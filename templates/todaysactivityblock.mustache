@@ -1,0 +1,76 @@
+<div id="todaysactivityblock" class="panel h-auto">
+    <div class="panel-header px-0">
+        <div class="panel-title px-0 col-lg-8 col-md-6 col-sm-12">
+            <strong>
+                {{#str}} todaysactivityheader, report_elucidsitereport {{/str}}
+                <a href="#" class="small"><i class="fa fa-question-circle"></i></a>
+            </strong>
+        </div>
+    </div>
+    <div class="panel-body bg-primary text-white">
+        <div class="panel-live grid-item">
+            <h4 class="text-white">Today's Login</h4>
+            <div class="row mx-0 text-center pb-10">
+                <div class="col-4 px-0">
+                    <div id="online-learners" class="font-size-30 font-weight-600 w-full">1</div>
+                    <small>Learners</small>
+                </div>
+                <div class="col-4 px-0">
+                    <div id="online-teachers" class="font-size-30 font-weight-600 w-full">1</div>
+                    <small>Teachers</small>
+                </div>
+                <div class="col-4 px-0">
+                    <div id="online-users" class="font-size-30 font-weight-600 w-full">1</div>
+                    <small>All Users</small>
+                </div>
+            </div>
+
+            <div class="visual mb-30">
+                <div class="visual-head">Page Views per Hour</div>
+                <div class="visual-body">
+                    <canvas class="ct-chart border-bottom" style="max-height: 150px"></canvas>
+                </div>
+            </div>
+
+        <table class="summary w-full">
+            <thead class="border-bottom">
+                <tr>
+                    <th style="text-align: left">Event Today</th>
+                    <th style="text-align: right">Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td align="left">Enrollments</td>
+                    <td align="right" id="live-enrolments">0</td>
+                </tr>
+                <tr>
+                    <td align="left">Activity Completions</td>
+                    <td align="right" id="live-completed_activities">0</td>
+                </tr>
+                <tr>
+                    <td align="left">Course Completions</td>
+                    <td align="right" id="live-completions">0</td>
+                </tr>
+                <tr>
+                    <td align="left">New Registrations</td>
+                    <td align="right" id="live-registrations">0</td>
+                </tr>
+                <tr>
+                    <td align="left">Visits</td>
+                    <td align="right" id="live-visits">9</td>
+                </tr>
+                <tr>
+                    <td align="left">Time Spent</td>
+                    <td align="right" id="live-timespend">00:00:45</td>
+                </tr>
+                <tr>
+                    <td align="left">Sessions</td>
+                    <td align="right" id="live-sessions">3</td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+        </div>
+    </div>
+</div>

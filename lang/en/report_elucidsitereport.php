@@ -38,3 +38,5 @@ $string['certificatestats'] = 'Certificates Stats';
 $string['lpstatsheader'] = 'Learning Program Stats';
 $string['accessinfo'] = 'Site Access Information';
 $string['inactiveusers'] = 'Inactive Users List';
+$string['todaysactivityheader'] = 'Today\'s Activities';
+$string['overallengagementheader'] = 'Overall Engagement in Courses';

@@ -1,19 +1,19 @@
 <div id="inactiveusersblock" class="panel h-auto">
-    <div class="panel-header clearfix">
-        <div class="panel-title px-0">
+    <div class="panel-header row mx-0">
+        <div class="panel-title px-0 col-lg-8 col-md-6 col-sm-12">
             <strong>
                 {{#str}} inactiveusers, report_elucidsitereport {{/str}}
                 <a href="#" class="small"><i class="fa fa-question-circle"></i></a>
             </strong>
-            <div class="dropdown col-12 text-right px-0 pb-10">
-                <small class="font-weight-700">Logged In: </small>
-                <button type="button" class="btn btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Never</button>
-                <div class="dropdown-menu dropdown-sm" role="menu">
-                    <a class="active dropdown-item" href="javascript:void(0)" role="menuitem">Never</a>
-                    <a class="dropdown-item" href="javascript:void(0)" role="menuitem">Before 1 Month</a>
-                    <a class="dropdown-item" href="javascript:void(0)" role="menuitem">Before 3 Month</a>
-                    <a class="dropdown-item" href="javascript:void(0)" role="menuitem">Before 6 Month</a>
-                </div>
+        </div>
+        <div class="panel-title dropdown col-lg-4 col-md-6 col-sm-12 text-right px-0">
+            <small class="font-weight-700">Logged In: </small>
+            <button type="button" class="btn btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Never</button>
+            <div class="dropdown-menu dropdown-sm" role="menu">
+                <a class="active dropdown-item" href="javascript:void(0)" role="menuitem">Never</a>
+                <a class="dropdown-item" href="javascript:void(0)" role="menuitem">Before 1 Month</a>
+                <a class="dropdown-item" href="javascript:void(0)" role="menuitem">Before 3 Month</a>
+                <a class="dropdown-item" href="javascript:void(0)" role="menuitem">Before 6 Month</a>
             </div>
         </div>
     </div>

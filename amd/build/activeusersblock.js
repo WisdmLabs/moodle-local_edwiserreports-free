@@ -1,67 +1,39 @@
-define(['jquery', 'core/chartjs'], function ($, Chart) {
+define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig'], function ($, Chart, defaultConfig) {
     function init() {
+        var graphData = {
+            activeUsers : [12, 19, 3, 5, 2, 3, 12, 12, 19, 3, 5, 6],
+            enrolment : [2, 9, 13, 15, 6, 15, 13, 9, 4, 11, 6, 3],
+            completionRate : [11, 15, 12, 5, 9, 10, 4, 11, 15, 12, 5, 10]
+        };
+
         var data = {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            labels: defaultConfig.activeUsersBlock.graph.labels,
             datasets: [{
-                label: 'Active Users',
-                data: [12, 19, 3, 5, 2, 3, 12, 12, 19, 3, 5, 6],
-                backgroundColor: [
-                    'rgba(0, 0, 0, 0)'
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)'
-                ]
+                label: defaultConfig.activeUsersBlock.graph.labelName.activeUsers,
+                data: graphData.activeUsers,
+                backgroundColor: defaultConfig.activeUsersBlock.graph.backgroundColor.activeUsers,
+                borderColor: defaultConfig.activeUsersBlock.graph.borderColor.activeUsers
             },
             {
-                label: 'Course Enrolment',
-                data: [2, 9, 13, 15, 6, 15, 13, 9, 4, 11, 6, 3],
-                backgroundColor: [
-                    'rgba(0, 0, 0, 0)'
-                ],
-                borderColor: [
-                    'rgba(73, 222, 148, 1)'
-                ]
+                label: defaultConfig.activeUsersBlock.graph.labelName.enrolments,
+                data: graphData.enrolment,
+                backgroundColor: defaultConfig.activeUsersBlock.graph.backgroundColor.enrolments,
+                borderColor: defaultConfig.activeUsersBlock.graph.borderColor.enrolments
             },
             {
-                label: 'Course Completion Rate',
-                data: [11, 15, 12, 5, 9, 10, 4, 11, 15, 12, 5, 10],
-                backgroundColor: [
-                    'rgba(0, 0, 0, 0)'
-                ],
-                borderColor: [
-                    'rgba(62, 142, 247, 1)'
-                ]
+                label: defaultConfig.activeUsersBlock.graph.labelName.completionRate,
+                data: graphData.completionRate,
+                backgroundColor: defaultConfig.activeUsersBlock.graph.backgroundColor.completionRate,
+                borderColor: defaultConfig.activeUsersBlock.graph.borderColor.completionRate
             }]
         };
 
-        var options = {
-            elements: {
-                point: {
-                    radius: 0
-                },
-                borderWidth: 4
-            },
-            responsive: true,
-            maintainAspectRatio: false,
-            aspectRatio: 1,
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        autoSkip: true,
-                        maxTicksLimit: 20,
-                        minTicksLimit: 20,
-                    }
-                }]
-            }
-        };
-
-        var ctx = $('#activeusersblock .ct-chart')[0].getContext('2d');
-        Chart.defaults.global.defaultFontFamily = 'Open Sans';
-        Chart.defaults.global.defaultFontStyle = 'bold';
-        var myLineChart = new Chart(ctx, {
-            type: 'line',
+        Chart.defaults.global.defaultFontFamily = defaultConfig.activeUsersBlock.graph.fontFamily;
+        Chart.defaults.global.defaultFontStyle = defaultConfig.activeUsersBlock.graph.fontStyle;
+        var myLineChart = new Chart(defaultConfig.activeUsersBlock.ctx, {
+            type: defaultConfig.activeUsersBlock.graph.type,
             data: data,
-            options: options
+            options: defaultConfig.activeUsersBlock.graph.options
         });
     }
 

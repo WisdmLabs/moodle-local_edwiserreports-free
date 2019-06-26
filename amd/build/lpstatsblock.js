@@ -1,27 +1,20 @@
-define(['jquery', 'core/chartjs'], function ($, Chart) {
+define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig'], function ($, Chart, defaultconfig) {
     function init() {
+        var graphData = [12, 19];
+
         var data = {
-            labels: ['Completed', 'Incompleted'],
+            labels: defaultConfig.lpStatsBlock.graph.labels,
             datasets: [{
-                label: 'Active Users',
-                data: [12, 19],
-                backgroundColor: [
-                    "#fe6384",
-                    "#36a2eb"
-                ],
+                data: graphData,
+                label: defaultConfig.lpStatsBlock.graph.label,
+                backgroundColor: defaultConfig.lpStatsBlock.graph.backgroundColor,
             }]
         };
 
-        var options = {
-            responsive: true,
-            maintainAspectRatio: false,
-            aspectRatio: 1,
-        };
-        var ctx = $('#lpstatsblock .ct-chart')[0].getContext('2d');
-        var myPieChart = new Chart(ctx, {
-            type: 'pie',
+        var myPieChart = new Chart(defaultConfig.lpStatsBlock.ctx, {
             data: data,
-            options: options
+            type: defaultConfig.lpStatsBlock.graph.type,
+            options: defaultConfig.lpStatsBlock.graph.options
         });
     }
 

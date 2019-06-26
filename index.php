@@ -33,6 +33,7 @@ admin_externalpage_setup('elucidsitereport');
 $PAGE->requires->js_call_amd('report_elucidsitereport/activeusersblock', 'init');
 $PAGE->requires->js_call_amd('report_elucidsitereport/courseprogressblock', 'init');
 $PAGE->requires->js_call_amd('report_elucidsitereport/lpstatsblock', 'init');
+$PAGE->requires->js_call_amd('report_elucidsitereport/todaysactivityblock', 'init');
 
 $elucidreport = new \report_elucidsitereport\output\elucidreport();
 $reportrenderable = new \report_elucidsitereport\output\elucidreport_renderable();
