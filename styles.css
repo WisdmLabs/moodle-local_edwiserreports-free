@@ -1,0 +1,20 @@
+#wdm-elucidsitereport table thead tr th {
+    font-weight: 700 !important;
+}
+#wdm-elucidsitereport #f2fsessionsblock table tbody tr td .icon {
+    transition: all 350ms ease-in-out;
+}
+#wdm-elucidsitereport #f2fsessionsblock table tbody tr[aria-expanded="true"] td .icon {
+    transform: rotate(90deg);
+}
+
+#wdm-elucidsitereport #accessinfograph table#accessinfotable tbody tr td {
+    border-width: 3px;
+    width: 12.5%;
+}
+#wdm-elucidsitereport #accessinfograph table#accessinfotable tbody tr td:not(.empty-lable):hover {
+    border-color: #999 !important;
+}
+#wdm-elucidsitereport #accessinfograph table#accessinfodesctable tbody tr td {
+    width: 16.67%;
+}
