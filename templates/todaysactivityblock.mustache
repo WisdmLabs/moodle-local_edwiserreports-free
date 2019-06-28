@@ -7,7 +7,81 @@
             </strong>
         </div>
     </div>
-    <div class="panel-body bg-primary text-white">
+    <div class="panel-body p-0 mt-10">
+        <div class="card card-inverse card-shadow bg-primary" id="widgetSaleBar">
+            <div class="card-block p-0">
+                <div class="pt-25 px-30">
+                    <div class="row no-space">
+                        <div class="col-4 pr-10">
+                            <div class="bold mb-5">Today's Login</div>
+                            <div class="row mx-0 text-center pb-10">
+                                <div class="col-12 bg-primary mb-10 py-10" style="filter: contrast(1.3);">
+                                    <div id="online-learners" class="font-size-30 font-weight-600 w-full">1</div>
+                                    <small>Learners</small>
+                                </div>
+                                <div class="col-12 bg-primary mb-10 py-10" style="filter: contrast(1.3);">
+                                    <div id="online-teachers" class="font-size-30 font-weight-600 w-full">1</div>
+                                    <small>Teachers</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-8 pl-10">
+                            <table class="summary w-full">
+                                <thead class="border-bottom">
+                                    <tr>
+                                        <th class="text-left">Event Today</th>
+                                        <th class="text-right ">Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td align="left">Enrollments</td>
+                                        <td align="right" id="live-enrolments">0</td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left">Activity Completions</td>
+                                        <td align="right" id="live-completed_activities">0</td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left">Course Completions</td>
+                                        <td align="right" id="live-completions">0</td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left">New Registrations</td>
+                                        <td align="right" id="live-registrations">0</td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left">Visits</td>
+                                        <td align="right" id="live-visits">9</td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left">Time Spent</td>
+                                        <td align="right" id="live-timespend">00:00:45</td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left">Sessions</td>
+                                        <td align="right" id="live-sessions">3</td>
+                                    </tr>
+                                    <tr class="border-top bold">
+                                        <td align="left">Total Users</td>
+                                        <td align="right" id="live-sessions">10</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="visual mb-30 px-30">
+                    <p class="visual-head bold">Page Views per Hour</p>
+                    <div class="visual-body">
+                        <canvas class="ct-chart py-10" style="max-height: 100px"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <div class="panel-body bg-primary text-white">
         <div class="panel-live grid-item">
             <h4 class="text-white">Today's Login</h4>
             <div class="row mx-0 text-center pb-10">
@@ -32,45 +106,45 @@
                 </div>
             </div>
 
-        <table class="summary w-full">
-            <thead class="border-bottom">
-                <tr>
-                    <th style="text-align: left">Event Today</th>
-                    <th style="text-align: right">Value</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td align="left">Enrollments</td>
-                    <td align="right" id="live-enrolments">0</td>
-                </tr>
-                <tr>
-                    <td align="left">Activity Completions</td>
-                    <td align="right" id="live-completed_activities">0</td>
-                </tr>
-                <tr>
-                    <td align="left">Course Completions</td>
-                    <td align="right" id="live-completions">0</td>
-                </tr>
-                <tr>
-                    <td align="left">New Registrations</td>
-                    <td align="right" id="live-registrations">0</td>
-                </tr>
-                <tr>
-                    <td align="left">Visits</td>
-                    <td align="right" id="live-visits">9</td>
-                </tr>
-                <tr>
-                    <td align="left">Time Spent</td>
-                    <td align="right" id="live-timespend">00:00:45</td>
-                </tr>
-                <tr>
-                    <td align="left">Sessions</td>
-                    <td align="right" id="live-sessions">3</td>
-                </tr>
-            </tbody>
-        </table>
+            <table class="summary w-full">
+                <thead class="border-bottom">
+                    <tr>
+                        <th style="text-align: left">Event Today</th>
+                        <th style="text-align: right">Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td align="left">Enrollments</td>
+                        <td align="right" id="live-enrolments">0</td>
+                    </tr>
+                    <tr>
+                        <td align="left">Activity Completions</td>
+                        <td align="right" id="live-completed_activities">0</td>
+                    </tr>
+                    <tr>
+                        <td align="left">Course Completions</td>
+                        <td align="right" id="live-completions">0</td>
+                    </tr>
+                    <tr>
+                        <td align="left">New Registrations</td>
+                        <td align="right" id="live-registrations">0</td>
+                    </tr>
+                    <tr>
+                        <td align="left">Visits</td>
+                        <td align="right" id="live-visits">9</td>
+                    </tr>
+                    <tr>
+                        <td align="left">Time Spent</td>
+                        <td align="right" id="live-timespend">00:00:45</td>
+                    </tr>
+                    <tr>
+                        <td align="left">Sessions</td>
+                        <td align="right" id="live-sessions">3</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
         </div>
-    </div>
+    </div> -->
 </div>
