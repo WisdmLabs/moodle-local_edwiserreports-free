@@ -7,22 +7,25 @@
                     <a href="#" class="small"><i class="fa fa-question-circle"></i></a>
                 </strong>
                 <div class="row mx-0">
-                    <small class="col-8 px-0">Updated at 10:25</small>
+                    <small id="updated-time" class="col-8 px-0"></small>
                     <div class="dropdown col-4 text-right">
                         <button type="button" class="btn btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">ALL</button>
                         <div class="dropdown-menu dropdown-sm" role="menu">
-                            <a class="active dropdown-item" href="javascript:void(0)" role="menuitem">ALL</a>
-                            <a class="dropdown-item" href="javascript:void(0)" role="menuitem">LAST WEEK</a>
-                            <a class="dropdown-item" href="javascript:void(0)" role="menuitem">LAST MONTH</a>
-                            <a class="dropdown-item" href="javascript:void(0)" role="menuitem">LAST YEAR</a>
-                            <a class="dropdown-item" href="javascript:void(0)" role="menuitem">LAST 5 YEAR</a>
+                            <a class="active dropdown-item small" href="javascript:void(0)" role="menuitem" value="all">ALL</a>
+                            <a class="dropdown-item small" href="javascript:void(0)" role="menuitem" value="weekly">LAST WEEK</a>
+                            <a class="dropdown-item small" href="javascript:void(0)" role="menuitem" value="monthly">LAST MONTH</a>
+                            <a class="dropdown-item small" href="javascript:void(0)" role="menuitem" value="yearly">LAST YEAR</a>
+                            <a class="dropdown-item small" href="javascript:void(0)" role="menuitem" value="fiveyearly">LAST 5 YEAR</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="panel-body p-0">
-            <canvas class="ct-chart line-chart" style="max-height: 350px;"></canvas>
+            <div class="loader w-full text-center pt-100" style="min-height: 250px;">
+                {{# pix }} loader, report_elucidsitereport{{/ pix }}
+            </div>
+            <canvas class="ct-chart line-chart d-none" style="max-height: 250px;"></canvas>
         </div>
     </div>
 </div>

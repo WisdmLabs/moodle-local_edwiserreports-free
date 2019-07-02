@@ -15,13 +15,16 @@ define(["jquery", "report_elucidsitereport/variables"], function($, v) {
                             display: false
                         }],
                         yAxes: [{
-                            display: false
+                            display: false,
                         }]
                     },
                     legend: {
                         display: false
                     }
                 },
+                borderColor : [
+                    v.whiteColor
+                ],
                 backgroundColor : [
                     v.whiteColor, v.whiteColor, v.whiteColor,
                     v.whiteColor, v.whiteColor, v.whiteColor,
@@ -55,39 +58,49 @@ define(["jquery", "report_elucidsitereport/variables"], function($, v) {
                 fontStyle : "bold",
                 options : {
                     elements: {
-                        point: {
-                            radius: 0
-                        },
                         borderWidth: 4
+                    },
+                    scales:{
+                        yAxes: [{
+                            ticks : {
+                                beginAtZero: true,
+                                min : 0,
+                                callback: function (value) {
+                                    if (Number.isInteger(value)) {
+                                        return value;
+                                    }
+                                }
+                            },
+                        }]
                     },
                     responsive: true,
                     maintainAspectRatio: false,
                     aspectRatio: 1
                 },
-                labels : [
-                    v.month_1, v.month_2, v.month_3, v.month_4,
-                    v.month_5, v.month_6, v.month_7, v.month_8,
-                    v.month_9, v.month_10, v.month_11, v.month_12,
-                ],
                 labelName : {
                     activeUsers : "Active Users",
                     enrolments : "Course Enrolment",
                     completionRate : "Course Completion Rate"
                 },
                 backgroundColor : {
-                    activeUsers : ["rgba(0, 0, 0, 0)"],
-                    enrolments : ["rgba(0, 0, 0, 0)"],
-                    completionRate : ["rgba(0, 0, 0, 0)"]
+                    activeUsers : "rgba(0, 0, 0, 0)",
+                    enrolments : "rgba(0, 0, 0, 0)",
+                    completionRate : "rgba(0, 0, 0, 0)"
                 },
                 borderColor : {
-                    activeUsers : ["rgba(255, 99, 132, 1)"],
-                    enrolments : ["rgba(73, 222, 148, 1)"],
-                    completionRate : ["rgba(62, 142, 247, 1)"]
+                    activeUsers : "rgba(255, 99, 132, 1)",
+                    enrolments : "rgba(73, 222, 148, 1)",
+                    completionRate : "rgba(62, 142, 247, 1)"
+                },
+                data : {
+                    activeUsers : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    enrolments : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    completionRate : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
                 }
             }
         },
 
-        // Active Users Block
+        // Course Progress Block
         courseProgressBlock : {
             ctx : $(v.courseProgressBlock)[0].getContext("2d"),
             graph : {
@@ -97,13 +110,12 @@ define(["jquery", "report_elucidsitereport/variables"], function($, v) {
                     maintainAspectRatio: false,
                     aspectRatio: 1,
                 },
-                labelName : "Active Users",
                 labels : ['0%', '20%', '40%', '60%', '80%', '100%'],
                 backgroundColor : ["#fe6384", "#36a2eb", "#fdce56", "#cacbd0", "#4ac0c0", "#FF851B"]
             }
         },
 
-        // Active Users Block
+        // LP Progress Block
         lpStatsBlock : {
             ctx : $(v.lpStatsBlock)[0].getContext("2d"),
             graph : {
@@ -113,7 +125,6 @@ define(["jquery", "report_elucidsitereport/variables"], function($, v) {
                     maintainAspectRatio: false,
                     aspectRatio: 1,
                 },
-                labelName : "Active Users",
                 labels : ['Completed', 'Incompleted'],
                 backgroundColor : ["#fe6384", "#36a2eb"]
             }

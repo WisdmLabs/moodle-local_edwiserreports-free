@@ -1,6 +1,6 @@
 define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig'], function ($, Chart, defaultConfig) {
     function init() {
-        var graphData = [12, 19, 3, 5, 2, 3, 12, 12, 19, 3, 5, 6, 12, 19, 3, 5, 2, 3, 12, 12, 19, 3, 5, 6];
+        var graphData = [12, 19, 3, 5, 2, 3, 12, 12, 19, 3, 5, 6, 12, 19, 3, 5, 2, 3, 12, 12, 19, 0, 5, 6];
 
         var data = {
             labels: defaultConfig.todaysActivityBlock.graph.labels,
