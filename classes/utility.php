@@ -35,7 +35,12 @@ require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/active_use
  * to perform in the eLucid report plugin
  */
 class utility {
-    public function get_active_users_data($filter = 'all') {
+    public static function get_active_users_data($data) {
+        if (isset($data->filter)) {
+            $filter = $data->filter;
+        } else {
+            $filter = 'weekly'; // Default filter
+        }
         return \report_elucidsitereport\active_users_block::get_active_users_graph_data($filter);
     }
 }

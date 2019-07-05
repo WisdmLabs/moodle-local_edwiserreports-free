@@ -18,3 +18,18 @@
 #wdm-elucidsitereport #accessinfograph table#accessinfodesctable tbody tr td {
     width: 16.67%;
 }
+
+#wdm-elucidsitereport #activeusersblock .input-group-addon {
+    font-weight: 300;
+    padding: .429rem .729rem;
+    color: #76838f;
+    text-align: center;
+    background-color: #e4eaec;
+    border: 1px solid #e4eaec;
+    border-radius: 0;
+}
+
+#wdm-elucidsitereport #activeusersblock input[type="date"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    display: none;
+}

@@ -164,8 +164,8 @@ class active_users_block extends utility {
         if (!empty($records)) {
             self::$firstaccess = $records[0]->timecreated;
             switch ($filter) {
-                case 'weekly':
-                    self::$xlabelcount = 7;
+                case 'all':
+                    self::$xlabelcount = ceil((self::$timenow - self::$firstaccess) / self::$oneday);
                     break;
                 case 'monthly':
                     self::$xlabelcount = 30;
@@ -173,15 +173,22 @@ class active_users_block extends utility {
                 case 'yearly':
                     self::$xlabelcount = 365;
                     break;
-                case 'yearly':
-                    self::$xlabelcount = 365;
-                    break;
-                case 'fiveyearly':
-                    self::$xlabelcount = 5 * 365;
+                case 'weekly':
+                    self::$xlabelcount = 7;
                     break;
                 default:
-                    self::$xlabelcount = ceil((self::$timenow - self::$firstaccess) / (24 * 60 * 60));
-                    break;
+                    $dates = explode("&", $filter);
+                    if (count($dates) == 2) {
+                        $startdate = strtotime(str_replace("start-date=", "", $dates[0]) . " 00:00:00");
+                        $enddate = strtotime(str_replace("end-date=", "", $dates[1]) . " 23:59:59");
+                    }
+
+                    if ($startdate && $enddate) {
+                        self::$xlabelcount = ceil($enddate - $startdate) / self::$oneday;
+                        self::$timenow = $enddate;
+                    } else {
+                        self::$xlabelcount = 7;
+                    }
             }
         } else {
             self::$firstaccess = self::$timenow;

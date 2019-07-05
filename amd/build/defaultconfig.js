@@ -56,7 +56,14 @@ define(["jquery", "report_elucidsitereport/variables"], function($, v) {
                 type : "line",
                 fontFamily : "Open Sans",
                 fontStyle : "bold",
+                pointStyle: "line",
+                showInLegend: true,
                 options : {
+                    legend: {
+                        labels: {
+                            usePointStyle: true
+                        }
+                    },
                     elements: {
                         borderWidth: 4
                     },

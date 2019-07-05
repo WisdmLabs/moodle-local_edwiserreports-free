@@ -40,6 +40,7 @@ class elucidreport_renderable implements renderable, templatable  {
     public function export_for_template(renderer_base $output) {
         $output = null;
         $export = new stdClass();
+        $export->timenow = date("Y-m-d", time());
         return  $export;
     }
 }

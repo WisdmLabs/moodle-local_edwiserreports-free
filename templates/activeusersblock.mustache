@@ -7,25 +7,20 @@
                     <a href="#" class="small"><i class="fa fa-question-circle"></i></a>
                 </strong>
                 <div class="row mx-0">
-                    <small id="updated-time" class="col-8 px-0"></small>
-                    <div class="dropdown col-4 text-right">
-                        <button type="button" class="btn btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">ALL</button>
-                        <div class="dropdown-menu dropdown-sm" role="menu">
-                            <a class="active dropdown-item small" href="javascript:void(0)" role="menuitem" value="all">ALL</a>
-                            <a class="dropdown-item small" href="javascript:void(0)" role="menuitem" value="weekly">LAST WEEK</a>
-                            <a class="dropdown-item small" href="javascript:void(0)" role="menuitem" value="monthly">LAST MONTH</a>
-                            <a class="dropdown-item small" href="javascript:void(0)" role="menuitem" value="yearly">LAST YEAR</a>
-                            <a class="dropdown-item small" href="javascript:void(0)" role="menuitem" value="fiveyearly">LAST 5 YEAR</a>
-                        </div>
+                    <div id="updated-time" class="font-size-12 px-0">
+                        Last updated <span class="minute">0</span> min ago
                     </div>
+                    {{> report_elucidsitereport/activeusers_filter }}
                 </div>
             </div>
         </div>
         <div class="panel-body p-0">
-            <div class="loader w-full text-center pt-100" style="min-height: 250px;">
+            <div class="loader w-full text-center pt-100 mt-50" style="min-height: 350px;">
                 {{# pix }} loader, report_elucidsitereport{{/ pix }}
             </div>
-            <canvas class="ct-chart line-chart d-none" style="max-height: 250px;"></canvas>
+            <canvas class="ct-chart line-chart d-none" style="max-height: 350px;"></canvas>
+        </div>
+        <div class="panel-footer p-0">
         </div>
     </div>
 </div>

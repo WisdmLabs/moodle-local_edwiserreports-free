@@ -1,0 +1,26 @@
+<div class="filters my-10 ml-auto text-right">
+    <form action="javascript:void(0);">
+        <div class="">
+            <div class="dropdown mb-10">
+                <button type="button" class="btn btn-sm dropdown-toggle input-group-addon" data-toggle="dropdown" aria-expanded="false">Last Week</button>
+                <div class="dropdown-menu" role="menu">
+                    <a class="dropdown-item" href="javascript:void(0)" role="menuitem" value="weekly">Last Week</a>
+                    <a class="dropdown-item" href="javascript:void(0)" role="menuitem" value="monthly">Last Month</a>
+                    <a class="dropdown-item" href="javascript:void(0)" role="menuitem" value="yearly">Last Year</a>
+                    <a class="dropdown-item custom" href="javascript:void(0)" role="menuitem" value="fiveyearly">Custom</a>
+                </div>
+            </div>
+            <div class="date-picker row mx-0 d-none">
+                <div class="row mr-0 ml-auto">
+                    <span class="input-group-addon rounded-left h-full">
+                        <i class="icon wb-calendar" aria-hidden="true"></i>
+                    </span>
+                    <input id="startdate" max="{{timenow}}" type="date" class="form-control w-150 px-5 rounded-0 h-full" name="start-date"/>
+                    <span class="input-group-addon btn-sm h-full py-10">to</span>
+                    <input id="enddate" max="{{timenow}}" type="date" class="form-control w-150 px-5 rpunded-0 h-full" name="end-date"/>
+                    <input type="submit" class="btn btn-sm btn-secondary input-group-addon rounded-right h-full" value="Go"/>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
