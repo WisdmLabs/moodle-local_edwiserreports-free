@@ -1,6 +1,11 @@
 #wdm-elucidsitereport table thead tr th {
     font-weight: 700 !important;
+    color: unset !important
 }
+#wdm-elucidsitereport .dataTables_wrapper.no-footer .dataTables_scrollBody {
+    border-bottom: 0 !important;
+}
+
 #wdm-elucidsitereport #f2fsessionsblock table tbody tr td .icon {
     transition: all 350ms ease-in-out;
 }
@@ -32,4 +37,33 @@
 #wdm-elucidsitereport #activeusersblock input[type="date"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
     display: none;
+}
+
+/* Datatable css */
+#wdm-elucidsitereport table.dataTable tr,
+#wdm-elucidsitereport table.dataTable tr td {
+    background-color: unset !important;
+}
+
+/* width */
+#wdm-elucidsitereport ::-webkit-scrollbar {
+  width: 10px;
+  border-radius: 0;
+}
+
+/* Track */
+#wdm-elucidsitereport ::-webkit-scrollbar-track {
+   border-radius: 0;
+   background: #f1f1f1;
+}
+
+/* Handle */
+#wdm-elucidsitereport ::-webkit-scrollbar-thumb {
+   border-radius: 0;
+   background: #888;
+}
+
+/* Handle on hover */
+#wdm-elucidsitereport ::-webkit-scrollbar-thumb:hover {
+   background: #555;
 }

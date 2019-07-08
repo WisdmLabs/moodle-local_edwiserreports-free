@@ -1,5 +1,7 @@
 define(["jquery", "report_elucidsitereport/variables"], function($, v) {
     return defaultConfig = {
+        // Default Config
+        requestUrl : M.cfg.wwwroot + '/report/elucidsitereport/request_handler.php',
         // Todays Activity Block
         todaysActivityBlock : {
             ctx : $(v.todaysActivityBlock)[0].getContext("2d"),

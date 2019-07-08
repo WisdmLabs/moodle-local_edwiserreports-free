@@ -30,6 +30,7 @@ use stdClass;
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/active_users_block.php");
+require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/active_courses_block.php");
 /**
  * Utilty class to add all utility function
  * to perform in the eLucid report plugin
@@ -42,5 +43,13 @@ class utility {
             $filter = 'weekly'; // Default filter
         }
         return \report_elucidsitereport\active_users_block::get_active_users_graph_data($filter);
+    }
+
+    public static function get_course_progress_data() {
+        return \report_elucidsitereport\course_progress_block::get_course_progress_graph_data();
+    }
+
+    public static function get_active_courses_data() {
+        return \report_elucidsitereport\active_courses_block::get_active_courses_table_data();
     }
 }
