@@ -26,11 +26,18 @@
 namespace report_elucidsitereport;
 
 use stdClass;
+use MoodleQuickForm;
+use context_course;
+use completion_info;
+use progress;
 
 defined('MOODLE_INTERNAL') || die();
 
+require_once($CFG->dirroot . "/completion/classes/progress.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/active_users_block.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/active_courses_block.php");
+require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/course_progress_block.php");
+
 /**
  * Utilty class to add all utility function
  * to perform in the eLucid report plugin
@@ -45,11 +52,88 @@ class utility {
         return \report_elucidsitereport\active_users_block::get_active_users_graph_data($filter);
     }
 
-    public static function get_course_progress_data() {
-        return \report_elucidsitereport\course_progress_block::get_course_progress_graph_data();
+    public static function get_course_progress_data($data) {
+        return \report_elucidsitereport\course_progress_block::get_course_progress_graph_data($data->courseid);
     }
 
     public static function get_active_courses_data() {
         return \report_elucidsitereport\active_courses_block::get_active_courses_table_data();
+    }
+
+    public static function generate_course_filter() {
+        global $DB;
+        $fields = "id, fullname, shortname";
+        $form = new MoodleQuickForm('test', 'post', '#');
+        $courses = $DB->get_records('course', array(), '', $fields);
+
+        $select = array();
+        foreach ($courses as $course) {
+            if ($course->id == 1) {
+                continue;
+            }
+            $coursecontext = context_course::instance($course->id);
+            // Get only students
+            $enrolledstudents = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+            if (count($enrolledstudents) == 0) {
+                continue;
+            }
+            $select[$course->id] = $course->fullname;
+        }
+
+        $options = array(
+           'multiple' => false,
+           'placeholder' => 'Search and Select Courses',
+           'class' => 'ml-0 mr-5 mb-10'
+        );
+        $form->addElement('autocomplete', 'courses', '', $select, $options);
+
+        ob_start();
+        $form->display();
+        $output = ob_get_contents();
+        ob_end_clean();
+        return $output;
+    }
+
+    public static function get_course_completion_info($course = false, $userid = false) {
+        global $COURSE, $USER;
+        if (!$course) {
+            $course = $COURSE;
+        }
+
+        if (!$userid) {
+            $userid = $USER->id;
+        }
+
+        $completioninfo = array();
+        $coursecontext = context_course::instance($course->id);
+        if (is_enrolled($coursecontext, $userid)) {
+            $completion = new completion_info($course);
+            if ($completion->is_enabled()) {
+                $percentage = \core_completion\progress::get_course_progress_percentage($course, $userid);
+                $modules = $completion->get_activities();
+                $completioninfo['totalactivities'] = count($modules);
+                $completioninfo['completedactivities'] = 0;
+                if (!is_null($percentage)) {
+                    $percentage = floor($percentage);
+                    if ($percentage == 100) {
+                        $completioninfo['progresspercentage'] = 100;
+                        $completioninfo['completedactivities'] = count($modules);
+                    } else if ($percentage > 0 && $percentage < 100) {
+                        $completioninfo['progresspercentage'] = $percentage;
+                        foreach ($modules as $module) {
+                            $data = $completion->get_data($module, false, $userid);
+                            if ($data->completionstate) {
+                                $completioninfo['completedactivities']++;
+                            }
+                        }
+                    } else {
+                        $completioninfo['progresspercentage'] = 0;
+                    }
+                } else {
+                    $completioninfo['progresspercentage'] = 0;
+                }
+            }
+        }
+        return $completioninfo;
     }
 }

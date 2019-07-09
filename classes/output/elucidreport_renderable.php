@@ -41,6 +41,7 @@ class elucidreport_renderable implements renderable, templatable  {
         $output = null;
         $export = new stdClass();
         $export->timenow = date("Y-m-d", time());
+        $export->searchfilter = \report_elucidsitereport\utility::generate_course_filter();
         return  $export;
     }
 }

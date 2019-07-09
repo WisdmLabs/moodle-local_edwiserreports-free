@@ -67,3 +67,37 @@
 #wdm-elucidsitereport ::-webkit-scrollbar-thumb:hover {
    background: #555;
 }
+
+/* Form course progress block */
+#courseprogressblock .col-md-3 {
+    display: none;
+}
+
+#courseprogressblock .col-md-9 {
+    display: -webkit-flex;
+    display: flex;
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: 0 0 100%;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+#courseprogressblock .col-md-9 .form-autocomplete-selection[role="list"] {
+    min-height: 1rem;
+    order: 3;
+    -webkit-order: 3;
+    margin-right: 0;
+    margin-left: 0;
+}
+
+#courseprogressblock .col-md-9 .form-autocomplete-selection[role="list"] span[role="listitem"] {
+    border-radius: 0;
+    background-color: #fff;
+    color: #526069;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: unset;
+    text-align: unset;
+    white-space: unset;
+}

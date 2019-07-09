@@ -41,11 +41,6 @@ class active_courses_block extends utility {
         global $DB;
 
         $table = "course";
-        $sqlcourseview = "SELECT DISTINCT userid
-                FROM {logstore_standard_log}
-                WHERE eventname = ? AND courseid = ?";
-        $sqlcoursecompletions = "SELECT * FROM {course_completions}
-                WHERE course = ?";
         $records = $DB->get_records($table, array());
 
         $courses = array();
@@ -56,13 +51,24 @@ class active_courses_block extends utility {
             }
 
             $count++;
+            $sqlcourseview = "SELECT DISTINCT userid
+                FROM {logstore_standard_log}
+                WHERE action = ? AND courseid = ?";
+            $course = get_course($record->id);
             $coursecontext = \context_course::instance($record->id);
             $enrolledstudents = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
 
             if (!empty($enrolledstudents)) {
-                $extsql = "AND userid IN (" . implode(",", array_keys($enrolledstudents)) . ")";
+                $extsql = " AND userid IN (" . implode(",", array_keys($enrolledstudents)) . ")";
                 $sqlcourseview .= $extsql;
-                $sqlcoursecompletions .= $extsql;
+            }
+
+            $completedusers = 0;
+            foreach ($enrolledstudents as $user) {
+                $completion = self::get_course_completion_info($course, $user->id);
+                if ($completion["progresspercentage"] == 100) {
+                    $completedusers++;
+                }
             }
 
             $courses[] = array(
@@ -70,12 +76,10 @@ class active_courses_block extends utility {
                 $record->fullname,
                 count($enrolledstudents),
                 count($DB->get_records_sql($sqlcourseview, array(
-                    '\core\event\course_viewed',
+                    'viewed',
                     $record->id
                 ))),
-                count($DB->get_records_sql($sqlcoursecompletions, array(
-                    $record->id
-                )))
+                $completedusers
             );
         }
         return $courses;

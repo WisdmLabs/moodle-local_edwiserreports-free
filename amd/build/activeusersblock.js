@@ -17,7 +17,6 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig'], func
             }).always(function() {
                 activeUsersGraph = generateActiveUsersGraph();
                 increamentDate();
-                // $(_panelTitle + " #updated-time").html("Updated at ");
                 $(_panelBody + " .ct-chart").removeClass('d-none');
                 $(_panelBody + " .loader").addClass('d-none');
             });

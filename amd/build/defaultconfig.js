@@ -114,8 +114,10 @@ define(["jquery", "report_elucidsitereport/variables"], function($, v) {
             ctx : $(v.courseProgressBlock)[0].getContext("2d"),
             graph : {
                 type : "pie",
+                data : [4, 5, 1, 7, 9, 12],
                 options : {
                     responsive: true,
+                    legend: {position: 'bottom'},
                     maintainAspectRatio: false,
                     aspectRatio: 1,
                 },
