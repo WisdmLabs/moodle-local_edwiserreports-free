@@ -34,14 +34,19 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
             .DataTable( {
                 data : data,
                 aaSorting: [[2, 'desc']],
+                language: {
+                    searchPlaceholder: "Search Courses"
+                },
                 columnDefs: [
                     {
                         "targets": 0,
                         "className": "text-center",
+                        "orderable": false
                     },
                     {
                         "targets": 1,
                         "className": "text-left",
+                        "orderable": false
                     },
                     {
                         "targets": 2,
@@ -56,8 +61,13 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
                         "className": "text-center",
                     }
                 ],
-                scrollY : "250px",
+                scrollY : "350px",
                 scrollCollapse : true,
+                fixedHeader: {
+                    header: true,
+                    headerOffset: 45
+                },
+                scrollX: true,
                 paging: false,
                 bInfo : false
             });
