@@ -37,6 +37,7 @@ require_once($CFG->dirroot . "/completion/classes/progress.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/active_users_block.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/active_courses_block.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/course_progress_block.php");
+require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/f2fsession_block.php");
 
 /**
  * Utilty class to add all utility function
@@ -49,15 +50,19 @@ class utility {
         } else {
             $filter = 'weekly'; // Default filter
         }
-        return \report_elucidsitereport\active_users_block::get_active_users_graph_data($filter);
+        return \report_elucidsitereport\active_users_block::get_data($filter);
     }
 
     public static function get_course_progress_data($data) {
-        return \report_elucidsitereport\course_progress_block::get_course_progress_graph_data($data->courseid);
+        return \report_elucidsitereport\course_progress_block::get_data($data->courseid);
     }
 
     public static function get_active_courses_data() {
-        return \report_elucidsitereport\active_courses_block::get_active_courses_table_data();
+        return \report_elucidsitereport\active_courses_block::get_data();
+    }
+
+    public static function get_f2fsessiondata_data() {
+        return \report_elucidsitereport\f2fsession_block::get_data();
     }
 
     public static function generate_course_filter() {

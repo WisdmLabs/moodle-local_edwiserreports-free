@@ -31,7 +31,7 @@ use stdClass;
  * To get the data related to active users block
  */
 class active_courses_block extends utility {
-    public static function get_active_courses_table_data() {
+    public static function get_data() {
         $response = new stdClass();
         $response->data = self::get_course_data();
         return $response;

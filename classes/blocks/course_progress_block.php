@@ -33,7 +33,7 @@ use completion_info;
  * To get the data related to active users block
  */
 class course_progress_block extends utility {
-    public static function get_course_progress_graph_data($courseid) {
+    public static function get_data($courseid) {
         $course = get_course($courseid);
         $coursecontext = context_course::instance($courseid);
         // Get only students

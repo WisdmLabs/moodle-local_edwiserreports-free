@@ -51,7 +51,7 @@ class active_users_block extends utility {
      * @param  string $filter date filter to get data
      * @return stdClass active users graph data
      */
-    public static function get_active_users_graph_data($filter) {
+    public static function get_data($filter) {
         self::$timenow = time();
 
         $response = new stdClass();

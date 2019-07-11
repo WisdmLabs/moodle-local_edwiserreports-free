@@ -1,0 +1,62 @@
+<div class="table-reponsive">
+    <table class="table">
+        <thead class="bg-secondary">
+            <tr>
+                <th>{{#str}} name, report_elucidsitereport{{/str}}</th>
+                <th>{{#str}} course, report_elucidsitereport {{/str}}</th>
+                <th>{{#str}} signups, report_elucidsitereport {{/str}}</th>
+                <th>{{#str}} attendees,report_elucidsitereport {{/str}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#f2fmodules}}
+            <tr data-toggle="collapse" data-target="#accordion-{{id}}" class="clickable">
+                <td><i class="icon fa fa-angle-right text-center"></i>{{name}}</td>
+                <td>{{coursename}}</td>
+                <td>{{overallsignups}}</td>
+                <td data-value="1" class="footable-last-column">{{overallattendend}}</td>
+            </tr>
+            <tr>
+                <td class="border-0 py-0 pl-30" colspan="4">
+                    <div  id="accordion-{{id}}" class="collapse">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>{{#str}} date, report_elucidsitereport {{/str}}</th>
+                                    <th>{{#str}} time, report_elucidsitereport {{/str}}</th>
+                                    <th>{{#str}} venue, report_elucidsitereport {{/str}}</th>
+                                    <th>{{#str}} signups, report_elucidsitereport {{/str}}</th>
+                                    <th>{{#str}} attendees, report_elucidsitereport {{/str}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#sessions}}
+                                <tr>
+                                    <td>{{date}}</td>
+                                    <td>{{time}}</td>
+                                    <td>{{signupvenue}}</td>
+                                    <td>{{signups}}</td>
+                                    <td>{{attendend}}</td>
+                                </tr>
+                                {{/sessions}}
+                                {{^sessions}}
+                                    <tr>
+                                        <td class="text-center" colspan="5">
+                                            {{#str}} nof2fsession, report_elucidsitereport {{/str}}
+                                        </td>
+                                    </tr>
+                                {{/sessions}}
+                            </tbody>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+            {{/f2fmodules}}
+            {{^f2fmodules}}
+            <tr>
+                <td class="text-center" colspan="4">{{#str}} nof2fmodule, report_elucidsitereport {{/str}}</td>
+            </tr>
+            {{/f2fmodules}}
+        </tbody>
+    </table>
+</div>

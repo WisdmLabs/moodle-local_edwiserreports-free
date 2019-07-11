@@ -84,11 +84,10 @@
 }
 
 #courseprogressblock .col-md-9 .form-autocomplete-selection[role="list"] {
-    min-height: 1rem;
     order: 3;
     -webkit-order: 3;
-    margin-right: 0;
-    margin-left: 0;
+    margin: 0;
+    width: 100%;
 }
 
 #courseprogressblock .col-md-9 .form-autocomplete-selection[role="list"] span[role="listitem"] {

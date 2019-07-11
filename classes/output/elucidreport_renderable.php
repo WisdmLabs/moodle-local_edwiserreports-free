@@ -24,10 +24,15 @@
  */
 
 namespace report_elucidsitereport\output;
+
+defined('MOODLE_INTERNAL') || die();
+
 use renderable;
 use templatable;
 use renderer_base;
 use stdClass;
+
+require_once($CFG->dirroot . "/report/elucidsitereport/lib.php");
 
 class elucidreport_renderable implements renderable, templatable  {
     /**
@@ -38,10 +43,16 @@ class elucidreport_renderable implements renderable, templatable  {
      * @return stdClass|array
      */
     public function export_for_template(renderer_base $output) {
+        global $PAGE;
         $output = null;
         $export = new stdClass();
         $export->timenow = date("Y-m-d", time());
         $export->searchfilter = \report_elucidsitereport\utility::generate_course_filter();
+        $export->hasf2fpluign = has_plugin("mod", "facetoface");
+
+        if ($export->hasf2fpluign) {
+            $PAGE->requires->js_call_amd('report_elucidsitereport/f2fsessionblock', 'init');
+        }
         return  $export;
     }
 }
