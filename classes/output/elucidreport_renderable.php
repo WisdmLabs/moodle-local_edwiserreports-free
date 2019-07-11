@@ -53,6 +53,12 @@ class elucidreport_renderable implements renderable, templatable  {
         if ($export->hasf2fpluign) {
             $PAGE->requires->js_call_amd('report_elucidsitereport/f2fsessionblock', 'init');
         }
+
+        $export->hascustomcertpluign = has_plugin("mod", "customcert");
+
+        if ($export->hascustomcertpluign) {
+            $PAGE->requires->js_call_amd('report_elucidsitereport/certificatestatsblock', 'init');
+        }
         return  $export;
     }
 }

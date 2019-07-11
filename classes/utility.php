@@ -38,6 +38,7 @@ require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/active_use
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/active_courses_block.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/course_progress_block.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/f2fsession_block.php");
+require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/certificates_block.php");
 
 /**
  * Utilty class to add all utility function
@@ -63,6 +64,10 @@ class utility {
 
     public static function get_f2fsessiondata_data() {
         return \report_elucidsitereport\f2fsession_block::get_data();
+    }
+
+    public static function get_certificates_data() {
+        return \report_elucidsitereport\certificates_block::get_data();
     }
 
     public static function generate_course_filter() {

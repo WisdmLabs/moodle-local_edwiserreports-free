@@ -64,4 +64,8 @@ class elucidsitereportController extends controllerAbstract
     public function get_f2fsession_data_ajax_action() {
         echo json_encode(\report_elucidsitereport\utility::get_f2fsessiondata_data());
     }
+
+    public function get_certificates_data_ajax_action() {
+        echo json_encode(\report_elucidsitereport\utility::get_certificates_data());
+    }
 }
