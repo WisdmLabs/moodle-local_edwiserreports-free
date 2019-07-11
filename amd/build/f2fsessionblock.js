@@ -18,18 +18,10 @@ define(['jquery', 'core/templates', 'report_elucidsitereport/defaultconfig'], fu
             }).fail(function(ex) {
                 console.log(ex);
             });
-            console.log(response.data);
         })
-        .fail(function() {
-            console.log("error");
+        .fail(function(error) {
+            console.log(error);
         })
-        .always(function() {
-            console.log("complete");
-        });
-    }
-
-    function renderF2fsessions(data) {
-
     }
 
     // Must return the init function
