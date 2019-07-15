@@ -100,3 +100,12 @@
     text-align: unset;
     white-space: unset;
 }
+
+/* Bootstrap CSS override */
+.badge-success {
+    background-color: #11c26d !important;
+}
+
+.badge-danger {
+    background-color: #ff4c52 !important;
+}

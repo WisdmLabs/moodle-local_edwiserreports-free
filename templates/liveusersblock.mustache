@@ -8,38 +8,24 @@
                 </strong>
             </div>
         </div>
-        <div class="table-responsive">
-            <table class="table">
+        <div class="panel-body p-0 table-responsive">
+            <div class="loader w-full text-center pt-100 mt-50" style="min-height: 250px;">
+                {{# pix }} loader, report_elucidsitereport{{/ pix }}
+            </div>
+            <table class="table d-none w-full mx-0">
                 <thead class="bg-secondary">
-                  <tr>
-                    <th>Full Name</th>
-                    <th>Online Since</th>
-                    <th>Status</th>
-                  </tr>
+                    <tr>
+                        <th class="bg-secondary border-bottom-0">
+                            {{#str}} fullname, report_elucidsitereport {{/str}}
+                        </th>
+                        <th class="bg-secondary border-bottom-0 text-center">
+                            {{#str}} onlinesince, report_elucidsitereport {{/str}}
+                        </th>
+                        <th class="bg-secondary border-bottom-0 text-center">
+                            {{#str}} status, report_elucidsitereport {{/str}}
+                        </th>
+                    </tr>
                 </thead>
-                <tbody>
-                  <tr>
-                    <td>Teagan Prohaska</td>
-                    <td>1 hour</td>
-                    <td>
-                      <span class="badge badge-danger">inactive</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Andy Gaylord</td>
-                    <td>15 min</td>
-                    <td>
-                      <span class="badge badge-info">active</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Veronica Gusikowski</td>
-                    <td>44 min</td>
-                    <td>
-                      <span class="badge badge-info">active</span>
-                    </td>
-                  </tr>
-                </tbody>
             </table>
         </div>
     </div>

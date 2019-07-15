@@ -1,5 +1,5 @@
 define(["jquery", "core/templates", "report_elucidsitereport/defaultconfig"], function($, templates, defaultConfig) {
-    var panelBody = "#certificatestatsblock .panel-body"
+    var panelBody = "#wdm-elucidsitereport #certificatestatsblock .panel-body"
 
     function init () {
         $.ajax({

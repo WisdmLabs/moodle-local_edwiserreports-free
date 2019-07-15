@@ -114,12 +114,22 @@ define(["jquery", "report_elucidsitereport/variables"], function($, v) {
             ctx : $(v.courseProgressBlock)[0].getContext("2d"),
             graph : {
                 type : "pie",
-                data : [4, 5, 1, 7, 9, 12],
+                data : [0, 0, 0, 0, 0, 0],
                 options : {
                     responsive: true,
                     legend: {position: 'bottom'},
                     maintainAspectRatio: false,
                     aspectRatio: 1,
+                    tooltips: {
+                        callbacks: {
+                            label: function(tooltipItem, data) {
+                                return M.util.get_string('courseprogresstooltip', 'report_elucidsitereport', {
+                                    label: data.labels[tooltipItem.index],
+                                    data: data.datasets[0].data[tooltipItem.index]
+                                });
+                            }
+                        }
+                    }
                 },
                 labels : ['0%', '20%', '40%', '60%', '80%', '100%'],
                 backgroundColor : ["#fe6384", "#36a2eb", "#fdce56", "#cacbd0", "#4ac0c0", "#FF851B"]

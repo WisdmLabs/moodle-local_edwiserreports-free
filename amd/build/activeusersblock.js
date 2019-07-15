@@ -2,7 +2,7 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig'], func
     function init() {
         function getActiveUsersBlockData(filter) {
             $.ajax({
-                url: M.cfg.wwwroot + '/report/elucidsitereport/request_handler.php',
+                url: defaultConfig.requestUrl,
                 data: {
                     action: 'get_activeusers_graph_data_ajax',
                     data: JSON.stringify({
@@ -16,10 +16,14 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig'], func
                 console.log(error);
             }).always(function() {
                 activeUsersGraph = generateActiveUsersGraph();
-                increamentDate();
+                setInterval(inceamentUpdateTime, 1000 * 60);
                 $(_panelBody + " .ct-chart").removeClass('d-none');
                 $(_panelBody + " .loader").addClass('d-none');
             });
+        }
+
+        function inceamentUpdateTime() {
+            $(_panelTitle + " #updated-time > span.minute").html(parseInt($(_panelTitle + " #updated-time > span.minute").text()) + 1);
         }
 
         function increamentDate() {

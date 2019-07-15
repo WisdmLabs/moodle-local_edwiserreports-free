@@ -27,7 +27,7 @@ require_once(__DIR__ . '/../../config.php');
 require_once($CFG->libdir . '/adminlib.php');
 require_once('classes/output/elucidreport_renderer.php');
 require_once('classes/output/elucidreport_renderable.php');
-
+$PAGE->requires->strings_for_js(['courseprogresstooltip'], 'report_elucidsitereport');
 admin_externalpage_setup('elucidsitereport');
 
 $PAGE->requires->js_call_amd('report_elucidsitereport/activeusersblock', 'init');
@@ -35,6 +35,7 @@ $PAGE->requires->js_call_amd('report_elucidsitereport/courseprogressblock', 'ini
 $PAGE->requires->js_call_amd('report_elucidsitereport/lpstatsblock', 'init');
 $PAGE->requires->js_call_amd('report_elucidsitereport/todaysactivityblock', 'init');
 $PAGE->requires->js_call_amd('report_elucidsitereport/activecoursesblock', 'init');
+$PAGE->requires->js_call_amd('report_elucidsitereport/realtimeusers', 'init');
 $PAGE->requires->css('/report/elucidsitereport/styles/datatable.css');
 
 $elucidreport = new \report_elucidsitereport\output\elucidreport();
