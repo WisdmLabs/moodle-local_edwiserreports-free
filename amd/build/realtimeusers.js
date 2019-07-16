@@ -6,7 +6,7 @@ define(["jquery", "report_elucidsitereport/defaultconfig", "report_elucidsiterep
 
     function init() {
         getOnlineUsersData(); // Call first time
-        setInterval(getOnlineUsersData, 36000);
+        setInterval(getOnlineUsersData, 1000 * 30);
     }
 
     function getOnlineUsersData() {

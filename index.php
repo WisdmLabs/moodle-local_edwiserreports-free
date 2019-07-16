@@ -36,6 +36,7 @@ $PAGE->requires->js_call_amd('report_elucidsitereport/lpstatsblock', 'init');
 $PAGE->requires->js_call_amd('report_elucidsitereport/todaysactivityblock', 'init');
 $PAGE->requires->js_call_amd('report_elucidsitereport/activecoursesblock', 'init');
 $PAGE->requires->js_call_amd('report_elucidsitereport/realtimeusers', 'init');
+$PAGE->requires->js_call_amd('report_elucidsitereport/accessinfoblock', 'init');
 $PAGE->requires->css('/report/elucidsitereport/styles/datatable.css');
 
 $elucidreport = new \report_elucidsitereport\output\elucidreport();

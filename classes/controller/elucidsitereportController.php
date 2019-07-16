@@ -72,4 +72,8 @@ class elucidsitereportController extends controllerAbstract
     public function get_liveusers_data_ajax_action() {
         echo json_encode(\report_elucidsitereport\utility::get_liveusers_data());
     }
+
+    public function get_siteaccess_data_ajax_action() {
+        echo json_encode(\report_elucidsitereport\utility::get_siteaccess_data());
+    }
 }

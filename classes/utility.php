@@ -40,6 +40,7 @@ require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/course_pro
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/f2fsession_block.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/certificates_block.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/liveusers_block.php");
+require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/siteaccess_block.php");
 
 /**
  * Utilty class to add all utility function
@@ -73,6 +74,10 @@ class utility {
 
     public static function get_liveusers_data() {
         return \report_elucidsitereport\liveusers_block::get_data();
+    }
+
+    public static function get_siteaccess_data() {
+        return \report_elucidsitereport\siteaccess_block::get_data();
     }
 
     public static function generate_course_filter() {
