@@ -2,6 +2,9 @@ define(["jquery", "report_elucidsitereport/variables"], function($, v) {
     return defaultConfig = {
         // Default Config
         requestUrl : M.cfg.wwwroot + '/report/elucidsitereport/request_handler.php',
+        requestType : 'GET',
+        requestDataType : 'json',
+
         // Todays Activity Block
         todaysActivityBlock : {
             ctx : $(v.todaysActivityBlock)[0].getContext("2d"),
@@ -24,19 +27,8 @@ define(["jquery", "report_elucidsitereport/variables"], function($, v) {
                         display: false
                     }
                 },
-                borderColor : [
-                    v.whiteColor
-                ],
-                backgroundColor : [
-                    v.whiteColor, v.whiteColor, v.whiteColor,
-                    v.whiteColor, v.whiteColor, v.whiteColor,
-                    v.whiteColor, v.whiteColor, v.whiteColor,
-                    v.whiteColor, v.whiteColor, v.whiteColor,
-                    v.whiteColor, v.whiteColor, v.whiteColor,
-                    v.whiteColor, v.whiteColor, v.whiteColor,
-                    v.whiteColor, v.whiteColor, v.whiteColor,
-                    v.whiteColor, v.whiteColor, v.whiteColor,
-                ],
+                borderColor : v.whiteColor,
+                backgroundColor : v.whiteColor,
                 labels : [
                     v.clock12_0, v.clock12_1, v.clock12_2,
                     v.clock12_3, v.clock12_4, v.clock12_5,
@@ -150,5 +142,34 @@ define(["jquery", "report_elucidsitereport/variables"], function($, v) {
                 backgroundColor : ["#fe6384", "#36a2eb"]
             }
         },
+
+        // Function to get panelbody, paneltitle and panelfooter
+        getPanel: function (blockid, type) {
+            var panel = "#wdm-elucidsitereport " + blockid;
+
+            switch(type) {
+                case "body":
+                    panel += " .panel-body";
+                    break;
+                case "title":
+                    panel += " .panel-title";
+                    break;
+                case "footer":
+                    panel += " .panel-footer";
+                    break;
+                case "table":
+                    panel += " .table";
+                    break;
+                case "loader":
+                    panel += " .loader";
+                    break;
+            }
+            return panel;
+        },
+
+        // function to get Template
+        getTemplate: function(template) {
+            return "report_elucidsitereport/" + template;
+        }
     };
 });

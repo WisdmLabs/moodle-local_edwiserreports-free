@@ -1,24 +1,24 @@
 define(['jquery', 'core/templates', 'report_elucidsitereport/defaultconfig'], function ($, templates, defaultConfig) {
-    var panelBody = "#wdm-elucidsitereport #accessinfograph .panel-body";
-    var table = panelBody + " .table";
-    var loader = panelBody + " .loader";
+    var panel = defaultConfig.getPanel("#accessinfograph");
+    var panelBody = defaultConfig.getPanel("#accessinfograph", "body");
+    var table = defaultConfig.getPanel("#accessinfograph", "table");
+    var loader = defaultConfig.getPanel("#accessinfograph", "loader");;
 
     function init() {
         $.ajax({
             url: defaultConfig.requestUrl,
-            type: 'GET',
-            dataType: 'json',
+            type: defaultConfig.requestType,
+            dataType: defaultConfig.requestDataType,
             data: {
                 action: 'get_siteaccess_data_ajax'
             },
         })
         .done(function(response) {
-            console.log(response.data);
-            templates.render('report_elucidsitereport/accessinfograph', response.data)
+            templates.render(defaultConfig.getTemplate("accessinfograph"), response.data)
             .then(function(html, js) {
-                $("#accessinfograph").empty();
-                templates.appendNodeContents("#accessinfograph", html, js);
-            }).fail(function(ex) {
+                templates.replaceNodeContents(panel, html, js);
+            })
+            .fail(function(ex) {
                 console.log(ex);
             })
             .always(function() {
