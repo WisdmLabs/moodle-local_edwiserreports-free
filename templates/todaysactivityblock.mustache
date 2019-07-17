@@ -13,15 +13,21 @@
                 <div class="pt-25 px-30">
                     <div class="row no-space">
                         <div class="col-4 pr-10">
-                            <div class="bold mb-5">Today's Login</div>
+                            <div class="bold mb-5">
+                                {{#str}} todayslogin, report_elucidsitereport {{/str}}
+                            </div>
                             <div class="row mx-0 text-center pb-10">
                                 <div class="col-12 bg-primary mb-10 py-10" style="filter: contrast(1.3);">
-                                    <div id="online-learners" class="font-size-30 font-weight-600 w-full">1</div>
-                                    <small>Learners</small>
+                                    <div id="todays-onlinelearners" class="font-size-30 font-weight-600 w-full">0</div>
+                                    <small>
+                                        {{#str}} learners, report_elucidsitereport {{/str}}
+                                    </small>
                                 </div>
                                 <div class="col-12 bg-primary mb-10 py-10" style="filter: contrast(1.3);">
-                                    <div id="online-teachers" class="font-size-30 font-weight-600 w-full">1</div>
-                                    <small>Teachers</small>
+                                    <div id="todays-onlineteachers" class="font-size-30 font-weight-600 w-full">0</div>
+                                    <small>
+                                        {{#str}} teachers, report_elucidsitereport {{/str}}
+                                    </small>
                                 </div>
                             </div>
                         </div>
@@ -29,42 +35,62 @@
                             <table class="summary w-full">
                                 <thead class="border-bottom">
                                     <tr>
-                                        <th class="text-left">Event Today</th>
-                                        <th class="text-right ">Value</th>
+                                        <th class="text-left">
+                                            {{#str}} eventtoday, report_elucidsitereport {{/str}}
+                                        </th>
+                                        <th class="text-right ">
+                                            {{#str}} value, report_elucidsitereport {{/str}}
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td align="left">Enrollments</td>
-                                        <td align="right" id="live-enrolments">0</td>
+                                        <td align="left">
+                                            {{#str}} enrollment, report_elucidsitereport {{/str}}
+                                        </td>
+                                        <td align="right" id="todays-enrollments">0</td>
                                     </tr>
                                     <tr>
-                                        <td align="left">Activity Completions</td>
-                                        <td align="right" id="live-completed_activities">0</td>
+                                        <td align="left">
+                                            {{#str}} activitycompletion, report_elucidsitereport {{/str}}
+                                        </td>
+                                        <td align="right" id="todays-activitycompletions">0</td>
                                     </tr>
                                     <tr>
-                                        <td align="left">Course Completions</td>
-                                        <td align="right" id="live-completions">0</td>
+                                        <td align="left">
+                                            {{#str}} coursecompletion, report_elucidsitereport {{/str}}
+                                        </td>
+                                        <td align="right" id="todays-coursecompletions">0</td>
                                     </tr>
                                     <tr>
-                                        <td align="left">New Registrations</td>
-                                        <td align="right" id="live-registrations">0</td>
+                                        <td align="left">
+                                            {{#str}} newregistration, report_elucidsitereport {{/str}}
+                                        </td>
+                                        <td align="right" id="todays-registrations">0</td>
                                     </tr>
                                     <tr>
-                                        <td align="left">Visits</td>
-                                        <td align="right" id="live-visits">9</td>
+                                        <td align="left">
+                                            {{#str}} visits, report_elucidsitereport {{/str}}
+                                        </td>
+                                        <td align="right" id="todays-visits">0</td>
                                     </tr>
-                                    <tr>
-                                        <td align="left">Time Spent</td>
-                                        <td align="right" id="live-timespend">00:00:45</td>
+                                    <tr class="d-none">
+                                        <td align="left">
+                                            {{#str}} timespent, report_elucidsitereport {{/str}}
+                                        </td>
+                                        <td align="right" id="todays-timespend">00:00:00</td>
                                     </tr>
-                                    <tr>
-                                        <td align="left">Sessions</td>
-                                        <td align="right" id="live-sessions">3</td>
-                                    </tr>
+                                    <!-- <tr>
+                                        <td align="left">
+                                            {{#str}} sessions, report_elucidsitereport {{/str}}
+                                        </td>
+                                        <td align="right" id="todays-sessions">0</td>
+                                    </tr> -->
                                     <tr class="border-top bold">
-                                        <td align="left">Total Users</td>
-                                        <td align="right" id="live-sessions">10</td>
+                                        <td align="left">
+                                            {{#str}} totalusers, report_elucidsitereport {{/str}}
+                                        </td>
+                                        <td align="right" id="todays-totalusers">0</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -72,7 +98,9 @@
                     </div>
                 </div>
                 <div class="visual mb-30 px-30">
-                    <p class="visual-head bold">Page Views per Hour</p>
+                    <p class="visual-head bold">
+                        {{#str}} pageview, report_elucidsitereport {{/str}}
+                    </p>
                     <div class="visual-body">
                         <canvas class="ct-chart py-5" style="max-height: 100px"></canvas>
                         <div class="w-full bg-white" style="height: 1px;"></div>
@@ -81,71 +109,4 @@
             </div>
         </div>
     </div>
-
-    <!-- <div class="panel-body bg-primary text-white">
-        <div class="panel-live grid-item">
-            <h4 class="text-white">Today's Login</h4>
-            <div class="row mx-0 text-center pb-10">
-                <div class="col-4 px-0">
-                    <div id="online-learners" class="font-size-30 font-weight-600 w-full">1</div>
-                    <small>Learners</small>
-                </div>
-                <div class="col-4 px-0">
-                    <div id="online-teachers" class="font-size-30 font-weight-600 w-full">1</div>
-                    <small>Teachers</small>
-                </div>
-                <div class="col-4 px-0">
-                    <div id="online-users" class="font-size-30 font-weight-600 w-full">1</div>
-                    <small>All Users</small>
-                </div>
-            </div>
-
-            <div class="visual mb-30">
-                <div class="visual-head">Page Views per Hour</div>
-                <div class="visual-body">
-                    <canvas class="ct-chart border-bottom" style="max-height: 150px"></canvas>
-                </div>
-            </div>
-
-            <table class="summary w-full">
-                <thead class="border-bottom">
-                    <tr>
-                        <th style="text-align: left">Event Today</th>
-                        <th style="text-align: right">Value</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td align="left">Enrollments</td>
-                        <td align="right" id="live-enrolments">0</td>
-                    </tr>
-                    <tr>
-                        <td align="left">Activity Completions</td>
-                        <td align="right" id="live-completed_activities">0</td>
-                    </tr>
-                    <tr>
-                        <td align="left">Course Completions</td>
-                        <td align="right" id="live-completions">0</td>
-                    </tr>
-                    <tr>
-                        <td align="left">New Registrations</td>
-                        <td align="right" id="live-registrations">0</td>
-                    </tr>
-                    <tr>
-                        <td align="left">Visits</td>
-                        <td align="right" id="live-visits">9</td>
-                    </tr>
-                    <tr>
-                        <td align="left">Time Spent</td>
-                        <td align="right" id="live-timespend">00:00:45</td>
-                    </tr>
-                    <tr>
-                        <td align="left">Sessions</td>
-                        <td align="right" id="live-sessions">3</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        </div>
-    </div> -->
 </div>

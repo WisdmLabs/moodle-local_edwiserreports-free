@@ -29,6 +29,7 @@ define(["jquery", "report_elucidsitereport/variables"], function($, v) {
                 },
                 borderColor : v.whiteColor,
                 backgroundColor : v.whiteColor,
+                borderWidth: 2,
                 labels : [
                     v.clock12_0, v.clock12_1, v.clock12_2,
                     v.clock12_3, v.clock12_4, v.clock12_5,
@@ -38,7 +39,8 @@ define(["jquery", "report_elucidsitereport/variables"], function($, v) {
                     v.clock12_15, v.clock12_16, v.clock12_0,
                     v.clock12_18, v.clock12_19, v.clock12_20,
                     v.clock12_21, v.clock12_22, v.clock12_23,
-                ]
+                ],
+                data : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
             },
         },
 
