@@ -5,10 +5,14 @@
                 {{#str}} lpstatsheader, report_elucidsitereport {{/str}}
                 <a href="#" class="small"><i class="fa fa-question-circle"></i></a>
             </strong>
+            {{{lpearchfilter}}}
         </div>
     </div>
     <div class="panel-body p-0">
-        <canvas class="ct-chart"></canvas>
+        <div class="loader w-full text-center pt-100" style="min-height: 250px;">
+            {{# pix }} loader, report_elucidsitereport{{/ pix }}
+        </div>
+        <canvas class="ct-chart d-none" style="min-height: 350px; max-height: 350px;"></canvas>
     </div>
     <div class="text-right">
         <a href="#" class="text-primary">

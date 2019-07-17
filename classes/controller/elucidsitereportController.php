@@ -80,4 +80,9 @@ class elucidsitereportController extends controllerAbstract
     public function get_todaysactivity_data_ajax_action() {
         echo json_encode(\report_elucidsitereport\utility::get_todaysactivity_data());
     }
+
+    public function get_lpstats_data_ajax_action() {
+        $data = json_decode(required_param('data', PARAM_RAW));
+        echo json_encode(\report_elucidsitereport\utility::get_lpstats_data($data));
+    }
 }

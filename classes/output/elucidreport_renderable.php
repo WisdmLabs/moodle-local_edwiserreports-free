@@ -47,7 +47,7 @@ class elucidreport_renderable implements renderable, templatable  {
         $output = null;
         $export = new stdClass();
         $export->timenow = date("Y-m-d", time());
-        $export->searchfilter = \report_elucidsitereport\utility::generate_course_filter();
+        $export->coursesearchfilter = \report_elucidsitereport\utility::generate_course_filter();
         $export->hasf2fpluign = has_plugin("mod", "facetoface");
 
         if ($export->hasf2fpluign) {
@@ -59,6 +59,13 @@ class elucidreport_renderable implements renderable, templatable  {
         if ($export->hascustomcertpluign) {
             $PAGE->requires->js_call_amd('report_elucidsitereport/certificatestatsblock', 'init');
         }
+
+        $export->haslppluign = has_plugin("local", "learning_program");
+
+        if ($export->haslppluign) {
+            $export->lpearchfilter = \report_elucidsitereport\utility::generate_lp_filter();
+        }
+
         return  $export;
     }
 }

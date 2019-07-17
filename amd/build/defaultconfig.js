@@ -126,7 +126,7 @@ define(["jquery", "report_elucidsitereport/variables"], function($, v) {
                     }
                 },
                 labels : ['0%', '20%', '40%', '60%', '80%', '100%'],
-                backgroundColor : ["#fe6384", "#36a2eb", "#fdce56", "#cacbd0", "#4ac0c0", "#FF851B"]
+                backgroundColor : ["#fe6384", "#36a2eb", "#fdce56", "#cacbd0", "#4ac0c0", "#ff851b"]
             }
         },
 
@@ -137,11 +137,13 @@ define(["jquery", "report_elucidsitereport/variables"], function($, v) {
                 type : "pie",
                 options : {
                     responsive: true,
+                    legend: {position: 'bottom'},
                     maintainAspectRatio: false,
                     aspectRatio: 1,
                 },
-                labels : ['Completed', 'Incompleted'],
-                backgroundColor : ["#fe6384", "#36a2eb"]
+                labels : ['No Users/Courses are available'],
+                data : [0],
+                backgroundColor : ["#fe6384", "#36a2eb", "#fdce56", "#cacbd0", "#4ac0c0", "#ff851b"]
             }
         },
 
