@@ -1,49 +1,35 @@
 <div id="inactiveusersblock" class="panel h-auto">
     <div class="panel-header row mx-0">
-        <div class="panel-title px-0 col-lg-8 col-md-6 col-sm-12">
+        <div class="panel-title px-0 col-lg-6 col-md-6 col-sm-12">
             <strong>
                 {{#str}} inactiveusers, report_elucidsitereport {{/str}}
                 <a href="#" class="small"><i class="fa fa-question-circle"></i></a>
             </strong>
         </div>
-        <div class="panel-title dropdown col-lg-4 col-md-6 col-sm-12 text-right px-0">
-            <small class="font-weight-700">Logged In: </small>
-            <button type="button" class="btn btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Never</button>
+        <div class="panel-title dropdown col-lg-6 col-md-6 col-sm-12 text-right px-0">
+            <small class="font-weight-500 font-size-12">Logged In: </small>
+            <button type="button" class="btn btn-sm dropdown-toggle input-group-addon" data-toggle="dropdown" aria-expanded="false">Never</button>
             <div class="dropdown-menu dropdown-sm" role="menu">
-                <a class="active dropdown-item" href="javascript:void(0)" role="menuitem">Never</a>
-                <a class="dropdown-item" href="javascript:void(0)" role="menuitem">Before 1 Month</a>
-                <a class="dropdown-item" href="javascript:void(0)" role="menuitem">Before 3 Month</a>
-                <a class="dropdown-item" href="javascript:void(0)" role="menuitem">Before 6 Month</a>
+                <a class="active dropdown-item" href="javascript:void(0)" data-value="never"  role="menuitem">Never</a>
+                <a class="dropdown-item" href="javascript:void(0)" data-value="1month" role="menuitem">Before 1 Month</a>
+                <a class="dropdown-item" href="javascript:void(0)"data-value="3month"  role="menuitem">Before 3 Month</a>
+                <a class="dropdown-item" href="javascript:void(0)"data-value="6month"  role="menuitem">Before 6 Month</a>
             </div>
         </div>
     </div>
     <div class="panel-body p-0">
-        <div class="table-responsive">
-            <table class="table">
+        <div class="loader w-full text-center pt-100 mt-50" style="min-height: 250px;">
+            {{# pix }} loader, report_elucidsitereport{{/ pix }}
+        </div>
+        <div class="table-responsive w-full">
+            <table id="inactiveuserstable" class="table w-full d-none">
                 <thead class="bg-secondary">
                   <tr>
-                    <th>Full Name</th>
-                    <th class="d-none d-sm-none d-md-table-cell d-lg-table">Email</th>
-                    <th>Last Access</th>
+                    <th class="bg-secondary border-bottom-0">Full Name</th>
+                    <th class="d-none d-sm-none d-md-table-cell d-lg-table-cell bg-secondary border-bottom-0">Email</th>
+                    <th class="bg-secondary border-bottom-0">Last Access</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr>
-                    <td>Teagan Prohaska</td>
-                    <td class="d-none d-sm-none d-md-table-cell d-lg-table">teagan.prohaska@gmail.com</td>
-                    <td>Never</td>
-                  </tr>
-                  <tr>
-                    <td>Andy Gaylord</td>
-                    <td class="d-none d-sm-none d-md-table-cell d-lg-table">andy.gaylord@gmail.com</td>
-                    <td>Never</td>
-                  </tr>
-                  <tr>
-                    <td>Veronica Gusikowski</td>
-                    <td class="d-none d-sm-none d-md-table-cell d-lg-table">veronica.gusikowski@gmail.com</td>
-                    <td>Never</td>
-                  </tr>
-                </tbody>
             </table>
         </div>
     </div>

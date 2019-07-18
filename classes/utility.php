@@ -42,6 +42,7 @@ require_once $CFG->dirroot . "/report/elucidsitereport/classes/blocks/liveusers_
 require_once $CFG->dirroot . "/report/elucidsitereport/classes/blocks/siteaccess_block.php";
 require_once $CFG->dirroot . "/report/elucidsitereport/classes/blocks/todaysactivity_block.php";
 require_once $CFG->dirroot . "/report/elucidsitereport/classes/blocks/lpstats_block.php";
+require_once $CFG->dirroot . "/report/elucidsitereport/classes/blocks/inactiveusers_block.php";
 
 /**
  * Utilty class to add all utility function
@@ -87,6 +88,15 @@ class utility {
 
 	public static function get_lpstats_data($data) {
 		return \report_elucidsitereport\lpstats_block::get_data($data->lpid);
+	}
+
+	public static function get_inactiveusers_data($data) {
+		if (isset($data->filter)) {
+			$filter = $data->filter;
+		} else {
+			$filter = 'never'; // Default filter
+		}
+		return \report_elucidsitereport\inactiveusers_block::get_data($filter);
 	}
 
     /* Generate Course Filter for course progress block
