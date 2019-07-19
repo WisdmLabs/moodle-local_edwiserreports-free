@@ -4,12 +4,14 @@
             <div class="panel-title px-0">
                 <strong>
                     {{#str}} activeusersheader, report_elucidsitereport {{/str}}
-                    <a href="#" class="small"><i class="fa fa-question-circle"></i></a>
+                    <a href="javascript:void(0)" class="small" data-toggle="tooltip" data-trigger="hover" data-title="{{#str}} activeusersblockhelp, report_elucidsitereport {{/str}}">
+                        <i class="fa fa-question-circle"></i>
+                    </a>
                 </strong>
                 <div class="mx-0">
                     <div id="updated-time" class="font-size-12 px-0 pull-left">
                         {{#str}} lastupdate, report_elucidsitereport {{/str}}
-                        <i class="fa fa-refresh"></i>
+                        <i class="refresh fa fa-refresh mx-5"></i>
                     </div>
                     <div class="filters ml-auto pull-right">
                         {{> report_elucidsitereport/activeusers_filter }}
@@ -18,10 +20,10 @@
             </div>
         </div>
         <div class="panel-body p-0">
-            <div class="loader w-full text-center pt-100 mt-50" style="min-height: 350px;">
+            <div class="loader w-full text-center py-100 my-50">
                 {{# pix }} loader, report_elucidsitereport{{/ pix }}
             </div>
-            <canvas class="ct-chart line-chart d-none" style="max-height: 350px;"></canvas>
+            <canvas class="ct-chart line-chart d-none"></canvas>
         </div>
         <div class="panel-footer p-0">
         </div>

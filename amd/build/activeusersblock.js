@@ -13,6 +13,8 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
         var chart             = panelBody + " .ct-chart";
         var loader            = panelBody + " .loader";
         var dropdownButton    = panel + " button[data-toggle='dropdown']";
+        var refreshBtn        = panelTitle + " .refresh";
+        var filter            = null;
 
 
         /* Custom Dropdown hide and show */
@@ -34,9 +36,16 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
 
             /* Select filter for active users block */
             $(dropdownItem + ":not(.custom)").on('click', function() {
+                filter = $(this).attr('value');
                 $(dropdownMenu).removeClass('show');
                 $(dropdownButton).html($(this).text());
-                getActiveUsersBlockData($(this).attr('value'));
+                getActiveUsersBlockData(filter);
+            });
+
+            $(refreshBtn).on('click', function() {
+                $(this).addClass("refresh-spin");
+                resetUpdateTime();
+                getActiveUsersBlockData(filter);
             });
 
             createDropdownCalendar();
@@ -64,15 +73,16 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
 
         /* After Select Custom date get active users details */
         function selectedCustomDate() {
-            var date = $(flatpickrCalender).val();
+            filter = $(flatpickrCalender).val();
 
-            if (!date.includes("to")) {
+            /* If correct date is not selected then return false */
+            if (!filter.includes("to")) {
                 return false;
             }
 
-            $(dropdownButton).html(date);
+            $(dropdownButton).html(filter);
             $(flatpickrCalender).val("");
-            getActiveUsersBlockData(date);
+            getActiveUsersBlockData(filter);
         }
 
         /* Get data for active users block */
@@ -97,8 +107,14 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
                 activeUsersGraph = generateActiveUsersGraph();
                 setInterval(inceamentUpdateTime, 1000 * 60);
                 $(chart).removeClass('d-none');
+                $(refreshBtn).removeClass('refresh-spin');
                 $(loader).addClass('d-none');
             });
+        }
+
+        /* Reset Update time in panel header */
+        function resetUpdateTime() {
+            $(panelTitle + " #updated-time > span.minute").html(0);
         }
 
         /* Increament update time in panel header */

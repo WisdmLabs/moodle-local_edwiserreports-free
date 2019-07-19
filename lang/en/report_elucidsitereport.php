@@ -75,3 +75,7 @@ $string['lastweek'] = "Last Week";
 $string['lastmonth'] = "Last Month";
 $string['lastyear'] = "Last Year";
 $string['custom'] = "Custom";
+
+/* Block help tooltips */
+$string['activeusersblocktitlehelp'] = "Active Users Block";
+$string['activeusersblockhelp'] = "This block will show graph of active users over the period with course enrolment and course completion.";
