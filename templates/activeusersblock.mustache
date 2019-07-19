@@ -6,11 +6,14 @@
                     {{#str}} activeusersheader, report_elucidsitereport {{/str}}
                     <a href="#" class="small"><i class="fa fa-question-circle"></i></a>
                 </strong>
-                <div class="row mx-0">
-                    <div id="updated-time" class="font-size-12 px-0">
-                        Last updated <span class="minute">0</span> min ago
+                <div class="mx-0">
+                    <div id="updated-time" class="font-size-12 px-0 pull-left">
+                        {{#str}} lastupdate, report_elucidsitereport {{/str}}
+                        <i class="fa fa-refresh"></i>
                     </div>
-                    {{> report_elucidsitereport/activeusers_filter }}
+                    <div class="filters ml-auto pull-right">
+                        {{> report_elucidsitereport/activeusers_filter }}
+                    </div>
                 </div>
             </div>
         </div>

@@ -151,7 +151,7 @@ class active_users_block extends utility {
     /**
      * Set all global values from graph
      */
-    public static function set_global_values_for_graph ($filter) {
+    public static function set_global_values_for_graph($filter) {
         global $DB;
 
         $sql = "SELECT id, userid, timecreated
@@ -177,10 +177,10 @@ class active_users_block extends utility {
                     self::$xlabelcount = 7;
                     break;
                 default:
-                    $dates = explode("&", $filter);
+                    $dates = explode(" to ", $filter);
                     if (count($dates) == 2) {
-                        $startdate = strtotime(str_replace("start-date=", "", $dates[0]) . " 00:00:00");
-                        $enddate = strtotime(str_replace("end-date=", "", $dates[1]) . " 23:59:59");
+                        $startdate = strtotime($dates[0] . " 00:00:00");
+                        $enddate = strtotime($dates[1] . " 23:59:59");
                     }
 
                     if ($startdate && $enddate) {

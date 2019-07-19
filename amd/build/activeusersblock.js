@@ -1,6 +1,85 @@
-define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig'], function ($, Chart, defaultConfig) {
+define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'report_elucidsitereport/flatpickr'], function ($, Chart, defaultConfig) {
     function init() {
+        /* Varible for active users block */
+        var cfg               = defaultConfig.activeUsersBlock;
+        var panel             = defaultConfig.getPanel("#activeusersblock");
+        var panelBody         = defaultConfig.getPanel("#activeusersblock", "body");
+        var panelTitle        = defaultConfig.getPanel("#activeusersblock", "title");
+        var panelFooter       = defaultConfig.getPanel("#activeusersblock", "footer");
+        var dropdownMenu      = panel + " .dropdown-menu";
+        var dropdownItem      = dropdownMenu + " .dropdown-item";
+        var dropdownToggle    = panel + " .dropdown-toggle";
+        var flatpickrCalender = panel + " #flatpickrCalender";
+        var chart             = panelBody + " .ct-chart";
+        var loader            = panelBody + " .loader";
+        var dropdownButton    = panel + " button[data-toggle='dropdown']";
+
+
+        /* Custom Dropdown hide and show */
+        $(document).ready(function() {
+            /* Show custom dropdown */
+            $(dropdownToggle).on("click", function() {
+                $(dropdownMenu).addClass("show");
+            });
+
+            /* Hide dropdown when click anywhere in the screen */
+            $(document).click(function(e){
+                if ($(e.target).hasClass("dropdown-menu") || 
+                    $(e.target).parents(".dropdown-menu").length) {
+                  e.preventDefault();
+                } else {
+                    $(dropdownMenu).removeClass('show');
+                }
+            });
+
+            /* Select filter for active users block */
+            $(dropdownItem + ":not(.custom)").on('click', function() {
+                $(dropdownMenu).removeClass('show');
+                $(dropdownButton).html($(this).text());
+                getActiveUsersBlockData($(this).attr('value'));
+            });
+
+            createDropdownCalendar();
+        });
+
+        /* Create Calender in dropdown tp select range */
+        function createDropdownCalendar() {
+            $(flatpickrCalender).flatpickr({
+                mode: 'range',
+                altInput: true,
+                altFormat: "d/m/Y",
+                dateFormat: "Y-m-d",
+                maxDate: "today",
+                appendTo: document.getElementById("activeUser-calendar"),
+                onOpen: function(event) {
+                    $(dropdownMenu).addClass('withcalendar');
+                },
+                onClose: function() {
+                    $(dropdownMenu).removeClass('withcalendar');
+                    $(dropdownMenu).removeClass('show');
+                    selectedCustomDate();
+                }
+            });
+        }
+
+        /* After Select Custom date get active users details */
+        function selectedCustomDate() {
+            var date = $(flatpickrCalender).val();
+
+            if (!date.includes("to")) {
+                return false;
+            }
+
+            $(dropdownButton).html(date);
+            $(flatpickrCalender).val("");
+            getActiveUsersBlockData(date);
+        }
+
+        /* Get data for active users block */
         function getActiveUsersBlockData(filter) {
+            $(chart).addClass('d-none');
+            $(loader).removeClass('d-none');
+
             $.ajax({
                 url: defaultConfig.requestUrl,
                 data: {
@@ -10,140 +89,74 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig'], func
                     })
                 },
             }).done(function(response) {
-                defaultConfig.activeUsersBlock.graph.data = response.data;
-                defaultConfig.activeUsersBlock.graph.labels = response.labels;
+                cfg.graph.data = response.data;
+                cfg.graph.labels = response.labels;
             }).fail(function(error) {
                 console.log(error);
             }).always(function() {
                 activeUsersGraph = generateActiveUsersGraph();
                 setInterval(inceamentUpdateTime, 1000 * 60);
-                $(_panelBody + " .ct-chart").removeClass('d-none');
-                $(_panelBody + " .loader").addClass('d-none');
+                $(chart).removeClass('d-none');
+                $(loader).addClass('d-none');
             });
         }
 
+        /* Increament update time in panel header */
         function inceamentUpdateTime() {
-            $(_panelTitle + " #updated-time > span.minute").html(parseInt($(_panelTitle + " #updated-time > span.minute").text()) + 1);
+            $(panelTitle + " #updated-time > span.minute").html(parseInt($(panelTitle + " #updated-time > span.minute").text()) + 1);
         }
 
-        function increamentDate() {
-            for (i = 1; i < 60; i++) {
-                setTimeout(increamentCounter, i * 1000 * 60);
-            }
-        }
-
-        function increamentCounter() {
-            $(_panelTitle + " #updated-time > span.minute").html(parseInt($(_panelTitle + " #updated-time > span.minute").text()) + 1);
-        }
-
+        /* Generate Active Users graph */
         function generateActiveUsersGraph () {
-            var graphData = defaultConfig.activeUsersBlock.graph.data;
-            var data = {
-                labels: defaultConfig.activeUsersBlock.graph.labels,
+            if(activeUsersGraph) {
+                activeUsersGraph.destroy();
+            }
+
+            Chart.defaults.global.defaultFontFamily = cfg.graph.fontFamily;
+            Chart.defaults.global.defaultFontStyle = cfg.graph.fontStyle;
+            return activeUsersGraph = new Chart(cfg.ctx, {
+                type: cfg.graph.type,
+                data: getGraphData(),
+                options: cfg.graph.options
+            });
+        }
+
+        /* Get graph data */
+        function getGraphData() {
+            return {
+                labels: cfg.graph.labels,
                 datasets: [{
-                    label: defaultConfig.activeUsersBlock.graph.labelName.activeUsers,
-                    data: graphData.activeUsers,
-                    backgroundColor: defaultConfig.activeUsersBlock.graph.backgroundColor.activeUsers,
-                    borderColor: defaultConfig.activeUsersBlock.graph.borderColor.activeUsers,
-                    pointBorderColor: defaultConfig.activeUsersBlock.graph.borderColor.activeUsers,
-                    pointBackgroundColor: defaultConfig.activeUsersBlock.graph.borderColor.activeUsers,
-                    pointStyle: defaultConfig.activeUsersBlock.graph.pointStyle
+                    label: cfg.graph.labelName.activeUsers,
+                    data: cfg.graph.data.activeUsers,
+                    backgroundColor: cfg.graph.backgroundColor.activeUsers,
+                    borderColor: cfg.graph.borderColor.activeUsers,
+                    pointBorderColor: cfg.graph.borderColor.activeUsers,
+                    pointBackgroundColor: cfg.graph.borderColor.activeUsers,
+                    pointStyle: cfg.graph.pointStyle
                 },
                 {
-                    label: defaultConfig.activeUsersBlock.graph.labelName.enrolments,
-                    data: graphData.enrolments,
-                    backgroundColor: defaultConfig.activeUsersBlock.graph.backgroundColor.enrolments,
-                    borderColor: defaultConfig.activeUsersBlock.graph.borderColor.enrolments,
-                    pointBorderColor: defaultConfig.activeUsersBlock.graph.borderColor.enrolments,
-                    pointBackgroundColor: defaultConfig.activeUsersBlock.graph.borderColor.enrolments,
-                    pointStyle: defaultConfig.activeUsersBlock.graph.pointStyle
+                    label: cfg.graph.labelName.enrolments,
+                    data: cfg.graph.data.enrolments,
+                    backgroundColor: cfg.graph.backgroundColor.enrolments,
+                    borderColor: cfg.graph.borderColor.enrolments,
+                    pointBorderColor: cfg.graph.borderColor.enrolments,
+                    pointBackgroundColor: cfg.graph.borderColor.enrolments,
+                    pointStyle: cfg.graph.pointStyle
                 },
                 {
-                    label: defaultConfig.activeUsersBlock.graph.labelName.completionRate,
-                    data: graphData.completionRate,
-                    backgroundColor: defaultConfig.activeUsersBlock.graph.backgroundColor.completionRate,
-                    borderColor: defaultConfig.activeUsersBlock.graph.borderColor.completionRate,
-                    pointBorderColor: defaultConfig.activeUsersBlock.graph.borderColor.completionRate,
-                    pointBackgroundColor: defaultConfig.activeUsersBlock.graph.borderColor.completionRate,
-                    pointStyle: defaultConfig.activeUsersBlock.graph.pointStyle
+                    label: cfg.graph.labelName.completionRate,
+                    data: cfg.graph.data.completionRate,
+                    backgroundColor: cfg.graph.backgroundColor.completionRate,
+                    borderColor: cfg.graph.borderColor.completionRate,
+                    pointBorderColor: cfg.graph.borderColor.completionRate,
+                    pointBackgroundColor: cfg.graph.borderColor.completionRate,
+                    pointStyle: cfg.graph.pointStyle
                 }]
             };
-
-            Chart.defaults.global.defaultFontFamily = defaultConfig.activeUsersBlock.graph.fontFamily;
-            Chart.defaults.global.defaultFontStyle = defaultConfig.activeUsersBlock.graph.fontStyle;
-            return activeUsersGraph = new Chart(defaultConfig.activeUsersBlock.ctx, {
-                type: defaultConfig.activeUsersBlock.graph.type,
-                data: data,
-                options: defaultConfig.activeUsersBlock.graph.options
-            });
         }
 
         /* Call function to initialize the active users block graph */
-
-        var _panelBody = "#activeusersblock .panel .panel-body";
-        var _panelTitle = "#activeusersblock .panel .panel-title";
-        var _panelFooter = "#activeusersblock .panel .panel-footer";
-        var _dropdownItem = "#activeusersblock .dropdown-menu .dropdown-item";
         var activeUsersGraph = getActiveUsersBlockData();
-        $(_dropdownItem + ":not(.custom)").on('click', function() {
-            if (!$(_panelTitle + " .filters .date-picker").hasClass("d-none")) {
-                $(_panelTitle + " .filters .date-picker").addClass("d-none");
-            }
-            $(_panelBody + " .ct-chart").addClass('d-none');
-            $(_panelBody + " .loader").removeClass('d-none');
-            $(_panelTitle + " button[data-toggle='dropdown']").html($(this).text());
-            activeUsersGraph.destroy();
-            getActiveUsersBlockData($(this).attr('value'));
-        });
-
-        $(_dropdownItem + ".custom").on('click', function() {
-            $(_panelTitle + " .filters .date-picker").removeClass("d-none");
-        });
-
-        // Validate date selector
-        var _startDate = _panelTitle + " .filters .date-picker #startdate";
-        var _endDate = _panelTitle + " .filters .date-picker #enddate";
-        $(_startDate).on("change", function() {
-            $(_endDate).attr("min", $(this)[0].value);
-            $(_startDate).removeClass("border-danger");
-            $(_endDate).removeClass("border-danger");
-        });
-        $(_endDate).on("change", function() {
-            $(_startDate).attr("max", $(this)[0].value);
-        });
-
-        $(_panelTitle + " form").submit(function( event ) {
-            event.preventDefault();
-
-            if ($(_startDate)[0].value == false || $(_endDate)[0].value == false) {
-                if ($(_startDate)[0].value == false) {
-                    $(_startDate).addClass("border-danger");
-                }
-
-                if ($(_endDate)[0].value == false) {
-                    $(_endDate).addClass("border-danger");
-                }
-                return false;
-            }
-
-            var dates = $(this).serializeArray();
-            var startdate = new Date(dates[0].value);
-            var enddate = new Date(dates[1].value);
-
-            $(_panelTitle + " button[data-toggle='dropdown']").html(
-                ("0" + startdate.getDate()).slice(-2) + "/"
-                + ("0" + (startdate.getMonth() + 1)).slice(-2) + "/"
-                + startdate.getFullYear() + " to "
-                + ("0" + enddate.getDate()).slice(-2) + "/"
-                + ("0" + (enddate.getMonth() + 1)).slice(-2) + "/"
-                + startdate.getFullYear()
-            );
-
-            $(_panelBody + " .ct-chart").addClass('d-none');
-            $(_panelBody + " .loader").removeClass('d-none');
-            activeUsersGraph.destroy();
-            getActiveUsersBlockData($(this).serialize());
-        });
     }
 
     // Must return the init function

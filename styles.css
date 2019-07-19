@@ -34,10 +34,39 @@
     border-radius: 0;
 }
 
-#wdm-elucidsitereport #activeusersblock input[type="date"]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    display: none;
+/* Custom Datate Range Selector */
+#wdm-elucidsitereport #activeusersblock .dropdown-menu.withcalendar .dropdown-calendar {
+    height: 300px;
+    width: 308px;
+    float: left;
+    position: relative;
 }
+
+#wdm-elucidsitereport #activeusersblock .dropdown-menu.withcalendar .dropdown-calendar .flatpickr-calendar {
+    top: 0 !important;
+    left: 0 !important;
+    right: auto !important;
+    box-shadow: none !important;
+    border: 0 !important;
+}
+
+@media only screen and (min-width: 600px) {
+    #wdm-elucidsitereport #activeusersblock .dropdown-menu.withcalendar {
+        width: 530px !important;
+    }
+    #wdm-elucidsitereport #activeusersblock .dropdown-menu .dropdown-body {
+        float: right !important;
+    }
+}
+
+#wdm-elucidsitereport #activeusersblock .dropdown-menu .dropdown-body {
+    width: 215px;
+    float: left;
+}
+#wdm-elucidsitereport #activeusersblock .dropdown-body .dropdown-item {
+    cursor: pointer;
+}
+
 
 /* Datatable css */
 #wdm-elucidsitereport table.dataTable tr,
@@ -112,4 +141,9 @@
 
 .badge-danger {
     background-color: #ff4c52 !important;
+}
+
+.dropdown-menu.dropdown-menu-right {
+    right: 0;
+    left: auto;
 }

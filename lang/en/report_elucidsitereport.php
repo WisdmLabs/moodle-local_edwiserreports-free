@@ -70,3 +70,8 @@ $string['timespent'] = "Time Spent";
 $string['sessions'] = "Sessions";
 $string['totalusers'] = "Total Users";
 $string['pageview'] = "Page Views per Hour";
+$string['lastupdate'] = "Last updated <span class='minute'>0</span> min ago";
+$string['lastweek'] = "Last Week";
+$string['lastmonth'] = "Last Month";
+$string['lastyear'] = "Last Year";
+$string['custom'] = "Custom";
