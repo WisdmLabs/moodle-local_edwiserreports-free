@@ -2,30 +2,35 @@ define(["jquery", "report_elucidsitereport/variables"], function($, v) {
     var toggleMenuAndPin = "#toggleMenubar [data-toggle='menubar'], .page-aside-pin";
 
     $(document).ready(function() {
+        var isNavlink = null;
         var pageContent = $("#page-admin-report-elucidsitereport-index .page-content");
-        rearrangeBlocks(pageContent.width());
+        var pageWidth = pageContent.width();
+
+        rearrangeBlocks(pageWidth, isNavlink);
 
         $(document).on("click", toggleMenuAndPin, function() {
-            var pageWidth = pageContent.width();
-            var isNavlink = $(this).hasClass("nav-link");
+            isNavlink = $(this).hasClass("nav-link");
+            pageWidth = pageContent.width();
 
             rearrangeBlocks(pageWidth, isNavlink);
         });
     });
 
     function rearrangeBlocks(pageWidth, isNavlink) {
+        var blocks ="#wdm-elucidsitereport > div";
+
         if (isNavlink) {
             var menubarFolded = $("body").hasClass("site-menubar-fold");
-            if (menubarFolded) {
-                $("#wdm-elucidsitereport > div").addClass("col-lg-12");
+            if (menubarFolded && pageWidth < 1080) {
+                $(blocks).addClass("col-lg-12");
             } else {
-                $("#wdm-elucidsitereport > div").removeClass("col-lg-12");
+                $(blocks).removeClass("col-lg-12");
             }
         } else {
-            if (pageWidth < 768 ) {
-                $("#wdm-elucidsitereport > div").addClass("col-lg-12");
+            if (pageWidth < 820 ) {
+                $(blocks).addClass("col-lg-12");
             } else {
-                $("#wdm-elucidsitereport > div").removeClass("col-lg-12");
+                $(blocks).removeClass("col-lg-12");
             }
         }
 

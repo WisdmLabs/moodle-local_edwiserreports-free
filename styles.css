@@ -74,6 +74,10 @@
     background-color: unset !important;
 }
 
+#wdm-elucidsitereport .dataTables_scrollHeadInner {
+    width: 100% !important;
+}
+
 /* width */
 #wdm-elucidsitereport ::-webkit-scrollbar {
   width: 10px;
