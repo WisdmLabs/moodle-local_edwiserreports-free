@@ -5,10 +5,14 @@
                 {{#str}} lpstatsheader, report_elucidsitereport {{/str}}
                 <a href="#" class="small"><i class="fa fa-question-circle"></i></a>
             </strong>
-            {{{lpearchfilter}}}
         </div>
     </div>
     <div class="panel-body p-0">
+        <select id="wdm-lpstats-select" class="form-control singleselect w-full" name="state">
+                {{#lps}}
+                <option value="{{id}}">{{fullname}}</option>
+                {{/lps}}
+            </select>
         <div class="loader w-full text-center py-100">
             {{# pix }} loader, report_elucidsitereport{{/ pix }}
         </div>

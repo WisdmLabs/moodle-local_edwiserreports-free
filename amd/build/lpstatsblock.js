@@ -1,9 +1,9 @@
-define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig'], function ($, Chart, defaultconfig) {
+define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig'], function ($, Chart, cfg) {
     function init() {
         var lpChart = null;
-        var panelBody = defaultconfig.getPanel("#lpstatsblock", "body");
-        var panelTitle = defaultconfig.getPanel("#lpstatsblock", "title");
-        var selectedLp = panelTitle + " #id_lp";
+        var panelBody = cfg.getPanel("#lpstatsblock", "body");
+        var panelTitle = cfg.getPanel("#lpstatsblock", "title");
+        var selectedLp = panelBody + " #wdm-lpstats-select";
         var chart = panelBody + " .ct-chart";
         var loader = panelBody + " .loader";
 
@@ -21,9 +21,9 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig'], func
 
         function getLpStatsData(lpId) {
             $.ajax({
-                url: defaultConfig.requestUrl,
-                type: defaultConfig.requestType,
-                dataType: defaultConfig.requestDataType,
+                url: cfg.requestUrl,
+                type: cfg.requestType,
+                dataType: cfg.requestDataType,
                 data: {
                     action: 'get_lpstats_data_ajax',
                     data: JSON.stringify({
@@ -44,21 +44,21 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig'], func
         }
 
         function generateLpChart(responsedata) {
-            defaultConfig.lpStatsBlock.graph.labels = responsedata.labels;
-            defaultConfig.lpStatsBlock.graph.data = responsedata.data;
+            cfg.lpStatsBlock.graph.labels = responsedata.labels;
+            cfg.lpStatsBlock.graph.data = responsedata.data;
 
             var data = {
-                labels: defaultConfig.lpStatsBlock.graph.labels,
+                labels: cfg.lpStatsBlock.graph.labels,
                 datasets: [{
-                    data: defaultConfig.lpStatsBlock.graph.data,
-                    backgroundColor: defaultConfig.lpStatsBlock.graph.backgroundColor,
+                    data: cfg.lpStatsBlock.graph.data,
+                    backgroundColor: cfg.lpStatsBlock.graph.backgroundColor,
                 }]
             };
 
-            lpChart = new Chart(defaultConfig.lpStatsBlock.ctx, {
+            lpChart = new Chart(cfg.lpStatsBlock.ctx, {
                 data: data,
-                type: defaultConfig.lpStatsBlock.graph.type,
-                options: defaultConfig.lpStatsBlock.graph.options
+                type: cfg.lpStatsBlock.graph.type,
+                options: cfg.lpStatsBlock.graph.options
             });
         }
     }

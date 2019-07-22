@@ -63,7 +63,7 @@ class elucidreport_renderable implements renderable, templatable  {
         $export->haslppluign = has_plugin("local", "learning_program");
 
         if ($export->haslppluign) {
-            $export->lpearchfilter = \report_elucidsitereport\utility::generate_lp_filter();
+            $export->lps = \report_elucidsitereport\utility::get_lps();
         }
 
         return  $export;
