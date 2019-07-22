@@ -102,14 +102,14 @@ class utility {
     /* Generate Course Filter for course progress block
      * @return String HTML form with select and search box
      */
-	public static function generate_course_filter() {
+	public static function get_courses() {
 		global $DB;
 		$fields = "id, fullname, shortname";
 		$form = new MoodleQuickForm('course', 'post', '#');
-		$courses = $DB->get_records('course', array(), '', $fields);
+		$records = $DB->get_records('course', array(), '', $fields);
 
-		$select = array();
-		foreach ($courses as $course) {
+		$courses = array();
+		foreach ($records as $course) {
 			if ($course->id == 1) {
 				continue;
 			}
@@ -119,21 +119,9 @@ class utility {
 			if (count($enrolledstudents) == 0) {
 				continue;
 			}
-			$select[$course->id] = $course->fullname;
+			$courses[] = $course;
 		}
-
-		$options = array(
-			'multiple' => false,
-			'placeholder' => 'Search and Select Courses',
-			'class' => 'ml-0 mr-5 mb-10',
-		);
-		$form->addElement('autocomplete', 'courses', '', $select, $options);
-
-		ob_start();
-		$form->display();
-		$output = ob_get_contents();
-		ob_end_clean();
-		return $output;
+		return $courses;
 	}
 
     /* Generate Learning Program Filter for course progress block

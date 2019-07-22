@@ -40,6 +40,7 @@ $PAGE->requires->js_call_amd('report_elucidsitereport/accessinfoblock', 'init');
 $PAGE->requires->js_call_amd('report_elucidsitereport/inactiveusersblock', 'init');
 $PAGE->requires->css('/report/elucidsitereport/styles/datatable.css');
 $PAGE->requires->css('/report/elucidsitereport/styles/flatpickr.min.css');
+$PAGE->requires->css('/report/elucidsitereport/styles/select2.min.css');
 
 $elucidreport = new \report_elucidsitereport\output\elucidreport();
 $reportrenderable = new \report_elucidsitereport\output\elucidreport_renderable();

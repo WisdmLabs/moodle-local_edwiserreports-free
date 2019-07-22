@@ -7,9 +7,13 @@
                     <a href="#" class="small"><i class="fa fa-question-circle"></i></a>
                 </strong>
             </div>
-            {{{coursesearchfilter}}}
         </div>
         <div class="panel-body p-0">
+            <select id="wdm-courseprogress-select" class="form-control singleselect w-full" name="state">
+                {{#courses}}
+                <option value="{{id}}">{{fullname}}</option>
+                {{/courses}}
+            </select>
             <div class="loader w-full text-center py-100 my-50">
                 {{# pix }} loader, report_elucidsitereport{{/ pix }}
             </div>
@@ -22,3 +26,11 @@
         </div>
     </div>
 </div>
+
+{{#js}}
+require(["jquery", "report_elucidsitereport/select2"], function($) {
+    $(document).ready(function() {
+        $('.singleselect').select2();
+    });
+});
+{{/js}}

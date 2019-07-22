@@ -1,15 +1,20 @@
-define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig'], function ($, Chart, defaultconfig) {
+define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig'], function ($, Chart, cfg) {
     function init() {
-        var myPieChart;
-        var panelBody = "#courseprogressblock .panel .panel-body";
-        var panelTitle = "#courseprogressblock .panel .panel-header";
-        var panelFooter = "#courseprogressblock .panel .panel-footer";
-        var selectedCourse = panelTitle + " #id_courses";
+        var courseProgress = null;
+        var panelBody = cfg.getPanel("#courseprogressblock", "body")
+        var panelTitle = cfg.getPanel("#courseprogressblock", "header");
+        var panelFooter = cfg.getPanel("#courseprogressblock", "footer");
+        var selectedCourse = panelBody + " #wdm-courseprogress-select";
+        var chart = panelBody + " .ct-chart";
+        var loader = panelBody + " .loader";
 
         $(selectedCourse).on("change", function () {
-            $(panelBody + " .ct-chart").addClass("d-none");
-            $(panelBody + " .loader").removeClass("d-none");
-            myPieChart.destroy();
+            $(chart).addClass("d-none");
+            $(loader).removeClass("d-none");
+
+            if (courseProgress) {
+                courseProgress.destroy();
+            }
             getCourseProgressData();
         });
 
@@ -18,7 +23,7 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig'], func
             $(document).ready(function($) {
                 var courseId = $(selectedCourse).val();
                 $.ajax({
-                    url: defaultconfig.requestUrl,
+                    url: cfg.requestUrl,
                     type: 'GET',
                     dataType: 'json',
                     data: {
@@ -29,33 +34,33 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig'], func
                     },
                 })
                 .done(function(response) {
-                    defaultConfig.courseProgressBlock.graph.data = response.data;
+                    cfg.courseProgressBlock.graph.data = response.data;
                 })
                 .fail(function(error) {
                     console.log(error);
                 })
                 .always(function() {
                     generateCourseProgressGraph();
-                    $(panelBody + " .ct-chart").removeClass("d-none");
-                    $(panelBody + " .loader").addClass("d-none");
+                    $(loader).addClass("d-none");
+                    $(chart).removeClass("d-none");
                 });
             });
         }
 
         function generateCourseProgressGraph() {
             var data = {
-                labels: defaultConfig.courseProgressBlock.graph.labels,
+                labels: cfg.courseProgressBlock.graph.labels,
                 datasets: [{
-                    label: defaultConfig.courseProgressBlock.graph.label,
-                    data: defaultConfig.courseProgressBlock.graph.data,
-                    backgroundColor: defaultConfig.courseProgressBlock.graph.backgroundColor
+                    label: cfg.courseProgressBlock.graph.label,
+                    data: cfg.courseProgressBlock.graph.data,
+                    backgroundColor: cfg.courseProgressBlock.graph.backgroundColor
                 }]
             };
 
-            myPieChart = new Chart(defaultConfig.courseProgressBlock.ctx, {
+            myPieChart = new Chart(cfg.courseProgressBlock.ctx, {
                 data: data,
-                type: defaultConfig.courseProgressBlock.graph.type,
-                options: defaultConfig.courseProgressBlock.graph.options
+                type: cfg.courseProgressBlock.graph.type,
+                options: cfg.courseProgressBlock.graph.options
             });
         }
     }

@@ -106,9 +106,9 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
             }).always(function() {
                 activeUsersGraph = generateActiveUsersGraph();
                 setInterval(inceamentUpdateTime, 1000 * 60);
-                $(chart).removeClass('d-none');
                 $(refreshBtn).removeClass('refresh-spin');
                 $(loader).addClass('d-none');
+                $(chart).removeClass('d-none');
             });
         }
 
