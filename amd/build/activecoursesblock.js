@@ -1,37 +1,52 @@
-define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'report_elucidsitereport/jquery.dataTables', 'report_elucidsitereport/dataTables.bootstrap4'], function ($, Chart, defaultConfig) {
+define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'report_elucidsitereport/jquery.dataTables', 'report_elucidsitereport/dataTables.bootstrap4'], function ($, Chart, cfg) {
     function init() {
+        var activeCourseTable;
+
+        var panelBody = cfg.getPanel("#mostactivecourses", "body");
+        var panelTitle = cfg.getPanel("#mostactivecourses", "title");
+        var panelFooter = cfg.getPanel("#mostactivecourses", "footer");
+        var loader = panelBody + " .loader";
+        var table = panelBody + " .table";
+
+        /* Ajax request to get data for active courses table */
         $.ajax({
-            url: defaultConfig.requestUrl,
-            type: 'GET',
-            dataType: 'json',
+            url: cfg.requestUrl,
+            type: cfg.requestType,
+            dataType: cfg.requestDataType,
             data: {
                 action: 'get_activecourses_data_ajax'
             },
         })
         .done(function(response) {
+            /* Create active course table */
             createActiveCourseTable(response.data);
         })
         .fail(function(error) {
             console.log(error);
         })
         .always(function() {
-            $(_panelBody + " .loader").addClass('d-none');
-            $(_panelBody + " .table").removeClass('d-none');
-            _activeCourseTable.on( 'order.dt search.dt', function () {
-                _activeCourseTable.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+            /* Added fixed column rank in datatable */
+            activeCourseTable.on('order.dt search.dt', function () {
+                activeCourseTable.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
                     cell.innerHTML = i+1;
                 });
             }).draw();
+
+
+            /* Remove laoder and display table after table is created */
+            $(loader).addClass('d-none');
+            $(table).removeClass('d-none');
         });
 
-        var _activeCourseTable;
-
-        var _panelBody = "#mostactivecourses .panel .panel-body";
-        var _panelTitle = "#mostactivecourses .panel .panel-title";
-        var _panelFooter = "#mostactivecourses .panel .panel-footer";
         function createActiveCourseTable(data) {
-            _activeCourseTable = $("#wdm-elucidsitereport #mostactivecourses table")
-            .DataTable( {
+            /* If datable already created the destroy the table*/
+            if (activeCourseTable) {
+                activeCourseTable.destroy();
+            }
+
+            /* Create datatable for active courses */
+            activeCourseTable = $(table).DataTable({
+                responsive: true,
                 data : data,
                 aaSorting: [[2, 'desc']],
                 language: {
@@ -61,7 +76,7 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
                         "className": "text-center",
                     }
                 ],
-                scrollY : "350px",
+                scrollY : "300px",
                 scrollCollapse : true,
                 fixedHeader: {
                     header: true,

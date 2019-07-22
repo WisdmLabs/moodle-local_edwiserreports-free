@@ -1,4 +1,37 @@
 define(["jquery", "report_elucidsitereport/variables"], function($, v) {
+    var toggleMenuAndPin = "#toggleMenubar [data-toggle='menubar'], .page-aside-pin";
+
+    $(document).ready(function() {
+        var pageContent = $("#page-admin-report-elucidsitereport-index .page-content");
+        rearrangeBlocks(pageContent.width());
+
+        $(document).on("click", toggleMenuAndPin, function() {
+            var pageWidth = pageContent.width();
+            var isNavlink = $(this).hasClass("nav-link");
+
+            rearrangeBlocks(pageWidth, isNavlink);
+        });
+    });
+
+    function rearrangeBlocks(pageWidth, isNavlink) {
+        if (isNavlink) {
+            var menubarFolded = $("body").hasClass("site-menubar-fold");
+            if (menubarFolded) {
+                $("#wdm-elucidsitereport > div").addClass("col-lg-12");
+            } else {
+                $("#wdm-elucidsitereport > div").removeClass("col-lg-12");
+            }
+        } else {
+            if (pageWidth < 768 ) {
+                $("#wdm-elucidsitereport > div").addClass("col-lg-12");
+            } else {
+                $("#wdm-elucidsitereport > div").removeClass("col-lg-12");
+            }
+        }
+
+        $(document).find('.table.dataTable').DataTable().draw();
+    }
+
     return defaultConfig = {
         // Default Config
         requestUrl : M.cfg.wwwroot + '/report/elucidsitereport/request_handler.php',
