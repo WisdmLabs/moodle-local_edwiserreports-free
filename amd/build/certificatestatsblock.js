@@ -1,11 +1,13 @@
-define(["jquery", "core/templates", "report_elucidsitereport/defaultconfig"], function($, templates, defaultConfig) {
-    var panelBody = "#wdm-elucidsitereport #certificatestatsblock .panel-body"
+define(["jquery", "core/templates", "report_elucidsitereport/defaultconfig"], function($, templates, cfg) {
+    var panel = cfg.getPanel("#certificatestatsblock");
+    var panelBody = cfg.getPanel("#certificatestatsblock", "body");
+    var table = panel + " .table";
 
     function init () {
         $.ajax({
-            url: defaultConfig.requestUrl,
-            type: 'GET',
-            dataType: 'json',
+            url: cfg.requestUrl,
+            type: cfg.requestType,
+            dataType: cfg.requestDataType,
             data: {
                 action: 'get_certificates_data_ajax'
             },
@@ -26,8 +28,7 @@ define(["jquery", "core/templates", "report_elucidsitereport/defaultconfig"], fu
     }
 
     function createActiveCourseTable() {
-        certificatesTable = $("#wdm-elucidsitereport #certificatestatsblock table")
-        .DataTable({
+        certificatesTable = $(table).DataTable({
             language: {
                 searchPlaceholder: "Search Certificates"
             },

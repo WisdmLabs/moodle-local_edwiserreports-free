@@ -1,6 +1,6 @@
-define(["jquery", "report_elucidsitereport/defaultconfig", "report_elucidsitereport/jquery.dataTables", "report_elucidsitereport/dataTables.bootstrap4"], function($, defaultConfig) {
+define(["jquery", "report_elucidsitereport/defaultconfig", "report_elucidsitereport/jquery.dataTables", "report_elucidsitereport/dataTables.bootstrap4"], function($, cfg) {
     var liveUsersTable = null;
-    var panelBody = "#wdm-elucidsitereport #liveusersblock .panel-body";
+    var panelBody = cfg.getPanel("#liveusersblock", "body");
     var loader = panelBody + " .loader";
     var table = panelBody + " .table";
 
@@ -9,11 +9,12 @@ define(["jquery", "report_elucidsitereport/defaultconfig", "report_elucidsiterep
         setInterval(getOnlineUsersData, 1000 * 30);
     }
 
+    /* Get online users data */
     function getOnlineUsersData() {
         $.ajax({
-            url: defaultConfig.requestUrl,
-            type: 'GET',
-            dataType: 'json',
+            url: cfg.requestUrl,
+            type: cfg.requestType,
+            dataType: cfg.requestDataType,
             data: {
                 action: 'get_liveusers_data_ajax',
             },
@@ -26,6 +27,7 @@ define(["jquery", "report_elucidsitereport/defaultconfig", "report_elucidsiterep
         });
     }
 
+    /* Create Datatable of the table */
     function createRealtimeUsersBlock(data) {
         if (liveUsersTable) {
             liveUsersTable.destroy();
@@ -34,8 +36,7 @@ define(["jquery", "report_elucidsitereport/defaultconfig", "report_elucidsiterep
             $(table).removeClass("d-none");
         }
 
-        liveUsersTable = $(table)
-        .DataTable({
+        liveUsersTable = $(table).DataTable({
             data: data,
             language: {
                 searchPlaceholder: "Search Users"
