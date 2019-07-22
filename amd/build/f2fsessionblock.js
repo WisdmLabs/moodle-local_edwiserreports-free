@@ -1,17 +1,18 @@
-define(['jquery', 'core/templates', 'report_elucidsitereport/defaultconfig'], function ($, templates, defaultConfig) {
-    var panelBody = "#f2fsessionsblock .panel-body"
+define(['jquery', 'core/templates', 'report_elucidsitereport/defaultconfig', 'report_elucidsitereport/jquery.dataTables', 'report_elucidsitereport/dataTables.bootstrap4'], function ($, templates, cfg) {
+    var panelBody = cfg.getPanel("#f2fsessionsblock", "body");
+    var table = panelBody + " #f2fsessionstable";
 
     function init() {
         $.ajax({
-            url: defaultConfig.requestUrl,
-            type: 'GET',
-            dataType: 'json',
+            url: cfg.requestUrl,
+            type: cfg.requestType,
+            dataType: cfg.requestDataType,
             data: {
                 action: 'get_f2fsession_data_ajax'
             },
         })
         .done(function(response) {
-            templates.render('report_elucidsitereport/f2fsessiontable', response.data)
+            templates.render(cfg.getTemplate('f2fsessiontable'), response.data)
             .then(function(html, js) {
                 $(panelBody).empty();
                 templates.appendNodeContents(panelBody, html, js);
