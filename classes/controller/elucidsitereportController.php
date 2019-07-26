@@ -90,4 +90,9 @@ class elucidsitereportController extends controllerAbstract
         $data = json_decode(required_param('data', PARAM_RAW));
         echo json_encode(\report_elucidsitereport\utility::get_inactiveusers_data($data));
     }
+
+    public function get_userslist_ajax_action() {
+        $data = json_decode(required_param('data', PARAM_RAW));
+        echo json_encode(\report_elucidsitereport\utility::get_userslist_data($data));
+    }
 }

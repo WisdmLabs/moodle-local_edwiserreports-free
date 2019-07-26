@@ -30,6 +30,9 @@
  * @param  [string] $puginname Plugin Name
  * @return boolean Return boolean
  */
+
+require_once $CFG->dirroot . "/report/elucidsitereport/classes/blocks/active_users_block.php";
+
 function has_plugin($plugintype, $puginname) {
     $plugins = \core_plugin_manager::instance()->get_plugins_of_type($plugintype);
 
@@ -38,4 +41,13 @@ function has_plugin($plugintype, $puginname) {
     }
 
     return false;
+}
+
+function report_elucidsitereport_output_fragment_userslist($args) {
+    global $CFG;
+ 
+    $filter = clean_param($args['filter'], PARAM_TEXT);
+    $action = clean_param($args['action'], PARAM_TEXT);
+
+    return \report_elucidsitereport\active_users_block::get_userslist($filter, $action);
 }

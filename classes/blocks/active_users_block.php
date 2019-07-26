@@ -25,6 +25,11 @@
 
 namespace report_elucidsitereport;
 use stdClass;
+use core_user;
+use html_table;
+use html_writer;
+use html_table_cell;
+use html_table_row;
 
 /**
  * Class Acive Users Block
@@ -65,6 +70,95 @@ class active_users_block extends utility {
     }
 
     /**
+     * Get users list for a perticuler action
+     */
+    public static function get_userslist($filter, $action) {
+        global $DB;
+
+        $sql = "SELECT DISTINCT userid
+                FROM {logstore_standard_log}
+                WHERE eventname = ?
+                AND timecreated > ?
+                AND timecreated <= ?";
+
+        $table = new html_table();
+        $table->head = array(
+            get_string("fullname", "report_elucidsitereport"),
+            get_string("email", "report_elucidsitereport")
+        );
+
+        $records = array();
+        switch ($action) {
+            case "activeusers":
+                $records = $DB->get_records_sql($sql, array('\core\event\user_loggedin', $filter, $filter + self::$oneday));
+                if (empty($records)) {
+                    $emptycell = new html_table_cell(get_string("usersnotavailable", "report_elucidsitereport"));
+                    $row = new html_table_row();
+                    $emptycell->colspan = count($table->head);
+                    $emptycell->attributes['class'] = "text-center";
+                    $row->cells = array($emptycell);
+                    $table->data = array($row);
+                } else {
+                    foreach ($records as $record) {
+                        $user = core_user::get_user($record->userid);
+                        $table->data[] = array(
+                            fullname($user),
+                            $user->email
+                        );
+                    }
+                }
+                break;
+            case "enrolments":
+                $records = $DB->get_records_sql($sql, array('\core\event\user_enrolment_created', $filter, $filter + self::$oneday));
+                if (empty($records)) {
+                    $emptycell = new html_table_cell(get_string("usersnotavailable", "report_elucidsitereport"));
+                    $row = new html_table_row();
+                    $emptycell->colspan = count($table->head);
+                    $emptycell->attributes['class'] = "text-center";
+                    $row->cells = array($emptycell);
+                    $table->data = array($row);
+                } else {
+                    foreach ($records as $record) {
+                        $user = core_user::get_user($record->userid);
+                        $table->data[] = array(
+                            fullname($user),
+                            $user->email
+                        );
+                    }
+                }
+                break;
+            case "completions":
+                $sql = "SELECT userid, course
+                    FROM {course_completions}
+                    WHERE timecompleted > ?
+                    AND timecompleted <= ?";
+                $records = $DB->get_records_sql($sql, array($filter, $filter + self::$oneday));
+
+                if (empty($records)) {
+                    $emptycell = new html_table_cell(get_string("usersnotavailable", "report_elucidsitereport"));
+                    $row = new html_table_row();
+                    $emptycell->colspan = count($table->head);
+                    $emptycell->attributes['class'] = "text-center";
+                    $row->cells = array($emptycell);
+                    $table->data = array($row);
+                } else {
+                    foreach ($records as $record) {
+                        $user = core_user::get_user($record->userid);
+                        $course = $DB->get_record('course', array('id' => $record->course));
+                        $table->data[] = array(
+                            fullname($user),
+                            $user->email,
+                            $course->fullname
+                        );
+                    }
+                }
+                break;
+        }
+
+        return html_writer::table($table);
+    }
+
+    /**
      * Get all active users
      * @param string $filter apply filter duration
      * @return array Array of all active users based
@@ -74,23 +168,25 @@ class active_users_block extends utility {
 
         $sql = "SELECT DISTINCT userid
                 FROM {logstore_standard_log}
-                WHERE eventname = ? AND timecreated BETWEEN ? AND ?";
+                WHERE eventname = ?
+                AND timecreated > ?
+                AND timecreated <= ?";
 
         $labels = array();
         $activeusers = array();
         for ($i = self::$xlabelcount; $i > 0; $i--) {
             if (!isset($endtime)) {
                 $endtime = self::$timenow;
-                $starttime = self::$timenow - self::$oneday;
+                $starttime = strtotime('today midnight');
             } else {
-                $endtime = $starttime - 1;
+                $endtime = $starttime;
                 $starttime = $endtime - self::$oneday;
             }
 
-            $labels[] = date("d M y", $endtime);
+            $labels[] = date("d M y", $starttime);
             $activeusers[] = count($DB->get_records_sql($sql, array('\core\event\user_loggedin', $starttime, $endtime)));
         }
-        self::$labels = array_reverse($labels);
+        self::$labels = array_reverse($labels); 
         return array_reverse($activeusers);
     }
 
@@ -104,15 +200,17 @@ class active_users_block extends utility {
 
         $sql = "SELECT DISTINCT userid
                 FROM {logstore_standard_log}
-                WHERE eventname = ? AND timecreated BETWEEN ? AND ?";
+                WHERE eventname = ?
+                AND timecreated > ?
+                AND timecreated <= ?";
 
         $enrolments = array();
         for ($i = self::$xlabelcount; $i > 0; $i--) {
             if (!isset($endtime)) {
                 $endtime = self::$timenow;
-                $starttime = self::$timenow - self::$oneday;
+                $starttime = strtotime('today midnight');
             } else {
-                $endtime = $starttime - 1;
+                $endtime = $starttime;
                 $starttime = $endtime - self::$oneday;
             }
 
@@ -131,15 +229,16 @@ class active_users_block extends utility {
 
         $sql = "SELECT DISTINCT userid
                 FROM {course_completions}
-                WHERE timecompleted BETWEEN ? AND ?";
+                WHERE timecompleted > ?
+                AND timecompleted <= ?";
 
         $completionrate = array();
         for ($i = self::$xlabelcount; $i > 0; $i--) {
             if (!isset($endtime)) {
                 $endtime = self::$timenow;
-                $starttime = self::$timenow - self::$oneday;
+                $starttime = strtotime('today midnight');
             } else {
-                $endtime = $starttime - 1;
+                $endtime = $starttime;
                 $starttime = $endtime - self::$oneday;
             }
 

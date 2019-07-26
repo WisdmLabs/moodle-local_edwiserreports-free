@@ -36,3 +36,15 @@ class report_elucidsitereport_renderer extends plugin_renderer_base {
         return $this->render_from_template('report_elucidsitereport/elucidsitereport', $templatecontext);
     }
 }
+
+class report_activeusers_renderer extends plugin_renderer_base {
+    /**
+     * Renders the couse bundle view page.
+     * @param  report_elucidreport $report  Object of elucid report renderable class
+     * @return string  Html Structure of the view page
+     */
+    public function render_report_activeusers(\report_elucidsitereport\activeusers_individual_renderable $activeusers) {
+        $templatecontext = $report->export_for_template($this);
+        return $this->render_from_template('report_elucidsitereport/activeusers', $templatecontext);
+    }
+}

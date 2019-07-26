@@ -31,8 +31,10 @@ use renderable;
 use templatable;
 use renderer_base;
 use stdClass;
+use moodle_url;
 
 require_once($CFG->dirroot . "/report/elucidsitereport/lib.php");
+require_once $CFG->dirroot . "/report/elucidsitereport/classes/blocks/active_users_block.php";
 
 class elucidreport_renderable implements renderable, templatable  {
     /**
@@ -43,21 +45,23 @@ class elucidreport_renderable implements renderable, templatable  {
      * @return stdClass|array
      */
     public function export_for_template(renderer_base $output) {
-        global $PAGE;
+        global $CFG, $PAGE;
+
         $output = null;
         $export = new stdClass();
         $export->timenow = date("Y-m-d", time());
         $export->courses = \report_elucidsitereport\utility::get_courses();
         $export->hasf2fpluign = has_plugin("mod", "facetoface");
+        $export->activeuserslink = new moodle_url($CFG->wwwroot . "/report/elucidsitereport/activeusers.php");
 
         if ($export->hasf2fpluign) {
-            $PAGE->requires->js_call_amd('report_elucidsitereport/f2fsessionblock', 'init');
+            $PAGE->requires->js_call_amd('report_elucidsitereport/block_f2fsessions', 'init');
         }
 
         $export->hascustomcertpluign = has_plugin("mod", "customcert");
 
         if ($export->hascustomcertpluign) {
-            $PAGE->requires->js_call_amd('report_elucidsitereport/certificatestatsblock', 'init');
+            $PAGE->requires->js_call_amd('report_elucidsitereport/block_certificatestats', 'init');
         }
 
         $export->haslppluign = has_plugin("local", "learning_program");
@@ -67,5 +71,19 @@ class elucidreport_renderable implements renderable, templatable  {
         }
 
         return  $export;
+    }
+}
+
+class activeusers_individual_renderable implements renderable, templatable  {
+    /**
+     * Function to export the renderer data in a format that is suitable for a
+     * edit mustache template.
+     *
+     * @param renderer_base $output Used to do a final render of any components that need to be rendered for export.
+     * @return stdClass|array
+     */
+    public function export_for_template(renderer_base $output) {
+        $output = null;
+        return  $output;
     }
 }

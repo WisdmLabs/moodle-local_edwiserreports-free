@@ -23,21 +23,26 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace report_elucidsitereport;
+
+use context_system;
+use moodle_url;
+
 require_once(__DIR__ . '/../../config.php');
-require_once($CFG->libdir . '/adminlib.php');
 require_once('classes/output/elucidreport_renderer.php');
 require_once('classes/output/elucidreport_renderable.php');
-$PAGE->requires->strings_for_js(['courseprogresstooltip'], 'report_elucidsitereport');
-admin_externalpage_setup('elucidsitereport');
 
-$PAGE->requires->js_call_amd('report_elucidsitereport/main', 'init');
-$PAGE->requires->css('/report/elucidsitereport/styles/datatable.css');
-$PAGE->requires->css('/report/elucidsitereport/styles/flatpickr.min.css');
-$PAGE->requires->css('/report/elucidsitereport/styles/select2.min.css');
+$context = context_system::instance();
+$PAGE->requires->js_call_amd('report_elucidsitereport/activeusers', 'init', array($context->id));
 
-$elucidreport = new \report_elucidsitereport\output\elucidreport();
-$reportrenderable = new \report_elucidsitereport\output\elucidreport_renderable();
-$output = $elucidreport->get_renderer()->render($reportrenderable);
+$pageurl = new moodle_url($CFG->wwwroot . "/report/elucidsitereport/activeusers.php");
+
+$PAGE->set_context($context);
+$PAGE->set_url($pageurl);
+
+$activeusers = new \report_elucidsitereport\output\activeusers();
+$activeusersrenderable = new \report_elucidsitereport\output\activeusers_individual_renderable();
+$output = $activeusers->get_renderer()->render($activeusersrenderable);
 
 echo $OUTPUT->header();
 echo $output;

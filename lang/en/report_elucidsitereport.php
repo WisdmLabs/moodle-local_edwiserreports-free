@@ -79,3 +79,10 @@ $string['custom'] = "Custom";
 /* Block help tooltips */
 $string['activeusersblocktitlehelp'] = "Active Users Block";
 $string['activeusersblockhelp'] = "This block will show graph of active users over the period with course enrolment and course completion.";
+
+/* Active Users Block */
+$string['noofactiveusers'] = "# Active Users";
+$string['noofenrolledusers'] = "# Enrolled Users";
+$string['noofccompletedusers'] = "# Completed Users";
+$string['email'] = "Email";
+$string['usersnotavailable'] = "No Users are available for this day";

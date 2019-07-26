@@ -5,6 +5,9 @@
 #wdm-elucidsitereport .dataTables_wrapper.no-footer .dataTables_scrollBody {
     border-bottom: 0 !important;
 }
+#wdm-elucidsitereport .table th::before, #wdm-elucidsitereport .table th::after {
+    display: none;
+}
 
 #wdm-elucidsitereport #f2fsessionsblock table tbody tr td .icon {
     transition: all 350ms ease-in-out;
@@ -202,4 +205,15 @@
 #wdm-elucidsitereport #todaysactivityblock .ct-chart {
     min-height: 100px;
     max-height: 100px;
+}
+
+/* Active users page */
+#wdm-activeusers-individual a {
+    text-decoration: none;
+}
+
+.loading-icon.icon-no-margin {
+    display: block;
+    width: 100%;
+    text-align: center;
 }

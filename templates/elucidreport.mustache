@@ -1,52 +1,52 @@
 <div id="wdm-elucidsitereport" class="row mx-0">
-    <div class="col-12 px-0 h-450">
-        {{> report_elucidsitereport/activeusersblock }}
+    <div class="col-12 px-0 h-500">
+        {{> report_elucidsitereport/block_activeusers }}
     </div>
 
     <div class="col-lg-4 col-md-12 col-sm-12">
-        {{> report_elucidsitereport/courseprogressblock }}
+        {{> report_elucidsitereport/block_courseprogress }}
     </div>
 
     <div class="col-lg-8 col-md-12 col-sm-12 px-0">
-        {{> report_elucidsitereport/mostactivecourses }}
+        {{> report_elucidsitereport/block_activecourses }}
     </div>
 
     {{#hascustomcertpluign}}
     <div class="col-lg-6 col-md-12 col-sm-12 px-0 pr-lg-10">
-        {{> report_elucidsitereport/certificatestatsblock }}
+        {{> report_elucidsitereport/block_certificatestats }}
     </div>
     {{/hascustomcertpluign}}
 
     <div class="col-lg-6 col-md-12 col-sm-12 px-0 pl-lg-10">
-        {{> report_elucidsitereport/liveusersblock }}
+        {{> report_elucidsitereport/block_liveusers }}
     </div>
 
     {{#hasf2fpluign}}
     <div class="col-12 px-0">
-        {{> report_elucidsitereport/f2fsessionsblock }}
+        {{> report_elucidsitereport/block_f2fsessions }}
     </div>
     {{/hasf2fpluign}}
 
     <div class="col-lg-8 col-md-12 col-sm-12 px-0">
-        {{> report_elucidsitereport/accessinfograph }}
+        {{> report_elucidsitereport/block_accessinfo }}
     </div>
 
     {{#haslppluign}}
     <div class="col-lg-4 col-md-12 col-sm-12 px-0">
-        {{> report_elucidsitereport/lpstatsblock }}
+        {{> report_elucidsitereport/block_lpstats }}
     </div>
     {{/haslppluign}}
 
     <div class="col-lg-6 col-md-12 col-sm-12 pl-0 pr-lg-10">
-        {{> report_elucidsitereport/todaysactivityblock }}
+        {{> report_elucidsitereport/block_todaysactivity }}
     </div>
 
     <div class="col-lg-6 col-md-12 col-sm-12 pr-0 pl-lg-10">
-        {{> report_elucidsitereport/inactiveusersblock }}
+        {{> report_elucidsitereport/block_inactiveusers }}
     </div>
 <!--
     <div class="col-12 px-0">
-        {{> report_elucidsitereport/overallengagementblock }}
+        {{> report_elucidsitereport/block_overallengagement }}
     </div>
 -->
 </div>
