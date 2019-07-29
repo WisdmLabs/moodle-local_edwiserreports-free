@@ -1,0 +1,63 @@
+<div id="wdm-courseprogress-individual" class="table-responsive">
+    <table class="table admintable d-none">
+        <thead>
+            <th>{{#str}} coursename, report_elucidsitereport {{/str}}</th>
+            <th>{{#str}} noofenrolled, report_elucidsitereport {{/str}}</th>
+            <th>{{#str}} noofcompleted, report_elucidsitereport {{/str}}</th>
+            <th>{{#str}} noofcompleted20, report_elucidsitereport {{/str}}</th>
+            <th>{{#str}} noofcompleted40, report_elucidsitereport {{/str}}</th>
+            <th>{{#str}} noofcompleted60, report_elucidsitereport {{/str}}</th>
+            <th>{{#str}} noofcompleted80, report_elucidsitereport {{/str}}</th>
+            <th>{{#str}} noofincompleted, report_elucidsitereport {{/str}}</th>
+        </thead>
+        <tbody>
+            {{#courseprogress}}
+            <tr>
+                <td>
+                    {{{fullname}}}
+                </td>
+                <td>
+                    <a href="javascript:void(0)" class="w-full" data-action="enrolments" data-courseid="{{id}}" data-coursename="{{fullname}}">
+                        {{enrolments}}
+                    </a>
+                </td>
+                <td>
+                	<a href="javascript:void(0)" class="w-full" data-action="completed" data-courseid="{{id}}" data-coursename="{{fullname}}">
+                		{{completed}}
+                	</a>
+                </td>
+                <td>
+                    <a href="javascript:void(0)" class="w-full" data-action="completed20" data-courseid="{{id}}" data-coursename="{{fullname}}">
+                        {{completed20}}
+                    </a>
+                </td>
+                <td>
+                    <a href="javascript:void(0)" class="w-full" data-action="completed40" data-courseid="{{id}}" data-coursename="{{fullname}}">
+                        {{completed40}}
+                    </a>
+                </td>
+                <td>
+                    <a href="javascript:void(0)" class="w-full" data-action="completed60" data-courseid="{{id}}" data-coursename="{{fullname}}">
+                        {{completed60}}
+                    </a>
+                </td>
+                <td>
+                    <a href="javascript:void(0)" class="w-full" data-action="completed80" data-courseid="{{id}}" data-coursename="{{fullname}}">
+                        {{completed80}}
+                    </a>
+                </td>
+                <td>
+                    <a href="javascript:void(0)" class="w-full" data-action="incompleted" data-courseid="{{id}}" data-coursename="{{fullname}}">
+                        {{incompleted}}
+                    </a>
+                </td>
+            </tr>
+            {{/courseprogress}}
+            {{^courseprogress}}
+            <div class="loader w-full text-center pt-100 mt-50">
+                {{# pix }} loader, report_elucidsitereport{{/ pix }}
+            </div>
+            {{/courseprogress}}
+        </tbody>
+    </table>
+</div>

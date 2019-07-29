@@ -59,6 +59,9 @@ class utility {
     }
 
     public static function get_course_progress_data($data) {
+        if ($data->courseid == "all") {
+            return \report_elucidsitereport\course_progress_block::get_courselist();
+        }
         return \report_elucidsitereport\course_progress_block::get_data($data->courseid);
     }
 
@@ -102,7 +105,7 @@ class utility {
     /* Generate Course Filter for course progress block
      * @return String HTML form with select and search box
      */
-    public static function get_courses() {
+    public static function get_courses($all = false) {
         global $DB;
         $fields = "id, fullname, shortname";
         $form = new MoodleQuickForm('course', 'post', '#');
@@ -116,7 +119,7 @@ class utility {
             $coursecontext = context_course::instance($course->id);
             // Get only students
             $enrolledstudents = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
-            if (count($enrolledstudents) == 0) {
+            if (!$all && count($enrolledstudents) == 0) {
                 continue;
             }
             $courses[] = $course;

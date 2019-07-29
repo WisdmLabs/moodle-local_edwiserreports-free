@@ -53,6 +53,7 @@ class elucidreport_renderable implements renderable, templatable  {
         $export->courses = \report_elucidsitereport\utility::get_courses();
         $export->hasf2fpluign = has_plugin("mod", "facetoface");
         $export->activeuserslink = new moodle_url($CFG->wwwroot . "/report/elucidsitereport/activeusers.php");
+        $export->courseprogresslink = new moodle_url($CFG->wwwroot . "/report/elucidsitereport/courseprogress.php");
 
         if ($export->hasf2fpluign) {
             $PAGE->requires->js_call_amd('report_elucidsitereport/block_f2fsessions', 'init');
@@ -75,6 +76,20 @@ class elucidreport_renderable implements renderable, templatable  {
 }
 
 class activeusers_renderable implements renderable, templatable  {
+    /**
+     * Function to export the renderer data in a format that is suitable for a
+     * edit mustache template.
+     *
+     * @param renderer_base $output Used to do a final render of any components that need to be rendered for export.
+     * @return stdClass|array
+     */
+    public function export_for_template(renderer_base $output) {
+        $output = null;
+        return  $output;
+    }
+}
+
+class courseprogress_renderable implements renderable, templatable  {
     /**
      * Function to export the renderer data in a format that is suitable for a
      * edit mustache template.

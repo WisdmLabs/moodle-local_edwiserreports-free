@@ -44,10 +44,24 @@ function has_plugin($plugintype, $puginname) {
 }
 
 function report_elucidsitereport_output_fragment_userslist($args) {
-    global $CFG;
- 
-    $filter = clean_param($args['filter'], PARAM_TEXT);
-    $action = clean_param($args['action'], PARAM_TEXT);
+    $response = null;
+    $page = clean_param($args["page"], PARAM_TEXT);
 
-    return \report_elucidsitereport\active_users_block::get_userslist($filter, $action);
+    switch($page) {
+        case "activeusers":
+            $filter = clean_param($args['filter'], PARAM_TEXT);
+            $action = clean_param($args['action'], PARAM_TEXT);
+
+            $response = \report_elucidsitereport\active_users_block::get_userslist($filter, $action);
+            break;
+        
+        case "courseprogress":
+            $courseid = clean_param($args['courseid'], PARAM_TEXT);
+            $action = clean_param($args['action'], PARAM_TEXT);
+
+            $response = \report_elucidsitereport\course_progress_block::get_userslist($courseid, $action);
+            break;
+    }
+
+    return $response;
 }

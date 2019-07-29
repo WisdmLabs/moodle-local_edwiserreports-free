@@ -43,8 +43,20 @@ class report_activeusers_renderer extends plugin_renderer_base {
      * @param  report_elucidreport $report  Object of elucid report renderable class
      * @return string  Html Structure of the view page
      */
-    public function render_report_activeusers(\report_elucidsitereport\activeusers_individual_renderable $activeusers) {
+    public function render_report_activeusers(\report_elucidsitereport\activeusers_renderable $activeusers) {
         $templatecontext = $report->export_for_template($this);
         return $this->render_from_template('report_elucidsitereport/activeusers', $templatecontext);
+    }
+}
+
+class report_courseprogress_renderer extends plugin_renderer_base {
+    /**
+     * Renders the couse bundle view page.
+     * @param  report_elucidreport $report  Object of elucid report renderable class
+     * @return string  Html Structure of the view page
+     */
+    public function render_report_courseprogress(\report_elucidsitereport\courseprogress_renderable $activeusers) {
+        $templatecontext = $report->export_for_template($this);
+        return $this->render_from_template('report_elucidsitereport/courseprogress', $templatecontext);
     }
 }

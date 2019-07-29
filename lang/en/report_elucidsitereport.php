@@ -80,9 +80,19 @@ $string['custom'] = "Custom";
 $string['activeusersblocktitlehelp'] = "Active Users Block";
 $string['activeusersblockhelp'] = "This block will show graph of active users over the period with course enrolment and course completion.";
 
-/* Active Users Block */
+/* Active Users Page */
 $string['noofactiveusers'] = "# Active Users";
 $string['noofenrolledusers'] = "# Enrolled Users";
-$string['noofccompletedusers'] = "# Completed Users";
+$string['noofcompletedusers'] = "# Completed Users";
 $string['email'] = "Email";
 $string['usersnotavailable'] = "No Users are available for this day";
+
+/* Course Progress Page */
+$string['coursename'] = "Course Name";
+$string['noofenrolled'] = "Enrolled Users";
+$string['noofcompleted'] = "Completed Users";
+$string['noofcompleted20'] = "Atleast 20% Completed";
+$string['noofcompleted40'] = "Atleast 40% Completed";
+$string['noofcompleted60'] = "Atleast 60% Completed";
+$string['noofcompleted80'] = "Atleast 80% Completed";
+$string['noofincompleted'] = "Not Completed";

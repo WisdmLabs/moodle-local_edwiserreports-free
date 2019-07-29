@@ -72,12 +72,15 @@
 
 
 /* Datatable css */
-#wdm-elucidsitereport table.dataTable tr,
-#wdm-elucidsitereport table.dataTable tr td {
+.path-report-elucidsitereport table.dataTable tr,
+.path-admin-report-elucidsitereport table.dataTable tr,
+.path-report-elucidsitereport table.dataTable tr td,
+.path-admin-report-elucidsitereport table.dataTable tr td {
     background-color: unset !important;
 }
 
-#wdm-elucidsitereport .dataTables_scrollHeadInner {
+.path-admin-report-elucidsitereport .dataTables_scrollHeadInner,
+.path-report-elucidsitereport .dataTables_scrollHeadInner {
     width: 100% !important;
 }
 
@@ -209,6 +212,11 @@
 
 /* Active users page */
 #wdm-activeusers-individual a {
+    text-decoration: none;
+}
+
+/* Course Progress page */
+#wdm-courseprogress-individual a {
     text-decoration: none;
 }
 

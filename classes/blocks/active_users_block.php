@@ -86,6 +86,7 @@ class active_users_block extends utility {
             get_string("fullname", "report_elucidsitereport"),
             get_string("email", "report_elucidsitereport")
         );
+        $table->attributes["class"] = "generaltable modal-table";
 
         $records = array();
         switch ($action) {
