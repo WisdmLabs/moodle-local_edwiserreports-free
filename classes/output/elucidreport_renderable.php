@@ -74,7 +74,7 @@ class elucidreport_renderable implements renderable, templatable  {
     }
 }
 
-class activeusers_individual_renderable implements renderable, templatable  {
+class activeusers_renderable implements renderable, templatable  {
     /**
      * Function to export the renderer data in a format that is suitable for a
      * edit mustache template.

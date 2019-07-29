@@ -41,9 +41,10 @@ $PAGE->set_context($context);
 $PAGE->set_url($pageurl);
 
 $activeusers = new \report_elucidsitereport\output\activeusers();
-$activeusersrenderable = new \report_elucidsitereport\output\activeusers_individual_renderable();
+$activeusersrenderable = new \report_elucidsitereport\output\activeusers_renderable();
 $output = $activeusers->get_renderer()->render($activeusersrenderable);
 
 echo $OUTPUT->header();
+echo $OUTPUT->heading(get_string("activeusersheader", "report_elucidsitereport"));
 echo $output;
 echo $OUTPUT->footer();
