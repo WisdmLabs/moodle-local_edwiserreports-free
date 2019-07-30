@@ -96,3 +96,12 @@ $string['noofcompleted40'] = "Atleast 40% Completed";
 $string['noofcompleted60'] = "Atleast 60% Completed";
 $string['noofcompleted80'] = "Atleast 80% Completed";
 $string['noofincompleted'] = "Not Completed";
+
+/* Certificates page */
+$string['username'] = 'User Name';
+$string['useremail'] = 'User Email';
+$string['dateofissue'] = 'Date of Issue';
+$string['dateofenrol'] = 'Date of Enrolment';
+$string['grade'] = 'Grade';
+$string['courseprogress'] = 'Course Progress';
+$string['notenrolled'] = 'User Not Enrolled';

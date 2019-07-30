@@ -33,18 +33,19 @@ require_once('classes/output/elucidreport_renderer.php');
 require_once('classes/output/elucidreport_renderable.php');
 
 $context = context_system::instance();
-$PAGE->requires->js_call_amd('report_elucidsitereport/courseprogress', 'init', array($context->id));
+$PAGE->requires->js_call_amd('report_elucidsitereport/certificates', 'init', array($context->id));
+$PAGE->requires->css('/report/elucidsitereport/styles/select2.min.css');
 
-$pageurl = new moodle_url($CFG->wwwroot . "/report/elucidsitereport/courseprogress.php");
+$pageurl = new moodle_url($CFG->wwwroot . "/report/elucidsitereport/certificates.php");
 
 $PAGE->set_context($context);
 $PAGE->set_url($pageurl);
 
-$courseprogress = new \report_elucidsitereport\output\courseprogress();
-$courseprogressrenderable = new \report_elucidsitereport\output\courseprogress_renderable();
-$output = $courseprogress->get_renderer()->render($courseprogressrenderable);
+$certificates = new \report_elucidsitereport\output\certificates();
+$certificatesrenderable = new \report_elucidsitereport\output\certificates_renderable();
+$output = $certificates->get_renderer()->render($certificatesrenderable);
 
 echo $OUTPUT->header();
-echo $OUTPUT->heading(get_string("courseprogress", "report_elucidsitereport"));
+echo $OUTPUT->heading(get_string("certificatestats", "report_elucidsitereport"));
 echo $output;
 echo $OUTPUT->footer();

@@ -73,7 +73,10 @@ class utility {
         return \report_elucidsitereport\f2fsession_block::get_data();
     }
 
-    public static function get_certificates_data() {
+    public static function get_certificates_data($data) {
+        if (isset($data->certificateid)) {
+            return \report_elucidsitereport\certificates_block::get_certificate($data->certificateid);
+        }
         return \report_elucidsitereport\certificates_block::get_data();
     }
 

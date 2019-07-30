@@ -1,0 +1,23 @@
+<div id="wdm-certificates-individual" class="table-responsive">
+    <div class="px-0 py-20">
+        <select id="wdm-certificates-select" class="form-control singleselect w-250" name="state">
+            {{#certificates}}
+            <option value="{{id}}">{{coursename}}: {{name}}</option>
+            {{/certificates}}
+        </select>
+    </div>
+    <div class="loader w-full text-center pt-100 mt-50">
+        {{# pix }} loader, report_elucidsitereport{{/ pix }}
+    </div>
+    <table class="table w-full" style="display: none;">
+        <thead>
+            <th>{{#str}} username, report_elucidsitereport {{/str}}</th>
+            <th>{{#str}} useremail, report_elucidsitereport {{/str}}</th>
+            <th>{{#str}} dateofissue, report_elucidsitereport {{/str}}</th>
+            <th>{{#str}} dateofenrol, report_elucidsitereport {{/str}}</th>
+            <th>{{#str}} grade, report_elucidsitereport {{/str}}</th>
+            <th>{{#str}} courseprogress, report_elucidsitereport {{/str}}</th>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
