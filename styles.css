@@ -9,10 +9,12 @@
     display: none;
 }
 
-#wdm-elucidsitereport #f2fsessionsblock table tbody tr td .icon {
+.path-admin-report-elucidsitereport .accordion-arrow.icon,
+.path-report-elucidsitereport .accordion-arrow.icon {
     transition: all 350ms ease-in-out;
 }
-#wdm-elucidsitereport #f2fsessionsblock table tbody tr[aria-expanded="true"] td .icon {
+.path-admin-report-elucidsitereport tr[aria-expanded="true"] .accordion-arrow.icon,
+.path-report-elucidsitereport tr[aria-expanded="true"] .accordion-arrow.icon {
     transform: rotate(90deg);
 }
 
@@ -84,6 +86,12 @@
     width: 100% !important;
 }
 
+.path-admin-report-elucidsitereport .collapse-td,
+.path-report-elucidsitereport .collapse-td {
+    height: auto !important;
+    padding-left: 50px !important;
+}
+
 /* width */
 #wdm-elucidsitereport ::-webkit-scrollbar {
   width: 10px;
@@ -151,6 +159,10 @@
 
 .badge-danger {
     background-color: #ff4c52 !important;
+}
+
+.badge-warning {
+    background-color: #eb6709 !important;
 }
 
 #wdm-elucidsitereport .dropdown-menu.dropdown-menu-right {

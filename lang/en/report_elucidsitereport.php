@@ -50,7 +50,7 @@ $string['course'] = "Course";
 $string['issued'] = "Issued";
 $string['notissued'] = "Not Issued";
 $string['nof2fmodule'] = "There is no previous face to face session available.";
-$string['nof2fsessions'] = "There is no previous face to face session available for this module.";
+$string['nof2fsessions'] = "There is no face to face session available for this module.";
 $string['nocertificates'] = "There is no certificate created";
 $string['courseprogresstooltip'] = '{$a->label} courses are completed by {$a->data} users.';
 $string['fullname'] = "Full Name";
@@ -97,7 +97,7 @@ $string['noofcompleted60'] = "Atleast 60% Completed";
 $string['noofcompleted80'] = "Atleast 80% Completed";
 $string['noofincompleted'] = "Not Completed";
 
-/* Certificates page */
+/* Certificates Page */
 $string['username'] = 'User Name';
 $string['useremail'] = 'User Email';
 $string['dateofissue'] = 'Date of Issue';
@@ -105,3 +105,11 @@ $string['dateofenrol'] = 'Date of Enrolment';
 $string['grade'] = 'Grade';
 $string['courseprogress'] = 'Course Progress';
 $string['notenrolled'] = 'User Not Enrolled';
+
+/* f2f Sessions Page*/
+$string['waitlist'] = 'Waitlist';
+$string['declined'] = 'Declined';
+$string['reason'] = 'Reason';
+$string['confirmed'] = 'Confirmed';
+$string['nosignups'] = 'No Signups are available';
+$string['nosessions'] = 'There is no face to face sessions';

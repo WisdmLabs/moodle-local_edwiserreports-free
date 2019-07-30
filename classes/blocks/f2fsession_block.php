@@ -29,6 +29,8 @@ defined('MOODLE_INTERNAL') || die();
 
 use stdClass;
 use context_module;
+use html_writer;
+use core_user;
 
 require_once($CFG->dirroot . '/mod/facetoface/lib.php');
 
@@ -87,6 +89,7 @@ class f2fsession_block extends utility {
         // TODO: This needs to check the location
         $location = '';
         $sessionid = false;
+        $sessionwaitlisted = false;
         $timenow = time();
         $overallattendend = 0;
         $overallsignups = 0;
@@ -152,7 +155,7 @@ class f2fsession_block extends utility {
         }
 
         // $f2fsessions->upcoming = $upcomingarray;
-        $f2fsessions->previous = $previousarray;
+        $f2fsessions->previous = array_merge($previousarray, $upcomingarray);
         $f2fsessions->overallattendend = $overallattendend;
         $f2fsessions->overallsignups = $overallsignups;
         // $f2fsessions->notscheduled = $upcomingtbdarray;
@@ -176,18 +179,79 @@ class f2fsession_block extends utility {
     public static function get_session_data($session, $sessiondate) {
         $attendees = facetoface_get_attendees($session->id);
         $attended = 0;
+        $waitlisted = 0;
+        $declined = 0;
+        $confirmed = 0;
+        $status = "";
+
         foreach ($attendees as $attendee) {
-            if ($attendee->statuscode >= 90) {
-                $attended++;
+            switch ($attendee->statuscode) {
+                case MDL_F2F_STATUS_FULLY_ATTENDED:
+                case MDL_F2F_STATUS_PARTIALLY_ATTENDED:
+                    $attended++;
+                    $status = html_writer::span($attendee->status, "badge badge-round badge-success");
+                    break;
+                case MDL_F2F_STATUS_WAITLISTED:
+                case MDL_F2F_STATUS_REQUESTED:
+                    $waitlisted++;
+                    $status = html_writer::span($attendee->status, "badge badge-round badge-warning");
+                    break;
+                case MDL_F2F_STATUS_DECLINED:
+                case MDL_F2F_STATUS_SESSION_CANCELLED:
+                    $declined++;
+                    $status = html_writer::span($attendee->status, "badge badge-round badge-danger");
+                    break;
+                case MDL_F2F_STATUS_APPROVED:
+                    $confirmed++;
+                    $status = html_writer::span($attendee->status, "badge badge-round badge-dark");
+                    break;
+                default:
+                    $status = html_writer::span("booked", "badge badge-round badge-primary");
+
             }
+            $attendee->status = $status;
         }
+
+        $attendees = array_merge($attendees, self::get_canceled_sessionsdata($session->id));
 
         $sessiondata = new stdClass();
         $sessiondata->id = $session->id;
-        $sessiondata->date = strtoupper(date("d M y", $sessiondate->timestart));
+        $sessiondata->sessionid = $session->id.$sessiondate->timestart;
+        $sessiondata->date = date("d M y", $sessiondate->timestart);
         $sessiondata->time = date("h:i A", $sessiondate->timestart);
         $sessiondata->signups = count($attendees);
         $sessiondata->attendend = $attended;
+        $sessiondata->waitlisted = $waitlisted;
+        $sessiondata->declined = $declined;
+        $sessiondata->confirmed = $confirmed;
+        $sessiondata->users = array_values($attendees);
         return $sessiondata;
+    }
+
+    public static function get_canceled_sessionsdata($sessionid) {
+        global $DB;
+
+        $sql = "SELECT ss.* FROM {facetoface_signups_status} ss
+                JOIN {facetoface_signups} fs
+                ON fs.id = ss.signupid
+                JOIN {facetoface_sessions_dates} sd
+                ON sd.sessionid = fs.sessionid
+                WHERE ss.statuscode = :statuscode
+                AND sd.sessionid = :sessionid";
+        $params = array(
+            "statuscode" => MDL_F2F_STATUS_USER_CANCELLED,
+            "sessionid" => $sessionid
+        );
+        $records = $DB->get_records_sql($sql, $params);
+
+        $canceled = array();
+        foreach ($records as $record) {
+            $user = core_user::get_user($record->createdby, "firstname, lastname");
+            $user->status = html_writer::span("canceled", "badge badge-round badge-danger");
+            $user->reason = $record->note;
+            $canceled[] = $user;
+        }
+
+        return $canceled;
     }
 }

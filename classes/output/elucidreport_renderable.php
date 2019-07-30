@@ -57,6 +57,7 @@ class elucidreport_renderable implements renderable, templatable  {
 
         if ($export->hasf2fpluign) {
             $PAGE->requires->js_call_amd('report_elucidsitereport/block_f2fsessions', 'init');
+            $export->f2fsessionlink = new moodle_url($CFG->wwwroot . "/report/elucidsitereport/f2fsessions.php");
         }
 
         $export->hascustomcertpluign = has_plugin("mod", "customcert");
@@ -124,5 +125,23 @@ class certificates_renderable implements renderable, templatable  {
         }
         $export->certificates = array_values($customcerts);
         return $export;
+    }
+}
+
+class f2fsessions_renderable implements renderable, templatable  {
+    /**
+     * Function to export the renderer data in a format that is suitable for a
+     * edit mustache template.
+     *
+     * @param renderer_base $output Used to do a final render of any components that need to be rendered for export.
+     * @return stdClass|array
+     */
+    public function export_for_template(renderer_base $output) {
+        global $DB;
+
+        $output = new stdClass();
+        $data = \report_elucidsitereport\f2fsession_block::get_data();
+        // $output = $data->data;
+        return $output;
     }
 }

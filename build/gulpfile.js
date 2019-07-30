@@ -17,6 +17,7 @@ var sources = [
     'src/js/vendor/flatpickr.min.js',
     'src/js/vendor/jquery.dataTables.js',
     'src/js/vendor/select2.min.js',
+    'src/js/vendor/jquery-asPieProgress.min.js',
     'src/js/main.js',
     'src/js/block_accessinfo.js',
     'src/js/block_activecourses.js',
@@ -29,6 +30,9 @@ var sources = [
     'src/js/block_realtimeusers.js',
     'src/js/block_todaysactivity.js',
     'src/js/activeusers.js',
+    'src/js/courseprogress.js',
+    'src/js/certificates.js',
+    'src/js/f2fsessions.js'
 ];
 
 gulp.task('purge', function(done) {

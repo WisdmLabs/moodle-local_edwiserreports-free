@@ -79,3 +79,16 @@ class certificates {
         return $this->output;
     }
 }
+
+class f2fsessions {
+    /**
+     * Returns the renderer of the local_learning_program
+     *
+     * @return mixed context|null The course context
+     */
+    public function get_renderer() {
+        global $PAGE;
+        $this->output = $PAGE->get_renderer('report_elucidsitereport', null, RENDERER_TARGET_GENERAL);
+        return $this->output;
+    }
+}

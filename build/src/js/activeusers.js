@@ -1,12 +1,13 @@
 define([
     'jquery',
     'core/modal_factory',
+    'core/modal_events',
     'core/fragment',
     'core/templates',
     'report_elucidsitereport/variables',
     'report_elucidsitereport/jquery.dataTables',
     'report_elucidsitereport/dataTables.bootstrap4'
-], function($, ModalFactory, Fragment, Templates, V) {
+], function($, ModalFactory, ModalEvents, Fragment, Templates, V) {
     function init(CONTEXTID) {
         $(document).ready(function() {
             var PageId = "#wdm-activeusers-individual";
@@ -39,7 +40,7 @@ define([
                     activeusers : ActiveUsers
                 }
 
-                Templates.render('report_elucidsitereport/activeusers_individual', context)
+                Templates.render('report_elucidsitereport/activeusers', context)
                 .then(function(html, js) {
                     Templates.replaceNode(PageId, html, js);
                 }).fail(function(ex) {
@@ -77,6 +78,7 @@ define([
                 var title;
                 var action = $(this).data("action");
                 var filter = $(this).data("filter");
+                var ModalRoot = null;
 
                 if (action == "activeusers") {
                     title = "Active Users in ";
@@ -95,18 +97,18 @@ define([
                         'userslist',
                         CONTEXTID,
                         {
+                            page : 'activeusers',
                             filter : filter,
                             action : action
                         }
                     )
                 }).then(function(modal) {
+                    ModalRoot = modal.getRoot();
                     modal.setTitle(title);
                     modal.show();
-                    modal.getRoot().on('hidden.bs.modal', function() {
-                        alert("Hide");
+                    ModalRoot.on(ModalEvents.hidden, function () {
+                        modal.destroy();
                     });
-                }).done(function() {
-                    $(".modal-table").DataTable();
                 });
             });
         });

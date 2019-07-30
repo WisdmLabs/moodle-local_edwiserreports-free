@@ -72,3 +72,15 @@ class report_certificates_renderer extends plugin_renderer_base {
         return $this->render_from_template('report_elucidsitereport/certificates', $templatecontext);
     }
 }
+
+class report_f2fsessions_renderer extends plugin_renderer_base {
+    /**
+     * Renders the couse bundle view page.
+     * @param  report_elucidreport $report  Object of elucid report renderable class
+     * @return string  Html Structure of the view page
+     */
+    public function render_report_certificates(\report_elucidsitereport\f2fsessions_renderable $f2fsessions) {
+        $templatecontext = $report->export_for_template($this);
+        return $this->render_from_template('report_elucidsitereport/f2fsessions', $templatecontext);
+    }
+}
