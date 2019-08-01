@@ -113,3 +113,10 @@ $string['reason'] = 'Reason';
 $string['confirmed'] = 'Confirmed';
 $string['nosignups'] = 'No Signups are available';
 $string['nosessions'] = 'There is no face to face sessions';
+
+/* Learning Program Page */
+$string['enrolled'] = "Enrolled On";
+$string['lastaccess'] = "Last Access";
+$string['progress'] = "Progress";
+$string['avgprogress'] = "Avg Progress";
+$string['notyet'] = "Not Yet";

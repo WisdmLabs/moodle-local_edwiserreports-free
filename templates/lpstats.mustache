@@ -1,0 +1,13 @@
+<div id="wdm-lpstats-individual" class="table-responsive">
+    <div class="px-0 py-20">
+        <select id="wdm-lp-select" class="form-control singleselect w-250" name="state">
+            {{#lps}}
+            <option value="{{id}}">{{fullname}}</option>
+            {{/lps}}
+        </select>
+    </div>
+    <div class="loader w-full text-center pt-100 mt-50">
+        {{# pix }} loader, report_elucidsitereport{{/ pix }}
+    </div>
+    <table class="table" style="display: none;"></table>
+</div>

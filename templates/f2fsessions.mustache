@@ -3,11 +3,14 @@
         <div class="loader w-full text-center pt-100 mt-50" style="min-height: 250px;">
             {{# pix }} loader, report_elucidsitereport{{/ pix }}
         </div>
-        <table id="f2fsessionstable" class="table generaltable" style="display: none;">
+        <table id="f2fsessionstable" class="table generaltable w-auto" style="display: none;">
             <thead>
                 <tr>
                     <th class="header">
-                        {{#str}} date, report_elucidsitereport {{/str}}/{{#str}} time, report_elucidsitereport {{/str}}
+                        {{#str}} date, report_elucidsitereport {{/str}}
+                    </th>
+                    <th class="header">
+                        {{#str}} time, report_elucidsitereport {{/str}}
                     </th>
                     <th class="header">
                         {{#str}} name, report_elucidsitereport{{/str}}
@@ -42,8 +45,9 @@
 
                     <td>
                         <i class="icon accordion-arrow fa fa-angle-right text-center"></i>
-                        {{date}} {{time}}
+                        {{date}}
                     </td>
+                    <td>{{time}}</td>
                     <td>{{name}}</td>
                     <td>{{coursename}}</td>
                     <td>{{signupvenue}}</td>

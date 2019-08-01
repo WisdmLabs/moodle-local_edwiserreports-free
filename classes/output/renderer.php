@@ -79,8 +79,20 @@ class report_f2fsessions_renderer extends plugin_renderer_base {
      * @param  report_elucidreport $report  Object of elucid report renderable class
      * @return string  Html Structure of the view page
      */
-    public function render_report_certificates(\report_elucidsitereport\f2fsessions_renderable $f2fsessions) {
+    public function render_report_f2fsessions(\report_elucidsitereport\f2fsessions_renderable $f2fsessions) {
         $templatecontext = $report->export_for_template($this);
         return $this->render_from_template('report_elucidsitereport/f2fsessions', $templatecontext);
+    }
+}
+
+class report_lpstats_renderer extends plugin_renderer_base {
+    /**
+     * Renders the couse bundle view page.
+     * @param  report_elucidreport $report  Object of elucid report renderable class
+     * @return string  Html Structure of the view page
+     */
+    public function render_report_lpstats(\report_elucidsitereport\lpstats_renderable $f2fsessions) {
+        $templatecontext = $report->export_for_template($this);
+        return $this->render_from_template('report_elucidsitereport/lpstats', $templatecontext);
     }
 }

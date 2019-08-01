@@ -93,20 +93,11 @@ class certificates_block extends utility {
         $coursecontext = context_course::instance($certificate->course);
         $issued = $DB->get_records('customcert_issues', array('customcertid' => $certid));
 
-        $sql = "SELECT *
+        $enrolsql = "SELECT *
                 FROM {user_enrolments} ue
                 JOIN {enrol} e ON (e.id = ue.enrolid AND e.courseid = :courseid)
                 JOIN {user} u ON u.id = ue.userid
                 WHERE ue.userid = :userid AND u.deleted = 0";
-
-        // please note that we must fetch all grade_grades fields if we want to construct grade_grade object from it!
-        $sql = "SELECT g.*
-                  FROM {grade_items} gi,
-                       {grade_grades} g
-                 WHERE g.itemid = gi.id
-                 AND gi.courseid = :courseid
-                 AND g.userid = :userid
-                 AND gi.itemtype = 'course'";
 
         $issuedcert = array();
         foreach ($issued as $issue) {
@@ -115,12 +106,12 @@ class certificates_block extends utility {
 
             $params = array('courseid'=>$course->id, 'userid' => $issue->userid);
             $gradeval = 0;
-            $grade = $DB->get_record_sql($sql, $params);
+            $grade = self::get_grades($course->id, $issue->userid);
             if (!$grade) {
                 $gradeval = $grade->finalgrade;
             }
 
-            $enrolment = $DB->get_record_sql($sql, $params);
+            $enrolment = $DB->get_record_sql($enrolsql, $params);
 
             $enrolmentdate = get_string("notenrolled", "report_elucidsitereport");
             $progressper = 0;
@@ -128,8 +119,8 @@ class certificates_block extends utility {
                 $enrolmentdate = date("d M y", $enrolment->timemodified);
                 $completion = self::get_course_completion_info($course, $user->id);
 
-                if (isset($completion[progresspercentage])) {
-                    $progressper = $completion[progresspercentage];
+                if (isset($completion["progresspercentage"])) {
+                    $progressper = $completion["progresspercentage"];
                 }
             }
 

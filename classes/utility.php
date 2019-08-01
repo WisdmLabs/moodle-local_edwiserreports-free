@@ -203,4 +203,29 @@ class utility {
         }
         return $completioninfo;
     }
+
+    public static function get_grades($courseid = false, $userid = false) {
+        global $COURSE, $DB, $USER;
+
+        if (!$userid) {
+            $userid = $USER->id;
+        }
+
+        if (!$courseid) {
+            $coueseid = $COURSE->id;
+        }
+
+        // please note that we must fetch all grade_grades fields if we want to construct grade_grade object from it!
+        $gradesql = "SELECT g.*
+            FROM {grade_items} gi, {grade_grades} g
+            WHERE g.itemid = gi.id
+            AND gi.courseid = :courseid
+            AND g.userid = :userid
+            AND gi.itemtype = 'course'";
+
+        $params = array('courseid'=>$courseid, 'userid' => $userid);
+        $gradereport = $DB->get_record_sql($gradesql, $params);
+
+        return $gradereport;
+    }
 }

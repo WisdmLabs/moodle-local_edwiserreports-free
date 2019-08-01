@@ -71,6 +71,7 @@ class elucidreport_renderable implements renderable, templatable  {
 
         if ($export->haslppluign) {
             $export->lps = \report_elucidsitereport\utility::get_lps();
+            $export->lpstatslink = new moodle_url($CFG->wwwroot . "/report/elucidsitereport/lpstats.php");
         }
 
         return  $export;
@@ -139,9 +140,24 @@ class f2fsessions_renderable implements renderable, templatable  {
     public function export_for_template(renderer_base $output) {
         global $DB;
 
+        $output = null;
+        return $output;
+    }
+}
+
+class lpstats_renderable implements renderable, templatable  {
+    /**
+     * Function to export the renderer data in a format that is suitable for a
+     * edit mustache template.
+     *
+     * @param renderer_base $output Used to do a final render of any components that need to be rendered for export.
+     * @return stdClass|array
+     */
+    public function export_for_template(renderer_base $output) {
+        global $DB;
+
         $output = new stdClass();
-        $data = \report_elucidsitereport\f2fsession_block::get_data();
-        // $output = $data->data;
+        $output->lps = \report_elucidsitereport\utility::get_lps();
         return $output;
     }
 }

@@ -1,0 +1,45 @@
+<table class="table w-auto" style="display: none;">
+    <thead>
+        <tr>
+            <th class="align-middle" rowspan="2">
+                {{#str}} name, report_elucidsitereport {{/str}}
+            </th>
+            <th class="align-middle" rowspan="2">
+                {{#str}} email, report_elucidsitereport {{/str}}
+            </th>
+            <th class="align-middle" rowspan="2">
+                {{#str}} enrolled, report_elucidsitereport {{/str}}
+            </th>
+            <th class="align-middle" rowspan="2">
+                {{#str}} lastaccess, report_elucidsitereport {{/str}}
+            </th>
+            <th class="align-middle" rowspan="2">
+                {{#str}} grade, report_elucidsitereport {{/str}}
+            </th>
+            <th class="text-center border-bottom-0" colspan="{{coursecount}}">
+                {{#str}} progress, report_elucidsitereport {{/str}}
+            </th>
+        </tr>
+        <tr>
+            {{#courses}}
+            <th class="text-center">{{shortname}}</th>
+            {{/courses}}
+            <th class="text-center">{{#str}} avgprogress, report_elucidsitereport {{/str}}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#users}}
+        <tr>
+            <td>{{name}}</td>
+            <td>{{email}}</td>
+            <td>{{enrolled}}</td>
+            <td>{{lastaccess}}</td>
+            <td class="text-center">{{grade}}</td>
+            {{#progress}}
+            <td class="text-center">{{.}}</td>
+            {{/progress}}
+            <td class="text-center">{{avgprogress}}</td>
+        </tr>
+        {{/users}}
+    </tbody>
+</table>

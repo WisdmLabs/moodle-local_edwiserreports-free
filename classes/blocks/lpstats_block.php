@@ -25,6 +25,7 @@
 
 namespace report_elucidsitereport;
 use stdClass;
+use core_user;
 
 /**
  * Learning Program Stats Block
@@ -38,7 +39,7 @@ class lpstats_block extends utility {
     	return $response;
     }
 
-    public function get_lpstats($lpid) {
+    public static function get_lpstats($lpid) {
     	global $DB;
     	$lp = $DB->get_record("wdm_learning_program", array("id" => $lpid), "courses");
     	$lpenrolment = $DB->get_records("wdm_learning_program_enrol", array("learningprogramid" => $lpid), "userid");
@@ -70,5 +71,73 @@ class lpstats_block extends utility {
     	$lpstats->data[] = count($lpenrolment) - count($completedusers);
 
     	return $lpstats;
+    }
+
+    public static function get_lpstats_usersdata($lpid) {
+        global $DB;
+
+        $lp = $DB->get_record("wdm_learning_program", array("id" => $lpid), "courses");
+        $lpenrolment = $DB->get_records("wdm_learning_program_enrol", array("learningprogramid" => $lpid), "userid");
+        $courses = json_decode($lp->courses);
+
+        $lpinfo = new stdClass();
+        $lpinfo->courses = array();
+        $lpinfo->users = array();
+        $lpinfo->coursecount = count($courses) + 1;
+        $flag = true;
+
+        foreach ($lpenrolment as $enrol) {
+            $user = core_user::get_user($enrol->userid, "id, firstname, lastname, email");
+
+            $userinfo = new stdClass();
+            $avgprogress = 0;
+            $userinfo->name = fullname($user);
+            $userinfo->email = $user->email;
+            $userinfo->enrolled = date("d M y", $enrol->timeenroled);
+            $userinfo->lastaccess = $enrol->lastaccess ? date("d M y", $enrol->lastaccess) : get_string("notyet", "report_elucidsitereport");
+
+            $userinfo->grade = 0;
+            $userinfo->progress = array();
+
+            foreach ($courses as $courseid) {
+                $course = get_course($courseid);
+
+                if (!$DB->record_exists("course", array("id" => $courseid))) {
+                    continue;
+                }
+
+                $completion = self::get_course_completion_info($course, $enrol->userid);
+
+                $gradereport = self::get_grades($course->id, $user->id);
+
+                if (isset($gradereport->finalgrade)) {
+                    $userinfo->grade += $gradereport->finalgrade;
+                }
+
+                if (isset($completion["progresspercentage"])) {
+                    $userinfo->progress[] = $completion["progresspercentage"] . "%";
+                    $avgprogress += $completion["progresspercentage"];
+                } else {
+                    $userinfo->progress[] = "NA";
+                }
+
+                if ($flag) {
+                    $lpinfo->courses[] = $course;
+                }
+
+            }
+
+            if ($lpinfo->coursecount > 1) {
+                $userinfo->avgprogress = number_format($avgprogress / ($lpinfo->coursecount - 1)) . "%";   
+            } else {
+                $userinfo->avgprogress = 0;
+            }
+
+            $userinfo->grade = number_format($userinfo->grade, 2);
+            $lpinfo->users[] = $userinfo;
+            $flag = false;
+        }
+
+        return $lpinfo;
     }
 }
