@@ -13,13 +13,30 @@
                 {{# pix }} loader, report_elucidsitereport{{/ pix }}
             </div>
             <table class="table w-full d-none">
+                <div class="table-dropdown" style="display: none;">
+                    {{#exportlinks}}
+                        {{#blockactivecourses}}
+                            {{> report_elucidsitereport/exportdropdown }}
+                        {{/blockactivecourses}}
+                    {{/exportlinks}}
+                </div>
                 <thead class="bg-secondary">
                     <tr>
-                        <th class="bg-secondary border-bottom-0">Rank</th>
-                        <th class="bg-secondary border-bottom-0">Course Name</th>
-                        <th class="bg-secondary border-bottom-0 text-center">Enrolments</th>
-                        <th class="bg-secondary border-bottom-0 text-center">Visits</th>
-                        <th class="bg-secondary border-bottom-0 text-center">Completions</th>
+                        <th class="bg-secondary border-bottom-0">
+                            {{#str}} rank, report_elucidsitereport {{/str}}
+                        </th>
+                        <th class="bg-secondary border-bottom-0">
+                            {{#str}} coursename, report_elucidsitereport {{/str}}
+                        </th>
+                        <th class="bg-secondary border-bottom-0 text-center">
+                            {{#str}} enrolments, report_elucidsitereport {{/str}}
+                        </th>
+                        <th class="bg-secondary border-bottom-0 text-center">
+                            {{#str}} visits, report_elucidsitereport {{/str}}
+                        </th>
+                        <th class="bg-secondary border-bottom-0 text-center">
+                            {{#str}} completions, report_elucidsitereport {{/str}}
+                        </th>
                     </tr>
                 </thead>
           </table>

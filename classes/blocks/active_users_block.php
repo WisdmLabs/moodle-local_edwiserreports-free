@@ -24,21 +24,22 @@
  */
 
 namespace report_elucidsitereport;
-use stdClass;
 use core_user;
 use html_table;
-use html_writer;
 use html_table_cell;
 use html_table_row;
+use html_writer;
+use stdClass;
 
 /**
  * Class Acive Users Block
  * To get the data related to active users block
  */
+
 class active_users_block extends utility {
     public static $firstaccess;
     public static $timenow;
-    public static $oneday = 24 * 60 * 60;
+    public static $oneday = 24*60*60;
     public static $labels;
     public static $xlabelcount;
 
@@ -59,14 +60,25 @@ class active_users_block extends utility {
     public static function get_data($filter) {
         self::$timenow = time();
 
-        $response = new stdClass();
+        $response       = new stdClass();
         $response->data = new stdClass();
         self::set_global_values_for_graph($filter);
-        $response->data->activeUsers = self::get_active_users($filter);
-        $response->data->enrolments = self::get_enrolments($filter);
+        $response->data->activeUsers    = self::get_active_users($filter);
+        $response->data->enrolments     = self::get_enrolments($filter);
         $response->data->completionRate = self::get_course_completionrate($filter);
-        $response->labels = self::$labels;
+        $response->labels               = self::$labels;
         return $response;
+    }
+
+    public static function get_header() {
+        $header = array(
+            get_string("date", "report_elucidsitereport"),
+            get_string("noofactiveusers", "report_elucidsitereport"),
+            get_string("noofenrolledusers", "report_elucidsitereport"),
+            get_string("noofcompletedusers", "report_elucidsitereport"),
+        );
+
+        return $header;
     }
 
     /**
@@ -81,49 +93,49 @@ class active_users_block extends utility {
                 AND timecreated > ?
                 AND timecreated <= ?";
 
-        $table = new html_table();
+        $table       = new html_table();
         $table->head = array(
             get_string("fullname", "report_elucidsitereport"),
-            get_string("email", "report_elucidsitereport")
+            get_string("email", "report_elucidsitereport"),
         );
         $table->attributes["class"] = "generaltable modal-table";
 
         $records = array();
         switch ($action) {
             case "activeusers":
-                $records = $DB->get_records_sql($sql, array('\core\event\user_loggedin', $filter, $filter + self::$oneday));
+                $records = $DB->get_records_sql($sql, array('\core\event\user_loggedin', $filter, $filter+self::$oneday));
                 if (empty($records)) {
-                    $emptycell = new html_table_cell(get_string("usersnotavailable", "report_elucidsitereport"));
-                    $row = new html_table_row();
-                    $emptycell->colspan = count($table->head);
+                    $emptycell                      = new html_table_cell(get_string("usersnotavailable", "report_elucidsitereport"));
+                    $row                            = new html_table_row();
+                    $emptycell->colspan             = count($table->head);
                     $emptycell->attributes['class'] = "text-center";
-                    $row->cells = array($emptycell);
-                    $table->data = array($row);
+                    $row->cells                     = array($emptycell);
+                    $table->data                    = array($row);
                 } else {
                     foreach ($records as $record) {
-                        $user = core_user::get_user($record->userid);
+                        $user          = core_user::get_user($record->userid);
                         $table->data[] = array(
                             fullname($user),
-                            $user->email
+                            $user->email,
                         );
                     }
                 }
                 break;
             case "enrolments":
-                $records = $DB->get_records_sql($sql, array('\core\event\user_enrolment_created', $filter, $filter + self::$oneday));
+                $records = $DB->get_records_sql($sql, array('\core\event\user_enrolment_created', $filter, $filter+self::$oneday));
                 if (empty($records)) {
-                    $emptycell = new html_table_cell(get_string("usersnotavailable", "report_elucidsitereport"));
-                    $row = new html_table_row();
-                    $emptycell->colspan = count($table->head);
+                    $emptycell                      = new html_table_cell(get_string("usersnotavailable", "report_elucidsitereport"));
+                    $row                            = new html_table_row();
+                    $emptycell->colspan             = count($table->head);
                     $emptycell->attributes['class'] = "text-center";
-                    $row->cells = array($emptycell);
-                    $table->data = array($row);
+                    $row->cells                     = array($emptycell);
+                    $table->data                    = array($row);
                 } else {
                     foreach ($records as $record) {
-                        $user = core_user::get_user($record->userid);
+                        $user          = core_user::get_user($record->userid);
                         $table->data[] = array(
                             fullname($user),
-                            $user->email
+                            $user->email,
                         );
                     }
                 }
@@ -132,24 +144,24 @@ class active_users_block extends utility {
                 $sql = "SELECT userid, course
                     FROM {course_completions}
                     WHERE timecompleted > ?
-                    AND timecompleted <= ?";
-                $records = $DB->get_records_sql($sql, array($filter, $filter + self::$oneday));
+                    AND timecompleted <= ?" ;
+                $records = $DB->get_records_sql($sql, array($filter, $filter+self::$oneday));
 
                 if (empty($records)) {
-                    $emptycell = new html_table_cell(get_string("usersnotavailable", "report_elucidsitereport"));
-                    $row = new html_table_row();
-                    $emptycell->colspan = count($table->head);
+                    $emptycell                      = new html_table_cell(get_string("usersnotavailable", "report_elucidsitereport"));
+                    $row                            = new html_table_row();
+                    $emptycell->colspan             = count($table->head);
                     $emptycell->attributes['class'] = "text-center";
-                    $row->cells = array($emptycell);
-                    $table->data = array($row);
+                    $row->cells                     = array($emptycell);
+                    $table->data                    = array($row);
                 } else {
                     foreach ($records as $record) {
-                        $user = core_user::get_user($record->userid);
-                        $course = $DB->get_record('course', array('id' => $record->course));
+                        $user          = core_user::get_user($record->userid);
+                        $course        = $DB->get_record('course', array('id' => $record->course));
                         $table->data[] = array(
                             fullname($user),
                             $user->email,
-                            $course->fullname
+                            $course->fullname,
                         );
                     }
                 }
@@ -173,21 +185,21 @@ class active_users_block extends utility {
                 AND timecreated > ?
                 AND timecreated <= ?";
 
-        $labels = array();
+        $labels      = array();
         $activeusers = array();
         for ($i = self::$xlabelcount; $i > 0; $i--) {
             if (!isset($endtime)) {
-                $endtime = self::$timenow;
+                $endtime   = self::$timenow;
                 $starttime = strtotime('today midnight');
             } else {
-                $endtime = $starttime;
-                $starttime = $endtime - self::$oneday;
+                $endtime   = $starttime;
+                $starttime = $endtime-self::$oneday;
             }
 
-            $labels[] = date("d M y", $starttime);
+            $labels[]      = date("d M y", $starttime);
             $activeusers[] = count($DB->get_records_sql($sql, array('\core\event\user_loggedin', $starttime, $endtime)));
         }
-        self::$labels = array_reverse($labels); 
+        self::$labels = array_reverse($labels);
         return array_reverse($activeusers);
     }
 
@@ -208,11 +220,11 @@ class active_users_block extends utility {
         $enrolments = array();
         for ($i = self::$xlabelcount; $i > 0; $i--) {
             if (!isset($endtime)) {
-                $endtime = self::$timenow;
+                $endtime   = self::$timenow;
                 $starttime = strtotime('today midnight');
             } else {
-                $endtime = $starttime;
-                $starttime = $endtime - self::$oneday;
+                $endtime   = $starttime;
+                $starttime = $endtime-self::$oneday;
             }
 
             $enrolments[] = count($DB->get_records_sql($sql, array('\core\event\user_enrolment_created', $starttime, $endtime)));
@@ -236,11 +248,11 @@ class active_users_block extends utility {
         $completionrate = array();
         for ($i = self::$xlabelcount; $i > 0; $i--) {
             if (!isset($endtime)) {
-                $endtime = self::$timenow;
+                $endtime   = self::$timenow;
                 $starttime = strtotime('today midnight');
             } else {
-                $endtime = $starttime;
-                $starttime = $endtime - self::$oneday;
+                $endtime   = $starttime;
+                $starttime = $endtime-self::$oneday;
             }
 
             $completionrate[] = count($DB->get_records_sql($sql, array($starttime, $endtime)));
@@ -265,7 +277,7 @@ class active_users_block extends utility {
             self::$firstaccess = $records[0]->timecreated;
             switch ($filter) {
                 case 'all':
-                    self::$xlabelcount = ceil((self::$timenow - self::$firstaccess) / self::$oneday);
+                    self::$xlabelcount = ceil((self::$timenow-self::$firstaccess)/self::$oneday);
                     break;
                 case 'monthly':
                     self::$xlabelcount = 30;
@@ -279,13 +291,13 @@ class active_users_block extends utility {
                 default:
                     $dates = explode(" to ", $filter);
                     if (count($dates) == 2) {
-                        $startdate = strtotime($dates[0] . " 00:00:00");
-                        $enddate = strtotime($dates[1] . " 23:59:59");
+                        $startdate = strtotime($dates[0]." 00:00:00");
+                        $enddate   = strtotime($dates[1]." 23:59:59");
                     }
 
                     if ($startdate && $enddate) {
-                        self::$xlabelcount = ceil($enddate - $startdate) / self::$oneday;
-                        self::$timenow = $enddate;
+                        self::$xlabelcount = ceil($enddate-$startdate)/self::$oneday;
+                        self::$timenow     = $enddate;
                     } else {
                         self::$xlabelcount = 7;
                     }

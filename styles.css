@@ -8,6 +8,17 @@
 #wdm-elucidsitereport .table th::before, #wdm-elucidsitereport .table th::after {
     display: none;
 }
+#mostactivecourses .dataTables_wrapper .row:first-child > div:first-child {
+    order: 2;
+}
+
+#mostactivecourses .dataTables_wrapper .row:first-child > div:last-child {
+    order: 1;
+}
+
+#mostactivecourses .dataTables_wrapper .row:first-child .dataTables_filter{
+    float: left;
+}
 
 .path-admin-report-elucidsitereport .accordion-arrow.icon,
 .path-report-elucidsitereport .accordion-arrow.icon {

@@ -5,6 +5,8 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
         var panelBody = cfg.getPanel("#mostactivecourses", "body");
         var panelTitle = cfg.getPanel("#mostactivecourses", "title");
         var panelFooter = cfg.getPanel("#mostactivecourses", "footer");
+        var dropdownBody = panelBody + " .table-dropdown";
+        var dropdownTable = panelBody + " .dataTables_wrapper .row:first-child > div:first-child";
         var loader = panelBody + " .loader";
         var table = panelBody + " .table";
 
@@ -51,6 +53,11 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
                 aaSorting: [[2, 'desc']],
                 language: {
                     searchPlaceholder: "Search Courses"
+                },
+                initComplete: function(settings, json) {
+                    $(dropdownTable).html($(dropdownBody).html());
+                    $(dropdownBody).remove();
+                    $(dropdownTable + " .dropdown").show();
                 },
                 columnDefs: [
                     {

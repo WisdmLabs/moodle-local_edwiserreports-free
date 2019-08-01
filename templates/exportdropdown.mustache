@@ -1,0 +1,13 @@
+<div class="dropdown px-5 pull-right">
+    <button type="button" class="btn btn-default btn-sm dropdown-toggle input-group-addon" id="export-dropdown" data-toggle="dropdown" aria-expanded="false">
+        <i class="icon fa fa-download"></i>
+    </button>
+    <div class="dropdown-menu" aria-labelledby="export-dropdown" role="menu">
+        {{#export}}
+            <a class="dropdown-item" href="{{{link}}}" role="menuitem">
+                <i class="icon fa fa-{{icon}}" aria-hidden="true"></i>
+                {{name}}
+            </a>
+        {{/export}}
+    </div>
+</div>

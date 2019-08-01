@@ -31,44 +31,44 @@
  * @return boolean Return boolean
  */
 
-require_once $CFG->dirroot . "/report/elucidsitereport/classes/blocks/active_users_block.php";
+require_once $CFG->dirroot."/report/elucidsitereport/classes/blocks/active_users_block.php";
 
 function has_plugin($plugintype, $puginname) {
-    $plugins = \core_plugin_manager::instance()->get_plugins_of_type($plugintype);
+	$plugins = \core_plugin_manager::instance()->get_plugins_of_type($plugintype);
 
-    if (array_key_exists($puginname, $plugins)) {
-        return true;
-    }
+	if (array_key_exists($puginname, $plugins)) {
+		return true;
+	}
 
-    return false;
+	return false;
 }
 
 function report_elucidsitereport_output_fragment_userslist($args) {
-    $response = null;
-    $page = clean_param($args["page"], PARAM_TEXT);
+	$response = null;
+	$page     = clean_param($args["page"], PARAM_TEXT);
 
-    switch($page) {
-        case "activeusers":
-            $filter = clean_param($args['filter'], PARAM_TEXT);
-            $action = clean_param($args['action'], PARAM_TEXT);
+	switch ($page) {
+		case "activeusers":
+			$filter = clean_param($args['filter'], PARAM_TEXT);
+			$action = clean_param($args['action'], PARAM_TEXT);
 
-            $response = \report_elucidsitereport\active_users_block::get_userslist($filter, $action);
-            break;
-        
-        case "courseprogress":
-            $courseid = clean_param($args['courseid'], PARAM_TEXT);
-            $action = clean_param($args['action'], PARAM_TEXT);
+			$response = \report_elucidsitereport\active_users_block::get_userslist($filter, $action);
+			break;
 
-            $response = \report_elucidsitereport\course_progress_block::get_userslist($courseid, $action);
-            break;
-    }
+		case "courseprogress":
+			$courseid = clean_param($args['courseid'], PARAM_TEXT);
+			$action   = clean_param($args['action'], PARAM_TEXT);
 
-    return $response;
+			$response = \report_elucidsitereport\course_progress_block::get_userslist($courseid, $action);
+			break;
+	}
+
+	return $response;
 }
 
 function report_elucidsitereport_output_fragment_lpstats($args) {
-    global $DB;
-    $lpid = clean_param($args["lpid"], PARAM_TEXT);
+	global $DB;
+	$lpid = clean_param($args["lpid"], PARAM_TEXT);
 
-    return json_encode(\report_elucidsitereport\lpstats_block::get_lpstats_usersdata($lpid));
+	return json_encode(\report_elucidsitereport\lpstats_block::get_lpstats_usersdata($lpid));
 }

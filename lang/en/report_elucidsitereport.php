@@ -75,6 +75,10 @@ $string['lastweek'] = "Last Week";
 $string['lastmonth'] = "Last Month";
 $string['lastyear'] = "Last Year";
 $string['custom'] = "Custom";
+$string['rank'] = "Rank";
+$string['enrolments'] = "Enrolments";
+$string['visits'] = "Visits";
+$string['completions'] = "Completions";
 
 /* Block help tooltips */
 $string['activeusersblocktitlehelp'] = "Active Users Block";
@@ -120,3 +124,10 @@ $string['lastaccess'] = "Last Access";
 $string['progress'] = "Progress";
 $string['avgprogress'] = "Avg Progress";
 $string['notyet'] = "Not Yet";
+
+/* Export Strings */
+$string['csv'] = "CSV";
+$string['excel'] = "Excel";
+$string['pdf'] = "PDF";
+$string['email'] = "Email";
+$string['copy'] = "Copy";

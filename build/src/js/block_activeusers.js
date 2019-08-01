@@ -6,14 +6,15 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
         var panelBody         = defaultConfig.getPanel("#activeusersblock", "body");
         var panelTitle        = defaultConfig.getPanel("#activeusersblock", "title");
         var panelFooter       = defaultConfig.getPanel("#activeusersblock", "footer");
-        var dropdownMenu      = panel + " .dropdown-menu";
+        var dropdownMenu      = panel + " .dropdown-menu[aria-labelledby='filter-dropdown']";
         var dropdownItem      = dropdownMenu + " .dropdown-item";
-        var dropdownToggle    = panel + " .dropdown-toggle";
+        var dropdownToggle    = panel + " #filter-dropdown.dropdown-toggle";
         var flatpickrCalender = panel + " #flatpickrCalender";
         var chart             = panelBody + " .ct-chart";
         var loader            = panelBody + " .loader";
-        var dropdownButton    = panel + " button[data-toggle='dropdown']";
+        var dropdownButton    = panel + " button#filter-dropdown";
         var refreshBtn        = panelTitle + " .refresh";
+        var exportUrlLink     = panel + " .dropdown-menu[aria-labelledby='export-dropdown'] .dropdown-item";
         var filter            = null;
 
 
@@ -26,10 +27,8 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
 
             /* Hide dropdown when click anywhere in the screen */
             $(document).click(function(e){
-                if ($(e.target).hasClass("dropdown-menu") || 
-                    $(e.target).parents(".dropdown-menu").length) {
-                  e.preventDefault();
-                } else {
+                if (!($(e.target).hasClass("dropdown-menu") || 
+                    $(e.target).parents(".dropdown-menu").length)) {
                     $(dropdownMenu).removeClass('show');
                 }
             });
@@ -39,6 +38,7 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
                 filter = $(this).attr('value');
                 $(dropdownMenu).removeClass('show');
                 $(dropdownButton).html($(this).text());
+                changeExportUrl(filter);
                 getActiveUsersBlockData(filter);
             });
 
@@ -80,9 +80,17 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
                 return false;
             }
 
+            changeExportUrl(filter);
             $(dropdownButton).html(filter);
             $(flatpickrCalender).val("");
             getActiveUsersBlockData(filter);
+        }
+
+        function changeExportUrl(filter) {
+            $(exportUrlLink).each(function() {
+                var oldUrl = $(this)[0].href;
+                $(this)[0].href = oldUrl.replace(/filter=(.*)/, "filter="+filter);
+            });
         }
 
         /* Get data for active users block */

@@ -23,21 +23,28 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once(__DIR__ . '/../../config.php');
-require_once($CFG->libdir . '/adminlib.php');
-require_once('classes/output/elucidreport_renderer.php');
-require_once('classes/output/elucidreport_renderable.php');
+require_once __DIR__ .'/../../config.php';
+require_once $CFG->libdir.'/adminlib.php';
+require_once 'classes/output/elucidreport_renderer.php';
+require_once 'classes/output/elucidreport_renderable.php';
+require_once 'classes/export.php';
+
 $PAGE->requires->strings_for_js(['courseprogresstooltip'], 'report_elucidsitereport');
+
 admin_externalpage_setup('elucidsitereport');
+
+$pageurl = new moodle_url($CFG->wwwroot."/report/elucidsitereport/index.php");
 
 $PAGE->requires->js_call_amd('report_elucidsitereport/main', 'init');
 $PAGE->requires->css('/report/elucidsitereport/styles/datatable.css');
 $PAGE->requires->css('/report/elucidsitereport/styles/flatpickr.min.css');
 $PAGE->requires->css('/report/elucidsitereport/styles/select2.min.css');
 
-$elucidreport = new \report_elucidsitereport\output\elucidreport();
+$PAGE->set_url($pageurl);
+
+$elucidreport     = new \report_elucidsitereport\output\elucidreport();
 $reportrenderable = new \report_elucidsitereport\output\elucidreport_renderable();
-$output = $elucidreport->get_renderer()->render($reportrenderable);
+$output           = $elucidreport->get_renderer()->render($reportrenderable);
 
 echo $OUTPUT->header();
 echo $output;

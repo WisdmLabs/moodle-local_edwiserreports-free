@@ -37,6 +37,18 @@ class active_courses_block extends utility {
         return $response;
     }
 
+    public static function get_header() {
+        $header = array(
+            get_string("rank", "report_elucidsitereport"),
+            get_string("coursename", "report_elucidsitereport"),
+            get_string("enrolments", "report_elucidsitereport"),
+            get_string("visits", "report_elucidsitereport"),
+            get_string("completions", "report_elucidsitereport"),
+        );
+
+        return $header;
+    }
+
     public static function get_course_data() {
         global $DB;
 
