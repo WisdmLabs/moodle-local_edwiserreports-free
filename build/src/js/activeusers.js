@@ -48,6 +48,7 @@ define([
                 }).always(function() {
                     $(ActiveUsersTable).DataTable({
                         order : [[0, 'desc']],
+                        dom: '<"pull-left"f><t><lip><"clear-fix">',
                         columnDefs: [
                             {
                                 "targets": 0

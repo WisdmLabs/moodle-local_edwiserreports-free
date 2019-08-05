@@ -131,4 +131,39 @@ class export {
 
         return $export;
     }
+
+    /**
+     * Get report page data for a block
+     */
+    private function exportable_data_report($action) {
+        $export = null;
+
+        switch ($action) {
+            case "activeusers":
+                $export[] = active_users_block::get_header();
+                $activeusersdata = active_users_block::get_data($filter);
+                foreach ($activeusersdata->labels as $key => $lable) {
+                    $export[] = array(
+                        $lable,
+                        $activeusersdata->data->activeUsers[$key],
+                        $activeusersdata->data->enrolments[$key],
+                        $activeusersdata->data->completionRate[$key],
+                    );
+                }
+                break;
+            case "activecourses":
+                $header = active_courses_block::get_header();
+                $activecoursesdata = active_courses_block::get_data();
+                $export = array_merge(
+                    array($header),
+                    $activecoursesdata->data
+                );
+                break;
+            default:
+                // code...
+                break;
+        }
+
+        return $export;
+    }
 }

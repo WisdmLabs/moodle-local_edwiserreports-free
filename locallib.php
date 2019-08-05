@@ -43,9 +43,25 @@ function get_exportlinks($prefix) {
  * @return [string] moodle link detail
  */
 function get_exportlinks_block_activeusers($prefix) {
-    $url = $prefix."/download.php";
+    $url = $prefix."download.php";
     $params = array(
         "region" => "block",
+        "action" => "activeusers",
+        "filter" => "weekly",
+    );
+
+    return get_exportlink_array($url, $params);
+}
+
+/**
+ * Get Export Link to export data for active users report
+ * @param  [string] $prefix Url prifix to get export link
+ * @return [string] moodle link detail
+ */
+function get_exportlinks_report_activeusers($prefix) {
+    $url = $prefix."download.php";
+    $params = array(
+        "region" => "report",
         "action" => "activeusers",
         "filter" => "weekly",
     );
@@ -59,7 +75,7 @@ function get_exportlinks_block_activeusers($prefix) {
  * @return [string] moodle link detail
  */
 function get_exportlinks_block_activecourses($prefix) {
-    $url = $prefix."/download.php";
+    $url = $prefix."download.php";
     $params = array(
         "region" => "block",
         "action" => "activecourses"
