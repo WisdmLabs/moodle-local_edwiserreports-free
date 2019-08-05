@@ -102,8 +102,9 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
                 url: defaultConfig.requestUrl,
                 data: {
                     action: 'get_activeusers_graph_data_ajax',
+                    sesskey: $(panel).data("sesskey"),
                     data: JSON.stringify({
-                        filter : filter
+                        filter: filter
                     })
                 },
             }).done(function(response) {

@@ -23,7 +23,8 @@ define([
                 type: V.requestType,
                 dataType: V.requestDataType,
                 data: {
-                    action: 'get_f2fsession_data_ajax'
+                    action: 'get_f2fsession_data_ajax',
+                    sesskey: $(PageId).data("sesskey"),
                 },
             })
             .done(function(response) {

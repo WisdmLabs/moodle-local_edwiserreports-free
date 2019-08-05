@@ -1,6 +1,7 @@
 define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig'], function ($, Chart, cfg) {
     function init() {
         var lpChart = null;
+        var panel = cfg.getPanel("#lpstatsblock");
         var panelBody = cfg.getPanel("#lpstatsblock", "body");
         var panelTitle = cfg.getPanel("#lpstatsblock", "title");
         var selectedLp = panelBody + " #wdm-lpstats-select";
@@ -24,8 +25,10 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig'], func
                 url: cfg.requestUrl,
                 type: cfg.requestType,
                 dataType: cfg.requestDataType,
+                sesskey: $(panel).data("sesskey"),
                 data: {
                     action: 'get_lpstats_data_ajax',
+                sesskey: $(panel).data("sesskey"),
                     data: JSON.stringify({
                         lpid : lpId
                     })

@@ -22,6 +22,7 @@ define([
                 url: V.requestUrl,
                 data: {
                     action: 'get_certificates_data_ajax',
+                    sesskey: $(PageId).data("sesskey"),
                     data: JSON.stringify({
                         certificateid : certificateid
                     })

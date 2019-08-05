@@ -10,7 +10,8 @@ define(['jquery', 'core/templates', 'report_elucidsitereport/defaultconfig'], fu
             type: defaultConfig.requestType,
             dataType: defaultConfig.requestDataType,
             data: {
-                action: 'get_siteaccess_data_ajax'
+                action: 'get_siteaccess_data_ajax',
+                sesskey: $(panel).data("sesskey")
             },
         })
         .done(function(response) {

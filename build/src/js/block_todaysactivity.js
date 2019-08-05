@@ -1,14 +1,16 @@
-define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig'], function ($, Chart, defaultConfig) {
+define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig'], function ($, Chart, cfg) {
     function init() {
         var todaysVisits;
-        var panelBody = defaultConfig.getPanel("#todaysactivityblock", "body");
+        var panel = cfg.getPanel("#todaysactivityblock");
+        var panelBody = cfg.getPanel("#todaysactivityblock", "body");
 
         $.ajax({
-            url: defaultConfig.requestUrl,
-            type: defaultConfig.requestType,
-            dataType: defaultConfig.requestDataType,
+            url: cfg.requestUrl,
+            type: cfg.requestType,
+            dataType: cfg.requestDataType,
             data: {
-                action: 'get_todaysactivity_data_ajax'
+                action: 'get_todaysactivity_data_ajax',
+                sesskey: $(panel).data("sesskey"),
             },
         })
         .done(function(response) {
@@ -24,19 +26,19 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig'], func
         });
 
         function generateTodaysVisitsGraph(data) {
-            defaultConfig.todaysActivityBlock.graph.data = data;
+            cfg.todaysActivityBlock.graph.data = data;
             var data = {
-                labels: defaultConfig.todaysActivityBlock.graph.labels,
+                labels: cfg.todaysActivityBlock.graph.labels,
                 datasets: [{
-                    label: defaultConfig.todaysActivityBlock.graph.labelName,
-                    data: defaultConfig.todaysActivityBlock.graph.data,
-                    backgroundColor: defaultConfig.todaysActivityBlock.graph.backgroundColor
+                    label: cfg.todaysActivityBlock.graph.labelName,
+                    data: cfg.todaysActivityBlock.graph.data,
+                    backgroundColor: cfg.todaysActivityBlock.graph.backgroundColor
                 }]
             };
 
-            todaysVisits = new Chart(defaultConfig.todaysActivityBlock.ctx, {
-                type: defaultConfig.todaysActivityBlock.graph.type,
-                options: defaultConfig.todaysActivityBlock.graph.options,
+            todaysVisits = new Chart(cfg.todaysActivityBlock.ctx, {
+                type: cfg.todaysActivityBlock.graph.type,
+                options: cfg.todaysActivityBlock.graph.options,
                 data: data
             });
         }

@@ -19,6 +19,7 @@ define([
                 url: V.requestUrl,
                 data: {
                     action: 'get_activeusers_graph_data_ajax',
+                    sesskey: $(PageId).data("sesskey"),
                     data: JSON.stringify({
                         filter : "all"
                     })

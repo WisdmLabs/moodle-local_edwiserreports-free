@@ -1,6 +1,7 @@
 define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig'], function ($, Chart, cfg) {
     function init() {
         var courseProgress = null;
+        var panel = cfg.getPanel("#courseprogressblock");
         var panelBody = cfg.getPanel("#courseprogressblock", "body")
         var panelTitle = cfg.getPanel("#courseprogressblock", "header");
         var panelFooter = cfg.getPanel("#courseprogressblock", "footer");
@@ -28,6 +29,7 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig'], func
                     dataType: 'json',
                     data: {
                         action: 'get_courseprogress_graph_data_ajax',
+                        sesskey: $(panel).data("sesskey"),
                         data: JSON.stringify({
                             courseid: courseId
                         })

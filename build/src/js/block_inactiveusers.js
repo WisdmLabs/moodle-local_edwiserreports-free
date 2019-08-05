@@ -1,8 +1,9 @@
-define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'report_elucidsitereport/jquery.dataTables', 'report_elucidsitereport/dataTables.bootstrap4'], function ($, Chart, defaultConfig) {
+define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'report_elucidsitereport/jquery.dataTables', 'report_elucidsitereport/dataTables.bootstrap4'], function ($, Chart, cfg) {
     function init() {
         var activeUsersTable;
-        var panelBody = defaultConfig.getPanel("#inactiveusersblock", "body");
-        var panelTitle = defaultConfig.getPanel("#inactiveusersblock", "title");
+        var panel = cfg.getPanel("#inactiveusersblock");
+        var panelBody = cfg.getPanel("#inactiveusersblock", "body");
+        var panelTitle = cfg.getPanel("#inactiveusersblock", "title");
         var table = panelBody + " #inactiveuserstable";
         var loader = panelBody + " .loader";
         var dropdown = panelTitle + " .dropdown-menu .dropdown-item";
@@ -22,11 +23,12 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
 
         function getInactiveUsersData(filter) {
             $.ajax({
-                url: defaultConfig.requestUrl,
+                url: cfg.requestUrl,
                 type: 'GET',
                 dataType: 'json',
                 data: {
                     action: 'get_inactiveusers_data_ajax',
+                    sesskey: $(panel).data("sesskey"),
                     data: JSON.stringify({
                         filter: filter
                     })

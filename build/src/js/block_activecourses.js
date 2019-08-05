@@ -2,6 +2,7 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
     function init() {
         var activeCourseTable;
 
+        var panel = cfg.getPanel("#mostactivecourses");
         var panelBody = cfg.getPanel("#mostactivecourses", "body");
         var panelTitle = cfg.getPanel("#mostactivecourses", "title");
         var panelFooter = cfg.getPanel("#mostactivecourses", "footer");
@@ -16,7 +17,8 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
             type: cfg.requestType,
             dataType: cfg.requestDataType,
             data: {
-                action: 'get_activecourses_data_ajax'
+                action: 'get_activecourses_data_ajax',
+                sesskey: $(panel).data("sesskey")
             },
         })
         .done(function(response) {

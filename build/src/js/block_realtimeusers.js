@@ -1,5 +1,6 @@
 define(["jquery", "report_elucidsitereport/defaultconfig", "report_elucidsitereport/jquery.dataTables", "report_elucidsitereport/dataTables.bootstrap4"], function($, cfg) {
     var liveUsersTable = null;
+    var panel = cfg.getPanel("#liveusersblock");
     var panelBody = cfg.getPanel("#liveusersblock", "body");
     var loader = panelBody + " .loader";
     var table = panelBody + " .table";
@@ -17,6 +18,7 @@ define(["jquery", "report_elucidsitereport/defaultconfig", "report_elucidsiterep
             dataType: cfg.requestDataType,
             data: {
                 action: 'get_liveusers_data_ajax',
+                sesskey: $(panel).data("sesskey")
             },
         })
         .done(function(response) {

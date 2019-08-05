@@ -9,7 +9,8 @@ define(["jquery", "core/templates", "report_elucidsitereport/defaultconfig"], fu
             type: cfg.requestType,
             dataType: cfg.requestDataType,
             data: {
-                action: 'get_certificates_data_ajax'
+                action: 'get_certificates_data_ajax',
+                sesskey: $(panel).data("sesskey")
             },
         })
         .done(function(response) {
