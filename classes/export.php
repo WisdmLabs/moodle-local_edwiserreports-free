@@ -31,6 +31,7 @@ require_once $CFG->dirroot."/report/elucidsitereport/classes/blocks/active_cours
 
 use csv_export_writer;
 use moodle_exception;
+use core_user;
 use report_elucidsitereport\active_users_block;
 
 class export {
@@ -48,16 +49,16 @@ class export {
     /**
      * Action to get data for specific block
      */
-    public $action = null;
+    public $blockname = null;
 
     /**
      * Constructor to create export object
      * @param $format type os export object
      */
-    public function __construct($format, $region, $action) {
+    public function __construct($format, $region, $blockname) {
         $this->type   = $format;
         $this->region = $region;
-        $this->action = $action;
+        $this->blockname = $blockname;
     }
 
     /**
@@ -84,10 +85,10 @@ class export {
 
         switch ($this->region) {
             case "block":
-                $export = $this->exportable_data_block($this->action, $filter);
+                $export = $this->exportable_data_block($this->blockname, $filter);
                 break;
             case "report":
-                $export = $this->exportable_data_report($this->action);
+                $export = $this->exportable_data_report($this->blockname, $filter);
                 break;
             default:
                 new moodle_exception(403);
@@ -100,10 +101,10 @@ class export {
     /**
      * Get Block Data in specific format
      */
-    private function exportable_data_block($action, $filter) {
+    private function exportable_data_block($blockname, $filter) {
         $export = null;
 
-        switch ($action) {
+        switch ($blockname) {
             case "activeusers":
                 $export[] = active_users_block::get_header();
                 $activeusersdata = active_users_block::get_data($filter);
@@ -135,35 +136,61 @@ class export {
     /**
      * Get report page data for a block
      */
-    private function exportable_data_report($action) {
-        $export = null;
+    private function exportable_data_report($blockname, $filter) {
+		$export = null;
+        $export[] = active_users_block::get_header_report();
 
-        switch ($action) {
-            case "activeusers":
-                $export[] = active_users_block::get_header();
-                $activeusersdata = active_users_block::get_data($filter);
-                foreach ($activeusersdata->labels as $key => $lable) {
-                    $export[] = array(
-                        $lable,
-                        $activeusersdata->data->activeUsers[$key],
-                        $activeusersdata->data->enrolments[$key],
-                        $activeusersdata->data->completionRate[$key],
-                    );
-                }
-                break;
-            case "activecourses":
-                $header = active_courses_block::get_header();
-                $activecoursesdata = active_courses_block::get_data();
-                $export = array_merge(
-                    array($header),
-                    $activecoursesdata->data
-                );
-                break;
-            default:
-                // code...
-                break;
+        $activeusersdata = active_users_block::get_data($filter);
+        foreach ($activeusersdata->labels as $key => $lable) {
+            $export = array_merge($export,
+                $this->get_usersdata($lable, "activeusers"),
+                $this->get_usersdata($lable, "enrolments"),
+                $this->get_usersdata($lable, "completions")
+            );
         }
-
         return $export;
+	}
+
+    private function get_usersdata($lable, $action) {
+        $usersdata = array();
+        $users = active_users_block::get_userslist(strtotime($lable), "activeusers");
+        foreach ($users as $key => $user) {
+            $user = array_merge(
+                array(
+                    $lable
+                ),
+                $user,
+                array(
+                    get_string($action . "_status", "report_elucidsitereport")
+                )
+            );
+            $usersdata[] = $user;
+        }
+        return $usersdata;
     }
+	
+	private function get_activeusers_report_data($lable) {
+		global $DB;
+		$export = array();
+
+		$sql = "SELECT DISTINCT userid
+                FROM {logstore_standard_log}
+                WHERE eventname = ?
+                AND timecreated > ?
+                AND timecreated <= ?";
+
+		$date = strtotime($lable);
+		$records = $DB->get_records_sql($sql, array('\core\event\user_loggedin',
+							$date, $date + active_users_block::$oneday));
+		foreach ($records as $record) {
+			$user = core_user::get_user($record->userid);
+			$export[] = array(
+				$lable,
+				fullname($user),
+				$user->email,
+				get_string("useractive", "report_elucidsitereport")
+			);
+		}
+		return $export;
+	}
 }

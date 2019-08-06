@@ -52,14 +52,14 @@ function report_elucidsitereport_output_fragment_userslist($args) {
 			$filter = clean_param($args['filter'], PARAM_TEXT);
 			$action = clean_param($args['action'], PARAM_TEXT);
 
-			$response = \report_elucidsitereport\active_users_block::get_userslist($filter, $action);
+			$response = \report_elucidsitereport\active_users_block::get_userslist_table($filter, $action);
 			break;
 
 		case "courseprogress":
 			$courseid = clean_param($args['courseid'], PARAM_TEXT);
 			$action   = clean_param($args['action'], PARAM_TEXT);
 
-			$response = \report_elucidsitereport\course_progress_block::get_userslist($courseid, $action);
+			$response = \report_elucidsitereport\course_progress_block::get_userslist_table($courseid, $action);
 			break;
 	}
 

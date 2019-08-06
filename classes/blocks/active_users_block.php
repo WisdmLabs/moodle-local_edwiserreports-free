@@ -60,7 +60,7 @@ class active_users_block extends utility {
     public static function get_data($filter) {
         self::$timenow = time();
 
-        $response       = new stdClass();
+        $response = new stdClass();
         $response->data = new stdClass();
         self::set_global_values_for_graph($filter);
         $response->data->activeUsers    = self::get_active_users($filter);
@@ -70,6 +70,10 @@ class active_users_block extends utility {
         return $response;
     }
 
+    /**
+     * Get header for export data actvive users
+     * @return [array] Array of headers of exportable data
+     */
     public static function get_header() {
         $header = array(
             get_string("date", "report_elucidsitereport"),
@@ -82,94 +86,113 @@ class active_users_block extends utility {
     }
 
     /**
-     * Get users list for a perticuler action
+     * Get header for export data actvive users individual page
+     * @return [array] Array of headers of exportable data
      */
-    public static function get_userslist($filter, $action) {
-        global $DB;
+    public static function get_header_report() {
+        $header = array(
+            get_string("date", "report_elucidsitereport"),
+            get_string("fullname", "report_elucidsitereport"),
+            get_string("email", "report_elucidsitereport"),
+            get_string("status", "report_elucidsitereport"),
+        );
 
-        $sql = "SELECT DISTINCT userid
-                FROM {logstore_standard_log}
-                WHERE eventname = ?
-                AND timecreated > ?
-                AND timecreated <= ?";
+        return $header;
+    }
 
-        $table       = new html_table();
+    /**
+     * Create users list table for active users block
+     * @param $filter [string] Time filter to get users for this day
+     * @param $action [string] Get users list for this action
+     * @return [array] Array of users data fields (Full Name, Email)
+     */
+    public static function get_userslist_table($filter, $action) {
+        $table = new html_table();
         $table->head = array(
             get_string("fullname", "report_elucidsitereport"),
             get_string("email", "report_elucidsitereport"),
         );
-        $table->attributes["class"] = "generaltable modal-table";
+        $table->attributes = array (
+            "class" => "generaltable modal-table"
+        );
+        $data = self::get_userslist($filter, $action);
 
-        $records = array();
-        switch ($action) {
+        if (empty($data)) {
+            $notavail = get_string("usersnotavailable", "report_elucidsitereport");
+            $emptycell = new html_table_cell($notavail);
+            $row = new html_table_row();
+            $emptycell->colspan = count($table->head);
+            $emptycell->attributes = array(
+                "class" => "text-center"
+            );
+            $row->cells = array($emptycell);
+            $table->data = array($row);
+        } else {
+            $table->data = $data;
+        }
+        return html_writer::table($table);
+	}
+	
+    /**
+     * Get users list data for active users block
+     * @param $filter [string] Time filter to get users for this day
+     * @param $action [string] Get users list for this action
+     * @return [string] HTML table string of users list
+     * Columns are (Full Name, Email)
+     */
+	public static function get_userslist($filter, $action) {
+        global $DB;
+		$sql = "SELECT DISTINCT userid
+                FROM {logstore_standard_log}
+                WHERE eventname = ?
+                AND timecreated > ?
+				AND timecreated <= ?";
+        $params = array();
+
+        switch($action) {
             case "activeusers":
-                $records = $DB->get_records_sql($sql, array('\core\event\user_loggedin', $filter, $filter+self::$oneday));
-                if (empty($records)) {
-                    $emptycell                      = new html_table_cell(get_string("usersnotavailable", "report_elucidsitereport"));
-                    $row                            = new html_table_row();
-                    $emptycell->colspan             = count($table->head);
-                    $emptycell->attributes['class'] = "text-center";
-                    $row->cells                     = array($emptycell);
-                    $table->data                    = array($row);
-                } else {
-                    foreach ($records as $record) {
-                        $user          = core_user::get_user($record->userid);
-                        $table->data[] = array(
-                            fullname($user),
-                            $user->email,
-                        );
-                    }
-                }
+                $params = array(
+                    '\core\event\user_loggedin',
+                    $filter,
+                    $filter + self::$oneday
+                );
                 break;
             case "enrolments":
-                $records = $DB->get_records_sql($sql, array('\core\event\user_enrolment_created', $filter, $filter+self::$oneday));
-                if (empty($records)) {
-                    $emptycell                      = new html_table_cell(get_string("usersnotavailable", "report_elucidsitereport"));
-                    $row                            = new html_table_row();
-                    $emptycell->colspan             = count($table->head);
-                    $emptycell->attributes['class'] = "text-center";
-                    $row->cells                     = array($emptycell);
-                    $table->data                    = array($row);
-                } else {
-                    foreach ($records as $record) {
-                        $user          = core_user::get_user($record->userid);
-                        $table->data[] = array(
-                            fullname($user),
-                            $user->email,
-                        );
-                    }
-                }
+                $params = array(
+                    '\core\event\user_enrolment_created',
+                    $filter,
+                    $filter + self::$oneday
+                );
                 break;
             case "completions":
                 $sql = "SELECT userid, course
                     FROM {course_completions}
                     WHERE timecompleted > ?
                     AND timecompleted <= ?" ;
-                $records = $DB->get_records_sql($sql, array($filter, $filter+self::$oneday));
-
-                if (empty($records)) {
-                    $emptycell                      = new html_table_cell(get_string("usersnotavailable", "report_elucidsitereport"));
-                    $row                            = new html_table_row();
-                    $emptycell->colspan             = count($table->head);
-                    $emptycell->attributes['class'] = "text-center";
-                    $row->cells                     = array($emptycell);
-                    $table->data                    = array($row);
-                } else {
-                    foreach ($records as $record) {
-                        $user          = core_user::get_user($record->userid);
-                        $course        = $DB->get_record('course', array('id' => $record->course));
-                        $table->data[] = array(
-                            fullname($user),
-                            $user->email,
-                            $course->fullname,
-                        );
-                    }
-                }
+                $params = array(
+                    $filter,
+                    $filter + self::$oneday
+                );
                 break;
         }
 
-        return html_writer::table($table);
-    }
+        $data = array();
+        $records = $DB->get_records_sql($sql, $params);
+        if (!empty($records)) {
+            foreach ($records as $record) {
+                $user = core_user::get_user($record->userid);
+                $userdata = array();
+                $userdata[] = fullname($user);
+                $userdata[] = $user->email;
+                if ($action == "completions") {
+                    $course = get_course($record->course);
+                    $userdata[] = $course->name;
+                }
+                $data[] = $userdata;
+            }
+        }
+        return $data;
+	}
 
     /**
      * Get all active users

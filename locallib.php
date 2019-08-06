@@ -47,7 +47,7 @@ function get_exportlinks_block_activeusers($prefix) {
     $params = array(
         "region" => "block",
         "action" => "activeusers",
-        "filter" => "weekly",
+        "filter" => "weekly"
     );
 
     return get_exportlink_array($url, $params);
@@ -63,7 +63,7 @@ function get_exportlinks_report_activeusers($prefix) {
     $params = array(
         "region" => "report",
         "action" => "activeusers",
-        "filter" => "weekly",
+        "filter" => "all"
     );
 
     return get_exportlink_array($url, $params);

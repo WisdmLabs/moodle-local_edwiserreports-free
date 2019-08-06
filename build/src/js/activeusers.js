@@ -75,7 +75,6 @@ define([
                 console.log(error);
             });
 
-            // $('#wdm-activeusers-individual .table').DataTable();
             $(document).on('click', ModalTrigger, function() {
                 var title;
                 var action = $(this).data("action");
