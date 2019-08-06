@@ -23,20 +23,25 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use report_elucidsitereport\export;
+
 require_once __DIR__ .'/../../config.php';
 require_once $CFG->dirroot."/report/elucidsitereport/classes/export.php";
 
-use report_elucidsitereport\export;
+require_login();
+
+$context = context_system::instance();
+$PAGE->set_context($context);
 
 if ($type = optional_param("type", false, PARAM_TEXT)) {
 	$region = required_param("region", PARAM_TEXT);
-	$action = required_param("action", PARAM_TEXT);
+	$blockname = required_param("blockname", PARAM_TEXT);
 	$filter = optional_param("filter", false, PARAM_TEXT);
 
-	$export = new export($type, $region, $action);
+	$export = new export($type, $region, $blockname);
 	$data = $export->get_exportable_data($filter);
 
 	if ($data) {
-		$export->data_export_csv($region."_".$action, $data);
+		$export->data_export_csv($region."_".$blockname, $data);
 	}
 }

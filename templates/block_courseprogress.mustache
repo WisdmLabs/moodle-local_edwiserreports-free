@@ -1,12 +1,17 @@
 <div id="courseprogressblock" class="">
     <div class="panel h-auto mb-0">
-        <div class="panel-header clearfix">
+        <div class="panel-header mb-10 clearfix">
             <div class="panel-title px-0">
                 <strong>
                     {{#str}} courseprogress, report_elucidsitereport {{/str}}
                     <a href="#" class="small"><i class="fa fa-question-circle"></i></a>
                 </strong>
             </div>
+            {{#exportlinks}}
+                {{#blockcourseprogress}}
+                    {{> report_elucidsitereport/exportdropdown }}
+                {{/blockcourseprogress}}
+            {{/exportlinks}}
         </div>
         <div class="panel-body p-0">
             <select id="wdm-courseprogress-select" class="form-control singleselect w-full" name="state">

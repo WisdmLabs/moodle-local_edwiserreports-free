@@ -60,7 +60,7 @@ class course_progress_block extends utility {
             self::$constcompleted["completed40"] => 0,
             self::$constcompleted["completed60"] => 0,
             self::$constcompleted["completed80"] => 0,
-            self::$constcompleted["completed100"] => 0,
+            self::$constcompleted["completed"] => 0,
         );
 
         foreach ($enrolledstudents as $user) {
@@ -93,6 +93,20 @@ class course_progress_block extends utility {
         return $response;
     }
 
+    public static function get_header() {
+        $header = array(
+            get_string("coursename", "report_elucidsitereport"),
+            get_string("noofenrolled", "report_elucidsitereport"),
+            get_string("noofincompleted", "report_elucidsitereport"),
+            get_string("noofcompleted20", "report_elucidsitereport"),
+            get_string("noofcompleted40", "report_elucidsitereport"),
+            get_string("noofcompleted60", "report_elucidsitereport"),
+            get_string("noofcompleted80", "report_elucidsitereport"),
+            get_string("noofcompleted", "report_elucidsitereport"),
+        );
+        return $header;
+    }
+
     public static function get_courselist() {
         $courses = \report_elucidsitereport\utility::get_courses(true);
 
@@ -112,10 +126,7 @@ class course_progress_block extends utility {
         return $response;
     }
 
-    public static function get_userslist($courseid, $action) {
-        $course = get_course($courseid);
-        $coursecontext = context_course::instance($courseid);
-        $enrolledstudents = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+    public static function get_userslist_table($courseid, $action) {
 
         $table = new html_table();
         $table->head = array(
@@ -123,8 +134,16 @@ class course_progress_block extends utility {
             get_string("email", "report_elucidsitereport")
         );
         $table->attributes["class"] = "generaltable modal-table";
-        $table->data = array();
+        $table->data = self::get_userslist($courseid, $action);
+        return html_writer::table($table);
+    }
 
+    public static function get_userslist($courseid, $action) {
+        $course = get_course($courseid);
+        $coursecontext = context_course::instance($courseid);
+        $enrolledstudents = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+
+        $data = array();
         foreach ($enrolledstudents as $enrolleduser) {
             $completion = self::get_course_completion_info($course, $enrolleduser->id);
             $progressper = $completion["progresspercentage"];
@@ -133,7 +152,7 @@ class course_progress_block extends utility {
                 case "incompleted":
                     if ($progressper < 20) {
                         $user = core_user::get_user($enrolleduser->id);
-                        $table->data[] = array(
+                        $data[] = array(
                             fullname($user),
                             $user->email
                         );
@@ -142,7 +161,7 @@ class course_progress_block extends utility {
                 case "completed20":
                     if ($progressper >= 20 && $progressper < 40) {
                         $user = core_user::get_user($enrolleduser->id);
-                        $table->data[] = array(
+                        $data[] = array(
                             fullname($user),
                             $user->email
                         );
@@ -151,7 +170,7 @@ class course_progress_block extends utility {
                 case "completed40":
                     if ($progressper >= 40 && $progressper < 60) {
                         $user = core_user::get_user($enrolleduser->id);
-                        $table->data[] = array(
+                        $data[] = array(
                             fullname($user),
                             $user->email
                         );
@@ -160,7 +179,7 @@ class course_progress_block extends utility {
                 case "completed60":
                     if ($progressper >= 60 && $progressper < 80) {
                         $user = core_user::get_user($enrolleduser->id);
-                        $table->data[] = array(
+                        $data[] = array(
                             fullname($user),
                             $user->email
                         );
@@ -169,7 +188,7 @@ class course_progress_block extends utility {
                 case "completed80":
                     if ($progressper >= 80 && $progressper < 100) {
                         $user = core_user::get_user($enrolleduser->id);
-                        $table->data[] = array(
+                        $data[] = array(
                             fullname($user),
                             $user->email
                         );
@@ -178,7 +197,7 @@ class course_progress_block extends utility {
                 case "completed":
                     if ($progressper == 100) {
                         $user = core_user::get_user($enrolleduser->id);
-                        $table->data[] = array(
+                        $data[] = array(
                             fullname($user),
                             $user->email
                         );
@@ -186,14 +205,13 @@ class course_progress_block extends utility {
                     break;
                 default:
                     $user = core_user::get_user($enrolleduser->id);
-                    $table->data[] = array(
+                    $data[] = array(
                         fullname($user),
                         $user->email
                     );
                     break;
             }
         }
-
-        return html_writer::table($table);
+        return $data;
     }
 }

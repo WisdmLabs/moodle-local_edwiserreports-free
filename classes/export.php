@@ -32,6 +32,7 @@ require_once $CFG->dirroot."/report/elucidsitereport/classes/blocks/active_cours
 use csv_export_writer;
 use moodle_exception;
 use core_user;
+use context_course;
 use report_elucidsitereport\active_users_block;
 
 class export {
@@ -103,7 +104,6 @@ class export {
      */
     private function exportable_data_block($blockname, $filter) {
         $export = null;
-
         switch ($blockname) {
             case "activeusers":
                 $export[] = active_users_block::get_header();
@@ -125,6 +125,21 @@ class export {
                     $activecoursesdata->data
                 );
                 break;
+            case "courseprogress":
+                $export[] = course_progress_block::get_header();
+                $courses = \report_elucidsitereport\utility::get_courses();
+                foreach ($courses as $key => $course) {
+                    $courseprogress = course_progress_block::get_data($course->id);
+                    $coursecontext = context_course::instance($course->id);
+                    $enrolledstudents = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+                    $export[] = array_merge(
+                        array(
+                            $course->fullname,
+                            count($enrolledstudents)
+                        ),
+                        $courseprogress->data
+                    );
+                }
             default:
                 // code...
                 break;
@@ -138,15 +153,23 @@ class export {
      */
     private function exportable_data_report($blockname, $filter) {
 		$export = null;
-        $export[] = active_users_block::get_header_report();
-
-        $activeusersdata = active_users_block::get_data($filter);
-        foreach ($activeusersdata->labels as $key => $lable) {
-            $export = array_merge($export,
-                $this->get_usersdata($lable, "activeusers"),
-                $this->get_usersdata($lable, "enrolments"),
-                $this->get_usersdata($lable, "completions")
-            );
+        switch ($blockname) {
+            case "activeusers":
+                $export[] = active_users_block::get_header_report();
+                $activeusersdata = active_users_block::get_data($filter);
+                foreach ($activeusersdata->labels as $key => $lable) {
+                    $export = array_merge($export,
+                        $this->get_usersdata($lable, "activeusers"),
+                        $this->get_usersdata($lable, "enrolments"),
+                        $this->get_usersdata($lable, "completions")
+                    );
+                }
+                break;
+            case "courseprogress":
+                break;
+            default:
+                // code...
+                break;
         }
         return $export;
 	}

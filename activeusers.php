@@ -32,6 +32,8 @@ require_once(__DIR__ . '/../../config.php');
 require_once('classes/output/elucidreport_renderer.php');
 require_once('classes/output/elucidreport_renderable.php');
 
+require_login();
+
 $context = context_system::instance();
 $PAGE->requires->js_call_amd('report_elucidsitereport/activeusers', 'init', array($context->id));
 

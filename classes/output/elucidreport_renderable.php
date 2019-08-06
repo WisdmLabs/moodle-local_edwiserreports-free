@@ -52,6 +52,14 @@ class elucidreport_renderable implements renderable, templatable {
         $export = new stdClass();
         $export->timenow = date("Y-m-d", time());
         $export->courses = \report_elucidsitereport\utility::get_courses();
+
+        $downloadurl = $CFG->wwwroot."/report/elucidsitereport/download.php";
+        $data = new stdClass();
+        if (!empty($export->courses)) {
+            $export->hascourses = true;
+            $data->firstcourseid = $export->courses[0]->id;
+        }
+
         $export->hasf2fpluign = has_plugin("mod", "facetoface");
         $export->activeuserslink = new moodle_url($CFG->wwwroot."/report/elucidsitereport/activeusers.php");
         $export->courseprogresslink = new moodle_url($CFG->wwwroot."/report/elucidsitereport/courseprogress.php");
@@ -75,8 +83,7 @@ class elucidreport_renderable implements renderable, templatable {
             $export->lpstatslink = new moodle_url($CFG->wwwroot."/report/elucidsitereport/lpstats.php");
         }
 
-        $prefixlink = $CFG->wwwroot."/report/elucidsitereport/";
-        $export->exportlinks = get_exportlinks($prefixlink);
+        $export->exportlinks = get_block_exportlinks($downloadurl, $data);
 
         return $export;
     }
@@ -93,9 +100,10 @@ class activeusers_renderable implements renderable, templatable {
     public function export_for_template(renderer_base $output) {
         global $CFG;
         $output = new stdClass();
-        $prefixlink = $CFG->wwwroot."/report/elucidsitereport/";
         $output->exportlink = new stdClass();
-        $output->exportlink->export = get_exportlinks_report_activeusers($prefixlink);
+
+        $downloadurl = $CFG->wwwroot."/report/elucidsitereport/download.php";
+        $output->exportlink->export = get_exportlinks($downloadurl, "report", "activeusers", "all");
 
         return $output;
     }
@@ -110,7 +118,12 @@ class courseprogress_renderable implements renderable, templatable {
      * @return stdClass|array
      */
     public function export_for_template(renderer_base $output) {
-        $output = null;
+        global $CFG;
+        $output = new stdClass();
+        $output->exportlink = new stdClass();
+
+        $downloadurl = $CFG->wwwroot."/report/elucidsitereport/download.php";
+        $output->exportlink->export = get_exportlinks($downloadurl, "report", "activeusers");
         return $output;
     }
 }

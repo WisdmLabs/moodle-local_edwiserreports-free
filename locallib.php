@@ -25,61 +25,44 @@
 
 /**
  * Get Export Link to export data from blocks and individual page
- * @param  [string] $prefix Url prifix to get export link
+ * @param  [string] $url Url prifix to get export link
+ * @param  [stdClass] $data Object for additional data
  * @return [string] moodle link detail
  */
-function get_exportlinks($prefix) {
+function get_block_exportlinks($url, $data) {
     $links = new stdClass();
     $links->blockactiveusers = new stdClass();
     $links->blockactivecourses = new stdClass();
-    $links->blockactiveusers->export   = get_exportlinks_block_activeusers($prefix);
-    $links->blockactivecourses->export = get_exportlinks_block_activecourses($prefix);
+    $links->blockcourseprogress = new stdClass();
+    $links->blockactiveusers->export = get_exportlinks($url, "block", "activeusers", "weekly");
+    $links->blockactivecourses->export = get_exportlinks($url, "block", "activecourses");
+
+    if (isset($data->firstcourseid)) {
+        $cpfilter = $data->firstcourseid;
+    } else {
+        $cpfilter = false;
+    }
+    $links->blockcourseprogress->export = get_exportlinks($url, "block", "courseprogress", $cpfilter);
     return $links;
 }
 
 /**
- * Get Export Link to export data for active users block
- * @param  [string] $prefix Url prifix to get export link
- * @return [string] moodle link detail
+ * Get Export Link to export link array
+ * @param  [string] $prifix Url url for export link
+ * @param  [string] $region Region for export
+ * @param  [string] $blockname Block to export
+ * @param  [string] $filter Filter for data to export
+ * @return [array] Array of export link
  */
-function get_exportlinks_block_activeusers($prefix) {
-    $url = $prefix."download.php";
+function get_exportlinks($url, $region, $blockname, $filter = false) {
     $params = array(
-        "region" => "block",
-        "action" => "activeusers",
-        "filter" => "weekly"
+        "region" => $region,
+        "blockname" => $blockname
     );
 
-    return get_exportlink_array($url, $params);
-}
-
-/**
- * Get Export Link to export data for active users report
- * @param  [string] $prefix Url prifix to get export link
- * @return [string] moodle link detail
- */
-function get_exportlinks_report_activeusers($prefix) {
-    $url = $prefix."download.php";
-    $params = array(
-        "region" => "report",
-        "action" => "activeusers",
-        "filter" => "all"
-    );
-
-    return get_exportlink_array($url, $params);
-}
-
-/**
- * Get Export Link to export data for active Courses block
- * @param  [string] $prefix Url prifix to get export link
- * @return [string] moodle link detail
- */
-function get_exportlinks_block_activecourses($prefix) {
-    $url = $prefix."download.php";
-    $params = array(
-        "region" => "block",
-        "action" => "activecourses"
-    );
+    if ($filter) {
+        $params["filter"] = $filter;
+    }
 
     return get_exportlink_array($url, $params);
 }
