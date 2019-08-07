@@ -329,4 +329,68 @@ class active_users_block extends utility {
             self::$firstaccess = self::$timenow;
         }
     }
+
+    /**
+     * Get Exportable data for Active Users Block
+     * @param $filter [string] Filter to get data from specific range
+     * @return [array] Array of exportable data
+     */
+    public static function get_exportable_data_block($filter) {
+        $export = array();
+        $export[] = self::get_header();
+        $activeusersdata = self::get_data($filter);
+        foreach ($activeusersdata->labels as $key => $lable) {
+            $export[] = array(
+                $lable,
+                $activeusersdata->data->activeUsers[$key],
+                $activeusersdata->data->enrolments[$key],
+                $activeusersdata->data->completionRate[$key],
+            );
+        }
+
+        return $export;
+    }
+
+    /**
+     * Get Exportable data for Active Users Page
+     * @param $filter [string] Filter to get data from specific range
+     * @return [array] Array of exportable data
+     */
+    public static function get_exportable_data_report($filter) {
+        $export = array();
+        $export[] = active_users_block::get_header_report();
+        $activeusersdata = active_users_block::get_data($filter);
+        foreach ($activeusersdata->labels as $key => $lable) {
+            $export = array_merge($export,
+                self::get_usersdata($lable, "activeusers"),
+                self::get_usersdata($lable, "enrolments"),
+                self::get_usersdata($lable, "completions")
+            );
+        }
+
+        return $export;
+    }
+
+    /**
+     * Get User Data for Active Users Block
+     * @param [string] $lable Date for lable
+     * @param [string] $action Action for getting data
+     */
+    public static function get_usersdata($lable, $action) {
+        $usersdata = array();
+        $users = active_users_block::get_userslist(strtotime($lable), "activeusers");
+        foreach ($users as $key => $user) {
+            $user = array_merge(
+                array(
+                    $lable
+                ),
+                $user,
+                array(
+                    get_string($action . "_status", "report_elucidsitereport")
+                )
+            );
+            $usersdata[] = $user;
+        }
+        return $usersdata;
+    }
 }

@@ -31,12 +31,20 @@ use stdClass;
  * To get the data related to active users block
  */
 class active_courses_block extends utility {
+    /**
+     * Get Data for Active Courses
+     * @return [objext] Response for Active Courses
+     */
     public static function get_data() {
         $response = new stdClass();
         $response->data = self::get_course_data();
         return $response;
     }
 
+    /**
+     * Get headers for Active Courses Block
+     * @return [array] Array of header of course block
+     */
     public static function get_header() {
         $header = array(
             get_string("rank", "report_elucidsitereport"),
@@ -49,6 +57,10 @@ class active_courses_block extends utility {
         return $header;
     }
 
+    /**
+     * Get Active Courses data
+     * @return [array] Array of course active records
+     */
     public static function get_course_data() {
         global $DB;
 
@@ -96,4 +108,22 @@ class active_courses_block extends utility {
         }
         return $courses;
     }
+
+    /**
+     * Get Exportable data for Active Courses Block
+     * @return [array] Array of exportable data
+     */
+    public static function get_exportable_data_block() {
+        $export = array();
+        $header = active_courses_block::get_header();
+        $activecoursesdata = active_courses_block::get_data();
+        $export = array_merge(
+            array($header),
+            $activecoursesdata->data
+        );
+
+        return $export;
+    }
+
+    
 }

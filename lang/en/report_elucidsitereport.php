@@ -134,3 +134,4 @@ $string['copy'] = "Copy";
 $string['activeusers_status'] = "User Active";
 $string['enrolments_status'] = "User Enrolled";
 $string['completions_status'] = "Course Completed";
+$string['completedactivity'] = "Completed Activity";

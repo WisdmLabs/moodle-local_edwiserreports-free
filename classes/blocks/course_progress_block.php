@@ -38,14 +38,17 @@ use core_user;
  * To get the data related to active users block
  */
 class course_progress_block extends utility {
+    /**
+     * Constant for completions
+     */
     public static $constcompleted = array(
-                                        "incompleted" => 0,
-                                        "completed20" => 1,
-                                        "completed40" => 2,
-                                        "completed60" => 3,
-                                        "completed80" => 4,
-                                        "completed" => 5,
-                                      );
+        "incompleted" => 0,
+        "completed20" => 1,
+        "completed40" => 2,
+        "completed60" => 3,
+        "completed80" => 4,
+        "completed" => 5,
+    );
 
     public static function get_data($courseid) {
         $course = get_course($courseid);
@@ -94,6 +97,17 @@ class course_progress_block extends utility {
     }
 
     public static function get_header() {
+        $header = array(
+            get_string("name", "report_elucidsitereport"),
+            get_string("email", "report_elucidsitereport"),
+            get_string("coursename", "report_elucidsitereport"),
+            get_string("completedactivity", "report_elucidsitereport"),
+            get_string("completions", "report_elucidsitereport")
+        );
+        return $header;
+    }
+
+    public static function get_header_report() {
         $header = array(
             get_string("coursename", "report_elucidsitereport"),
             get_string("noofenrolled", "report_elucidsitereport"),
@@ -213,5 +227,56 @@ class course_progress_block extends utility {
             }
         }
         return $data;
+    }
+
+    /**
+     * Get Exportable data for Course Progress Block
+     * @param $filter [string] Filter to get data from specific range
+     * @return [array] Array of exportable data
+     */
+    public static function get_exportable_data_block($filter) {
+        $export = array();
+        $export[] = course_progress_block::get_header();
+        $coursecontext = context_course::instance($filter);
+        $course = get_course($filter);
+        $enrolledstudents = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+        foreach($enrolledstudents as $key => $student) {
+            $completion = course_progress_block::get_course_completion_info($course, $student->id);
+            $completed = $completion["completedactivities"] . "/" . $completion["totalactivities"];
+            $export[] = array(
+                fullname($student),
+                $student->email,
+                $course->fullname,
+                $completed,
+                $completion["progresspercentage"] . "%"
+            );
+        }
+
+        return $export;
+    }
+
+    /**
+     * Get Exportable data for Active Users Page
+     * @param $filter [string] Filter to get data from specific range
+     * @return [array] Array of exportable data
+     */
+    public static function get_exportable_data_report($filter) {
+        $export = array();
+        $export[] = course_progress_block::get_header_report();
+        $courses = \report_elucidsitereport\utility::get_courses();
+        foreach ($courses as $key => $course) {
+            $courseprogress = course_progress_block::get_data($course->id);
+            $coursecontext = context_course::instance($course->id);
+            $enrolledstudents = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+            $export[] = array_merge(
+                array(
+                    $course->fullname,
+                    count($enrolledstudents)
+                ),
+                $courseprogress->data
+            );
+        }
+
+        return $export;
     }
 }
