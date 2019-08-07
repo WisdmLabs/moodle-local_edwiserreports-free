@@ -254,4 +254,86 @@ class f2fsession_block extends utility {
 
         return $canceled;
     }
+
+    /**
+     * Get header for f2fsessions block
+     * @return [array] Array of header f2fsessions block
+     */
+    public static function get_headers() {
+        $header = array(
+            get_string("date", "report_elucidsitereport"),
+            get_string("time", "report_elucidsitereport"),
+            get_string("name", "report_elucidsitereport"),
+            get_string("coursename", "report_elucidsitereport"),
+            get_string("signups", "report_elucidsitereport"),
+            get_string("attendees", "report_elucidsitereport"),
+            get_string("waitlist", "report_elucidsitereport"),
+            get_string("declined", "report_elucidsitereport"),
+            get_string("confirmed", "report_elucidsitereport")
+        );
+
+        return $header;
+    }
+
+
+    /**
+     * Get exportable data for f2fsessions block
+     * @return [array] Array f2fsessions information
+     */
+    public static function get_exportable_data_block() {
+        $export = array();
+        $export[] = self::get_headers();
+
+        $modules = self::get_f2fmodules();
+        foreach($modules as $module) {
+            $data = array(
+                "date" => null,
+                "time" => null,
+                "name" => null,
+                "coursename" => null,
+                "signups" => null,
+                "attendend" => null,
+                "waitlisted" => null,
+                "declined" => null,
+                "confirmed" => null
+            );
+
+            foreach($module->sessions as $session) {
+                $data["date"] = $session->date;
+                $data["time"] = $session->time;
+                $data["signups"] = $session->signups;
+                $data["attendend"] = $session->attendend;
+                $data["waitlisted"] = $session->waitlisted;
+                $data["declined"] = $session->declined;
+                $data["confirmed"] = $session->confirmed;
+            }
+            $data["name"] = $module->name;
+            $data["coursename"] = $module->coursename;
+
+            $export[] = array_values($data);
+        }
+        return $export;
+    }
+
+    /**
+     * Get exportable data for certificates report
+     * @return [array] Array certificates information
+     */
+    public static function get_exportable_data_report($certid) {
+        $users = self::get_issued_users($certid);
+
+        foreach($users as $c => $user) {
+            foreach($user as $r => $userinfo) {
+                $users[$c][$r] = strip_tags($userinfo);
+            }
+        }
+
+        $out = array_merge(
+            array(
+                self::get_headers_report()
+            ),
+            $users
+        );
+        return $out;
+    }
 }

@@ -116,6 +116,9 @@ class export {
             case "certificates":
                 $export = certificates_block::get_exportable_data_block($filter);
                 break;
+            case "f2fsession":
+                $export = f2fsession_block::get_exportable_data_block($filter);
+                break;
         }
         return $export;
     }

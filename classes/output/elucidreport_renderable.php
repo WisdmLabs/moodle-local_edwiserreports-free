@@ -163,10 +163,12 @@ class f2fsessions_renderable implements renderable, templatable {
      * @return stdClass|array
      */
     public function export_for_template(renderer_base $output) {
-        global $DB;
+        global $CFG, $DB;
 
         $output = new stdClass();
         $output->sesskey = sesskey();
+        $downloadurl = $CFG->wwwroot."/report/elucidsitereport/download.php";
+        $output->exportlink = get_exportlinks($downloadurl, "report", "f2fsession", "1");
         return $output;
     }
 }

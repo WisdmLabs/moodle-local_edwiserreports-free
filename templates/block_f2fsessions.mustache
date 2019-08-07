@@ -6,6 +6,11 @@
                 <a href="#" class="small"><i class="fa fa-question-circle"></i></a>
             </strong>
         </div>
+        {{#exportlinks}}
+            {{#blockf2fsessions}}
+                {{> report_elucidsitereport/exportdropdown }}
+            {{/blockf2fsessions}}
+        {{/exportlinks}}
     </div>
     <div class="panel-body p-0">
         <div class="loader w-full text-center pt-100 mt-50" style="min-height: 250px;">

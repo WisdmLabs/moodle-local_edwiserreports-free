@@ -43,6 +43,7 @@ function get_block_exportlinks($url, $data) {
     $links->blockcourseprogress = get_exportlinks($url, "block", "courseprogress", $cpfilter);
 
     $links->blockcertificates = get_exportlinks($url, "block", "certificates");
+    $links->blockf2fsessions = get_exportlinks($url, "block", "f2fsession");
     return $links;
 }
 
