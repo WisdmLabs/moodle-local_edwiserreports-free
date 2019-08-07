@@ -44,5 +44,12 @@ define(function() {
         clock12_21 : "09:00 PM",
         clock12_22 : "10:00 PM",
         clock12_23 : "11:00 PM",
+
+        changeExportUrl : function (filter, exportUrlLink) {
+            $(exportUrlLink).each(function() {
+                var oldUrl = $(this)[0].href;
+                $(this)[0].href = oldUrl.replace(/filter=(.*)/, "filter="+filter);
+            });
+        }
     }
 });

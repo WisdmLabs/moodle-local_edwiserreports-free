@@ -187,6 +187,8 @@ define(["jquery", "report_elucidsitereport/variables", "report_elucidsitereport/
             }
         },
 
+        changeExportUrl: v.changeExportUrl,
+
         // Function to get panelbody, paneltitle and panelfooter
         getPanel: function (blockid, type) {
             var panel = "#wdm-elucidsitereport " + blockid;

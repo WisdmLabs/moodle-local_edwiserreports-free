@@ -50,6 +50,7 @@ class elucidreport_renderable implements renderable, templatable {
 
         $output = null;
         $export = new stdClass();
+        $export->sesskey = sesskey();
         $export->timenow = date("Y-m-d", time());
         $export->courses = \report_elucidsitereport\utility::get_courses();
 
@@ -101,7 +102,7 @@ class activeusers_renderable implements renderable, templatable {
         global $CFG;
         $output = new stdClass();
         $output->exportlink = new stdClass();
-
+        $output->sesskey = sesskey();
         $downloadurl = $CFG->wwwroot."/report/elucidsitereport/download.php";
         $output->exportlink->export = get_exportlinks($downloadurl, "report", "activeusers", "all");
 
@@ -120,6 +121,7 @@ class courseprogress_renderable implements renderable, templatable {
     public function export_for_template(renderer_base $output) {
         global $CFG;
         $output = new stdClass();
+        $output->sesskey = sesskey();
         $output->exportlink = new stdClass();
 
         $downloadurl = $CFG->wwwroot."/report/elucidsitereport/download.php";
@@ -141,6 +143,7 @@ class certificates_renderable implements renderable, templatable {
 
         $output      = null;
         $export      = new stdClass();
+        $export->sesskey = sesskey();
         $customcerts = $DB->get_records("customcert", array());
         foreach ($customcerts as $customcert) {
             $course                 = get_course($customcert->course);
@@ -162,7 +165,8 @@ class f2fsessions_renderable implements renderable, templatable {
     public function export_for_template(renderer_base $output) {
         global $DB;
 
-        $output = null;
+        $output = new stdClass();
+        $output->sesskey = sesskey();
         return $output;
     }
 }
@@ -179,6 +183,7 @@ class lpstats_renderable implements renderable, templatable {
         global $DB;
 
         $output      = new stdClass();
+        $output->sesskey = sesskey();
         $output->lps = \report_elucidsitereport\utility::get_lps();
         return $output;
     }

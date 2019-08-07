@@ -38,7 +38,7 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
                 filter = $(this).attr('value');
                 $(dropdownMenu).removeClass('show');
                 $(dropdownButton).html($(this).text());
-                changeExportUrl(filter);
+                defaultConfig.changeExportUrl(filter, exportUrlLink);
                 getActiveUsersBlockData(filter);
             });
 
@@ -80,17 +80,10 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
                 return false;
             }
 
-            changeExportUrl(filter);
+            defaultConfig.changeExportUrl(filter, exportUrlLink);
             $(dropdownButton).html(filter);
             $(flatpickrCalender).val("");
             getActiveUsersBlockData(filter);
-        }
-
-        function changeExportUrl(filter) {
-            $(exportUrlLink).each(function() {
-                var oldUrl = $(this)[0].href;
-                $(this)[0].href = oldUrl.replace(/filter=(.*)/, "filter="+filter);
-            });
         }
 
         /* Get data for active users block */

@@ -44,6 +44,8 @@ if (!@include_once(__DIR__.'/../../config.php')) {
     include_once('/var/www/html/elucid/v37/config.php');
 }
 
+require_sesskey();
+
 $systemcontext = context_system::instance();
 
 $contextid = optional_param('contextid', $systemcontext->id, PARAM_INT);
