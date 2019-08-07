@@ -90,16 +90,16 @@ class export {
             case "report":
                 $export = $this->exportable_data_report($this->blockname, $filter);
                 break;
-            default:
-                new moodle_exception(403);
-
         }
 
         return $export;
     }
 
     /**
-     * Get Block Data in specific format
+     * Get exportable data for dashboard block
+     * @param [string] $blockname Block to get exportable data
+     * @param [string] $filter Filter to get data
+     * @return [array] Array of exportable data
      */
     private function exportable_data_block($blockname, $filter) {
         $export = null;
@@ -112,16 +112,19 @@ class export {
                 break;
             case "courseprogress":
                 $export = course_progress_block::get_exportable_data_block($filter);
-            default:
-                // code...
+                break;
+            case "certificates":
+                $export = certificates_block::get_exportable_data_block($filter);
                 break;
         }
-
         return $export;
     }
 
     /**
-     * Get report page data for a block
+     * Get exportable data for individual page
+     * @param [string] $blockname Block to get exportable data
+     * @param [string] $filter Filter to get data
+     * @return [array] Array of exportable data
      */
     private function exportable_data_report($blockname, $filter) {
         $export = null;
@@ -132,8 +135,8 @@ class export {
             case "courseprogress":
                 $export = course_progress_block::get_exportable_data_report($filter);
                 break;
-            default:
-                // code...
+            case "certificates":
+                $export = certificates_block::get_exportable_data_report($filter);
                 break;
         }
         return $export;

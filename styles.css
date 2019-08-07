@@ -8,15 +8,18 @@
 #wdm-elucidsitereport .table th::before, #wdm-elucidsitereport .table th::after {
     display: none;
 }
-#mostactivecourses .dataTables_wrapper .row:first-child > div:first-child {
+#mostactivecourses .dataTables_wrapper .row:first-child > div:first-child,
+#certificatestatsblock .dataTables_wrapper .row:first-child > div:first-child {
     order: 2;
 }
 
-#mostactivecourses .dataTables_wrapper .row:first-child > div:last-child {
+#mostactivecourses .dataTables_wrapper .row:first-child > div:last-child,
+#certificatestatsblock .dataTables_wrapper .row:first-child > div:last-child {
     order: 1;
 }
 
-#mostactivecourses .dataTables_wrapper .row:first-child .dataTables_filter{
+#mostactivecourses .dataTables_wrapper .row:first-child .dataTables_filter,
+#certificatestatsblock .dataTables_wrapper .row:first-child .dataTables_filter {
     float: left;
 }
 

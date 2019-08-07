@@ -101,10 +101,10 @@ class activeusers_renderable implements renderable, templatable {
     public function export_for_template(renderer_base $output) {
         global $CFG;
         $output = new stdClass();
-        $output->exportlink = new stdClass();
         $output->sesskey = sesskey();
+
         $downloadurl = $CFG->wwwroot."/report/elucidsitereport/download.php";
-        $output->exportlink->export = get_exportlinks($downloadurl, "report", "activeusers", "all");
+        $output->exportlink = get_exportlinks($downloadurl, "report", "activeusers", "all");
 
         return $output;
     }
@@ -122,10 +122,9 @@ class courseprogress_renderable implements renderable, templatable {
         global $CFG;
         $output = new stdClass();
         $output->sesskey = sesskey();
-        $output->exportlink = new stdClass();
 
         $downloadurl = $CFG->wwwroot."/report/elucidsitereport/download.php";
-        $output->exportlink->export = get_exportlinks($downloadurl, "report", "activeusers");
+        $output->exportlink = get_exportlinks($downloadurl, "report", "activeusers");
         return $output;
     }
 }
@@ -139,18 +138,19 @@ class certificates_renderable implements renderable, templatable {
      * @return stdClass|array
      */
     public function export_for_template(renderer_base $output) {
-        global $DB;
+        global $CFG, $DB;
 
-        $output      = null;
-        $export      = new stdClass();
-        $export->sesskey = sesskey();
+        $output = new stdClass();
+        $output->sesskey = sesskey();
         $customcerts = $DB->get_records("customcert", array());
         foreach ($customcerts as $customcert) {
-            $course                 = get_course($customcert->course);
+            $course = get_course($customcert->course);
             $customcert->coursename = $course->shortname;
         }
-        $export->certificates = array_values($customcerts);
-        return $export;
+        $output->certificates = array_values($customcerts);
+        $downloadurl = $CFG->wwwroot."/report/elucidsitereport/download.php";
+        $output->exportlink = get_exportlinks($downloadurl, "report", "certificates", "1");
+        return $output;
     }
 }
 

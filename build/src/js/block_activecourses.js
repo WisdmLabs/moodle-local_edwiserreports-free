@@ -56,7 +56,7 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
                 language: {
                     searchPlaceholder: "Search Courses"
                 },
-                initComplete: function(settings, json) {
+                initComplete: function() {
                     $(dropdownTable).html($(dropdownBody).html());
                     $(dropdownBody).remove();
                     $(dropdownTable + " .dropdown").show();

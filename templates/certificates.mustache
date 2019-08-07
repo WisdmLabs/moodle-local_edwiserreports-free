@@ -1,10 +1,17 @@
 <div id="wdm-certificates-individual" class="table-responsive" data-sesskey="{{sesskey}}">
-    <div class="px-0 py-20">
-        <select id="wdm-certificates-select" class="form-control singleselect w-250" name="state">
-            {{#certificates}}
-            <option value="{{id}}">{{coursename}}: {{name}}</option>
-            {{/certificates}}
-        </select>
+    <div class="d-flex">
+        <div class="px-0 py-20 pull-left">
+            <select id="wdm-certificates-select" class="form-control singleselect w-250" name="state">
+                {{#certificates}}
+                <option value="{{id}}">{{coursename}}: {{name}}</option>
+                {{/certificates}}
+            </select>
+        </div>
+        <div class="px-0 py-20 ml-auto">
+            {{#exportlink}}
+                {{> report_elucidsitereport/exportdropdown }}
+            {{/exportlink}}
+        </div>
     </div>
     <div class="loader w-full text-center pt-100 mt-50">
         {{# pix }} loader, report_elucidsitereport{{/ pix }}

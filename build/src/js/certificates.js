@@ -15,7 +15,9 @@ define([
         var CertTable = PageId + " .table";
         var loader = PageId + " .loader";
         var CertSelect = "#wdm-certificates-select";
+        var exportUrlLink = PageId + " .dropdown-menu[aria-labelledby='export-dropdown'] .dropdown-item";
         var Table = null;
+        var certificateid = null;
 
         function getCertificateDetail(certificateid) {
             $.ajax({
@@ -63,6 +65,7 @@ define([
 
                         $(loader).hide();
                         $(CertTable).show();
+                        V.changeExportUrl(certificateid, exportUrlLink);
                     }
                 });
                 console.log(response);
@@ -75,7 +78,7 @@ define([
         $(document).ready(function() {
             $(CertSelect).select2();
 
-            var certificateid = $(CertSelect).val();
+            certificateid = $(CertSelect).val();
             getCertificateDetail(certificateid);
 
             $(CertSelect).on("change", function() {

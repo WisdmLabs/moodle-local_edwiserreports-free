@@ -40,14 +40,23 @@ require_once($CFG->dirroot.'/grade/report/grader/lib.php');
  * To get the data for certificates
  */
 class certificates_block extends utility {
+    /**
+     * Get data for certificates block
+     * @return [object] Response object for Certificates Block
+     */
     public static function get_data() {
         $response = new stdClass();
         $response->data = new stdClass();
-        $response->data->customcerts = self::get_certificates();
+        $response->data->customcerts = self::get_certificate_list();
         return $response;
     }
 
-    public static function get_certificates() {
+    /**
+     * Get all certificates list with details
+     * for certificates block
+     * @return [array] Array of Certifcates
+     */
+    public static function get_certificate_list() {
         global $DB;
 
         $certificates = array();
@@ -86,71 +95,154 @@ class certificates_block extends utility {
         return $certificates;
     }
 
-    public static function get_certificate($certid) {
+    /**
+     * Get a certificates details for certificate page
+     * @return [object] Certifcates details object
+     */
+    public static function get_issued_users($certid) {
         global $DB;
         $certificate = $DB->get_record("customcert", array("id" => $certid));
         $course = get_course($certificate->course);
-        $coursecontext = context_course::instance($certificate->course);
         $issued = $DB->get_records('customcert_issues', array('customcertid' => $certid));
-
-        $enrolsql = "SELECT *
-                FROM {user_enrolments} ue
-                JOIN {enrol} e ON (e.id = ue.enrolid AND e.courseid = :courseid)
-                JOIN {user} u ON u.id = ue.userid
-                WHERE ue.userid = :userid AND u.deleted = 0";
 
         $issuedcert = array();
         foreach ($issued as $issue) {
-            $certinfo = array();
-            $user = core_user::get_user($issue->userid);
-
-            $params = array('courseid'=>$course->id, 'userid' => $issue->userid);
-            $gradeval = 0;
-            $grade = self::get_grades($course->id, $issue->userid);
-            if (!$grade) {
-                $gradeval = $grade->finalgrade;
-            }
-
-            $enrolment = $DB->get_record_sql($enrolsql, $params);
-
-            $enrolmentdate = get_string("notenrolled", "report_elucidsitereport");
-            $progressper = 0;
-            if ($enrolment) {
-                $enrolmentdate = date("d M y", $enrolment->timemodified);
-                $completion = self::get_course_completion_info($course, $user->id);
-
-                if (isset($completion["progresspercentage"])) {
-                    $progressper = $completion["progresspercentage"];
-                }
-            }
-
-            $courseprogresshtml = html_writer::div(
-                html_writer::span(
-                    "$progressper %",
-                    "pie-progress-number"
-                ),
-                "pie-progress pie-progress-xs",
-                array(
-                    "role" => "progressbar",
-                    "data-goal" => "$progressper",
-                    "aria-valuenow" => "$progressper",
-                    "data-barcolor" => "#28c0de",
-                    "aria-valuemin" => "0",
-                    "aria-valuemax" => "100"
-                )
-            );
-
-            $certinfo = array(
-                "username" => fullname($user),
-                "email" => $user->email,
-                "issuedate" => date("d M y", $issue->timecreated),
-                "dateenrolled" => $enrolmentdate,
-                "grade" => number_format($grade->finalgrade, 2),
-                "courseprogress" => $courseprogresshtml
-            );
-            $issuedcert[] = array_values($certinfo);
+            $issuedcert[] = self::get_certinfo($course, $issue);
         }
 
         return $issuedcert;
+    }
+
+    /**
+     * Get Certificate Information
+     * @param [object] $course stdClass object of course
+     * @param [object] $issued stdClass object of issued certificates
+     */
+    public static function get_certinfo($course, $issue) {
+        global $DB;
+
+        $enrolsql = "SELECT *
+            FROM {user_enrolments} ue
+            JOIN {enrol} e ON (e.id = ue.enrolid AND e.courseid = :courseid)
+            JOIN {user} u ON u.id = ue.userid
+            WHERE ue.userid = :userid AND u.deleted = 0";
+
+        $certinfo = array();
+        $user = core_user::get_user($issue->userid);
+
+        $params = array('courseid'=>$course->id, 'userid' => $issue->userid);
+        $gradeval = 0;
+        $grade = self::get_grades($course->id, $issue->userid);
+        if (!$grade) {
+            $gradeval = $grade->finalgrade;
+        }
+
+        $enrolment = $DB->get_record_sql($enrolsql, $params);
+        $enrolmentdate = get_string("notenrolled", "report_elucidsitereport");
+        $progressper = 0;
+        if ($enrolment) {
+            $enrolmentdate = date("d M y", $enrolment->timemodified);
+            $completion = self::get_course_completion_info($course, $user->id);
+
+            if (isset($completion["progresspercentage"])) {
+                $progressper = $completion["progresspercentage"];
+            }
+        }
+
+        $courseprogresshtml = html_writer::div(
+            html_writer::span(
+                "$progressper %",
+                "pie-progress-number"
+            ),
+            "pie-progress pie-progress-xs",
+            array(
+                "role" => "progressbar",
+                "data-goal" => "$progressper",
+                "aria-valuenow" => "$progressper",
+                "data-barcolor" => "#28c0de",
+                "aria-valuemin" => "0",
+                "aria-valuemax" => "100"
+            )
+        );
+
+        $certinfo = array(
+            "username" => fullname($user),
+            "email" => $user->email,
+            "issuedate" => date("d M y", $issue->timecreated),
+            "dateenrolled" => $enrolmentdate,
+            "grade" => number_format($grade->finalgrade, 2),
+            "courseprogress" => $courseprogresshtml
+        );
+        return array_values($certinfo);
+    }
+
+    /**
+     * Get headers for certificates block
+     * @return [array] Array of headers of certificates block
+     */
+    public static function get_headers() {
+        $headers = array(
+            get_string("name", "report_elucidsitereport"),
+            get_string("coursename", "report_elucidsitereport"),
+            get_string("issued", "report_elucidsitereport"),
+            get_string("notissued", "report_elucidsitereport")
+        );
+        return $headers;
+    }
+
+    /**
+     * Get headers for certificates block
+     * @return [array] Array of headers of certificates block
+     */
+    public static function get_headers_report() {
+        $headers = array(
+            get_string("username", "report_elucidsitereport"),
+            get_string("useremail", "report_elucidsitereport"),
+            get_string("dateofissue", "report_elucidsitereport"),
+            get_string("dateofenrol", "report_elucidsitereport"),
+            get_string("grade", "report_elucidsitereport"),
+            get_string("courseprogress", "report_elucidsitereport")
+        );
+        return $headers;
+    }
+
+    /**
+     * Get exportable data for certificatesblock
+     * @return [array] Array certificates information
+     */
+    public static function get_exportable_data_block() {
+        $certificates = self::get_certificate_list();
+        foreach($certificates as $key => $certificate) {
+            unset($certificate["id"]);
+            $certificates[$key] = array_values($certificate);
+        }
+
+        $certificates = array_merge(
+            array(self::get_headers()),
+            $certificates
+        );
+        return $certificates;
+    }
+
+    /**
+     * Get exportable data for certificates report
+     * @return [array] Array certificates information
+     */
+    public static function get_exportable_data_report($certid) {
+        $users = self::get_issued_users($certid);
+
+        foreach($users as $c => $user) {
+            foreach($user as $r => $userinfo) {
+                $users[$c][$r] = strip_tags($userinfo);
+            }
+        }
+
+        $out = array_merge(
+            array(
+                self::get_headers_report()
+            ),
+            $users
+        );
+        return $out;
     }
 }

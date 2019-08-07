@@ -31,18 +31,18 @@
  */
 function get_block_exportlinks($url, $data) {
     $links = new stdClass();
-    $links->blockactiveusers = new stdClass();
-    $links->blockactivecourses = new stdClass();
-    $links->blockcourseprogress = new stdClass();
-    $links->blockactiveusers->export = get_exportlinks($url, "block", "activeusers", "weekly");
-    $links->blockactivecourses->export = get_exportlinks($url, "block", "activecourses");
 
     if (isset($data->firstcourseid)) {
         $cpfilter = $data->firstcourseid;
     } else {
         $cpfilter = false;
     }
-    $links->blockcourseprogress->export = get_exportlinks($url, "block", "courseprogress", $cpfilter);
+
+    $links->blockactiveusers = get_exportlinks($url, "block", "activeusers", "weekly");
+    $links->blockactivecourses = get_exportlinks($url, "block", "activecourses");
+    $links->blockcourseprogress = get_exportlinks($url, "block", "courseprogress", $cpfilter);
+
+    $links->blockcertificates = get_exportlinks($url, "block", "certificates");
     return $links;
 }
 
@@ -55,6 +55,8 @@ function get_block_exportlinks($url, $data) {
  * @return [array] Array of export link
  */
 function get_exportlinks($url, $region, $blockname, $filter = false) {
+    $out = new stdClass();
+
     $params = array(
         "region" => $region,
         "blockname" => $blockname
@@ -64,7 +66,8 @@ function get_exportlinks($url, $region, $blockname, $filter = false) {
         $params["filter"] = $filter;
     }
 
-    return get_exportlink_array($url, $params);
+    $out->export = get_exportlink_array($url, $params);
+    return $out;
 }
 
 /**

@@ -2,6 +2,8 @@ define(["jquery", "core/templates", "report_elucidsitereport/defaultconfig"], fu
     var panel = cfg.getPanel("#certificatestatsblock");
     var panelBody = cfg.getPanel("#certificatestatsblock", "body");
     var table = panel + " .table";
+    var dropdownBody = panel + " .table-dropdown";
+    var dropdownTable = panelBody + " .dataTables_wrapper .row:first-child > div:first-child";
 
     function init () {
         $.ajax({
@@ -32,6 +34,11 @@ define(["jquery", "core/templates", "report_elucidsitereport/defaultconfig"], fu
         certificatesTable = $(table).DataTable({
             language: {
                 searchPlaceholder: "Search Certificates"
+            },
+            initComplete: function() {
+                $(dropdownTable).html($(dropdownBody).html());
+                $(dropdownBody).remove();
+                $(dropdownTable + " .dropdown").show();
             },
             scrollY : "200px",
             scrollCollapse : true,

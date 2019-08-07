@@ -75,7 +75,7 @@ class utility {
 
     public static function get_certificates_data($data) {
         if (isset($data->certificateid)) {
-            return \report_elucidsitereport\certificates_block::get_certificate($data->certificateid);
+            return \report_elucidsitereport\certificates_block::get_issued_users($data->certificateid);
         }
         return \report_elucidsitereport\certificates_block::get_data();
     }
