@@ -60,7 +60,7 @@ function report_elucidsitereport_output_fragment_userslist($args) {
             $minval = clean_param($args['minval'], PARAM_TEXT);
             $maxval = clean_param($args['maxval'], PARAM_TEXT);
 
-            $response = \report_elucidsitereport\course_progress_block::get_userslist_table($courseid, $action, $minval, $maxval);
+            $response = \report_elucidsitereport\course_progress_block::get_userslist_table($courseid, $minval, $maxval);
             break;
         case "courseengage":
         	$courseid = clean_param($args['courseid'], PARAM_TEXT);

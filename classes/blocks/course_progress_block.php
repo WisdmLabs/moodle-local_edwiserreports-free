@@ -192,7 +192,7 @@ class course_progress_block extends utility {
         );
         $table->attributes["class"] = "generaltable modal-table";
 
-        $data = self::get_userslist($courseid, $action, $minval, $maxval);
+        $data = self::get_userslist($courseid, $minval, $maxval);
         if (empty($data)) {
             $notavail = get_string("nousersavailable", "report_elucidsitereport");
             $emptycell = new html_table_cell($notavail);
@@ -225,7 +225,7 @@ class course_progress_block extends utility {
         foreach ($enrolledstudents as $enrolleduser) {
             $completion = self::get_course_completion_info($course, $enrolleduser->id);
             $progressper = $completion["progresspercentage"];
-            if ($progressper >= $minval && $progressper <= $maxval) {
+            if ($progressper > $minval && $progressper <= $maxval) {
                 $user = core_user::get_user($enrolleduser->id);
                 $usersdata[] = array(
                     fullname($user),
@@ -234,40 +234,6 @@ class course_progress_block extends utility {
             }
         }
         return $usersdata;
-    }
-
-    /**
-     * Get Completion Maximum Value
-     * @param [string] $action Action to get course related users
-     * @return [int] Course Completion Max value 
-     */
-    public static function get_completion_minvalue($action) {
-        /* Set Max Completion value */
-        $minval = 0;
-        switch ($action) {
-            case "incompleted":
-                $minval = 0;
-                break;
-            case "completed20":
-                $minval = 20;
-                break;
-            case "completed40":
-                $minval = 40;
-                break;
-            case "completed60":
-                $minval = 60;
-                break;
-            case "completed80":
-                $minval = 80;
-                break;
-            case "completed":
-                $minval = 100;
-                break;
-            default:
-                $minval = 0; // For enmrolement
-                break;
-        }
-        return $minval;
     }
 
     /**
