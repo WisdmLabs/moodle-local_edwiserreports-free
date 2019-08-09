@@ -17,6 +17,7 @@ define([
             var url = M.cfg.wwwroot + '/report/elucidsitereport/request_handler.php';
             url += '?action=get_courseengage_data_ajax';
             url += '&sesskey=' + sesskey;
+            var CourseEngageUsers = CourseEngageTable + " a.modal-trigger";
 
             $(CourseEngageTable).DataTable( {
                 ajax : url,
@@ -30,12 +31,39 @@ define([
                 ],
                 columnDefs: [
                     { className: "text-left", targets: 0 },
-                    { className: "text-center", targets: "_all" }
+                    { className: "text-center modal-trigger", targets: "_all" }
                 ],
                 initComplete: function() {
                     console.log(loader);
                     $(loader).hide();
                 }
+            });
+
+            $(document).on('click', CourseEngageUsers, function() {
+                var action = $(this).data("action");
+                var courseid = $(this).data("courseid");
+                var coursename = $(this).data("coursename");
+                var ModalRoot = null;
+
+                ModalFactory.create({
+                    body: Fragment.loadFragment(
+                        'report_elucidsitereport',
+                        'userslist',
+                        CONTEXTID,
+                        {
+                            page : 'courseengage',
+                            courseid : courseid,
+                            action : action
+                        }
+                    )
+                }).then(function(modal) {
+                    ModalRoot = modal.getRoot();
+                    modal.setTitle(coursename);
+                    modal.show();
+                    ModalRoot.on(ModalEvents.hidden, function () {
+                        modal.destroy();
+                    });
+                });
             });
         });
     }

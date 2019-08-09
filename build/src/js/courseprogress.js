@@ -89,7 +89,8 @@ define([
 
             // $('#wdm-activeusers-individual .table').DataTable();
             $(document).on('click', ModalTrigger, function() {
-                var action = $(this).data("action");
+                var minval = $(this).data("minvalue");
+                var maxval = $(this).data("maxvalue");
                 var courseid = $(this).data("courseid");
                 var coursename = $(this).data("coursename");
                 var ModalRoot = null;
@@ -102,7 +103,8 @@ define([
                         {
                             page : 'courseprogress',
                             courseid : courseid,
-                            action : action
+                            minval : minval,
+                            maxval : maxval,
                         }
                     )
                 }).then(function(modal) {

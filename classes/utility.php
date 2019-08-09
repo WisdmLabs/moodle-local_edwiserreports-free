@@ -166,6 +166,12 @@ class utility {
         return $lps;
     }
 
+    /**
+     * Get Course Completion Information about a course
+     * @param [object] $course Course Object
+     * @param [int] $userid User Id
+     * @return [array] Array of completion information
+     */
     public static function get_course_completion_info($course = false, $userid = false) {
         global $COURSE, $USER;
         if (!$course) {
@@ -180,6 +186,7 @@ class utility {
         $coursecontext = context_course::instance($course->id);
         if (is_enrolled($coursecontext, $userid)) {
             $completion = new completion_info($course);
+
             if ($completion->is_enabled()) {
                 $percentage = \core_completion\progress::get_course_progress_percentage($course, $userid);
                 $modules = $completion->get_activities();
@@ -252,15 +259,17 @@ class utility {
 
     /**
      * Get Users Who have complted atleast one activity in a course
-     * @param [int] $courseid Course ID to get all visits
+     * @param [object] $courseid Course ID
+     * @param [array] $users Enrolled Users
      * @return [array] Array of Users ID who have completed a activity 
      */
-    public static function users_completed_a_module($courseid, $users) {
+    public static function users_completed_a_module($course, $users) {
         $record = array();
+
         foreach($users as $user) {
             $completion = self::get_course_completion_info($course, $user->id);
             if ($completion["completedactivities"] > 0) {
-                $records[] = $user->id;
+                $records[] = $user;
             }
         }
 
@@ -269,15 +278,16 @@ class utility {
 
     /**
      * Get Users Who have complted half activities in a course
-     * @param [int] $courseid Course ID to get all visits
+     * @param [object] $courseid Course ID
+     * @param [array] $users Enrolled Users
      * @return [array] Array of Users ID who have completed half activities 
      */
-    public static function users_completed_half_module($courseid, $users) {
+    public static function users_completed_half_modules($course, $users) {
         $record = array();
         foreach($users as $user) {
             $completion = self::get_course_completion_info($course, $user->id);
             if ($completion["progresspercentage"] > 50) {
-                $records[] = $user->id;
+                $records[] = $user;
             }
         }
 
@@ -286,15 +296,16 @@ class utility {
 
     /**
      * Get Users Who have complted all activities in a course
-     * @param [int] $courseid Course ID to get all visits
+     * @param [object] $courseid Course ID
+     * @param [array] $users Enrolled Users
      * @return [array] Array of Users ID who have completed all activities 
      */
-    public static function users_completed_all_module($courseid, $users) {
+    public static function users_completed_all_module($course, $users) {
         $record = array();
         foreach($users as $user) {
             $completion = self::get_course_completion_info($course, $user->id);
             if ($completion["progresspercentage"] == 100) {
-                $records[] = $user->id;
+                $records[] = $user;
             }
         }
 

@@ -188,6 +188,12 @@
     overflow: scroll !important;
 }
 
+.text-decoration-none {
+    text-decoration: none !important;
+}
+
+/* Bootstrap Ended*/
+
 #wdm-elucidsitereport .dropdown-menu.dropdown-menu-right {
     right: 0;
     left: auto;

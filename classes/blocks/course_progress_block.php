@@ -41,15 +41,44 @@ class course_progress_block extends utility {
     /**
      * Constant for completions
      */
-    public static $constcompleted = array(
-        "incompleted" => 0,
-        "completed20" => 1,
-        "completed40" => 2,
-        "completed60" => 3,
-        "completed80" => 4,
-        "completed" => 5,
+    public static $completed = array(
+        "00" => array(
+            "index" => 0,
+            "value" => 0,
+            "count" => 0
+        ),
+        "20" => array(
+            "index" => 1,
+            "value" => 20,
+            "count" => 0
+        ),
+        "40" => array(
+            "index" => 2,
+            "value" => 40,
+            "count" => 0
+        ),
+        "60" => array(
+            "index" => 3,
+            "value" => 60,
+            "count" => 0
+        ),
+        "80" => array(
+            "index" => 4,
+            "value" => 80,
+            "count" => 0
+        ),
+        "100" => array(
+            "index" => 5,
+            "value" => 100,
+            "count" => 0
+        )
     );
 
+    /**
+     * Get data for course progress block
+     * @param [int] $courseid Course Id
+     * @return [array] Array of course completion info
+     */
     public static function get_data($courseid) {
         $course = get_course($courseid);
         $coursecontext = context_course::instance($courseid);
@@ -57,43 +86,47 @@ class course_progress_block extends utility {
         $enrolledstudents = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
 
         $response = new stdClass();
-        $completed = array(
-            self::$constcompleted["incompleted"] => 0,
-            self::$constcompleted["completed20"] => 0,
-            self::$constcompleted["completed40"] => 0,
-            self::$constcompleted["completed60"] => 0,
-            self::$constcompleted["completed80"] => 0,
-            self::$constcompleted["completed"] => 0,
-        );
+        $response->data = self::get_completion_with_percentage($course, $enrolledstudents);
+        return $response;
+    }
 
-        foreach ($enrolledstudents as $user) {
+    /**
+     * Get completion with percentage
+     * (0%, 20%, 40%, 60%, 80%, 100%)
+     * @param [object] $course Course Object
+     * @param [object] $users Users Object
+     * @return [array] Array of completion with percentage
+     */
+    public static function get_completion_with_percentage($course, $users) {
+        foreach ($users as $user) {
             $completion = self::get_course_completion_info($course, $user->id);
+            $progressper = $completion["progresspercentage"];
             switch (true) {
-                case $completion["progresspercentage"] < 20:
-                    $completed[self::$constcompleted["incompleted"]]++;
-                    break;
-                case $completion["progresspercentage"] < 40:
-                    $completed[self::$constcompleted["completed20"]]++;
-                    break;
-                case $completion["progresspercentage"] < 60:
-                    $completed[self::$constcompleted["completed40"]]++;
-                    break;
-                case $completion["progresspercentage"] < 80:
-                    $completed[self::$constcompleted["completed60"]]++;
-                    break;
-                case $completion["progresspercentage"] < 100:
-                    $completed[self::$constcompleted["completed80"]]++;
-                    break;
-                case $completion["progresspercentage"] = 100:
-                    $completed[self::$constcompleted["completed"]]++;
+                case $progressper == self::$completed["100"]["value"]:
+                    self::$completed["100"]["count"]++;
+                case $progressper >= self::$completed["80"]["value"]:
+                    self::$completed["80"]["count"]++;
+                case $progressper >= self::$completed["60"]["value"]:
+                    self::$completed["60"]["count"]++;
+                case $progressper >= self::$completed["40"]["value"]:
+                    self::$completed["40"]["count"]++;
+                case $progressper >= self::$completed["20"]["value"]:
+                    self::$completed["20"]["count"]++;
                     break;
                 default:
-                    $completed[self::$constcompleted["incompleted"]]++;
+                    self::$completed["00"]["count"]++;
                     break;
             }
         }
-        $response->data = array_values($completed);
-        return $response;
+
+        $completed = array();
+        foreach(self::$completed as $key => $complete) {
+            $completed[$complete["index"]] = $complete["count"];
+            // Flush after getting the value
+            self::$completed[$key]["count"] = 0;
+        }
+
+        return $completed;
     }
 
     public static function get_header() {
@@ -128,8 +161,12 @@ class course_progress_block extends utility {
         foreach ($courses as $course) {
             $coursedata = self::get_data($course->id);
             foreach ($coursedata->data as $key => $data) {
-                $reskey = array_search($key, self::$constcompleted);
-                $course->$reskey = $data;
+                foreach(self::$completed as $compkey => $complete) {
+                    if ($key == $complete["index"]) {
+                        $attrkey = "completed".$compkey;
+                    }
+                }
+                $course->$attrkey = $data;
             }
 
             $coursecontext = context_course::instance($course->id);
@@ -140,7 +177,13 @@ class course_progress_block extends utility {
         return $response;
     }
 
-    public static function get_userslist_table($courseid, $action) {
+    /**
+     * Get Users List Table
+     * @param [int] $courseid Course ID
+     * @param [int] $minval Minimum Progress Value
+     * @param [int] $maxval Maximum Progress Value
+     */
+    public static function get_userslist_table($courseid, $minval, $maxval) {
 
         $table = new html_table();
         $table->head = array(
@@ -148,85 +191,83 @@ class course_progress_block extends utility {
             get_string("email", "report_elucidsitereport")
         );
         $table->attributes["class"] = "generaltable modal-table";
-        $table->data = self::get_userslist($courseid, $action);
+
+        $data = self::get_userslist($courseid, $action, $minval, $maxval);
+        if (empty($data)) {
+            $notavail = get_string("nousersavailable", "report_elucidsitereport");
+            $emptycell = new html_table_cell($notavail);
+            $row = new html_table_row();
+            $emptycell->colspan = count($table->head);
+            $emptycell->attributes = array(
+                "class" => "text-center"
+            );
+            $row->cells = array($emptycell);
+            $table->data = array($row);
+        } else {
+            $table->data = $data;
+        }
         return html_writer::table($table);
     }
 
-    public static function get_userslist($courseid, $action) {
+    /**
+     * Get Users list
+     * @param [int] $courseid Course ID
+     * @param [int] $minval Minimum Progress Value
+     * @param [int] $maxval Maximum Progress Value
+     * @return [array] Users Data Array
+     */
+    public static function get_userslist($courseid, $minval, $maxval) {
         $course = get_course($courseid);
         $coursecontext = context_course::instance($courseid);
         $enrolledstudents = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
 
-        $data = array();
+        $usersdata = array();
         foreach ($enrolledstudents as $enrolleduser) {
             $completion = self::get_course_completion_info($course, $enrolleduser->id);
             $progressper = $completion["progresspercentage"];
-
-            switch ($action) {
-                case "incompleted":
-                    if ($progressper < 20) {
-                        $user = core_user::get_user($enrolleduser->id);
-                        $data[] = array(
-                            fullname($user),
-                            $user->email
-                        );
-                    }
-                    break;
-                case "completed20":
-                    if ($progressper >= 20 && $progressper < 40) {
-                        $user = core_user::get_user($enrolleduser->id);
-                        $data[] = array(
-                            fullname($user),
-                            $user->email
-                        );
-                    }
-                    break;
-                case "completed40":
-                    if ($progressper >= 40 && $progressper < 60) {
-                        $user = core_user::get_user($enrolleduser->id);
-                        $data[] = array(
-                            fullname($user),
-                            $user->email
-                        );
-                    }
-                    break;
-                case "completed60":
-                    if ($progressper >= 60 && $progressper < 80) {
-                        $user = core_user::get_user($enrolleduser->id);
-                        $data[] = array(
-                            fullname($user),
-                            $user->email
-                        );
-                    }
-                    break;
-                case "completed80":
-                    if ($progressper >= 80 && $progressper < 100) {
-                        $user = core_user::get_user($enrolleduser->id);
-                        $data[] = array(
-                            fullname($user),
-                            $user->email
-                        );
-                    }
-                    break;
-                case "completed":
-                    if ($progressper == 100) {
-                        $user = core_user::get_user($enrolleduser->id);
-                        $data[] = array(
-                            fullname($user),
-                            $user->email
-                        );
-                    }
-                    break;
-                default:
-                    $user = core_user::get_user($enrolleduser->id);
-                    $data[] = array(
-                        fullname($user),
-                        $user->email
-                    );
-                    break;
+            if ($progressper >= $minval && $progressper <= $maxval) {
+                $user = core_user::get_user($enrolleduser->id);
+                $usersdata[] = array(
+                    fullname($user),
+                    $user->email
+                );
             }
         }
-        return $data;
+        return $usersdata;
+    }
+
+    /**
+     * Get Completion Maximum Value
+     * @param [string] $action Action to get course related users
+     * @return [int] Course Completion Max value 
+     */
+    public static function get_completion_minvalue($action) {
+        /* Set Max Completion value */
+        $minval = 0;
+        switch ($action) {
+            case "incompleted":
+                $minval = 0;
+                break;
+            case "completed20":
+                $minval = 20;
+                break;
+            case "completed40":
+                $minval = 40;
+                break;
+            case "completed60":
+                $minval = 60;
+                break;
+            case "completed80":
+                $minval = 80;
+                break;
+            case "completed":
+                $minval = 100;
+                break;
+            default:
+                $minval = 0; // For enmrolement
+                break;
+        }
+        return $minval;
     }
 
     /**

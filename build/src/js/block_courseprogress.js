@@ -8,7 +8,7 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig'], func
         var selectedCourse = panelBody + " #wdm-courseprogress-select";
         var chart = panelBody + " .ct-chart";
         var loader = panelBody + " .loader";
-        var exportUrlLink     = panel + " .dropdown-menu[aria-labelledby='export-dropdown'] .dropdown-item";
+        var exportUrlLink = panel + " .dropdown-menu[aria-labelledby='export-dropdown'] .dropdown-item";
 
         $(document).ready(function($) {
             getCourseProgressData();
@@ -63,7 +63,7 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig'], func
                 }]
             };
 
-            myPieChart = new Chart(cfg.courseProgressBlock.ctx, {
+            courseProgress = new Chart(cfg.courseProgressBlock.ctx, {
                 data: data,
                 type: cfg.courseProgressBlock.graph.type,
                 options: cfg.courseProgressBlock.graph.options

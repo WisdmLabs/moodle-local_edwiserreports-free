@@ -131,8 +131,8 @@ class active_users_block extends utility {
             $table->data = $data;
         }
         return html_writer::table($table);
-	}
-	
+    }
+    
     /**
      * Get users list data for active users block
      * @param $filter [string] Time filter to get users for this day
@@ -140,13 +140,13 @@ class active_users_block extends utility {
      * @return [string] HTML table string of users list
      * Columns are (Full Name, Email)
      */
-	public static function get_userslist($filter, $action) {
+    public static function get_userslist($filter, $action) {
         global $DB;
-		$sql = "SELECT DISTINCT userid
+        $sql = "SELECT DISTINCT userid
                 FROM {logstore_standard_log}
                 WHERE eventname = ?
                 AND timecreated > ?
-				AND timecreated <= ?";
+                AND timecreated <= ?";
         $params = array();
 
         switch($action) {
@@ -192,7 +192,7 @@ class active_users_block extends utility {
             }
         }
         return $data;
-	}
+    }
 
     /**
      * Get all active users
