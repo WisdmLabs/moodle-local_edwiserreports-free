@@ -36,17 +36,18 @@ require_login();
 
 $context = context_system::instance();
 $PAGE->requires->js_call_amd('report_elucidsitereport/courseprogress', 'init', array($context->id));
+$PAGE->requires->js_call_amd('report_elucidsitereport/courseengage', 'init', array($context->id));
 
-$pageurl = new moodle_url($CFG->wwwroot . "/report/elucidsitereport/courseprogress.php");
+$pageurl = new moodle_url($CFG->wwwroot . "/report/elucidsitereport/coursereport.php");
 
 $PAGE->set_context($context);
 $PAGE->set_url($pageurl);
 
-$courseprogress = new \report_elucidsitereport\output\courseprogress();
-$courseprogressrenderable = new \report_elucidsitereport\output\courseprogress_renderable();
-$output = $courseprogress->get_renderer()->render($courseprogressrenderable);
+$coursereport = new \report_elucidsitereport\output\coursereport();
+$coursereportrenderable = new \report_elucidsitereport\output\coursereport_renderable();
+$output = $coursereport->get_renderer()->render($coursereportrenderable);
 
 echo $OUTPUT->header();
-echo $OUTPUT->heading(get_string("courseprogress", "report_elucidsitereport"));
+echo $OUTPUT->heading(get_string("coursereports", "report_elucidsitereport"));
 echo $output;
 echo $OUTPUT->footer();

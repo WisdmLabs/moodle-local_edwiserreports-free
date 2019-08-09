@@ -14,6 +14,8 @@ define([
             var CourseProgressTable = PageId + " .table";
             var loader = PageId + " .loader";
             var ModalTrigger = CourseProgressTable + " a";
+            var dropdownBody = ".table-dropdown";
+            var dropdownTable = PageId + " .dataTables_wrapper .row:first-child > div:first-child";
 
             $.ajax({
                 url: V.requestUrl,
@@ -37,7 +39,14 @@ define([
                 }).always(function() {
                     $(CourseProgressTable).DataTable({
                         order : [[0, 'desc']],
-                        columnDefs: [
+                        bLengthChange : false,
+                        pageLength : 50,
+                        initComplete: function() {
+                            $(dropdownTable).html($(dropdownBody).html());
+                            $(dropdownBody).remove();
+                            $(dropdownTable + " .dropdown").show();
+                        },
+                        columnDefs : [
                             {
                                 "targets": 0
                             },

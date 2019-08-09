@@ -298,6 +298,8 @@ class f2fsession_block extends utility {
                 "confirmed" => null
             );
 
+            $data["name"] = $module->name;
+            $data["coursename"] = $module->coursename;
             foreach($module->sessions as $session) {
                 $data["date"] = $session->date;
                 $data["time"] = $session->time;
@@ -306,34 +308,18 @@ class f2fsession_block extends utility {
                 $data["waitlisted"] = $session->waitlisted;
                 $data["declined"] = $session->declined;
                 $data["confirmed"] = $session->confirmed;
+                $export[] = array_values($data);
             }
-            $data["name"] = $module->name;
-            $data["coursename"] = $module->coursename;
-
-            $export[] = array_values($data);
         }
         return $export;
     }
 
     /**
-     * Get exportable data for certificates report
+     * Get exportable data for f2fsession block
      * @return [array] Array certificates information
      */
-    public static function get_exportable_data_report($certid) {
-        $users = self::get_issued_users($certid);
-
-        foreach($users as $c => $user) {
-            foreach($user as $r => $userinfo) {
-                $users[$c][$r] = strip_tags($userinfo);
-            }
-        }
-
-        $out = array_merge(
-            array(
-                self::get_headers_report()
-            ),
-            $users
-        );
-        return $out;
+    public static function get_exportable_data_report() {
+        /* TODO: Get coexportable data for f2fsession block*/
+        return null;
     }
 }

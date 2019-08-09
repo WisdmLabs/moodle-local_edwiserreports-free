@@ -1,17 +1,35 @@
-{{#exportlink}}
-    {{> report_elucidsitereport/exportdropdown }}
-{{/exportlink}}
+<div class="table-dropdown">
+    {{#exportlink}}
+        {{> report_elucidsitereport/exportdropdown }}
+    {{/exportlink}}
+</div>
 <div id="wdm-courseprogress-individual" class="table-responsive" data-sesskey="{{sesskey}}">
     <table class="table admintable d-none">
         <thead>
-            <th>{{#str}} coursename, report_elucidsitereport {{/str}}</th>
-            <th>{{#str}} noofenrolled, report_elucidsitereport {{/str}}</th>
-            <th>{{#str}} noofcompleted, report_elucidsitereport {{/str}}</th>
-            <th>{{#str}} noofcompleted20, report_elucidsitereport {{/str}}</th>
-            <th>{{#str}} noofcompleted40, report_elucidsitereport {{/str}}</th>
-            <th>{{#str}} noofcompleted60, report_elucidsitereport {{/str}}</th>
-            <th>{{#str}} noofcompleted80, report_elucidsitereport {{/str}}</th>
-            <th>{{#str}} noofincompleted, report_elucidsitereport {{/str}}</th>
+            <th class="text-nowrap">
+                {{#str}} coursename, report_elucidsitereport {{/str}}
+            </th>
+            <th class="text-nowrap">
+                {{#str}} noofenrolled, report_elucidsitereport {{/str}}
+            </th>
+            <th class="text-nowrap">
+                {{#str}} noofcompleted, report_elucidsitereport {{/str}}
+            </th>
+            <th class="text-nowrap">
+                {{#str}} noofcompleted20, report_elucidsitereport {{/str}}
+            </th>
+            <th class="text-nowrap">
+                {{#str}} noofcompleted40, report_elucidsitereport {{/str}}
+            </th>
+            <th class="text-nowrap">
+                {{#str}} noofcompleted60, report_elucidsitereport {{/str}}
+            </th>
+            <th class="text-nowrap">
+                {{#str}} noofcompleted80, report_elucidsitereport {{/str}}
+            </th>
+            <th class="text-nowrap">
+                {{#str}} noofincompleted, report_elucidsitereport {{/str}}
+            </th>
         </thead>
         <tbody>
             {{#courseprogress}}

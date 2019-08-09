@@ -1,9 +1,9 @@
-<div id="wdm-f2fsessions-individual" class="table-responsive" data-sesskey="{{sesskey}}">
+<div id="wdm-f2fsessions-individual" data-sesskey="{{sesskey}}">
     <div class="table-reponsive">
         <div class="loader w-full text-center pt-100 mt-50" style="min-height: 250px;">
             {{# pix }} loader, report_elucidsitereport{{/ pix }}
         </div>
-        <table id="f2fsessionstable" class="table generaltable w-auto" style="display: none;">
+        <table id="f2fsessionstable" class="table dataTable no-footer" style="display: none;">
             <thead>
                 <tr>
                     <th class="header">
@@ -42,7 +42,6 @@
                 {{#f2fmodules}}
                 {{#sessions}}
                 <tr data-toggle="collapse" data-target="#accordion-{{sessionid}}" class="clickable">
-
                     <td>
                         <i class="icon accordion-arrow fa fa-angle-right text-center"></i>
                         {{date}}
@@ -58,7 +57,7 @@
                     <td class="text-center">{{declined}}</td>
                 </tr>
                 <tr>
-                    <td class="border-0 collapse-td py-0 pl-30" colspan="10">
+                    <td class="border-0 collapse-td py-0 pl-30">
                         <div  id="accordion-{{sessionid}}" class="collapse">
                             <table class="table">
                                 <thead>
@@ -97,7 +96,7 @@
                 {{/sessions}}
                 {{^sessions}}
                 <tr>
-                    <td class="text-center" colspan="9">
+                    <td class="text-center" colspan="10">
                         {{#str}} nosessions, report_elucidsitereport{{/str}}
                     </td>
                 </tr>
@@ -105,7 +104,7 @@
                 {{/f2fmodules}}
                 {{^f2fmodules}}
                 <tr>
-                    <td class="text-center" colspan="9">
+                    <td class="text-center" colspan="10">
                         {{#str}} nosessions, report_elucidsitereport{{/str}}
                     </td>
                 </tr>

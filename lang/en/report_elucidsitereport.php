@@ -31,6 +31,8 @@ $string['pluginname'] = 'eLucid Site Report';
 $string['realtimeusers'] = 'Real Time Users';
 $string['activeusersheader'] = 'Active Users, Course Enrolment and Course Completion Rate';
 $string['courseprogress'] = 'Course Progress';
+$string['courseengagement'] = 'Course Engagement';
+$string['coursereports'] = 'Course Reports';
 $string['more'] = '<i class="fa fa-angle-right"></i> More';
 $string['mostactiveusersheader'] = 'Most Active Courses based on Enrollment, Visits and Completions';
 $string['f2fsessionsheader'] = 'Face to Face Sessions';
@@ -135,3 +137,8 @@ $string['activeusers_status'] = "User Active";
 $string['enrolments_status'] = "User Enrolled";
 $string['completions_status'] = "Course Completed";
 $string['completedactivity'] = "Completed Activity";
+
+/* Course Engagement Block */
+$string['activitystart'] = "At least one Activity Started";
+$string['completedhalf'] = "Completed 50% of Courses";
+$string['coursecompleted'] = "Course Completed";

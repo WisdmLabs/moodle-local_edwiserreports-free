@@ -43,6 +43,7 @@ require_once $CFG->dirroot . "/report/elucidsitereport/classes/blocks/siteaccess
 require_once $CFG->dirroot . "/report/elucidsitereport/classes/blocks/todaysactivity_block.php";
 require_once $CFG->dirroot . "/report/elucidsitereport/classes/blocks/lpstats_block.php";
 require_once $CFG->dirroot . "/report/elucidsitereport/classes/blocks/inactiveusers_block.php";
+require_once $CFG->dirroot . "/report/elucidsitereport/classes/blocks/courseengage_block.php";
 
 /**
  * Utilty class to add all utility function
@@ -96,6 +97,10 @@ class utility {
         return \report_elucidsitereport\lpstats_block::get_data($data->lpid);
     }
 
+    public static function get_courseengage_data($data) {
+        return \report_elucidsitereport\courseengage_block::get_data();
+    }
+
     public static function get_inactiveusers_data($data) {
         if (isset($data->filter)) {
             $filter = $data->filter;
@@ -105,13 +110,13 @@ class utility {
         return \report_elucidsitereport\inactiveusers_block::get_data($filter);
     }
 
-    /* Generate Course Filter for course progress block
-     * @return String HTML form with select and search box
+    /** Generate Course Filter for course progress block
+     * @param [bool] $all Get course with no enrolment as well
+     * @return [array] Array of courses
      */
     public static function get_courses($all = false) {
         global $DB;
         $fields = "id, fullname, shortname";
-        $form = new MoodleQuickForm('course', 'post', '#');
         $records = $DB->get_records('course', array(), '', $fields);
 
         $courses = array();
@@ -227,5 +232,72 @@ class utility {
         $gradereport = $DB->get_record_sql($gradesql, $params);
 
         return $gradereport;
+    }
+
+    /**
+     * Get Users who visited the Course
+     * @param [int] $courseid Course ID to get all visits
+     * @return [array] Array of Users ID who visited the course
+     */
+    public static function get_course_visites($courseid) {
+        global $DB;
+
+        $sql = "SELECT DISTINCT userid
+            FROM {logstore_standard_log}
+            WHERE action = ? AND courseid = ?";
+        $records = $DB->get_records_sql($sql, array('viewed', $courseid));
+
+        return $records;
+    }
+
+    /**
+     * Get Users Who have complted atleast one activity in a course
+     * @param [int] $courseid Course ID to get all visits
+     * @return [array] Array of Users ID who have completed a activity 
+     */
+    public static function users_completed_a_module($courseid, $users) {
+        $record = array();
+        foreach($users as $user) {
+            $completion = self::get_course_completion_info($course, $user->id);
+            if ($completion["completedactivities"] > 0) {
+                $records[] = $user->id;
+            }
+        }
+
+        return $records;
+    }
+
+    /**
+     * Get Users Who have complted half activities in a course
+     * @param [int] $courseid Course ID to get all visits
+     * @return [array] Array of Users ID who have completed half activities 
+     */
+    public static function users_completed_half_module($courseid, $users) {
+        $record = array();
+        foreach($users as $user) {
+            $completion = self::get_course_completion_info($course, $user->id);
+            if ($completion["progresspercentage"] > 50) {
+                $records[] = $user->id;
+            }
+        }
+
+        return $records;
+    }
+
+    /**
+     * Get Users Who have complted all activities in a course
+     * @param [int] $courseid Course ID to get all visits
+     * @return [array] Array of Users ID who have completed all activities 
+     */
+    public static function users_completed_all_module($courseid, $users) {
+        $record = array();
+        foreach($users as $user) {
+            $completion = self::get_course_completion_info($course, $user->id);
+            if ($completion["progresspercentage"] == 100) {
+                $records[] = $user->id;
+            }
+        }
+
+        return $records;
     }
 }

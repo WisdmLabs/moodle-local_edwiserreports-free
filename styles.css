@@ -9,16 +9,20 @@
     display: none;
 }
 #mostactivecourses .dataTables_wrapper .row:first-child > div:first-child,
+#wdm-courseprogress-individual .dataTables_wrapper .row:first-child > div:first-child,
 #certificatestatsblock .dataTables_wrapper .row:first-child > div:first-child {
     order: 2;
 }
 
 #mostactivecourses .dataTables_wrapper .row:first-child > div:last-child,
+#wdm-courseprogress-individual .row:first-child > div:last-child,
 #certificatestatsblock .dataTables_wrapper .row:first-child > div:last-child {
     order: 1;
+    padding-left: 0;
 }
 
 #mostactivecourses .dataTables_wrapper .row:first-child .dataTables_filter,
+#wdm-courseprogress-individual .dataTables_wrapper .row:first-child .dataTables_filter,
 #certificatestatsblock .dataTables_wrapper .row:first-child .dataTables_filter {
     float: left;
 }
@@ -107,25 +111,26 @@
 }
 
 /* width */
-#wdm-elucidsitereport ::-webkit-scrollbar {
+.path-report-elucidsitereport .page-main ::-webkit-scrollbar {
   width: 10px;
+  height: 10px;
   border-radius: 0;
 }
 
 /* Track */
-#wdm-elucidsitereport ::-webkit-scrollbar-track {
+.path-report-elucidsitereport .page-main ::-webkit-scrollbar-track {
    border-radius: 0;
    background: #f1f1f1;
 }
 
 /* Handle */
-#wdm-elucidsitereport ::-webkit-scrollbar-thumb {
+.path-report-elucidsitereport .page-main ::-webkit-scrollbar-thumb {
    border-radius: 0;
    background: #888;
 }
 
 /* Handle on hover */
-#wdm-elucidsitereport ::-webkit-scrollbar-thumb:hover {
+.path-report-elucidsitereport .page-main ::-webkit-scrollbar-thumb:hover {
    background: #555;
 }
 
@@ -177,6 +182,10 @@
 
 .badge-warning {
     background-color: #eb6709 !important;
+}
+
+.overflow-scroll {
+    overflow: scroll !important;
 }
 
 #wdm-elucidsitereport .dropdown-menu.dropdown-menu-right {
@@ -250,4 +259,9 @@
     display: block;
     width: 100%;
     text-align: center;
+}
+
+#wdm-courseprogress-individual.table-responsive>div.dataTables_wrapper>div.row,
+#wdm-courseengage-individual.table-responsive>div.dataTables_wrapper>div.row {
+    overflow: scroll;
 }

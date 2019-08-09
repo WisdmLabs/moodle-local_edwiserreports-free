@@ -1,0 +1,36 @@
+<div class="table-dropdown">
+    {{#exportlink}}
+        {{> report_elucidsitereport/exportdropdown }}
+    {{/exportlink}}
+</div>
+<div id="wdm-courseengage-individual" class="table-responsive" data-sesskey="{{sesskey}}">
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="text-nowrap">
+                    {{#str}} coursename, report_elucidsitereport {{/str}}
+                </th>
+                <th class="text-center text-nowrap">
+                    {{#str}} enrolments, report_elucidsitereport {{/str}}
+                </th>
+                <th class="text-center text-nowrap">
+                    {{#str}} visits, report_elucidsitereport {{/str}}
+                </th>
+                <th class="text-center text-nowrap">
+                    {{#str}} activitystart, report_elucidsitereport {{/str}}
+                </th>
+                <th class="text-center text-nowrap">
+                    {{#str}} completedhalf, report_elucidsitereport {{/str}}
+                </th>
+                <th class="text-center text-nowrap">
+                    {{#str}} coursecompleted, report_elucidsitereport {{/str}}
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <div class="loader w-full text-center py-100 my-50">
+                {{# pix }} loader, report_elucidsitereport{{/ pix }}
+            </div>
+        </tbody>
+  </table>
+</div>

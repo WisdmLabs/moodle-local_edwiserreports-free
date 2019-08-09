@@ -54,9 +54,9 @@ class activeusers {
     }
 }
 
-class courseprogress {
+class coursereport {
     /**
-     * Returns the renderer of the local_learning_program
+     * Returns the renderer of the Course Report
      *
      * @return mixed context|null The course context
      */
