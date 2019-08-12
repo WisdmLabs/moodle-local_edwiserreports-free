@@ -208,7 +208,7 @@ class completion_renderable implements renderable, templatable {
     }
 }
 
-class courseaccess_renderable implements renderable, templatable {
+class courseanalytics_renderable implements renderable, templatable {
     /**
      * Function to export the renderer data in a format that is suitable for a
      * edit mustache template.

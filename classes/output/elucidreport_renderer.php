@@ -119,7 +119,7 @@ class completion {
     }
 }
 
-class courseaccess {
+class courseanalytics {
     /**
      * Returns the renderer of the course access report
      *

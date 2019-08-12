@@ -150,7 +150,7 @@ $string['completionpercantage'] = "Completion Percentage";
 $string['activitycompleted'] = '{$a->completed} out of {$a->total}';
 
 /* Course Access Page */
-$string['courseaccessheader'] = "Course Access Report";
+$string['courseanalyticsheader'] = "Course Access Report";
 $string['recentvisits'] = "Recent Visits";
 $string['enrolledon'] = "Enrolled On";
 $string['enrolltype'] = "Enrolment Type";

@@ -40,20 +40,20 @@ $params = array(
 	"courseid" => $courseid
 );
 
-$pageurl = new moodle_url($CFG->wwwroot . "/report/elucidsitereport/courseaccess.php", $params);
+$pageurl = new moodle_url($CFG->wwwroot . "/report/elucidsitereport/courseanalytics.php", $params);
 
 $PAGE->set_context($coursecontext);
 $PAGE->set_url($pageurl);
-$PAGE->requires->js_call_amd('report_elucidsitereport/courseaccess', 'init', array($coursecontext->id));
+$PAGE->requires->js_call_amd('report_elucidsitereport/courseanalytics', 'init', array($coursecontext->id));
 
-$courseaccess = new \report_elucidsitereport\output\courseaccess();
-$courseaccessrenderable = new \report_elucidsitereport\output\courseaccess_renderable();
-$output = $courseaccess->get_renderer()->render($courseaccessrenderable);
+$courseanalytics = new \report_elucidsitereport\output\courseanalytics();
+$courseanalyticsrenderable = new \report_elucidsitereport\output\courseanalytics_renderable();
+$output = $courseanalytics->get_renderer()->render($courseanalyticsrenderable);
 
 $course = get_course($courseid);
-$PAGE->set_heading($course->fullname . ": " . get_string("courseaccessheader", "report_elucidsitereport"));
+$PAGE->set_heading($course->fullname . ": " . get_string("courseanalyticsheader", "report_elucidsitereport"));
 
 echo $OUTPUT->header();
-echo $OUTPUT->heading(get_string("courseaccessheader", "report_elucidsitereport"));
+echo $OUTPUT->heading(get_string("courseanalyticsheader", "report_elucidsitereport"));
 echo $output;
 echo $OUTPUT->footer();

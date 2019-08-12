@@ -31,14 +31,14 @@ use context_course;
  * Class Course Access Block
  * To get the data related to active users block
  */
-class courseaccess_block extends utility {
+class courseanalytics_block extends utility {
     /**
      * Get Data for Course Access
      * @return [object] Response for Course Access
      */
     public static function get_data($courseid) {
         $response = new stdClass();
-        $response->data = self::get_courseaccess_data($courseid);
+        $response->data = self::get_courseanalytics_data($courseid);
         return $response;
     }
 
@@ -46,7 +46,7 @@ class courseaccess_block extends utility {
      * Get Course Access data
      * @return [array] Array of users with course Access 
      */
-    public static function get_courseaccess_data($courseid) {
+    public static function get_courseanalytics_data($courseid) {
         global $DB;
 
         $coursecontext = context_course::instance($courseid);

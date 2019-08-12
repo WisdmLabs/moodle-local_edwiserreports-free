@@ -5,10 +5,10 @@ define([
     'report_elucidsitereport/dataTables.bootstrap4'
 ], function($, V) {
     function init(CONTEXTID) {
-        var PageId = $("#wdm-courseaccess-individual");
+        var PageId = $("#wdm-courseanalytics-individual");
         var CompletionTable = PageId.find(".table");
         var loader = PageId.find(".loader");
-        var url = V.requestUrl + "?action=get_courseaccess_data_ajax";
+        var url = V.requestUrl + "?action=get_courseanalytics_data_ajax";
 
         $(document).ready(function() {
             var sesskey = PageId.data("sesskey");

@@ -109,14 +109,14 @@ class report_completion_renderer extends plugin_renderer_base {
     }
 }
 
-class report_courseaccess_renderer extends plugin_renderer_base {
+class report_courseanalytics_renderer extends plugin_renderer_base {
     /**
      * Renders the Completion report.
      * @param  report_elucidreport $report  Object of completion renderable class
      * @return string  Html Structure of the view page
      */
-    public function render_report_courseaccess(\report_elucidsitereport\courseaccess_renderable $f2fsessions) {
+    public function render_report_courseanalytics(\report_elucidsitereport\courseanalytics_renderable $f2fsessions) {
         $templatecontext = $report->export_for_template($this);
-        return $this->render_from_template('report_elucidsitereport/courseaccess', $templatecontext);
+        return $this->render_from_template('report_elucidsitereport/courseanalytics', $templatecontext);
     }
 }
