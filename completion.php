@@ -50,11 +50,10 @@ $completion = new \report_elucidsitereport\output\completion();
 $completionrenderable = new \report_elucidsitereport\output\completion_renderable();
 $output = $completion->get_renderer()->render($completionrenderable);
 
-$PAGE->set_heading(get_string("completionheader", "report_elucidsitereport"));
-
 $course = get_course($courseid);
+$PAGE->set_heading($course->fullname . ": " . get_string("completionheader", "report_elucidsitereport"));
 
 echo $OUTPUT->header();
-echo $OUTPUT->heading($course->fullname);
+echo $OUTPUT->heading(get_string("completionheader", "report_elucidsitereport"));
 echo $output;
 echo $OUTPUT->footer();
