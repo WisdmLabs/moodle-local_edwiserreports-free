@@ -54,6 +54,5 @@ $course = get_course($courseid);
 $PAGE->set_heading($course->fullname . ": " . get_string("courseanalyticsheader", "report_elucidsitereport"));
 
 echo $OUTPUT->header();
-echo $OUTPUT->heading(get_string("courseanalyticsheader", "report_elucidsitereport"));
 echo $output;
 echo $OUTPUT->footer();

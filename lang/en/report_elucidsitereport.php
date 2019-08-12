@@ -149,10 +149,16 @@ $string['completionheader'] = "Course Completion";
 $string['completionpercantage'] = "Completion Percentage";
 $string['activitycompleted'] = '{$a->completed} out of {$a->total}';
 
-/* Course Access Page */
-$string['courseanalyticsheader'] = "Course Access Report";
+/* Course Analytics Page */
+$string['courseanalyticsheader'] = "Course Analytics";
 $string['recentvisits'] = "Recent Visits";
+$string['lastvisit'] = "Last Visit";
 $string['enrolledon'] = "Enrolled On";
 $string['enrolltype'] = "Enrolment Type";
 $string['noofvisits'] = "Number of visits";
 $string['completiontime'] = "Completion Time";
+$string['spenttime'] = "Spent Time";
+$string['completedon'] = "Completed On";
+$string['recentcompletion'] = "Recent Completion";
+$string['recentenrolment'] = "Recent Enrolments";
+$string['recentvisits'] = "Recent Visits";

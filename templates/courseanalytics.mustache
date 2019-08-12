@@ -3,30 +3,68 @@
         {{> report_elucidsitereport/exportdropdown }}
     {{/exportlink}}
 </div>
-<div id="wdm-courseanalytics-individual" class="table-responsive" data-sesskey="{{sesskey}}">
-    <table class="table">
-        <thead>
-            <tr>
-                <th class="text-nowrap border-bottom-0">
-                    {{#str}} username, report_elucidsitereport {{/str}}
-                </th>
-                <th class="text-center text-nowrap border-bottom-0">
-                    {{#str}} email, report_elucidsitereport {{/str}}
-                </th>
-                <th class="text-center text-nowrap border-bottom-0">
-                    {{#str}} noofvisits, report_elucidsitereport {{/str}}
-                </th>
-                <th class="text-center text-nowrap border-bottom-0">
-                    {{#str}} recentvisits, report_elucidsitereport {{/str}}
-                </th>
-                <th class="text-center text-nowrap border-bottom-0">
-                    {{#str}} enrolledon, report_elucidsitereport {{/str}}
-                </th>
-                <th class="text-center text-nowrap border-bottom-0">
-                    {{#str}} completions, report_elucidsitereport {{/str}}
-                </th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
+<div id="wdm-courseanalytics-individual" class="row" data-sesskey="{{sesskey}}">
+    <div class="recent-visits table-responsive col-lg-4 col-md-6 col-sm-12">
+        <h4>
+            {{#str}} recentvisits , report_elucidsitereport{{/str}}
+        </h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="text-nowrap border-bottom-0">
+                        {{#str}} name, report_elucidsitereport {{/str}}
+                    </th>
+                    <th class="text-center text-nowrap border-bottom-0">
+                        {{#str}} lastvisit, report_elucidsitereport {{/str}}
+                    </th>
+                    <!-- <th class="text-center text-nowrap border-bottom-0">
+                        {{#str}} spenttime, report_elucidsitereport {{/str}}
+                    </th> -->
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <div class="recent-enrolment table-responsive col-lg-4 col-md-6 col-sm-12">
+        <h4>
+            {{#str}} recentenrolment , report_elucidsitereport{{/str}}
+        </h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="text-nowrap border-bottom-0">
+                        {{#str}} name, report_elucidsitereport {{/str}}
+                    </th>
+                    <th class="text-center text-nowrap border-bottom-0">
+                        {{#str}} enrolledon, report_elucidsitereport {{/str}}
+                    </th>
+                    <!-- <th class="text-center text-nowrap border-bottom-0">
+                        {{#str}} time, report_elucidsitereport {{/str}}
+                    </th> -->
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <div class="recent-completion table-responsive col-lg-4 col-md-6 col-sm-12">
+        <h4>
+            {{#str}} recentcompletion , report_elucidsitereport{{/str}}
+        </h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="text-nowrap border-bottom-0">
+                        {{#str}} name, report_elucidsitereport {{/str}}
+                    </th>
+                    <th class="text-center text-nowrap border-bottom-0">
+                        {{#str}} completedon, report_elucidsitereport {{/str}}
+                    </th>
+                    <!-- <th class="text-center text-nowrap border-bottom-0">
+                        {{#str}} time, report_elucidsitereport {{/str}}
+                    </th> -->
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
 </div>

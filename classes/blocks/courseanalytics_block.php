@@ -26,6 +26,7 @@
 namespace report_elucidsitereport;
 use stdClass;
 use context_course;
+use html_writer;
 
 /**
  * Class Course Access Block
@@ -54,51 +55,97 @@ class courseanalytics_block extends utility {
         $course = get_course($courseid);
         $timenow = time();
 
-        $userscompletion = array();
-        foreach ($enrolledstudents as $user) {
-            $enrolsql = "SELECT *
+        $courseanalytics = new stdClass();
+        $courseanalytics->recentvisits = self::get_recentvisits($courseid, $enrolledstudents);
+        $courseanalytics->recentenrolments = self::get_recentenrolments($courseid, $enrolledstudents);
+        $courseanalytics->recentcompletions = self::get_recentcompletions($courseid, $enrolledstudents);
+        return $courseanalytics;
+    }
+
+    /**
+     * Get Recent visits on a course
+     * @param [int] $courseid Course ID
+     * @param [array] $users Array of Enrolled Users
+     * @return [array] Array of Recent visits
+     */
+    public static function get_recentvisits($courseid, $users) {
+        $allvisits = self::get_course_visites($courseid);
+        $timenow = time();
+
+        $visits = array();
+        foreach($users as $user) {
+            $uservisits = self::get_visits_by_users($courseid, $user->id);
+
+            $userinfo = array();
+            $userinfo[] = fullname($user);
+            if (!empty($uservisits)) {
+                $userinfo[] = get_string("never");
+            } else {
+                $timecreated = array_values($uservisits)[0]->timecreated;
+                $userinfo[] = html_writer::span($timecreated, "d-none") . format_time($timenow - $timecreated);
+            }
+            $visits[] = $userinfo;
+        }
+        return $visits;
+    }
+
+    /**
+     * Get Recent enrolements on a course
+     * @param [int] $courseid Course ID
+     * @param [array] $users Array of Enrolled Users
+     * @return [array] Array of Recent Enrolments
+     */
+    public static function get_recentenrolments($courseid, $users) {
+        global $DB;
+
+        $enrolsql = "SELECT *
             FROM {user_enrolments} ue
             JOIN {enrol} e ON (e.id = ue.enrolid AND e.courseid = :courseid)
             JOIN {user} u ON u.id = ue.userid
             WHERE ue.userid = :userid AND u.deleted = 0";
 
+        $params = array('courseid'=>$courseid, 'userid' => $user->id);
+            $enrolinfo = $DB->get_record_sql($enrolsql, $params);
+
+        $enrolments = array();
+        foreach($users as $user) {
             $params = array('courseid'=>$courseid, 'userid' => $user->id);
             $enrolinfo = $DB->get_record_sql($enrolsql, $params);
 
-            $completion = self::get_course_completion_info($course, $user->id);
-
-            if (empty($completion)) {
-                $activitycompletion = "NA";
-                $progressper = "NA";
-            } else {
-                $activitycompletion = get_string(
-                    'activitycompleted',
-                    'report_elucidsitereport',
-                    array(
-                        "completed" => $completion["completedactivities"],
-                        "total" => $completion["totalactivities"]
-                    )
-                );
-                $progressper = $completion["progresspercentage"] . "%";
-            }
-
-            $visits = self::get_visits_by_users($courseid, $user->id);
-
-            if (empty($visits)) {
-                $lastvisits = get_string("never");
-            } else {
-                $lastvisits = format_time($timenow - array_values($visits)[0]->timecreated);
-            }
-
-            $completioninfo = new stdClass();
-            $completioninfo->username = fullname($user);
-            $completioninfo->useremail = $user->email;
-            $completioninfo->lastvists = $lastvisits;
-            $completioninfo->visitscount = count(self::get_visits_by_users($courseid, $user->id));
-            $completioninfo->enrolledon = date("d M Y", $enrolinfo->timemodified);
-            $completioninfo->completion = $progressper;
-            $userscompletion[] = $completioninfo;
+            $userinfo = array();
+            $userinfo[] = fullname($user);
+            $userinfo[] = html_writer::span($enrolinfo->timemodified, "d-none") . date("d M Y", $enrolinfo->timemodified);
+            $enrolments[] = $userinfo;
         }
-        return $userscompletion;
+        return $enrolments;
+    }
+
+    /**
+     * Get Recent eCompletions on a course
+     * @param [int] $courseid Course ID
+     * @param [array] $users Array of Enrolled Users
+     * @return [array] Array of Recent Completions
+     */
+    public static function get_recentcompletions($courseid, $users) {
+        global $DB;
+        $course = get_course($courseid);
+
+        $recentcompletions = array();
+        foreach($users as $user) {
+            $completion = $DB->get_record("course_completions" , array(
+                "userid" => $user->id,
+                "course" => $courseid
+            ));
+
+            $userinfo = array();
+            $userinfo[] = fullname($user);
+            if (!empty($completion) && $completion->timecompleted) {
+                $userinfo[] = html_writer::span($completion->timecompleted, "d-none") . date("d M Y", $completion->timecompleted);
+            } else {
+                $userinfo[] = get_string("notyet", "report_elucidsitereport");
+            }
+            $recentcompletions[] = $userinfo;
+        }
+        return $recentcompletions;
     }
 }
