@@ -25,7 +25,7 @@
 
 namespace report_elucidsitereport;
 
-use context_system;
+use context_course;
 use moodle_url;
 
 require_once(__DIR__ . '/../../config.php');
@@ -34,20 +34,27 @@ require_once('classes/output/elucidreport_renderable.php');
 
 require_login();
 
-$context = context_system::instance();
-$PAGE->requires->js_call_amd('report_elucidsitereport/activeusers', 'init', array($context->id));
+$courseid = required_param("courseid", PARAM_INT);
+$coursecontext = context_course::instance($courseid);
+$params = array(
+	"courseid" => $courseid
+);
 
-$pageurl = new moodle_url($CFG->wwwroot . "/report/elucidsitereport/activeusers.php");
+$pageurl = new moodle_url($CFG->wwwroot . "/report/elucidsitereport/completion.php", $params);
 
-$PAGE->set_context($context);
+$PAGE->set_context($coursecontext);
 $PAGE->set_url($pageurl);
+$PAGE->requires->js_call_amd('report_elucidsitereport/completion', 'init', array($coursecontext->id));
 
-$activeusers = new \report_elucidsitereport\output\activeusers();
-$activeusersrenderable = new \report_elucidsitereport\output\activeusers_renderable();
-$output = $activeusers->get_renderer()->render($activeusersrenderable);
+$completion = new \report_elucidsitereport\output\completion();
+$completionrenderable = new \report_elucidsitereport\output\completion_renderable();
+$output = $completion->get_renderer()->render($completionrenderable);
 
-$PAGE->set_heading(get_string("activeusersheader", "report_elucidsitereport"));
+$PAGE->set_heading(get_string("completionheader", "report_elucidsitereport"));
+
+$course = get_course($courseid);
 
 echo $OUTPUT->header();
+echo $OUTPUT->heading($course->fullname);
 echo $output;
 echo $OUTPUT->footer();

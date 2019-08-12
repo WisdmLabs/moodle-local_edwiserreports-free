@@ -42,9 +42,9 @@ $PAGE->requires->css('/report/elucidsitereport/styles/select2.min.css');
 
 $PAGE->set_url($pageurl);
 
-$elucidreport     = new \report_elucidsitereport\output\elucidreport();
+$elucidreport = new \report_elucidsitereport\output\elucidreport();
 $reportrenderable = new \report_elucidsitereport\output\elucidreport_renderable();
-$output           = $elucidreport->get_renderer()->render($reportrenderable);
+$output = $elucidreport->get_renderer()->render($reportrenderable);
 
 echo $OUTPUT->header();
 echo $output;

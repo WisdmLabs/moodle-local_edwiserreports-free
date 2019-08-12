@@ -96,3 +96,15 @@ class report_lpstats_renderer extends plugin_renderer_base {
         return $this->render_from_template('report_elucidsitereport/lpstats', $templatecontext);
     }
 }
+
+class report_completion_renderer extends plugin_renderer_base {
+    /**
+     * Renders the Completion report.
+     * @param  report_elucidreport $report  Object of completion renderable class
+     * @return string  Html Structure of the view page
+     */
+    public function render_report_completion(\report_elucidsitereport\completion_renderable $f2fsessions) {
+        $templatecontext = $report->export_for_template($this);
+        return $this->render_from_template('report_elucidsitereport/completion', $templatecontext);
+    }
+}

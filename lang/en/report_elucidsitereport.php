@@ -143,3 +143,8 @@ $string['activitystart'] = "At least one Activity Started";
 $string['completedhalf'] = "Completed 50% of Courses";
 $string['coursecompleted'] = "Course Completed";
 $string['nousersavailable'] = "No Users Available";
+
+/* Completion Page */
+$string['completionheader'] = "Course Completion";
+$string['completionpercantage'] = "Completion Percentage";
+$string['activitycompleted'] = '{$a->completed} out of {$a->total}';

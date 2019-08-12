@@ -44,6 +44,7 @@ require_once $CFG->dirroot . "/report/elucidsitereport/classes/blocks/todaysacti
 require_once $CFG->dirroot . "/report/elucidsitereport/classes/blocks/lpstats_block.php";
 require_once $CFG->dirroot . "/report/elucidsitereport/classes/blocks/inactiveusers_block.php";
 require_once $CFG->dirroot . "/report/elucidsitereport/classes/blocks/courseengage_block.php";
+require_once $CFG->dirroot . "/report/elucidsitereport/classes/blocks/completion_block.php";
 
 /**
  * Utilty class to add all utility function
@@ -108,6 +109,10 @@ class utility {
             $filter = 'never'; // Default filter
         }
         return \report_elucidsitereport\inactiveusers_block::get_data($filter);
+    }
+
+    public static function get_completion_data($data) {
+        return \report_elucidsitereport\completion_block::get_data($data->courseid);
     }
 
     /** Generate Course Filter for course progress block
@@ -309,6 +314,26 @@ class utility {
             }
         }
 
+        return $records;
+    }
+
+    /**
+     * Get Course visited by a users
+     * @param [int] $courseid Course ID
+     * @param [string] $userid User ID
+     * @return [int] Count of visits by this users
+     */
+    public static function get_visits_by_users($courseid, $userid) {
+        global $DB;
+        
+        $table = "logstore_standard_log";
+        $records = $DB->get_records($table,
+            array(
+                "action" => "viewed",
+                "courseid" => $courseid,
+                "userid" => $userid
+            )
+        );
         return $records;
     }
 }

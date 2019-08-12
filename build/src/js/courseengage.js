@@ -14,9 +14,7 @@ define([
             var CourseEngageTable = PageId + " .table";
             var loader = PageId + " .loader";
             var sesskey = $(PageId).data("sesskey");
-            var url = M.cfg.wwwroot + '/report/elucidsitereport/request_handler.php';
-            url += '?action=get_courseengage_data_ajax';
-            url += '&sesskey=' + sesskey;
+            var url = V.requestUrl + '?action=get_courseengage_data_ajax&sesskey=' + sesskey;
             var CourseEngageUsers = CourseEngageTable + " a.modal-trigger";
 
             $(CourseEngageTable).DataTable( {

@@ -45,7 +45,8 @@ $lpstats = new \report_elucidsitereport\output\lpstats();
 $lpstatsrenderable = new \report_elucidsitereport\output\lpstats_renderable();
 $output = $lpstats->get_renderer()->render($lpstatsrenderable);
 
+$PAGE->set_heading(get_string("lpstatsheader", "report_elucidsitereport"));
+
 echo $OUTPUT->header();
-echo $OUTPUT->heading(get_string("lpstatsheader", "report_elucidsitereport"));
 echo $output;
 echo $OUTPUT->footer();

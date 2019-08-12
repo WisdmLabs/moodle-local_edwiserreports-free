@@ -47,7 +47,8 @@ $coursereport = new \report_elucidsitereport\output\coursereport();
 $coursereportrenderable = new \report_elucidsitereport\output\coursereport_renderable();
 $output = $coursereport->get_renderer()->render($coursereportrenderable);
 
+$PAGE->set_heading(get_string("coursereports", "report_elucidsitereport"));
+
 echo $OUTPUT->header();
-echo $OUTPUT->heading(get_string("coursereports", "report_elucidsitereport"));
 echo $output;
 echo $OUTPUT->footer();

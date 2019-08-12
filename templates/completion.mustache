@@ -1,0 +1,34 @@
+<div class="table-dropdown">
+    {{#exportlink}}
+        {{> report_elucidsitereport/exportdropdown }}
+    {{/exportlink}}
+</div>
+<div id="wdm-completion-individual" class="table-responsive" data-sesskey="{{sesskey}}">
+    <table class="table" style="display: none;">
+        <thead>
+            <tr>
+                <th class="text-nowrap border-bottom-0" rowspan="2">
+                    {{#str}} username, report_elucidsitereport {{/str}}
+                </th>
+                <th class="text-center text-nowrap border-bottom-0" rowspan="2">
+                    {{#str}} email, report_elucidsitereport {{/str}}
+                </th>
+                <th class="text-center text-nowrap border-bottom-0" rowspan="2">
+                    {{#str}} visits, report_elucidsitereport {{/str}}
+                </th>
+                <th class="text-center text-nowrap border-bottom-0" colspan="2">
+                    {{#str}} coursecompletion, report_elucidsitereport {{/str}}
+                </th>
+            </tr>
+            <tr>
+                <th class="text-center text-nowrap border-bottom-0">
+                    {{#str}} activitycompletion, report_elucidsitereport {{/str}}
+                </th>
+                <th class="text-center text-nowrap border-bottom-0">
+                    {{#str}} completionpercantage, report_elucidsitereport {{/str}}
+                </th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+  </table>
+</div>

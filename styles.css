@@ -99,6 +99,11 @@
     background-color: unset !important;
 }
 
+.path-report-elucidsitereport .table thead th,
+.path-admin-report-elucidsitereport .table thead th {
+    vertical-align: middle !important;
+}
+
 .path-admin-report-elucidsitereport .dataTables_scrollHeadInner,
 .path-report-elucidsitereport .dataTables_scrollHeadInner {
     width: 100% !important;
