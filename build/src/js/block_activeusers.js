@@ -17,7 +17,6 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
         var exportUrlLink     = panel + " .dropdown-menu[aria-labelledby='export-dropdown'] .dropdown-item";
         var filter            = null;
 
-
         /* Custom Dropdown hide and show */
         $(document).ready(function() {
             /* Show custom dropdown */
@@ -42,6 +41,7 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
                 getActiveUsersBlockData(filter);
             });
 
+            /* Refresh when click on the refresh button */
             $(refreshBtn).on('click', function() {
                 $(this).addClass("refresh-spin");
                 resetUpdateTime();
