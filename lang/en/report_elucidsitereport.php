@@ -153,4 +153,6 @@ $string['activitycompleted'] = '{$a->completed} out of {$a->total}';
 $string['courseaccessheader'] = "Course Access Report";
 $string['recentvisits'] = "Recent Visits";
 $string['enrolledon'] = "Enrolled On";
-$string['noofvisits'] = "Visits Count";
+$string['enrolltype'] = "Enrolment Type";
+$string['noofvisits'] = "Number of visits";
+$string['completiontime'] = "Completion Time";

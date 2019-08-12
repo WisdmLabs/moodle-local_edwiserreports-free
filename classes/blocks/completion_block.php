@@ -26,6 +26,7 @@
 namespace report_elucidsitereport;
 use stdClass;
 use context_course;
+use html_writer;
 
 /**
  * Class Course Completion Block
@@ -43,57 +44,83 @@ class completion_block extends utility {
     }
 
     /**
-     * Get headers for Course Completion Block
-     * @return [array] Array of header of course block
-     */
-    public static function get_header() {
-        $header = array(
-            get_string("rank", "report_elucidsitereport"),
-            get_string("coursename", "report_elucidsitereport"),
-            get_string("enrolments", "report_elucidsitereport"),
-            get_string("visits", "report_elucidsitereport"),
-            get_string("completions", "report_elucidsitereport"),
-        );
-
-        return $header;
-    }
-
-    /**
      * Get Course Completion data
      * @return [array] Array of users with course Completion 
      */
     public static function get_completion_data($courseid) {
+        global $DB;
+        $timenow = time();
+
+        $enrolsql = "SELECT *
+            FROM {user_enrolments} ue
+            JOIN {enrol} e ON (e.id = ue.enrolid AND e.courseid = :courseid)
+            JOIN {user} u ON u.id = ue.userid
+            WHERE ue.userid = :userid AND u.deleted = 0";
+
         $coursecontext = context_course::instance($courseid);
         $enrolledstudents = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
         $course = get_course($courseid);
 
         $userscompletion = array();
         foreach ($enrolledstudents as $user) {
+            $params = array('courseid'=>$courseid, 'userid' => $user->id);
+            $enrolinfo = $DB->get_record_sql($enrolsql, $params);
+
             $completion = self::get_course_completion_info($course, $user->id);
 
             if (empty($completion)) {
-                $activitycompletion = "NA";
                 $progressper = "NA";
             } else {
-                $activitycompletion = get_string(
-                    'activitycompleted',
-                    'report_elucidsitereport',
-                    array(
-                        "completed" => $completion["completedactivities"],
-                        "total" => $completion["totalactivities"]
-                    )
-                );
                 $progressper = $completion["progresspercentage"] . "%";
             }
 
             $completioninfo = new stdClass();
-            $completioninfo->username = fullname($user);
-            $completioninfo->useremail = $user->email;
-            $completioninfo->visits = count(self::get_visits_by_users($courseid, $user->id));
-            $completioninfo->activitycompleted = $activitycompletion;
+            $completioninfo->username = html_writer::div(
+                fullname($user), '',
+                array (
+                    "data-toggle" => "tooltip",
+                    "title" => $user->email
+                )
+            );
+
+            $visits = self::get_visits_by_users($courseid, $user->id);
+
+            if (empty($visits)) {
+                $lastvisits = get_string("never");
+            } else {
+                $lastvisits = format_time($timenow - array_values($visits)[0]->timecreated);
+            }
+
+            $gradeval = 0;
+            $grade = self::get_grades($courseid, $user->id);
+            if (isset($grade->finalgrade)) {
+                $gradeval = $grade->finalgrade;
+            }
+
+            $completioninfo->enrolledon = date("d M Y", $enrolinfo->timemodified);
+            $completioninfo->enrolltype = $enrolinfo->enrol;
+            $completioninfo->noofvisits = count(self::get_visits_by_users($courseid, $user->id));
             $completioninfo->completion = $progressper;
+            $completioninfo->compleiontime = self::get_timecompleted($courseid, $user->id);
+            $completioninfo->grade = $gradeval;
+            $completioninfo->lastaccess = $lastvisits;
             $userscompletion[] = $completioninfo;
         }
         return $userscompletion;
+    }
+
+    public static function get_timecompleted($courseid, $userid) {
+        global $DB;
+
+        $coursecompletion = $DB->get_record("course_completions", array(
+            "userid" => $user->id,
+            "course" => $course->id
+        ));
+
+        if (isset($coursecompletion) && $coursecompletion->timecompleted) {
+            return $coursecompletion->timecompleted;
+        } else {
+            return get_string("notyet", "report_elucidsitereport");
+        }
     }
 }

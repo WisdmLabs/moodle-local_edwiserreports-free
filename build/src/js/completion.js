@@ -29,10 +29,13 @@ define([
                 },
                 columns : [
                     { "data": "username" },
-                    { "data": "useremail" },
-                    { "data": "visits" },
-                    { "data": "activitycompleted" },
-                    { "data": "completion" }
+                    { "data": "enrolledon" }, 
+                    { "data": "enrolltype" },
+                    { "data": "noofvisits" },
+                    { "data": "completion" },
+                    { "data": "compleiontime" },
+                    { "data": "grade" },
+                    { "data": "lastaccess" }
                 ],
                 columnDefs: [
                     { className: "text-left", targets: 0 },
