@@ -184,7 +184,7 @@ class lpstats_renderable implements renderable, templatable {
     public function export_for_template(renderer_base $output) {
         global $DB;
 
-        $output      = new stdClass();
+        $output = new stdClass();
         $output->sesskey = sesskey();
         $output->lps = \report_elucidsitereport\utility::get_lps();
         return $output;
@@ -202,7 +202,24 @@ class completion_renderable implements renderable, templatable {
     public function export_for_template(renderer_base $output) {
         global $DB;
 
-        $output      = new stdClass();
+        $output = new stdClass();
+        $output->sesskey = sesskey();
+        return $output;
+    }
+}
+
+class courseaccess_renderable implements renderable, templatable {
+    /**
+     * Function to export the renderer data in a format that is suitable for a
+     * edit mustache template.
+     *
+     * @param renderer_base $output Used to do a final render of any components that need to be rendered for export.
+     * @return stdClass|array
+     */
+    public function export_for_template(renderer_base $output) {
+        global $DB;
+
+        $output = new stdClass();
         $output->sesskey = sesskey();
         return $output;
     }

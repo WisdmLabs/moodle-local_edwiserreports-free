@@ -105,4 +105,9 @@ class elucidsitereportController extends controllerAbstract
         $data = json_decode(required_param('data', PARAM_RAW));
         echo json_encode(\report_elucidsitereport\utility::get_completion_data($data));
     }
+
+    public function get_courseaccess_data_ajax_action() {
+        $data = json_decode(required_param('data', PARAM_RAW));
+        echo json_encode(\report_elucidsitereport\utility::get_courseaccess_data($data));
+    }
 }

@@ -118,3 +118,16 @@ class completion {
         return $this->output;
     }
 }
+
+class courseaccess {
+    /**
+     * Returns the renderer of the course access report
+     *
+     * @return mixed context|null The course context
+     */
+    public function get_renderer() {
+        global $PAGE;
+        $this->output = $PAGE->get_renderer('report_elucidsitereport', null, RENDERER_TARGET_GENERAL);
+        return $this->output;
+    }
+}

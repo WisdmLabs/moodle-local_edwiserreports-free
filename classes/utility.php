@@ -45,6 +45,7 @@ require_once $CFG->dirroot . "/report/elucidsitereport/classes/blocks/lpstats_bl
 require_once $CFG->dirroot . "/report/elucidsitereport/classes/blocks/inactiveusers_block.php";
 require_once $CFG->dirroot . "/report/elucidsitereport/classes/blocks/courseengage_block.php";
 require_once $CFG->dirroot . "/report/elucidsitereport/classes/blocks/completion_block.php";
+require_once $CFG->dirroot . "/report/elucidsitereport/classes/blocks/courseaccess_block.php";
 
 /**
  * Utilty class to add all utility function
@@ -113,6 +114,10 @@ class utility {
 
     public static function get_completion_data($data) {
         return \report_elucidsitereport\completion_block::get_data($data->courseid);
+    }
+
+    public static function get_courseaccess_data($data) {
+        return \report_elucidsitereport\courseaccess_block::get_data($data->courseid);
     }
 
     /** Generate Course Filter for course progress block
@@ -332,7 +337,8 @@ class utility {
                 "action" => "viewed",
                 "courseid" => $courseid,
                 "userid" => $userid
-            )
+            ),
+            "timecreated DESC"
         );
         return $records;
     }

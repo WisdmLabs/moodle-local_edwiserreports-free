@@ -35,7 +35,8 @@ var sources = [
     'src/js/f2fsessions.js',
     'src/js/lpstats.js',
     'src/js/courseengage.js',
-    'src/js/completion.js'
+    'src/js/completion.js',
+    'src/js/courseaccess.js'
 ];
 
 gulp.task('purge', function(done) {

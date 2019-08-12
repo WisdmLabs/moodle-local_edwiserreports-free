@@ -144,7 +144,13 @@ $string['completedhalf'] = "Completed 50% of Courses";
 $string['coursecompleted'] = "Course Completed";
 $string['nousersavailable'] = "No Users Available";
 
-/* Completion Page */
+/* Course Completion Page */
 $string['completionheader'] = "Course Completion";
 $string['completionpercantage'] = "Completion Percentage";
 $string['activitycompleted'] = '{$a->completed} out of {$a->total}';
+
+/* Course Access Page */
+$string['courseaccessheader'] = "Course Access Report";
+$string['recentvisits'] = "Recent Visits";
+$string['enrolledon'] = "Enrolled On";
+$string['noofvisits'] = "Visits Count";
