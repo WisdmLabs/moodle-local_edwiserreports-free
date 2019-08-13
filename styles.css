@@ -123,7 +123,7 @@
 .path-admin-report-elucidsitereport table.dataTable tr,
 .path-report-elucidsitereport table.dataTable tr td,
 .path-admin-report-elucidsitereport table.dataTable tr td {
-    background-color: unset !important;
+    background-color: unset;
 }
 
 .path-report-elucidsitereport .table thead th,
@@ -226,6 +226,16 @@
 
 .text-decoration-none {
     text-decoration: none !important;
+}
+
+.text-gold {
+    color: #fdd703;
+}
+.text-silver {
+    color: #bfc0bf;
+}
+.text-bronze {
+    color: #cd7e33;
 }
 
 /* Bootstrap Ended*/

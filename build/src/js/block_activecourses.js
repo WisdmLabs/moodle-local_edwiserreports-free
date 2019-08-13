@@ -32,7 +32,16 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
             /* Added fixed column rank in datatable */
             activeCourseTable.on('order.dt search.dt', function () {
                 activeCourseTable.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
-                    cell.innerHTML = i+1;
+                    if (i == 0) {
+                        cell.innerHTML = "<i class='fa fa-trophy text-gold'></i>";
+                    } else if (i == 1) {
+                        cell.innerHTML = "<i class='fa fa-trophy text-silver'></i>";
+                    } else if (i == 2) {
+                        cell.innerHTML = "<i class='fa fa-trophy text-bronze'></i>";
+                    } else {
+                        cell.innerHTML = i+1;
+                    }
+                    $(cell).addClass("bg-secondary font-weight-bold")
                 });
             }).draw();
 
