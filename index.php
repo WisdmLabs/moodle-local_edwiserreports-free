@@ -46,6 +46,8 @@ $elucidreport = new \report_elucidsitereport\output\elucidreport();
 $reportrenderable = new \report_elucidsitereport\output\elucidreport_renderable();
 $output = $elucidreport->get_renderer()->render($reportrenderable);
 
+$PAGE->set_heading(get_string("reportsandanalytics", "report_elucidsitereport"));
+
 echo $OUTPUT->header();
 echo $output;
 echo $OUTPUT->footer();

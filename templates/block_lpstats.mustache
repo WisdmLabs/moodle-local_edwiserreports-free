@@ -6,6 +6,11 @@
                 <a href="#" class="small"><i class="fa fa-question-circle"></i></a>
             </strong>
         </div>
+        {{#exportlinks}}
+            {{#blocklpstats}}
+                {{> report_elucidsitereport/exportdropdown }}
+            {{/blocklpstats}}
+        {{/exportlinks}}
     </div>
     <div class="panel-body p-0">
         <select id="wdm-lpstats-select" class="form-control singleselect w-full" name="state">

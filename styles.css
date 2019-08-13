@@ -18,7 +18,6 @@
 #wdm-courseprogress-individual .row:first-child > div:last-child,
 #certificatestatsblock .dataTables_wrapper .row:first-child > div:last-child {
     order: 1;
-    padding-left: 0;
 }
 
 #mostactivecourses .dataTables_wrapper .row:first-child .dataTables_filter,
@@ -73,12 +72,40 @@
     border: 0 !important;
 }
 
+/* Media query for dashboard page */
 @media only screen and (min-width: 600px) {
     #wdm-elucidsitereport #activeusersblock .dropdown-menu.withcalendar {
         width: 530px !important;
     }
     #wdm-elucidsitereport #activeusersblock .dropdown-menu .dropdown-body {
         float: right !important;
+    }
+    #wdm-elucidsitereport #activeusersblock .panel-header {
+        margin-right: 170px;
+    }
+    #wdm-elucidsitereport #activeusersblock .panel-header .filters,
+    #wdm-elucidsitereport #courseprogressblock .panel-header .dropdown,
+    #wdm-elucidsitereport #mostactivecourses .panel-header .dropdown,
+    #wdm-elucidsitereport #certificatestatsblock .panel-header .dropdown,
+    #wdm-elucidsitereport #f2fsessionsblock .panel-header .dropdown,
+    #wdm-elucidsitereport #lpstatsblock .panel-header .dropdown {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+    #wdm-elucidsitereport #courseprogressblock .panel-header,
+    #wdm-elucidsitereport #mostactivecourses .panel-header,
+    #wdm-elucidsitereport #certificatestatsblock .panel-header,
+    #wdm-elucidsitereport #f2fsessionsblock .panel-header,
+    #wdm-elucidsitereport #lpstatsblock .panel-header {
+        margin-right: 65px;
+    }
+    #wdm-elucidsitereport #courseprogressblock .panel-header .dropdown,
+    #wdm-elucidsitereport #mostactivecourses .panel-header .dropdown,
+    #wdm-elucidsitereport #certificatestatsblock .panel-header .dropdown,
+    #wdm-elucidsitereport #f2fsessionsblock .panel-header .dropdown,
+    #wdm-elucidsitereport #lpstatsblock .panel-header .dropdown {
+        margin-top: 20px;
     }
 }
 

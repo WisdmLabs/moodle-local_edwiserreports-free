@@ -7,19 +7,19 @@
                     <a href="#" class="small"><i class="fa fa-question-circle"></i></a>
                 </strong>
             </div>
+            <div class="table-dropdown" style="display: none;">
+                {{#exportlinks}}
+                    {{#blockactivecourses}}
+                        {{> report_elucidsitereport/exportdropdown }}
+                    {{/blockactivecourses}}
+                {{/exportlinks}}
+            </div>
         </div>
         <div class="panel-body p-0">
             <div class="loader w-full text-center py-100 my-50">
                 {{# pix }} loader, report_elucidsitereport{{/ pix }}
             </div>
             <table class="table w-full d-none">
-                <div class="table-dropdown" style="display: none;">
-                    {{#exportlinks}}
-                        {{#blockactivecourses}}
-                            {{> report_elucidsitereport/exportdropdown }}
-                        {{/blockactivecourses}}
-                    {{/exportlinks}}
-                </div>
                 <thead class="bg-secondary">
                     <tr>
                         <th class="bg-secondary border-bottom-0">
