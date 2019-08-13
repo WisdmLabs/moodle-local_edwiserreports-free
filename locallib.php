@@ -23,6 +23,7 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+require_once($CFG->dirroot . "/cohort/lib.php");
 /**
  * Get Export Link to export data from blocks and individual page
  * @param  [string] $url Url prifix to get export link
@@ -105,4 +106,42 @@ function get_exportlink_array($url, $params) {
             "link" => new moodle_url($url, array_merge(array("type" => "copy"), $params)),
         )
     );
+}
+
+/**
+ * Get Users Filter for filer the data
+ * @return [array] Array of filters
+ */
+function get_userfilters() {
+    $userfilters = new stdClass();
+    $userfilters->cohortfilter = get_cohort_filter();
+    $userfilters->rangeselector = true;
+
+    return $userfilters;
+}
+
+/**
+ * Get Cohort filter Filter for filer the data
+ * @return [array] Array of Cohort filters
+ */
+function get_cohort_filter() {
+    global $DB;
+
+    $syscontext = context_system::instance();
+    $cohorts = cohort_get_cohorts($syscontext->id)["cohorts"];
+    $categories = $DB->get_records_select('course_categories', 'id');
+
+    foreach($categories as $category) {
+        $catcontext = context_coursecat::instance($category->id);
+        $cohorts = array_merge($cohorts, cohort_get_cohorts($catcontext->id)["cohorts"]);
+    }
+
+    if (empty($cohorts)) {
+        return false;
+    }
+    
+    $cohortfilter = new stdClass();
+    $cohortfilter->text = "Cohort";
+    $cohortfilter->values = $cohorts;
+    return $cohortfilter;
 }

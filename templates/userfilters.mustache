@@ -1,0 +1,77 @@
+<div id="wdm-userfilter" class="h-40 my-10">
+    <div class="row">
+        <div class="col-6 d-flex">
+            {{#customfields}}
+            <div class="dropdown px-10">
+                <button type="button" class="btn btn-default dropdown-toggle" id="customfields" data-toggle="dropdown">
+                    {{text}}
+                </button>
+                <div class="dropdown-menu" aria-labelledby="customfields" role="menu">
+                    {{#values}}
+                    <a class="dropdown-item" href="javascript:void(0)" role="menuitem">
+                        {{.}}
+                    </a>
+                    {{/values}}
+                </div>
+            </div>
+            {{/customfields}}
+            {{#customfieldvalue}}
+            <div class="dropdown px-10">
+                <button type="button" class="btn btn-default dropdown-toggle" id="customfields" data-toggle="dropdown">
+                    {{text}}
+                </button>
+                <div class="dropdown-menu" aria-labelledby="customfieldvalue" role="menu">
+                    {{#values}}
+                    <a class="dropdown-item" href="javascript:void(0)" role="menuitem">
+                        {{.}}
+                    </a>
+                    {{/values}}
+                </div>
+            </div>
+            {{/customfieldvalue}}
+        </div>
+        <div class="col-6">
+            <div class="filters d-flex w-full">
+                {{#cohortfilter}}
+                <div class="dropdown ml-auto">
+                    <button type="button" class="btn btn-sm dropdown-toggle input-group-addon" id="cohortfilter" data-toggle="dropdown">
+                        {{text}}
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="cohortfilter" role="menu">
+                        <a class="dropdown-item" href="javascript:void(0)" role="menuitem">
+                            {{#str}} all, report_elucidsitereport {{/str}}
+                        </a>
+                        {{#values}}
+                        <a class="dropdown-item" href="javascript:void(0)" role="menuitem">
+                            {{name}}
+                        </a>
+                        {{/values}}
+                    </div>
+                </div>
+                {{/cohortfilter}}
+                {{#rangeselector}}
+                <div class="dropdown px-5">
+                    <button type="button" class="btn btn-sm dropdown-toggle input-group-addon" data-toggle="dropdown" id="filter-dropdown" aria-expanded="false">
+                        {{#str}} lastweek, report_elucidsitereport {{/str}}
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="filter-dropdown" role="menu">
+                        <div id="activeUser-calendar" class="dropdown-calendar"></div>
+                        <div class="dropdown-body">
+                            <a class="dropdown-item" href="javascript:void(0)" role="menuitem" value="weekly">
+                                {{#str}} lastweek, report_elucidsitereport {{/str}}
+                            </a>
+                            <a class="dropdown-item" href="javascript:void(0)" role="menuitem" value="monthly">
+                                {{#str}} lastmonth, report_elucidsitereport {{/str}}
+                            </a>
+                            <a class="dropdown-item" href="javascript:void(0)" role="menuitem" value="yearly">
+                                {{#str}} lastyear, report_elucidsitereport {{/str}}
+                            </a>
+                            <input class="dropdown-item border-0 custom" id="flatpickrCalender" placeholder="{{#str}} custom, report_elucidsitereport{{/str}}"  data-input/>
+                        </div>
+                    </div>
+                </div>
+                {{/rangeselector}}
+            </div>
+        </div>
+    </div>
+</div>

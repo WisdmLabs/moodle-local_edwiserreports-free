@@ -41,13 +41,13 @@ $pageurl = new moodle_url($CFG->wwwroot . "/report/elucidsitereport/activeusers.
 
 $PAGE->set_context($context);
 $PAGE->set_url($pageurl);
+$PAGE->requires->css('/report/elucidsitereport/styles/flatpickr.min.css');
 
 $activeusers = new \report_elucidsitereport\output\activeusers();
 $activeusersrenderable = new \report_elucidsitereport\output\activeusers_renderable();
 $output = $activeusers->get_renderer()->render($activeusersrenderable);
 
-$PAGE->set_heading(get_string("activeusersheader", "report_elucidsitereport"));
-
 echo $OUTPUT->header();
+echo $OUTPUT->heading(get_string("activeusersheader", "report_elucidsitereport"), 1, "page-title p-5");
 echo $output;
 echo $OUTPUT->footer();

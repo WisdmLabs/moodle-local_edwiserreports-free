@@ -1,43 +1,49 @@
 {{#exportlink}}
-    {{> report_elucidsitereport/exportdropdown }}
+        {{> report_elucidsitereport/exportdropdown }}
 {{/exportlink}}
-<div id="wdm-activeusers-individual" class="table-responsive" data-sesskey="{{sesskey}}">
-    <table class="table admintable d-none">
-        <thead>
-            <th>{{#str}} date, report_elucidsitereport {{/str}}</th>
-            <th>{{#str}} noofactiveusers, report_elucidsitereport {{/str}}</th>
-            <th>{{#str}} noofenrolledusers, report_elucidsitereport {{/str}}</th>
-            <th>{{#str}} noofcompletedusers, report_elucidsitereport {{/str}}</th>
-        </thead>
-        <tbody>
-            {{#activeusers}}
-            <tr>
-                <td>
-                    <span class="d-none">{{filter}}</span>
-                    {{{date}}}
-                </td>
-                <td>
-                    <a href="javascript:void(0)" class="w-full" data-action="activeusers" data-filter="{{filter}}">
-                        {{activeusers}}
-                    </a>
-                </td>
-                <td>
-                	<a href="javascript:void(0)" class="w-full" data-action="enrolments" data-filter="{{filter}}">
-                		{{courseenrolment}}
-                	</a>
-                </td>
-                <td>
-                	<a href="javascript:void(0)" class="w-full" data-action="completions" data-filter="{{filter}}">
-                		{{coursecompletion}}
-                	</a>
-                </td>
-            </tr>
-            {{/activeusers}}
-            {{^activeusers}}
-            <div class="loader w-full text-center pt-100 mt-50">
-                {{# pix }} loader, report_elucidsitereport{{/ pix }}
-            </div>
-            {{/activeusers}}
-        </tbody>
-    </table>
+{{#userfilters}}
+    {{> report_elucidsitereport/userfilters }}
+{{/userfilters}}
+
+<div id="wdm-activeusers-individual" data-sesskey="{{sesskey}}">
+    <div class="table-responsive">
+        <table class="table admintable d-none">
+            <thead>
+                <th>{{#str}} date, report_elucidsitereport {{/str}}</th>
+                <th>{{#str}} noofactiveusers, report_elucidsitereport {{/str}}</th>
+                <th>{{#str}} noofenrolledusers, report_elucidsitereport {{/str}}</th>
+                <th>{{#str}} noofcompletedusers, report_elucidsitereport {{/str}}</th>
+            </thead>
+            <tbody>
+                {{#activeusers}}
+                <tr>
+                    <td>
+                        <span class="d-none">{{filter}}</span>
+                        {{{date}}}
+                    </td>
+                    <td>
+                        <a href="javascript:void(0)" class="w-full" data-action="activeusers" data-filter="{{filter}}">
+                            {{activeusers}}
+                        </a>
+                    </td>
+                    <td>
+                    	<a href="javascript:void(0)" class="w-full" data-action="enrolments" data-filter="{{filter}}">
+                    		{{courseenrolment}}
+                    	</a>
+                    </td>
+                    <td>
+                    	<a href="javascript:void(0)" class="w-full" data-action="completions" data-filter="{{filter}}">
+                    		{{coursecompletion}}
+                    	</a>
+                    </td>
+                </tr>
+                {{/activeusers}}
+                {{^activeusers}}
+                <div class="loader w-full text-center pt-100 mt-50">
+                    {{# pix }} loader, report_elucidsitereport{{/ pix }}
+                </div>
+                {{/activeusers}}
+            </tbody>
+        </table>
+    </div>
 </div>

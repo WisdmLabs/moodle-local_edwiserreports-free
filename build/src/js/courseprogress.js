@@ -42,43 +42,18 @@ define([
                         bLengthChange : false,
                         pageLength : 50,
                         initComplete: function() {
-                            $(dropdownTable).html($(dropdownBody).html());
-                            $(dropdownBody).remove();
                             $(dropdownTable + " .dropdown").show();
                         },
                         columnDefs : [
                             {
-                                "targets": 0
+                                "targets": 0,
+                                "className": "text-left" 
                             },
                             {
-                                "targets": 1,
-                                "className": "text-center",
-                            },
-                            {
-                                "targets": 2,
-                                "className": "text-center",
-                            },
-                            {
-                                "targets": 3,
-                                "className": "text-center",
-                            },
-                            {
-                                "targets": 4,
-                                "className": "text-center",
-                            },
-                            {
-                                "targets": 5,
-                                "className": "text-center",
-                            },
-                            {
-                                "targets": 6,
-                                "className": "text-center",
-                            },
-                            {
-                                "targets": 7,
+                                "targets": "_all",
                                 "className": "text-center",
                             }
-                        ],
+                        ]
                     });
                     $(CourseProgressTable).removeClass("d-none");
                     $(loader).remove();

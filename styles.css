@@ -1,3 +1,7 @@
+.clearfix {
+    clear: both;
+}
+
 #wdm-elucidsitereport table thead tr th {
     font-weight: 700 !important;
     color: unset !important
@@ -46,7 +50,7 @@
     width: 16.67%;
 }
 
-#wdm-elucidsitereport .input-group-addon {
+.input-group-addon {
     font-weight: 300;
     padding: .429rem .729rem;
     color: #76838f;
@@ -56,15 +60,17 @@
     border-radius: 0;
 }
 
-/* Custom Datate Range Selector */
-#wdm-elucidsitereport #activeusersblock .dropdown-menu.withcalendar .dropdown-calendar {
+/* Custom Date Range Selector End*/
+#wdm-elucidsitereport #activeusersblock .dropdown-menu.withcalendar .dropdown-calendar,
+.path-report-elucidsitereport .dropdown-menu.withcalendar .dropdown-calendar {
     height: 300px;
     width: 308px;
     float: left;
     position: relative;
 }
 
-#wdm-elucidsitereport #activeusersblock .dropdown-menu.withcalendar .dropdown-calendar .flatpickr-calendar {
+#wdm-elucidsitereport #activeusersblock .dropdown-menu.withcalendar .dropdown-calendar .flatpickr-calendar,
+.path-report-elucidsitereport .dropdown-menu.withcalendar .dropdown-calendar .flatpickr-calendar {
     top: 0 !important;
     left: 0 !important;
     right: auto !important;
@@ -72,12 +78,32 @@
     border: 0 !important;
 }
 
+#wdm-elucidsitereport #activeusersblock .dropdown-menu .dropdown-body,
+.path-report-elucidsitereport .dropdown-menu .dropdown-body {
+    width: 215px;
+    float: left;
+}
+
+#wdm-elucidsitereport #activeusersblock .dropdown-body .dropdown-item,
+.path-report-elucidsitereport .dropdown-body .dropdown-item {
+    cursor: pointer;
+}
+
+#wdm-elucidsitereport .dropdown-menu.dropdown-menu-right,
+.path-report-elucidsitereport .dropdown-menu.dropdown-menu-right {
+    right: 0;
+    left: auto;
+}
+/* Custom Date Range Selector End*/
+
 /* Media query for dashboard page */
 @media only screen and (min-width: 600px) {
-    #wdm-elucidsitereport #activeusersblock .dropdown-menu.withcalendar {
+    #wdm-elucidsitereport #activeusersblock .dropdown-menu.withcalendar,
+    .path-report-elucidsitereport .dropdown-menu.withcalendar{
         width: 530px !important;
     }
-    #wdm-elucidsitereport #activeusersblock .dropdown-menu .dropdown-body {
+    #wdm-elucidsitereport #activeusersblock .dropdown-menu .dropdown-body,
+    .path-report-elucidsitereport .dropdown-menu .dropdown-body {
         float: right !important;
     }
     #wdm-elucidsitereport #activeusersblock .panel-header {
@@ -88,7 +114,8 @@
     #wdm-elucidsitereport #mostactivecourses .panel-header .dropdown,
     #wdm-elucidsitereport #certificatestatsblock .panel-header .dropdown,
     #wdm-elucidsitereport #f2fsessionsblock .panel-header .dropdown,
-    #wdm-elucidsitereport #lpstatsblock .panel-header .dropdown {
+    #wdm-elucidsitereport #lpstatsblock .panel-header .dropdown,
+    .path-report-elucidsitereport .export-dropdown.dropdown {
         position: absolute;
         top: 0;
         right: 0;
@@ -97,8 +124,9 @@
     #wdm-elucidsitereport #mostactivecourses .panel-header,
     #wdm-elucidsitereport #certificatestatsblock .panel-header,
     #wdm-elucidsitereport #f2fsessionsblock .panel-header,
-    #wdm-elucidsitereport #lpstatsblock .panel-header {
-        margin-right: 65px;
+    #wdm-elucidsitereport #lpstatsblock .panel-header,
+    .path-report-elucidsitereport .page-title {
+        margin-right: 50px;
     }
     #wdm-elucidsitereport #courseprogressblock .panel-header .dropdown,
     #wdm-elucidsitereport #mostactivecourses .panel-header .dropdown,
@@ -107,14 +135,13 @@
     #wdm-elucidsitereport #lpstatsblock .panel-header .dropdown {
         margin-top: 20px;
     }
+    .path-report-elucidsitereport #page-header {
+        padding: 0 !important;
+    }
 }
 
-#wdm-elucidsitereport #activeusersblock .dropdown-menu .dropdown-body {
-    width: 215px;
-    float: left;
-}
-#wdm-elucidsitereport #activeusersblock .dropdown-body .dropdown-item {
-    cursor: pointer;
+#export-dropdown.dropdown-toggle:after {
+    display: none;
 }
 
 
@@ -242,11 +269,6 @@
 
 /* Bootstrap Ended*/
 
-#wdm-elucidsitereport .dropdown-menu.dropdown-menu-right {
-    right: 0;
-    left: auto;
-}
-
 @-webkit-keyframes rotating /* Safari and Chrome */ {
   from {
     -webkit-transform: rotate(0deg);
@@ -315,7 +337,13 @@
     text-align: center;
 }
 
+#wdm-activeusers-individual .table-responsive>div.dataTables_wrapper>div.row,
 #wdm-courseprogress-individual.table-responsive>div.dataTables_wrapper>div.row,
 #wdm-courseengage-individual.table-responsive>div.dataTables_wrapper>div.row {
     overflow: scroll;
+}
+
+.path-report-elucidsitereport  [role="main"],
+.path-admin-report-elucidsitereport [role="main"] {
+    position: relative;
 }
