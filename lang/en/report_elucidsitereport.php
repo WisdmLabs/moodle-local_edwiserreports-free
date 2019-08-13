@@ -36,7 +36,7 @@ $string['courseprogress'] = 'Course Progress';
 $string['courseengagement'] = 'Course Engagement';
 $string['coursereports'] = 'Course Reports';
 $string['more'] = '<i class="fa fa-angle-right"></i> More';
-$string['mostactiveusersheader'] = 'Most Active Courses based on Enrollment, Visits and Completions';
+$string['mostactiveusersheader'] = 'Popular Courses';
 $string['f2fsessionsheader'] = 'Instructor-Led Sessions';
 $string['certificatestats'] = 'Certificates Stats';
 $string['lpstatsheader'] = 'Learning Program Stats';
