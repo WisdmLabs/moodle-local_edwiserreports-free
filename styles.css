@@ -122,7 +122,9 @@
 .path-report-elucidsitereport table.dataTable tr,
 .path-admin-report-elucidsitereport table.dataTable tr,
 .path-report-elucidsitereport table.dataTable tr td,
-.path-admin-report-elucidsitereport table.dataTable tr td {
+.path-admin-report-elucidsitereport table.dataTable tr td,
+.path-admin-report-elucidsitereport table.dataTable tr.odd td.sorting_1,
+.path-report-elucidsitereport table.dataTable tr td.sorting_1 {
     background-color: unset;
 }
 

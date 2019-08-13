@@ -41,8 +41,8 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
                     } else {
                         cell.innerHTML = i+1;
                     }
-                    $(cell).addClass("bg-secondary font-weight-bold")
                 });
+                $(table + " td:not(.bg-secondary)").addClass("bg-white");
             }).draw();
 
 
@@ -71,7 +71,7 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
                 columnDefs: [
                     {
                         "targets": 0,
-                        "className": "text-center",
+                        "className": "text-center bg-secondary font-weight-bold",
                         "orderable": false
                     },
                     {
@@ -80,15 +80,7 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
                         "orderable": false
                     },
                     {
-                        "targets": 2,
-                        "className": "text-center",
-                    },
-                    {
-                        "targets": 3,
-                        "className": "text-center",
-                    },
-                    {
-                        "targets": 4,
+                        "targets": "_all",
                         "className": "text-center",
                     }
                 ],
