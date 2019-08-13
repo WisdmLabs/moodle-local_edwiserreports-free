@@ -63,10 +63,10 @@ class active_users_block extends utility {
         $response = new stdClass();
         $response->data = new stdClass();
         self::set_global_values_for_graph($filter);
-        $response->data->activeUsers    = self::get_active_users($filter);
-        $response->data->enrolments     = self::get_enrolments($filter);
+        $response->data->activeUsers = self::get_active_users($filter);
+        $response->data->enrolments = self::get_enrolments($filter);
         $response->data->completionRate = self::get_course_completionrate($filter);
-        $response->labels               = self::$labels;
+        $response->labels = self::$labels;
         return $response;
     }
 
@@ -212,14 +212,14 @@ class active_users_block extends utility {
         $activeusers = array();
         for ($i = self::$xlabelcount; $i > 0; $i--) {
             if (!isset($endtime)) {
-                $endtime   = self::$timenow;
+                $endtime = self::$timenow;
                 $starttime = strtotime('today midnight');
             } else {
-                $endtime   = $starttime;
+                $endtime = $starttime;
                 $starttime = $endtime-self::$oneday;
             }
 
-            $labels[]      = date("d M y", $starttime);
+            $labels[] = date("d M y", $starttime);
             $activeusers[] = count($DB->get_records_sql($sql, array('\core\event\user_loggedin', $starttime, $endtime)));
         }
         self::$labels = array_reverse($labels);
@@ -315,12 +315,12 @@ class active_users_block extends utility {
                     $dates = explode(" to ", $filter);
                     if (count($dates) == 2) {
                         $startdate = strtotime($dates[0]." 00:00:00");
-                        $enddate   = strtotime($dates[1]." 23:59:59");
+                        $enddate = strtotime($dates[1]." 23:59:59");
                     }
 
                     if ($startdate && $enddate) {
                         self::$xlabelcount = ceil($enddate-$startdate)/self::$oneday;
-                        self::$timenow     = $enddate;
+                        self::$timenow = $enddate;
                     } else {
                         self::$xlabelcount = 7;
                     }

@@ -78,7 +78,7 @@ class courseanalytics_block extends utility {
 
             $userinfo = array();
             $userinfo[] = fullname($user);
-            if (!empty($uservisits)) {
+            if (empty($uservisits)) {
                 $userinfo[] = get_string("never");
             } else {
                 $timecreated = array_values($uservisits)[0]->timecreated;

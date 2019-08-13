@@ -16,12 +16,19 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
         var refreshBtn        = panelTitle + " .refresh";
         var exportUrlLink     = panel + " .dropdown-menu[aria-labelledby='export-dropdown'] .dropdown-item";
         var filter            = null;
+        var dropdownInput     = panelTitle + " input.form-control.input";
 
         /* Custom Dropdown hide and show */
         $(document).ready(function() {
             /* Show custom dropdown */
             $(dropdownToggle).on("click", function() {
                 $(dropdownMenu).addClass("show");
+            });
+
+            /* Added Custom Value in Dropdown */
+            $(dropdownInput).ready(function() {
+                var placeholder = $(dropdownInput).attr("placeholder");
+                $(dropdownInput).val(placeholder);
             });
 
             /* Hide dropdown when click anywhere in the screen */
@@ -39,6 +46,8 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
                 $(dropdownButton).html($(this).text());
                 defaultConfig.changeExportUrl(filter, exportUrlLink);
                 getActiveUsersBlockData(filter);
+                $(flatpickrCalender).val("Custom");
+                $(dropdownInput).val("Custom");
             });
 
             /* Refresh when click on the refresh button */
@@ -74,6 +83,7 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
         /* After Select Custom date get active users details */
         function selectedCustomDate() {
             filter = $(flatpickrCalender).val();
+            var date = $(dropdownInput).val();
 
             /* If correct date is not selected then return false */
             if (!filter.includes("to")) {
@@ -81,7 +91,7 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
             }
 
             defaultConfig.changeExportUrl(filter, exportUrlLink);
-            $(dropdownButton).html(filter);
+            $(dropdownButton).html(date);
             $(flatpickrCalender).val("");
             getActiveUsersBlockData(filter);
         }
