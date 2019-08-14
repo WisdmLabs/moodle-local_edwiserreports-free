@@ -1,39 +1,46 @@
+{{#exportlink}}
+    {{> report_elucidsitereport/exportdropdown }}
+{{/exportlink}}
+{{#userfilters}}
+    {{> report_elucidsitereport/userfilters }}
+{{/userfilters}}
+
 <div id="wdm-f2fsessions-individual" data-sesskey="{{sesskey}}">
-    <div class="table-reponsive">
-        <div class="loader w-full text-center pt-100 mt-50" style="min-height: 250px;">
+    <div class="table-reponsive overflow-scroll">
+        <div class="loader w-full text-center py-100 my-50">
             {{# pix }} loader, report_elucidsitereport{{/ pix }}
         </div>
-        <table id="f2fsessionstable" class="table dataTable no-footer" style="display: none;">
+        <table id="f2fsessionstable" class="table dataTable no-footer clickable" style="display: none;">
             <thead>
                 <tr>
-                    <th class="header">
+                    <th class="text-nowrap">
                         {{#str}} date, report_elucidsitereport {{/str}}
                     </th>
-                    <th class="header">
+                    <th class="text-nowrap">
                         {{#str}} time, report_elucidsitereport {{/str}}
                     </th>
-                    <th class="header">
+                    <th class="text-nowrap">
                         {{#str}} name, report_elucidsitereport{{/str}}
                     </th>
-                    <th class="header">
+                    <th class="text-nowrap">
                         {{#str}} course, report_elucidsitereport {{/str}}
                     </th>
-                    <th class="header">
+                    <th class="text-nowrap">
                         {{#str}} venue, report_elucidsitereport {{/str}}
                     </th>
-                    <th class="header">
+                    <th class="text-nowrap">
                         {{#str}} signups, report_elucidsitereport {{/str}}
                     </th>
-                    <th class="header">
+                    <th class="text-nowrap">
                         {{#str}} confirmed, report_elucidsitereport {{/str}}
                     </th>
-                    <th class="header">
+                    <th class="text-nowrap">
                         {{#str}} attendees, report_elucidsitereport {{/str}}
                     </th>
-                    <th class="header">
+                    <th class="text-nowrap">
                         {{#str}} waitlist, report_elucidsitereport {{/str}}
                     </th>
-                    <th class="header">
+                    <th class="text-nowrap">
                         {{#str}} declined, report_elucidsitereport {{/str}}
                     </th>
                 </tr>
@@ -41,7 +48,7 @@
             <tbody>
                 {{#f2fmodules}}
                 {{#sessions}}
-                <tr data-toggle="collapse" data-target="#accordion-{{sessionid}}" class="clickable">
+                <tr class="text-nowrap" data-toggle="collapse" data-target="#accordion-{{sessionid}}" class="clickable">
                     <td>
                         <i class="icon accordion-arrow fa fa-angle-right text-center"></i>
                         {{date}}
@@ -57,18 +64,18 @@
                     <td class="text-center">{{declined}}</td>
                 </tr>
                 <tr>
-                    <td class="border-0 collapse-td py-0 pl-30">
+                    <td class="border-0 collapse-td py-0 pl-30" colspan="10">
                         <div  id="accordion-{{sessionid}}" class="collapse">
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th class="header">
+                                        <th class="text-nowrap">
                                             {{#str}} username, report_elucidsitereport {{/str}}
                                         </th>
-                                        <th class="header">
+                                        <th class="text-nowrap">
                                             {{#str}} status, report_elucidsitereport {{/str}}
                                         </th>
-                                        <th class="header">
+                                        <th class="text-nowrap">
                                             {{#str}} reason, report_elucidsitereport {{/str}}
                                         </th>
                                     </tr>

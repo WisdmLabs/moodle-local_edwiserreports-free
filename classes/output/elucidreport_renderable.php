@@ -174,6 +174,8 @@ class f2fsessions_renderable implements renderable, templatable {
         $output->sesskey = sesskey();
         $downloadurl = $CFG->wwwroot."/report/elucidsitereport/download.php";
         $output->exportlink = get_exportlinks($downloadurl, "report", "f2fsession", "1");
+        $output->userfilters = get_userfilters(false, true, false);
+        $output->backurl = new moodle_url($CFG->wwwroot."/report/elucidsitereport/index.php");
         return $output;
     }
 }

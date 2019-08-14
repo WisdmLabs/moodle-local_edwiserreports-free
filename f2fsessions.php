@@ -45,8 +45,7 @@ $f2fsessions = new \report_elucidsitereport\output\f2fsessions();
 $f2fsessionsrenderable = new \report_elucidsitereport\output\f2fsessions_renderable();
 $output = $f2fsessions->get_renderer()->render($f2fsessionsrenderable);
 
-$PAGE->set_heading(get_string("f2fsessionsheader", "report_elucidsitereport"));
-
 echo $OUTPUT->header();
+echo $OUTPUT->heading(get_string("f2fsessionsheader", "report_elucidsitereport"), 1, "page-title p-5 mb-10");
 echo $output;
 echo $OUTPUT->footer();
