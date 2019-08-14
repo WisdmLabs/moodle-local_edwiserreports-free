@@ -58,7 +58,13 @@ class utility {
         } else {
             $filter = 'weekly'; // Default filter
         }
-        return \report_elucidsitereport\active_users_block::get_data($filter);
+
+        if (isset($data->cohortid)) {
+            $cohortid = $data->cohortid;
+        } else {
+            $cohortid = 0; // Default Cohort ID
+        }
+        return \report_elucidsitereport\active_users_block::get_data($filter, $cohortid);
     }
 
     public static function get_course_progress_data($data) {

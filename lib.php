@@ -58,13 +58,14 @@ function has_plugin($plugintype, $puginname) {
 function report_elucidsitereport_output_fragment_userslist($args) {
     $response = null;
     $page = clean_param($args["page"], PARAM_TEXT);
+    $cohortid = clean_param($args["cohortid"], PARAM_TEXT);
 
     switch ($page) {
         case "activeusers":
             $filter = clean_param($args['filter'], PARAM_TEXT);
             $action = clean_param($args['action'], PARAM_TEXT);
 
-            $response = \report_elucidsitereport\active_users_block::get_userslist_table($filter, $action);
+            $response = \report_elucidsitereport\active_users_block::get_userslist_table($filter, $action, $cohortid);
             break;
 
         case "courseprogress":

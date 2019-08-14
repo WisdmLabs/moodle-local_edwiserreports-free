@@ -57,15 +57,15 @@ class active_users_block extends utility {
      * @param  string $filter date filter to get data
      * @return stdClass active users graph data
      */
-    public static function get_data($filter) {
+    public static function get_data($filter, $cohortid) {
         self::$timenow = time();
 
         $response = new stdClass();
         $response->data = new stdClass();
         self::set_global_values_for_graph($filter);
-        $response->data->activeUsers = self::get_active_users($filter);
-        $response->data->enrolments = self::get_enrolments($filter);
-        $response->data->completionRate = self::get_course_completionrate($filter);
+        $response->data->activeUsers = self::get_active_users($filter, $cohortid);
+        $response->data->enrolments = self::get_enrolments($filter, $cohortid);
+        $response->data->completionRate = self::get_course_completionrate($filter, $cohortid);
         $response->labels = self::$labels;
         return $response;
     }
@@ -102,11 +102,12 @@ class active_users_block extends utility {
 
     /**
      * Create users list table for active users block
-     * @param $filter [string] Time filter to get users for this day
-     * @param $action [string] Get users list for this action
+     * @param [string] $filter Time filter to get users for this day
+     * @param [string] $action Get users list for this action
+     * @param [int] $cohortid Get users list for this action
      * @return [array] Array of users data fields (Full Name, Email)
      */
-    public static function get_userslist_table($filter, $action) {
+    public static function get_userslist_table($filter, $action, $cohortid) {
         $table = new html_table();
         $table->head = array(
             get_string("fullname", "report_elucidsitereport"),
@@ -115,7 +116,7 @@ class active_users_block extends utility {
         $table->attributes = array (
             "class" => "generaltable modal-table"
         );
-        $data = self::get_userslist($filter, $action);
+        $data = self::get_userslist($filter, $action, $cohortid);
 
         if (empty($data)) {
             $notavail = get_string("usersnotavailable", "report_elucidsitereport");
@@ -135,49 +136,38 @@ class active_users_block extends utility {
     
     /**
      * Get users list data for active users block
-     * @param $filter [string] Time filter to get users for this day
-     * @param $action [string] Get users list for this action
+     * @param [string] $filter Time filter to get users for this day
+     * @param [string] $action Get users list for this action
+     * @param [int] $cohortid Cohort Id
      * @return [string] HTML table string of users list
      * Columns are (Full Name, Email)
      */
-    public static function get_userslist($filter, $action) {
+    public static function get_userslist($filter, $action, $cohortid) {
         global $DB;
-        $sql = "SELECT DISTINCT userid
-                FROM {logstore_standard_log}
-                WHERE eventname = ?
-                AND timecreated > ?
-                AND timecreated <= ?";
+        
         $params = array();
+        if ($cohortid) {
+            $params["cohortid"] = $cohortid;
+        }
 
         switch($action) {
             case "activeusers":
-                $params = array(
-                    '\core\event\user_loggedin',
-                    $filter,
-                    $filter + self::$oneday
-                );
+                $params["eventname"] = '\core\event\user_loggedin';
                 break;
             case "enrolments":
-                $params = array(
-                    '\core\event\user_enrolment_created',
-                    $filter,
-                    $filter + self::$oneday
-                );
-                break;
-            case "completions":
-                $sql = "SELECT userid, course
-                    FROM {course_completions}
-                    WHERE timecompleted > ?
-                    AND timecompleted <= ?" ;
-                $params = array(
-                    $filter,
-                    $filter + self::$oneday
-                );
+                $params["eventname"] = '\core\event\user_enrolment_created';
                 break;
         }
 
+        $sql = self::get_sql_query($action, $filter, $cohortid);
+        $params["starttime"] = $filter;
+        $params["endtime"] = $filter + self::$oneday;
+
         $data = array();
         $records = $DB->get_records_sql($sql, $params);
+var_dump($records);
+var_dump($sql);
+var_dump($params); die;
         if (!empty($records)) {
             foreach ($records as $record) {
                 $user = core_user::get_user($record->userid);
@@ -196,32 +186,40 @@ class active_users_block extends utility {
 
     /**
      * Get all active users
-     * @param string $filter apply filter duration
+     * @param [string] $filter Duration String
+     * @param [int] $cohortid Cohort ID
      * @return array Array of all active users based
      */
-    public static function get_active_users($filter) {
+    public static function get_active_users($filter, $cohortid) {
         global $DB;
 
-        $sql = "SELECT DISTINCT userid
-                FROM {logstore_standard_log}
-                WHERE eventname = ?
-                AND timecreated > ?
-                AND timecreated <= ?";
+        $params = array(
+            "eventname" => '\core\event\user_loggedin'
+        );
 
-        $labels      = array();
+        $sql = self::get_sql_query("activeusers", $filter, $cohortid);
+        if ($cohortid) {
+            $params["cohortid"] = $cohortid;
+        }
+
+        $labels = array();
         $activeusers = array();
         for ($i = self::$xlabelcount; $i > 0; $i--) {
-            if (!isset($endtime)) {
-                $endtime = self::$timenow;
-                $starttime = strtotime('today midnight');
+            if (!isset($params["endtime"])) {
+                $params["endtime"] = self::$timenow;
+                $params["starttime"] = strtotime('today midnight');
             } else {
-                $endtime = $starttime;
-                $starttime = $endtime-self::$oneday;
+                $params["endtime"] = $params["starttime"];
+                $params["starttime"] = $params["starttime"] - self::$oneday;
             }
 
-            $labels[] = date("d M y", $starttime);
-            $activeusers[] = count($DB->get_records_sql($sql, array('\core\event\user_loggedin', $starttime, $endtime)));
+            $labels[] = date("d M y", $params["starttime"]);
+            $users = $DB->get_records_sql($sql, $params);
+            $activeusers[] = count($users);
         }
+
+        /* Reverse the array because the graph take
+        value from left to right */
         self::$labels = array_reverse($labels);
         return array_reverse($activeusers);
     }
@@ -231,26 +229,29 @@ class active_users_block extends utility {
      * @param string $filter apply filter duration
      * @return array Array of all active users based
      */
-    public static function get_enrolments($filter) {
+    public static function get_enrolments($filter, $cohortid) {
         global $DB;
 
-        $sql = "SELECT DISTINCT userid
-                FROM {logstore_standard_log}
-                WHERE eventname = ?
-                AND timecreated > ?
-                AND timecreated <= ?";
+        $params = array(
+            "eventname" => '\core\event\user_enrolment_created'
+        );
+
+        $sql = self::get_sql_query("enrolments", $filter, $cohortid);
+        if ($cohortid) {
+            $params["cohortid"] = $cohortid;
+        }
 
         $enrolments = array();
         for ($i = self::$xlabelcount; $i > 0; $i--) {
-            if (!isset($endtime)) {
-                $endtime   = self::$timenow;
-                $starttime = strtotime('today midnight');
+            if (!isset($params["endtime"])) {
+                $params["endtime"] = self::$timenow;
+                $params["starttime"] = strtotime('today midnight');
             } else {
-                $endtime   = $starttime;
-                $starttime = $endtime-self::$oneday;
+                $params["endtime"] = $params["starttime"];
+                $params["starttime"] = $params["starttime"] - self::$oneday;
             }
 
-            $enrolments[] = count($DB->get_records_sql($sql, array('\core\event\user_enrolment_created', $starttime, $endtime)));
+            $enrolments[] = count($DB->get_records_sql($sql, $params));
         }
         return array_reverse($enrolments);
     }
@@ -260,31 +261,33 @@ class active_users_block extends utility {
      * @param string $filter apply filter duration
      * @return array Array of all active users based
      */
-    public static function get_course_completionrate($filter) {
+    public static function get_course_completionrate($filter, $cohortid) {
         global $DB;
 
-        $sql = "SELECT DISTINCT userid
-                FROM {course_completions}
-                WHERE timecompleted > ?
-                AND timecompleted <= ?";
+        $params = array();
+        $sql = self::get_sql_query("completions", $filter, $cohortid);
+        if ($cohortid) {
+            $params["cohortid"] = $cohortid;
+        }
 
         $completionrate = array();
         for ($i = self::$xlabelcount; $i > 0; $i--) {
-            if (!isset($endtime)) {
-                $endtime   = self::$timenow;
-                $starttime = strtotime('today midnight');
+            if (!isset($params["endtime"])) {
+                $params["endtime"] = self::$timenow;
+                $params["starttime"] = strtotime('today midnight');
             } else {
-                $endtime   = $starttime;
-                $starttime = $endtime-self::$oneday;
+                $params["endtime"] = $params["starttime"];
+                $params["starttime"] = $params["starttime"] - self::$oneday;
             }
 
-            $completionrate[] = count($DB->get_records_sql($sql, array($starttime, $endtime)));
+            $completionrate[] = count($DB->get_records_sql($sql, $params));
         }
         return array_reverse($completionrate);
     }
 
     /**
      * Set all global values from graph
+     * @param [string] $filter Range selector
      */
     public static function set_global_values_for_graph($filter) {
         global $DB;
@@ -392,5 +395,59 @@ class active_users_block extends utility {
             $usersdata[] = $user;
         }
         return $usersdata;
+    }
+
+    /**
+     * Get sql for active users data
+     * @param [string] $action Action to perform
+     * @param [string] $filter Date range selector
+     * @param [int] $cohortid Cohort Id
+     * @return [string] String of sql to get data
+     */
+    public static function get_sql_query($action, $filter, $cohortid) {
+        $sql = '';
+        switch($action) {
+            case "activeusers":
+            case "enrolments":
+                /* If cohort filter is added then get
+                only cohort members */
+                if ($cohortid) {
+                    $params["cohortid"] = $cohortid;
+                    $sql = "SELECT DISTINCT l.userid
+                        FROM {logstore_standard_log} l
+                        JOIN {cohort_members} cm
+                        ON l.userid = cm.userid
+                        WHERE cm.cohortid = :cohortid
+                        AND l.eventname = :eventname
+                        AND l.timecreated > :starttime
+                        AND l.timecreated <= :endtime";
+                } else {
+                    $sql = "SELECT DISTINCT userid
+                        FROM {logstore_standard_log}
+                        WHERE eventname = :eventname
+                        AND timecreated > :starttime
+                        AND timecreated <= :endtime";
+                }
+                break;
+            case "completions":
+                /* If cohort filter is added then get
+                only cohort members */
+                if ($cohortid) {
+                    $params["cohortid"] = $cohortid;
+                    $sql = "SELECT DISTINCT cc.userid, cc.course
+                        FROM {course_completions} cc
+                        JOIN {cohort_members} cm
+                        ON cc.userid = cm.userid
+                        WHERE cm.cohortid = :cohortid
+                        AND cc.timecompleted > :starttime
+                        AND cc.timecompleted <= :endtime";
+                } else {
+                    $sql = "SELECT DISTINCT userid, course
+                        FROM {course_completions}
+                        WHERE timecompleted > :starttime
+                        AND timecompleted <= :endtime";
+                }
+        }
+        return $sql;
     }
 }
