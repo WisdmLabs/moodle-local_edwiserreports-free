@@ -9,60 +9,35 @@ define([
     'report_elucidsitereport/dataTables.bootstrap4'
 ], function($, ModalFactory, ModalEvents, Fragment, Templates, V) {
     function init(CONTEXTID) {
+        var PageId = "#wdm-courseprogress-individual";
+        var CourseProgressTable = PageId + " .table";
+        var loader = PageId + " .loader";
+        var ModalTrigger = CourseProgressTable + " a";
+        var dropdownBody = ".table-dropdown";
+        var dropdownTable = PageId + " .dataTables_wrapper .row:first-child > div:first-child";
+        var datatable = null;
+
+        // Varibales for cohort filter
+        var cohortFilterBtn   = "#cohortfilter";
+        var cohortFilterItem  = cohortFilterBtn + " ~ .dropdown-menu .dropdown-item";
+        var cohortId = 0;
+        var sesskey = null;
+
         $(document).ready(function() {
-            var PageId = "#wdm-courseprogress-individual";
-            var CourseProgressTable = PageId + " .table";
-            var loader = PageId + " .loader";
-            var ModalTrigger = CourseProgressTable + " a";
-            var dropdownBody = ".table-dropdown";
-            var dropdownTable = PageId + " .dataTables_wrapper .row:first-child > div:first-child";
+            generateCourseProgressTable(cohortId);
 
-            $.ajax({
-                url: V.requestUrl,
-                data: {
-                    action: 'get_courseprogress_graph_data_ajax',
-                    sesskey: $(PageId).data("sesskey"),
-                    data: JSON.stringify({
-                        courseid : "all"
-                    })
-                },
-            }).done(function(response) {
-                var context = {
-                    courseprogress : response
-                };
-
-                Templates.render('report_elucidsitereport/courseprogress', context)
-                .then(function(html, js) {
-                    Templates.replaceNode(PageId, html, js);
-                }).fail(function(ex) {
-                    console.log(ex);
-                }).always(function() {
-                    $(CourseProgressTable).DataTable({
-                        order : [[0, 'desc']],
-                        bLengthChange : false,
-                        pageLength : 50,
-                        initComplete: function() {
-                            $(dropdownTable + " .dropdown").show();
-                        },
-                        columnDefs : [
-                            {
-                                "targets": 0,
-                                "className": "text-left" 
-                            },
-                            {
-                                "targets": "_all",
-                                "className": "text-center",
-                            }
-                        ]
-                    });
-                    $(CourseProgressTable).removeClass("d-none");
-                    $(loader).remove();
-                });
-            }).fail(function(error) {
-                console.log(error);
+            /* Select cohort filter for active users block */
+            $(document).on('click', cohortFilterItem, function() {
+                if (datatable) {
+                    datatable.destroy();
+                    $(CourseProgressTable).hide();
+                    $(loader).show();   
+                }
+                cohortId = $(this).data('cohortid');
+                $(cohortFilterBtn).html($(this).text());
+                generateCourseProgressTable(cohortId);
             });
 
-            // $('#wdm-activeusers-individual .table').DataTable();
             $(document).on('click', ModalTrigger, function() {
                 var minval = $(this).data("minvalue");
                 var maxval = $(this).data("maxvalue");
@@ -92,6 +67,57 @@ define([
                 });
             });
         });
+
+        // Generate course progress table 
+        function generateCourseProgressTable(cohortId) {
+            sesskey = $(PageId).data("sesskey");
+            $.ajax({
+                url: V.requestUrl,
+                data: {
+                    action: 'get_courseprogress_graph_data_ajax',
+                    sesskey: sesskey,
+                    data: JSON.stringify({
+                        courseid : "all",
+                        cohortid : cohortId
+                    })
+                },
+            }).done(function(response) {
+                var context = {
+                    courseprogress : response,
+                    sesskey : sesskey
+                };
+
+                Templates.render('report_elucidsitereport/courseprogress', context)
+                .then(function(html, js) {
+                    Templates.replaceNode(PageId, html, js);
+                }).fail(function(ex) {
+                    console.log(ex);
+                }).always(function() {
+                    datatable = $(CourseProgressTable).DataTable({
+                        order : [[0, 'desc']],
+                        bLengthChange : false,
+                        pageLength : 50,
+                        initComplete: function() {
+                            $(dropdownTable + " .dropdown").show();
+                        },
+                        columnDefs : [
+                            {
+                                "targets": 0,
+                                "className": "text-left" 
+                            },
+                            {
+                                "targets": "_all",
+                                "className": "text-center",
+                            }
+                        ]
+                    });
+                    $(CourseProgressTable).show();
+                    $(loader).hide();
+                });
+            }).fail(function(error) {
+                console.log(error);
+            });
+        }
     }
 
     return {

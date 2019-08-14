@@ -55,8 +55,6 @@ define([
                 cohortId = $(this).data('cohortid');
                 $(cohortFilterBtn).html($(this).text());
                 createActiveUsersTable(filter, cohortId);
-                $(flatpickrCalender).val("Custom");
-                $(dropdownInput).val("Custom");
             });
 
             /* Select filter for active users block */

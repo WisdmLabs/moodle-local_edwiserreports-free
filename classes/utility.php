@@ -69,7 +69,7 @@ class utility {
 
     public static function get_course_progress_data($data) {
         if ($data->courseid == "all") {
-            return \report_elucidsitereport\course_progress_block::get_courselist();
+            return \report_elucidsitereport\course_progress_block::get_courselist($data->cohortid);
         }
         return \report_elucidsitereport\course_progress_block::get_data($data->courseid);
     }

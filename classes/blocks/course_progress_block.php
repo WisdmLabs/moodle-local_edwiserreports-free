@@ -24,6 +24,7 @@
  */
 
 namespace report_elucidsitereport;
+
 use stdClass;
 use context_course;
 use completion_info;
@@ -32,6 +33,8 @@ use html_writer;
 use html_table_cell;
 use html_table_row;
 use core_user;
+
+require_once($CFG->dirroot . "/cohort/lib.php");
 
 /**
  * Class Course Progress Block
@@ -79,14 +82,14 @@ class course_progress_block extends utility {
      * @param [int] $courseid Course Id
      * @return [array] Array of course completion info
      */
-    public static function get_data($courseid) {
+    public static function get_data($courseid, $cohortid = 0) {
         $course = get_course($courseid);
         $coursecontext = context_course::instance($courseid);
         // Get only students
         $enrolledstudents = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
 
         $response = new stdClass();
-        $response->data = self::get_completion_with_percentage($course, $enrolledstudents);
+        $response->data = self::get_completion_with_percentage($course, $enrolledstudents, $cohortid);
         return $response;
     }
 
@@ -97,8 +100,17 @@ class course_progress_block extends utility {
      * @param [object] $users Users Object
      * @return [array] Array of completion with percentage
      */
-    public static function get_completion_with_percentage($course, $users) {
+    public static function get_completion_with_percentage($course, $users, $cohortid) {
         foreach ($users as $user) {
+
+            /* If cohort filter is there then get only users from cohort */
+            if ($cohortid) {
+                $cohorts = cohort_get_user_cohorts($user->id);
+                if (!array_key_exists($cohortid, $cohorts)) {
+                    continue;
+                }
+            }
+
             $completion = self::get_course_completion_info($course, $user->id);
             $progressper = $completion["progresspercentage"];
             switch (true) {
@@ -154,12 +166,17 @@ class course_progress_block extends utility {
         return $header;
     }
 
-    public static function get_courselist() {
+    /**
+     * Get Course List
+     * @param [int] $cohort ID
+     * @return [object] Object of course list
+     */
+    public static function get_courselist($cohortid) {
         $courses = \report_elucidsitereport\utility::get_courses(true);
 
         $response = array();
         foreach ($courses as $course) {
-            $coursedata = self::get_data($course->id);
+            $coursedata = self::get_data($course->id, $cohortid);
             foreach ($coursedata->data as $key => $data) {
                 foreach(self::$completed as $compkey => $complete) {
                     if ($key == $complete["index"]) {
@@ -171,6 +188,16 @@ class course_progress_block extends utility {
 
             $coursecontext = context_course::instance($course->id);
             $enrolledstudents = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+
+            if($cohortid) {
+                foreach($enrolledstudents as $key => $user) {
+                    $cohorts = cohort_get_user_cohorts($user->id);
+                    if (!array_key_exists($cohortid, $cohorts)) {
+                        unset($enrolledstudents[$key]);
+                    }
+                }
+            }
+
             $course->enrolments = count($enrolledstudents);
             $response[] = $course;
         }

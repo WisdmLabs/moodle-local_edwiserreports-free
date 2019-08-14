@@ -4,7 +4,10 @@
     {{/exportlink}}
 </div>
 <div id="wdm-courseprogress-individual" class="table-responsive" data-sesskey="{{sesskey}}">
-    <table class="table admintable d-none">
+    <div class="loader w-full text-center pt-100 mt-50">
+        {{# pix }} loader, report_elucidsitereport{{/ pix }}
+    </div>
+    <table class="table admintable" style="display: none;">
         <thead>
             <th class="text-nowrap">
                 {{#str}} coursename, report_elucidsitereport {{/str}}
@@ -73,11 +76,6 @@
                     </a>
                 </td>
             </tr>
-            {{/courseprogress}}
-            {{^courseprogress}}
-            <div class="loader w-full text-center pt-100 mt-50">
-                {{# pix }} loader, report_elucidsitereport{{/ pix }}
-            </div>
             {{/courseprogress}}
         </tbody>
     </table>
