@@ -110,12 +110,21 @@ function get_exportlink_array($url, $params) {
 
 /**
  * Get Users Filter for filer the data
+ * @param [boolean] $customfields Custom Fields
+ * @param [boolean] $cohortfilter Cohort Filters
+ * @param [boolean] $rangeselector Range Selector
  * @return [array] Array of filters
  */
-function get_userfilters() {
+function get_userfilters($customfields, $cohortfilter, $rangeselector) {
     $userfilters = new stdClass();
-    $userfilters->cohortfilter = get_cohort_filter();
-    $userfilters->rangeselector = true;
+
+    if ($cohortfilter) {
+        $userfilters->cohortfilter = get_cohort_filter();
+    }
+
+    if ($rangeselector) {
+        $userfilters->rangeselector = true;
+    }
 
     return $userfilters;
 }
