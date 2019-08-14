@@ -19,10 +19,15 @@ define([
         var dropdownItem      = dropdownMenu + " .dropdown-item";
         var flatpickrCalender = "#flatpickrCalender";
         var dropdownButton    = "button#filter-dropdown";
-        var filter            = 'all';
+        var filter            = 'weekly';
+        var cohortId          = 0;
         var dropdownInput     = "#wdm-userfilter input.form-control.input";
         var sesskey           = null;
         var DataTable         = null;
+
+        // Varibales for cohort filter
+        var cohortFilterBtn   = "#cohortfilter";
+        var cohortFilterItem  = cohortFilterBtn + " ~ .dropdown-menu .dropdown-item";
         // var tableDom = '<"row"f><"row"t><"row"<"d-none"i><p>>';
 
         $(document).ready(function() {
@@ -45,12 +50,21 @@ define([
                 }
             });
 
+            /* Select cohort filter for active users block */
+            $(cohortFilterItem).on('click', function() {
+                cohortId = $(this).data('cohortid');
+                $(cohortFilterBtn).html($(this).text());
+                createActiveUsersTable(filter, cohortId);
+                $(flatpickrCalender).val("Custom");
+                $(dropdownInput).val("Custom");
+            });
+
             /* Select filter for active users block */
             $(dropdownItem + ":not(.custom)").on('click', function() {
                 filter = $(this).attr('value');
                 $(dropdownMenu).removeClass('show');
                 $(dropdownButton).html($(this).text());
-                createActiveUsersTable(filter);
+                createActiveUsersTable(filter, cohortId);
                 $(flatpickrCalender).val("Custom");
                 $(dropdownInput).val("Custom");
             });
@@ -87,6 +101,7 @@ define([
                         {
                             page : 'activeusers',
                             filter : filter,
+                            cohortid : cohortId,
                             action : action
                         }
                     )
@@ -133,11 +148,11 @@ define([
 
             $(dropdownButton).html(date);
             $(flatpickrCalender).val("");
-            createActiveUsersTable(filter);
+            createActiveUsersTable(filter, cohortId);
         }
 
         /* Create Active Users Table */
-        function createActiveUsersTable(filter) {
+        function createActiveUsersTable(filter, cohortId) {
             sesskey = $(PageId).data("sesskey");
 
             if (DataTable) {
@@ -152,7 +167,8 @@ define([
                     action: 'get_activeusers_graph_data_ajax',
                     sesskey: sesskey,
                     data: JSON.stringify({
-                        filter : filter
+                        filter : filter,
+                        cohortid : cohortId
                     })
                 },
             }).done(function(response) {
