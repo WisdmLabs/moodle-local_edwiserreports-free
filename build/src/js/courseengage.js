@@ -9,32 +9,32 @@ define([
     'report_elucidsitereport/dataTables.bootstrap4'
 ], function($, ModalFactory, ModalEvents, Fragment, Templates, V) {
     function init(CONTEXTID) {
-        $(document).ready(function() {
-            var PageId = "#wdm-courseengage-individual";
-            var CourseEngageTable = PageId + " .table";
-            var loader = PageId + " .loader";
-            var sesskey = $(PageId).data("sesskey");
-            var url = V.requestUrl + '?action=get_courseengage_data_ajax&sesskey=' + sesskey;
-            var CourseEngageUsers = CourseEngageTable + " a.modal-trigger";
+        var PageId = "#wdm-courseengage-individual";
+        var CourseEngageTable = PageId + " .table";
+        var loader = PageId + " .loader";
+        var sesskey = $(PageId).data("sesskey");
+        var url = V.requestUrl + '?action=get_courseengage_data_ajax&sesskey=' + sesskey;
+        var CourseEngageUsers = CourseEngageTable + " a.modal-trigger";
+        var datatable = null;
 
-            $(CourseEngageTable).DataTable( {
-                ajax : url,
-                columns : [
-                    { "data": "coursename" },
-                    { "data": "enrolment" },
-                    { "data": "visited" },
-                    { "data": "activitystart" },
-                    { "data": "completedhalf" },
-                    { "data": "coursecompleted" }
-                ],
-                columnDefs: [
-                    { className: "text-left", targets: 0 },
-                    { className: "text-center modal-trigger", targets: "_all" }
-                ],
-                initComplete: function() {
-                    console.log(loader);
-                    $(loader).hide();
+        // Varibales for cohort filter
+        var cohortFilterBtn   = "#cohortfilter";
+        var cohortFilterItem  = cohortFilterBtn + " ~ .dropdown-menu .dropdown-item";
+        var cohortId = 0;
+
+        $(document).ready(function() {
+            createCourseEngageTable(cohortId);
+
+            /* Select cohort filter for active users block */
+            $(document).on('click', cohortFilterItem, function() {
+                if (datatable) {
+                    datatable.destroy();
+                    $(CourseEngageTable).hide();
+                    $(loader).show();   
                 }
+                cohortId = $(this).data('cohortid');
+                $(cohortFilterBtn).html($(this).text());
+                createCourseEngageTable(cohortId);
             });
 
             $(document).on('click', CourseEngageUsers, function() {
@@ -51,7 +51,8 @@ define([
                         {
                             page : 'courseengage',
                             courseid : courseid,
-                            action : action
+                            action : action,
+                            cohortid : cohortId
                         }
                     )
                 }).then(function(modal) {
@@ -64,6 +65,29 @@ define([
                 });
             });
         });
+
+        function createCourseEngageTable(cohortId) {
+            console.log(url + "&cohortid=" + cohortId);
+            datatable = $(CourseEngageTable).DataTable( {
+                ajax : url + "&cohortid=" + cohortId,
+                columns : [
+                    { "data": "coursename" },
+                    { "data": "enrolment" },
+                    { "data": "visited" },
+                    { "data": "activitystart" },
+                    { "data": "completedhalf" },
+                    { "data": "coursecompleted" }
+                ],
+                columnDefs: [
+                    { className: "text-left", targets: 0 },
+                    { className: "text-center modal-trigger", targets: "_all" }
+                ],
+                initComplete: function() {
+                    $(CourseEngageTable).show();
+                    $(loader).hide();
+                }
+            });
+        }
     }
 
     return {

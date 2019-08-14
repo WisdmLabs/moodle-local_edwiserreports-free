@@ -55,6 +55,7 @@ define([
                             courseid : courseid,
                             minval : minval,
                             maxval : maxval,
+                            cohortid : cohortId
                         }
                     )
                 }).then(function(modal) {
