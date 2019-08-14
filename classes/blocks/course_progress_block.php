@@ -210,7 +210,7 @@ class course_progress_block extends utility {
      * @param [int] $minval Minimum Progress Value
      * @param [int] $maxval Maximum Progress Value
      */
-    public static function get_userslist_table($courseid, $minval, $maxval) {
+    public static function get_userslist_table($courseid, $minval, $maxval, $cohortid) {
 
         $table = new html_table();
         $table->head = array(
@@ -219,7 +219,7 @@ class course_progress_block extends utility {
         );
         $table->attributes["class"] = "generaltable modal-table";
 
-        $data = self::get_userslist($courseid, $minval, $maxval);
+        $data = self::get_userslist($courseid, $minval, $maxval, $cohortid);
         if (empty($data)) {
             $notavail = get_string("nousersavailable", "report_elucidsitereport");
             $emptycell = new html_table_cell($notavail);
@@ -243,13 +243,21 @@ class course_progress_block extends utility {
      * @param [int] $maxval Maximum Progress Value
      * @return [array] Users Data Array
      */
-    public static function get_userslist($courseid, $minval, $maxval) {
+    public static function get_userslist($courseid, $minval, $maxval, $cohortid) {
         $course = get_course($courseid);
         $coursecontext = context_course::instance($courseid);
         $enrolledstudents = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
 
         $usersdata = array();
         foreach ($enrolledstudents as $enrolleduser) {
+            /* If cohort filter is there then get only users from cohort */
+            if ($cohortid) {
+                $cohorts = cohort_get_user_cohorts($enrolleduser->id);
+                if (!array_key_exists($cohortid, $cohorts)) {
+                    continue;
+                }
+            }
+
             $completion = self::get_course_completion_info($course, $enrolleduser->id);
             $progressper = $completion["progresspercentage"];
             if ($progressper > $minval && $progressper <= $maxval) {

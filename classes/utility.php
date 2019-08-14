@@ -32,20 +32,21 @@ use progress;
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once $CFG->dirroot . "/completion/classes/progress.php";
-require_once $CFG->dirroot . "/report/elucidsitereport/classes/blocks/active_users_block.php";
-require_once $CFG->dirroot . "/report/elucidsitereport/classes/blocks/active_courses_block.php";
-require_once $CFG->dirroot . "/report/elucidsitereport/classes/blocks/course_progress_block.php";
-require_once $CFG->dirroot . "/report/elucidsitereport/classes/blocks/f2fsession_block.php";
-require_once $CFG->dirroot . "/report/elucidsitereport/classes/blocks/certificates_block.php";
-require_once $CFG->dirroot . "/report/elucidsitereport/classes/blocks/liveusers_block.php";
-require_once $CFG->dirroot . "/report/elucidsitereport/classes/blocks/siteaccess_block.php";
-require_once $CFG->dirroot . "/report/elucidsitereport/classes/blocks/todaysactivity_block.php";
-require_once $CFG->dirroot . "/report/elucidsitereport/classes/blocks/lpstats_block.php";
-require_once $CFG->dirroot . "/report/elucidsitereport/classes/blocks/inactiveusers_block.php";
-require_once $CFG->dirroot . "/report/elucidsitereport/classes/blocks/courseengage_block.php";
-require_once $CFG->dirroot . "/report/elucidsitereport/classes/blocks/completion_block.php";
-require_once $CFG->dirroot . "/report/elucidsitereport/classes/blocks/courseanalytics_block.php";
+require_once($CFG->dirroot . "/completion/classes/progress.php");
+require_once($CFG->dirroot . "/cohort/lib.php");
+require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/active_users_block.php");
+require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/active_courses_block.php");
+require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/course_progress_block.php");
+require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/f2fsession_block.php");
+require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/certificates_block.php");
+require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/liveusers_block.php");
+require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/siteaccess_block.php");
+require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/todaysactivity_block.php");
+require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/lpstats_block.php");
+require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/inactiveusers_block.php");
+require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/courseengage_block.php");
+require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/completion_block.php");
+require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/courseanalytics_block.php");
 
 /**
  * Utilty class to add all utility function
@@ -105,8 +106,8 @@ class utility {
         return \report_elucidsitereport\lpstats_block::get_data($data->lpid);
     }
 
-    public static function get_courseengage_data($data) {
-        return \report_elucidsitereport\courseengage_block::get_data();
+    public static function get_courseengage_data($cohortid) {
+        return \report_elucidsitereport\courseengage_block::get_data($cohortid);
     }
 
     public static function get_inactiveusers_data($data) {
@@ -262,13 +263,31 @@ class utility {
      * @param [int] $courseid Course ID to get all visits
      * @return [array] Array of Users ID who visited the course
      */
-    public static function get_course_visites($courseid) {
+    public static function get_course_visites($courseid, $cohortid) {
         global $DB;
 
-        $sql = "SELECT DISTINCT userid
-            FROM {logstore_standard_log}
-            WHERE action = ? AND courseid = ?";
-        $records = $DB->get_records_sql($sql, array('viewed', $courseid));
+        $params = array(
+            "courseid" => $courseid,
+            "action" => "viewes"
+        );
+
+        if ($cohortid) {
+            $params["cohortid"] = "cohortid";
+            $sql = "SELECT DISTINCT l.userid
+                FROM {logstore_standard_log} l
+                JOIN {cohort_members} cm
+                ON l.userid = cm.userid
+                WHERE cm.cohortid = :cohortid
+                AND l.action = :action
+                AND l.courseid = :courseid";
+        } else {
+            $sql = "SELECT DISTINCT userid
+                FROM {logstore_standard_log}
+                WHERE action = :action
+                AND courseid = :courseid";
+        }
+
+        $records = $DB->get_records_sql($sql, $params);
 
         return $records;
     }
@@ -279,10 +298,18 @@ class utility {
      * @param [array] $users Enrolled Users
      * @return [array] Array of Users ID who have completed a activity 
      */
-    public static function users_completed_a_module($course, $users) {
+    public static function users_completed_a_module($course, $users, $cohortid) {
         $record = array();
 
         foreach($users as $user) {
+            /* If cohort filter is there then get only users from cohort */
+            if ($cohortid) {
+                $cohorts = cohort_get_user_cohorts($user->id);
+                if (!array_key_exists($cohortid, $cohorts)) {
+                    continue;
+                }
+            }
+
             $completion = self::get_course_completion_info($course, $user->id);
             if ($completion["completedactivities"] > 0) {
                 $records[] = $user;
@@ -298,9 +325,17 @@ class utility {
      * @param [array] $users Enrolled Users
      * @return [array] Array of Users ID who have completed half activities 
      */
-    public static function users_completed_half_modules($course, $users) {
+    public static function users_completed_half_modules($course, $users, $cohortid) {
         $record = array();
         foreach($users as $user) {
+            /* If cohort filter is there then get only users from cohort */
+            if ($cohortid) {
+                $cohorts = cohort_get_user_cohorts($user->id);
+                if (!array_key_exists($cohortid, $cohorts)) {
+                    continue;
+                }
+            }
+
             $completion = self::get_course_completion_info($course, $user->id);
             if ($completion["progresspercentage"] > 50) {
                 $records[] = $user;
@@ -316,9 +351,17 @@ class utility {
      * @param [array] $users Enrolled Users
      * @return [array] Array of Users ID who have completed all activities 
      */
-    public static function users_completed_all_module($course, $users) {
+    public static function users_completed_all_module($course, $users, $cohortid) {
         $record = array();
         foreach($users as $user) {
+            /* If cohort filter is there then get only users from cohort */
+            if ($cohortid) {
+                $cohorts = cohort_get_user_cohorts($user->id);
+                if (!array_key_exists($cohortid, $cohorts)) {
+                    continue;
+                }
+            }
+
             $completion = self::get_course_completion_info($course, $user->id);
             if ($completion["progresspercentage"] == 100) {
                 $records[] = $user;

@@ -44,9 +44,9 @@ class courseengage_block extends utility {
      * @return [object] Information about the course engage
      * block
      */
-    public static function get_data() {
+    public static function get_data($cohortid) {
         $response = new stdClass();
-        $response->data = self::get_courseengage($lpid);
+        $response->data = self::get_courseengage($cohortid);
 
         return $response;
     }
@@ -55,11 +55,11 @@ class courseengage_block extends utility {
      * Get Course Engagement Data
      * @return [array] Array of course engagement
      */
-    public static function get_courseengage() {
+    public static function get_courseengage($cohortid) {
         $engagedata = array();
         $courses = self::get_courses(true);
         foreach($courses as $course) {
-            $engagedata[] = self::get_engagement($course);
+            $engagedata[] = self::get_engagement($course, $cohortid);
         }
         return $engagedata;
     }
@@ -69,11 +69,21 @@ class courseengage_block extends utility {
      * @param [int] $courseid Courese ID to get course engagement
      * @return [object] 
      */
-    public static function get_engagement($course) {
+    public static function get_engagement($course, $cohortid) {
         global $DB;
 
         $coursecontext = context_course::instance($course->id);
         $enrolledstudents = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+
+        /* If cohort filter is there then select only cohort users */
+        if($cohortid) {
+            foreach($enrolledstudents as $key => $user) {
+                $cohorts = cohort_get_user_cohorts($user->id);
+                if (!array_key_exists($cohortid, $cohorts)) {
+                    unset($enrolledstudents[$key]);
+                }
+            }
+        }
 
         $engagement = new stdClass();
         $engagement->coursename = $course->fullname;
@@ -85,22 +95,22 @@ class courseengage_block extends utility {
         $engagement->visited = self::get_engagement_attr(
             "visited",
             $course,
-            count(self::get_course_visites($course->id))
+            count(self::get_course_visites($course->id, $cohortid))
         );
         $engagement->activitystart = self::get_engagement_attr(
             "activitystart",
             $course,
-            count(self::users_completed_a_module($course, $enrolledstudents))
+            count(self::users_completed_a_module($course, $enrolledstudents, $cohortid))
         );
         $engagement->completedhalf = self::get_engagement_attr(
             "completedhalf",
             $course,
-            count(self::users_completed_half_modules($course, $enrolledstudents))
+            count(self::users_completed_half_modules($course, $enrolledstudents, $cohortid))
         );
         $engagement->coursecompleted = self::get_engagement_attr(
             "coursecompleted",
             $course,
-            count(self::users_completed_all_module($course, $enrolledstudents))
+            count(self::users_completed_all_module($course, $enrolledstudents, $cohortid))
         );
         return $engagement;
     }
@@ -127,12 +137,12 @@ class courseengage_block extends utility {
      * @param [string] $action Action for users list
      * @return [string] HTML table of users list
      */
-    public static function get_userslist_table($courseid, $action) {
+    public static function get_userslist_table($courseid, $action, $cohortid) {
         $table = new html_table();
         $table->attributes = array (
             "class" => "generaltable modal-table"
         );
-        $data = self::get_userslist($courseid, $action);
+        $data = self::get_userslist($courseid, $action, $cohortid);
 
         $table->head = $data->head;
         if (empty($data->data)) {
@@ -157,26 +167,26 @@ class courseengage_block extends utility {
      * @param [string] $action Action to get Users Data
      * @return [array] Users Data Array
      */
-    public static function get_userslist($courseid, $action) {
+    public static function get_userslist($courseid, $action, $cohortid) {
         $course = get_course($courseid);
 
         switch($action) {
             case "enrolment":
-                $usersdata = self::get_enrolled_users($course);
+                $usersdata = self::get_enrolled_users($course, $cohortid);
                 ;
                 break;
             case "visited":
-                $usersdata = self::get_visited_users($course);
+                $usersdata = self::get_visited_users($course, $cohortid);
                 ;
                 break;
             case "activitystart":
-                $usersdata = self::get_users_started_an_activity($course);
+                $usersdata = self::get_users_started_an_activity($course, $cohortid);
                 break;
             case "completedhalf":
-                $usersdata = self::get_users_completed_half_courses($course);
+                $usersdata = self::get_users_completed_half_courses($course, $cohortid);
                 break;
             case "coursecompleted":
-                $usersdata = self::get_users_completed_courses($course);
+                $usersdata = self::get_users_completed_courses($course, $cohortid);
                 break;
         }
         return $usersdata;
@@ -187,7 +197,7 @@ class courseengage_block extends utility {
      * @param [object] $course Course Object
      * @return [array] Array of users list
      */
-    public static function get_enrolled_users($course) {
+    public static function get_enrolled_users($course, $cohortid) {
         $coursecontext = context_course::instance($course->id);
         $users = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
 
@@ -199,6 +209,14 @@ class courseengage_block extends utility {
 
         $userdata->data = array();
         foreach($users as $user) {
+            /* If cohort filter is there then get only users from cohort */
+            if ($cohortid) {
+                $cohorts = cohort_get_user_cohorts($user->id);
+                if (!array_key_exists($cohortid, $cohorts)) {
+                    continue;
+                }
+            }
+
             $usresdata->data[] = array(
                 fullname($user),
                 $user->email,
@@ -212,7 +230,7 @@ class courseengage_block extends utility {
      * @param [object] $course Course Object
      * @return [array] Array of users list
      */
-    public static function get_visited_users($course) {
+    public static function get_visited_users($course, $cohortid) {
         $users = self::get_course_visites($course->id);
         $usersdata = new stdClass();
         $userdata->head = array(
@@ -222,6 +240,14 @@ class courseengage_block extends utility {
 
         $userdata->data = array();
         foreach($users as $user) {
+            /* If cohort filter is there then get only users from cohort */
+            if ($cohortid) {
+                $cohorts = cohort_get_user_cohorts($user->id);
+                if (!array_key_exists($cohortid, $cohorts)) {
+                    continue;
+                }
+            }
+
             $user = core_user::get_user($user->userid);
             $userdata->data[] = array(
                 fullname($user),
@@ -236,10 +262,10 @@ class courseengage_block extends utility {
      * @param [object] $course Course Object
      * @return [array] Array of users list
      */
-    public static function get_users_started_an_activity($course) {
+    public static function get_users_started_an_activity($course, $cohortid) {
         $coursecontext = context_course::instance($course->id);
         $enrolledusers = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
-        $users = self::users_completed_a_module($course, $enrolledusers);
+        $users = self::users_completed_a_module($course, $enrolledusers, $cohortid);
 
         $usersdata = new stdClass();
         $userdata->head = array(
@@ -249,6 +275,14 @@ class courseengage_block extends utility {
 
         $userdata->data = array();
         foreach($users as $user) {
+            /* If cohort filter is there then get only users from cohort */
+            if ($cohortid) {
+                $cohorts = cohort_get_user_cohorts($user->id);
+                if (!array_key_exists($cohortid, $cohorts)) {
+                    continue;
+                }
+            }
+
             $userdata->data[] = array(
                 fullname($user),
                 $user->email,
@@ -262,10 +296,10 @@ class courseengage_block extends utility {
      * @param [object] $course Course Object
      * @return [array] Array of users list
      */
-    public static function get_users_completed_half_courses($course) {
+    public static function get_users_completed_half_courses($course, $cohortid) {
         $coursecontext = context_course::instance($course->id);
         $enrolledusers = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
-        $users = self::users_completed_half_modules($course, $enrolledusers);
+        $users = self::users_completed_half_modules($course, $enrolledusers, $cohortid);
 
         $usersdata = new stdClass();
         $userdata->head = array(
@@ -275,6 +309,14 @@ class courseengage_block extends utility {
 
         $userdata->data = array();
         foreach($users as $user) {
+            /* If cohort filter is there then get only users from cohort */
+            if ($cohortid) {
+                $cohorts = cohort_get_user_cohorts($user->id);
+                if (!array_key_exists($cohortid, $cohorts)) {
+                    continue;
+                }
+            }
+
             $userdata->data[] = array(
                 fullname($user),
                 $user->email,
@@ -288,10 +330,10 @@ class courseengage_block extends utility {
      * @param [object] $course Course Object
      * @return [array] Array of users list
      */
-    public static function get_users_completed_courses($course) {
+    public static function get_users_completed_courses($course, $cohortid) {
         $coursecontext = context_course::instance($course->id);
         $enrolledusers = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
-        $users = self::users_completed_all_module($course, $enrolledusers);
+        $users = self::users_completed_all_module($course, $enrolledusers, $cohortid);
 
         $usersdata = new stdClass();
         $userdata->head = array(
@@ -301,6 +343,14 @@ class courseengage_block extends utility {
 
         $userdata->data = array();
         foreach($users as $user) {
+            /* If cohort filter is there then get only users from cohort */
+            if ($cohortid) {
+                $cohorts = cohort_get_user_cohorts($user->id);
+                if (!array_key_exists($cohortid, $cohorts)) {
+                    continue;
+                }
+            }
+
             $userdata->data[] = array(
                 fullname($user),
                 $user->email,
