@@ -347,3 +347,9 @@
 .path-admin-report-elucidsitereport [role="main"] {
     position: relative;
 }
+
+/* Back button for reports */
+#wdm_reportback_buttons {
+    top: 0;
+    left: 0;
+}

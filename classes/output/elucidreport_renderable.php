@@ -106,6 +106,7 @@ class activeusers_renderable implements renderable, templatable {
         $downloadurl = $CFG->wwwroot."/report/elucidsitereport/download.php";
         $output->exportlink = get_exportlinks($downloadurl, "report", "activeusers", "all");
         $output->userfilters = get_userfilters();
+        $output->backurl = new moodle_url($CFG->wwwroot."/report/elucidsitereport/index.php");
         return $output;
     }
 }
