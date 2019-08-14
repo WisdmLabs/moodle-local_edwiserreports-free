@@ -339,7 +339,8 @@
 
 #wdm-activeusers-individual .table-responsive>div.dataTables_wrapper>div.row,
 #wdm-courseprogress-individual.table-responsive>div.dataTables_wrapper>div.row,
-#wdm-courseengage-individual.table-responsive>div.dataTables_wrapper>div.row {
+#wdm-courseengage-individual.table-responsive>div.dataTables_wrapper>div.row,
+#wdm-lpstats-individual.table-responsive>div.dataTables_wrapper>div.row {
     overflow: scroll;
 }
 

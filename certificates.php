@@ -48,6 +48,6 @@ $certificatesrenderable = new \report_elucidsitereport\output\certificates_rende
 $output = $certificates->get_renderer()->render($certificatesrenderable);
 
 echo $OUTPUT->header();
-echo $OUTPUT->heading(get_string("certificatestats", "report_elucidsitereport"), 1, "page-title p-5");
+echo $OUTPUT->heading(get_string("certificatestats", "report_elucidsitereport"), 1, "page-title p-5 mb-10");
 echo $output;
 echo $OUTPUT->footer();

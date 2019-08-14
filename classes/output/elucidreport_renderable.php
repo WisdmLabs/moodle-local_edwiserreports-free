@@ -189,11 +189,15 @@ class lpstats_renderable implements renderable, templatable {
      * @return stdClass|array
      */
     public function export_for_template(renderer_base $output) {
-        global $DB;
+        global $CFG, $DB;
 
         $output = new stdClass();
         $output->sesskey = sesskey();
         $output->lps = \report_elucidsitereport\utility::get_lps();
+        $downloadurl = $CFG->wwwroot."/report/elucidsitereport/download.php";
+        $output->exportlink = get_exportlinks($downloadurl, "report", "lpstats", "1");
+        $output->userfilters = get_userfilters(false, true, false);
+        $output->backurl = new moodle_url($CFG->wwwroot."/report/elucidsitereport/index.php");
         return $output;
     }
 }
