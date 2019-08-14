@@ -1,3 +1,10 @@
+{{#userfilters}}
+    {{> report_elucidsitereport/userfilters }}
+{{/userfilters}}
+{{#exportlink}}
+    {{> report_elucidsitereport/exportdropdown }}
+{{/exportlink}}
+
 <div id="wdm-certificates-individual" class="table-responsive" data-sesskey="{{sesskey}}">
     <div class="d-flex">
         <div class="px-0 py-20 pull-left">
@@ -8,9 +15,6 @@
             </select>
         </div>
         <div class="px-0 py-20 ml-auto">
-            {{#exportlink}}
-                {{> report_elucidsitereport/exportdropdown }}
-            {{/exportlink}}
         </div>
     </div>
     <div class="loader w-full text-center pt-100 mt-50">

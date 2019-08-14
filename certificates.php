@@ -47,8 +47,7 @@ $certificates = new \report_elucidsitereport\output\certificates();
 $certificatesrenderable = new \report_elucidsitereport\output\certificates_renderable();
 $output = $certificates->get_renderer()->render($certificatesrenderable);
 
-$PAGE->set_heading(get_string("certificatestats", "report_elucidsitereport"));
-
 echo $OUTPUT->header();
+echo $OUTPUT->heading(get_string("certificatestats", "report_elucidsitereport"), 1, "page-title p-5");
 echo $output;
 echo $OUTPUT->footer();
