@@ -33,6 +33,12 @@
 
 require_once $CFG->dirroot."/report/elucidsitereport/classes/blocks/active_users_block.php";
 
+/**
+ * If the moodle has plugin then return true
+ * @param [string] $plugintype Plugin Type
+ * @param [string] $pluginname Plugin Name
+ * @return [boolean] True|False based on plugin exist
+ */
 function has_plugin($plugintype, $puginname) {
     $plugins = \core_plugin_manager::instance()->get_plugins_of_type($plugintype);
 
@@ -43,6 +49,12 @@ function has_plugin($plugintype, $puginname) {
     return false;
 }
 
+
+/**
+ * Get Users List Fragments for diffrent pages
+ * @param [array] $args Array of arguments
+ * @return [string] HTML table
+ */
 function report_elucidsitereport_output_fragment_userslist($args) {
     $response = null;
     $page = clean_param($args["page"], PARAM_TEXT);
@@ -73,6 +85,11 @@ function report_elucidsitereport_output_fragment_userslist($args) {
     return $response;
 }
 
+/**
+ * Get Learning Program stats fragment
+ * @param [array] $args Array of arguments
+ * @return [string] HTML table
+ */
 function report_elucidsitereport_output_fragment_lpstats($args) {
     global $DB;
     $lpid = clean_param($args["lpid"], PARAM_TEXT);
