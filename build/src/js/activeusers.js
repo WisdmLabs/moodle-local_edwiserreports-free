@@ -22,6 +22,7 @@ define([
         var filter            = 'all';
         var dropdownInput     = "#wdm-userfilter input.form-control.input";
         var sesskey           = null;
+        var DataTable         = null;
         // var tableDom = '<"row"f><"row"t><"row"<"d-none"i><p>>';
 
         $(document).ready(function() {
@@ -139,6 +140,12 @@ define([
         function createActiveUsersTable(filter) {
             sesskey = $(PageId).data("sesskey");
 
+            if (DataTable) {
+                DataTable.destroy();
+                $(ActiveUsersTable).hide();
+                $(loader).show();
+            }
+
             $.ajax({
                 url: V.requestUrl,
                 data: {
@@ -172,10 +179,9 @@ define([
                 }).fail(function(ex) {
                     console.log(ex);
                 }).always(function() {
-                    $(ActiveUsersTable).DataTable({
+                    DataTable = $(ActiveUsersTable).DataTable({
                         responsive: true,
                         order : [[0, 'desc']],
-                        // dom: tableDom,
                         columnDefs: [
                             {
                                 "targets": 0,
@@ -190,8 +196,8 @@ define([
                         bLengthChange : false,
 
                     });
-                    $(ActiveUsersTable).removeClass("d-none");
-                    $(loader).remove();
+                    $(ActiveUsersTable).show();
+                    $(loader).hide();
                 });
             }).fail(function(error) {
                 console.log(error);
