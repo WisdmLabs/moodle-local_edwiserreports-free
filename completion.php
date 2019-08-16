@@ -27,12 +27,13 @@ namespace report_elucidsitereport;
 
 use context_course;
 use moodle_url;
+use context_helper;
 
 require_once(__DIR__ . '/../../config.php');
 require_once('classes/output/elucidreport_renderer.php');
 require_once('classes/output/elucidreport_renderable.php');
 
-require_login();
+// require_login();
 
 $courseid = required_param("courseid", PARAM_INT);
 $coursecontext = context_course::instance($courseid);
@@ -46,14 +47,15 @@ $PAGE->set_context($coursecontext);
 $PAGE->set_url($pageurl);
 $PAGE->requires->js_call_amd('report_elucidsitereport/completion', 'init', array($coursecontext->id));
 
+$course = get_course($courseid);
+require_login($course);
+
 $completion = new \report_elucidsitereport\output\completion();
 $completionrenderable = new \report_elucidsitereport\output\completion_renderable();
 $output = $completion->get_renderer()->render($completionrenderable);
 
-$course = get_course($courseid);
-
 echo $OUTPUT->header();
 echo create_back_button($CFG->wwwroot . "/report/elucidsitereport/");
-echo $OUTPUT->heading(get_string("completionheader", "report_elucidsitereport"));
+echo $OUTPUT->heading(get_string("completionheader", "report_elucidsitereport"), 1 , "page-title py-5 mb-10");
 echo $output;
 echo $OUTPUT->footer();

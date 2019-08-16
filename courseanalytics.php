@@ -46,14 +46,15 @@ $PAGE->set_context($coursecontext);
 $PAGE->set_url($pageurl);
 $PAGE->requires->js_call_amd('report_elucidsitereport/courseanalytics', 'init', array($coursecontext->id));
 
+$course = get_course($courseid);
+require_login($course);
+
 $courseanalytics = new \report_elucidsitereport\output\courseanalytics();
 $courseanalyticsrenderable = new \report_elucidsitereport\output\courseanalytics_renderable();
 $output = $courseanalytics->get_renderer()->render($courseanalyticsrenderable);
 
-$course = get_course($courseid);
-
 echo $OUTPUT->header();
 echo create_back_button($CFG->wwwroot . "/report/elucidsitereport/");
-echo $OUTPUT->heading($course->fullname . ": " . get_string("courseanalyticsheader", "report_elucidsitereport"));
+echo $OUTPUT->heading($course->fullname . ": " . get_string("courseanalyticsheader", "report_elucidsitereport"), 1 , "page-title py-5 mb-10");
 echo $output;
 echo $OUTPUT->footer();

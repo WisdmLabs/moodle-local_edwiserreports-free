@@ -147,7 +147,9 @@ $string['coursecompleted'] = "Course Completed";
 $string['nousersavailable'] = "No Users Available";
 
 /* Course Completion Page */
-$string['completionheader'] = "Course Completion";
+$string['completionheader'] = "Course Completion Reports";
+$string['completionreports'] = "Completion Reports";
+$string['activitycompletion'] = "Activity Completion";
 $string['completionpercantage'] = "Completion Percentage";
 $string['activitycompleted'] = '{$a->completed} out of {$a->total}';
 

@@ -181,3 +181,19 @@ function create_back_button($backurl) {
     );
     return $html;
 }
+
+/**
+ * If the moodle has plugin then return true
+ * @param [string] $plugintype Plugin Type
+ * @param [string] $pluginname Plugin Name
+ * @return [boolean] True|False based on plugin exist
+ */
+function has_plugin($plugintype, $puginname) {
+    $plugins = \core_plugin_manager::instance()->get_plugins_of_type($plugintype);
+
+    if (array_key_exists($puginname, $plugins)) {
+        return true;
+    }
+
+    return false;
+}
