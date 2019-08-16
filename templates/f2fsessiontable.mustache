@@ -11,10 +11,19 @@
         <tbody>
             {{#f2fmodules}}
             <tr data-toggle="collapse" data-target="#accordion-{{id}}" class="clickable">
-                <td><i class="icon fa fa-angle-right text-center"></i>{{name}}</td>
-                <td>{{coursename}}</td>
-                <td>{{overallsignups}}</td>
-                <td data-value="1" class="footable-last-column">{{overallattendend}}</td>
+                <td>
+                    {{name}}
+                </td>
+                <td>
+                    {{coursename}}
+                </td>
+                <td>
+                    {{overallsignups}}
+                </td>
+                <td data-value="1" class="footable-last-column">
+                    {{overallattendend}}
+                    <i class="icon accordion-arrow pull-right fa fa-angle-left text-center"></i>
+                </td>
             </tr>
             <tr>
                 <td class="border-0 py-0 pl-30" colspan="4">

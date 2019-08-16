@@ -40,14 +40,16 @@
 }
 /* DataTables Custom CSS End */
 
+/* Accordion transition on click event Start */
 .path-admin-report-elucidsitereport .accordion-arrow.icon,
 .path-report-elucidsitereport .accordion-arrow.icon {
     transition: all 350ms ease-in-out;
 }
 .path-admin-report-elucidsitereport tr[aria-expanded="true"] .accordion-arrow.icon,
 .path-report-elucidsitereport tr[aria-expanded="true"] .accordion-arrow.icon {
-    transform: rotate(90deg);
+    transform: rotate(-90deg);
 }
+/* Accordion transition on click event End */
 
 #wdm-elucidsitereport #accessinfograph table#accessinfotable tbody tr td {
     border-width: 3px;

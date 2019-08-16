@@ -49,10 +49,7 @@
                 {{#f2fmodules}}
                 {{#sessions}}
                 <tr class="text-nowrap" data-toggle="collapse" data-target="#accordion-{{sessionid}}" class="clickable">
-                    <td>
-                        <i class="icon accordion-arrow fa fa-angle-right text-center"></i>
-                        {{date}}
-                    </td>
+                    <td>{{date}}</td>
                     <td>{{time}}</td>
                     <td>{{name}}</td>
                     <td>{{coursename}}</td>
@@ -61,7 +58,10 @@
                     <td class="text-center">{{confirmed}}</td>
                     <td class="text-center">{{attendend}}</td>
                     <td class="text-center">{{waitlisted}}</td>
-                    <td class="text-center">{{declined}}</td>
+                    <td class="text-center">
+                        <i class="icon accordion-arrow pull-right fa fa-angle-left my-5"></i>
+                        {{declined}}
+                    </td>
                 </tr>
                 <tr>
                     <td class="border-0 collapse-td py-0 pl-30" colspan="10">
