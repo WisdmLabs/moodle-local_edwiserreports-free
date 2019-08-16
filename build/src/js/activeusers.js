@@ -81,15 +81,14 @@ define([
                 var ModalRoot = null;
 
                 if (action == "activeusers") {
-                    title = "Active Users in ";
+                    title = "Active Users on ";
                 } else if (action == "enrolments") {
-                    title = "Enroled Users in ";
+                    title = "Enroled Users on ";
                 } else if (action == "completions") {
-                    title = "Completed Users in ";
+                    title = "Completed Users on ";
                 }
-
                 var titleDate = new Date(eval(filter*1000));
-                title += titleDate.toLocaleString().split(',')[0];
+                title += V.formatDate(titleDate, "d MMMM yyyy");
 
                 ModalFactory.create({
                     body: Fragment.loadFragment(

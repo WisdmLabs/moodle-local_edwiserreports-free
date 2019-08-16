@@ -165,9 +165,6 @@ class active_users_block extends utility {
 
         $data = array();
         $records = $DB->get_records_sql($sql, $params);
-var_dump($records);
-var_dump($sql);
-var_dump($params); die;
         if (!empty($records)) {
             foreach ($records as $record) {
                 $user = core_user::get_user($record->userid);
