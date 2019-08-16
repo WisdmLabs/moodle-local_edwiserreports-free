@@ -41,7 +41,9 @@
 #wdm-activeusers-individual .table-responsive>div.dataTables_wrapper>div.row,
 #wdm-courseprogress-individual.table-responsive>div.dataTables_wrapper>div,
 #wdm-courseengage-individual.table-responsive>div.dataTables_wrapper>div,
-#wdm-lpstats-individual.table-responsive>div.dataTables_wrapper>div.row {
+#wdm-lpstats-individual.table-responsive>div.dataTables_wrapper>div.row,
+#wdm-completion-individual.table-responsive>div.dataTables_wrapper>div,
+#wdm-courseanalytics-individual.table-responsive>div.dataTables_wrapper>div {
     clear: both;
     overflow: scroll;
 }

@@ -24,6 +24,7 @@ define([
 
             CompletionTable.DataTable({
                 ajax : url,
+                dom : "<'pull-left'f><t><p>",
                 oLanguage : {
                     sEmptyTable : "No users are enrolled as student"
                 },

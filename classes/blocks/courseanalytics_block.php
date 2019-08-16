@@ -69,7 +69,8 @@ class courseanalytics_block extends utility {
      * @return [array] Array of Recent visits
      */
     public static function get_recentvisits($courseid, $users) {
-        $allvisits = self::get_course_visites($courseid);
+        $cohortid = 0; //TODO: Remove for cohort filter
+        $allvisits = self::get_course_visites($courseid, $cohortid);
         $timenow = time();
 
         $visits = array();
