@@ -181,33 +181,36 @@
     padding-left: 50px !important;
 }
 
+
+/* Custom Scrollbar Design Start */
 /* width */
-.path-report-elucidsitereport #region-main ::-webkit-scrollbar,
-.path-admin-report-elucidsitereport #region-main ::-webkit-scrollbar {
+.path-report-elucidsitereport ::-webkit-scrollbar,
+.path-admin-report-elucidsitereport ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
   border-radius: 0;
 }
 
 /* Track */
-.path-report-elucidsitereport #region-main ::-webkit-scrollbar-track,
-.path-admin-report-elucidsitereport #region-main ::-webkit-scrollbar-track {
+.path-report-elucidsitereport ::-webkit-scrollbar-track,
+.path-admin-report-elucidsitereport ::-webkit-scrollbar-track {
    border-radius: 0;
    background: #f1f1f1;
 }
 
 /* Handle */
-.path-report-elucidsitereport #region-main ::-webkit-scrollbar-thumb,
-.path-admin-report-elucidsitereport #region-main ::-webkit-scrollbar-thumb {
+.path-report-elucidsitereport ::-webkit-scrollbar-thumb,
+.path-admin-report-elucidsitereport ::-webkit-scrollbar-thumb {
    border-radius: 0;
    background: #888;
 }
 
 /* Handle on hover */
-.path-report-elucidsitereport #region-main ::-webkit-scrollbar-thumb:hover,
-.path-admin-report-elucidsitereport #region-main ::-webkit-scrollbar {
+.path-report-elucidsitereport ::-webkit-scrollbar-thumb:hover,
+.path-admin-report-elucidsitereport ::-webkit-scrollbar {
    background: #555;
 }
+/* Custom Scrollbar Design End */
 
 /* Form course progress block */
 #courseprogressblock .col-md-3,
