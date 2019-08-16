@@ -154,3 +154,30 @@ function get_cohort_filter() {
     $cohortfilter->values = $cohorts;
     return $cohortfilter;
 }
+
+/**
+ * Create back button for each individual page
+ * @param [object] $backurl Moodle Url Object
+ * @return [string] Html string for back button
+ */
+function create_back_button($backurl) {
+    $html = html_writer::div(
+        html_writer::link(
+            $backurl,
+            html_writer::tag(
+                "i", "", array(
+                    "class" => "icon fa fa-arrow-left",
+                    "aria-hidden" => "true"
+                )
+            ),
+            array(
+                "class" => "btn btn-sm btn-default",
+                "data-toggle" => "tooltip",
+                "data-original-title" => get_string("back"),
+                "data-placement" => "bottom"
+            )
+        ),
+        "mb-10", array ("id" => "wdm_reportback_button")
+    );
+    return $html;
+}

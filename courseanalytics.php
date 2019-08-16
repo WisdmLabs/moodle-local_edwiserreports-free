@@ -51,8 +51,9 @@ $courseanalyticsrenderable = new \report_elucidsitereport\output\courseanalytics
 $output = $courseanalytics->get_renderer()->render($courseanalyticsrenderable);
 
 $course = get_course($courseid);
-$PAGE->set_heading($course->fullname . ": " . get_string("courseanalyticsheader", "report_elucidsitereport"));
 
 echo $OUTPUT->header();
+echo create_back_button($CFG->wwwroot . "/report/elucidsitereport/");
+echo $OUTPUT->heading($course->fullname . ": " . get_string("courseanalyticsheader", "report_elucidsitereport"));
 echo $output;
 echo $OUTPUT->footer();

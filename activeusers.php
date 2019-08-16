@@ -48,6 +48,7 @@ $activeusersrenderable = new \report_elucidsitereport\output\activeusers_rendera
 $output = $activeusers->get_renderer()->render($activeusersrenderable);
 
 echo $OUTPUT->header();
+echo create_back_button($CFG->wwwroot . "/report/elucidsitereport/");
 echo $OUTPUT->heading(get_string("activeusersheader", "report_elucidsitereport"), 1, "page-title p-5 mb-10");
 echo $output;
 echo $OUTPUT->footer();

@@ -51,9 +51,9 @@ $completionrenderable = new \report_elucidsitereport\output\completion_renderabl
 $output = $completion->get_renderer()->render($completionrenderable);
 
 $course = get_course($courseid);
-$PAGE->set_heading($course->fullname . ": " . get_string("completionheader", "report_elucidsitereport"));
 
 echo $OUTPUT->header();
+echo create_back_button($CFG->wwwroot . "/report/elucidsitereport/");
 echo $OUTPUT->heading(get_string("completionheader", "report_elucidsitereport"));
 echo $output;
 echo $OUTPUT->footer();

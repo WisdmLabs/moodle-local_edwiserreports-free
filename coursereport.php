@@ -48,7 +48,7 @@ $coursereportrenderable = new \report_elucidsitereport\output\coursereport_rende
 $output = $coursereport->get_renderer()->render($coursereportrenderable);
 
 echo $OUTPUT->header();
-
+echo create_back_button($CFG->wwwroot . "/report/elucidsitereport/");
 echo $OUTPUT->heading(get_string("coursereports", "report_elucidsitereport"), 1, "page-title p-5 mb-20");
 echo $output;
 echo $OUTPUT->footer();

@@ -46,6 +46,7 @@ $f2fsessionsrenderable = new \report_elucidsitereport\output\f2fsessions_rendera
 $output = $f2fsessions->get_renderer()->render($f2fsessionsrenderable);
 
 echo $OUTPUT->header();
+echo create_back_button($CFG->wwwroot . "/report/elucidsitereport/");
 echo $OUTPUT->heading(get_string("f2fsessionsheader", "report_elucidsitereport"), 1, "page-title p-5 mb-10");
 echo $output;
 echo $OUTPUT->footer();

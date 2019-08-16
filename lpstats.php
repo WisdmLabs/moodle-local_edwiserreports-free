@@ -46,6 +46,7 @@ $lpstatsrenderable = new \report_elucidsitereport\output\lpstats_renderable();
 $output = $lpstats->get_renderer()->render($lpstatsrenderable);
 
 echo $OUTPUT->header();
+echo create_back_button($CFG->wwwroot . "/report/elucidsitereport/");
 echo $OUTPUT->heading(get_string("lpstatsheader", "report_elucidsitereport"), 1, "page-title p-5 mb-10");
 echo $output;
 echo $OUTPUT->footer();
