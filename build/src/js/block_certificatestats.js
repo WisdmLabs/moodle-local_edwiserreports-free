@@ -31,6 +31,7 @@ define(["jquery", "core/templates", "report_elucidsitereport/defaultconfig"], fu
 
     function createActiveCourseTable() {
         certificatesTable = $(table).DataTable({
+            dom : '<"pull-left"f><t>',
             language: {
                 searchPlaceholder: "Search Certificates"
             },

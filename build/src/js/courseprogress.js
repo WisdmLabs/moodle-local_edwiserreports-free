@@ -95,6 +95,7 @@ define([
                     console.log(ex);
                 }).always(function() {
                     datatable = $(CourseProgressTable).DataTable({
+                        dom : '<"pull-left"f><t><p>',
                         order : [[0, 'desc']],
                         bLengthChange : false,
                         pageLength : 50,

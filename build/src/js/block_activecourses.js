@@ -61,6 +61,7 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
             activeCourseTable = $(table).DataTable({
                 responsive: true,
                 data : data,
+                dom : '<"pull-left"f><t>',
                 aaSorting: [[2, 'desc']],
                 language: {
                     searchPlaceholder: "Search Courses"

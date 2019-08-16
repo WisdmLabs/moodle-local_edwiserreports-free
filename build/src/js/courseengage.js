@@ -70,6 +70,7 @@ define([
             console.log(url + "&cohortid=" + cohortId);
             datatable = $(CourseEngageTable).DataTable( {
                 ajax : url + "&cohortid=" + cohortId,
+                dom : '<"pull-left"f><t><p>',
                 columns : [
                     { "data": "coursename" },
                     { "data": "enrolment" },

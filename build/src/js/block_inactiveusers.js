@@ -49,6 +49,7 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
             activeUsersTable = $(table)
             .DataTable( {
                 data : data,
+                dom : '<"pull-left"f><t>',
                 aaSorting: [[2, 'desc']],
                 language: {
                     searchPlaceholder: "Search Users"

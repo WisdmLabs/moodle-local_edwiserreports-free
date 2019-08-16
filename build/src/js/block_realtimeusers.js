@@ -2,8 +2,8 @@ define(["jquery", "report_elucidsitereport/defaultconfig", "report_elucidsiterep
     var liveUsersTable = null;
     var panel = cfg.getPanel("#liveusersblock");
     var panelBody = cfg.getPanel("#liveusersblock", "body");
-    var loader = panelBody + " .loader";
-    var table = panelBody + " .table";
+    var loader = $(panelBody + " .loader");
+    var table = $(panelBody + " .table");
 
     function init() {
         getOnlineUsersData(); // Call first time
@@ -34,12 +34,13 @@ define(["jquery", "report_elucidsitereport/defaultconfig", "report_elucidsiterep
         if (liveUsersTable) {
             liveUsersTable.destroy();
         } else {
-            $(loader).remove();
-            $(table).removeClass("d-none");
+            loader.hide();
+            table.show();
         }
 
-        liveUsersTable = $(table).DataTable({
+        liveUsersTable = table.DataTable({
             data: data,
+            dom : '<"row rtblock-filter"<"pull-left"f>><t>',
             language: {
                 searchPlaceholder: "Search Users"
             },
@@ -67,7 +68,11 @@ define(["jquery", "report_elucidsitereport/defaultconfig", "report_elucidsiterep
             },
             scrollX: true,
             paging: false,
-            bInfo : false
+            bInfo : false,
+            initComplete : function() {
+                var usersCount = '<small class="ml-auto my-auto font-weight-bold">LoggedIn Users : ' + data.length + '</small>';
+                $(document).find(".rtblock-filter").append(usersCount);
+            }
         });
     }
 
