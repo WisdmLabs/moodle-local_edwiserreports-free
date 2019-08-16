@@ -2,6 +2,8 @@
     clear: both;
 }
 
+
+/* DataTables Custom CSS Start */
 #wdm-elucidsitereport table thead tr th {
     font-weight: 700 !important;
     color: unset !important
@@ -29,6 +31,14 @@
 #certificatestatsblock .dataTables_wrapper .row:first-child .dataTables_filter {
     float: left;
 }
+
+#wdm-activeusers-individual .table-responsive>div.dataTables_wrapper>div.row,
+#wdm-courseprogress-individual.table-responsive>div.dataTables_wrapper>div.row,
+#wdm-courseengage-individual.table-responsive>div.dataTables_wrapper>div.row,
+#wdm-lpstats-individual.table-responsive>div.dataTables_wrapper>div.row {
+    overflow: scroll;
+}
+/* DataTables Custom CSS End */
 
 .path-admin-report-elucidsitereport .accordion-arrow.icon,
 .path-report-elucidsitereport .accordion-arrow.icon {
@@ -260,14 +270,24 @@
 .text-gold {
     color: #fdd703;
 }
+
 .text-silver {
     color: #bfc0bf;
 }
+
 .text-bronze {
     color: #cd7e33;
 }
 
-/* Bootstrap Ended*/
+.bg-image-none {
+    background-image: none !important;
+}
+
+.no-sorting-arrow:before,
+.no-sorting-arrow:after {
+    display: none;
+}
+/* Bootstrap CSS Override Ended*/
 
 @-webkit-keyframes rotating /* Safari and Chrome */ {
   from {
@@ -335,13 +355,6 @@
     display: block;
     width: 100%;
     text-align: center;
-}
-
-#wdm-activeusers-individual .table-responsive>div.dataTables_wrapper>div.row,
-#wdm-courseprogress-individual.table-responsive>div.dataTables_wrapper>div.row,
-#wdm-courseengage-individual.table-responsive>div.dataTables_wrapper>div.row,
-#wdm-lpstats-individual.table-responsive>div.dataTables_wrapper>div.row {
-    overflow: scroll;
 }
 
 .path-report-elucidsitereport  [role="main"],
