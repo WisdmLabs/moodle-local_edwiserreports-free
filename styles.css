@@ -14,28 +14,35 @@
 #wdm-elucidsitereport .table th::before, #wdm-elucidsitereport .table th::after {
     display: none;
 }
-#mostactivecourses .dataTables_wrapper .row:first-child > div:first-child,
+/*#mostactivecourses .dataTables_wrapper .row:first-child > div:first-child,
 #wdm-courseprogress-individual .dataTables_wrapper .row:first-child > div:first-child,
-#certificatestatsblock .dataTables_wrapper .row:first-child > div:first-child {
+#certificatestatsblock .dataTables_wrapper .row:first-child > div:first-child,
+#liveusersblock .dataTables_wrapper .row:first-child > div:first-child,
+#inactiveusersblock .dataTables_wrapper .row:first-child > div:first-child {
     order: 2;
 }
 
 #mostactivecourses .dataTables_wrapper .row:first-child > div:last-child,
 #wdm-courseprogress-individual .row:first-child > div:last-child,
-#certificatestatsblock .dataTables_wrapper .row:first-child > div:last-child {
+#certificatestatsblock .dataTables_wrapper .row:first-child > div:last-child,
+#liveusersblock .dataTables_wrapper .row:first-child > div:last-child,
+#inactiveusersblock .dataTables_wrapper .row:first-child > div:last-child {
     order: 1;
-}
+}*/
 
-#mostactivecourses .dataTables_wrapper .row:first-child .dataTables_filter,
+/*#mostactivecourses .dataTables_wrapper .row:first-child .dataTables_filter,
 #wdm-courseprogress-individual .dataTables_wrapper .row:first-child .dataTables_filter,
-#certificatestatsblock .dataTables_wrapper .row:first-child .dataTables_filter {
+#certificatestatsblock .dataTables_wrapper .row:first-child .dataTables_filter,
+#liveusersblock .dataTables_wrapper .row:first-child .dataTables_filter,
+#inactiveusersblock .dataTables_wrapper .row:first-child .dataTables_filter {
     float: left;
-}
+}*/
 
 #wdm-activeusers-individual .table-responsive>div.dataTables_wrapper>div.row,
-#wdm-courseprogress-individual.table-responsive>div.dataTables_wrapper>div.row,
-#wdm-courseengage-individual.table-responsive>div.dataTables_wrapper>div.row,
+#wdm-courseprogress-individual.table-responsive>div.dataTables_wrapper>div,
+#wdm-courseengage-individual.table-responsive>div.dataTables_wrapper>div,
 #wdm-lpstats-individual.table-responsive>div.dataTables_wrapper>div.row {
+    clear: both;
     overflow: scroll;
 }
 /* DataTables Custom CSS End */
@@ -371,4 +378,10 @@
 #wdm_reportback_buttons {
     top: 0;
     left: 0;
+}
+
+/* Remove Breadcrumb */
+.path-report-elucidsitereport .breadcrumb,
+.path-admin-report-elucidsitereport .breadcrumb {
+    display: none;
 }
