@@ -27,6 +27,12 @@ define([
             });
         });
 
+        /**
+         * Get Course Completion
+         * @param  {Number} courseId Course Id
+         * @param  {number} cohortId Cohort Id
+         * @return {}
+         */
         function getCourseCompletion(courseId, cohortId) {
             if (Table) {
                 Table.destroy();

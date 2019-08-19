@@ -10,11 +10,30 @@ define([
         var RecentEnroled = PageId.find(".recent-enrolment .table");
         var RecentCompletion = PageId.find(".recent-completion .table");
         var loader = PageId.find(".loader");
+        var RecentVisitsTable = null;
+        var RecentEnroledTable = null;
+        var RecentCompletionTable = null;
+
+        // Varibales for cohort filter
+        var cohortId = 0;
+        var cohortFilterBtn   = "#cohortfilter";
+        var cohortFilterItem  = cohortFilterBtn + " ~ .dropdown-menu .dropdown-item";
 
         $(document).ready(function() {
-            var sesskey = PageId.data("sesskey");
             var courseId = V.getUrlParameter("courseid");
 
+            /* Select cohort filter for active users block */
+            $(cohortFilterItem).on('click', function() {
+                cohortId = $(this).data('cohortid');
+                $(cohortFilterBtn).html($(this).text());
+                getCourseAnalyticsData(courseId, cohortId);
+            });
+
+            getCourseAnalyticsData(courseId, cohortId);
+        });
+
+        function getCourseAnalyticsData(courseId, cohortId) {
+            var sesskey = PageId.data("sesskey");
             $.ajax({
                 url: V.requestUrl,
                 type: V.requestType,
@@ -23,35 +42,43 @@ define([
                     action: 'get_courseanalytics_data_ajax',
                     sesskey: sesskey,
                     data: JSON.stringify({
-                        courseid: courseId
+                        courseid: courseId,
+                        cohortid: cohortId
                     })
                 },
             })
             .done(function(response) {
                 /* Generate Recent Visit Table */
-                generateDataTable(RecentVisits, response.data.recentvisits);
+                RecentVisitsTable = generateDataTable(RecentVisits, RecentVisitsTable, response.data.recentvisits);
 
                 /* Generate Recent Enrolment Table */
-                generateDataTable(RecentEnroled, response.data.recentenrolments);
+                RecentEnroledTable = generateDataTable(RecentEnroled, RecentEnroledTable, response.data.recentenrolments);
 
                 /* Generate Recent Completion Table */
-                generateDataTable(RecentCompletion, response.data.recentcompletions);
+                RecentCompletionTable = generateDataTable(RecentCompletion, RecentCompletionTable, response.data.recentcompletions);
             })
             .fail(function(error) {
                 console.log(error);
             });
-        });
+        }
 
         /* Generate Data Table for specific blocks */
-        function generateDataTable(table, data) {
-            var emptyStr = "No users has Enrolled in the course";;
-            $(table).show();
+        function generateDataTable(tableId, table, data) {
+            var emptyStr = "No users has Enrolled in this course";;
 
-            if (table == RecentCompletion){
-                emptyStr = "No users has completed any course";
+            if (tableId == RecentCompletion){
+                emptyStr = "No users has completed this course";
+            } else if (tableId == RecentVisits){
+                emptyStr = "No users has visited this course";
             }
 
-            table.DataTable({
+            if(table != null) {
+                $(loader).hide();
+                table.destroy();
+            }
+
+            $(tableId).show();
+            return tableId.DataTable({
                 data : data,
                 oLanguage : {
                     sEmptyTable : emptyStr

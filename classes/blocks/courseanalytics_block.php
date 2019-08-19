@@ -27,6 +27,7 @@ namespace report_elucidsitereport;
 use stdClass;
 use context_course;
 use html_writer;
+use core_user;
 
 /**
  * Class Course Access Block
@@ -37,9 +38,9 @@ class courseanalytics_block extends utility {
      * Get Data for Course Access
      * @return [object] Response for Course Access
      */
-    public static function get_data($courseid) {
+    public static function get_data($courseid, $cohortid) {
         $response = new stdClass();
-        $response->data = self::get_courseanalytics_data($courseid);
+        $response->data = self::get_courseanalytics($courseid, $cohortid);
         return $response;
     }
 
@@ -47,7 +48,7 @@ class courseanalytics_block extends utility {
      * Get Course Access data
      * @return [array] Array of users with course Access 
      */
-    public static function get_courseanalytics_data($courseid) {
+    public static function get_courseanalytics($courseid, $cohortid) {
         global $DB;
 
         $coursecontext = context_course::instance($courseid);
@@ -56,25 +57,31 @@ class courseanalytics_block extends utility {
         $timenow = time();
 
         $courseanalytics = new stdClass();
-        $courseanalytics->recentvisits = self::get_recentvisits($courseid, $enrolledstudents);
-        $courseanalytics->recentenrolments = self::get_recentenrolments($courseid, $enrolledstudents);
-        $courseanalytics->recentcompletions = self::get_recentcompletions($courseid, $enrolledstudents);
+        $courseanalytics->recentvisits = self::get_recentvisits($courseid, $enrolledstudents, $cohortid);
+        $courseanalytics->recentenrolments = self::get_recentenrolments($courseid, $enrolledstudents, $cohortid);
+        $courseanalytics->recentcompletions = self::get_recentcompletions($courseid, $enrolledstudents, $cohortid);
         return $courseanalytics;
     }
 
     /**
      * Get Recent visits on a course
      * @param [int] $courseid Course ID
-     * @param [array] $users Array of Enrolled Users
+     * @param [int] $cohorid CohortId
      * @return [array] Array of Recent visits
      */
-    public static function get_recentvisits($courseid, $users) {
-        $cohortid = 0; //TODO: Remove for cohort filter
-        $allvisits = self::get_course_visites($courseid, $cohortid);
+    public static function get_recentvisits($courseid, $users, $cohortid) {
+        $allvisits = self::get_course_visites($courseid, 0);
         $timenow = time();
 
         $visits = array();
         foreach($users as $user) {
+            if ($cohortid) {
+                $cohorts = cohort_get_user_cohorts($user->id);
+                if (!array_key_exists($cohortid, $cohorts)) {
+                    continue;
+                }
+            }
+
             $uservisits = self::get_visits_by_users($courseid, $user->id);
 
             $userinfo = array();
@@ -96,7 +103,7 @@ class courseanalytics_block extends utility {
      * @param [array] $users Array of Enrolled Users
      * @return [array] Array of Recent Enrolments
      */
-    public static function get_recentenrolments($courseid, $users) {
+    public static function get_recentenrolments($courseid, $users, $cohortid) {
         global $DB;
 
         $enrolsql = "SELECT *
@@ -106,10 +113,17 @@ class courseanalytics_block extends utility {
             WHERE ue.userid = :userid AND u.deleted = 0";
 
         $params = array('courseid'=>$courseid, 'userid' => $user->id);
-            $enrolinfo = $DB->get_record_sql($enrolsql, $params);
+        $enrolinfo = $DB->get_record_sql($enrolsql, $params);
 
         $enrolments = array();
         foreach($users as $user) {
+            if ($cohortid) {
+                $cohorts = cohort_get_user_cohorts($user->id);
+                if (!array_key_exists($cohortid, $cohorts)) {
+                    continue;
+                }
+            }
+
             $params = array('courseid'=>$courseid, 'userid' => $user->id);
             $enrolinfo = $DB->get_record_sql($enrolsql, $params);
 
@@ -127,12 +141,19 @@ class courseanalytics_block extends utility {
      * @param [array] $users Array of Enrolled Users
      * @return [array] Array of Recent Completions
      */
-    public static function get_recentcompletions($courseid, $users) {
+    public static function get_recentcompletions($courseid, $users, $cohortid) {
         global $DB;
         $course = get_course($courseid);
 
         $recentcompletions = array();
         foreach($users as $user) {
+            if ($cohortid) {
+                $cohorts = cohort_get_user_cohorts($user->id);
+                if (!array_key_exists($cohortid, $cohorts)) {
+                    continue;
+                }
+            }
+
             $completion = $DB->get_record("course_completions" , array(
                 "userid" => $user->id,
                 "course" => $courseid

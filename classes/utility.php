@@ -143,7 +143,12 @@ class utility {
     }
 
     public static function get_courseanalytics_data($data) {
-        return \report_elucidsitereport\courseanalytics_block::get_data($data->courseid);
+        if (isset($data->cohortid)) {
+            $cohortid = $data->cohortid;
+        } else {
+            $cohortid = 0;
+        }
+        return \report_elucidsitereport\courseanalytics_block::get_data($data->courseid, $cohortid);
     }
 
     /** Generate Course Filter for course progress block
@@ -287,11 +292,11 @@ class utility {
 
         $params = array(
             "courseid" => $courseid,
-            "action" => "viewes"
+            "action" => "viewed"
         );
 
         if ($cohortid) {
-            $params["cohortid"] = "cohortid";
+            $params["cohortid"] = $cohortid;
             $sql = "SELECT DISTINCT l.userid
                 FROM {logstore_standard_log} l
                 JOIN {cohort_members} cm
@@ -307,7 +312,6 @@ class utility {
         }
 
         $records = $DB->get_records_sql($sql, $params);
-
         return $records;
     }
 
