@@ -20,7 +20,7 @@ define([
             url += "&sesskey=" + sesskey;
             url += "&data=" + params;
 
-            $(CompletionTable).show();
+            CompletionTable.show();
 
             CompletionTable.DataTable({
                 ajax : url,

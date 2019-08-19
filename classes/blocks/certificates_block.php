@@ -99,24 +99,36 @@ class certificates_block extends utility {
      * Get a certificates details for certificate page
      * @return [object] Certifcates details object
      */
-    public static function get_issued_users($certid) {
+    public static function get_issued_users($certid, $cohortid) {
         global $DB;
         $certificate = $DB->get_record("customcert", array("id" => $certid));
         $course = get_course($certificate->course);
         $issued = $DB->get_records('customcert_issues', array('customcertid' => $certid));
 
+        $response = new stdClass();
         $issuedcert = array();
         foreach ($issued as $issue) {
+            $cohorts = cohort_get_user_cohorts($issue->userid);
+            if ($cohortid) {
+                $cohorts = cohort_get_user_cohorts($user->id);
+                if (!array_key_exists($cohortid, $cohorts)) {
+                    continue;
+                }
+            }
+
             $issuedcert[] = self::get_certinfo($course, $issue);
         }
 
-        return $issuedcert;
+        $response->data = $issuedcert;
+
+        return $response;
     }
 
     /**
      * Get Certificate Information
      * @param [object] $course stdClass object of course
      * @param [object] $issued stdClass object of issued certificates
+     * @return [object] Certificate information
      */
     public static function get_certinfo($course, $issue) {
         global $DB;
@@ -149,6 +161,7 @@ class certificates_block extends utility {
             }
         }
 
+        /* Pie Progress for Course Progress */
         $courseprogresshtml = html_writer::div(
             html_writer::span(
                 "$progressper %",
@@ -165,15 +178,15 @@ class certificates_block extends utility {
             )
         );
 
-        $certinfo = array(
-            "username" => fullname($user),
-            "email" => $user->email,
-            "issuedate" => date("d M y", $issue->timecreated),
-            "dateenrolled" => $enrolmentdate,
-            "grade" => number_format($grade->finalgrade, 2),
-            "courseprogress" => $courseprogresshtml
-        );
-        return array_values($certinfo);
+        /* Certificates Object */
+        $certinfo = new stdClass();
+        $certinfo->username = fullname($user);
+        $certinfo->email = $user->email;
+        $certinfo->issuedate = date("d M y", $issue->timecreated);
+        $certinfo->dateenrolled = $enrolmentdate;
+        $certinfo->grade = number_format($grade->finalgrade, 2);
+        $certinfo->courseprogress = $courseprogresshtml;
+        return $certinfo;
     }
 
     /**

@@ -148,7 +148,7 @@ class certificates_renderable implements renderable, templatable {
 		$customcerts = $DB->get_records("customcert", array());
 		
 		if (!empty($customcerts)) {
-			$output->hascertificates;
+			$output->hascertificates = true;
 			foreach ($customcerts as $customcert) {
 				$course = get_course($customcert->course);
 				$customcert->coursename = $course->shortname;

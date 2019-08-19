@@ -11,83 +11,84 @@ define([
     'report_elucidsitereport/jquery-asPieProgress'
 ], function($, ModalFactory, ModalEvents, Fragment, Templates, V) {
     function init(CONTEXTID) {
-        var PageId = "#wdm-certificates-individual";
-        var CertTable = PageId + " .table";
-        var loader = PageId + " .loader";
-        var CertSelect = "#wdm-certificates-select";
-        var exportUrlLink = PageId + " .dropdown-menu[aria-labelledby='export-dropdown'] .dropdown-item";
-        var Table = null;
+        var PageId = $("#wdm-certificates-individual");
+        var CertTable = PageId.find(".table");
+        var loader = PageId.find(".loader");
+        var CertSelect = $("#wdm-certificates-select");
+        var exportUrlLink = PageId.find(".dropdown-menu[aria-labelledby='export-dropdown'] .dropdown-item");
+        var dataTable = null;
         var certificateid = null;
 
-        function getCertificateDetail(certificateid) {
-            $.ajax({
-                url: V.requestUrl,
-                data: {
-                    action: 'get_certificates_data_ajax',
-                    sesskey: $(PageId).data("sesskey"),
-                    data: JSON.stringify({
-                        certificateid : certificateid
-                    })
-                },
-            }).done(function(response) {
-                Table = $(CertTable).DataTable({
-                    data : response,
-                    columnDefs: [
-                        {
-                            "targets": 0,
-                            "className": "align-middle"
-                        },
-                        {
-                            "targets": 1,
-                            "className": "align-middle"
-                        },
-                        {
-                            "targets": 2,
-                            "className": "align-middle text-center"
-                        },
-                        {
-                            "targets": 3,
-                            "className": "align-middle text-center"
-                        },
-                        {
-                            "targets": 4,
-                            "className": "align-middle text-center"
-                        },
-                        {
-                            "targets": 5,
-                            "className": "align-middle text-center"
-                        },
-                    ],
-                    initComplete: function(settings, json) {
-                        $('.pie-progress').asPieProgress({
-                            namespace: 'pie_progress'
-                        });
+        // Varibales for cohort filter
+        var cohortid = 0;
+        var cohortFilterBtn   = "#cohortfilter";
+        var cohortFilterItem  = cohortFilterBtn + " ~ .dropdown-menu .dropdown-item";
 
-                        $(loader).hide();
-                        $(CertTable).show();
-                        V.changeExportUrl(certificateid, exportUrlLink);
+        function getCertificateDetail(certificateid, cohortId) {
+            var params = {
+                action: 'get_certificates_data_ajax',
+                sesskey: $(PageId).data("sesskey"),
+                data: JSON.stringify({
+                    certificateid : certificateid,
+                    cohortid : cohortId
+                })
+            };
+
+            if (dataTable) {
+                dataTable.destroy();
+            }
+
+            dataTable = CertTable.DataTable({
+                ajax : V.generateUrl(V.requestUrl, params),
+                dom : "<'pull-left'f><t><p>",
+                columnDefs: [
+                    {
+                        "targets": 0,
+                        "className": "align-middle"
+                    },
+                    {
+                        "targets": 1,
+                        "className": "align-middle"
+                    },
+                    {
+                        "targets": "_all",
+                        "className": "align-middle text-center"
                     }
-                });
-                console.log(response);
-            }).fail(function(error) {
-                console.log(error);
+                ],
+                columns : [
+                    { "data": "username" },
+                    { "data": "email" }, 
+                    { "data": "issuedate" },
+                    { "data": "dateenrolled" },
+                    { "data": "grade" },
+                    { "data": "courseprogress" }
+                ],
+                oLanguage : {
+                    sEmptyTable : "No certificates are awarded"
+                },
+                initComplete: function(settings, json) {
+                    $('.pie-progress').asPieProgress({
+                        namespace: 'pie_progress'
+                    });
+                    CertTable.show();
+                }
             });
-
         }
 
         $(document).ready(function() {
-            $(CertSelect).select2();
+            CertSelect.select2();
 
-            certificateid = $(CertSelect).val();
+            certificateid = CertSelect.val();
             getCertificateDetail(certificateid);
 
-            $(CertSelect).on("change", function() {
-                if (Table) {
-                    Table.destroy();
-                }
+            /* Select cohort filter for active users block */
+            $(cohortFilterItem).on('click', function() {
+                cohortId = $(this).data('cohortid');
+                $(cohortFilterBtn).html($(this).text());
+                getCertificateDetail(certificateid, cohortId);
+            });
 
-                $(loader).show();
-                $(CertTable).hide();
+            CertSelect.on("change", function() {
                 getCertificateDetail($(this).val());
             });
         });

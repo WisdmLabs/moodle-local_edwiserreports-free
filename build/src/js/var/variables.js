@@ -150,6 +150,21 @@ define(function() {
             format = format.replace(/\\(.)/g, "$1");
 
             return format;
+        },
+
+        generateUrl : function(url, params) {
+            var completeUrl = url + "?";
+            var isfirst = true;
+
+            $.each(params, function(idx, param) {
+                if (isfirst) {
+                    isfirst = false;
+                } else {
+                    completeUrl += "&";
+                }
+                completeUrl += idx + "=" + param;
+            });
+            return completeUrl;
         }
     }
 });
