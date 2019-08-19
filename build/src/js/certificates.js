@@ -22,7 +22,7 @@ define([
         var certificateid = null;
 
         // Varibales for cohort filter
-        var cohortid = 0;
+        var cohortId = 0;
         var cohortFilterBtn   = "#cohortfilter";
         var cohortFilterItem  = cohortFilterBtn + " ~ .dropdown-menu .dropdown-item";
 

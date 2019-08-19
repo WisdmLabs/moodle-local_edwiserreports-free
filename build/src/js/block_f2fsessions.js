@@ -10,7 +10,9 @@ define(['jquery', 'core/templates', 'report_elucidsitereport/defaultconfig', 're
             dataType: cfg.requestDataType,
             data: {
                 action: 'get_f2fsession_data_ajax',
-                sesskey: $(panel).data("sesskey")
+                sesskey: $(panel).data("sesskey"),
+                data: JSON.stringify({
+                })
             },
         })
         .done(function(response) {

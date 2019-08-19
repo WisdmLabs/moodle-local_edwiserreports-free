@@ -16,19 +16,31 @@ define([
         var PageId = "#wdm-f2fsessions-individual";
         var F2fTable = PageId + " .table";
         var loader = PageId + " .loader";
+        var sesskey = $(PageId).data("sesskey");
 
-        function getF2fSessions() {
+        // Varibales for cohort filter
+        var cohortId = 0;
+        var cohortFilterBtn = "#cohortfilter";
+        var cohortFilterItem  = cohortFilterBtn + " ~ .dropdown-menu .dropdown-item";
+
+        function getF2fSessions(cohortId) {
             $.ajax({
                 url: V.requestUrl,
                 type: V.requestType,
                 dataType: V.requestDataType,
                 data: {
                     action: 'get_f2fsession_data_ajax',
-                    sesskey: $(PageId).data("sesskey"),
+                    sesskey: sesskey,
+                    data: JSON.stringify({
+                        cohortid: cohortId
+                    })
                 },
             })
             .done(function(response) {
-                Templates.render('report_elucidsitereport/f2fsessions', response.data)
+                var context = response.data;
+                context.sesskey = sesskey;
+
+                Templates.render('report_elucidsitereport/f2fsessions', context)
                 .then(function(html, js) {
                     Templates.replaceNode(PageId, html, js);
                 }).fail(function(ex) {
@@ -44,7 +56,17 @@ define([
         }
 
         $(document).ready(function() {
-            getF2fSessions();
+            getF2fSessions(cohortId);
+
+            /* Select cohort filter for active users block */
+            $(cohortFilterItem).on('click', function() {
+                $(F2fTable).hide();
+                $(loader).show();
+
+                cohortId = $(this).data('cohortid');
+                $(cohortFilterBtn).html($(this).text());
+                getF2fSessions(cohortId);
+            });
         });
     }
 
