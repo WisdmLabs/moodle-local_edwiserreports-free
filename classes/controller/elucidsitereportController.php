@@ -61,8 +61,13 @@ class elucidsitereportController extends controllerAbstract
         echo json_encode(\report_elucidsitereport\utility::get_course_progress_data($data));
     }
 
+    /**
+     * Get Face to Face session data
+     * @param [string] $data Data for external service
+     */
     public function get_f2fsession_data_ajax_action() {
-        echo json_encode(\report_elucidsitereport\utility::get_f2fsessiondata_data());
+        $data = json_decode(required_param('data', PARAM_RAW));
+        echo json_encode(\report_elucidsitereport\utility::get_f2fsessiondata_data($data));
     }
 
     public function get_certificates_data_ajax_action() {

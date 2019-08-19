@@ -79,8 +79,18 @@ class utility {
         return \report_elucidsitereport\active_courses_block::get_data();
     }
 
-    public static function get_f2fsessiondata_data() {
-        return \report_elucidsitereport\f2fsession_block::get_data();
+    /**
+     * Get Face to Face session data
+     * @param [string] $data Data for external service
+     */
+    public static function get_f2fsessiondata_data($data) {
+        if (isset($data->cohortid)) {
+            $cohortid = $data->cohortid;
+        } else {
+            $cohortid = 0;
+        }
+
+        return \report_elucidsitereport\f2fsession_block::get_data($cohortid);
     }
 
     public static function get_certificates_data($data) {

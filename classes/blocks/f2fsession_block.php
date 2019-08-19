@@ -39,10 +39,10 @@ require_once($CFG->dirroot . '/mod/facetoface/lib.php');
  * To get the data related to active users block
  */
 class f2fsession_block extends utility {
-    public static function get_data() {
+    public static function get_data($cohortid) {
         $response = new stdClass();
         $response->data = new stdClass();
-        $response->data->f2fmodules = self::get_f2fmodules();
+        $response->data->f2fmodules = self::get_f2fmodules($cohortid);
         return $response;
     }
 
@@ -50,7 +50,7 @@ class f2fsession_block extends utility {
      * Get face to face activities
      * @return array Array of all available face to face activities
      */
-    public static function get_f2fmodules() {
+    public static function get_f2fmodules($cohortid) {
         global $CFG, $DB, $USER;
 
         $count = 0;
@@ -66,7 +66,7 @@ class f2fsession_block extends utility {
             }
 
             $facetoface->coursename = $course->shortname;
-            $f2fsessions = self::get_f2fsessions($facetoface);
+            $f2fsessions = self::get_f2fsessions($facetoface, $cohortid);
 
             $facetoface->sessions[] = $f2fsessions;
             if (count($f2fsessions->previous)) {
@@ -82,7 +82,7 @@ class f2fsession_block extends utility {
      * @param  object $facetoface Face to face activity object
      * @return array Array of all sessions
      */
-    public static function get_f2fsessions($facetoface) {
+    public static function get_f2fsessions($facetoface, $cohortid) {
         global $CFG, $DB, $USER;
         // $locations = get_locations($facetoface->id);
 
@@ -109,7 +109,7 @@ class f2fsession_block extends utility {
             foreach ($sessions as $session) {
                 $sessiondata = array();
                 foreach ($session->sessiondates as $sessiondate) {
-                    $sessiondata = self::get_session_data($session, $sessiondate);
+                    $sessiondata = self::get_session_data($session, $sessiondate, $cohortid);
 
                     // Add custom fields to sessiondata.
                     $customdata = $DB->get_records('facetoface_session_data', array('sessionid' => $session->id), '', 'fieldid, data');
@@ -165,6 +165,12 @@ class f2fsession_block extends utility {
         return $f2fsessions;
     }
 
+    /**
+     * Get the required data from F2F Sessions
+     * @param [object] $facetoface Face to face detail
+     * @param [object] $f2fsession Face to face session detail
+     * @return [object] Face to Face data 
+     */
     public static function get_facetoface_data($facetoface, $f2fsession) {
         $f2fmodule = new stdClass();
         $f2fmodule->id = $facetoface->id;
@@ -176,15 +182,28 @@ class f2fsession_block extends utility {
         return $f2fmodule;
     }
 
-    public static function get_session_data($session, $sessiondate) {
+    /** 
+     * Get the F2F Session data
+     * @param [object] $session Session data
+     * @param [string] $sessiondate Session Date
+     * @return [object] Face to Face data 
+     */
+    public static function get_session_data($session, $sessiondate, $cohortid) {
         $attendees = facetoface_get_attendees($session->id);
         $attended = 0;
         $waitlisted = 0;
         $declined = 0;
         $confirmed = 0;
         $status = "";
+        foreach ($attendees as $key => $attendee) {
+            if ($cohortid) {
+                $cohorts = cohort_get_user_cohorts($attendee->id);
+                if (!array_key_exists($cohortid, $cohorts)) {
+                    unset($attendees[$key]);
+                    continue;
+                }
+            }
 
-        foreach ($attendees as $attendee) {
             switch ($attendee->statuscode) {
                 case MDL_F2F_STATUS_FULLY_ATTENDED:
                 case MDL_F2F_STATUS_PARTIALLY_ATTENDED:
@@ -212,7 +231,7 @@ class f2fsession_block extends utility {
             $attendee->status = $status;
         }
 
-        $attendees = array_merge($attendees, self::get_canceled_sessionsdata($session->id));
+        $attendees = array_merge($attendees, self::get_canceled_sessionsdata($session->id, $cohortid));
 
         $sessiondata = new stdClass();
         $sessiondata->id = $session->id;
@@ -228,7 +247,7 @@ class f2fsession_block extends utility {
         return $sessiondata;
     }
 
-    public static function get_canceled_sessionsdata($sessionid) {
+    public static function get_canceled_sessionsdata($sessionid, $cohortid) {
         global $DB;
 
         $sql = "SELECT ss.* FROM {facetoface_signups_status} ss
@@ -246,7 +265,14 @@ class f2fsession_block extends utility {
 
         $canceled = array();
         foreach ($records as $record) {
-            $user = core_user::get_user($record->createdby, "firstname, lastname");
+            if ($cohortid) {
+                $cohorts = cohort_get_user_cohorts($record->createdby);
+                if (!array_key_exists($cohortid, $cohorts)) {
+                    continue;
+                }
+            }
+
+            $user = core_user::get_user($record->createdby, "id, firstname, lastname");
             $user->status = html_writer::span("canceled", "badge badge-round badge-danger");
             $user->reason = $record->note;
             $canceled[] = $user;

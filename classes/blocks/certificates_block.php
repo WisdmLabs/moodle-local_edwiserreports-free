@@ -108,9 +108,8 @@ class certificates_block extends utility {
         $response = new stdClass();
         $issuedcert = array();
         foreach ($issued as $issue) {
-            $cohorts = cohort_get_user_cohorts($issue->userid);
             if ($cohortid) {
-                $cohorts = cohort_get_user_cohorts($user->id);
+                $cohorts = cohort_get_user_cohorts($issue->userid);
                 if (!array_key_exists($cohortid, $cohorts)) {
                     continue;
                 }
@@ -164,7 +163,7 @@ class certificates_block extends utility {
         /* Pie Progress for Course Progress */
         $courseprogresshtml = html_writer::div(
             html_writer::span(
-                "$progressper %",
+                $progressper . "%",
                 "pie-progress-number font-size-14"
             ),
             "pie-progress pie-progress-xs",
