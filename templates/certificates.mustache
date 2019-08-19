@@ -6,6 +6,7 @@
 {{/exportlink}}
 
 <div id="wdm-certificates-individual" class="table-responsive" data-sesskey="{{sesskey}}">
+	{{#hascertificates}}
     <div class="d-flex">
         <div class="px-0 py-20 pull-left">
             <select id="wdm-certificates-select" class="form-control singleselect w-250" name="state">
@@ -14,10 +15,9 @@
                 {{/certificates}}
             </select>
         </div>
-        <div class="px-0 py-20 ml-auto">
-        </div>
     </div>
-    <div class="loader w-full text-center pt-100 mt-50">
+    {{/hascertificates}}
+    <div class="loader w-full text-center py-100 my-50">
         {{# pix }} loader, report_elucidsitereport{{/ pix }}
     </div>
     <table class="table w-full" style="display: none;">

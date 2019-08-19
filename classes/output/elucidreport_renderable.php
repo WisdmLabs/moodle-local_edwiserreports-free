@@ -145,12 +145,16 @@ class certificates_renderable implements renderable, templatable {
 
         $output = new stdClass();
         $output->sesskey = sesskey();
-        $customcerts = $DB->get_records("customcert", array());
-        foreach ($customcerts as $customcert) {
-            $course = get_course($customcert->course);
-            $customcert->coursename = $course->shortname;
-        }
-        $output->certificates = array_values($customcerts);
+		$customcerts = $DB->get_records("customcert", array());
+		
+		if (!empty($customcerts)) {
+			$output->hascertificates;
+			foreach ($customcerts as $customcert) {
+				$course = get_course($customcert->course);
+				$customcert->coursename = $course->shortname;
+			}
+			$output->certificates = array_values($customcerts);
+		}
         $downloadurl = $CFG->wwwroot."/report/elucidsitereport/download.php";
         $output->exportlink = get_exportlinks($downloadurl, "report", "certificates", "1");
         $output->userfilters = get_userfilters(false, true, false);

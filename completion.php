@@ -56,6 +56,6 @@ $output = $completion->get_renderer()->render($completionrenderable);
 
 echo $OUTPUT->header();
 echo create_back_button($CFG->wwwroot . "/report/elucidsitereport/");
-echo $OUTPUT->heading(get_string("completionheader", "report_elucidsitereport"), 1 , "page-title py-5 mb-10");
+echo $OUTPUT->heading(get_string("completionheader", "report_elucidsitereport"), 1 , "page-title p-5 mb-10");
 echo $output;
 echo $OUTPUT->footer();

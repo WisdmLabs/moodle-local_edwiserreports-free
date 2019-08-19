@@ -15,14 +15,14 @@
     display: none;
 }
 
-#wdm-activeusers-individual .table-responsive>div.dataTables_wrapper>div.row,
-#wdm-courseprogress-individual.table-responsive>div.dataTables_wrapper>div,
-#wdm-courseengage-individual.table-responsive>div.dataTables_wrapper>div,
-#wdm-lpstats-individual.table-responsive>div.dataTables_wrapper>div.row,
-#wdm-completion-individual.table-responsive>div.dataTables_wrapper>div,
-#wdm-courseanalytics-individual.table-responsive>div.dataTables_wrapper>div {
+#wdm-activeusers-individual .table-responsive>div.dataTables_wrapper>div.row:nth-child(2),
+#wdm-courseprogress-individual.table-responsive>div.dataTables_wrapper>div:nth-child(2),
+#wdm-courseengage-individual.table-responsive>div.dataTables_wrapper>div:nth-child(2),
+#wdm-lpstats-individual.table-responsive>div.dataTables_wrapper>div.row:nth-child(2),
+#wdm-completion-individual.table-responsive>div.dataTables_wrapper>div:nth-child(2),
+#wdm-courseanalytics-individual.table-responsive>div.dataTables_wrapper>div:nth-child(2) {
     clear: both;
-    overflow: scroll;
+    overflow-x: scroll;
 }
 /* DataTables Custom CSS End */
 
@@ -135,22 +135,20 @@
     }
 }
 
-.path-report-elucidsitereport #page-header {
-    padding: 0 !important;
-    display: none;
-}
-
 #export-dropdown.dropdown-toggle:after {
     display: none;
 }
 
+#wdm-elucidsitereport .panel {
+	box-shadow: unset;
+}
 
 /* Datatable css */
 .path-report-elucidsitereport table.dataTable tr,
 .path-admin-report-elucidsitereport table.dataTable tr,
 .path-report-elucidsitereport table.dataTable tr td,
 .path-admin-report-elucidsitereport table.dataTable tr td,
-.path-admin-report-elucidsitereport table.dataTable tr.odd td.sorting_1,
+.path-admin-report-elucidsitereport table.dataTable tr td.sorting_1,
 .path-report-elucidsitereport table.dataTable tr td.sorting_1 {
     background-color: unset;
 }
