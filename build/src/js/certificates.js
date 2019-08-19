@@ -14,8 +14,10 @@ define([
         var PageId = $("#wdm-certificates-individual");
         var CertTable = PageId.find(".table");
         var loader = PageId.find(".loader");
-        var CertSelect = $("#wdm-certificates-select");
+        var CertDropdown = $("#wdm-certificates-dropdown");
+        var CertSelect = "#wdm-certificates-select";
         var exportUrlLink = PageId.find(".dropdown-menu[aria-labelledby='export-dropdown'] .dropdown-item");
+        var filterSection = $("#wdm-userfilter .row .col-6:first-child");
         var dataTable = null;
         var certificateid = null;
 
@@ -67,18 +69,21 @@ define([
                     sEmptyTable : "No certificates are awarded"
                 },
                 initComplete: function(settings, json) {
-                    $('.pie-progress').asPieProgress({
-                        namespace: 'pie_progress'
-                    });
+                    $('.pie-progress').asPieProgress();
                     CertTable.show();
-                }
+                },
+                bInfo : false,
+                lengthChange : false
             });
         }
 
         $(document).ready(function() {
-            CertSelect.select2();
+            filterSection.html(CertDropdown.html());
+            $(document).find(CertSelect).select2();
+            $(document).find(CertSelect).show();
+            CertDropdown.remove();
 
-            certificateid = CertSelect.val();
+            certificateid = $(CertSelect).val();
             getCertificateDetail(certificateid);
 
             /* Select cohort filter for active users block */
@@ -88,7 +93,7 @@ define([
                 getCertificateDetail(certificateid, cohortId);
             });
 
-            CertSelect.on("change", function() {
+            $(document).on("change", CertSelect, function() {
                 getCertificateDetail($(this).val());
             });
         });

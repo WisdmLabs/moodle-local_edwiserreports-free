@@ -165,16 +165,19 @@ class certificates_block extends utility {
         $courseprogresshtml = html_writer::div(
             html_writer::span(
                 "$progressper %",
-                "pie-progress-number"
+                "pie-progress-number font-size-14"
             ),
             "pie-progress pie-progress-xs",
             array(
+                "data-plugin" => "pieProgress",
                 "role" => "progressbar",
                 "data-goal" => "$progressper",
                 "aria-valuenow" => "$progressper",
                 "data-barcolor" => "#28c0de",
                 "aria-valuemin" => "0",
-                "aria-valuemax" => "100"
+                "aria-valuemax" => "100",
+                "data-barsize" => "2",
+                "data-size" => "60",
             )
         );
 
