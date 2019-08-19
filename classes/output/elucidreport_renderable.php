@@ -215,10 +215,14 @@ class completion_renderable implements renderable, templatable {
      * @return stdClass|array
      */
     public function export_for_template(renderer_base $output) {
-        global $DB;
+        global $CFG, $DB;
 
         $output = new stdClass();
         $output->sesskey = sesskey();
+        $downloadurl = $CFG->wwwroot."/report/elucidsitereport/download.php";
+        $output->exportlink = get_exportlinks($downloadurl, "report", "completion", "1");
+        $output->userfilters = get_userfilters(false, true, false);
+        $output->backurl = new moodle_url($CFG->wwwroot."/report/elucidsitereport/index.php");
         return $output;
     }
 }
@@ -232,10 +236,14 @@ class courseanalytics_renderable implements renderable, templatable {
      * @return stdClass|array
      */
     public function export_for_template(renderer_base $output) {
-        global $DB;
+        global $CFG, $DB;
 
         $output = new stdClass();
         $output->sesskey = sesskey();
+        $downloadurl = $CFG->wwwroot."/report/elucidsitereport/download.php";
+        $output->exportlink = get_exportlinks($downloadurl, "report", "courseanalytics", "1");
+        $output->userfilters = get_userfilters(false, true, false);
+        $output->backurl = new moodle_url($CFG->wwwroot."/report/elucidsitereport/index.php");
         return $output;
     }
 }

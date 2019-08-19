@@ -8,21 +8,44 @@ define([
         var PageId = $("#wdm-completion-individual");
         var CompletionTable = PageId.find(".table");
         var loader = PageId.find(".loader");
-        var url = V.requestUrl + "?action=get_completion_data_ajax";
+        var Table = null;
+
+        // Varibales for cohort filter
+        var cohortId = 0;
+        var cohortFilterBtn   = "#cohortfilter";
+        var cohortFilterItem  = cohortFilterBtn + " ~ .dropdown-menu .dropdown-item";
 
         $(document).ready(function() {
-            var sesskey = PageId.data("sesskey");
             var courseId = V.getUrlParameter("courseid");
-            var params = JSON.stringify({
-                courseid: courseId
-            });
+            getCourseCompletion(courseId, cohortId);
 
-            url += "&sesskey=" + sesskey;
-            url += "&data=" + params;
+            /* Select cohort filter for active users block */
+            $(cohortFilterItem).on('click', function() {
+                cohortId = $(this).data('cohortid');
+                $(cohortFilterBtn).html($(this).text());
+                getCourseCompletion(courseId, cohortId);
+            });
+        });
+
+        function getCourseCompletion(courseId, cohortId) {
+            if (Table) {
+                Table.destroy();
+                CompletionTable.hide();
+                loader.show();
+            }
+
+            var params = {
+                action: "get_completion_data_ajax",
+                sesskey: PageId.data("sesskey"),
+                data: JSON.stringify({
+                    courseid: courseId,
+                    cohortid: cohortId
+                })
+            };
+            var url = V.generateUrl(V.requestUrl, params);
 
             CompletionTable.show();
-
-            CompletionTable.DataTable({
+            Table = CompletionTable.DataTable({
                 ajax : url,
                 dom : "<'pull-left'f><t><p>",
                 oLanguage : {
@@ -47,7 +70,7 @@ define([
                     $(loader).hide();
                 }
             });
-        });
+        }
     }
 
     return {

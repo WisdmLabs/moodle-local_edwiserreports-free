@@ -129,8 +129,17 @@ class utility {
         return \report_elucidsitereport\inactiveusers_block::get_data($filter);
     }
 
+    /** 
+     * Get Course Completion Data
+     * @param [string] $data Data to get Course Completion detail
+     */
     public static function get_completion_data($data) {
-        return \report_elucidsitereport\completion_block::get_data($data->courseid);
+        if ($data->cohortid) {
+            $cohortid = $data->cohortid;
+        } else {
+            $cohortid = 0;
+        }
+        return \report_elucidsitereport\completion_block::get_data($data->courseid, $cohortid);
     }
 
     public static function get_courseanalytics_data($data) {

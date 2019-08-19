@@ -33,7 +33,7 @@ require_once(__DIR__ . '/../../config.php');
 require_once('classes/output/elucidreport_renderer.php');
 require_once('classes/output/elucidreport_renderable.php');
 
-// require_login();
+require_login();
 
 $courseid = required_param("courseid", PARAM_INT);
 $coursecontext = context_course::instance($courseid);

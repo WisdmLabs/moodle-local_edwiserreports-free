@@ -35,19 +35,23 @@ use html_writer;
 class completion_block extends utility {
     /**
      * Get Data for Course Completion
+     * @param [int] $courseid Course Id
+     * @param [int] $cohortid Cohort Id
      * @return [object] Response for Course Completion
      */
-    public static function get_data($courseid) {
+    public static function get_data($courseid, $cohortid) {
         $response = new stdClass();
-        $response->data = self::get_completion_data($courseid);
+        $response->data = self::get_completions($courseid, $cohortid);
         return $response;
     }
 
     /**
      * Get Course Completion data
+     * @param [int] $courseid Course Id
+     * @param [int] $cohortid Cohort Id
      * @return [array] Array of users with course Completion 
      */
-    public static function get_completion_data($courseid) {
+    public static function get_completions($courseid, $cohortid) {
         global $DB;
         $timenow = time();
 
@@ -63,6 +67,13 @@ class completion_block extends utility {
 
         $userscompletion = array();
         foreach ($enrolledstudents as $user) {
+            if ($cohortid) {
+                $cohorts = cohort_get_user_cohorts($user->id);
+                if (!array_key_exists($cohortid, $cohorts)) {
+                    continue;
+                }
+            }
+
             $params = array('courseid'=>$courseid, 'userid' => $user->id);
             $enrolinfo = $DB->get_record_sql($enrolsql, $params);
 
@@ -109,6 +120,12 @@ class completion_block extends utility {
         return $userscompletion;
     }
 
+    /**
+     * Get Course completion time by a user
+     * @param [int] $courseid Course Id
+     * @param [int] $userid User Id
+     * @return [string] date | not completed
+     */
     public static function get_timecompleted($courseid, $userid) {
         global $DB;
 
