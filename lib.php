@@ -77,6 +77,7 @@ function report_elucidsitereport_output_fragment_userslist($args) {
 function report_elucidsitereport_output_fragment_lpstats($args) {
     global $DB;
     $lpid = clean_param($args["lpid"], PARAM_TEXT);
+    $cohortid = clean_param($args["cohortid"], PARAM_TEXT);
 
-    return json_encode(\report_elucidsitereport\lpstats_block::get_lpstats_usersdata($lpid));
+    return json_encode(\report_elucidsitereport\lpstats_block::get_lpstats_usersdata($lpid, $cohortid));
 }

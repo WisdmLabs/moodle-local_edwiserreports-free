@@ -3,40 +3,63 @@ define([
     'core/templates',
     'core/fragment',
     'report_elucidsitereport/variables',
+    'report_elucidsitereport/select2',
     'report_elucidsitereport/jquery.dataTables',
     'report_elucidsitereport/dataTables.bootstrap4'
 ], function($, Templates, Fragment, V) {
     function init(CONTEXTID) {
         var PageId = "#wdm-lpstats-individual";
-        var LpSelect = PageId + " #wdm-lp-select";
+        var LpSelect = "#wdm-lp-select";
         var LpTable = PageId + " .table";
         var loader = PageId + " .loader";
+        var filterSection = $("#wdm-userfilter .row .col-6:first-child");
+        var LpDropdown = $(PageId).find("#wdm-lp-dropdown");
         var Table = null;
 
+        // Varibales for cohort filter
+        var cohortId = 0;
+        var cohortFilterBtn   = "#cohortfilter";
+        var cohortFilterItem  = cohortFilterBtn + " ~ .dropdown-menu .dropdown-item";
+
         $(document).ready(function() {
-            var lpid = $(LpSelect).val();
-            addLpStatsTable(lpid);
+            filterSection.html(LpDropdown.html());
+            $(document).find(LpSelect).select2();
+            $(document).find(LpSelect).show();
+            LpDropdown.remove();
 
-            $(LpSelect).on("change", function() {
-                if (Table) {
-                    Table.destroy();
-                }
+            var lpid = $(document).find(LpSelect).val();
+            addLpStatsTable(lpid, cohortId);
 
+            /* Select cohort filter for active users block */
+            $(cohortFilterItem).on('click', function() {
+                cohortId = $(this).data('cohortid');
+                $(cohortFilterBtn).html($(this).text());
+                addLpStatsTable(lpid, cohortId);
+            });
+
+            $(document).find(LpSelect).on("change", function() {
                 $(LpTable).hide();
                 $(loader).show();
 
-                lpid = $(LpSelect).val();
-                addLpStatsTable(lpid);
+                lpid = $(document).find(LpSelect).val();
+                addLpStatsTable(lpid, cohortId);
             })
         });
 
-        function addLpStatsTable(lpid) {
+        function addLpStatsTable(lpid, cohortId) {
+            if (Table) {
+                Table.destroy();
+                $(LpTable).hide();
+                $(loader).show();
+            }
+
             var fragment = Fragment.loadFragment(
                 'report_elucidsitereport',
                 'lpstats',
                 CONTEXTID,
                 {
-                    lpid : lpid
+                    lpid : lpid,
+                    cohortid : cohortId
                 }
             );
 
@@ -50,6 +73,10 @@ define([
                 }).always(function() {
                     $(LpTable).show();
                     Table = $(LpTable).DataTable({
+                        dom : "<'pull-left'f><t><p>",
+                        oLanguage : {
+                            sEmptyTable : "No Learning Program are available"
+                        },
                         responsive : true
                     });
                     $(loader).hide();

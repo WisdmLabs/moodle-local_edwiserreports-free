@@ -18,7 +18,8 @@
 #wdm-activeusers-individual .table-responsive>div.dataTables_wrapper>div.row:nth-child(2),
 #wdm-courseprogress-individual.table-responsive>div.dataTables_wrapper>div:nth-child(2),
 #wdm-courseengage-individual.table-responsive>div.dataTables_wrapper>div:nth-child(2),
-#wdm-lpstats-individual.table-responsive>div.dataTables_wrapper>div.row:nth-child(2),
+#wdm-lpstats-individual.table-responsive>div.dataTables_wrapper>div:nth-child(2),
+#wdm-certificates-individual.table-responsive>div.dataTables_wrapper>div:nth-child(2),
 #wdm-completion-individual.table-responsive>div.dataTables_wrapper>div:nth-child(2),
 #wdm-courseanalytics-individual.table-responsive>div.dataTables_wrapper>div:nth-child(2) {
     clear: both;

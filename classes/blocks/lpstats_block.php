@@ -73,7 +73,13 @@ class lpstats_block extends utility {
     	return $lpstats;
     }
 
-    public static function get_lpstats_usersdata($lpid) {
+    /**
+     * Get Lp Stats Users Data
+     * @param [int] $lpid Learning Program Id
+     * @param [int] $cohortid Cohort Id
+     * @return [array] LP stats Users Data
+     */
+    public static function get_lpstats_usersdata($lpid, $cohortid) {
         global $DB;
 
         $lp = $DB->get_record("wdm_learning_program", array("id" => $lpid), "courses");
@@ -87,6 +93,13 @@ class lpstats_block extends utility {
         $flag = true;
 
         foreach ($lpenrolment as $enrol) {
+            if ($cohortid) {
+                $cohorts = cohort_get_user_cohorts($enrol->userid);
+                if (!array_key_exists($cohortid, $cohorts)) {
+                    continue;
+                }
+            }
+
             $user = core_user::get_user($enrol->userid, "id, firstname, lastname, email");
 
             $userinfo = new stdClass();

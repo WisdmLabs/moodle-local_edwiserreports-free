@@ -6,7 +6,7 @@
 {{/userfilters}}
 
 <div id="wdm-lpstats-individual" class="table-responsive" data-sesskey="{{sesskey}}">
-    <div class="px-0 py-20">
+    <div id="wdm-lp-dropdown" class="px-0 py-20">
         <select id="wdm-lp-select" class="form-control singleselect w-250" name="state">
             {{#lps}}
             <option value="{{id}}">{{fullname}}</option>
@@ -16,5 +16,5 @@
     <div class="loader w-full text-center pt-100 mt-50">
         {{# pix }} loader, report_elucidsitereport{{/ pix }}
     </div>
-    <table class="table" style="display: none;"></table>
+    <table class="table w-full" style="display: none;"></table>
 </div>
