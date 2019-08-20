@@ -33,10 +33,17 @@ require_once($CFG->dirroot . "/cohort/lib.php");
 function get_block_exportlinks($url, $data) {
     $links = new stdClass();
 
+    /* Course Progress Filter Id*/
     if (isset($data->firstcourseid)) {
         $cpfilter = $data->firstcourseid;
     } else {
         $cpfilter = false;
+    }
+
+    if (isset($data->firstlpid)) {
+        $lpfilter = $data->firstlpid;
+    } else {
+        $lpfilter = false;
     }
 
     $links->blockactiveusers = get_exportlinks($url, "block", "activeusers", "weekly");
@@ -44,7 +51,7 @@ function get_block_exportlinks($url, $data) {
     $links->blockcourseprogress = get_exportlinks($url, "block", "courseprogress", $cpfilter);
     $links->blockcertificates = get_exportlinks($url, "block", "certificates");
     $links->blockf2fsessions = get_exportlinks($url, "block", "f2fsession");
-    $links->blocklpstats = get_exportlinks($url, "block", "lpstats");
+    $links->blocklpstats = get_exportlinks($url, "block", "lpstats", $lpfilter);
     return $links;
 }
 

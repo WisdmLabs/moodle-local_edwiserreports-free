@@ -5,6 +5,7 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig'], func
         var panelBody = cfg.getPanel("#lpstatsblock", "body");
         var panelTitle = cfg.getPanel("#lpstatsblock", "title");
         var selectedLp = panelBody + " #wdm-lpstats-select";
+        var exportUrlLink = panel + " .dropdown-menu[aria-labelledby='export-dropdown'] .dropdown-item";
         var chart = panelBody + " .ct-chart";
         var loader = panelBody + " .loader";
 
@@ -12,11 +13,13 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig'], func
             var lpId = $(selectedLp).val();
             getLpStatsData(lpId);
 
-            $(selectedLp).on("change", function () {                
+            $(selectedLp).on("change", function () {  
+                lpId = $(this).val();              
                 $(chart).addClass("d-none");
                 $(loader).removeClass("d-none");
+                cfg.changeExportUrl(lpId, exportUrlLink);
                 lpChart.destroy();
-                getLpStatsData($(this).val());
+                getLpStatsData(lpId);
             });
         });
 

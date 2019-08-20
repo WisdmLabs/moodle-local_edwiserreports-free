@@ -139,6 +139,7 @@ $string['activeusers_status'] = "User Active";
 $string['enrolments_status'] = "User Enrolled";
 $string['completions_status'] = "Course Completed";
 $string['completedactivity'] = "Completed Activity";
+$string['coursecompletedusers'] = "Course Completed By Users";
 
 /* Course Engagement Block */
 $string['activitystart'] = "At least one Activity Started";

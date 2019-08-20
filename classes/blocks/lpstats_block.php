@@ -153,4 +153,36 @@ class lpstats_block extends utility {
 
         return $lpinfo;
     }
+
+    /**
+     * Get header for export data actvive users
+     * @return [array] Array of headers of exportable data
+     */
+    public static function get_header_block() {
+        $header = array(
+            get_string("coursename", "report_elucidsitereport"),
+            get_string("coursecompletedusers", "report_elucidsitereport")
+        );
+
+        return $header;
+    }
+
+    /**
+     * Get Exportable data for LP Stats Block
+     * @param  [int] $filter Lp ID
+     * @return [array] Array of LP Stats
+     */
+    public static function get_exportable_data_block($filter) {
+        $lpstats = self::get_lpstats($filter);
+
+        $export = array();
+        $export[] = self::get_header_block();
+        foreach($lpstats->labels as $key => $label) {
+            $export[] = array(
+                $label,
+                $lpstats->data[$key]
+            );
+        }
+        return $export;
+    }
 }

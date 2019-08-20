@@ -81,6 +81,10 @@ class elucidreport_renderable implements renderable, templatable {
 
         if ($export->haslppluign) {
             $export->lps = \report_elucidsitereport\utility::get_lps();
+            if (!empty($export->courses)) {
+                $export->haslps = true;
+                $data->firstlpid = $export->lps[0]["id"];
+            }
             $export->lpstatslink = new moodle_url($CFG->wwwroot."/report/elucidsitereport/lpstats.php");
         }
 
