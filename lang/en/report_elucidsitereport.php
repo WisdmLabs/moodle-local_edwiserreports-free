@@ -128,6 +128,7 @@ $string['lastaccess'] = "Last Access";
 $string['progress'] = "Progress";
 $string['avgprogress'] = "Avg Progress";
 $string['notyet'] = "Not Yet";
+$string['lpname'] = "Learning Program Name";
 
 /* Export Strings */
 $string['csv'] = "CSV";
@@ -140,6 +141,19 @@ $string['enrolments_status'] = "User Enrolled";
 $string['completions_status'] = "Course Completed";
 $string['completedactivity'] = "Completed Activity";
 $string['coursecompletedusers'] = "Course Completed By Users";
+
+$string['activeusersexportheader'] = "Active Users, Course Enrolment and Course Completion Rate";
+$string['activeusersexporthelp'] = "This report will show active users, course enrolment and course completion over the period.";
+$string['courseprogressexportheader'] = "Course Progress Report";
+$string['courseprogressexporthelp'] = "This report will show the course progress of a perticuler course by the users.";
+$string['activecoursesexportheader'] = "Most active course report";
+$string['activecoursesexporthelp'] = "This report will show the most active courses based on the enrolments, visits and completions.";
+$string['certificatesexportheader'] = "Awarded certificates report";
+$string['certificatesexporthelp'] = "This report will show the certificates who have issued or not issue issue to enrolled users.";
+$string['f2fsessionexportheader'] = "Instructor-Led Sessions report";
+$string['f2fsessionexporthelp'] = "This report will show the Instructor-Led Sessions details.";
+$string['lpstatsexportheader'] = "Learning Program report";
+$string['lpstatsexporthelp'] = "This report will show the Learning program details.";
 
 /* Course Engagement Block */
 $string['activitystart'] = "At least one Activity Started";

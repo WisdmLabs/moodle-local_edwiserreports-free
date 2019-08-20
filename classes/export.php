@@ -27,6 +27,7 @@ namespace report_elucidsitereport;
 
 require_once($CFG->libdir."/csvlib.class.php");
 require_once($CFG->libdir."/excellib.class.php");
+require_once($CFG->libdir."/pdflib.php");
 require_once($CFG->dirroot."/report/elucidsitereport/classes/blocks/active_users_block.php");
 require_once($CFG->dirroot."/report/elucidsitereport/classes/blocks/active_courses_block.php");
 
@@ -35,6 +36,9 @@ use moodle_exception;
 use core_user;
 use context_course;
 use MoodleExcelWorkbook;
+use pdf;
+use html_table;
+use html_writer;
 
 class export {
     /**
@@ -72,9 +76,11 @@ class export {
     public function data_export($filename, $data) {
         switch($this->format) {
             case "csv":
-                return $this->data_export_csv($filename, $data);
+                $this->data_export_csv($filename, $data);
             case "excel":
-                return $this->data_export_excel($filename, $data);
+                $this->data_export_excel($filename, $data);
+            case "pdf":
+                $this->data_export_pdf($filename, $data);
         }
     }
 
@@ -85,10 +91,7 @@ class export {
      * @return Return status after export the data
      */
     public function data_export_csv($filename, $data) {
-        if (csv_export_writer::download_array($filename, $data)) {
-            return true;
-        }
-        return false;
+        csv_export_writer::download_array($filename, $data);
     }
 
     /**
@@ -115,6 +118,55 @@ class export {
 
         // Close the workbook
         $workbook->close();
+    }
+
+    /**
+     * Export data in Pdf format
+     * @param $filenme file name to export data
+     * @param $data data to be export
+     * @return Return status after export the data
+     */
+    public function data_export_pdf($filename, $data) {
+        $pdf = new pdf();
+
+        $pdf->setPrintHeader(false);
+        $pdf->setPrintFooter(false);
+        // $pdf->SetAutoPageBreak(true, 72);
+
+        $pdf->AddPage();
+
+        $table = new html_table();
+        foreach ($data as $key => $val) {
+            if ($key == 0) {
+                foreach($val as $v) {
+                    $table->head[] = html_writer::tag("h4", $v,
+                        array(
+                            "style" => "border-bottom: 1px solid #000;"
+                        )
+                    );
+                }
+            } else {
+                $table->data[] = $val;
+            }
+        }
+
+        //  Set the appropriate font
+        $pdf->writeHTML(
+            html_writer::tag("h1",
+                get_string($this->blockname . "exportheader", "report_elucidsitereport"),
+                array(
+                    "style" => "text-align:center" 
+                )
+            ).
+            html_writer::tag("p",
+                get_string($this->blockname . "exporthelp", "report_elucidsitereport"),
+                array(
+                    "style" => "text-indent: 50px"
+                )
+            ).
+            html_writer::table($table)
+        );
+        $pdf->Output($filename);
     }
 
     /**

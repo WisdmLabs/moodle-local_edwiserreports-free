@@ -161,6 +161,7 @@ class lpstats_block extends utility {
     public static function get_header_block() {
         $header = array(
             get_string("coursename", "report_elucidsitereport"),
+            get_string("lpname", "report_elucidsitereport"),
             get_string("coursecompletedusers", "report_elucidsitereport")
         );
 
@@ -173,13 +174,17 @@ class lpstats_block extends utility {
      * @return [array] Array of LP Stats
      */
     public static function get_exportable_data_block($filter) {
+        global $DB;
+
         $lpstats = self::get_lpstats($filter);
+        $lp = $DB->get_record("wdm_learning_program", array("id" => $filter), "name");
 
         $export = array();
         $export[] = self::get_header_block();
         foreach($lpstats->labels as $key => $label) {
             $export[] = array(
                 $label,
+                $lp->name,
                 $lpstats->data[$key]
             );
         }

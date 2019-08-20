@@ -24,6 +24,7 @@
  */
 
 namespace report_elucidsitereport;
+
 use core_user;
 use html_table;
 use html_table_cell;
