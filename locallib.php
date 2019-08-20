@@ -24,6 +24,7 @@
  */
 
 require_once($CFG->dirroot . "/cohort/lib.php");
+
 /**
  * Get Export Link to export data from blocks and individual page
  * @param  [string] $url Url prifix to get export link
@@ -90,27 +91,27 @@ function get_exportlink_array($url, $params) {
         array(
             "name" => get_string("csv", "report_elucidsitereport"),
             "icon" => "file-o",
-            "link" => new moodle_url($url, array_merge(array("type" => "csv"), $params)),
+            "link" => new moodle_url($url, array_merge(array("format" => "csv"), $params)),
         ),
         array(
             "name" => get_string("excel", "report_elucidsitereport"),
             "icon" => "file-excel-o",
-            "link" => new moodle_url($url, array_merge(array("type" => "excel"), $params)),
+            "link" => new moodle_url($url, array_merge(array("format" => "excel"), $params)),
         ),
         array(
             "name" => get_string("pdf", "report_elucidsitereport"),
             "icon" => "file-pdf-o",
-            "link" => new moodle_url($url, array_merge(array("type" => "pdf"), $params)),
+            "link" => new moodle_url($url, array_merge(array("format" => "pdf"), $params)),
         ),
         array(
             "name" => get_string("email", "report_elucidsitereport"),
             "icon" => "envelope-o",
-            "link" => new moodle_url($url, array_merge(array("type" => "copy"), $params)),
+            "link" => new moodle_url($url, array_merge(array("format" => "copy"), $params)),
         ),
         array(
             "name" => get_string("copy", "report_elucidsitereport"),
             "icon" => "copy",
-            "link" => new moodle_url($url, array_merge(array("type" => "copy"), $params)),
+            "link" => new moodle_url($url, array_merge(array("format" => "copy"), $params)),
         )
     );
 }
@@ -196,7 +197,7 @@ function create_back_button($backurl) {
  * @return [boolean] True|False based on plugin exist
  */
 function has_plugin($plugintype, $puginname) {
-    $plugins = \core_plugin_manager::instance()->get_plugins_of_type($plugintype);
+    $plugins = core_plugin_manager::instance()->get_plugins_of_type($plugintype);
 
     if (array_key_exists($puginname, $plugins)) {
         return true;

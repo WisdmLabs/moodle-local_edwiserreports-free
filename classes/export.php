@@ -25,14 +25,16 @@
 
 namespace report_elucidsitereport;
 
-require_once $CFG->libdir."/csvlib.class.php";
-require_once $CFG->dirroot."/report/elucidsitereport/classes/blocks/active_users_block.php";
-require_once $CFG->dirroot."/report/elucidsitereport/classes/blocks/active_courses_block.php";
+require_once($CFG->libdir."/csvlib.class.php");
+require_once($CFG->libdir."/excellib.class.php");
+require_once($CFG->dirroot."/report/elucidsitereport/classes/blocks/active_users_block.php");
+require_once($CFG->dirroot."/report/elucidsitereport/classes/blocks/active_courses_block.php");
 
 use csv_export_writer;
 use moodle_exception;
 use core_user;
 use context_course;
+use MoodleExcelWorkbook;
 
 class export {
     /**
@@ -56,9 +58,24 @@ class export {
      * @param $format type os export object
      */
     public function __construct($format, $region, $blockname) {
-        $this->type   = $format;
+        $this->format = $format;
         $this->region = $region;
         $this->blockname = $blockname;
+    }
+
+    /**
+     * Export data
+     * @param $filenme file name to export data
+     * @param $data data to be export
+     * @return Return status after export the data
+     */
+    public function data_export($filename, $data) {
+        switch($this->format) {
+            case "csv":
+                return $this->data_export_csv($filename, $data);
+            case "excel":
+                return $this->data_export_excel($filename, $data);
+        }
     }
 
     /**
@@ -72,6 +89,32 @@ class export {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Export data in Excel format
+     * @param $filenme file name to export data
+     * @param $data data to be export
+     * @return Return status after export the data
+     */
+    public function data_export_excel($filename, $data) {
+        // Creating a workbook
+        $workbook = new MoodleExcelWorkbook("-");
+
+        // Adding the worksheet
+        $myxls = $workbook->add_worksheet($this->region . "_" . $this->blockname);
+
+        foreach ($data as $rownum => $row) {
+            foreach ($row as $colnum => $val) {
+                $myxls->write_string($rownum, $colnum, $val);
+            }
+        }
+
+        // Sending HTTP headers
+        $workbook->send($filename);
+
+        // Close the workbook
+        $workbook->close();
     }
 
     /**

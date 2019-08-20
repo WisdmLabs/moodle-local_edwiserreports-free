@@ -33,15 +33,15 @@ require_login();
 $context = context_system::instance();
 $PAGE->set_context($context);
 
-if ($type = optional_param("type", false, PARAM_TEXT)) {
+if ($format = optional_param("format", false, PARAM_TEXT)) {
 	$region = required_param("region", PARAM_TEXT);
 	$blockname = required_param("blockname", PARAM_TEXT);
 	$filter = optional_param("filter", false, PARAM_TEXT);
 
-	$export = new export($type, $region, $blockname);
+	$export = new export($format, $region, $blockname);
 	$data = $export->get_exportable_data($filter);
 
 	if ($data) {
-		$export->data_export_csv($region."_".$blockname, $data);
+		$export->data_export($region."_".$blockname, $data);
 	}
 }
