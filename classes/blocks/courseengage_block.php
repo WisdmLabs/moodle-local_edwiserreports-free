@@ -228,10 +228,11 @@ class courseengage_block extends utility {
     /**
      * Get Visited users in a course
      * @param [object] $course Course Object
+     * @param [object] $cohortid Cohort Id
      * @return [array] Array of users list
      */
     public static function get_visited_users($course, $cohortid) {
-        $users = self::get_course_visites($course->id);
+        $users = self::get_course_visites($course->id, $cohortid);
         $usersdata = new stdClass();
         $userdata->head = array(
             get_string("name", "report_elucidsitereport"),

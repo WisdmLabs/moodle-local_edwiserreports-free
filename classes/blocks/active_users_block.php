@@ -338,7 +338,7 @@ class active_users_block extends utility {
     public static function get_exportable_data_block($filter) {
         $export = array();
         $export[] = self::get_header();
-        $activeusersdata = self::get_data($filter);
+        $activeusersdata = self::get_data($filter, 0);
         foreach ($activeusersdata->labels as $key => $lable) {
             $export[] = array(
                 $lable,

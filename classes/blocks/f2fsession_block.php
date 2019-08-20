@@ -50,7 +50,7 @@ class f2fsession_block extends utility {
      * Get face to face activities
      * @return array Array of all available face to face activities
      */
-    public static function get_f2fmodules($cohortid) {
+    public static function get_f2fmodules($cohortid = false) {
         global $CFG, $DB, $USER;
 
         $count = 0;
