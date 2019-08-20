@@ -39,6 +39,7 @@ use MoodleExcelWorkbook;
 use pdf;
 use html_table;
 use html_writer;
+use file_storage;
 
 class export {
     /**
@@ -77,10 +78,16 @@ class export {
         switch($this->format) {
             case "csv":
                 $this->data_export_csv($filename, $data);
+                break;
             case "excel":
                 $this->data_export_excel($filename, $data);
+                break;
             case "pdf":
                 $this->data_export_pdf($filename, $data);
+                break;
+            case "email":
+                $this->data_export_email($filename, $data);
+                break;
         }
     }
 
@@ -127,6 +134,34 @@ class export {
      * @return Return status after export the data
      */
     public function data_export_pdf($filename, $data) {
+        $filename .= '.pdf';
+        $this->generate_pdf_file($filename, $data, "D");
+    }
+
+    /**
+     * Export data email to user
+     * @param $filenme file name to export data
+     * @param $data data to be export
+     * @return Return status after export the data
+     */
+    public function data_export_email($filename, $data) {
+        global $USER;
+
+        $filename .= '.pdf';
+        $filepath = $this->generate_pdf_file($filename, $data, "F");
+
+        $subject = get_string($this->blockname . "exportheader", "report_elucidsitereport");
+        $content = get_string($this->blockname . "exporthelp", "report_elucidsitereport");
+        email_to_user($USER, $USER, $subject, '', $content, $filepath, $filename);
+        unlink($filepath);
+    }
+
+    /**
+     * Generate PDF file to export
+     * @return [type] [description]
+     */
+    private function generate_pdf_file($filename, $data, $dest) {
+        global $CFG;
         $pdf = new pdf();
 
         $pdf->setPrintHeader(false);
@@ -166,7 +201,16 @@ class export {
             ).
             html_writer::table($table)
         );
-        $pdf->Output($filename);
+
+        if ($dest == "F") {
+            $filepath = $CFG->tempdir . '/files/' . $filename;
+        } else {
+            $filepath = $filename;
+        }
+
+        $pdf->Output($filepath, $dest);
+
+        return $filepath;
     }
 
     /**

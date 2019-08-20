@@ -92,27 +92,32 @@ function get_exportlink_array($url, $params) {
             "name" => get_string("csv", "report_elucidsitereport"),
             "icon" => "file-o",
             "link" => new moodle_url($url, array_merge(array("format" => "csv"), $params)),
+            "action" => 'csv'
         ),
         array(
             "name" => get_string("excel", "report_elucidsitereport"),
             "icon" => "file-excel-o",
             "link" => new moodle_url($url, array_merge(array("format" => "excel"), $params)),
+            "action" => 'excel'
         ),
         array(
             "name" => get_string("pdf", "report_elucidsitereport"),
             "icon" => "file-pdf-o",
             "link" => new moodle_url($url, array_merge(array("format" => "pdf"), $params)),
+            "action" => 'pdf'
         ),
         array(
             "name" => get_string("email", "report_elucidsitereport"),
             "icon" => "envelope-o",
-            "link" => new moodle_url($url, array_merge(array("format" => "copy"), $params)),
-        ),
+            "link" => new moodle_url($url, array_merge(array("format" => "email"), $params)),
+            "action" => 'email'
+        )/*,
         array(
             "name" => get_string("copy", "report_elucidsitereport"),
             "icon" => "copy",
             "link" => new moodle_url($url, array_merge(array("format" => "copy"), $params)),
-        )
+            "action" => 'copy'
+        )*/
     );
 }
 

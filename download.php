@@ -32,6 +32,7 @@ require_login();
 
 $context = context_system::instance();
 $PAGE->set_context($context);
+$PAGE->set_url($CFG->wwwroot . "/report/elucidsitereport/index.php");
 
 if ($format = optional_param("format", false, PARAM_TEXT)) {
 	$region = required_param("region", PARAM_TEXT);
@@ -45,3 +46,5 @@ if ($format = optional_param("format", false, PARAM_TEXT)) {
 		$export->data_export($region."_".$blockname, $data);
 	}
 }
+
+redirect($PAGE->url, get_string("emailsent", "report_elucidsitereport"));

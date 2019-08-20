@@ -141,6 +141,7 @@ $string['enrolments_status'] = "User Enrolled";
 $string['completions_status'] = "Course Completed";
 $string['completedactivity'] = "Completed Activity";
 $string['coursecompletedusers'] = "Course Completed By Users";
+$string['emailsent'] = "Email has been sent to your mail account";
 
 $string['activeusersexportheader'] = "Active Users, Course Enrolment and Course Completion Rate";
 $string['activeusersexporthelp'] = "This report will show active users, course enrolment and course completion over the period.";

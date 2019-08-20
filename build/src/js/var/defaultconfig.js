@@ -1,10 +1,11 @@
-define(["jquery", "report_elucidsitereport/variables", "report_elucidsitereport/select2"], function($, v) {
+define(["jquery", "core/notification", "report_elucidsitereport/variables", "report_elucidsitereport/select2"], function($, notif, v) {
     var toggleMenuAndPin = "#toggleMenubar [data-toggle='menubar'], .page-aside-pin";
 
     $(document).ready(function() {
         var isNavlink = null;
         var pageContent = $("#page-admin-report-elucidsitereport-index .page-content");
         var pageWidth = pageContent.width();
+        var exportDropdown = '.export-dropdown a[data-action="email"]';
 
         rearrangeBlocks(pageWidth, isNavlink);
 
@@ -16,6 +17,23 @@ define(["jquery", "report_elucidsitereport/variables", "report_elucidsitereport/
         });
 
         $('.singleselect').select2();
+
+        $(document).on("click", exportDropdown, function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: this.href
+            }).done(function() {
+                notif.addNotification({
+                    message: "Email has been sent to your mail account",
+                    type: "info"
+                });
+            }).fail(function() {
+                notif.addNotification({
+                    message: "Failed to send the report in your mail account",
+                    type: "error"
+                });
+            })
+        });
     });
 
     function rearrangeBlocks(pageWidth, isNavlink) {
