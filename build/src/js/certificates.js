@@ -90,7 +90,7 @@ define([
             /* Select cohort filter for active users block */
             $(cohortFilterItem).on('click', function() {
                 cohortId = $(this).data('cohortid');
-                V.changeExportUrl(cohortId, exportUrlLink, "C");
+                V.changeExportUrl(cohortId, exportUrlLink, V.cohortReplaceFlag);
                 $(cohortFilterBtn).html($(this).text());
                 getCertificateDetail(certificateid, cohortId);
             });
@@ -99,7 +99,7 @@ define([
                 certificateid = $(this).val()
                 getCertificateDetail(certificateid);
                 console.log(certificateid);
-                V.changeExportUrl(certificateid, exportUrlLink, "F");
+                V.changeExportUrl(certificateid, exportUrlLink, V.filterReplaceFlag);
             });
         });
     }

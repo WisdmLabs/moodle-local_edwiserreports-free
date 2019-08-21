@@ -56,14 +56,14 @@ define([
             $(cohortFilterItem).on('click', function() {
                 cohortId = $(this).data('cohortid');
                 $(cohortFilterBtn).html($(this).text());
-                V.changeExportUrl(cohortId, exportUrlLink, "C");
+                V.changeExportUrl(cohortId, exportUrlLink, V.cohortReplaceFlag);
                 createActiveUsersTable(filter, cohortId);
             });
 
             /* Select filter for active users block */
             $(dropdownItem + ":not(.custom)").on('click', function() {
                 filter = $(this).attr('value');
-                V.changeExportUrl(filter, exportUrlLink, "F");
+                V.changeExportUrl(filter, exportUrlLink, V.filterReplaceFlag);
                 $(dropdownMenu).removeClass('show');
                 $(dropdownButton).html($(this).text());
                 createActiveUsersTable(filter, cohortId);

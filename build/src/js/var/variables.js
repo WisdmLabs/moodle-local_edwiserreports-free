@@ -1,4 +1,4 @@
-define(function() {
+define(['report_elucidsitereport/variables'], function(V) {
     return {
         requestUrl : M.cfg.wwwroot + '/report/elucidsitereport/request_handler.php',
         requestType : 'GET',
@@ -45,16 +45,25 @@ define(function() {
         clock12_22 : "10:00 PM",
         clock12_23 : "11:00 PM",
 
-        changeExportUrl : function (filter, exportUrlLink, type) {
+
+        exportUrlLink : ".dropdown-menu[aria-labelledby='export-dropdown'] .dropdown-item",
+        cohortFilterBtn : "#cohortfilter",
+        cohortFilterItem : "#cohortfilter ~ .dropdown-menu .dropdown-item",
+
+        // Export Variable
+        cohortReplaceFlag : "C",
+        filterReplaceFlag : "F",
+
+        changeExportUrl : function (filter, exportUrlLink, flag) {
             $(exportUrlLink).each(function() {
                 var oldUrl = this.href;
-                if (type == "F") {
+                if (flag == "F") {
                     if (oldUrl.search(/filter=(.*)&/) > -1) {
                         oldUrl = oldUrl.replace(/filter=(.*)&/, "filter="+filter+"&");
                     } else {
                         oldUrl = oldUrl.replace(/filter=(.*)/, "filter="+filter);
                     }
-                } else if (type == "C") {
+                } else if (flag == "C") {
                     oldUrl = oldUrl.replace(/cohortid=(.*)/, "cohortid="+filter);
                 }
 

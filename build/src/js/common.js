@@ -1,4 +1,11 @@
-define(["jquery", "core/notification", "report_elucidsitereport/variables"], function($, notif, v) {
+define([
+    'jquery',
+    'core/notification',
+    'report_elucidsitereport/variables',
+    'report_elucidsitereport/select2',
+    'report_elucidsitereport/jquery.dataTables',
+    'report_elucidsitereport/dataTables.bootstrap4'
+    ], function($, notif, v) {
     var toggleMenuAndPin = "#toggleMenubar [data-toggle='menubar'], .page-aside-pin";
 
     $(document).ready(function() {

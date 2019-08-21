@@ -27,7 +27,7 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', "repo
 
         function getCourseProgressData() {
             var courseId = $(selectedCourse).val();
-            cfg.changeExportUrl(courseId, exportUrlLink, "F");
+            cfg.changeExportUrl(courseId, exportUrlLink, V.filterReplaceFlag);
 
             $.ajax({
                 url: cfg.requestUrl,

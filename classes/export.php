@@ -289,6 +289,9 @@ class export {
             case "f2fsession":
                 $export = f2fsession_block::get_exportable_data_report($filter);
                 break;
+            case "lpstats":
+                $export = lpstats_block::get_exportable_data_report($filter);
+                break;
         }
         return $export;
     }

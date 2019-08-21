@@ -18,7 +18,7 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', "repo
                 lpId = $(this).val();              
                 $(chart).addClass("d-none");
                 $(loader).removeClass("d-none");
-                cfg.changeExportUrl(lpId, exportUrlLink, "F");
+                cfg.changeExportUrl(lpId, exportUrlLink, V.filterReplaceFlag);
                 lpChart.destroy();
                 getLpStatsData(lpId);
             });

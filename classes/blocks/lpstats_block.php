@@ -39,6 +39,11 @@ class lpstats_block extends utility {
     	return $response;
     }
 
+    /**
+     * Get LP stats details
+     * @param  [int] $lpid Learning Program Id
+     * @return [object] Learning Program stats
+     */
     public static function get_lpstats($lpid) {
     	global $DB;
     	$lp = $DB->get_record("wdm_learning_program", array("id" => $lpid), "courses");
@@ -104,7 +109,7 @@ class lpstats_block extends utility {
 
             $userinfo = new stdClass();
             $avgprogress = 0;
-            $userinfo->name = fullname($user);
+            $userinfo->name = $user->firstname . " " . $user->lastname;
             $userinfo->email = $user->email;
             $userinfo->enrolled = date("d M y", $enrol->timeenroled);
             $userinfo->lastaccess = $enrol->lastaccess ? date("d M y", $enrol->lastaccess) : get_string("notyet", "report_elucidsitereport");
@@ -169,6 +174,22 @@ class lpstats_block extends utility {
     }
 
     /**
+     * Get header for export data Lp stats page
+     * @return [array] Array of headers of exportable data
+     */
+    public static function get_header_report() {
+        $header = array(
+            get_string("name", "report_elucidsitereport"),
+            get_string("email", "report_elucidsitereport"),
+            get_string("enrolled", "report_elucidsitereport"),
+            get_string("lastaccess", "report_elucidsitereport"),
+            get_string("grade", "report_elucidsitereport")
+        );
+
+        return $header;
+    }
+
+    /**
      * Get Exportable data for LP Stats Block
      * @param  [int] $filter Lp ID
      * @return [array] Array of LP Stats
@@ -187,6 +208,39 @@ class lpstats_block extends utility {
                 $lp->name,
                 $lpstats->data[$key]
             );
+        }
+        return $export;
+    }
+
+    /**
+     * Get Exportable data for LP Stats Page
+     * @param  [int] $filter Lp ID
+     * @return [array] Array of LP Stats
+     */
+    public static function get_exportable_data_report($filter) {
+        global $DB;
+
+        $cohortid = optional_param("cohortid", 0, PARAM_INT);
+        $lpstats = self::get_lpstats_usersdata($filter, $cohortid);
+
+        $header = self::get_header_report();
+        foreach ($lpstats->courses as $course) {
+            $header[] = $course->shortname;
+        }
+
+        $export = array();
+        $export[] = $header;
+        foreach($lpstats->users as $user) {
+            $data = array();
+            $data[] = $user->name;
+            $data[] = $user->email;
+            $data[] = $user->enrolled;
+            $data[] = $user->lastaccess;
+            $data[] = $user->grade;
+            foreach ($user->progress as $progress) {
+                $data[] = $progress;
+            }
+            $export[] = $data;
         }
         return $export;
     }

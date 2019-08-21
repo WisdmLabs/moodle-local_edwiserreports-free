@@ -3,9 +3,6 @@ define([
     'core/templates',
     'core/fragment',
     'report_elucidsitereport/variables',
-    'report_elucidsitereport/select2',
-    'report_elucidsitereport/jquery.dataTables',
-    'report_elucidsitereport/dataTables.bootstrap4',
     'report_elucidsitereport/common'
 ], function($, Templates, Fragment, V) {
     function init(CONTEXTID) {
@@ -19,8 +16,6 @@ define([
 
         // Varibales for cohort filter
         var cohortId = 0;
-        var cohortFilterBtn   = "#cohortfilter";
-        var cohortFilterItem  = cohortFilterBtn + " ~ .dropdown-menu .dropdown-item";
 
         $(document).ready(function() {
             filterSection.html(LpDropdown.html());
@@ -32,9 +27,10 @@ define([
             addLpStatsTable(lpid, cohortId);
 
             /* Select cohort filter for active users block */
-            $(cohortFilterItem).on('click', function() {
+            $(V.cohortFilterItem).on('click', function() {
                 cohortId = $(this).data('cohortid');
-                $(cohortFilterBtn).html($(this).text());
+                $(V.cohortFilterBtn).html($(this).text());
+                V.changeExportUrl(cohortId, V.exportUrlLink, V.cohortReplaceFlag);
                 addLpStatsTable(lpid, cohortId);
             });
 
@@ -43,6 +39,7 @@ define([
                 $(loader).show();
 
                 lpid = $(document).find(LpSelect).val();
+                V.changeExportUrl(lpid, V.exportUrlLink, V.filterReplaceFlag);
                 addLpStatsTable(lpid, cohortId);
             })
         });
@@ -76,7 +73,7 @@ define([
                     Table = $(LpTable).DataTable({
                         dom : "<'pull-left'f><t><p>",
                         oLanguage : {
-                            sEmptyTable : "No Learning Program are available"
+                            sEmptyTable : "No Users are enrolled in any Learning Programs"
                         },
                         responsive : true
                     });

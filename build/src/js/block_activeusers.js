@@ -44,7 +44,7 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
                 filter = $(this).attr('value');
                 $(dropdownMenu).removeClass('show');
                 $(dropdownButton).html($(this).text());
-                defaultConfig.changeExportUrl(filter, exportUrlLink, "F");
+                defaultConfig.changeExportUrl(filter, exportUrlLink, V.filterReplaceFlag);
                 getActiveUsersBlockData(filter);
                 $(flatpickrCalender).val("Custom");
                 $(dropdownInput).val("Custom");
@@ -90,7 +90,7 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
                 return false;
             }
 
-            defaultConfig.changeExportUrl(filter, exportUrlLink, "F");
+            defaultConfig.changeExportUrl(filter, exportUrlLink, V.filterReplaceFlag);
             $(dropdownButton).html(date);
             $(flatpickrCalender).val("");
             getActiveUsersBlockData(filter);

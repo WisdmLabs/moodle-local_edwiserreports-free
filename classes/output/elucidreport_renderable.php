@@ -208,9 +208,13 @@ class lpstats_renderable implements renderable, templatable {
         $output = new stdClass();
         $output->sesskey = sesskey();
         $output->lps = \report_elucidsitereport\utility::get_lps();
-        $downloadurl = $CFG->wwwroot."/report/elucidsitereport/download.php";
-        $output->exportlink = get_exportlinks($downloadurl, "report", "lpstats", "1");
-        $output->userfilters = get_userfilters(false, true, false);
+
+        if (!empty($output->lps)) {
+            $output->haslps = true;
+            $downloadurl = $CFG->wwwroot."/report/elucidsitereport/download.php";
+            $output->exportlink = get_exportlinks($downloadurl, "report", "lpstats", $output->lps[0]["id"], 0);
+            $output->userfilters = get_userfilters(false, true, false);
+        }
         $output->backurl = new moodle_url($CFG->wwwroot."/report/elucidsitereport/index.php");
         return $output;
     }

@@ -296,7 +296,7 @@ class f2fsession_block extends utility {
      * Get header for f2fsessions block
      * @return [array] Array of header f2fsessions block
      */
-    public static function get_headers_report($filter) {
+    public static function get_headers_report($filter = false) {
         if ($filter) {
             $header = array (
                 get_string("username", "report_elucidsitereport"),
@@ -327,7 +327,7 @@ class f2fsession_block extends utility {
      */
     public static function get_exportable_data_block() {
         $export = array();
-        $export[] = self::get_headers();
+        $export[] = self::get_headers_report();
 
         $modules = self::get_f2fmodules();
         foreach($modules as $module) {
