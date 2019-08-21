@@ -303,13 +303,23 @@ class course_progress_block extends utility {
      * @return [array] Array of exportable data
      */
     public static function get_exportable_data_report($filter) {
+        $cohortid = optional_param("cohortid", 0, PARAM_INT);
         $export = array();
         $export[] = course_progress_block::get_header_report();
         $courses = \report_elucidsitereport\utility::get_courses();
         foreach ($courses as $key => $course) {
-            $courseprogress = course_progress_block::get_data($course->id);
+            $courseprogress = course_progress_block::get_data($course->id, $cohortid);
             $coursecontext = context_course::instance($course->id);
             $enrolledstudents = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+            if($cohortid) {
+                foreach($enrolledstudents as $key => $user) {
+                    $cohorts = cohort_get_user_cohorts($user->id);
+                    if (!array_key_exists($cohortid, $cohorts)) {
+                        unset($enrolledstudents[$key]);
+                    }
+                }
+            }
+
             $export[] = array_merge(
                 array(
                     $course->fullname,
