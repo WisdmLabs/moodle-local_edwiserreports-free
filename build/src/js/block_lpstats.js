@@ -17,7 +17,7 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig'], func
                 lpId = $(this).val();              
                 $(chart).addClass("d-none");
                 $(loader).removeClass("d-none");
-                cfg.changeExportUrl(lpId, exportUrlLink);
+                cfg.changeExportUrl(lpId, exportUrlLink, "F");
                 lpChart.destroy();
                 getLpStatsData(lpId);
             });

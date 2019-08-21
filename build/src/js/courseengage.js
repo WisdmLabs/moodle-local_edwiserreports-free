@@ -37,7 +37,7 @@ define([
 
                 cohortId = $(this).data('cohortid');
 
-                V.changeExportUrl(cohortId, exportUrlLink);
+                V.changeExportUrl(cohortId, exportUrlLink, "C");
                 $(cohortFilterBtn).html($(this).text());
                 createCourseEngageTable(cohortId);
             });

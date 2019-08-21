@@ -45,14 +45,16 @@ define(function() {
         clock12_22 : "10:00 PM",
         clock12_23 : "11:00 PM",
 
-        changeExportUrl : function (filter, exportUrlLink) {
+        changeExportUrl : function (filter, exportUrlLink, type) {
             $(exportUrlLink).each(function() {
                 var oldUrl = this.href;
-                if (oldUrl.indexOf("filter=") > -1) {
-                    oldUrl = oldUrl.replace(/filter=(.*)/, "filter="+filter);
-                }
-
-                if (oldUrl.indexOf("cohortid=") > -1) {
+                if (type == "F") {
+                    if (oldUrl.search(/filter=(.*)&/) > -1) {
+                        oldUrl = oldUrl.replace(/filter=(.*)&/, "filter="+filter+"&");
+                    } else {
+                        oldUrl = oldUrl.replace(/filter=(.*)/, "filter="+filter);
+                    }
+                } else if (type == "C") {
                     oldUrl = oldUrl.replace(/cohortid=(.*)/, "cohortid="+filter);
                 }
 

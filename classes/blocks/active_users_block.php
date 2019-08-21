@@ -336,6 +336,7 @@ class active_users_block extends utility {
      * @return [array] Array of exportable data
      */
     public static function get_exportable_data_block($filter) {
+        $cohortid = optional_param("cohortid", 0, PARAM_INT);
         $export = array();
         $export[] = self::get_header();
         $activeusersdata = self::get_data($filter);

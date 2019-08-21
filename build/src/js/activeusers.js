@@ -25,6 +25,7 @@ define([
         var dropdownInput     = "#wdm-userfilter input.form-control.input";
         var sesskey           = null;
         var DataTable         = null;
+        var exportUrlLink = ".dropdown-menu[aria-labelledby='export-dropdown'] .dropdown-item";
 
         // Varibales for cohort filter
         var cohortFilterBtn   = "#cohortfilter";
@@ -55,12 +56,14 @@ define([
             $(cohortFilterItem).on('click', function() {
                 cohortId = $(this).data('cohortid');
                 $(cohortFilterBtn).html($(this).text());
+                V.changeExportUrl(cohortId, exportUrlLink, "C");
                 createActiveUsersTable(filter, cohortId);
             });
 
             /* Select filter for active users block */
             $(dropdownItem + ":not(.custom)").on('click', function() {
                 filter = $(this).attr('value');
+                V.changeExportUrl(filter, exportUrlLink, "F");
                 $(dropdownMenu).removeClass('show');
                 $(dropdownButton).html($(this).text());
                 createActiveUsersTable(filter, cohortId);

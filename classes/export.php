@@ -135,7 +135,7 @@ class export {
      */
     public function data_export_pdf($filename, $data) {
         $filename .= '.pdf';
-        $this->generate_pdf_file($filename, $data, "D");
+        $this->generate_pdf_file($filename, $data, "I");
     }
 
     /**
