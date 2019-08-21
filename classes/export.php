@@ -295,6 +295,9 @@ class export {
             case "completion":
                 $export = completion_block::get_exportable_data_report($filter);
                 break;
+            case "courseanalytics":
+                $export = courseanalytics_block::get_exportable_data_report($filter);
+                break;
         }
         return $export;
     }

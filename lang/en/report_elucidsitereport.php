@@ -159,6 +159,8 @@ $string['courseengageexportheader'] = "Course Engagement Report";
 $string['courseengageexporthelp'] = "This report will show the course engagement by the users.";
 $string['completionexportheader'] = "Course Completion Report";
 $string['completionexporthelp'] = "This report will show the course completions by the users.";
+$string['courseanalyticsexportheader'] = "Course Completion Report";
+$string['courseanalyticsexporthelp'] = "This report will show the course completions by the users.";
 
 /* Course Engagement Block */
 $string['activitystart'] = "At least one Activity Started";

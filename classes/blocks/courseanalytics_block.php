@@ -54,7 +54,6 @@ class courseanalytics_block extends utility {
         $coursecontext = context_course::instance($courseid);
         $enrolledstudents = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
         $course = get_course($courseid);
-        $timenow = time();
 
         $courseanalytics = new stdClass();
         $courseanalytics->recentvisits = self::get_recentvisits($courseid, $enrolledstudents, $cohortid);
@@ -90,7 +89,7 @@ class courseanalytics_block extends utility {
                 $userinfo[] = get_string("never");
             } else {
                 $timecreated = array_values($uservisits)[0]->timecreated;
-                $userinfo[] = html_writer::span($timecreated, "d-none") . format_time($timenow - $timecreated);
+                $userinfo[] = html_writer::span("", $timecreated) . format_time($timenow - $timecreated);
             }
             $visits[] = $userinfo;
         }
@@ -112,9 +111,6 @@ class courseanalytics_block extends utility {
             JOIN {user} u ON u.id = ue.userid
             WHERE ue.userid = :userid AND u.deleted = 0";
 
-        $params = array('courseid'=>$courseid, 'userid' => $user->id);
-        $enrolinfo = $DB->get_record_sql($enrolsql, $params);
-
         $enrolments = array();
         foreach($users as $user) {
             if ($cohortid) {
@@ -129,7 +125,7 @@ class courseanalytics_block extends utility {
 
             $userinfo = array();
             $userinfo[] = fullname($user);
-            $userinfo[] = html_writer::span($enrolinfo->timemodified, "d-none") . date("d M Y", $enrolinfo->timemodified);
+            $userinfo[] = html_writer::span("", $enrolinfo->timemodified) . date("d M Y", $enrolinfo->timemodified);
             $enrolments[] = $userinfo;
         }
         return $enrolments;
@@ -162,7 +158,7 @@ class courseanalytics_block extends utility {
             $userinfo = array();
             $userinfo[] = fullname($user);
             if (!empty($completion) && $completion->timecompleted) {
-                $userinfo[] = html_writer::span($completion->timecompleted, "d-none") . date("d M Y", $completion->timecompleted);
+                $userinfo[] = html_writer::span("", $completion->timecompleted) . date("d M Y", $completion->timecompleted);
             } else {
                 $userinfo[] = get_string("notyet", "report_elucidsitereport");
             }
@@ -170,4 +166,74 @@ class courseanalytics_block extends utility {
         }
         return $recentcompletions;
     }
+
+    /**
+     * Get Export Header
+     * @param  [string] $action header to get
+     * @return [array] Array of headers
+     */
+    public static function get_header_report($action) {
+        switch($action) {
+            case "visits" :
+                $header = array(
+                    get_string("name", "report_elucidsitereport"),
+                    get_string("lastvisit", "report_elucidsitereport")
+                );
+                break;
+            case "enrolment" :
+                $header = array(
+                    get_string("name", "report_elucidsitereport"),
+                    get_string("enrolledon", "report_elucidsitereport")
+                );
+                break;
+            case "completion" :
+                $header = array(
+                    get_string("name", "report_elucidsitereport"),
+                    get_string("completedon", "report_elucidsitereport")
+                );
+                break;
+            default :
+                $header = false;
+                break;
+        }
+
+        return $header;
+    }
+    /**
+     * Get Exportable data Course Anaytics Report
+     * @param  [int] $courseid Course ID
+     * @return [array] 
+     */
+    public static function get_exportable_data_report($courseid) {
+        $cohortid = optional_param("cohortid", 0, PARAM_INT);
+        $action = required_param("action", PARAM_TEXT);
+
+        $coursecontext = context_course::instance($courseid);
+        $enrolledstudents = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+
+        $export = array();
+        $header = self::get_header_report($action);
+        switch($action) {
+            case "visits" :
+                $response = self::get_recentvisits($courseid, $enrolledstudents, $cohortid);
+                break;
+            case "enrolment" :
+                $response = self::get_recentenrolments($courseid, $enrolledstudents, $cohortid);
+                break;
+            case "completion" :
+                $response = self::get_recentcompletions($courseid, $enrolledstudents, $cohortid);
+                break;
+            default :
+                $response = false;
+                break;
+        }
+
+        foreach($response as $r => $val) {
+            foreach($val as $c => $v) {
+                $response[$r][$c] = strip_tags($v);
+            }
+        }
+        $export = array_merge(array($header), $response);
+        return $export;
+    } 
 }

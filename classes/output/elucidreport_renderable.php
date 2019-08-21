@@ -253,10 +253,16 @@ class courseanalytics_renderable implements renderable, templatable {
     public function export_for_template(renderer_base $output) {
         global $CFG, $DB;
 
+        $courseid = required_param("courseid", PARAM_INT);
         $output = new stdClass();
         $output->sesskey = sesskey();
         $downloadurl = $CFG->wwwroot."/report/elucidsitereport/download.php";
-        $output->exportlink = get_exportlinks($downloadurl, "report", "courseanalytics", "1");
+        $output->visitsexportlink = get_exportlinks($downloadurl, "report", "courseanalytics", $courseid, 0, "visits");
+        $output->visitsexportlink->isindividual = true;
+        $output->enrolmentexportlink = get_exportlinks($downloadurl, "report", "courseanalytics", $courseid, 0, "enrolment");
+        $output->enrolmentexportlink->isindividual = true;
+        $output->completionexportlink = get_exportlinks($downloadurl, "report", "courseanalytics", $courseid, 0, "completion");
+        $output->completionexportlink->isindividual = true;
         $output->userfilters = get_userfilters(false, true, false);
         $output->backurl = new moodle_url($CFG->wwwroot."/report/elucidsitereport/index.php");
         return $output;

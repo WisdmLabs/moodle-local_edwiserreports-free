@@ -8,6 +8,11 @@
 {{/userfilters}}
 <div id="wdm-courseanalytics-individual" class="row" data-sesskey="{{sesskey}}">
     <div class="recent-visits table-responsive col-lg-4 col-md-6 col-sm-12">
+        <div class="w-full text-right">
+            {{#visitsexportlink}}
+                {{> report_elucidsitereport/exportdropdown }}
+            {{/visitsexportlink}}
+        </div>
         <h4>
             {{#str}} recentvisits , report_elucidsitereport{{/str}}
         </h4>
@@ -29,6 +34,11 @@
         </table>
     </div>
     <div class="recent-enrolment table-responsive col-lg-4 col-md-6 col-sm-12">
+        <div class="w-full text-right">
+            {{#enrolmentexportlink}}
+                {{> report_elucidsitereport/exportdropdown }}
+            {{/enrolmentexportlink}}
+        </div>
         <h4>
             {{#str}} recentenrolment , report_elucidsitereport{{/str}}
         </h4>
@@ -50,6 +60,11 @@
         </table>
     </div>
     <div class="recent-completion table-responsive col-lg-4 col-md-6 col-sm-12">
+        <div class="w-full text-right">
+            {{#completionexportlink}}
+                {{> report_elucidsitereport/exportdropdown }}
+            {{/completionexportlink}}
+        </div>
         <h4>
             {{#str}} recentcompletion , report_elucidsitereport{{/str}}
         </h4>

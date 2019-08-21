@@ -62,15 +62,20 @@ function get_block_exportlinks($url, $data) {
  * @param  [string] $region Region for export
  * @param  [string] $blockname Block to export
  * @param  [string] $filter Filter for data to export
+ * @param  [string] $action Action of a page report
  * @return [array] Array of export link
  */
-function get_exportlinks($url, $region, $blockname, $filter = false, $cohortid = false) {
+function get_exportlinks($url, $region, $blockname, $filter = false, $cohortid = false, $action = false) {
     $out = new stdClass();
 
     $params = array(
         "region" => $region,
         "blockname" => $blockname
     );
+
+    if ($action !== false) {
+        $params["action"] = $action;
+    }
 
     if ($filter !== false) {
         $params["filter"] = $filter;

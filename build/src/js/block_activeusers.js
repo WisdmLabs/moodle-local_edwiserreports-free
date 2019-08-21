@@ -1,4 +1,10 @@
-define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'report_elucidsitereport/flatpickr'], function ($, Chart, defaultConfig) {
+define([
+    'jquery',
+    'core/chartjs',
+    'report_elucidsitereport/defaultconfig',
+    'report_elucidsitereport/variables',
+    'report_elucidsitereport/flatpickr'
+], function ($, Chart, defaultConfig, V) {
     function init() {
         /* Varible for active users block */
         var cfg               = defaultConfig.activeUsersBlock;

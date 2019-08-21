@@ -1,4 +1,10 @@
-define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', "report_elucidsitereport/select2"], function ($, Chart, cfg) {
+define([
+    'jquery',
+    'core/chartjs',
+    'report_elucidsitereport/defaultconfig',
+    'report_elucidsitereport/variables',
+    'report_elucidsitereport/select2'
+], function ($, Chart, cfg, V) {
     function init() {
         var lpChart = null;
         var panel = cfg.getPanel("#lpstatsblock");
