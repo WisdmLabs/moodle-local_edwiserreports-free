@@ -105,7 +105,7 @@ class completion_block extends utility {
             $gradeval = 0;
             $grade = self::get_grades($courseid, $user->id);
             if (isset($grade->finalgrade)) {
-                $gradeval = $grade->finalgrade;
+                $gradeval = round($grade->finalgrade, 2);
             }
 
             $completioninfo->enrolledon = date("d M Y", $enrolinfo->timemodified);
@@ -130,8 +130,8 @@ class completion_block extends utility {
         global $DB;
 
         $coursecompletion = $DB->get_record("course_completions", array(
-            "userid" => $user->id,
-            "course" => $course->id
+            "userid" => $userid,
+            "course" => $courseid
         ));
 
         if (isset($coursecompletion) && $coursecompletion->timecompleted) {
@@ -139,5 +139,40 @@ class completion_block extends utility {
         } else {
             return get_string("notyet", "report_elucidsitereport");
         }
+    }
+
+    /**
+     * Get export header string
+     * @return [type] [description]
+     */
+    public static function get_header() {
+        return array(
+            get_string("fullname", "report_elucidsitereport"),
+            get_string("enrolledon", "report_elucidsitereport"),
+            get_string("enrolltype", "report_elucidsitereport"),
+            get_string("noofvisits", "report_elucidsitereport"),
+            get_string("coursecompletion", "report_elucidsitereport"),
+            get_string("completiontime", "report_elucidsitereport"),
+            get_string("grade", "report_elucidsitereport"),
+            get_string("lastaccess", "report_elucidsitereport")
+        );
+    }
+
+    /**
+     * Get Exportable data for Course Completion Page
+     * @return [array] Array of LP Stats
+     */
+    public static function get_exportable_data_report($courseid) {
+        global $DB;
+        $cohortid = optional_param("cohortid", 0, PARAM_INT);
+        $completions = self::get_completions($courseid, $cohortid);
+
+        $export = array();
+        $export[] = self::get_header();
+        foreach($completions as $completion) {
+            $completion->username = strip_tags($completion->username);
+            $export[] = array_values((array)$completion);
+        }
+        return $export;
     }
 }

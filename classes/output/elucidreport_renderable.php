@@ -231,10 +231,11 @@ class completion_renderable implements renderable, templatable {
     public function export_for_template(renderer_base $output) {
         global $CFG, $DB;
 
+        $courseid = required_param("courseid", PARAM_INT);
         $output = new stdClass();
         $output->sesskey = sesskey();
         $downloadurl = $CFG->wwwroot."/report/elucidsitereport/download.php";
-        $output->exportlink = get_exportlinks($downloadurl, "report", "completion", "1");
+        $output->exportlink = get_exportlinks($downloadurl, "report", "completion", $courseid, 0);
         $output->userfilters = get_userfilters(false, true, false);
         $output->backurl = new moodle_url($CFG->wwwroot."/report/elucidsitereport/index.php");
         return $output;

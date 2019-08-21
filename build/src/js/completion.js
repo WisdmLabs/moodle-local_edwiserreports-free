@@ -1,8 +1,6 @@
 define([
     'jquery',
     'report_elucidsitereport/variables',
-    'report_elucidsitereport/jquery.dataTables',
-    'report_elucidsitereport/dataTables.bootstrap4',
     'report_elucidsitereport/common'
 ], function($, V) {
     function init(CONTEXTID) {
@@ -13,17 +11,16 @@ define([
 
         // Varibales for cohort filter
         var cohortId = 0;
-        var cohortFilterBtn   = "#cohortfilter";
-        var cohortFilterItem  = cohortFilterBtn + " ~ .dropdown-menu .dropdown-item";
 
         $(document).ready(function() {
             var courseId = V.getUrlParameter("courseid");
             getCourseCompletion(courseId, cohortId);
 
             /* Select cohort filter for active users block */
-            $(cohortFilterItem).on('click', function() {
+            $(V.cohortFilterItem).on('click', function() {
                 cohortId = $(this).data('cohortid');
-                $(cohortFilterBtn).html($(this).text());
+                $(V.cohortFilterBtn).html($(this).text());
+                V.changeExportUrl(cohortId, V.exportUrlLink, V.cohortReplaceFlag);
                 getCourseCompletion(courseId, cohortId);
             });
         });

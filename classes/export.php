@@ -292,6 +292,9 @@ class export {
             case "lpstats":
                 $export = lpstats_block::get_exportable_data_report($filter);
                 break;
+            case "completion":
+                $export = completion_block::get_exportable_data_report($filter);
+                break;
         }
         return $export;
     }

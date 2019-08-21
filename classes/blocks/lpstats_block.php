@@ -218,8 +218,6 @@ class lpstats_block extends utility {
      * @return [array] Array of LP Stats
      */
     public static function get_exportable_data_report($filter) {
-        global $DB;
-
         $cohortid = optional_param("cohortid", 0, PARAM_INT);
         $lpstats = self::get_lpstats_usersdata($filter, $cohortid);
 
