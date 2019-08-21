@@ -1,4 +1,4 @@
-define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig'], function ($, Chart, cfg) {
+define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', "report_elucidsitereport/select2"], function ($, Chart, cfg) {
     function init() {
         var courseProgress = null;
         var panel = cfg.getPanel("#courseprogressblock");
@@ -12,6 +12,7 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig'], func
 
         $(document).ready(function($) {
             getCourseProgressData();
+            $(panelBody + ' .singleselect').select2();
 
             $(selectedCourse).on("change", function () {
                 $(chart).addClass("d-none");

@@ -1,4 +1,4 @@
-define(["jquery", "core/notification", "report_elucidsitereport/variables", "report_elucidsitereport/select2"], function($, notif, v) {
+define(["jquery", "core/notification", "report_elucidsitereport/variables"], function($, notif, v) {
     var toggleMenuAndPin = "#toggleMenubar [data-toggle='menubar'], .page-aside-pin";
 
     $(document).ready(function() {
@@ -15,8 +15,6 @@ define(["jquery", "core/notification", "report_elucidsitereport/variables", "rep
 
             rearrangeBlocks(pageWidth, isNavlink);
         });
-
-        $('.singleselect').select2();
 
         $(document).on("click", exportDropdown, function(e) {
             e.preventDefault();

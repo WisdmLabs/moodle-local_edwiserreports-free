@@ -1,4 +1,4 @@
-define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig'], function ($, Chart, cfg) {
+define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', "report_elucidsitereport/select2"], function ($, Chart, cfg) {
     function init() {
         var lpChart = null;
         var panel = cfg.getPanel("#lpstatsblock");
@@ -12,6 +12,7 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig'], func
         $(document).ready(function() {
             var lpId = $(selectedLp).val();
             getLpStatsData(lpId);
+            $(panelBody + ' .singleselect').select2();
 
             $(selectedLp).on("change", function () {  
                 lpId = $(this).val();              

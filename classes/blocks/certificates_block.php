@@ -99,7 +99,7 @@ class certificates_block extends utility {
      * Get a certificates details for certificate page
      * @return [object] Certifcates details object
      */
-    public static function get_issued_users($certid, $cohortid) {
+    public static function get_issued_users($certid, $cohortid = false) {
         global $DB;
         $certificate = $DB->get_record("customcert", array("id" => $certid));
         $course = get_course($certificate->course);
@@ -244,20 +244,17 @@ class certificates_block extends utility {
      * @return [array] Array certificates information
      */
     public static function get_exportable_data_report($certid) {
-        $users = self::get_issued_users($certid);
+        $cohortid = optional_param("cohortid", 0, PARAM_INT);
+        $record = self::get_issued_users($certid, $cohortid);
 
-        foreach($users as $c => $user) {
-            foreach($user as $r => $userinfo) {
-                $users[$c][$r] = strip_tags($userinfo);
-            }
+        foreach($record->data as $key => $user) {
+            $user->courseprogress = strip_tags($user->courseprogress);
+            $users[$key] = array_values((array) $user);
         }
 
-        $out = array_merge(
-            array(
-                self::get_headers_report()
-            ),
-            $users
-        );
+        $out = array_merge(array(
+            self::get_headers_report()
+        ), $users);
         return $out;
     }
 }

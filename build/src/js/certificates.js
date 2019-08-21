@@ -17,7 +17,7 @@ define([
         var loader = PageId.find(".loader");
         var CertDropdown = $("#wdm-certificates-dropdown");
         var CertSelect = "#wdm-certificates-select";
-        var exportUrlLink = PageId.find(".dropdown-menu[aria-labelledby='export-dropdown'] .dropdown-item");
+        var exportUrlLink = ".dropdown-menu[aria-labelledby='export-dropdown'] .dropdown-item";
         var filterSection = $("#wdm-userfilter .row .col-6:first-child");
         var dataTable = null;
         var certificateid = null;
@@ -80,9 +80,9 @@ define([
 
         $(document).ready(function() {
             filterSection.html(CertDropdown.html());
-            $(document).find(CertSelect).select2();
-            $(document).find(CertSelect).show();
             CertDropdown.remove();
+            $(document).find(CertSelect).show();
+            $(document).find(CertSelect).select2();
 
             certificateid = $(CertSelect).val();
             getCertificateDetail(certificateid);
@@ -90,12 +90,16 @@ define([
             /* Select cohort filter for active users block */
             $(cohortFilterItem).on('click', function() {
                 cohortId = $(this).data('cohortid');
+                V.changeExportUrl(cohortId, exportUrlLink, "C");
                 $(cohortFilterBtn).html($(this).text());
                 getCertificateDetail(certificateid, cohortId);
             });
 
             $(document).on("change", CertSelect, function() {
-                getCertificateDetail($(this).val());
+                certificateid = $(this).val()
+                getCertificateDetail(certificateid);
+                console.log(certificateid);
+                V.changeExportUrl(certificateid, exportUrlLink, "F");
             });
         });
     }

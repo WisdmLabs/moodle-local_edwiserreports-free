@@ -155,14 +155,18 @@ class certificates_renderable implements renderable, templatable {
 		
 		if (!empty($customcerts)) {
 			$output->hascertificates = true;
+            $firstcertid = 0;
 			foreach ($customcerts as $customcert) {
+                if (!$firstcertid) {
+                    $firstcertid = $customcert->id;
+                }
 				$course = get_course($customcert->course);
 				$customcert->coursename = $course->shortname;
 			}
 			$output->certificates = array_values($customcerts);
+            $downloadurl = $CFG->wwwroot."/report/elucidsitereport/download.php";
+            $output->exportlink = get_exportlinks($downloadurl, "report", "certificates", $firstcertid, 0);
 		}
-        $downloadurl = $CFG->wwwroot."/report/elucidsitereport/download.php";
-        $output->exportlink = get_exportlinks($downloadurl, "report", "certificates", "1");
         $output->userfilters = get_userfilters(false, true, false);
         $output->backurl = new moodle_url($CFG->wwwroot."/report/elucidsitereport/index.php");
         return $output;
