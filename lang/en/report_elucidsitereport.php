@@ -117,7 +117,7 @@ $string['notenrolled'] = 'User Not Enrolled';
 /* f2f Sessions Page*/
 $string['waitlist'] = 'Waitlist';
 $string['declined'] = 'Declined';
-$string['reason'] = 'Reason';
+$string['reason'] = '(If Canceled) Reason';
 $string['confirmed'] = 'Confirmed';
 $string['nosignups'] = 'No Signups are available';
 $string['nosessions'] = 'There is no face to face sessions';

@@ -33,6 +33,7 @@ use html_writer;
 use core_user;
 
 require_once($CFG->dirroot . '/mod/facetoface/lib.php');
+require_once($CFG->dirroot . '/report/elucidsitereport/locallib.php');
 
 /**
  * Class f2fsession Block
@@ -189,6 +190,7 @@ class f2fsession_block extends utility {
      * @return [object] Face to Face data 
      */
     public static function get_session_data($session, $sessiondate, $cohortid) {
+        global $CFG;
         $attendees = facetoface_get_attendees($session->id);
         $attended = 0;
         $waitlisted = 0;
@@ -235,7 +237,7 @@ class f2fsession_block extends utility {
 
         $sessiondata = new stdClass();
         $sessiondata->id = $session->id;
-        $sessiondata->sessionid = $session->id.$sessiondate->timestart;
+        $sessiondata->sessionid = $session->id."-".$sessiondate->timestart;
         $sessiondata->date = date("d M y", $sessiondate->timestart);
         $sessiondata->time = date("h:i A", $sessiondate->timestart);
         $sessiondata->signups = count($attendees);
@@ -244,9 +246,18 @@ class f2fsession_block extends utility {
         $sessiondata->declined = $declined;
         $sessiondata->confirmed = $confirmed;
         $sessiondata->users = array_values($attendees);
+        $downloadurl = $CFG->wwwroot."/report/elucidsitereport/download.php";
+        $sessiondata->exportlink = \get_exportlinks($downloadurl, "report", "f2fsession", $sessiondata->sessionid, $cohortid);
+        $sessiondata->exportlink->isindividual = true;
         return $sessiondata;
     }
 
+    /**
+     * Get Canceled Session Data
+     * @param  [int] $sessionid Session Id
+     * @param  [int] $cohortid Cohort Id
+     * @return [array] Array of Canceled Session
+     */
     public static function get_canceled_sessionsdata($sessionid, $cohortid) {
         global $DB;
 
@@ -285,18 +296,26 @@ class f2fsession_block extends utility {
      * Get header for f2fsessions block
      * @return [array] Array of header f2fsessions block
      */
-    public static function get_headers() {
-        $header = array(
-            get_string("date", "report_elucidsitereport"),
-            get_string("time", "report_elucidsitereport"),
-            get_string("name", "report_elucidsitereport"),
-            get_string("coursename", "report_elucidsitereport"),
-            get_string("signups", "report_elucidsitereport"),
-            get_string("attendees", "report_elucidsitereport"),
-            get_string("waitlist", "report_elucidsitereport"),
-            get_string("declined", "report_elucidsitereport"),
-            get_string("confirmed", "report_elucidsitereport")
-        );
+    public static function get_headers_report($filter) {
+        if ($filter) {
+            $header = array (
+                get_string("username", "report_elucidsitereport"),
+                get_string("status", "report_elucidsitereport"),
+                get_string("reason", "report_elucidsitereport")
+            );
+        } else {
+            $header = array(
+                get_string("date", "report_elucidsitereport"),
+                get_string("time", "report_elucidsitereport"),
+                get_string("name", "report_elucidsitereport"),
+                get_string("coursename", "report_elucidsitereport"),
+                get_string("signups", "report_elucidsitereport"),
+                get_string("attendees", "report_elucidsitereport"),
+                get_string("waitlist", "report_elucidsitereport"),
+                get_string("declined", "report_elucidsitereport"),
+                get_string("confirmed", "report_elucidsitereport")
+            );
+        }
 
         return $header;
     }
@@ -312,29 +331,19 @@ class f2fsession_block extends utility {
 
         $modules = self::get_f2fmodules();
         foreach($modules as $module) {
-            $data = array(
-                "date" => null,
-                "time" => null,
-                "name" => null,
-                "coursename" => null,
-                "signups" => null,
-                "attendend" => null,
-                "waitlisted" => null,
-                "declined" => null,
-                "confirmed" => null
-            );
+            $data = new stdClass();
 
-            $data["name"] = $module->name;
-            $data["coursename"] = $module->coursename;
+            $data->name = $module->name;
+            $data->coursename = $module->coursename;
             foreach($module->sessions as $session) {
-                $data["date"] = $session->date;
-                $data["time"] = $session->time;
-                $data["signups"] = $session->signups;
-                $data["attendend"] = $session->attendend;
-                $data["waitlisted"] = $session->waitlisted;
-                $data["declined"] = $session->declined;
-                $data["confirmed"] = $session->confirmed;
-                $export[] = array_values($data);
+                $data->date = $session->date;
+                $data->time = $session->time;
+                $data->signups = $session->signups;
+                $data->attendend = $session->attendend;
+                $data->waitlisted = $session->waitlisted;
+                $data->declined = $session->declined;
+                $data->confirmed = $session->confirmed;
+                $export[] = array_values((array)$data);
             }
         }
         return $export;
@@ -342,10 +351,68 @@ class f2fsession_block extends utility {
 
     /**
      * Get exportable data for f2fsession block
+     * @param [string] $filter Session Id
      * @return [array] Array certificates information
      */
-    public static function get_exportable_data_report() {
-        /* TODO: Get coexportable data for f2fsession block*/
-        return null;
+    public static function get_exportable_data_report($filter) {
+        $cohortid = optional_param("cohortid", 0, PARAM_INT);
+        $export = array();
+        $modules = self::get_f2fmodules($cohortid);
+        $export[] = self::get_headers_report($filter);
+        foreach($modules as $module) {
+            if ($filter) {
+                $data = self::get_exportable_data_report_users($module, $filter);
+            } else {
+                $data = self::get_exportable_data_report_sessions($module);
+            }
+            $export = array_merge($export, $data);
+        }
+        return $export;
+    }
+
+    /**
+     * Get Exportable data of users in a session
+     * @param  [object] $module Session Module Object
+     * @param  [string] $filter Session Id
+     * @return [array] Users array of exportable data
+     */
+    public static function get_exportable_data_report_users($module, $filter) {
+        $dataarray = array();
+        foreach($module->sessions as $session) {
+            if ($session->sessionid !== $filter) {
+                continue;
+            }
+            foreach($session->users as $user) {
+                $data = new stdClass();
+                $data->fullname = $user->firstname . " " . $user->lastname;
+                $data->status = strip_tags($user->status);
+                $data->reason = $user->reason;
+                $dataarray[] = array_values((array) $data);
+            }
+        }
+        return $dataarray;
+    }
+
+    /**
+     * Get Exportable data of session
+     * @param  [object] $module Session Module Object
+     * @return [array] Array of sessions
+     */
+    public static function get_exportable_data_report_sessions($module) {
+        $dataarray = array();
+        $data = new stdClass();
+        $data->name = $module->name;
+        $data->coursename = $module->coursename;
+        foreach($module->sessions as $session) {
+            $data->date = $session->date;
+            $data->time = $session->time;
+            $data->signups = $session->signups;
+            $data->attendend = $session->attendend;
+            $data->waitlisted = $session->waitlisted;
+            $data->declined = $session->declined;
+            $data->confirmed = $session->confirmed;
+            $dataarray[] = array_values((array)$data);
+        }
+        return $dataarray;
     }
 }

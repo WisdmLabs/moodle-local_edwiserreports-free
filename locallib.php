@@ -72,7 +72,7 @@ function get_exportlinks($url, $region, $blockname, $filter = false, $cohortid =
         "blockname" => $blockname
     );
 
-    if ($filter) {
+    if ($filter !== false) {
         $params["filter"] = $filter;
     }
 
@@ -95,25 +95,25 @@ function get_exportlink_array($url, $params) {
         array(
             "name" => get_string("csv", "report_elucidsitereport"),
             "icon" => "file-o",
-            "link" => new moodle_url($url, array_merge(array("format" => "csv"), $params)),
+            "link" => (new moodle_url($url, array_merge(array("format" => "csv"), $params)))->out(),
             "action" => 'csv'
         ),
         array(
             "name" => get_string("excel", "report_elucidsitereport"),
             "icon" => "file-excel-o",
-            "link" => new moodle_url($url, array_merge(array("format" => "excel"), $params)),
+            "link" => (new moodle_url($url, array_merge(array("format" => "excel"), $params)))->out(),
             "action" => 'excel'
         ),
         array(
             "name" => get_string("pdf", "report_elucidsitereport"),
             "icon" => "file-pdf-o",
-            "link" => new moodle_url($url, array_merge(array("format" => "pdf"), $params)),
+            "link" => (new moodle_url($url, array_merge(array("format" => "pdf"), $params)))->out(),
             "action" => 'pdf'
         ),
         array(
             "name" => get_string("email", "report_elucidsitereport"),
             "icon" => "envelope-o",
-            "link" => new moodle_url($url, array_merge(array("format" => "email"), $params)),
+            "link" => (new moodle_url($url, array_merge(array("format" => "email"), $params)))->out(),
             "action" => 'email'
         )/*,
         array(

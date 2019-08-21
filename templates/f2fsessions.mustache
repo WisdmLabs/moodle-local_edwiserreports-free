@@ -7,7 +7,7 @@
 
 <div id="wdm-f2fsessions-individual" data-sesskey="{{sesskey}}">
     <div class="table-reponsive overflow-scroll">
-        <div class="loader w-full text-center py-100 my-50">
+        <div class="loader w-full text-center py-110 my-50">
             {{# pix }} loader, report_elucidsitereport{{/ pix }}
         </div>
         <table id="f2fsessionstable" class="table dataTable no-footer clickable" style="display: none;">
@@ -43,6 +43,9 @@
                     <th class="text-nowrap bg-image-none no-sorting-arrow">
                         {{#str}} declined, report_elucidsitereport {{/str}}
                     </th>
+                    <th>
+                        Download
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -58,13 +61,16 @@
                     <td class="text-center">{{confirmed}}</td>
                     <td class="text-center">{{attendend}}</td>
                     <td class="text-center">{{waitlisted}}</td>
-                    <td class="text-center">
-                        <i class="icon accordion-arrow pull-right fa fa-angle-left my-5"></i>
-                        {{declined}}
+                    <td class="text-center">{{declined}}</td>
+                    <td class="text-center py-0 d-flex">
+                        {{#exportlink}}
+                            {{> report_elucidsitereport/exportdropdown }}
+                        {{/exportlink}}
+                        <i class="icon accordion-arrow fa fa-angle-left my-auto"></i>
                     </td>
                 </tr>
                 <tr>
-                    <td class="border-0 collapse-td py-0 pl-30" colspan="10">
+                    <td class="border-0 collapse-td py-0 pl-30" colspan="11">
                         <div  id="accordion-{{sessionid}}" class="collapse">
                             <table class="table">
                                 <thead>
@@ -103,7 +109,7 @@
                 {{/sessions}}
                 {{^sessions}}
                 <tr>
-                    <td class="text-center" colspan="10">
+                    <td class="text-center" colspan="11">
                         {{#str}} nosessions, report_elucidsitereport{{/str}}
                     </td>
                 </tr>
@@ -111,7 +117,7 @@
                 {{/f2fmodules}}
                 {{^f2fmodules}}
                 <tr>
-                    <td class="text-center" colspan="10">
+                    <td class="text-center" colspan="11">
                         {{#str}} nosessions, report_elucidsitereport{{/str}}
                     </td>
                 </tr>

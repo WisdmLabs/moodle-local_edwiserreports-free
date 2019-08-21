@@ -18,6 +18,7 @@ define([
         var F2fTable = PageId + " .table";
         var loader = PageId + " .loader";
         var sesskey = $(PageId).data("sesskey");
+        var exportUrlLink = ".dropdown-menu[aria-labelledby='export-dropdown'] .dropdown-item";
 
         // Varibales for cohort filter
         var cohortId = 0;
@@ -65,6 +66,7 @@ define([
                 $(loader).show();
 
                 cohortId = $(this).data('cohortid');
+                V.changeExportUrl(cohortId, exportUrlLink, "C");
                 $(cohortFilterBtn).html($(this).text());
                 getF2fSessions(cohortId);
             });

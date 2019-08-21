@@ -1,10 +1,10 @@
-<div class="dropdown px-5 mb-5 export-dropdown">
+<div class="dropdown px-5 {{^isindividual}}export-dropdown mb-5{{/isindividual}}">
     <button type="button" class="btn btn-link bg-white border-0 btn-lg text-dark dropdown-toggle py-5 px-10" id="export-dropdown" data-toggle="dropdown" aria-expanded="false">
-        <i class="icon fa fa-download"></i>
+        <i class="icon fa fa-download {{#isindividual}}font-size-14{{/isindividual}}"></i>
     </button>
-    <div class="dropdown-menu" aria-labelledby="export-dropdown" role="menu">
+    <div class="dropdown-menu py-0" aria-labelledby="export-dropdown" role="menu">
         {{#export}}
-            <a class="dropdown-item" href="{{{link}}}" role="menuitem" data-action="{{action}}">
+            <a class="dropdown-item btn btn-link btn-sm m-0 w-full" href="{{{link}}}" role="menuitem" data-action="{{action}}">
                 {{name}}
             </a>
         {{/export}}

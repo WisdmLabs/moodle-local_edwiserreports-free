@@ -135,7 +135,7 @@ class export {
      */
     public function data_export_pdf($filename, $data) {
         $filename .= '.pdf';
-        $this->generate_pdf_file($filename, $data, "I");
+        $this->generate_pdf_file($filename, $data, "D");
     }
 
     /**
@@ -285,6 +285,9 @@ class export {
                 break;
             case "certificates":
                 $export = certificates_block::get_exportable_data_report($filter);
+                break;
+            case "f2fsession":
+                $export = f2fsession_block::get_exportable_data_report($filter);
                 break;
         }
         return $export;
