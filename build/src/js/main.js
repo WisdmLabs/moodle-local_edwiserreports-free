@@ -6,7 +6,8 @@ define([
 	'report_elucidsitereport/block_inactiveusers',
 	'report_elucidsitereport/block_lpstats',
 	'report_elucidsitereport/block_realtimeusers',
-	'report_elucidsitereport/block_todaysactivity'
+	'report_elucidsitereport/block_todaysactivity',
+	'report_elucidsitereport/common'
 ], function (
 	accessInfo,
 	activeCourses,

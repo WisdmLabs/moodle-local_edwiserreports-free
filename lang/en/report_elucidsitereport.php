@@ -155,6 +155,8 @@ $string['f2fsessionexportheader'] = "Instructor-Led Sessions report";
 $string['f2fsessionexporthelp'] = "This report will show the Instructor-Led Sessions details.";
 $string['lpstatsexportheader'] = "Learning Program report";
 $string['lpstatsexporthelp'] = "This report will show the Learning program details.";
+$string['courseengageexportheader'] = "Course Engagement Report";
+$string['courseengageexporthelp'] = "This report will show the course engagement by the users.";
 
 /* Course Engagement Block */
 $string['activitystart'] = "At least one Activity Started";

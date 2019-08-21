@@ -100,5 +100,5 @@ class courseaccess_block extends utility {
             $userscompletion[] = $completioninfo;
         }
         return $userscompletion;
-    }
+    }z
 }

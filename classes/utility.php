@@ -322,7 +322,7 @@ class utility {
      * @return [array] Array of Users ID who have completed a activity 
      */
     public static function users_completed_a_module($course, $users, $cohortid) {
-        $record = array();
+        $records = array();
 
         foreach($users as $user) {
             /* If cohort filter is there then get only users from cohort */
@@ -349,7 +349,7 @@ class utility {
      * @return [array] Array of Users ID who have completed half activities 
      */
     public static function users_completed_half_modules($course, $users, $cohortid) {
-        $record = array();
+        $records = array();
         foreach($users as $user) {
             /* If cohort filter is there then get only users from cohort */
             if ($cohortid) {
@@ -375,7 +375,7 @@ class utility {
      * @return [array] Array of Users ID who have completed all activities 
      */
     public static function users_completed_all_module($course, $users, $cohortid) {
-        $record = array();
+        $records = array();
         foreach($users as $user) {
             /* If cohort filter is there then get only users from cohort */
             if ($cohortid) {

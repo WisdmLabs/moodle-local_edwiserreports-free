@@ -8,7 +8,8 @@ define([
     'report_elucidsitereport/select2',
     'report_elucidsitereport/jquery.dataTables',
     'report_elucidsitereport/dataTables.bootstrap4',
-    'report_elucidsitereport/jquery-asPieProgress'
+    'report_elucidsitereport/jquery-asPieProgress',
+    'report_elucidsitereport/common'
 ], function($, ModalFactory, ModalEvents, Fragment, Templates, V) {
     function init(CONTEXTID) {
         var PageId = $("#wdm-certificates-individual");

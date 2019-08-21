@@ -129,7 +129,9 @@ class coursereport_renderable implements renderable, templatable {
         $output->sesskey = sesskey();
 
         $downloadurl = $CFG->wwwroot."/report/elucidsitereport/download.php";
-        $output->exportlink = get_exportlinks($downloadurl, "report", "activeusers");
+        $output->exportlink = new stdClass();
+        $output->exportlink->courseprogress = get_exportlinks($downloadurl, "report", "courseprogress", false, 0);
+        $output->exportlink->courseengage = get_exportlinks($downloadurl, "report", "courseengage", false, 0);
         $output->userfilters = get_userfilters(false, true, false);
         $output->backurl = new moodle_url($CFG->wwwroot."/report/elucidsitereport/index.php");
         return $output;

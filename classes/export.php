@@ -280,6 +280,9 @@ class export {
             case "courseprogress":
                 $export = course_progress_block::get_exportable_data_report($filter);
                 break;
+            case "courseengage":
+                $export = courseengage_block::get_exportable_data_report();
+                break;
             case "certificates":
                 $export = certificates_block::get_exportable_data_report($filter);
                 break;

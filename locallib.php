@@ -64,7 +64,7 @@ function get_block_exportlinks($url, $data) {
  * @param  [string] $filter Filter for data to export
  * @return [array] Array of export link
  */
-function get_exportlinks($url, $region, $blockname, $filter = false) {
+function get_exportlinks($url, $region, $blockname, $filter = false, $cohortid = false) {
     $out = new stdClass();
 
     $params = array(
@@ -74,6 +74,10 @@ function get_exportlinks($url, $region, $blockname, $filter = false) {
 
     if ($filter) {
         $params["filter"] = $filter;
+    }
+
+    if ($cohortid !== false) {
+        $params["cohortid"] = $cohortid;
     }
 
     $out->export = get_exportlink_array($url, $params);

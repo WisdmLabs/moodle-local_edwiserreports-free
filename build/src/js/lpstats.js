@@ -5,7 +5,8 @@ define([
     'report_elucidsitereport/variables',
     'report_elucidsitereport/select2',
     'report_elucidsitereport/jquery.dataTables',
-    'report_elucidsitereport/dataTables.bootstrap4'
+    'report_elucidsitereport/dataTables.bootstrap4',
+    'report_elucidsitereport/common'
 ], function($, Templates, Fragment, V) {
     function init(CONTEXTID) {
         var PageId = "#wdm-lpstats-individual";

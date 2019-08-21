@@ -6,7 +6,8 @@ define([
     'core/templates',
     'report_elucidsitereport/variables',
     'report_elucidsitereport/jquery.dataTables',
-    'report_elucidsitereport/dataTables.bootstrap4'
+    'report_elucidsitereport/dataTables.bootstrap4',
+    'report_elucidsitereport/common'
 ], function($, ModalFactory, ModalEvents, Fragment, Templates, V) {
     function init(CONTEXTID) {
         var PageId = "#wdm-courseengage-individual";
@@ -16,6 +17,7 @@ define([
         var url = V.requestUrl + '?action=get_courseengage_data_ajax&sesskey=' + sesskey;
         var CourseEngageUsers = CourseEngageTable + " a.modal-trigger";
         var datatable = null;
+        var exportUrlLink = ".dropdown-menu[aria-labelledby='export-dropdown'] .dropdown-item";
 
         // Varibales for cohort filter
         var cohortFilterBtn   = "#cohortfilter";
@@ -32,7 +34,10 @@ define([
                     $(CourseEngageTable).hide();
                     $(loader).show();   
                 }
+
                 cohortId = $(this).data('cohortid');
+
+                V.changeExportUrl(cohortId, exportUrlLink);
                 $(cohortFilterBtn).html($(this).text());
                 createCourseEngageTable(cohortId);
             });
@@ -67,7 +72,6 @@ define([
         });
 
         function createCourseEngageTable(cohortId) {
-            console.log(url + "&cohortid=" + cohortId);
             datatable = $(CourseEngageTable).DataTable( {
                 ajax : url + "&cohortid=" + cohortId,
                 dom : '<"pull-left"f><t><p>',

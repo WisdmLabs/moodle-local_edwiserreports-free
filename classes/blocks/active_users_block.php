@@ -58,7 +58,7 @@ class active_users_block extends utility {
      * @param  string $filter date filter to get data
      * @return stdClass active users graph data
      */
-    public static function get_data($filter, $cohortid) {
+    public static function get_data($filter, $cohortid = false) {
         self::$timenow = time();
 
         $response = new stdClass();
@@ -143,7 +143,7 @@ class active_users_block extends utility {
      * @return [string] HTML table string of users list
      * Columns are (Full Name, Email)
      */
-    public static function get_userslist($filter, $action, $cohortid) {
+    public static function get_userslist($filter, $action, $cohortid = false) {
         global $DB;
         
         $params = array();
@@ -205,7 +205,7 @@ class active_users_block extends utility {
         for ($i = self::$xlabelcount; $i > 0; $i--) {
             if (!isset($params["endtime"])) {
                 $params["endtime"] = self::$timenow;
-                $params["starttime"] = strtotime('today midnight');
+                $params["starttime"] = strtotime(date("d M y", self::$timenow));
             } else {
                 $params["endtime"] = $params["starttime"];
                 $params["starttime"] = $params["starttime"] - self::$oneday;
@@ -318,7 +318,6 @@ class active_users_block extends utility {
                         $startdate = strtotime($dates[0]." 00:00:00");
                         $enddate = strtotime($dates[1]." 23:59:59");
                     }
-
                     if ($startdate && $enddate) {
                         self::$xlabelcount = ceil($enddate-$startdate)/self::$oneday;
                         self::$timenow = $enddate;
@@ -339,7 +338,7 @@ class active_users_block extends utility {
     public static function get_exportable_data_block($filter) {
         $export = array();
         $export[] = self::get_header();
-        $activeusersdata = self::get_data($filter, 0);
+        $activeusersdata = self::get_data($filter);
         foreach ($activeusersdata->labels as $key => $lable) {
             $export[] = array(
                 $lable,

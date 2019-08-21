@@ -47,8 +47,16 @@ define(function() {
 
         changeExportUrl : function (filter, exportUrlLink) {
             $(exportUrlLink).each(function() {
-                var oldUrl = $(this)[0].href;
-                $(this)[0].href = oldUrl.replace(/filter=(.*)/, "filter="+filter);
+                var oldUrl = this.href;
+                if (oldUrl.indexOf("filter=") > -1) {
+                    oldUrl = oldUrl.replace(/filter=(.*)/, "filter="+filter);
+                }
+
+                if (oldUrl.indexOf("cohortid=") > -1) {
+                    oldUrl = oldUrl.replace(/cohortid=(.*)/, "cohortid="+filter);
+                }
+
+                $(this)[0].href = oldUrl;
             });
         },
 

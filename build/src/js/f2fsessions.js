@@ -4,7 +4,8 @@ define([
     'core/modal_events',
     'core/fragment',
     'core/templates',
-    'report_elucidsitereport/variables'
+    'report_elucidsitereport/variables',
+    'report_elucidsitereport/common'
 ], function($,
     ModalFactory,
     ModalEvents,

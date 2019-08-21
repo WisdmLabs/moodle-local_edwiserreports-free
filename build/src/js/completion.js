@@ -2,7 +2,8 @@ define([
     'jquery',
     'report_elucidsitereport/variables',
     'report_elucidsitereport/jquery.dataTables',
-    'report_elucidsitereport/dataTables.bootstrap4'
+    'report_elucidsitereport/dataTables.bootstrap4',
+    'report_elucidsitereport/common'
 ], function($, V) {
     function init(CONTEXTID) {
         var PageId = $("#wdm-completion-individual");

@@ -359,4 +359,42 @@ class courseengage_block extends utility {
         }
         return $userdata;
     }
+
+
+
+    /**
+     * Get Header for report
+     * @return [type] [description]
+     */
+    public static function get_header_report() {
+        $header = array(
+            get_string("coursename", "report_elucidsitereport"),
+            get_string("enrolments", "report_elucidsitereport"),
+            get_string("visits", "report_elucidsitereport"),
+            get_string("activitystart", "report_elucidsitereport"),
+            get_string("completedhalf", "report_elucidsitereport"),
+            get_string("coursecompleted", "report_elucidsitereport")
+        );
+        return $header;
+    }
+
+    /**
+     * Get Exportable data for Course Engage Page
+     * @param $filter [string] Filter to get data from specific range
+     * @return [array] Array of exportable data
+     */
+    public static function get_exportable_data_report() {
+        $cohortid = optional_param("cohortid", 0, PARAM_INT);
+        $export[] = self::get_header_report();
+
+        $data = self::get_courseengage($cohortid);
+        foreach($data as $key => $val) {
+            $row = array();
+            foreach ($val as $k => $v) {
+                $row[] = strip_tags($v);
+            }
+            $export[] = $row;
+        }
+        return $export;
+    }
 }
