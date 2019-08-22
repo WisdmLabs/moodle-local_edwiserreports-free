@@ -36,7 +36,7 @@ $string['courseprogress'] = 'Course Progress';
 $string['courseengagement'] = 'Course Engagement';
 $string['coursereports'] = 'Course Reports';
 $string['more'] = '<i class="fa fa-angle-right"></i> More';
-$string['mostactiveusersheader'] = 'Popular Courses';
+$string['activecoursesheader'] = 'Popular Courses';
 $string['f2fsessionsheader'] = 'Instructor-Led Sessions';
 $string['certificatestats'] = 'Certificates Stats';
 $string['lpstatsheader'] = 'Learning Program Stats';
@@ -87,6 +87,15 @@ $string['completions'] = "Completions";
 /* Block help tooltips */
 $string['activeusersblocktitlehelp'] = "Active Users Block";
 $string['activeusersblockhelp'] = "This block will show graph of active users over the period with course enrolment and course completion.";
+$string['courseprogressblockhelp'] = "This block will show the pie chart of a course with percantage.";
+$string['activecoursesblockhelp'] = "This block will show the most active courses based on the visits enrolment and completions.";
+$string['certificatestatsblockhelp'] = "This block will show all created custom certificates and how many users awarded with this certificates.";
+$string['realtimeusersblockhelp'] = "This block will show all logged in users in this site.";
+$string['f2fsessionsblockhelp'] = "This block will show all created face to face sessions and count of all signups and attendees.";
+$string['accessinfoblockhelp'] = "This block will show the avg usage of the site in a week.";
+$string['lpstatsblockhelp'] = "This block will show all the course completed by the users in a learning program.";
+$string['todaysactivityblockhelp'] = "This block will show the todays activities performed by in this website.";
+$string['inactiveusersblockhelp'] = "This block will show list of users inactive in this site.";
 
 /* Active Users Page */
 $string['noofactiveusers'] = "# Active Users";

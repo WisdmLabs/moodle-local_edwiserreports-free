@@ -3,8 +3,15 @@
         <div class="panel-header clearfix">
             <div class="panel-title px-0">
                 <strong>
-                    {{#str}} mostactiveusersheader, report_elucidsitereport {{/str}}
-                    <a href="#" class="small"><i class="fa fa-question-circle"></i></a>
+                    {{#str}} activecoursesheader, report_elucidsitereport {{/str}}
+                    <a href="javascript:void(0)"
+                        class="small"
+                        data-toggle="tooltip"
+                        data-trigger="hover"
+                        data-placement="bottom"
+                        title="{{#str}} activecoursesblockhelp, report_elucidsitereport {{/str}}">
+                        <i class="fa fa-question-circle"></i>
+                    </a>
                 </strong>
             </div>
             <div class="table-dropdown" style="display: none;">
