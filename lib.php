@@ -81,3 +81,95 @@ function report_elucidsitereport_output_fragment_lpstats($args) {
 
     return json_encode(\report_elucidsitereport\lpstats_block::get_lpstats_usersdata($lpid, $cohortid));
 }
+
+require_once("$CFG->libdir/formslib.php");
+
+/**
+ * Email Dialog form to send report via email
+ */
+class email_dialog_form extends moodleform {
+    /**
+     * The constructor function calls the abstract function definition() and it will then
+     * process and clean and attempt to validate incoming data.
+     *
+     * It will call your custom validate method to validate data and will also check any rules
+     * you have specified in definition using addRule
+     *
+     * The name of the form (id attribute of the form) is automatically generated depending on
+     * the name you gave the class extending moodleform. You should call your class something
+     * like
+     *
+     * @param mixed $action the action attribute for the form. If empty defaults to auto detect the
+     *              current url. If a moodle_url object then outputs params as hidden variables.
+     * @param mixed $customdata if your form defintion method needs access to data such as $course
+     *              $cm, etc. to construct the form definition then pass it in this array. You can
+     *              use globals for somethings.
+     * @param string $method if you set this to anything other than 'post' then _GET and _POST will
+     *               be merged and used as incoming data to the form.
+     * @param string $target target frame for form submission. You will rarely use this. Don't use
+     *               it if you don't need to as the target attribute is deprecated in xhtml strict.
+     * @param mixed $attributes you can pass a string of html attributes here or an array.
+     *               Special attribute 'data-random-ids' will randomise generated elements ids. This
+     *               is necessary when there are several forms on the same page.
+     * @param bool $editable
+     * @param array $ajaxformdata Forms submitted via ajax, must pass their data here, instead of relying on _GET and _POST.
+     */
+    public function __construct($action=null, $customdata=null, $method='post', $target='', $attributes=null, $editable=true,
+                                $ajaxformdata=null) {
+        parent::__construct($action, $customdata, $method, $target, $attributes, $editable, $ajaxformdata);
+    }
+
+    //Add elements to form
+    public function definition() {
+        global $CFG;
+ 
+        $mform = $this->_form;
+        $customdata = $this->_customdata;
+        $blockname = $customdata["blockname"];
+
+        // Email Text area
+        $mform->addElement('text', 'email',
+            get_string('email', 'report_elucidsitereport'),
+            array(
+                'size' => '30',
+                'placeholder' => get_string("emailexample", "report_elucidsitereport")
+            )
+        );
+        $mform->setType('email', PARAM_NOTAGS);
+
+        // Subject Text area
+        $mform->addElement('text', 'subject',
+            get_string("subject", "report_elucidsitereport"),
+            array(
+                'size'=>'30',
+                'placeholder' => get_string($blockname . "exportheader", "report_elucidsitereport")
+            )
+        );
+        $mform->setType('subject', PARAM_NOTAGS);
+
+        // Content Text area
+        $mform->addElement('editor', 'content',
+            get_string("content", "report_elucidsitereport"),
+            array(
+                'rows' => '5',
+                'cols' => '40',
+                'enable_filemanagement' => false
+            )
+        );
+        $mform->setType('content', PARAM_RAW);
+        $this->content["text"] = get_string($blockname . "exporthelp", "report_elucidsitereport");
+    }
+}
+
+/**
+ * Create fragment for email dialog box
+ * @param  [array] $args Arguments
+ * @return [string] HTML String
+ */
+function report_elucidsitereport_output_fragment_email_dialog($args) {
+    $blockname = clean_param($args["blockname"], PARAM_TEXT);
+    $form = new email_dialog_form(null, array("blockname" => $blockname));
+    ob_start();
+    $form->display();
+    return ob_get_clean();
+}

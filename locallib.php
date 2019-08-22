@@ -85,41 +85,51 @@ function get_exportlinks($url, $region, $blockname, $filter = false, $cohortid =
         $params["cohortid"] = $cohortid;
     }
 
-    $out->export = get_exportlink_array($url, $params);
+    $out->export = get_exportlink_array($url, $blockname, $params);
     return $out;
 }
 
 /**
  * Get Export Link to export link array
  * @param  [string] $url Url for export link
+ * @param  [string] $blockname Block to export
  * @param  [array] $params Prameters for link
  * @return [array] Array of export link
  */
-function get_exportlink_array($url, $params) {
+function get_exportlink_array($url, $blockname, $params) {
+    $context = context_system::instance();
     return array(
         array(
             "name" => get_string("csv", "report_elucidsitereport"),
             "icon" => "file-o",
             "link" => (new moodle_url($url, array_merge(array("format" => "csv"), $params)))->out(),
-            "action" => 'csv'
+            "action" => 'csv',
+            "blockname" => $blockname,
+            "contextid" => $context->id
         ),
         array(
             "name" => get_string("excel", "report_elucidsitereport"),
             "icon" => "file-excel-o",
             "link" => (new moodle_url($url, array_merge(array("format" => "excel"), $params)))->out(),
-            "action" => 'excel'
+            "action" => 'excel',
+            "blockname" => $blockname,
+            "contextid" => $context->id
         ),
         array(
             "name" => get_string("pdf", "report_elucidsitereport"),
             "icon" => "file-pdf-o",
             "link" => (new moodle_url($url, array_merge(array("format" => "pdf"), $params)))->out(),
-            "action" => 'pdf'
+            "action" => 'pdf',
+            "blockname" => $blockname,
+            "contextid" => $context->id
         ),
         array(
             "name" => get_string("email", "report_elucidsitereport"),
             "icon" => "envelope-o",
             "link" => (new moodle_url($url, array_merge(array("format" => "email"), $params)))->out(),
-            "action" => 'email'
+            "action" => 'email',
+            "blockname" => $blockname,
+            "contextid" => $context->id
         )/*,
         array(
             "name" => get_string("copy", "report_elucidsitereport"),

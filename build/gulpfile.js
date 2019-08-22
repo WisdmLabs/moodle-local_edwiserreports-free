@@ -63,9 +63,9 @@ gulp.task('dist-js',
     gulp.series('uglify', 'copy', 'purge')
 );
 
-// gulp.task('watchjs', function(done) {
-//   gulp.watch('src/js/**/*.js', gulp.series('dist-js'));
-//   done();
-// });
+gulp.task('watch', function(done) {
+  gulp.watch('src/js/**/*.js', gulp.series('dist-js'));
+  done();
+});
 
-gulp.task('default', gulp.series('dist-js'));
+gulp.task('default', gulp.series('watch', 'dist-js'));

@@ -20,7 +20,7 @@ define([
         var loader            = panelBody + " .loader";
         var dropdownButton    = panel + " button#filter-dropdown";
         var refreshBtn        = panelTitle + " .refresh";
-        var exportUrlLink     = panel + " .dropdown-menu[aria-labelledby='export-dropdown'] .dropdown-item";
+        var exportUrlLink     = panel + V.exportUrlLink;
         var filter            = null;
         var dropdownInput     = panelTitle + " input.form-control.input";
 

@@ -40,6 +40,7 @@ use pdf;
 use html_table;
 use html_writer;
 use file_storage;
+use stdClass;
 
 class export {
     /**
@@ -146,13 +147,56 @@ class export {
      */
     public function data_export_email($filename, $data) {
         global $USER;
+        $recuser = $USER;
+        $senduser = core_user::get_noreply_user();
 
         $filename .= '.pdf';
         $filepath = $this->generate_pdf_file($filename, $data, "F");
 
-        $subject = get_string($this->blockname . "exportheader", "report_elucidsitereport");
-        $content = get_string($this->blockname . "exporthelp", "report_elucidsitereport");
-        email_to_user($USER, $USER, $subject, '', $content, $filepath, $filename);
+        $emailids = trim(optional_param("email", false, PARAM_TEXT));
+        $subject = trim(optional_param("subject", false, PARAM_TEXT));
+        $content = optional_param("content", false, PARAM_TEXT);
+
+        if (!$subject && $subject == '') {
+            $subject = get_string($this->blockname . "exportheader", "report_elucidsitereport");
+        }
+
+        $contenttext = '';
+        if ($content["format"] == 1) {
+            if (!$content || !isset($content["text"]) || $content["text"] == '') {
+                $contenttext = get_string($this->blockname . "exporthelp", "report_elucidsitereport");
+            } else {
+                $contenttext = $content["text"];
+            }
+        }
+
+        if ($emailids && $emailids !== '') {
+            ob_start();
+            foreach(explode(";", $emailids) as $emailid) {
+                $recuser->email = trim($emailid);
+                email_to_user(
+                    $recuser,
+                    $senduser,
+                    $subject,
+                    '',
+                    $contenttext,
+                    $filepath,
+                    $filename
+                );
+            }
+            ob_end_clean();
+            // If failed then return error
+            $res = new stdClass();
+            $res->error = false;
+            $res->errormsg = get_string('emailsent', 'report_elucidsitereport');
+            echo json_encode($res); die;
+        } else {
+            // If failed then return error
+            $res = new stdClass();
+            $res->error = true;
+            $res->errormsg = get_string('emailnotsent', 'report_elucidsitereport');
+            echo json_encode($res); die; // Die after responding with error
+        }
         unlink($filepath);
     }
 
@@ -203,7 +247,7 @@ class export {
         );
 
         if ($dest == "F") {
-            $filepath = $CFG->tempdir . '/files/' . $filename;
+            $filepath = $CFG->tempdir . '/' . $filename;
         } else {
             $filepath = $filename;
         }
