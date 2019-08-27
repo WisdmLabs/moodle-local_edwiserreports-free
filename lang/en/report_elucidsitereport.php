@@ -83,6 +83,7 @@ $string['rank'] = "Rank";
 $string['enrolments'] = "Enrolments";
 $string['visits'] = "Visits";
 $string['completions'] = "Completions";
+$string['selectdate'] = "Select Date";
 
 /* Block help tooltips */
 $string['activeusersblocktitlehelp'] = "Active Users Block";

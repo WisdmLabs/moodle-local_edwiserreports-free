@@ -35,60 +35,94 @@ use theme_remui\utility;
  * To get the data related to active users block
  */
 class todaysactivity_block extends utility {
-    public static function get_data() {
+    public static function get_data($date = false) {
         $response = new stdClass();
-        $response->data = self::get_todaysactivity();
+        $response->data = self::get_todaysactivity($date);
         return $response;
     }
 
-    public static function get_todaysactivity() {
+    /**
+     * Get Todays Activity information
+     * @return [type] [description]
+     */
+    public static function get_todaysactivity($date) {
         global $DB;
 
+        // Set time according to the filter
+        if ($date) {
+            $starttime = strtotime($date);
+            $endtime = $starttime + 24 * 60 * 60;
+        } else {
+            $endtime = time();
+            $starttime = strtotime(date("Ymd", $endtime));
+        }
+
         $todaysactivity = array();
-        $timenow = time();
+        $total = 0;
         $context = context_system::instance();
-        $midnighttime = strtotime(date("Ymd", $timenow));
 
-        $enrollmentsql = "SELECT * FROM {user_enrolments} WHERE timecreated > ?";
-        $enrollments = $DB->get_records_sql($enrollmentsql, array($midnighttime));
+        // Enrolments
+        $enrollmentsql = "SELECT * FROM {user_enrolments}
+            WHERE timecreated >= ?
+            AND timecreated < ? ";
+        $enrollments = $DB->get_records_sql($enrollmentsql, array($starttime, $endtime));
         $todaysactivity["enrollments"] = count($enrollments);
+        $total += count($enrollments);
 
-        $activitycompletionsql = "SELECT * FROM {course_modules_completion} WHERE timemodified > ?";
-        $activitycompletions = $DB->get_records_sql($activitycompletionsql, array($midnighttime));
+        // Activity Completion
+        $activitycompletionsql = "SELECT * FROM {course_modules_completion}
+            WHERE timemodified >= ?
+            AND timemodified < ?";
+        $activitycompletions = $DB->get_records_sql($activitycompletionsql, array($starttime, $endtime));
         $todaysactivity["activitycompletions"] = count($activitycompletions);
+        $total += count($activitycompletions);
 
-        $coursecompletionsql = "SELECT * FROM {course_completions} WHERE timecompleted > ?";
-        $coursecompletions = $DB->get_records_sql($coursecompletionsql, array($midnighttime));
+        // Course Completion
+        $coursecompletionsql = "SELECT * FROM {course_completions}
+            WHERE timecompleted >= ?
+            AND timecompleted < ?";
+        $coursecompletions = $DB->get_records_sql($coursecompletionsql,
+            array($starttime, $endtime)
+        );
         $todaysactivity["coursecompletions"] = count($coursecompletions);
+        $total += count($coursecompletions);
 
-        $registrationssql = "SELECT * FROM {user} WHERE timecreated > ?";
-        $registrations = $DB->get_records_sql($registrationssql, array($midnighttime));
+        // Registration
+        $registrationssql = "SELECT * FROM {user}
+            WHERE timecreated >= ?
+            AND timecreated < ?";
+        $registrations = $DB->get_records_sql($registrationssql,
+            array($starttime, $endtime)
+        );
         $todaysactivity["registrations"] = count($registrations);
+        $total += count($registrations);
 
-        $registrationssql = "SELECT * FROM {user} WHERE timecreated > ?";
-        $registrations = $DB->get_records_sql($registrationssql, array($midnighttime));
-        $todaysactivity["registrations"] = count($registrations);
-
+        // Visits
         $visitsssql = "SELECT DISTINCT userid
-                        FROM {logstore_standard_log}
-                        WHERE timecreated > ?
-                        AND userid > 1"; // Remove guest users
-        $visits = $DB->get_records_sql($visitsssql, array($midnighttime));
+            FROM {logstore_standard_log}
+            WHERE timecreated >= ?
+            AND timecreated < ?
+            AND userid > 1"; // Remove guest users
+        $visits = $DB->get_records_sql($visitsssql,
+            array($starttime, $endtime)
+        );
         $todaysactivity["visits"] = count($visits);
+        $total += count($visits);
 
-        $visitsssql .= " AND timecreated <= ?";
-        $starttime = $midnighttime;
-        $endtime = $midnighttime + 60 * 60;
+        $starttimehour = $starttime;
+        $endtimehour = $starttime + 60 * 60;
         $todaysactivity["visitshour"] = array();
         do {
-            $visitshour = $DB->get_records_sql($visitsssql, array($starttime, $endtime));
+            $visitshour = $DB->get_records_sql($visitsssql,
+                array($starttimehour, $endtimehour)
+            );
             $todaysactivity["visitshour"][] = count($visitshour);
-            $starttime = $endtime;
-            $endtime = $endtime + 60 * 60;
-        } while ($starttime <= $timenow);
+            $starttimehour = $endtimehour;
+            $endtimehour = $endtimehour + 60 * 60;
+        } while ($starttimehour < $endtime);
 
-        $fetcher = new fetcher(null, $timenow, $midnighttime, $context);
-        $activeusers = $fetcher->get_users(0);
+        /*$fetcher = new fetcher(null, $endtime, $starttime, $context);
+        $activeusers = $fetcher->get_users(0);*/
         $todaysactivity["onlinelearners"] = $todaysactivity["onlineteachers"] = 0;
 
         // 'moodle/course:ignoreavailabilityrestrictions' - this capability is allowed to only teachers
@@ -96,9 +130,9 @@ class todaysactivity_block extends utility {
 
         // 'moodle/course:isincompletionreports' - this capability is allowed to only students
         $learnerscap = "moodle/course:isincompletionreports";
-        foreach ($activeusers as $user) {
+        foreach ($visits as $user) {
             $isteacher = $islearner = false;
-            $courses = enrol_get_users_courses($user->id);
+            $courses = enrol_get_users_courses($user->userid);
             foreach ($courses as $course) {
                 $coursecontext = context_course::instance($course->id);
                 $isteacher = has_capability($teacherscap, $coursecontext, $user->id);
@@ -113,20 +147,7 @@ class todaysactivity_block extends utility {
                 $todaysactivity["onlinelearners"]++;
             }
         }
+        $todaysactivity["totalusers"] = $total;
         return $todaysactivity;
     }
 }
-/*
-array(
-            "onlinelearners" => 20,
-            "onlineteachers" => 1,
-            "enrollments" => 2,
-            "activitycompletions" => 3,
-            "coursecompletions" => 1,
-            "registrations" => 2,
-            "visits" => 21,
-            "sessions" => 14,
-            "totalusers" => 21,
-            "visitshour" => array(1, 0, 2, 5)
-        );
-        */

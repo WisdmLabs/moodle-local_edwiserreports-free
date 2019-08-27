@@ -108,8 +108,13 @@ class utility {
         return \report_elucidsitereport\siteaccess_block::get_data();
     }
 
-    public static function get_todaysactivity_data() {
-        return \report_elucidsitereport\todaysactivity_block::get_data();
+    public static function get_todaysactivity_data($data) {
+        if (isset($data->date)) {
+            $date = $data->date;
+        } else {
+            $date = false;
+        }
+        return \report_elucidsitereport\todaysactivity_block::get_data($date);
     }
 
     public static function get_lpstats_data($data) {
