@@ -84,6 +84,7 @@ $string['enrolments'] = "Enrolments";
 $string['visits'] = "Visits";
 $string['completions'] = "Completions";
 $string['selectdate'] = "Select Date";
+$string['never'] = "Never";
 
 /* Block help tooltips */
 $string['activeusersblocktitlehelp'] = "Active Users Block";
@@ -103,6 +104,12 @@ $string['nocourses'] = "No Courses Found";
 
 /* Block Learning Program */
 $string['nolearningprograms'] = "No Learning Programs Found";
+
+/* Block Inactive Users */
+$string['siteaccess'] = "Site Access:";
+$string['before1month'] = "Before 1 Month";
+$string['before2month'] = "Before 2 Month";
+$string['before3month'] = "Before 3 Month";
 
 /* Active Users Page */
 $string['noofactiveusers'] = "# Active Users";

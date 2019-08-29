@@ -31,49 +31,49 @@ use stdClass;
  * To get the data related to inactive users block
  */
 class inactiveusers_block extends utility {
-	public static function get_data($filter) {
-		$response = new stdClass();
-		$response->data = self::get_inactiveusers($filter);
-		return $response;
-	}
+    public static function get_data($filter) {
+        $response = new stdClass();
+        $response->data = self::get_inactiveusers($filter);
+        return $response;
+    }
 
-	public static function get_inactiveusers($filter) {
-		global $DB;
+    public static function get_inactiveusers($filter) {
+        global $DB;
 
-		$lastlogin = 0;
-		$timenow = time();
-		switch ($filter) {
-			case '1month':
-				$lastlogin = $timenow - 1 * 30 * 24 * 60 * 60;
-				break;
-			case '3month':
-				$lastlogin = $timenow - 3 * 30 * 24 * 60 * 60;
-				break;
-			case '6month':
-				$lastlogin = $timenow - 6 * 30 * 24 * 60 * 60;
-				break;
-		}
+        $lastlogin = 0;
+        $timenow = time();
+        switch ($filter) {
+            case '1month':
+                $lastlogin = $timenow - 1 * 30 * 24 * 60 * 60;
+                break;
+            case '3month':
+                $lastlogin = $timenow - 3 * 30 * 24 * 60 * 60;
+                break;
+            case '6month':
+                $lastlogin = $timenow - 6 * 30 * 24 * 60 * 60;
+                break;
+        }
 
-		$sql = "SELECT * FROM {user} WHERE lastlogin <= ?
-				AND deleted = 0 AND id > 1";
-		$inactiveusers = array();
-		$users = $DB->get_records_sql($sql, array($lastlogin));
+        $sql = "SELECT * FROM {user} WHERE lastlogin <= ?
+                AND deleted = 0 AND id > 1";
+        $inactiveusers = array();
+        $users = $DB->get_records_sql($sql, array($lastlogin));
 
-		foreach ($users as $user) {
-			$inactiveuser = array(
-				"name" => fullname($user),
-				"email" => $user->email
-			);
+        foreach ($users as $user) {
+            $inactiveuser = array(
+                "name" => fullname($user),
+                "email" => $user->email
+            );
 
-			$inactiveuser["lastlogin"] = '<div class="d-none">'.$user->lastlogin.'</div>';
-			if ($user->lastlogin) {
-				$inactiveuser["lastlogin"] .= format_time($timenow - $user->lastlogin);
-			} else {
-				$inactiveuser["lastlogin"] .= get_string('never');
-			}
+            $inactiveuser["lastlogin"] = '<div class="d-none">'.$user->lastlogin.'</div>';
+            if ($user->lastlogin) {
+                $inactiveuser["lastlogin"] .= format_time($timenow - $user->lastlogin);
+            } else {
+                $inactiveuser["lastlogin"] .= get_string('never');
+            }
 
-			$inactiveusers[] = array_values($inactiveuser);
-		}
-		return $inactiveusers;
-	}
+            $inactiveusers[] = array_values($inactiveuser);
+        }
+        return $inactiveusers;
+    }
 }

@@ -14,18 +14,28 @@
             </strong>
         </div>
         <div class="panel-title dropdown col-lg-6 col-md-6 col-sm-12 text-right px-0">
-            <small class="font-weight-500 font-size-12">Logged In: </small>
+            <small class="font-weight-500 font-size-12">
+                {{#str}} siteaccess, report_elucidsitereport {{/str}}
+            </small>
             <button type="button" class="btn btn-sm dropdown-toggle input-group-addon" data-toggle="dropdown" aria-expanded="false">Never</button>
             <div class="dropdown-menu dropdown-sm" role="menu">
-                <a class="active dropdown-item" href="javascript:void(0)" data-value="never"  role="menuitem">Never</a>
-                <a class="dropdown-item" href="javascript:void(0)" data-value="1month" role="menuitem">Before 1 Month</a>
-                <a class="dropdown-item" href="javascript:void(0)"data-value="3month"  role="menuitem">Before 3 Month</a>
-                <a class="dropdown-item" href="javascript:void(0)"data-value="6month"  role="menuitem">Before 6 Month</a>
+                <a class="active dropdown-item" href="javascript:void(0)" data-value="never"  role="menuitem">
+                    {{#str}} never, report_elucidsitereport {{/str}}
+                </a>
+                <a class="dropdown-item" href="javascript:void(0)" data-value="1month" role="menuitem">
+                    {{#str}} before1month, report_elucidsitereport {{/str}}
+                </a>
+                <a class="dropdown-item" href="javascript:void(0)"data-value="3month"  role="menuitem">
+                    {{#str}} before2month, report_elucidsitereport {{/str}}
+                </a>
+                <a class="dropdown-item" href="javascript:void(0)"data-value="6month"  role="menuitem">
+                    {{#str}} before3month, report_elucidsitereport {{/str}}
+                </a>
             </div>
         </div>
     </div>
     <div class="panel-body p-0">
-        <div class="loader w-full text-center pt-100 mt-50" style="min-height: 250px;">
+        <div class="loader w-full text-center py-100 my-50">
             {{# pix }} loader, report_elucidsitereport{{/ pix }}
         </div>
         <div class="table-responsive w-full">

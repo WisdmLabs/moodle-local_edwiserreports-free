@@ -51,6 +51,9 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
                 data : data,
                 dom : '<"pull-left"f><t>',
                 aaSorting: [[2, 'desc']],
+                oLanguage: {
+                    sEmptyTable: "No users are available"
+                },
                 language: {
                     searchPlaceholder: "Search Users"
                 },
