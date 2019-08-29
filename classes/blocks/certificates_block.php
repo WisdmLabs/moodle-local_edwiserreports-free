@@ -62,11 +62,15 @@ class certificates_block extends utility {
         $certificates = array();
         $customcert = $DB->get_records("customcert", array());
 
+        $sqlcm = "SELECT * FROM {course_modules} cm
+            JOIN {modules} m ON m.id = cm.module
+            WHERE cm.course = ? AND cm.instance = ? AND m.name = ?";
         foreach ($customcert as $certificate) {
             $course = get_course($certificate->course);
-            $cm = $DB->get_record("course_modules", array(
-                "course" => $certificate->course,
-                "instance" => $certificate->id
+            $cm = $DB->get_record_sql($sqlcm, array(
+                $certificate->course,
+                $certificate->id,
+                "customcert"
             ));
 
             $context = context_module::instance($cm->id);
