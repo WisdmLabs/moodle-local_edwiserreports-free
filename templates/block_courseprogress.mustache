@@ -21,6 +21,7 @@
             {{/exportlinks}}
         </div>
         <div class="panel-body p-0">
+            {{#hascourses}}
             <select id="wdm-courseprogress-select" class="form-control singleselect w-full" name="state">
                 {{#courses}}
                 <option value="{{id}}">{{fullname}}</option>
@@ -30,11 +31,24 @@
                 {{# pix }} loader, report_elucidsitereport{{/ pix }}
             </div>
             <canvas class="ct-chart d-none"></canvas>
+            {{/hascourses}}
+            {{^hascourses}}
+                <div class="pie-placeholder position-relative mt-50">
+                    {{# pix }} pie-placeholder, report_elucidsitereport{{/ pix }}
+                    <div class="position-absolute w-full" style="top: 130px;">
+                        <div class="alert alert-secondary text-center w-full" role="alert">
+                            {{#str}} nocourses, report_elucidsitereport {{/str}}
+                        </div>
+                    </div>
+                </div>
+            {{/hascourses}}
         </div>
+        {{#hascourses}}
         <div class="text-right">
             <a href="{{courseprogresslink}}" class="text-primary">
                 {{#str}} more, report_elucidsitereport {{/str}}
             </a>
         </div>
+        {{/hascourses}}
     </div>
 </div>

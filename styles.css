@@ -201,10 +201,16 @@
 }
 /* Custom Scrollbar Design End */
 
-/* Form course progress block */
+/* Form course progress & Lp stats block */
 #courseprogressblock .col-md-3,
 #lpstatsblock .col-md-3 {
     display: none;
+}
+
+/* Placeholder for pie graph*/
+.pie-placeholder img.icon {
+    width: 100%;
+    height: 100%;
 }
 
 #courseprogressblock .col-md-9,

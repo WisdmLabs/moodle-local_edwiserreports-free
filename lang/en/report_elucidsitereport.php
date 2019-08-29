@@ -98,6 +98,12 @@ $string['lpstatsblockhelp'] = "This block will show all the course completed by 
 $string['todaysactivityblockhelp'] = "This block will show the todays activities performed by in this website.";
 $string['inactiveusersblockhelp'] = "This block will show list of users inactive in this site.";
 
+/* Block Course Progress */
+$string['nocourses'] = "No Courses Found";
+
+/* Block Learning Program */
+$string['nolearningprograms'] = "No Learning Programs Found";
+
 /* Active Users Page */
 $string['noofactiveusers'] = "# Active Users";
 $string['noofenrolledusers'] = "# Enrolled Users";
