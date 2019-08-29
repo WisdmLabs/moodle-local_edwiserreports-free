@@ -67,32 +67,53 @@ class certificates_block extends utility {
             WHERE cm.course = ? AND cm.instance = ? AND m.name = ?";
         foreach ($customcert as $certificate) {
             $course = get_course($certificate->course);
+            $coursecontext = context_course::instance($course->id);
             $cm = $DB->get_record_sql($sqlcm, array(
                 $certificate->course,
                 $certificate->id,
                 "customcert"
             ));
 
-            $context = context_module::instance($cm->id);
-            $enrolledusers = get_enrolled_users(context_course::instance($course->id));
-            $canmanage = has_capability('mod/customcert:manage', $context);
+            $modulecontext = context_module::instance($cm->id);
+            $enrolledusers = get_enrolled_users($coursecontext);
 
-            $cangetcertificates = 0;
-            for ($i = 0; $i < count($enrolledusers); $i++) {
+            $issued = $DB->get_records('customcert_issues', array('customcertid' => $certificate->id));
+
+            // Number of perople who can view certificates
+            $notawareded = 0;
+            foreach($enrolledusers as $user) {
+                $canmanage = has_capability('mod/customcert:manage', $modulecontext, $user);
+                // These people can manage the certificates
                 if ($canmanage) {
                     continue;
                 }
-                $cangetcertificates++;
+                // These people can only view the certificates
+                $awarded = false;
+                foreach ($issued as $issue) {
+                    if ($issue->userid === $user->id) {
+                        $awarded = true;
+                    }
+                }
+
+                if (!$awarded) {
+                    $notawareded++;
+                }
             }
 
-            $issued = $DB->get_records('customcert_issues', array('customcertid' => $certificate->id));
+            // list($insql, $inparam) = $DB->get_in_or_equal($canviewcert, SQL_PARAMS_QM, 'param', true, true);
+
+
+            // $params = [$customcertid];
+            // $params = array_merge($params, $inparam);
+            // $issued = $DB->get_records("SELECT * FROM customcert_issues WHERE customcertid = ? AND userid =" . $insql, $params);
+            // $issued = $DB->get_records('customcert_issues', array('customcertid' => $certificate->id));
 
             $certificates[] = array(
                 "id" => $certificate->id,
                 "name" => $certificate->name,
                 "coursename" => $course->fullname,
                 "issued" => count($issued),
-                "notissued" => $cangetcertificates = count($issued)
+                "notissued" => $notawareded
             );
         }
 
