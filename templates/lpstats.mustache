@@ -14,9 +14,14 @@
             {{/lps}}
         </select>
     </div>
-    {{/haslps}}
     <div class="loader w-full text-center pt-100 mt-50">
         {{# pix }} loader, report_elucidsitereport{{/ pix }}
     </div>
     <table class="table w-full" style="display: none;"></table>
+    {{/haslps}}
+    {{^haslps}}
+        <div class="alert alert-danger w-full" role="alert">
+            {{#str}} nolearningprograms, report_elucidsitereport {{/str}}
+        </div>
+    {{/haslps}}
 </div>
