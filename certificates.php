@@ -35,6 +35,14 @@ require_once('classes/output/elucidreport_renderable.php');
 require_login();
 
 $context = context_system::instance();
+// The requested section isn't in the admin tree
+// It could be because the user has inadequate capapbilities or because the section doesn't exist
+if (!has_capability('moodle/site:config', $context)) {
+    // The requested section could depend on a different capability
+    // but most likely the user has inadequate capabilities
+    print_error('accessdenied', 'admin');
+}
+
 $PAGE->requires->js_call_amd('report_elucidsitereport/certificates', 'init', array($context->id));
 $PAGE->requires->css('/report/elucidsitereport/styles/select2.min.css');
 
