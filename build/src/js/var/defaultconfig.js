@@ -104,7 +104,7 @@ define(["jquery", "report_elucidsitereport/variables", "report_elucidsitereport/
         },
 
         // Course Progress Block
-        courseProgressBlock : {
+        /*courseProgressBlock : {
             ctx : $(v.courseProgressBlock)[0].getContext("2d"),
             graph : {
                 type : "pie",
@@ -128,10 +128,43 @@ define(["jquery", "report_elucidsitereport/variables", "report_elucidsitereport/
                 labels : ['0%', '20%', '40%', '60%', '80%', '100%'],
                 backgroundColor : ["#fe6384", "#36a2eb", "#fdce56", "#cacbd0", "#4ac0c0", "#ff851b"]
             }
+        },*/
+
+        getCourseProgressBlock: function () {
+            courseProgressBlock = $(v.courseProgressBlock);
+            if (courseProgressBlock.length == 0) {
+                return false;
+            }
+
+            return {
+                ctx : $(v.courseProgressBlock)[0].getContext("2d"),
+                graph : {
+                    type : "pie",
+                    data : [0, 0, 0, 0, 0, 0],
+                    options : {
+                        responsive: true,
+                        legend: {position: 'bottom'},
+                        maintainAspectRatio: false,
+                        aspectRatio: 1,
+                        tooltips: {
+                            callbacks: {
+                                label: function(tooltipItem, data) {
+                                    return M.util.get_string('courseprogresstooltip', 'report_elucidsitereport', {
+                                        label: data.labels[tooltipItem.index],
+                                        data: data.datasets[0].data[tooltipItem.index]
+                                    });
+                                }
+                            }
+                        }
+                    },
+                    labels : ['0%', '20%', '40%', '60%', '80%', '100%'],
+                    backgroundColor : ["#fe6384", "#36a2eb", "#fdce56", "#cacbd0", "#4ac0c0", "#ff851b"]
+                }
+            }
         },
 
         // LP Progress Block
-        lpStatsBlock : {
+        /*lpStatsBlock : {
             ctx : $(v.lpStatsBlock)[0].getContext("2d"),
             graph : {
                 type : "pie",
@@ -145,10 +178,34 @@ define(["jquery", "report_elucidsitereport/variables", "report_elucidsitereport/
                 data : [0],
                 backgroundColor : ["#fe6384", "#36a2eb", "#fdce56", "#cacbd0", "#4ac0c0", "#ff851b"]
             }
-        },
+        },*/
+
 
         changeExportUrl: v.changeExportUrl,
 
+        // Get learning program blocks
+        getLpStatsBlock: function () {
+            lpStatsBlock = $(v.lpStatsBlock);
+            if (lpStatsBlock.length == 0) {
+                return false;
+            }
+
+            return {
+                ctx : lpStatsBlock[0].getContext("2d"),
+                graph : {
+                    type : "pie",
+                    options : {
+                        responsive: true,
+                        legend: {position: 'bottom'},
+                        maintainAspectRatio: false,
+                        aspectRatio: 1,
+                    },
+                    labels : ['No Users/Courses are available'],
+                    data : [0],
+                    backgroundColor : ["#fe6384", "#36a2eb", "#fdce56", "#cacbd0", "#4ac0c0", "#ff851b"]
+                }
+            }
+        },
         // Function to get panelbody, paneltitle and panelfooter
         getPanel: function (blockid, type) {
             var panel = "#wdm-elucidsitereport " + blockid;

@@ -15,20 +15,24 @@ define([
         var chart = panelBody + " .ct-chart";
         var loader = panelBody + " .loader";
         var exportUrlLink = panel + " .dropdown-menu[aria-labelledby='export-dropdown'] .dropdown-item";
+        var courseProgressBlock = false;
 
         $(document).ready(function($) {
-            getCourseProgressData();
-            $(panelBody + ' .singleselect').select2();
-
-            $(selectedCourse).on("change", function () {
-                $(chart).addClass("d-none");
-                $(loader).removeClass("d-none");
-
-                if (courseProgress) {
-                    courseProgress.destroy();
-                }
+            courseProgressBlock = cfg.getCourseProgressBlock();
+            if (courseProgressBlock) {
                 getCourseProgressData();
-            });
+                $(panelBody + ' .singleselect').select2();
+
+                $(selectedCourse).on("change", function () {
+                    $(chart).addClass("d-none");
+                    $(loader).removeClass("d-none");
+
+                    if (courseProgress) {
+                        courseProgress.destroy();
+                    }
+                    getCourseProgressData();
+                });
+            }
         });
 
         function getCourseProgressData() {
@@ -48,7 +52,7 @@ define([
                 },
             })
             .done(function(response) {
-                cfg.courseProgressBlock.graph.data = response.data;
+                courseProgressBlock.graph.data = response.data;
             })
             .fail(function(error) {
                 console.log(error);
@@ -62,18 +66,18 @@ define([
 
         function generateCourseProgressGraph() {
             var data = {
-                labels: cfg.courseProgressBlock.graph.labels,
+                labels: courseProgressBlock.graph.labels,
                 datasets: [{
-                    label: cfg.courseProgressBlock.graph.label,
-                    data: cfg.courseProgressBlock.graph.data,
-                    backgroundColor: cfg.courseProgressBlock.graph.backgroundColor
+                    label: courseProgressBlock.graph.label,
+                    data: courseProgressBlock.graph.data,
+                    backgroundColor: courseProgressBlock.graph.backgroundColor
                 }]
             };
 
-            courseProgress = new Chart(cfg.courseProgressBlock.ctx, {
+            courseProgress = new Chart(courseProgressBlock.ctx, {
                 data: data,
-                type: cfg.courseProgressBlock.graph.type,
-                options: cfg.courseProgressBlock.graph.options
+                type: courseProgressBlock.graph.type,
+                options: courseProgressBlock.graph.options
             });
         }
     }
