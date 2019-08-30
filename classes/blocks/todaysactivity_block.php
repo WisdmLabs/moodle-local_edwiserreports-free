@@ -43,7 +43,8 @@ class todaysactivity_block extends utility {
 
     /**
      * Get Todays Activity information
-     * @return [type] [description]
+     * @param [string] $date Date filter in proprtdat format
+     * @return [array] Array of todays activities information
      */
     public static function get_todaysactivity($date) {
         global $DB;
