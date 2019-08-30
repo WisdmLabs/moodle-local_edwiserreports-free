@@ -39,6 +39,8 @@ use MoodleExcelWorkbook;
 use pdf;
 use html_table;
 use html_writer;
+use html_table_row;
+use html_table_cell;
 use file_storage;
 use stdClass;
 
@@ -202,7 +204,10 @@ class export {
 
     /**
      * Generate PDF file to export
-     * @return [type] [description]
+     * @param [string] $filename File Name
+     * @param [array] $data Data to export
+     * @param [string] $destination location to create file
+     * @return [string] File Path
      */
     private function generate_pdf_file($filename, $data, $dest) {
         global $CFG;
@@ -214,37 +219,13 @@ class export {
 
         $pdf->AddPage();
 
-        $table = new html_table();
-        foreach ($data as $key => $val) {
-            if ($key == 0) {
-                foreach($val as $v) {
-                    $table->head[] = html_writer::tag("h4", $v,
-                        array(
-                            "style" => "border-bottom: 1px solid #000;"
-                        )
-                    );
-                }
-            } else {
-                $table->data[] = $val;
-            }
-        }
+        // Generate HTML to export
+        ob_start();
+        $html = $this->get_html_for_pdf($data);
+        ob_clean();
 
-        //  Set the appropriate font
-        $pdf->writeHTML(
-            html_writer::tag("h1",
-                get_string($this->blockname . "exportheader", "report_elucidsitereport"),
-                array(
-                    "style" => "text-align:center" 
-                )
-            ).
-            html_writer::tag("p",
-                get_string($this->blockname . "exporthelp", "report_elucidsitereport"),
-                array(
-                    "style" => "text-indent: 50px"
-                )
-            ).
-            html_writer::table($table)
-        );
+        //  Create proper HTML ro export in PDF
+        $pdf->writeHTML($html);
 
         if ($dest == "F") {
             $filepath = $CFG->tempdir . '/' . $filename;
@@ -255,6 +236,46 @@ class export {
         $pdf->Output($filepath, $dest);
 
         return $filepath;
+    }
+
+    /**
+     * Get HTML Content to export
+     * @param  [array] $data Array of exportable Data
+     * @return [string] HTML String
+     */
+    public function get_html_for_pdf($data) {
+        $table = new html_table();
+        foreach ($data as $key => $val) {
+            if ($key == 0) {
+                foreach($val as $v) {
+                    $table->head[] = html_writer::tag("h4", $v);
+                }
+                $cell = new html_table_cell();
+                $cell->colspan = count($val);
+                $cell->style = "border-top: 1px solid #000; padding: 5px;";
+                $row = new html_table_row(array($cell));
+                $table->data[] = $row;
+            } else {
+                $table->data[] = $val;
+            }
+        }
+
+        // Generate HTML to export
+        $html = html_writer::tag("h1",
+            get_string($this->blockname . "exportheader", "report_elucidsitereport"),
+            array(
+                "style" => "text-align:center" 
+            )
+        ).
+        html_writer::tag("p",
+            get_string($this->blockname . "exporthelp", "report_elucidsitereport"),
+            array(
+                "style" => "text-indent: 50px"
+            )
+        ).
+        html_writer::table($table);
+
+        return $html;
     }
 
     /**

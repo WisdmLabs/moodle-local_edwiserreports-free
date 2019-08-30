@@ -169,7 +169,7 @@ class certificates_block extends utility {
         $params = array('courseid'=>$course->id, 'userid' => $issue->userid);
         $gradeval = 0;
         $grade = self::get_grades($course->id, $issue->userid);
-        if (!$grade) {
+        if ($grade) {
             $gradeval = $grade->finalgrade;
         }
 
@@ -211,7 +211,7 @@ class certificates_block extends utility {
         $certinfo->email = $user->email;
         $certinfo->issuedate = date("d M y", $issue->timecreated);
         $certinfo->dateenrolled = $enrolmentdate;
-        $certinfo->grade = number_format($grade->finalgrade, 2);
+        $certinfo->grade = number_format($gradeval, 2);
         $certinfo->courseprogress = $courseprogresshtml;
         return $certinfo;
     }
