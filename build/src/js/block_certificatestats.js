@@ -35,6 +35,9 @@ define(["jquery", "core/templates", "report_elucidsitereport/defaultconfig"], fu
             language: {
                 searchPlaceholder: "Search Certificates"
             },
+            oLanguage : {
+                sEmptyTable : "There is no certificate created"
+            },
             initComplete: function() {
                 $(dropdownBody).show();
             },

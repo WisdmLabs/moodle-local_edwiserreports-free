@@ -191,13 +191,13 @@ class export {
             $res = new stdClass();
             $res->error = false;
             $res->errormsg = get_string('emailsent', 'report_elucidsitereport');
-            echo json_encode($res); die;
+            echo json_encode($res);
         } else {
             // If failed then return error
             $res = new stdClass();
             $res->error = true;
             $res->errormsg = get_string('emailnotsent', 'report_elucidsitereport');
-            echo json_encode($res); die; // Die after responding with error
+            echo json_encode($res);
         }
         unlink($filepath);
     }

@@ -148,24 +148,22 @@ class siteaccess_block extends utility {
     public function get_siteaccess_info() {
         global $DB;
 
-        $fromtime = time() - (365 * 24 * 60 * 60);
-        $sql = "SELECT id, timecreated FROM {logstore_standard_log}
-            WHERE 'action' = ? AND timecreated > ?";
-        // $accesslog = $DB->get_records("logstore_standard_log", array("action" => "viewed"), '', 'id, timecreated');
-        $accesslog = $DB->get_records_sql($sql, array("viewed", $frotime));
+        $oneyear = 365 * 24 * 60 * 60;
+        $fromtime = time() - $oneyear;
+
+        $sql = "SELECT id, action, timecreated FROM {logstore_standard_log}
+            WHERE action = ? AND timecreated > ?";
+        $accesslog = $DB->get_records_sql($sql, array("viewed", $fromtime));
         $siteaccess = new stdClass();
         $siteaccess->siteaccess = $this->get_accessinfo(array_values($accesslog));
-
-        // $siteaccess->weekly = array();
-        /*for ($time = 0; $time < 24; $time++) {
-            $timeaccess = new stdClass();
-            $timeaccess->access = self::get_accessinfo($accesslog, $time * 60 * 60);
-            $timeaccess->time = gmdate("h:i A", $time * 60 * 60);
-            $siteaccess->weekly[] = $timeaccess;
-        }*/
         return $siteaccess;
     }
 
+    /**
+     * Get Access information
+     * @param  [array] $accesslog Array of access log
+     * @return [object] Site Access Information
+     */
     public function get_accessinfo($accesslog) {
         global $DB;
 

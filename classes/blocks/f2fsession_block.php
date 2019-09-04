@@ -32,7 +32,6 @@ use context_module;
 use html_writer;
 use core_user;
 
-require_once($CFG->dirroot . '/mod/facetoface/lib.php');
 require_once($CFG->dirroot . '/report/elucidsitereport/locallib.php');
 
 /**
@@ -85,6 +84,8 @@ class f2fsession_block extends utility {
      */
     public static function get_f2fsessions($facetoface, $cohortid) {
         global $CFG, $DB, $USER;
+
+        require_once($CFG->dirroot . '/mod/facetoface/lib.php');
         // $locations = get_locations($facetoface->id);
 
         // TODO: This needs to check the location
@@ -191,6 +192,8 @@ class f2fsession_block extends utility {
      */
     public static function get_session_data($session, $sessiondate, $cohortid) {
         global $CFG;
+        require_once($CFG->dirroot . '/mod/facetoface/lib.php');
+
         $attendees = facetoface_get_attendees($session->id);
         $attended = 0;
         $waitlisted = 0;

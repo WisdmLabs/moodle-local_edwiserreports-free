@@ -20,17 +20,19 @@ define([
             var lpId = $(selectedLp).val();
             lpStatsBlock = cfg.getLpStatsBlock();
 
-            getLpStatsData(lpId);
-            $(panelBody + ' .singleselect').select2();
-
-            $(selectedLp).on("change", function () {  
-                lpId = $(this).val();              
-                $(chart).addClass("d-none");
-                $(loader).removeClass("d-none");
-                cfg.changeExportUrl(lpId, exportUrlLink, V.filterReplaceFlag);
-                lpChart.destroy();
+            if (lpStatsBlock) {
                 getLpStatsData(lpId);
-            });
+                $(panelBody + ' .singleselect').select2();
+
+                $(selectedLp).on("change", function () {  
+                    lpId = $(this).val();              
+                    $(chart).addClass("d-none");
+                    $(loader).removeClass("d-none");
+                    cfg.changeExportUrl(lpId, exportUrlLink, V.filterReplaceFlag);
+                    lpChart.destroy();
+                    getLpStatsData(lpId);
+                });
+            }
         });
 
         function getLpStatsData(lpId) {
