@@ -137,6 +137,14 @@ $string['grade'] = 'Grade';
 $string['courseprogress'] = 'Course Progress';
 $string['notenrolled'] = 'User Not Enrolled';
 
+/* f2f Sessions Block */
+$string['attended'] = "Attended";
+$string['requested'] = "Requested";
+$string['canceled'] = "Canceled";
+$string['approved'] = "Approved";
+$string['booked'] = "Booked";
+
+
 /* f2f Sessions Page*/
 $string['waitlist'] = 'Waitlist';
 $string['declined'] = 'Declined';

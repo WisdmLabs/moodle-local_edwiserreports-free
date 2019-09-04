@@ -43,6 +43,9 @@
                     <th class="text-nowrap bg-image-none no-sorting-arrow">
                         {{#str}} declined, report_elucidsitereport {{/str}}
                     </th>
+                    <th class="text-nowrap bg-image-none no-sorting-arrow">
+                        {{#str}} canceled, report_elucidsitereport {{/str}}
+                    </th>
                     <th>
                         Download
                     </th>
@@ -62,6 +65,7 @@
                     <td class="text-center">{{attendend}}</td>
                     <td class="text-center">{{waitlisted}}</td>
                     <td class="text-center">{{declined}}</td>
+                    <td class="text-center">{{canceled}}</td>
                     <td class="text-center py-0 d-flex">
                         {{#exportlink}}
                             {{> report_elucidsitereport/exportdropdown }}

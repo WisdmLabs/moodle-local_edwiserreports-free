@@ -210,30 +210,46 @@ class f2fsession_block extends utility {
                 case MDL_F2F_STATUS_FULLY_ATTENDED:
                 case MDL_F2F_STATUS_PARTIALLY_ATTENDED:
                     $attended++;
-                    $status = html_writer::span($attendee->status, "badge badge-round badge-success");
+                    $status = html_writer::span(
+                        get_string("attended", "report_elucidsitereport"),
+                        "badge badge-round badge-success"
+                    );
                     break;
                 case MDL_F2F_STATUS_WAITLISTED:
                 case MDL_F2F_STATUS_REQUESTED:
                     $waitlisted++;
-                    $status = html_writer::span($attendee->status, "badge badge-round badge-warning");
+                    $status = html_writer::span(
+                        get_string("requested", "report_elucidsitereport"),
+                        "badge badge-round badge-warning"
+                    );
                     break;
                 case MDL_F2F_STATUS_DECLINED:
                 case MDL_F2F_STATUS_SESSION_CANCELLED:
                     $declined++;
-                    $status = html_writer::span($attendee->status, "badge badge-round badge-danger");
+                    $status = html_writer::span(
+                        get_string("canceled", "report_elucidsitereport"),
+                        "badge badge-round badge-danger"
+                    );
                     break;
                 case MDL_F2F_STATUS_APPROVED:
                     $confirmed++;
-                    $status = html_writer::span($attendee->status, "badge badge-round badge-dark");
+                    $status = html_writer::span(
+                        get_string("approved", "report_elucidsitereport"),
+                        "badge badge-round badge-dark"
+                    );
                     break;
                 default:
-                    $status = html_writer::span("booked", "badge badge-round badge-primary");
+                    $status = html_writer::span(
+                        get_string("booked", "report_elucidsitereport"),
+                        "badge badge-round badge-primary"
+                    );
 
             }
             $attendee->status = $status;
         }
 
-        $attendees = array_merge($attendees, self::get_canceled_sessionsdata($session->id, $cohortid));
+        $canceledusers = self::get_canceled_sessionsdata($session->id, $cohortid);
+        $allsignups = array_merge($attendees, $canceledusers);
 
         $sessiondata = new stdClass();
         $sessiondata->id = $session->id;
@@ -245,7 +261,8 @@ class f2fsession_block extends utility {
         $sessiondata->waitlisted = $waitlisted;
         $sessiondata->declined = $declined;
         $sessiondata->confirmed = $confirmed;
-        $sessiondata->users = array_values($attendees);
+        $sessiondata->canceled = count($canceledusers);
+        $sessiondata->users = array_values($allsignups);
         $downloadurl = $CFG->wwwroot."/report/elucidsitereport/download.php";
         $sessiondata->exportlink = \get_exportlinks($downloadurl, "report", "f2fsession", $sessiondata->sessionid, $cohortid);
         $sessiondata->exportlink->isindividual = true;
@@ -284,7 +301,10 @@ class f2fsession_block extends utility {
             }
 
             $user = core_user::get_user($record->createdby, "id, firstname, lastname");
-            $user->status = html_writer::span("canceled", "badge badge-round badge-danger");
+            $user->status = html_writer::span(
+                get_string("canceled", "report_elucidsitereport"),
+                "badge badge-round badge-danger"
+            );
             $user->reason = $record->note;
             $canceled[] = $user;
         }
@@ -386,8 +406,11 @@ class f2fsession_block extends utility {
                 $data = new stdClass();
                 $data->fullname = $user->firstname . " " . $user->lastname;
                 $data->status = strip_tags($user->status);
-                $data->reason = $user->reason;
                 $dataarray[] = array_values((array) $data);
+
+                if (isset($user->reason)) {
+                    $data->reason = $user->reason;
+                }
             }
         }
         return $dataarray;
