@@ -24,7 +24,6 @@ define([
                 },
             })
             .done(function(response) {
-                console.log(response.data);
                 templates.render(cfg.getTemplate("block_accessinfo"), response.data)
                 .then(function(html, js) {
                     templates.replaceNode(panel, html, js);

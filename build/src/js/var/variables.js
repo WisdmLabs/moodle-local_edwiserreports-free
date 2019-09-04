@@ -47,7 +47,7 @@ define(['report_elucidsitereport/variables'], function(V) {
         clock12_23 : "11:00 PM",
 
 
-        exportUrlLink : ".dropdown-menu[aria-labelledby='export-dropdown'] .dropdown-item",
+        exportUrlLink : " .dropdown-menu[aria-labelledby='export-dropdown'] .dropdown-item",
         cohortFilterBtn : "#cohortfilter",
         cohortFilterItem : "#cohortfilter ~ .dropdown-menu .dropdown-item",
 
@@ -55,6 +55,7 @@ define(['report_elucidsitereport/variables'], function(V) {
         cohortReplaceFlag : "C",
         filterReplaceFlag : "F",
 
+        // Change the export URL for export buttons
         changeExportUrl : function (filter, exportUrlLink, flag) {
             $(exportUrlLink).each(function() {
                 var oldUrl = this.href;
@@ -67,7 +68,6 @@ define(['report_elucidsitereport/variables'], function(V) {
                 } else if (flag == "C") {
                     oldUrl = oldUrl.replace(/cohortid=(.*)/, "cohortid="+filter);
                 }
-
                 $(this)[0].href = oldUrl;
             });
         },

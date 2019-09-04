@@ -156,6 +156,7 @@ define([
         function createActiveUsersTable(filter, cohortId) {
             sesskey = $(PageId).data("sesskey");
 
+            /* If datatable is already created then destroy the table */
             if (DataTable) {
                 DataTable.destroy();
                 $(ActiveUsersTable).hide();

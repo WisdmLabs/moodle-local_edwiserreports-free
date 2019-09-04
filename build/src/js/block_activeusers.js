@@ -50,7 +50,6 @@ define([
                 filter = $(this).attr('value');
                 $(dropdownMenu).removeClass('show');
                 $(dropdownButton).html($(this).text());
-                defaultConfig.changeExportUrl(filter, exportUrlLink, V.filterReplaceFlag);
                 getActiveUsersBlockData(filter);
                 $(flatpickrCalender).val("Custom");
                 $(dropdownInput).val("Custom");
@@ -59,7 +58,6 @@ define([
             /* Refresh when click on the refresh button */
             $(refreshBtn).on('click', function() {
                 $(this).addClass("refresh-spin");
-                resetUpdateTime();
                 getActiveUsersBlockData(filter);
             });
 
@@ -123,6 +121,10 @@ define([
                 console.log(error);
             }).always(function() {
                 activeUsersGraph = generateActiveUsersGraph();
+                V.changeExportUrl(filter, exportUrlLink, V.filterReplaceFlag);
+
+                // Change graph variables
+                resetUpdateTime();
                 setInterval(inceamentUpdateTime, 1000 * 60);
                 $(refreshBtn).removeClass('refresh-spin');
                 $(loader).addClass('d-none');
@@ -137,6 +139,7 @@ define([
 
         /* Increament update time in panel header */
         function inceamentUpdateTime() {
+            console.log("1 min passed");
             $(panelTitle + " #updated-time > span.minute").html(parseInt($(panelTitle + " #updated-time > span.minute").text()) + 1);
         }
 
