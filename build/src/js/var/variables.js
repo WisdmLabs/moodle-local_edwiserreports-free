@@ -1,5 +1,6 @@
 define(['report_elucidsitereport/variables'], function(V) {
     return {
+        pluginPage: $("#wdm-elucidsitereport"),
         requestUrl : M.cfg.wwwroot + '/report/elucidsitereport/request_handler.php',
         requestType : 'GET',
         requestDataType : 'json',
