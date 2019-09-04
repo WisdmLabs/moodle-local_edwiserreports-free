@@ -53,7 +53,7 @@ class elucidsitereportController extends controllerAbstract
     }
 
     public function get_activecourses_data_ajax_action() {
-        echo json_encode(\report_elucidsitereport\utility::get_active_courses_data($data));
+        echo json_encode(\report_elucidsitereport\utility::get_active_courses_data());
     }
 
     public function get_courseprogress_graph_data_ajax_action() {

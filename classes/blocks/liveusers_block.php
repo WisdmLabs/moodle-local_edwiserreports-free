@@ -75,7 +75,7 @@ class liveusers_block extends utility {
                 ), "timecreated DESC", "timecreated", 0, 1)
             );
 
-            if ($lastlogin[0]->timecreated) {
+            if (isset($lastlogin[0]->timecreated) && $lastlogin[0]->timecreated) {
                 $user["lastlogin"] = '<div class="d-none">'.$lastlogin[0]->timecreated.'</div>';
                 $user["lastlogin"] .= format_time($timenow - $lastlogin[0]->timecreated);
             } else {

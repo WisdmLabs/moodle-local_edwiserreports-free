@@ -20,16 +20,20 @@
         </div>
         <table id="accessinfotable" class="table d-none">
             <tbody class="small">
-                {{#weekly}}
+                {{#siteaccess}}
+                {{#.}}
                 <tr style="background-color: #e0e0e0 !important;">
-                    {{#access}}
-                    <td class="bg-secondary small font-weight-700 border border-white p-0" style="background-color: rgba(52,137,223,{{.}}) !important;">
-                        <p class="m-0"></p>
-                    </td>
-                    {{/access}}
-                    <td class="empty-lable bg-white small font-weight-700 border border-white py-0" style="min-width:60px">{{time}}</td>
+                        {{#access}}
+                            <td class="bg-secondary small font-weight-700 border border-white p-0" style="background-color: rgba(52,137,223,{{.}}) !important;">
+                                <p class="m-0 d-none">{{.}}</p>
+                            </td>
+                        {{/access}}
+                        {{#time}}
+                        <td class="empty-lable bg-white small font-weight-700 border border-white py-0" style="min-width:60px">{{.}}</td>
+                        {{/time}}
                 </tr>
-                {{/weekly}}
+                {{/.}}
+                {{/siteaccess}}
 
                 <tr class="text-center">
                     <td class="empty-lable small font-weight-700"><p class="m-0">Mon</p></td>

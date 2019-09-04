@@ -31,28 +31,162 @@ use stdClass;
  * To get the data related to site access
  */
 class siteaccess_block extends utility {
+    public $siteaccess = array(
+        array(
+            "access" => array(0, 0, 0, 0, 0, 0, 0),
+            "time" => "12:00 AM"
+        ),
+        array(
+            "access" => array(0, 0, 0, 0, 0, 0, 0),
+            "time" => "01:00 AM"
+        ),
+        array(
+            "access" => array(0, 0, 0, 0, 0, 0, 0),
+            "time" => "02:00 AM"
+        ),
+        array(
+            "access" => array(0, 0, 0, 0, 0, 0, 0),
+            "time" => "03:00 AM"
+        ),
+        array(
+            "access" => array(0, 0, 0, 0, 0, 0, 0),
+            "time" => "04:00 AM"
+        ),
+        array(
+            "access" => array(0, 0, 0, 0, 0, 0, 0),
+            "time" => "05:00 AM"
+        ),
+        array(
+            "access" => array(0, 0, 0, 0, 0, 0, 0),
+            "time" => "06:00 AM"
+        ),
+        array(
+            "access" => array(0, 0, 0, 0, 0, 0, 0),
+            "time" => "07:00 AM"
+        ),
+        array(
+            "access" => array(0, 0, 0, 0, 0, 0, 0),
+            "time" => "08:00 AM"
+        ),
+        array(
+            "access" => array(0, 0, 0, 0, 0, 0, 0),
+            "time" => "09:00 AM"
+        ),
+        array(
+            "access" => array(0, 0, 0, 0, 0, 0, 0),
+            "time" => "10:00 AM"
+        ),
+        array(
+            "access" => array(0, 0, 0, 0, 0, 0, 0),
+            "time" => "11:00 AM"
+        ),
+        array(
+            "access" => array(0, 0, 0, 0, 0, 0, 0),
+            "time" => "12:00 AM"
+        ),
+        array(
+            "access" => array(0, 0, 0, 0, 0, 0, 0),
+            "time" => "12:00 AM"
+        ),
+        array(
+            "access" => array(0, 0, 0, 0, 0, 0, 0),
+            "time" => "01:00 PM"
+        ),
+        array(
+            "access" => array(0, 0, 0, 0, 0, 0, 0),
+            "time" => "02:00 PM"
+        ),
+        array(
+            "access" => array(0, 0, 0, 0, 0, 0, 0),
+            "time" => "03:00 PM"
+        ),
+        array(
+            "access" => array(0, 0, 0, 0, 0, 0, 0),
+            "time" => "04:00 PM"
+        ),
+        array(
+            "access" => array(0, 0, 0, 0, 0, 0, 0),
+            "time" => "05:00 PM"
+        ),
+        array(
+            "access" => array(0, 0, 0, 0, 0, 0, 0),
+            "time" => "06:00 PM"
+        ),
+        array(
+            "access" => array(0, 0, 0, 0, 0, 0, 0),
+            "time" => "07:00 PM"
+        ),
+        array(
+            "access" => array(0, 0, 0, 0, 0, 0, 0),
+            "time" => "08:00 PM"
+        ),
+        array(
+            "access" => array(0, 0, 0, 0, 0, 0, 0),
+            "time" => "09:00 PM"
+        ),
+        array(
+            "access" => array(0, 0, 0, 0, 0, 0, 0),
+            "time" => "10:00 PM"
+        ),
+        array(
+            "access" => array(0, 0, 0, 0, 0, 0, 0),
+            "time" => "11:00 PM"
+        )
+    );
+
     public static function get_data() {
         $response = new stdClass();
-        $response->data = self::get_siteaccess_info();
+        $siteaccessblock = new siteaccess_block();
+        $response->data = $siteaccessblock->get_siteaccess_info();
         return $response;
     }
 
-    public static function get_siteaccess_info() {
+    /**
+     * Get site access information
+     * @return [object] Site access inforamtion 
+     */
+    public function get_siteaccess_info() {
         global $DB;
 
-        $accesslog = $DB->get_records("logstore_standard_log", array());
+        $fromtime = time() - (365 * 24 * 60 * 60);
+        $sql = "SELECT id, timecreated FROM {logstore_standard_log}
+            WHERE 'action' = ? AND timecreated > ?";
+        // $accesslog = $DB->get_records("logstore_standard_log", array("action" => "viewed"), '', 'id, timecreated');
+        $accesslog = $DB->get_records_sql($sql, array("viewed", $frotime));
         $siteaccess = new stdClass();
-        $siteaccess->weekly = array();
-        for ($time = 0; $time < 24; $time++) {
+        $siteaccess->siteaccess = $this->get_accessinfo(array_values($accesslog));
+
+        // $siteaccess->weekly = array();
+        /*for ($time = 0; $time < 24; $time++) {
             $timeaccess = new stdClass();
             $timeaccess->access = self::get_accessinfo($accesslog, $time * 60 * 60);
             $timeaccess->time = gmdate("h:i A", $time * 60 * 60);
             $siteaccess->weekly[] = $timeaccess;
-        }
+        }*/
         return $siteaccess;
     }
 
-    public static function get_accessinfo($accesslog, $time) {
+    public function get_accessinfo($accesslog) {
+        global $DB;
+
+        $oneweek = 7 * 24 * 60 * 60;
+        $timeduration = end($accesslog)->timecreated - $accesslog[0]->timecreated;
+        $userscount = $DB->count_records("user", array("deleted" => false));
+        $weeks = ceil($timeduration / $oneweek);
+
+        if ($weeks) {
+            foreach($accesslog as $log) {
+                $col = number_format(date("w", $log->timecreated));
+                $row = number_format(date("H", $log->timecreated));
+
+                $this->siteaccess[$row]["access"][$col] += (1 / ($weeks * $userscount));
+            }
+        }
+
+        return $this->siteaccess;
+    }
+
+    /*public static function get_accessinfo($accesslog, $time) {
         global $DB;
         $allusers = $DB->get_records("user", array("deleted" => false));
         $access = array();
@@ -115,5 +249,5 @@ class siteaccess_block extends utility {
             $access[$key] = count($eachweekaccess) / count($allusers);
         }
         return $access;
-    }
+    }*/
 }

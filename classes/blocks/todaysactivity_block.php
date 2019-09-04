@@ -136,8 +136,8 @@ class todaysactivity_block extends utility {
             $courses = enrol_get_users_courses($user->userid);
             foreach ($courses as $course) {
                 $coursecontext = context_course::instance($course->id);
-                $isteacher = has_capability($teacherscap, $coursecontext, $user->id);
-                $islearner = has_capability($learnerscap, $coursecontext, $user->id);
+                $isteacher = has_capability($teacherscap, $coursecontext, $user->userid);
+                $islearner = has_capability($learnerscap, $coursecontext, $user->userid);
             }
 
             if ($isteacher) {
