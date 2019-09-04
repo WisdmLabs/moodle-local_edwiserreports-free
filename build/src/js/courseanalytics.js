@@ -30,9 +30,15 @@ define([
                 getCourseAnalyticsData(courseId, cohortId);
             });
 
+            // Get Course Analytics Data
             getCourseAnalyticsData(courseId, cohortId);
         });
 
+        /**
+         * Get Course Analytics Data
+         * @param  {int} courseId Course Id
+         * @param  {int} cohortId Cohort Id
+         */
         function getCourseAnalyticsData(courseId, cohortId) {
             var sesskey = PageId.data("sesskey");
             $.ajax({
@@ -63,7 +69,12 @@ define([
             });
         }
 
-        /* Generate Data Table for specific blocks */
+        /**
+         * Generate Data Table for specific blocks
+         * @param  {string} tableId Table Id
+         * @param  {object} table Table Object
+         * @param  {array} data Data to create table
+         */
         function generateDataTable(tableId, table, data) {
             var emptyStr = "No users has Enrolled in this course";;
 
@@ -92,9 +103,10 @@ define([
                 initComplete: function() {
                     $(loader).hide();
                 },
-                paging: false,
+                paging: true,
                 bInfo : false,
-                searching : false
+                searching : false,
+                lengthChange: false
             });
         }
     }

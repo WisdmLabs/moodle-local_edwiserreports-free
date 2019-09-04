@@ -25,6 +25,7 @@
 
 namespace report_elucidsitereport;
 
+use context_system;
 use context_course;
 use moodle_url;
 

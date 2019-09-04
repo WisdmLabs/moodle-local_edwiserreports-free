@@ -225,6 +225,7 @@ class active_users_block extends utility {
     /**
      * Get all Enrolments
      * @param string $filter apply filter duration
+     * @param [int] $cohortid Cohort Id
      * @return array Array of all active users based
      */
     public static function get_enrolments($filter, $cohortid) {
@@ -257,6 +258,7 @@ class active_users_block extends utility {
     /**
      * Get all Enrolments
      * @param string $filter apply filter duration
+     * @param [int] $cohortid Cohort Id
      * @return array Array of all active users based
      */
     public static function get_course_completionrate($filter, $cohortid) {
@@ -298,21 +300,23 @@ class active_users_block extends utility {
         $records = array_values($DB->get_records_sql($sql, $params));
 
         if (!empty($records)) {
+            // Getting first access of the site
             self::$firstaccess = $records[0]->timecreated;
             switch ($filter) {
                 case 'all':
                     self::$xlabelcount = ceil((self::$timenow-self::$firstaccess)/self::$oneday);
                     break;
                 case 'monthly':
-                    self::$xlabelcount = 30;
+                    self::$xlabelcount = 30; // One Month
                     break;
                 case 'yearly':
-                    self::$xlabelcount = 365;
+                    self::$xlabelcount = 365; // One Year
                     break;
                 case 'weekly':
-                    self::$xlabelcount = 7;
+                    self::$xlabelcount = 7; // One Week
                     break;
                 default:
+                    // Explode dates from custom date filter
                     $dates = explode(" to ", $filter);
                     if (count($dates) == 2) {
                         $startdate = strtotime($dates[0]." 00:00:00");
@@ -322,10 +326,11 @@ class active_users_block extends utility {
                         self::$xlabelcount = ceil($enddate-$startdate)/self::$oneday;
                         self::$timenow = $enddate;
                     } else {
-                        self::$xlabelcount = 7;
+                        self::$xlabelcount = 7; // Default one week
                     }
             }
         } else {
+            // If no record fonud then current time is first access time
             self::$firstaccess = self::$timenow;
         }
     }

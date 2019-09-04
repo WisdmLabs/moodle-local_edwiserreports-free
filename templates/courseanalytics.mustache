@@ -1,21 +1,16 @@
-<div class="table-dropdown">
-    {{#exportlink}}
-        {{> report_elucidsitereport/exportdropdown }}
-    {{/exportlink}}
-</div>
 {{#userfilters}}
     {{> report_elucidsitereport/userfilters }}
 {{/userfilters}}
 <div id="wdm-courseanalytics-individual" class="row" data-sesskey="{{sesskey}}">
     <div class="recent-visits table-responsive col-lg-4 col-md-6 col-sm-12">
-        <div class="w-full text-right">
+        <h4 class="panel-title px-0">
+            {{#str}} recentvisits , report_elucidsitereport{{/str}}
+        </h4>
+        <div class="position-absolute my-10" style="top:0; right: 0;">
             {{#visitsexportlink}}
                 {{> report_elucidsitereport/exportdropdown }}
             {{/visitsexportlink}}
         </div>
-        <h4>
-            {{#str}} recentvisits , report_elucidsitereport{{/str}}
-        </h4>
         <table class="table">
             <thead>
                 <tr>
@@ -34,14 +29,14 @@
         </table>
     </div>
     <div class="recent-enrolment table-responsive col-lg-4 col-md-6 col-sm-12">
-        <div class="w-full text-right">
+        <h4 class="panel-title px-0">
+            {{#str}} recentenrolment , report_elucidsitereport{{/str}}
+        </h4>
+        <div class="position-absolute my-10" style="top:0; right: 0;">
             {{#enrolmentexportlink}}
                 {{> report_elucidsitereport/exportdropdown }}
             {{/enrolmentexportlink}}
         </div>
-        <h4>
-            {{#str}} recentenrolment , report_elucidsitereport{{/str}}
-        </h4>
         <table class="table">
             <thead>
                 <tr>
@@ -60,14 +55,14 @@
         </table>
     </div>
     <div class="recent-completion table-responsive col-lg-4 col-md-6 col-sm-12">
-        <div class="w-full text-right">
+        <h4 class="panel-title px-0">
+            {{#str}} recentcompletion , report_elucidsitereport{{/str}}
+        </h4>
+        <div class="position-absolute my-10" style="top:0; right: 0;">
             {{#completionexportlink}}
                 {{> report_elucidsitereport/exportdropdown }}
             {{/completionexportlink}}
         </div>
-        <h4>
-            {{#str}} recentcompletion , report_elucidsitereport{{/str}}
-        </h4>
         <table class="table">
             <thead>
                 <tr>
