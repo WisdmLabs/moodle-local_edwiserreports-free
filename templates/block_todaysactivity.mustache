@@ -13,7 +13,7 @@
                 </a>
             </strong>
         </div>
-        <input class="btn btn-sm dropdown-toggle input-group-addon border-0 position-absolute w-150 my-20" id="flatpickrCalender" placeholder="{{#str}} selectdate, report_elucidsitereport {{/str}}" data-input style="top: 0;right: 0;"/>
+        <input class="btn btn-sm dropdown-toggle input-group-addon border-0 position-absolute w-150 my-20" id="flatpickrCalender" placeholder="{{#str}} selectdate, report_elucidsitereport {{/str}}" data-input/>
     </div>
     <div class="panel-body p-0 mt-10">
         <div class="card card-inverse card-shadow bg-primary" id="widgetSaleBar">
@@ -25,14 +25,24 @@
                                 {{#str}} todayslogin, report_elucidsitereport {{/str}}
                             </div>
                             <div class="row mx-0 text-center pb-10">
-                                <div class="col-12 bg-primary mb-10 py-10" style="filter: contrast(1.3);">
-                                    <div id="todays-onlinelearners" class="random random-counter font-size-30 font-weight-600 w-full">0</div>
+                                <div class="col-12 todays-block bg-primary mb-10 py-10">
+                                    <div id="todays-onlinelearners" class=" font-size-30 font-weight-600 w-full">
+                                        <div class="loader w-full text-center">
+                                            {{# pix }} loader, report_elucidsitereport{{/ pix }}
+                                        </div>
+                                        <div class="data"></div>
+                                    </div>
                                     <small>
                                         {{#str}} learners, report_elucidsitereport {{/str}}
                                     </small>
                                 </div>
-                                <div class="col-12 bg-primary mb-10 py-10" style="filter: contrast(1.3);">
-                                    <div id="todays-onlineteachers" class="random random-counter font-size-30 font-weight-600 w-full">0</div>
+                                <div class="col-12 todays-block bg-primary mb-10 py-10">
+                                    <div id="todays-onlineteachers" class=" font-size-30 font-weight-600 w-full">
+                                        <div class="loader w-full text-center">
+                                            {{# pix }} loader, report_elucidsitereport{{/ pix }}
+                                        </div>
+                                        <div class="data"></div>
+                                    </div>
                                     <small>
                                         {{#str}} teachers, report_elucidsitereport {{/str}}
                                     </small>
@@ -56,49 +66,57 @@
                                         <td align="left">
                                             {{#str}} enrollment, report_elucidsitereport {{/str}}
                                         </td>
-                                        <td align="right" class="random random-counter" id="todays-enrollments">0</td>
+                                        <td align="right" class="" id="todays-enrollments">
+                                            <span class="data">0</span>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td align="left">
                                             {{#str}} activitycompletion, report_elucidsitereport {{/str}}
                                         </td>
-                                        <td align="right" class="random random-counter" id="todays-activitycompletions">0</td>
+                                        <td align="right" class="" id="todays-activitycompletions">
+                                            <span class="data">0</span>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td align="left">
                                             {{#str}} coursecompletion, report_elucidsitereport {{/str}}
                                         </td>
-                                        <td align="right" class="random random-counter" id="todays-coursecompletions">0</td>
+                                        <td align="right" class="" id="todays-coursecompletions">
+                                            <span class="data">0</span>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td align="left">
                                             {{#str}} newregistration, report_elucidsitereport {{/str}}
                                         </td>
-                                        <td align="right" class="random random-counter" id="todays-registrations">0</td>
+                                        <td align="right" class="" id="todays-registrations">
+                                            <span class="data">0</span>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td align="left">
                                             {{#str}} visits, report_elucidsitereport {{/str}}
                                         </td>
-                                        <td align="right" class="random random-counter" id="todays-visits">0</td>
+                                        <td align="right" class="" id="todays-visits">
+                                            <span class="data">0</span>
+                                        </td>
                                     </tr>
                                     <tr class="d-none">
                                         <td align="left">
                                             {{#str}} timespent, report_elucidsitereport {{/str}}
                                         </td>
-                                        <td align="right" class="random random-counter" id="todays-timespend">00:00:00</td>
-                                    </tr>
-                                    <!-- <tr>
-                                        <td align="left">
-                                            {{#str}} sessions, report_elucidsitereport {{/str}}
+                                        <td align="right" class="" id="todays-timespend">
+                                            <span class="data">00:00:00</span>
                                         </td>
-                                        <td align="right" id="todays-sessions">0</td>
-                                    </tr> -->
+                                    </tr>
                                     <tr class="border-top bold">
                                         <td align="left">
                                             {{#str}} totalusers, report_elucidsitereport {{/str}}
                                         </td>
-                                        <td align="right" class="random random-counter" id="todays-totalusers">0</td>
+                                        <td align="right" class="" id="todays-totalusers">
+                                            <span class="data">0</span>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>

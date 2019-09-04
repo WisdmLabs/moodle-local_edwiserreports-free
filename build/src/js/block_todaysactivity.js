@@ -22,18 +22,10 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig'], func
                 maxDate: "today",
                 defaultDate: ["today"],
                 onChange: function(selectedDates, dateStr, instance) {
-                    $(panelBody + " .random").addClass("random-counter");
+                    section.find("loader").show();
                     getTodaysActivity(dateStr);
                 }
             });
-
-            var count = 0;
-            function randomCounter(){
-                count = Math.round(Math.random()*5);
-                $(panelBody + ' .random-counter').text(count);
-                setTimeout(randomCounter, 20);
-            }
-            randomCounter();
         });
 
         /**
@@ -64,24 +56,9 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig'], func
                  */
                 $.each(response.data, function(indx, el) {
                     var section = $(panelBody + " #todays-" + indx);
-                    section.removeClass("random-counter");
-                    section.html(el);
+                    section.find(".loader").hide();
+                    section.find(".data").html(el);
                 });
-
-                /**
-                 * Added Counter for todays activity block
-                 */
-                /*$(panelBody + ' .count').each(function () {
-                    $(this).prop('Counter',0).animate({
-                        Counter: $(this).text()
-                    }, {
-                        duration: 400,
-                        easing: 'swing',
-                        step: function (now) {
-                            $(this).text(Math.ceil(now));
-                        }
-                    });
-                });*/
 
                 /* Generate Todays Activity Graph */
                 generateTodaysVisitsGraph(response.data.visitshour);

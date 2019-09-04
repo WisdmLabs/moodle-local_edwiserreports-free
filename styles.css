@@ -334,9 +334,21 @@
     max-height: 350px;
 }
 
+/* Todays Activity Block */
+
+#wdm-elucidsitereport #todaysactivityblock input.input-group-addon {
+    top: 0;
+    right: 0;
+    background-color: #e4eaec;
+}
+
 #wdm-elucidsitereport #todaysactivityblock .ct-chart {
     min-height: 100px;
     max-height: 100px;
+}
+
+#wdm-elucidsitereport #todaysactivityblock .todays-block {
+    filter: contrast(1.3);
 }
 
 /* Active users page */
