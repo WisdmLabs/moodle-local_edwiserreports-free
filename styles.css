@@ -170,6 +170,10 @@
     padding-left: 50px !important;
 }
 
+/* F2f sessions page css */
+#wdm-f2fsessions-individual #f2fsessionstable {
+    min-height: 150px;
+}
 
 /* Custom Scrollbar Design Start */
 /* width */
