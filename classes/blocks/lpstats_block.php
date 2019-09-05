@@ -54,14 +54,19 @@ class lpstats_block extends utility {
 
     	$completedusers = array();
     	foreach ($courses as $courseid) {
-    		$course = get_course($courseid);
+    		$course = $DB->get_record('course', array('id' => $courseid));
+            // If course not present then continue
+            if (!$course) {
+                continue;
+            }
+
     		$lpstats->labels[] = $course->shortname;
 
     		$completed = 0;
     		foreach ($lpenrolment as $enrol) {
     			$completion = self::get_course_completion_info($course, $enrol->userid);
 
-    			if ($completion["progresspercentage"] == 100) {
+    			if (isset($completion["progresspercentage"]) && $completion["progresspercentage"] == 100) {
     				if (!in_array($enrol->userid, $completedusers)) {
     					array_push($completedusers, $enrol->userid);
     				}
@@ -72,7 +77,7 @@ class lpstats_block extends utility {
     	}
 
     	// No users are completd any courses
-    	$lpstats->labels[] = "None of the above";
+    	$lpstats->labels[] = get_string("none", "report_elucidsitereport");
     	$lpstats->data[] = count($lpenrolment) - count($completedusers);
 
     	return $lpstats;
@@ -118,7 +123,11 @@ class lpstats_block extends utility {
             $userinfo->progress = array();
 
             foreach ($courses as $courseid) {
-                $course = get_course($courseid);
+                $course = $DB->get_record('course', array('id' => $courseid));
+                // If course not present then continue
+                if (!$course) {
+                    continue;
+                }
 
                 if (!$DB->record_exists("course", array("id" => $courseid))) {
                     continue;

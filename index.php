@@ -29,7 +29,7 @@ require_once 'classes/output/elucidreport_renderer.php';
 require_once 'classes/output/elucidreport_renderable.php';
 require_once 'classes/export.php';
 
-$PAGE->requires->strings_for_js(['courseprogresstooltip'], 'report_elucidsitereport');
+$PAGE->requires->strings_for_js(['courseprogresstooltip', 'lpstatstooltip'], 'report_elucidsitereport');
 
 admin_externalpage_setup('elucidsitereport');
 

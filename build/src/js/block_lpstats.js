@@ -5,7 +5,7 @@ define([
     'report_elucidsitereport/variables',
     'report_elucidsitereport/select2'
 ], function ($, Chart, cfg, V) {
-    function init() {
+    function init(notifyListner) {
         var lpChart = null;
         var panel = cfg.getPanel("#lpstatsblock");
         var panelBody = cfg.getPanel("#lpstatsblock", "body");
@@ -32,6 +32,8 @@ define([
                     lpChart.destroy();
                     getLpStatsData(lpId);
                 });
+            } else {
+                notifyListner("lpStatsBlock");
             }
         });
 
@@ -58,6 +60,7 @@ define([
             .always(function() {
                 $(loader).addClass("d-none");
                 $(chart).removeClass("d-none");
+                notifyListner("lpStatsBlock");
             });
         }
 

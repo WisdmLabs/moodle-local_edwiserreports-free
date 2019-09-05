@@ -5,7 +5,7 @@ define([
     'report_elucidsitereport/variables',
     'report_elucidsitereport/select2'
 ], function ($, Chart, cfg, V) {
-    function init() {
+    function init(notifyListner) {
         var courseProgress = null;
         var panel = cfg.getPanel("#courseprogressblock");
         var panelBody = cfg.getPanel("#courseprogressblock", "body")
@@ -61,6 +61,9 @@ define([
                 generateCourseProgressGraph();
                 $(loader).addClass("d-none");
                 $(chart).removeClass("d-none");
+
+                /* Notify that this event is completed */
+                notifyListner("courseProgress");
             });
         }
 

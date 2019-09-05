@@ -8,7 +8,7 @@ define([
     var table = cfg.getPanel("#accessinfograph", "table");
     var loader = cfg.getPanel("#accessinfograph", "loader");;
 
-    function init() {
+    function init(notifyListner) {
         $(document).ready(function() {
             generateAccessInfoGraph();
         });
@@ -39,6 +39,8 @@ define([
             })
             .fail(function(error) {
                 console.log(error);
+            }).always(function() {
+                notifyListner("accessInfo");
             });
         }
     }

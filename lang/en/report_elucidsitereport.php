@@ -57,6 +57,7 @@ $string['nof2fmodule'] = "There is no previous face to face session available.";
 $string['nof2fsessions'] = "There is no face to face session available for this module.";
 $string['nocertificates'] = "There is no certificate created";
 $string['courseprogresstooltip'] = '{$a->data} users completion are {$a->label}.';
+$string['lpstatstooltip'] = '{$a->data} users completed {$a->label}.';
 $string['fullname'] = "Full Name";
 $string['onlinesince'] = "Online Since";
 $string['status'] = "Status";
@@ -98,6 +99,7 @@ $string['accessinfoblockhelp'] = "This block will show the avg usage of the site
 $string['lpstatsblockhelp'] = "This block will show all the course completed by the users in a learning program.";
 $string['todaysactivityblockhelp'] = "This block will show the todays activities performed by in this website.";
 $string['inactiveusersblockhelp'] = "This block will show list of users inactive in this site.";
+$string['none'] = "None";
 
 /* Block Course Progress */
 $string['nocourses'] = "No Courses Found";

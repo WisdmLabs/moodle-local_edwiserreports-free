@@ -1,5 +1,5 @@
 define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'report_elucidsitereport/jquery.dataTables', 'report_elucidsitereport/dataTables.bootstrap4'], function ($, Chart, cfg) {
-    function init() {
+    function init(notifyListner) {
         var activeCourseTable;
 
         var panel = cfg.getPanel("#mostactivecourses");
@@ -49,6 +49,9 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
             /* Remove laoder and display table after table is created */
             $(loader).addClass('d-none');
             $(table).removeClass('d-none');
+
+            /* Notify that this event is completed */
+            notifyListner("activeCourses");
         });
 
         function createActiveCourseTable(data) {

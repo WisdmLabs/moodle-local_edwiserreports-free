@@ -5,24 +5,27 @@ define([
     'report_elucidsitereport/variables',
     'report_elucidsitereport/flatpickr'
 ], function ($, Chart, defaultConfig, V) {
-    function init() {
-        /* Varible for active users block */
-        var cfg               = defaultConfig.activeUsersBlock;
-        var panel             = defaultConfig.getPanel("#activeusersblock");
-        var panelBody         = defaultConfig.getPanel("#activeusersblock", "body");
-        var panelTitle        = defaultConfig.getPanel("#activeusersblock", "title");
-        var panelFooter       = defaultConfig.getPanel("#activeusersblock", "footer");
-        var dropdownMenu      = panel + " .dropdown-menu[aria-labelledby='filter-dropdown']";
-        var dropdownItem      = dropdownMenu + " .dropdown-item";
-        var dropdownToggle    = panel + " #filter-dropdown.dropdown-toggle";
-        var flatpickrCalender = panel + " #flatpickrCalender";
-        var chart             = panelBody + " .ct-chart";
-        var loader            = panelBody + " .loader";
-        var dropdownButton    = panel + " button#filter-dropdown";
-        var refreshBtn        = panelTitle + " .refresh";
-        var exportUrlLink     = panel + V.exportUrlLink;
-        var filter            = null;
-        var dropdownInput     = panelTitle + " input.form-control.input";
+    /* Varible for active users block */
+    var cfg               = defaultConfig.activeUsersBlock;
+    var panel             = defaultConfig.getPanel("#activeusersblock");
+    var panelBody         = defaultConfig.getPanel("#activeusersblock", "body");
+    var panelTitle        = defaultConfig.getPanel("#activeusersblock", "title");
+    var panelFooter       = defaultConfig.getPanel("#activeusersblock", "footer");
+    var dropdownMenu      = panel + " .dropdown-menu[aria-labelledby='filter-dropdown']";
+    var dropdownItem      = dropdownMenu + " .dropdown-item";
+    var dropdownToggle    = panel + " #filter-dropdown.dropdown-toggle";
+    var flatpickrCalender = panel + " #flatpickrCalender";
+    var chart             = panelBody + " .ct-chart";
+    var loader            = panelBody + " .loader";
+    var dropdownButton    = panel + " button#filter-dropdown";
+    var refreshBtn        = panelTitle + " .refresh";
+    var exportUrlLink     = panel + V.exportUrlLink;
+    var filter            = null;
+    var dropdownInput     = panelTitle + " input.form-control.input";
+    var listner           = null;
+
+    function init(notifyListner) {
+        listner = notifyListner;
 
         /* Custom Dropdown hide and show */
         $(document).ready(function() {
@@ -129,6 +132,9 @@ define([
                 $(refreshBtn).removeClass('refresh-spin');
                 $(loader).addClass('d-none');
                 $(chart).removeClass('d-none');
+
+                /* Notify that this event is completed */
+                listner("activeUsers");
             });
         }
 

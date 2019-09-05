@@ -4,8 +4,11 @@ define(["jquery", "report_elucidsitereport/defaultconfig", "report_elucidsiterep
     var panelBody = cfg.getPanel("#liveusersblock", "body");
     var loader = $(panelBody + " .loader");
     var table = $(panelBody + " .table");
+    var listner = null;
 
-    function init() {
+    function init(notifyListner) {
+        listner = notifyListner;
+
         getOnlineUsersData(); // Call first time
         setInterval(getOnlineUsersData, 1000 * 30);
     }
@@ -26,6 +29,8 @@ define(["jquery", "report_elucidsitereport/defaultconfig", "report_elucidsiterep
         })
         .fail(function(error) {
             console.log(error);
+        }).always(function(){
+            listner("realTimeUsers");
         });
     }
 

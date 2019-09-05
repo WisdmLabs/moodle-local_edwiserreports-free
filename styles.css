@@ -15,6 +15,10 @@
     display: none;
 }
 
+#wdm-elucidsitereport .dataTables_scrollHead {
+    margin-bottom: 0 !important;
+}
+
 #wdm-activeusers-individual .table-responsive>div.dataTables_wrapper>div.row:nth-child(2),
 #wdm-courseprogress-individual.table-responsive>div.dataTables_wrapper>div:nth-child(2),
 #wdm-courseengage-individual.table-responsive>div.dataTables_wrapper>div:nth-child(2),

@@ -1,5 +1,5 @@
 define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'report_elucidsitereport/jquery.dataTables', 'report_elucidsitereport/dataTables.bootstrap4'], function ($, Chart, cfg) {
-    function init() {
+    function init(notifyListner) {
         var activeUsersTable;
         var panel = cfg.getPanel("#inactiveusersblock");
         var panelBody = cfg.getPanel("#inactiveusersblock", "body");
@@ -8,6 +8,7 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
         var loader = panelBody + " .loader";
         var dropdown = panelTitle + " .dropdown-menu .dropdown-item";
         var dropdownToggle = panelTitle + " button.dropdown-toggle";
+        var inActiveUsersTable = null;
 
         getInactiveUsersData($(dropdown).data("value"));
         $(dropdown).on("click", function() {
@@ -39,6 +40,8 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
             })
             .fail(function(error) {
                 console.log(error);
+            }).always(function() {
+                notifyListner("inActiveUsers");
             });
         }
 
@@ -46,7 +49,11 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
             $(loader).addClass('d-none');
             $(table).removeClass('d-none');
 
-            activeUsersTable = $(table)
+            if (inActiveUsersTable) {
+                inActiveUsersTable.destroy();
+            }
+
+            inActiveUsersTable = $(table)
             .DataTable( {
                 data : data,
                 dom : '<"pull-left"f><t>',
