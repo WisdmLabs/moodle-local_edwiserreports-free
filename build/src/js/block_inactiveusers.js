@@ -65,10 +65,6 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
                 ],
                 scrollY : "320px",
                 scrollCollapse : true,
-                fixedHeader: {
-                    header: true,
-                    headerOffset: 45
-                },
                 scrollX: true,
                 paging: false,
                 bInfo : false

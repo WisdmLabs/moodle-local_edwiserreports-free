@@ -139,7 +139,6 @@ define([
 
         /* Increament update time in panel header */
         function inceamentUpdateTime() {
-            console.log("1 min passed");
             $(panelTitle + " #updated-time > span.minute").html(parseInt($(panelTitle + " #updated-time > span.minute").text()) + 1);
         }
 
