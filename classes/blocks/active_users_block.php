@@ -54,16 +54,62 @@ class active_users_block extends utility {
     public static $interval = 3;
 
     /**
+     * Constructor
+     * @param [string] $filter Range selector
+     */
+    public static function generate_default_data($filter) {
+        global $DB;
+        self::$timenow = time();
+
+        $sql = "SELECT id, userid, timecreated
+                FROM {logstore_standard_log}
+                ORDER BY timecreated ASC";
+        $records = array_values($DB->get_records_sql($sql));
+        if (!empty($records)) {
+            // Getting first access of the site
+            self::$firstaccess = $records[0]->timecreated;
+            switch ($filter) {
+                case 'all':
+                    self::$xlabelcount = ceil((self::$timenow-self::$firstaccess)/self::$oneday);
+                    break;
+                case 'monthly':
+                    self::$xlabelcount = 30; // One Month
+                    break;
+                case 'yearly':
+                    self::$xlabelcount = 365; // One Year
+                    break;
+                case 'weekly':
+                    self::$xlabelcount = 7; // One Week
+                    break;
+                default:
+                    // Explode dates from custom date filter
+                    $dates = explode(" to ", $filter);
+                    if (count($dates) == 2) {
+                        $startdate = strtotime($dates[0]." 00:00:00");
+                        $enddate = strtotime($dates[1]." 23:59:59");
+                    }
+                    if ($startdate && $enddate) {
+                        self::$xlabelcount = ceil($enddate-$startdate)/self::$oneday;
+                        self::$timenow = $enddate;
+                    } else {
+                        self::$xlabelcount = 7; // Default one week
+                    }
+            }
+        } else {
+            // If no record fonud then current time is first access time
+            self::$firstaccess = self::$timenow;
+        }
+    }
+
+    /**
      * Get active user, enrolment, completion
      * @param  string $filter date filter to get data
      * @return stdClass active users graph data
      */
     public static function get_data($filter, $cohortid = false) {
-        self::$timenow = time();
-
         $response = new stdClass();
         $response->data = new stdClass();
-        self::set_global_values_for_graph($filter);
+        self::generate_default_data($filter);
         $response->data->activeUsers = self::get_active_users($filter, $cohortid);
         $response->data->enrolments = self::get_enrolments($filter, $cohortid);
         $response->data->completionRate = self::get_course_completionrate($filter, $cohortid);
@@ -146,26 +192,46 @@ class active_users_block extends utility {
     public static function get_userslist($filter, $action, $cohortid = false) {
         global $DB;
         
+        $sql = "SELECT DISTINCT userid 
+            FROM {logstore_standard_log} l";
         $params = array();
+
+        $sqlext = "";
         if ($cohortid) {
+            $sqlext .= " JOIN {cohort_members} cm
+                    ON cm.userid = l.userid";
             $params["cohortid"] = $cohortid;
         }
 
+        $sql .= $sqlext;
+        $sql .= " WHERE l.userid > 1
+            AND l.timecreated >= :starttime
+            AND l.timecreated < :endtime";
+
         switch($action) {
             case "activeusers":
-                $params["eventname"] = '\core\event\user_loggedin';
+                $sql .= " AND l.action = :action";
+                $params["action"] = 'viewed';
                 break;
             case "enrolments":
+                $sql .= " AND l.eventname = :eventname";
                 $params["eventname"] = '\core\event\user_enrolment_created';
+                $params["action"] = 'created';
                 break;
+            case "completions";
+                $sql = "SELECT DISTINCT userid, course
+                    FROM {course_completions} l" . $sqlext;
+                $sql .= " WHERE l.timecompleted IS NOT NULL
+                    AND l.timecompleted >= :starttime
+                    AND l.timecompleted < :endtime";
         }
 
-        $sql = self::get_sql_query($action, $filter, $cohortid);
         $params["starttime"] = $filter;
         $params["endtime"] = $filter + self::$oneday;
 
         $data = array();
         $records = $DB->get_records_sql($sql, $params);
+
         if (!empty($records)) {
             foreach ($records as $record) {
                 $user = core_user::get_user($record->userid);
@@ -191,34 +257,38 @@ class active_users_block extends utility {
     public static function get_active_users($filter, $cohortid) {
         global $DB;
 
+        $starttime = self::$timenow - (self::$xlabelcount * self::$oneday);
         $params = array(
-            "eventname" => '\core\event\user_loggedin'
+            "starttime" => $starttime,
+            "endtime" => self::$timenow,
+            "action" => "viewed"
         );
 
-        $sql = self::get_sql_query("activeusers", $filter, $cohortid);
         if ($cohortid) {
             $params["cohortid"] = $cohortid;
         }
 
-        $labels = array();
-        $activeusers = array();
-        for ($i = self::$xlabelcount; $i > 0; $i--) {
-            if (!isset($params["endtime"])) {
-                $params["endtime"] = self::$timenow;
-                $params["starttime"] = strtotime(date("d M y", self::$timenow));
-            } else {
-                $params["endtime"] = $params["starttime"];
-                $params["starttime"] = $params["starttime"] - self::$oneday;
-            }
+        // Get sql to get active users
+        $sql = self::get_sql_query("activeusers", $filter, $cohortid);
+        $logs = $DB->get_records_sql($sql, $params);
 
-            $labels[] = date("d M y", $params["starttime"]);
-            $users = $DB->get_records_sql($sql, $params);
-            $activeusers[] = count($users);
+        $activeusers = array();
+        for ($i = 0; $i < self::$xlabelcount; $i++) {
+            $time = self::$timenow - $i * self::$oneday;
+            $logkey = date("j-n-Y", $time);
+
+            // $users = $DB->get_records_sql($sql, $params);
+            if (isset($logs[$logkey])) {
+                $activeusers[] = $logs[$logkey]->usercount;
+            } else {
+                $activeusers[] = 0;
+            }
+            self::$labels[] = date("d M y", $time);
         }
 
         /* Reverse the array because the graph take
         value from left to right */
-        self::$labels = array_reverse($labels);
+        self::$labels = array_reverse(self::$labels);
         return array_reverse($activeusers);
     }
 
@@ -231,26 +301,30 @@ class active_users_block extends utility {
     public static function get_enrolments($filter, $cohortid) {
         global $DB;
 
+        $starttime = self::$timenow - (self::$xlabelcount * self::$oneday);
         $params = array(
-            "eventname" => '\core\event\user_enrolment_created'
+            "starttime" => $starttime,
+            "endtime" => self::$timenow,
+            "eventname" => '\core\event\user_enrolment_created',
+            "action" => "created"
         );
 
-        $sql = self::get_sql_query("enrolments", $filter, $cohortid);
         if ($cohortid) {
             $params["cohortid"] = $cohortid;
         }
 
+        $sql = self::get_sql_query("enrolments", $filter, $cohortid);
+        $logs = $DB->get_records_sql($sql, $params);
         $enrolments = array();
-        for ($i = self::$xlabelcount; $i > 0; $i--) {
-            if (!isset($params["endtime"])) {
-                $params["endtime"] = self::$timenow;
-                $params["starttime"] = strtotime('today midnight');
-            } else {
-                $params["endtime"] = $params["starttime"];
-                $params["starttime"] = $params["starttime"] - self::$oneday;
-            }
+        for ($i = 0; $i < self::$xlabelcount; $i++) {
+            $time = self::$timenow - $i * self::$oneday;
+            $logkey = date("j-n-Y", $time);
 
-            $enrolments[] = count($DB->get_records_sql($sql, $params));
+            if (isset($logs[$logkey])) {
+                $enrolments[] = $logs[$logkey]->usercount;
+            } else {
+                $enrolments[] = 0;
+            }
         }
         return array_reverse($enrolments);
     }
@@ -270,70 +344,21 @@ class active_users_block extends utility {
             $params["cohortid"] = $cohortid;
         }
 
+        $completions = $DB->get_records_sql($sql, $params);
         $completionrate = array();
-        for ($i = self::$xlabelcount; $i > 0; $i--) {
-            if (!isset($params["endtime"])) {
-                $params["endtime"] = self::$timenow;
-                $params["starttime"] = strtotime('today midnight');
-            } else {
-                $params["endtime"] = $params["starttime"];
-                $params["starttime"] = $params["starttime"] - self::$oneday;
-            }
+        for ($i = 0; $i < self::$xlabelcount; $i++) {
+            $time = self::$timenow - $i * self::$oneday;
+            $logkey = date("j-n-Y", $time);
 
-            $completionrate[] = count($DB->get_records_sql($sql, $params));
+            if (isset($completions[$logkey])) {
+                $completionrate[] = $completions[$logkey]->usercount;
+            } else {
+                $completionrate[] = 0;
+            }
         }
         return array_reverse($completionrate);
     }
 
-    /**
-     * Set all global values from graph
-     * @param [string] $filter Range selector
-     */
-    public static function set_global_values_for_graph($filter) {
-        global $DB;
-
-        $sql = "SELECT id, userid, timecreated
-                FROM {logstore_standard_log}";
-        $params = array();
-
-        $sql .= " ORDER BY timecreated ASC";
-        $records = array_values($DB->get_records_sql($sql, $params));
-
-        if (!empty($records)) {
-            // Getting first access of the site
-            self::$firstaccess = $records[0]->timecreated;
-            switch ($filter) {
-                case 'all':
-                    self::$xlabelcount = ceil((self::$timenow-self::$firstaccess)/self::$oneday);
-                    break;
-                case 'monthly':
-                    self::$xlabelcount = 30; // One Month
-                    break;
-                case 'yearly':
-                    self::$xlabelcount = 365; // One Year
-                    break;
-                case 'weekly':
-                    self::$xlabelcount = 7; // One Week
-                    break;
-                default:
-                    // Explode dates from custom date filter
-                    $dates = explode(" to ", $filter);
-                    if (count($dates) == 2) {
-                        $startdate = strtotime($dates[0]." 00:00:00");
-                        $enddate = strtotime($dates[1]." 23:59:59");
-                    }
-                    if ($startdate && $enddate) {
-                        self::$xlabelcount = ceil($enddate-$startdate)/self::$oneday;
-                        self::$timenow = $enddate;
-                    } else {
-                        self::$xlabelcount = 7; // Default one week
-                    }
-            }
-        } else {
-            // If no record fonud then current time is first access time
-            self::$firstaccess = self::$timenow;
-        }
-    }
 
     /**
      * Get Exportable data for Active Users Block
@@ -411,44 +436,122 @@ class active_users_block extends utility {
         $sql = '';
         switch($action) {
             case "activeusers":
-            case "enrolments":
                 /* If cohort filter is added then get
                 only cohort members */
                 if ($cohortid) {
-                    $params["cohortid"] = $cohortid;
-                    $sql = "SELECT DISTINCT l.userid
-                        FROM {logstore_standard_log} l
-                        JOIN {cohort_members} cm
-                        ON l.userid = cm.userid
-                        WHERE cm.cohortid = :cohortid
-                        AND l.eventname = :eventname
-                        AND l.timecreated > :starttime
-                        AND l.timecreated <= :endtime";
-                } else {
-                    $sql = "SELECT DISTINCT userid
-                        FROM {logstore_standard_log}
-                        WHERE eventname = :eventname
-                        AND timecreated > :starttime
-                        AND timecreated <= :endtime";
+                    $sql = "SELECT
+                       CONCAT(
+                           DAY(FROM_UNIXTIME(l.timecreated)), '-',
+                           MONTH(FROM_UNIXTIME(l.timecreated)), '-',
+                           YEAR(FROM_UNIXTIME(l.timecreated))
+                       ) USERDATE,
+                       COUNT( DISTINCT l.userid ) as usercount
+                       FROM mdl_logstore_standard_log l
+                       JOIN mdl_cohort_members cm
+                       ON l.userid = cm.userid
+                       WHERE cm.cohortid = 2
+                       AND l.action = :action
+                       AND l.timecreated >= :starttime
+                       AND l.timecreated < :endtime
+                       AND l.userid > 1
+                       GROUP BY YEAR(FROM_UNIXTIME(l.timecreated)),
+                       MONTH(FROM_UNIXTIME(l.timecreated)),
+                       DAY(FROM_UNIXTIME(l.timecreated)), USERDATE";
+               } else {
+                   $sql = "SELECT
+                       CONCAT(
+                           DAY(FROM_UNIXTIME(timecreated)), '-',
+                           MONTH(FROM_UNIXTIME(timecreated)), '-',
+                           YEAR(FROM_UNIXTIME(timecreated))
+                       ) USERDATE,
+                       COUNT( DISTINCT userid ) as usercount
+                       FROM {logstore_standard_log}
+                       WHERE action = :action
+                       AND timecreated >= :starttime
+                       AND timecreated < :endtime
+                       AND userid > 1
+                       GROUP BY YEAR(FROM_UNIXTIME(timecreated)),
+                       MONTH(FROM_UNIXTIME(timecreated)),
+                       DAY(FROM_UNIXTIME(timecreated)), USERDATE";
                 }
                 break;
+            case "enrolments":
+                 /* If cohort filter is added then get
+                 only cohort members */
+                 if ($cohortid) {
+                     $sql = "SELECT
+                        CONCAT(
+                            DAY(FROM_UNIXTIME(l.timecreated)), '-',
+                            MONTH(FROM_UNIXTIME(l.timecreated)), '-',
+                            YEAR(FROM_UNIXTIME(l.timecreated))
+                        ) USERDATE,
+                        COUNT( DISTINCT l.userid ) as usercount
+                        FROM mdl_logstore_standard_log l
+                        JOIN mdl_cohort_members cm
+                        ON l.userid = cm.userid
+                        WHERE cm.cohortid = 2
+                        AND l.eventname = :eventname
+                        AND l.action = :action
+                        AND l.timecreated >= :starttime
+                        AND l.timecreated < :endtime
+                        AND l.userid > 1
+                        GROUP BY YEAR(FROM_UNIXTIME(l.timecreated)),
+                        MONTH(FROM_UNIXTIME(l.timecreated)),
+                        DAY(FROM_UNIXTIME(l.timecreated)), USERDATE";
+                } else {
+                    $sql = "SELECT
+                        CONCAT(
+                            DAY(FROM_UNIXTIME(timecreated)), '-',
+                            MONTH(FROM_UNIXTIME(timecreated)), '-',
+                            YEAR(FROM_UNIXTIME(timecreated))
+                        ) USERDATE,
+                        COUNT( DISTINCT userid ) as usercount
+                        FROM {logstore_standard_log}
+                        WHERE eventname = :eventname
+                        AND action = :action
+                        AND timecreated >= :starttime
+                        AND timecreated < :endtime
+                        AND userid > 1
+                        GROUP BY YEAR(FROM_UNIXTIME(timecreated)),
+                        MONTH(FROM_UNIXTIME(timecreated)),
+                        DAY(FROM_UNIXTIME(timecreated)), USERDATE";
+                 }
+                 break;
             case "completions":
                 /* If cohort filter is added then get
                 only cohort members */
                 if ($cohortid) {
                     $params["cohortid"] = $cohortid;
-                    $sql = "SELECT DISTINCT cc.userid, cc.course
-                        FROM {course_completions} cc
+                    $sql = "SELECT
+                        CONCAT(
+                        DAY(FROM_UNIXTIME(cc.timecompleted)), '-',
+                        MONTH(FROM_UNIXTIME(cc.timecompleted)), '-',
+                        YEAR(FROM_UNIXTIME(cc.timecompleted))
+                        ) USERDATE,
+                        course,
+                        COUNT( DISTINCT userid ) as usercount
+                        FROM mdl_course_completions cc
                         JOIN {cohort_members} cm
                         ON cc.userid = cm.userid
-                        WHERE cm.cohortid = :cohortid
-                        AND cc.timecompleted > :starttime
-                        AND cc.timecompleted <= :endtime";
+                        WHERE cc.timecompleted IS NOT NULL
+                        AND cm.cohortid = :cohortid
+                        GROUP BY YEAR(FROM_UNIXTIME(cc.timecompleted)),
+                        MONTH(FROM_UNIXTIME(timecompleted)),
+                        DAY(FROM_UNIXTIME(timecompleted)), course, USERDATE";
                 } else {
-                    $sql = "SELECT DISTINCT userid, course
-                        FROM {course_completions}
-                        WHERE timecompleted > :starttime
-                        AND timecompleted <= :endtime";
+                    $sql = "SELECT
+                        CONCAT(
+                            DAY(FROM_UNIXTIME(timecompleted)), '-',
+                            MONTH(FROM_UNIXTIME(timecompleted)), '-',
+                            YEAR(FROM_UNIXTIME(timecompleted))
+                        ) USERDATE,
+                        course,
+                        COUNT( DISTINCT userid ) as usercount
+                        FROM mdl_course_completions
+                        WHERE timecompleted IS NOT NULL
+                        GROUP BY YEAR(FROM_UNIXTIME(timecompleted)),
+                        MONTH(FROM_UNIXTIME(timecompleted)),
+                        DAY(FROM_UNIXTIME(timecompleted)), course, USERDATE";
                 }
         }
         return $sql;
