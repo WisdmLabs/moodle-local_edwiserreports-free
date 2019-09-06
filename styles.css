@@ -209,6 +209,11 @@
 }
 /* Custom Scrollbar Design End */
 
+/* Certificates Block*/
+#wdm-elucidsitereport #certificatestatsblock .panel-body {
+    min-height: 250px;
+}
+
 /* Form course progress & Lp stats block */
 #courseprogressblock .col-md-3,
 #lpstatsblock .col-md-3 {

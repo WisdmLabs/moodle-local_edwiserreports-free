@@ -25,6 +25,7 @@
 
 namespace report_elucidsitereport;
 use stdClass;
+use context_course;
 
 /**
  * Class Acive Users Block
@@ -65,28 +66,22 @@ class active_courses_block extends utility {
         global $DB;
 
         $table = "course";
-        $records = $DB->get_records($table, array());
+        $courses = get_courses();
 
-        $courses = array();
+        $response = array();
         $count = 0;
-        foreach ($records as $record) {
-            if ($record->id == 1) {
+        foreach ($courses as $course) {
+            $count++;
+            
+            // If moodle course then return false
+            if ($course->id == 1) {
                 continue;
             }
 
-            $count++;
-            $sqlcourseview = "SELECT DISTINCT userid
-                FROM {logstore_standard_log}
-                WHERE action = ? AND courseid = ?";
-            $course = get_course($record->id);
-            $coursecontext = \context_course::instance($record->id);
+            $coursecontext = context_course::instance($course->id);
             $enrolledstudents = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
 
-            if (!empty($enrolledstudents)) {
-                $extsql = " AND userid IN (" . implode(",", array_keys($enrolledstudents)) . ")";
-                $sqlcourseview .= $extsql;
-            }
-
+            // Get Completion count
             $completedusers = 0;
             foreach ($enrolledstudents as $user) {
                 $completion = self::get_course_completion_info($course, $user->id);
@@ -95,18 +90,43 @@ class active_courses_block extends utility {
                 }
             }
 
-            $courses[] = array(
+            $courseview = self::get_courseview_count($course->id, $enrolledstudents);
+            $response[] = array(
                 $count,
-                $record->fullname,
+                $course->fullname,
                 count($enrolledstudents),
-                count($DB->get_records_sql($sqlcourseview, array(
-                    'viewed',
-                    $record->id
-                ))),
+                $courseview,
                 $completedusers
             );
         }
-        return $courses;
+        return $response;
+    }
+
+    /**
+     * Get Course View Count by users
+     * @param  [int] $courseid Course Id
+     * @param  [array] $enrolledstudents Array of enrolled uesers
+     * @return [int] Number of course views by users
+     */
+    public static function get_courseview_count($courseid, $enrolledstudents) {
+        global $DB;
+
+        $sqlcourseview = "SELECT COUNT(userid) as usercount FROM
+            (SELECT DISTINCT userid
+            FROM {logstore_standard_log}
+            WHERE action = ? AND courseid = ?";
+
+        if (!empty($enrolledstudents)) {
+            $extsql = " AND userid IN (" . implode(",", array_keys($enrolledstudents)) . ")";
+            $sqlcourseview .= $extsql;
+        }
+
+        $sqlcourseview .= ") as users";
+        $views = $DB->get_record_sql($sqlcourseview, array(
+            'viewed',
+            $courseid
+        ));
+        return $views->usercount;
     }
 
     /**

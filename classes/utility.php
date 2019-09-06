@@ -262,6 +262,12 @@ class utility {
         return $completioninfo;
     }
 
+    /**
+     * Get Course Grade of a user
+     * @param  [int] $courseid Course Id
+     * @param  [int] $userid User Id
+     * @return [object] Grade Report
+     */
     public static function get_grades($courseid = false, $userid = false) {
         global $COURSE, $DB, $USER;
 

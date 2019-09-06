@@ -27,10 +27,6 @@ define([
             func : courseProgress,
             status : false
         },
-        activeCourses : {
-            func : activeCourses,
-            status : false
-        },
         realTimeUsers : {
             func : realTimeUsers,
             status : false
@@ -46,6 +42,14 @@ define([
         ,
         inActiveUsers : {
             func : inActiveUsers,
+            status : false
+        },
+        todaysActivity : {
+            func : todaysActivity,
+            status : false
+        },
+        activeCourses : {
+            func : activeCourses,
             status : false
         }
     };

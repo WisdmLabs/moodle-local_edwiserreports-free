@@ -1,5 +1,5 @@
 define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig'], function ($, Chart, cfg) {
-    function init() {
+    function init(notifyListner) {
         // Global data got todays activity block
         var todaysVisits;
         var panel = cfg.getPanel("#todaysactivityblock");
@@ -22,7 +22,7 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig'], func
                 maxDate: "today",
                 defaultDate: ["today"],
                 onChange: function(selectedDates, dateStr, instance) {
-                    section.find("loader").show();
+                    $(panelBody).find("loader").show();
                     getTodaysActivity(dateStr);
                 }
             });
@@ -65,6 +65,8 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig'], func
             })
             .fail(function(error) {
                 console.log(error);
+            }).always(function() {
+                notifyListner("todaysActivity");
             });
         }
 

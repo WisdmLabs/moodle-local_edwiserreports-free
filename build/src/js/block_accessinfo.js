@@ -6,7 +6,8 @@ define([
     var panel = cfg.getPanel("#accessinfograph");
     var panelBody = cfg.getPanel("#accessinfograph", "body");
     var table = cfg.getPanel("#accessinfograph", "table");
-    var loader = cfg.getPanel("#accessinfograph", "loader");;
+    var loader = cfg.getPanel("#accessinfograph", "loader");
+    var accessDesc = "#accessinfodesctable";
 
     function init(notifyListner) {
         $(document).ready(function() {
@@ -32,6 +33,7 @@ define([
                     console.log(ex);
                 })
                 .always(function() {
+                    $(accessDesc).show();
                     $(loader).remove();
                     $(table).removeClass("d-none");
                     $(panel + ' [data-toggle="tooltip"]').tooltip();
