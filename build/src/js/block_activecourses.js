@@ -66,6 +66,13 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
                 data : data,
                 dom : '<"pull-left"f><t>',
                 aaSorting: [[2, 'desc']],
+                aoColumns: [
+                    null,
+                    null,
+                    { "orderSequence": [ "desc" ] },
+                    { "orderSequence": [ "desc" ] },
+                    { "orderSequence": [ "desc" ] }
+                ],
                 language: {
                     searchPlaceholder: "Search Courses"
                 },

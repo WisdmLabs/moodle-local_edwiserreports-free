@@ -10,7 +10,6 @@ define(["jquery", "report_elucidsitereport/defaultconfig", "report_elucidsiterep
         listner = notifyListner;
 
         getOnlineUsersData(); // Call first time
-        setInterval(getOnlineUsersData, 1000 * 30);
     }
 
     /* Get online users data */
@@ -31,6 +30,7 @@ define(["jquery", "report_elucidsitereport/defaultconfig", "report_elucidsiterep
             console.log(error);
         }).always(function(){
             listner("realTimeUsers");
+            setTimeout(getOnlineUsersData, 1000 * 30);
         });
     }
 
