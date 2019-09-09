@@ -25,8 +25,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['pluginname'] = 'eLucid Site Report';
-$string['reportsandanalytics'] = "Reports & Analytics Dashboard";
+$string['pluginname'] = 'Reports & Analytics Dashboard';
+$string['reportsandanalytics'] = "Reports & Analytics";
 $string['all'] = "All";
 
 /* Blocks Name */
