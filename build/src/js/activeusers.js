@@ -149,6 +149,7 @@ define([
 
             $(dropdownButton).html(date);
             $(flatpickrCalender).val("");
+            V.changeExportUrl(filter, exportUrlLink, V.filterReplaceFlag);
             createActiveUsersTable(filter, cohortId);
         }
 

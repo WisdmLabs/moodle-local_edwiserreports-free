@@ -37,10 +37,20 @@ define('COURSE_COMPLETE_60PER', 0.6);
 define('COURSE_COMPLETE_80PER', 0.8);
 define('COURSE_COMPLETE_100PER', 1);
 
-
+/* Percentage constant */
 define('PERCENTAGE_00', "0%");
 define('PERCENTAGE_20', "20%");
 define('PERCENTAGE_40', "40%");
 define('PERCENTAGE_60', "60%");
 define('PERCENTAGE_80', "80%");
 define('PERCENTAGE_100', "100%");
+
+/* Time constant */
+define('ONEDAY', 24*60*60);
+define('ALL', "all");
+define('WEEKLY', "weekly");
+define('MONTHLY', "monthly");
+define('YEARLY', "yearly");
+define('WEEKLY_DAYS', 7);
+define('MONTHLY_DAYS', 30);
+define('YEARLY_DAYS', 365);
