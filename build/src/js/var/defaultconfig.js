@@ -121,11 +121,8 @@ define(["jquery", "report_elucidsitereport/variables", "report_elucidsitereport/
                         aspectRatio: 1,
                         tooltips: {
                             callbacks: {
-                                label: function(tooltipItem, data) {
-                                    return M.util.get_string('courseprogresstooltip', 'report_elucidsitereport', {
-                                        label: data.labels[tooltipItem.index],
-                                        data: data.datasets[0].data[tooltipItem.index]
-                                    });
+                                title: function(tooltipItem, data) {
+                                    return M.util.get_string('courseprogresstooltip', 'report_elucidsitereport');
                                 }
                             }
                         }
