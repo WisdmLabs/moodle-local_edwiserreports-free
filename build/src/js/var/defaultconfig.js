@@ -36,7 +36,7 @@ define(["jquery", "report_elucidsitereport/variables", "report_elucidsitereport/
                     v.clock12_6, v.clock12_7, v.clock12_8,
                     v.clock12_9, v.clock12_10, v.clock12_11,
                     v.clock12_12, v.clock12_13, v.clock12_14,
-                    v.clock12_15, v.clock12_16, v.clock12_0,
+                    v.clock12_15, v.clock12_16, v.clock12_17,
                     v.clock12_18, v.clock12_19, v.clock12_20,
                     v.clock12_21, v.clock12_22, v.clock12_23,
                 ],
