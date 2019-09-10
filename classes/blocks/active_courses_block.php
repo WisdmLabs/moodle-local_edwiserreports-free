@@ -63,15 +63,16 @@ class active_courses_block extends utility {
      * @return [array] Array of course active records
      */
     public static function get_course_data() {
-        global $DB;
-
-        $table = "course";
         $courses = get_courses();
 
-        $response = array();
         $count = 0;
+        $response = array();
+        $completions = parent::get_course_completions();
         foreach ($courses as $course) {
-            $count++;
+            $res = array(
+                $count++,
+                $course->fullname
+            );
             
             // If moodle course then return false
             if ($course->id == 1) {
@@ -80,24 +81,29 @@ class active_courses_block extends utility {
 
             $coursecontext = context_course::instance($course->id);
             $enrolledstudents = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+            $res[] = count($enrolledstudents);
 
             // Get Completion count
             $completedusers = 0;
+
             foreach ($enrolledstudents as $user) {
-                $completion = self::get_course_completion_info($course, $user->id);
-                if ($completion["progresspercentage"] == 100) {
-                    $completedusers++;
+                // $completion = self::get_course_completion_info($course, $user->id);
+                $key = $user->id."-".$course->id;
+                if (!isset($completions[$key])) {
+                    continue;
                 }
+
+                $completion = $completions[$key];
+                if ($completion->progress != 1) {
+                    continue;
+                }
+                $completedusers++;
             }
 
-            $courseview = self::get_courseview_count($course->id, $enrolledstudents);
-            $response[] = array(
-                $count,
-                $course->fullname,
-                count($enrolledstudents),
-                $courseview,
-                $completedusers
-            );
+
+            $res[] = self::get_courseview_count($course->id, $enrolledstudents);
+            $res[] = $completedusers;
+            $response[] = $res;
         }
         return $response;
     }

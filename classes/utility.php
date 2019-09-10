@@ -68,6 +68,11 @@ class utility {
         return \report_elucidsitereport\active_users_block::get_data($filter, $cohortid);
     }
 
+    /**
+     * Get Course Progress data for Course Progress Page
+     * @param  [object] Consist of filters 
+     * @return [array] Course Progress array
+     */
     public static function get_course_progress_data($data) {
         if ($data->courseid == "all") {
             return \report_elucidsitereport\course_progress_block::get_courselist($data->cohortid);
@@ -210,6 +215,58 @@ class utility {
         }
 
         return $lps;
+    }
+
+    /**
+     * Get All Course Completion
+     * @return [type] [description]
+     */
+    public static function get_course_completions() {
+        global $DB;
+
+        $sql = "SELECT CONCAT(mc.userid, '-', m.course),
+            mc.userid, m.course,(COUNT(mc.userid)/
+            (SELECT COUNT(*) FROM {course_modules}
+            WHERE completion = m.completion
+            AND course = m.course)) AS 'progress'
+            FROM {course_modules} m, {course_modules_completion} mc
+            WHERE m.id=mc.coursemoduleid
+            AND mc.completionstate = :completionstatus
+            AND m.completion > :completion
+            GROUP BY mc.userid, m.course";
+        $params = array(
+            "completion" => 0,
+            "completionstatus" => true
+        );
+
+        return $DB->get_records_sql($sql, $params);
+    }
+
+    /**
+     * Get Course Completions by users
+     * @return [type] [description]
+     */
+    public static function get_course_completion($courseid) {
+        global $DB;
+
+        $sql = "SELECT mc.userid, m.course,(COUNT(mc.userid)/
+            (SELECT COUNT(*) FROM {course_modules}
+            WHERE completion = m.completion
+            AND course = m.course)) AS 'progress'
+            FROM {course_modules} m, {course_modules_completion} mc
+            WHERE m.id=mc.coursemoduleid
+            AND mc.completionstate = :completionstatus
+            AND m.completion > :completion
+            AND m.course = :courseid
+            GROUP BY mc.userid";
+
+        $params = array(
+            "completion" => 0,
+            "completionstatus" => true,
+            "courseid" => $courseid
+        );
+
+        return $DB->get_records_sql($sql, $params);
     }
 
     /**
