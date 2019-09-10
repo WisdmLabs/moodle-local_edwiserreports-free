@@ -35,6 +35,7 @@ use html_table_row;
 use core_user;
 
 require_once($CFG->dirroot . "/cohort/lib.php");
+require_once($CFG->dirroot . "/report/elucidsitereport/classes/constants.php");
 
 /**
  * Class Course Progress Block
@@ -67,12 +68,12 @@ class course_progress_block extends utility {
     public static function get_completion_with_percentage($course, $users, $cohortid) {
         $completions = parent::get_course_completion($course->id);
         $completedusers = array(
-            "0%" => 0,
-            "20%" => 0,
-            "40%" => 0,
-            "60%" => 0,
-            "80%" => 0,
-            "100%" => 0,
+            PERCENTAGE_00 => 0,
+            PERCENTAGE_20 => 0,
+            PERCENTAGE_40 => 0,
+            PERCENTAGE_60 => 0,
+            PERCENTAGE_80 => 0,
+            PERCENTAGE_100 => 0,
         );
         foreach ($users as $user) {
 
@@ -90,29 +91,29 @@ class course_progress_block extends utility {
             } else {
                 $progress = $completions[$user->id]->progress;
                 switch (true) {
-                    case $progress == 1:
+                    case $progress == COURSE_COMPLETE_100PER:
                         // Completed 100% of course
-                        $completedusers["100%"]++;
+                        $completedusers[PERCENTAGE_100]++;
                         break;
-                    case $progress >= 0.8 && $progress < 1:
+                    case $progress >= COURSE_COMPLETE_80PER && $progress < COURSE_COMPLETE_100PER:
                         // Completed 80% of course
-                        $completedusers["80%"]++;
+                        $completedusers[PERCENTAGE_80]++;
                         break;
-                    case $progress >= 0.6 && $progress < 0.8:
+                    case $progress >= COURSE_COMPLETE_60PER && $progress < COURSE_COMPLETE_80PER:
                         // Completed 60% of course
-                        $completedusers["60%"]++;
+                        $completedusers[PERCENTAGE_60]++;
                         break;
-                    case $progress >= 0.4 && $progress < 0.6:
+                    case $progress >= COURSE_COMPLETE_40PER && $progress < COURSE_COMPLETE_60PER:
                         // Completed 40% of course
-                        $completedusers["40%"]++;
+                        $completedusers[PERCENTAGE_40]++;
                         break;
-                    case $progress >= 0.2 && $progress < 0.4:
+                    case $progress >= COURSE_COMPLETE_20PER && $progress < COURSE_COMPLETE_40PER:
                         // Completed 20% of course
-                        $completedusers["20%"]++;
+                        $completedusers[PERCENTAGE_20]++;
                         break;
                     default:
                         // Completed 0% of course
-                        $completedusers["0%"]++;
+                        $completedusers[PERCENTAGE_00]++;
                 }
             }
         }
@@ -195,23 +196,23 @@ class course_progress_block extends utility {
                 } else {
                     $progress = $completions[$key]->progress;
                     switch (true) {
-                        case $progress == 1:
+                        case $progress == COURSE_COMPLETE_100PER:
                             // Completed 100% of course
                             $res->completed100++;
                             break;
-                        case $progress >= 0.8 && $progress < 1:
+                        case $progress >= COURSE_COMPLETE_80PER && $progress < COURSE_COMPLETE_100PER:
                             // Completed 80% of course
                             $res->completed80++;
                             break;
-                        case $progress >= 0.6 && $progress < 0.8:
+                        case $progress >= COURSE_COMPLETE_60PER && $progress < COURSE_COMPLETE_80PER:
                             // Completed 60% of course
                             $res->completed60++;
                             break;
-                        case $progress >= 0.4 && $progress < 0.6:
+                        case $progress >= COURSE_COMPLETE_40PER && $progress < COURSE_COMPLETE_60PER:
                             // Completed 40% of course
                             $res->completed40++;
                             break;
-                        case $progress >= 0.2 && $progress < 0.4:
+                        case $progress >= COURSE_COMPLETE_20PER && $progress < COURSE_COMPLETE_40PER:
                             // Completed 20% of course
                             $res->completed20++;
                             break;

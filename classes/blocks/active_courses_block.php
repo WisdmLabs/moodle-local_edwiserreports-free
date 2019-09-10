@@ -94,7 +94,7 @@ class active_courses_block extends utility {
                 }
 
                 $completion = $completions[$key];
-                if ($completion->progress != 1) {
+                if ($completion->progress != COURSE_COMPLETE_100PER) {
                     continue;
                 }
                 $completedusers++;
