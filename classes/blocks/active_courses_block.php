@@ -63,43 +63,48 @@ class active_courses_block extends utility {
      * @return [array] Array of course active records
      */
     public static function get_course_data() {
+        global $DB;
+
         $courses = get_courses();
 
         $count = 0;
         $response = array();
-        $completions = parent::get_course_completions();
+        // $completions = parent::get_course_completions();
+        
+        // Calculate Completion Count for All Course 
+        $sql = "SELECT courseid, COUNT(userid) AS users
+            FROM {elucidsitereport_completion}
+            WHERE completion = :completion
+            GROUP BY courseid";
+        // Get records with 100% completions
+        $coursecompletion = $DB->get_records_sql($sql, array("completion" => 100));
+
         foreach ($courses as $course) {
-            $res = array(
-                $count++,
-                $course->fullname
-            );
-            
             // If moodle course then return false
             if ($course->id == 1) {
                 continue;
             }
 
+            // Create a record for responce
+            $res = array(
+                $count++,
+                $course->fullname
+            );
+            
+
+            // Get Course Context
             $coursecontext = context_course::instance($course->id);
+
+            // Get Enrolled users
             $enrolledstudents = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
             $res[] = count($enrolledstudents);
 
             // Get Completion count
-            $completedusers = 0;
-
-            foreach ($enrolledstudents as $user) {
-                // $completion = self::get_course_completion_info($course, $user->id);
-                $key = $user->id."-".$course->id;
-                if (!isset($completions[$key])) {
-                    continue;
-                }
-
-                $completion = $completions[$key];
-                if ($completion->progress != COURSE_COMPLETE_100PER) {
-                    continue;
-                }
-                $completedusers++;
+            if (!isset($coursecompletion[$course->id])) {
+                $completedusers = 0;
+            } else{
+                $completedusers = $coursecompletion[$course->id]->users;
             }
-
 
             $res[] = self::get_courseview_count($course->id, $enrolledstudents);
             $res[] = $completedusers;
