@@ -320,6 +320,38 @@ class utility {
     }
 
     /**
+     * Get Course Completion Time For Users
+     * @param  [int] $courseid Course Id
+     * @param  [int] $userid User Id
+     * @return [int] Completion Time
+     */
+    public static function get_time_completion($courseid = false, $userid = false) {
+        global $COURSE, $DB, $USER;
+
+        if (!$courseid) {
+            $courseid = $COURSE->id;
+        }
+
+        if (!$userid) {
+            $userid = $USER->id;
+        }
+
+        $params = array(
+            "userid" => $userid,
+            "course" => $courseid
+        );
+        $completion = $DB->get_record("course_completions", $params);
+
+        // If completion then return time completed
+        if ($completion && $completion->timecompleted) {
+            return $completion->timecompleted;
+        }
+
+        // If not completed then return false
+        return NULL;
+    }
+
+    /**
      * Get Course Grade of a user
      * @param  [int] $courseid Course Id
      * @param  [int] $userid User Id
@@ -337,7 +369,7 @@ class utility {
         }
 
         // please note that we must fetch all grade_grades fields if we want to construct grade_grade object from it!
-        $gradesql = "SELECT g.*
+        $gradesql = "SELECT g.id, g.finalgrade
             FROM {grade_items} gi, {grade_grades} g
             WHERE g.itemid = gi.id
             AND gi.courseid = :courseid

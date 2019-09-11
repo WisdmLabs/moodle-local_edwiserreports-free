@@ -227,3 +227,9 @@ $string['completedon'] = "Completed On";
 $string['recentcompletion'] = "Recent Completion";
 $string['recentenrolment'] = "Recent Enrolments";
 $string['recentvisits'] = "Recent Visits";
+
+/* Cron Task Strings */
+$string['updatetables'] = "Updating Reports and Analytics Table";
+$string['updatingrecordstarted'] = "Updating reports and analytics record is srated...";
+$string['updatingrecordended'] = "Updating reports and analytics record is ended...";
+$string['updatinguserrecord'] = 'Updating userid {$a->userid} in courseid {$a->courseid}';

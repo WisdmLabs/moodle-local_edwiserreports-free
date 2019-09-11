@@ -15,17 +15,24 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Plugin version and other meta-data are defined here.
+ * Plugin administration pages are defined here.
  *
  * @package     report_elucidsitereport
+ * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component = 'report_elucidsitereport';
-$plugin->release = '1.1.0';
-$plugin->version = 2019091100;
-$plugin->requires = 2018120300;
-$plugin->maturity = MATURITY_ALPHA;
+$tasks = [
+    [
+        'classname' => 'report_elucidsitereport\task\update_reports_table',
+        'blocking' => 0,
+        'minute' => '*',
+        'hour' => '*',
+        'day' => '*',
+        'month' => '*',
+        'dayofweek' => '*',
+    ],
+];

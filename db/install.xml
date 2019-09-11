@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="report/elucidsitereport/db" VERSION="2019091100" COMMENT="XMLDB file for eLucid Site Reports"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd">
+    <TABLES>
+        <TABLE NAME="elucidsitereport_completion" COMMENT="This table saves course completion infomation.">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Course ID for completion."/>
+                <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="User ID for completion."/>
+                <FIELD NAME="completion" TYPE="number" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" DECIMALS="2" COMMENT="Completion Percantage between 0 to 100"/>
+                <FIELD NAME="completedactivities" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" DEFAULT="0" COMMENT="Completed Activities Count."/>
+                <FIELD NAME="grade" TYPE="number" LENGTH="10" NOTNULL="false" SEQUENCE="false" DECIMALS="4" COMMENT="Total Graded in Course"/>
+                <FIELD NAME="timecompleted" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Time Course Completed"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="The unique id for this report_completion instance."/>
+            </KEYS>
+            <INDEXES>
+                <INDEX NAME="courseid" UNIQUE="false" FIELDS="courseid" COMMENT="The course this reports belongs to."/>
+                <INDEX NAME="userid" UNIQUE="false" FIELDS="userid" COMMENT="The user id for reports"/>
+            </INDEXES>
+        </TABLE>
+    </TABLES>
+</XMLDB>
