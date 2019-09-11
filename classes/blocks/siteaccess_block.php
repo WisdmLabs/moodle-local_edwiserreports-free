@@ -172,12 +172,24 @@ class siteaccess_block extends utility {
         $userscount = $DB->count_records("user", array("deleted" => false));
         $weeks = ceil($timeduration / $oneweek);
 
+        $weekmax = 0;
         if ($weeks) {
             foreach($accesslog as $log) {
                 $col = number_format(date("w", $log->timecreated));
                 $row = number_format(date("H", $log->timecreated));
 
-                $this->siteaccess[$row]["access"][$col] += (1 / ($weeks * $userscount));
+                $this->siteaccess[$row]["access"][$col] += (1 / ($weeks));
+                if ($weekmax < $this->siteaccess[$row]["access"][$col]) {
+                    $weekmax > $this->siteaccess[$row]["access"][$col];
+                }
+            }
+        }
+
+        foreach ($this->siteaccess as $x => $value) {
+            if ($weekmax) {
+                foreach ($value as $y => $val) {
+                    $this->siteaccess[$row]["access"][$col] = $val / $weekmax;
+                }
             }
         }
 
