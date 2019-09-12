@@ -401,14 +401,20 @@ class utility {
                 FROM {logstore_standard_log} l
                 JOIN {cohort_members} cm
                 ON l.userid = cm.userid
+                JOIN {user} u
+                ON u.id = l.userid
                 WHERE cm.cohortid = :cohortid
                 AND l.action = :action
-                AND l.courseid = :courseid";
+                AND l.courseid = :courseid
+                AND u.delete = 0";
         } else {
-            $sql = "SELECT DISTINCT userid
-                FROM {logstore_standard_log}
-                WHERE action = :action
-                AND courseid = :courseid";
+            $sql = "SELECT DISTINCT l.userid
+                FROM {logstore_standard_log} l
+                JOIN {user} u
+                ON u.id = l.userid
+                WHERE l.action = :action
+                AND l.courseid = :courseid
+                AND u.deleted = 0";
         }
 
         $records = $DB->get_records_sql($sql, $params);

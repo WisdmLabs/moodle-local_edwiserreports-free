@@ -56,10 +56,66 @@ class courseengage_block extends utility {
      * @return [array] Array of course engagement
      */
     public static function get_courseengage($cohortid) {
+        global $DB;
+
         $engagedata = array();
         $courses = self::get_courses(true);
+
+        $completionsql = "SELECT c.courseid, COUNT(c.userid) AS usercount
+            FROM {elucidsitereport_completion} c
+            JOIN {user} u ON u.id = c.userid
+            WHERE c.completion
+            BETWEEN :completionstart
+            AND :completionend
+            AND u.deleted = 0
+            GROUP BY c.courseid";
+
+        // Calculate 50% Completion Count for Courses 
+        $params = array(
+            "completionstart" => 50.00,
+            "completionend" => 99.99
+        );
+        $completion50 = $DB->get_records_sql($completionsql, $params);
+
+        // Calculate 100% Completion Count for Courses 
+        $params = array(
+            "completionstart" => 100.00,
+            "completionend" => 100.00
+        );
+        $completion100 = $DB->get_records_sql($completionsql, $params);
+
+        // Calculate atleast completed one modules 
+        $completionmodulesql = "SELECT c.courseid, COUNT(c.userid) AS usercount
+            FROM {elucidsitereport_completion} c
+            JOIN {user} u ON u.id = c.userid
+            WHERE completedactivities = :completedactivities
+            AND u.deleted = 0
+            GROUP BY c.courseid";
+        $params = array(
+            "completedactivities" => 1
+        );
+        $completiononemodule = $DB->get_records_sql($completionmodulesql, $params);
         foreach($courses as $course) {
-            $engagedata[] = self::get_engagement($course, $cohortid);
+            $values = array(
+                "completed50" => 0,
+                "completed100" => 0,
+                "completiononemodule" => 0
+            );
+
+            $completed50 = $completed100 = 0;
+            if (isset($completion50[$course->id])) {
+                $values["completed50"] = $completion50[$course->id]->usercount;
+            }
+
+            if (isset($completion100[$course->id])) {
+                $values["completed100"] = $completion100[$course->id]->usercount;
+            }
+
+            if (isset($completiononemodule[$course->id])) {
+                $values["completiononemodule"] = $completiononemodule[$course->id]->usercount;
+            }
+
+            $engagedata[] = self::get_engagement($course, $cohortid, $values);
         }
         return $engagedata;
     }
@@ -69,12 +125,11 @@ class courseengage_block extends utility {
      * @param [int] $courseid Courese ID to get course engagement
      * @return [object] 
      */
-    public static function get_engagement($course, $cohortid) {
+    public static function get_engagement($course, $cohortid, $values) {
         global $DB;
 
         $coursecontext = context_course::instance($course->id);
         $enrolledstudents = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
-
         /* If cohort filter is there then select only cohort users */
         if($cohortid) {
             foreach($enrolledstudents as $key => $user) {
@@ -100,17 +155,17 @@ class courseengage_block extends utility {
         $engagement->activitystart = self::get_engagement_attr(
             "activitystart",
             $course,
-            count(self::users_completed_a_module($course, $enrolledstudents, $cohortid))
+            $values["completiononemodule"]
         );
         $engagement->completedhalf = self::get_engagement_attr(
             "completedhalf",
             $course,
-            count(self::users_completed_half_modules($course, $enrolledstudents, $cohortid))
+            $values["completed50"]
         );
         $engagement->coursecompleted = self::get_engagement_attr(
             "coursecompleted",
             $course,
-            count(self::users_completed_all_module($course, $enrolledstudents, $cohortid))
+            $values["completed100"]
         );
         return $engagement;
     }

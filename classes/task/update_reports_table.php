@@ -94,12 +94,13 @@ class update_reports_table extends \core\task\scheduled_task {
             $timecompleted = \report_elucidsitereport\utility::get_time_completion($record->courseid, $record->userid);
 
             // Get Progress Percantage
-            $progressper = 0;
+            $progressper = $completedactivities = 0;
             $completion = \report_elucidsitereport\utility::get_course_completion_info($course, $record->userid);
             // If completion is not empty then update progress percentage
             if (!empty($completion)) {
                 $completion = (object) $completion;
                 $progressper = $completion->progresspercentage;
+                $completedactivities = $completion->completedactivities;
             }
 
             // Get Course Grades
@@ -115,6 +116,7 @@ class update_reports_table extends \core\task\scheduled_task {
                 "courseid" => $record->courseid,
                 "userid" => $record->userid,
                 "completion" => $progressper,
+                "completedactivities" => $completedactivities,
                 "grade" => $coursegrade,
                 "timecompleted" => $timecompleted
             );
