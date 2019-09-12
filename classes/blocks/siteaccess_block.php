@@ -24,6 +24,9 @@
  */
 
 namespace report_elucidsitereport;
+
+require_once($CFG->dirroot . "/report/elucidsitereport/classes/constants.php");
+
 use stdClass;
 
 /**
@@ -31,110 +34,70 @@ use stdClass;
  * To get the data related to site access
  */
 class siteaccess_block extends utility {
-    public $siteaccess = array(
-        array(
-            "access" => array(0, 0, 0, 0, 0, 0, 0),
-            "time" => "12:00 AM"
-        ),
-        array(
-            "access" => array(0, 0, 0, 0, 0, 0, 0),
-            "time" => "01:00 AM"
-        ),
-        array(
-            "access" => array(0, 0, 0, 0, 0, 0, 0),
-            "time" => "02:00 AM"
-        ),
-        array(
-            "access" => array(0, 0, 0, 0, 0, 0, 0),
-            "time" => "03:00 AM"
-        ),
-        array(
-            "access" => array(0, 0, 0, 0, 0, 0, 0),
-            "time" => "04:00 AM"
-        ),
-        array(
-            "access" => array(0, 0, 0, 0, 0, 0, 0),
-            "time" => "05:00 AM"
-        ),
-        array(
-            "access" => array(0, 0, 0, 0, 0, 0, 0),
-            "time" => "06:00 AM"
-        ),
-        array(
-            "access" => array(0, 0, 0, 0, 0, 0, 0),
-            "time" => "07:00 AM"
-        ),
-        array(
-            "access" => array(0, 0, 0, 0, 0, 0, 0),
-            "time" => "08:00 AM"
-        ),
-        array(
-            "access" => array(0, 0, 0, 0, 0, 0, 0),
-            "time" => "09:00 AM"
-        ),
-        array(
-            "access" => array(0, 0, 0, 0, 0, 0, 0),
-            "time" => "10:00 AM"
-        ),
-        array(
-            "access" => array(0, 0, 0, 0, 0, 0, 0),
-            "time" => "11:00 AM"
-        ),
-        array(
-            "access" => array(0, 0, 0, 0, 0, 0, 0),
-            "time" => "12:00 AM"
-        ),
-        array(
-            "access" => array(0, 0, 0, 0, 0, 0, 0),
-            "time" => "12:00 AM"
-        ),
-        array(
-            "access" => array(0, 0, 0, 0, 0, 0, 0),
-            "time" => "01:00 PM"
-        ),
-        array(
-            "access" => array(0, 0, 0, 0, 0, 0, 0),
-            "time" => "02:00 PM"
-        ),
-        array(
-            "access" => array(0, 0, 0, 0, 0, 0, 0),
-            "time" => "03:00 PM"
-        ),
-        array(
-            "access" => array(0, 0, 0, 0, 0, 0, 0),
-            "time" => "04:00 PM"
-        ),
-        array(
-            "access" => array(0, 0, 0, 0, 0, 0, 0),
-            "time" => "05:00 PM"
-        ),
-        array(
-            "access" => array(0, 0, 0, 0, 0, 0, 0),
-            "time" => "06:00 PM"
-        ),
-        array(
-            "access" => array(0, 0, 0, 0, 0, 0, 0),
-            "time" => "07:00 PM"
-        ),
-        array(
-            "access" => array(0, 0, 0, 0, 0, 0, 0),
-            "time" => "08:00 PM"
-        ),
-        array(
-            "access" => array(0, 0, 0, 0, 0, 0, 0),
-            "time" => "09:00 PM"
-        ),
-        array(
-            "access" => array(0, 0, 0, 0, 0, 0, 0),
-            "time" => "10:00 PM"
-        ),
-        array(
-            "access" => array(0, 0, 0, 0, 0, 0, 0),
-            "time" => "11:00 PM"
-        )
-    );
+    /**
+     * Set response object for site access information
+     * @var array
+     */
+    public $siteaccess = array();
 
+    /**
+     * Constructoe
+     */
+    public function __construct() {
+        // Initialize the site access information response
+        $value = array(
+            "opacity" => 0,
+            "value" => 0
+        );
+
+        // Initialize access value for site access
+        $access = array($value, $value, $value, $value, $value, $value, $value);
+
+        // Getting time strings for access inforamtion block
+        $times = array(
+            get_string("time00", "report_elucidsitereport"),
+            get_string("time01", "report_elucidsitereport"),
+            get_string("time02", "report_elucidsitereport"),
+            get_string("time03", "report_elucidsitereport"),
+            get_string("time04", "report_elucidsitereport"),
+            get_string("time05", "report_elucidsitereport"),
+            get_string("time06", "report_elucidsitereport"),
+            get_string("time07", "report_elucidsitereport"),
+            get_string("time08", "report_elucidsitereport"),
+            get_string("time09", "report_elucidsitereport"),
+            get_string("time10", "report_elucidsitereport"),
+            get_string("time11", "report_elucidsitereport"),
+            get_string("time12", "report_elucidsitereport"),
+            get_string("time13", "report_elucidsitereport"),
+            get_string("time14", "report_elucidsitereport"),
+            get_string("time15", "report_elucidsitereport"),
+            get_string("time16", "report_elucidsitereport"),
+            get_string("time17", "report_elucidsitereport"),
+            get_string("time18", "report_elucidsitereport"),
+            get_string("time19", "report_elucidsitereport"),
+            get_string("time20", "report_elucidsitereport"),
+            get_string("time21", "report_elucidsitereport"),
+            get_string("time22", "report_elucidsitereport"),
+            get_string("time23", "report_elucidsitereport")
+        );
+
+        // Initialize access inforamtion object
+        foreach($times as $time) {
+            $value = array(
+                "access" => $access,
+                "time" => $time
+            );
+            $this->siteaccess[] = $value;
+        }
+    }
+
+    /**
+     * Get Site access inforamtion data
+     * @return [object] Site access information
+     */
     public static function get_data() {
+        $siteaccessblock = new siteaccess_block();
+
         $response = new stdClass();
         $siteaccessblock = new siteaccess_block();
         $response->data = $siteaccessblock->get_siteaccess_info();
@@ -148,15 +111,24 @@ class siteaccess_block extends utility {
     public function get_siteaccess_info() {
         global $DB;
 
-        $oneyear = 365 * 24 * 60 * 60;
-        $fromtime = time() - $oneyear;
+        // SQL to gey access info log
+        $sql = "SELECT id, action, timecreated
+            FROM {logstore_standard_log}
+            WHERE action = :action
+            AND timecreated > :timecreated";
 
-        $sql = "SELECT id, action, timecreated FROM {logstore_standard_log}
-            WHERE action = ? AND timecreated > ?";
-        $accesslog = $DB->get_records_sql($sql, array("viewed", $fromtime));
-        $siteaccess = new stdClass();
-        $siteaccess->siteaccess = $this->get_accessinfo(array_values($accesslog));
-        return $siteaccess;
+        // Getting access log
+        $timenow = time();
+        $params = array (
+            "action" => "viewed",
+            "timecreated" => $timenow - ONEYEAR
+        );
+        $accesslog = $DB->get_records_sql($sql, $params);
+
+        // Getting site access information object
+        $response = new stdClass();
+        $response->siteaccess = $this->get_accessinfo(array_values($accesslog));
+        return $response;
     }
 
     /**
@@ -166,98 +138,40 @@ class siteaccess_block extends utility {
      */
     public function get_accessinfo($accesslog) {
         global $DB;
-
-        $oneweek = 7 * 24 * 60 * 60;
+        
+        // Getting number of weeks to get access log
         $timeduration = end($accesslog)->timecreated - $accesslog[0]->timecreated;
-        $userscount = $DB->count_records("user", array("deleted" => false));
-        $weeks = ceil($timeduration / $oneweek);
-
+        $weeks = ceil($timeduration / ONEWEEK); // Weeks in time duaration
         $weekmax = 0;
+        // If weeks are there then 
         if ($weeks) {
+            // Parse access log to save in access inforamtion object
             foreach($accesslog as $log) {
+                // Column for weeks
                 $col = number_format(date("w", $log->timecreated));
+
+                // Row for hours
                 $row = number_format(date("H", $log->timecreated));
 
-                $this->siteaccess[$row]["access"][$col] += (1 / ($weeks));
-                if ($weekmax < $this->siteaccess[$row]["access"][$col]) {
-                    $weekmax > $this->siteaccess[$row]["access"][$col];
+                // Calculate site access for row and colums
+                $this->siteaccess[$row]["access"][$col]["value"] += (1 / ($weeks));
+
+                // Maximum value in week
+                if ($weekmax < $this->siteaccess[$row]["access"][$col]["value"]) {
+                    $weekmax = $this->siteaccess[$row]["access"][$col]["value"];
+                }
+            }
+
+            // Get Opacity value for siteaccess inforamtion
+            foreach ($this->siteaccess as $row => $value) {
+                if ($weekmax) {
+                    foreach ($value["access"] as $col => $val) {
+                        $this->siteaccess[$row]["access"][$col]["opacity"] = $val["value"] / $weekmax;
+                        $this->siteaccess[$row]["access"][$col]["value"] = (string)number_format($val['value'], 2);
+                    }
                 }
             }
         }
-
-        foreach ($this->siteaccess as $x => $value) {
-            if ($weekmax) {
-                foreach ($value as $y => $val) {
-                    $this->siteaccess[$row]["access"][$col] = $val / $weekmax;
-                }
-            }
-        }
-
         return $this->siteaccess;
     }
-
-    /*public static function get_accessinfo($accesslog, $time) {
-        global $DB;
-        $allusers = $DB->get_records("user", array("deleted" => false));
-        $access = array();
-        $weeklyaccess = array(
-            0 => array(),
-            1 => array(),
-            2 => array(),
-            3 => array(),
-            4 => array(),
-            5 => array(),
-            6 => array()
-        );
-
-        $starttime = explode("%", gmdate("H:i%D", $time));
-        $endtime = explode("%", gmdate("H:i%D", $time + 60 * 60));
-        foreach ($accesslog as $log) {
-            $logtime = explode("%", date("H:i%D", $log->timecreated));
-            $timecompare = $logtime[0] < $endtime[0] && $logtime[0] > $starttime[0];
-
-            switch (true) {
-                case ($log->userid > 0 && $timecompare && "Mon" == $logtime[1]):
-                    if ($log->userid > 0 && !in_array($log->userid, $weeklyaccess[0])) {
-                        $weeklyaccess[0][] = $log->userid;
-                    }
-                    break;
-                case ($log->userid > 0 && $timecompare && "Tue" == $logtime[1]):
-                    if (!in_array($log->userid, $weeklyaccess[1])) {
-                        $weeklyaccess[1][] = $log->userid;
-                    }
-                    break;
-                case ($log->userid > 0 && $timecompare && "Wed" == $logtime[1]):
-                    if (!in_array($log->userid, $weeklyaccess[2])) {
-                        $weeklyaccess[2][] = $log->userid;
-                    }
-                    break;
-                case ($log->userid > 0 && $timecompare && "Thu" == $logtime[1]):
-                    if (!in_array($log->userid, $weeklyaccess[3])) {
-                        $weeklyaccess[3][] = $log->userid;
-                    }
-                    break;
-                case ($log->userid > 0 && $timecompare && "Fri" == $logtime[1]):
-                    if (!in_array($log->userid, $weeklyaccess[4])) {
-                        $weeklyaccess[4][] = $log->userid;
-                    }
-                    break;
-                case ($log->userid > 0 && $timecompare && "Sat" == $logtime[1]):
-                    if (!in_array($log->userid, $weeklyaccess[5])) {
-                        $weeklyaccess[5][] = $log->userid;
-                    }
-                    break;
-                case ($log->userid > 0 && $timecompare && "Sun" == $logtime[1]):
-                    if (!in_array($log->userid, $weeklyaccess[6])) {
-                        $weeklyaccess[6][] = $log->userid;
-                    }
-                    break;
-            }
-        }
-
-        foreach ($weeklyaccess as $key => $eachweekaccess) {
-            $access[$key] = count($eachweekaccess) / count($allusers);
-        }
-        return $access;
-    }*/
 }

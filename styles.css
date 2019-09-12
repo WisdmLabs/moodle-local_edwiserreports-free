@@ -51,7 +51,7 @@
     border-width: 3px;
     width: 12.5%;
 }
-#wdm-elucidsitereport #accessinfograph table#accessinfotable tbody tr td:not(.empty-lable):hover {
+#wdm-elucidsitereport #accessinfograph table#accessinfotable tbody tr td:not(.empty-label):hover {
     border-color: #999 !important;
 }
 #wdm-elucidsitereport #accessinfograph table#accessinfodesctable tbody tr td {
@@ -400,4 +400,34 @@
 .path-report-elucidsitereport .breadcrumb,
 .path-admin-report-elucidsitereport .breadcrumb {
     display: none;
+}
+
+/* Site acess block css*/
+#wdm-elucidsitereport #accessinfograph tr.siteaccess-tablerow {
+    background-color: #e0e0e0 !important;
+}
+
+#wdm-elucidsitereport #accessinfograph td.empty-label.siteacess-time,
+#wdm-elucidsitereport #accessinfograph #accessinfodesctable td.empty-label.color-label {
+    min-width:60px;
+}
+
+#wdm-elucidsitereport #accessinfograph #accessinfodesctable td.color-label-20 {
+    background-color: rgba(52,137,223,0.2) !important;
+}
+#wdm-elucidsitereport #accessinfograph #accessinfodesctable td.color-label-40 {
+    background-color: rgba(52,137,223,0.4) !important;
+}
+#wdm-elucidsitereport #accessinfograph #accessinfodesctable td.color-label-60 {
+    background-color: rgba(52,137,223,0.6) !important;
+}
+#wdm-elucidsitereport #accessinfograph #accessinfodesctable td.color-label-80 {
+    background-color: rgba(52,137,223,0.8) !important;
+}
+#wdm-elucidsitereport #accessinfograph #accessinfodesctable td.color-label-100 {
+    background-color: rgba(52,137,223,1) !important;
+}
+
+#wdm-elucidsitereport #accessinfograph #accessinfodesctable td.empty-label p {
+    left: -0.2rem;
 }

@@ -46,7 +46,10 @@ define('PERCENTAGE_80', "80%");
 define('PERCENTAGE_100', "100%");
 
 /* Time constant */
-define('ONEDAY', 24*60*60);
+define('ONEDAY', 24 * 60 * 60);
+define('ONEWEEK', 7 * 24 * 60 * 60);
+define('ONEMONTH', 30 * 24 * 60 * 60);
+define('ONEYEAR', 365 * 24 * 60 * 60);
 define('ALL', "all");
 define('WEEKLY', "weekly");
 define('MONTHLY', "monthly");

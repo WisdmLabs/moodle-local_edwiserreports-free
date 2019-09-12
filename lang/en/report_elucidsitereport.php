@@ -147,6 +147,40 @@ $string['canceled'] = "Canceled";
 $string['approved'] = "Approved";
 $string['booked'] = "Booked";
 
+/* Site Access Block*/
+$string['sun'] = "SUN";
+$string['mon'] = "MON";
+$string['tue'] = "TUE";
+$string['wed'] = "WED";
+$string['thu'] = "THU";
+$string['fri'] = "FRI";
+$string['sat'] = "SAT";
+$string['time00'] = "12:00 AM";
+$string['time01'] = "01:00 AM";
+$string['time02'] = "02:00 AM";
+$string['time03'] = "03:00 AM";
+$string['time04'] = "04:00 AM";
+$string['time05'] = "05:00 AM";
+$string['time06'] = "06:00 AM";
+$string['time07'] = "07:00 AM";
+$string['time08'] = "08:00 AM";
+$string['time09'] = "09:00 AM";
+$string['time10'] = "10:00 AM";
+$string['time11'] = "11:00 AM";
+$string['time12'] = "12:00 PM";
+$string['time13'] = "01:00 PM";
+$string['time14'] = "02:00 PM";
+$string['time15'] = "03:00 PM";
+$string['time16'] = "04:00 PM";
+$string['time17'] = "05:00 PM";
+$string['time18'] = "06:00 PM";
+$string['time19'] = "07:00 PM";
+$string['time20'] = "08:00 PM";
+$string['time21'] = "09:00 PM";
+$string['time22'] = "10:00 PM";
+$string['time23'] = "11:00 PM";
+$string['siteaccessinfo'] = "Avg users access";
+
 
 /* f2f Sessions Page*/
 $string['waitlist'] = 'Waitlist';
