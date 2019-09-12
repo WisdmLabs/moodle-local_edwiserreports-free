@@ -54,63 +54,97 @@ class update_reports_table extends \core\task\scheduled_task {
         $tablename = "elucidsitereport_completion";
 
         // Get all courses to get completion
-        $courses = get_courses();
+        // $courses = get_courses();
 
+        $data = array();
         mtrace(get_string('updatingrecordstarted', 'report_elucidsitereport'));
-        foreach ($courses as $course) {
-            // Get Course Context
-            $coursecontext = context_course::instance($course->id);
 
-            // Get all students from course
-            $students = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+        // SQL Query to get completions records
+        $sql = "SELECT CONCAT(mc.userid, '-', m.course) as id,
+            mc.userid, m.course as courseid, (COUNT(mc.userid)/
+            (SELECT COUNT(*) FROM {course_modules}
+            WHERE completion = m.completion
+            AND course = m.course)) AS 'progress'
+            FROM {course_modules} m, {course_modules_completion} mc
+            WHERE m.id=mc.coursemoduleid
+            AND mc.completionstate = :completionstatus
+            AND m.completion > :completion
+            GROUP BY mc.userid, m.course";
 
-            // For all students calculate completions
-            foreach ($students as $user) {
-                mtrace(get_string('updatinguserrecord', 'report_elucidsitereport',
-                    array('userid' => $user->id, 'courseid' => $course->id)));
-                // Get Completion for Course
-                $progressper = 0;
-                $completion = (object) \report_elucidsitereport\utility::get_course_completion_info($course, $user->id);
-                if ($completion) {
-                    $progressper = $completion->progresspercentage;
+        // Parameters to get completions
+        $params = array(
+            "completion" => 0,
+            "completionstatus" => true
+        );
+
+        // Get compeltions records
+        $records = $DB->get_records_sql($sql, $params);
+
+        // Parse each records and save in database
+        foreach($records as $key => $record) {
+            $course = get_course($record->courseid);
+
+            // Completion param to get time completion
+            $completionparam = array(
+                "courseid" => $record->courseid,
+                "userid" => $record->userid
+            );
+
+            // Get Course Comletion Time
+            $timecompleted = \report_elucidsitereport\utility::get_time_completion($record->courseid, $record->userid);
+
+            // Get Progress Percantage
+            $progressper = 0;
+            $completion = \report_elucidsitereport\utility::get_course_completion_info($course, $record->userid);
+            // If completion is not empty then update progress percentage
+            if (!empty($completion)) {
+                $completion = (object) $completion;
+                $progressper = $completion->progresspercentage;
+            }
+
+            // Get Course Grades
+            $coursegrade = 0;
+            $grades = \report_elucidsitereport\utility::get_grades($record->courseid, $record->userid);
+            // If course grade is set then update course grade
+            if ($grades && $grades->finalgrade) {
+                $coursegrade = $grades->finalgrade;
+            }
+
+            // Created data oabject
+            $dataobject = array(
+                "courseid" => $record->courseid,
+                "userid" => $record->userid,
+                "completion" => $progressper,
+                "grade" => $coursegrade,
+                "timecompleted" => $timecompleted
+            );
+
+            $strparams = array(
+                'userid' => $record->userid,
+                'courseid' => $record->courseid
+            );
+
+            // Get previous completion recordid
+            $prevcompletion = $DB->get_record($tablename, $completionparam, "id");
+            if ($prevcompletion) {
+                // If same record then dont update
+                if ($DB->record_exists($tablename, $dataobject)) {
+                    continue;
                 }
-                
-                // Get Course Grades
-                $coursegrade = 0;
-                $grades = \report_elucidsitereport\utility::get_grades($course->id, $user->id);
-                if ($grades && $grades->finalgrade) {
-                    $coursegrade = $grades->finalgrade;
-                }
 
-                // Get Course Comletion Time
-                $timecompleted = \report_elucidsitereport\utility::get_time_completion($course->id, $user->id);
-
-                // Create data object
-                $dataobject = (object) array(
-                    "courseid" => $course->id,
-                    "userid" => $user->id,
-                    "completion" => $progressper,
-                    "grade" => $coursegrade,
-                    "timecompleted" => $timecompleted
-                );
-
-                // Params to get records
-                $params = array(
-                    "courseid" => $course->id,
-                    "userid" => $user->id
-                );
-
-                // Update/Insert Records in Reports Table
-                if ($record = $DB->get_record($tablename, $params, "id")) {
-                    $dataobject->id = $record->id;
-                    // If exist then Update records
-                    $DB->update_record($tablename, $dataobject);
-                } else {
-                    // If not exist then insert records
-                    $DB->insert_record($tablename, $dataobject);
-                }
+                mtrace(get_string('updatinguserrecord', 'report_elucidsitereport', $strparams));
+                // If exist then Update records
+                $dataobject["id"] = $prevcompletion->id;
+                $DB->update_record($tablename, $dataobject);
+            } else {
+                // Save data to inseart ar the end
+                mtrace(get_string('gettinguserrecord', 'report_elucidsitereport', $strparams));
+                $data[] = $dataobject;
             }
         }
+        // If not exist then insert records
+        mtrace(get_string('creatinguserrecord', 'report_elucidsitereport'));
+        $DB->insert_records($tablename, $data);
         mtrace(get_string('updatingrecordended', 'report_elucidsitereport'));
     }
 }
