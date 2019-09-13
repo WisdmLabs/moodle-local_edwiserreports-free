@@ -152,19 +152,26 @@ class export {
         $recuser = $USER;
         $senduser = core_user::get_noreply_user();
 
+        // Generate file to send emails
         $filename .= '.pdf';
         $filepath = $this->generate_pdf_file($filename, $data, "F");
 
+        // Get email data from submited form
         $emailids = trim(optional_param("email", false, PARAM_TEXT));
         $subject = trim(optional_param("subject", false, PARAM_TEXT));
-        $content = optional_param("content", false, PARAM_TEXT);
 
+        // Optional parameter causing issue because this is an array
+        $content = $_POST["content"];
+
+        // If subject is not set the get default subject
         if (!$subject && $subject == '') {
             $subject = get_string($this->blockname . "exportheader", "report_elucidsitereport");
         }
 
+        // Get content text to send emails
         $contenttext = '';
-        if ($content["format"] == 1) {
+        if ($content["format"] == 1) { // Text Foramt = 1
+            // If content text is not set then set default value of content text
             if (!$content || !isset($content["text"]) || $content["text"] == '') {
                 $contenttext = get_string($this->blockname . "exporthelp", "report_elucidsitereport");
             } else {
@@ -172,10 +179,15 @@ class export {
             }
         }
 
+        // Send emails foreach email ids
         if ($emailids && $emailids !== '') {
+            // process in background and dont show message in console
             ob_start();
             foreach(explode(";", $emailids) as $emailid) {
+                // trim email id if white spaces are added
                 $recuser->email = trim($emailid);
+
+                // Send email to user
                 email_to_user(
                     $recuser,
                     $senduser,
@@ -187,6 +199,7 @@ class export {
                 );
             }
             ob_end_clean();
+
             // If failed then return error
             $res = new stdClass();
             $res->error = false;
@@ -199,6 +212,8 @@ class export {
             $res->errormsg = get_string('emailnotsent', 'report_elucidsitereport');
             echo json_encode($res);
         }
+
+        // Remove file after email sending process
         unlink($filepath);
     }
 
