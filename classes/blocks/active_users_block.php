@@ -33,6 +33,7 @@ use html_table_cell;
 use html_table_row;
 use html_writer;
 use stdClass;
+use cache;
 
 /**
  * Class Acive Users Block
@@ -44,6 +45,7 @@ class active_users_block extends utility {
     public $timenow;
     public $labels;
     public $xlabelcount;
+    public $cache;
 
     /**
      * Constructor
@@ -51,12 +53,24 @@ class active_users_block extends utility {
      */
     public function __construct($filter) {
         global $DB;
-        $this->timenow = time();
 
-        $sql = "SELECT id, userid, timecreated
+        // Set current time
+        $this->timenow = time();
+        // Set cache for active users block
+        $this->cache = cache::make('report_elucidsitereport', 'activeusers');
+
+        // Get logs from cache
+        if (!$records = $this->cache->get("activeusers-log")) {
+            $sql = "SELECT id, userid, timecreated
                 FROM {logstore_standard_log}
                 ORDER BY timecreated ASC";
-        $records = array_values($DB->get_records_sql($sql));
+            $records = array_values($DB->get_records_sql($sql));
+
+            // Set cache if log is not available
+            $this->cache->set("activeusers-log", $records);
+        }
+
+        $cachekey = "activeusers-labels-" . $filter;
         if (!empty($records)) {
             // Getting first access of the site
             $this->firstaccess = $records[0]->timecreated;
@@ -100,11 +114,25 @@ class active_users_block extends utility {
             $this->firstaccess = $this->timenow;
         }
 
-        // Set labels for graph
-        for ($i = 0; $i < $this->xlabelcount; $i++) {
-            $time = $this->timenow - $i * ONEDAY;
-            $this->labels[] = date("d M y", $time);
+
+        // Get labels from cache if exist
+        if ($this->cache->get($cachekey)) {
+            $this->labels = $this->cache->get($cachekey);
+        } else {
+            // Get all lables
+            for ($i = 0; $i < $this->xlabelcount; $i++) {
+                $time = $this->timenow - $i * ONEDAY;
+                $this->labels[] = date("d M y", $time);
+            }
+
+            // If cache is not set then set cache for labels
+            if (isset($cachekey)) {
+                $this->cache->set($cachekey, $this->labels);
+            }
         }
+
+        // Reverse the labels to show in graph from right to left
+        $this->labels = array_reverse($this->labels);
     }
 
     /**
@@ -115,13 +143,28 @@ class active_users_block extends utility {
     public static function get_data($filter, $cohortid = false) {
         $activeusersblock = new active_users_block($filter);
 
-        $response = new stdClass();
-        $response->data = new stdClass();
-        // self::generate_default_data($filter);
-        $response->data->activeUsers = $activeusersblock->get_active_users($filter, $cohortid);
-        $response->data->enrolments = $activeusersblock->get_enrolments($filter, $cohortid);
-        $response->data->completionRate = $activeusersblock->get_course_completionrate($filter, $cohortid);
-        $response->labels = $activeusersblock->labels;
+        // Get cache key
+        $cachekey = "activeusers-response" . $filter . "-";
+        if ($cohortid) {
+            $cachekey .= $cohortid;
+        } else {
+            $cachekey .= "all";
+        }
+
+        // If response is in cache then return from cache
+        if (!$response = $activeusersblock->cache->get($cachekey)) {
+            $response = new stdClass();
+            $response->data = new stdClass();
+
+            $response->data->activeUsers = $activeusersblock->get_active_users($filter, $cohortid);
+            $response->data->enrolments = $activeusersblock->get_enrolments($filter, $cohortid);
+            $response->data->completionRate = $activeusersblock->get_course_completionrate($filter, $cohortid);
+            $response->labels = $activeusersblock->labels;
+
+            // Set response in cache
+            $activeusersblock->cache->set($cachekey, $response);
+        }
+
         return $response;
     }
 
@@ -163,29 +206,47 @@ class active_users_block extends utility {
      * @return [array] Array of users data fields (Full Name, Email)
      */
     public static function get_userslist_table($filter, $action, $cohortid) {
-        $table = new html_table();
-        $table->head = array(
-            get_string("fullname", "report_elucidsitereport"),
-            get_string("email", "report_elucidsitereport"),
-        );
-        $table->attributes = array (
-            "class" => "generaltable modal-table"
-        );
-        $data = self::get_userslist($filter, $action, $cohortid);
+        // Make cache
+        $cache = cache::make('report_elucidsitereport', 'activeusers');
 
-        if (empty($data)) {
-            $notavail = get_string("usersnotavailable", "report_elucidsitereport");
-            $emptycell = new html_table_cell($notavail);
-            $row = new html_table_row();
-            $emptycell->colspan = count($table->head);
-            $emptycell->attributes = array(
-                "class" => "text-center"
+        // Get values from cache if it is set
+        $cachekey = "userslist-" . $filter . "-" . $action . "-" . "-" . $cohortid;
+        if (!$table = $cache->get($cachekey)) {
+            $table = new html_table();
+
+            // Set table header
+            $table->head = array(
+                get_string("fullname", "report_elucidsitereport"),
+                get_string("email", "report_elucidsitereport"),
             );
-            $row->cells = array($emptycell);
-            $table->data = array($row);
-        } else {
-            $table->data = $data;
+
+            // Set table attributes
+            $table->attributes = array (
+                "class" => "generaltable modal-table"
+            );
+
+            // Get Users data
+            $data = self::get_userslist($filter, $action, $cohortid);
+
+            // Set table cell
+            if (empty($data)) {
+                $notavail = get_string("usersnotavailable", "report_elucidsitereport");
+                $emptycell = new html_table_cell($notavail);
+                $row = new html_table_row();
+                $emptycell->colspan = count($table->head);
+                $emptycell->attributes = array(
+                    "class" => "text-center"
+                );
+                $row->cells = array($emptycell);
+                $table->data = array($row);
+            } else {
+                $table->data = $data;
+            }
+
+            // Set cache for users list
+            $cache->set($cachekey, $table);
         }
+
         return html_writer::table($table);
     }
     
@@ -274,6 +335,8 @@ class active_users_block extends utility {
 
         // Query to get activeusers from logs
         if ($cohortid) {
+            $cachekey = "activeusers-activeusers-" . $filter . "-" . $cohortid;
+            $params["cohortid"] = $cohortid;
             $sql = "SELECT
                CONCAT(
                    DAY(FROM_UNIXTIME(l.timecreated)), '-',
@@ -292,9 +355,9 @@ class active_users_block extends utility {
                GROUP BY YEAR(FROM_UNIXTIME(l.timecreated)),
                MONTH(FROM_UNIXTIME(l.timecreated)),
                DAY(FROM_UNIXTIME(l.timecreated)), USERDATE";
-               $params["cohortid"] = $cohortid;
        } else {
-           $sql = "SELECT
+            $cachekey = "activeusers-activeusers-" . $filter . "-all";
+            $sql = "SELECT
                CONCAT(
                    DAY(FROM_UNIXTIME(timecreated)), '-',
                    MONTH(FROM_UNIXTIME(timecreated)), '-',
@@ -310,21 +373,30 @@ class active_users_block extends utility {
                MONTH(FROM_UNIXTIME(timecreated)),
                DAY(FROM_UNIXTIME(timecreated)), USERDATE";
         };
-        $logs = $DB->get_records_sql($sql, $params);
-        $activeusers = array();
-        for ($i = 0; $i < $this->xlabelcount; $i++) {
-            $time = $this->timenow - $i * ONEDAY;
-            $logkey = date("j-n-Y", $time);
-            if (isset($logs[$logkey])) {
-                $activeusers[] = $logs[$logkey]->usercount;
-            } else {
-                $activeusers[] = 0;
+
+        // Get active users data from cache
+        if (!$activeusers = $this->cache->get($cachekey)) {
+            // Get Logs to generate active users data
+            $activeusers = array();
+            $logs = $DB->get_records_sql($sql, $params);
+
+            // Get active users for every day
+            for ($i = 0; $i < $this->xlabelcount; $i++) {
+                $time = $this->timenow - $i * ONEDAY;
+                $logkey = date("j-n-Y", $time);
+                if (isset($logs[$logkey])) {
+                    $activeusers[] = $logs[$logkey]->usercount;
+                } else {
+                    $activeusers[] = 0;
+                }
             }
+
+            // If not set the set cache
+            $this->cache->set($cachekey, $activeusers);
         }
 
         /* Reverse the array because the graph take
         value from left to right */
-        $this->labels = array_reverse($this->labels);
         return array_reverse($activeusers);
     }
 
@@ -346,7 +418,8 @@ class active_users_block extends utility {
         );
 
         if ($cohortid) {
-             $sql = "SELECT
+            $cachekey = "activeusers-enrolments-" . $filter . "-" . $cohortid;
+            $sql = "SELECT
                 CONCAT(
                     DAY(FROM_UNIXTIME(l.timecreated)), '-',
                     MONTH(FROM_UNIXTIME(l.timecreated)), '-',
@@ -367,6 +440,7 @@ class active_users_block extends utility {
                 DAY(FROM_UNIXTIME(l.timecreated)), USERDATE";
             $params["cohortid"] = $cohortid;
         } else {
+            $cachekey = "activeusers-enrolments-". $filter . "-all";
             $sql = "SELECT
                 CONCAT(
                     DAY(FROM_UNIXTIME(timecreated)), '-',
@@ -385,18 +459,30 @@ class active_users_block extends utility {
                 DAY(FROM_UNIXTIME(timecreated)), USERDATE";
         }
 
-        $logs = $DB->get_records_sql($sql, $params);
-        $enrolments = array();
-        for ($i = 0; $i < $this->xlabelcount; $i++) {
-            $time = $this->timenow - $i * ONEDAY;
-            $logkey = date("j-n-Y", $time);
+        // Get data from cache if exist
+        if (!$enrolments = $this->cache->get($cachekey)) {
+            // Get enrolments log
+            $logs = $DB->get_records_sql($sql, $params);
+            $enrolments = array();
 
-            if (isset($logs[$logkey])) {
-                $enrolments[] = $logs[$logkey]->usercount;
-            } else {
-                $enrolments[] = 0;
+            // Get enrolments from every day
+            for ($i = 0; $i < $this->xlabelcount; $i++) {
+                $time = $this->timenow - $i * ONEDAY;
+                $logkey = date("j-n-Y", $time);
+
+                if (isset($logs[$logkey])) {
+                    $enrolments[] = $logs[$logkey]->usercount;
+                } else {
+                    $enrolments[] = 0;
+                }
             }
+
+            // Set cache ifnot exist
+            $this->cache->set($cachekey, $enrolments);
         }
+
+        /* Reverse the array because the graph take
+        value from left to right */
         return array_reverse($enrolments);
     }
 
@@ -411,6 +497,7 @@ class active_users_block extends utility {
 
         $params = array();
         if ($cohortid) {
+            $cachekey = "activeusers-completionrate-" . $filter . "-" . $cohortid;
             $params["cohortid"] = $cohortid;
             $sql = "SELECT
                 CONCAT(
@@ -429,6 +516,7 @@ class active_users_block extends utility {
                 MONTH(FROM_UNIXTIME(cc.timecompleted)),
                 DAY(FROM_UNIXTIME(cc.timecompleted)), cc.course, USERDATE";
         } else {
+            $cachekey = "activeusers-completionrate-" . $filter . "-all";
             $sql = "SELECT
                 CONCAT(
                     DAY(FROM_UNIXTIME(timecompleted)), '-',
@@ -444,18 +532,29 @@ class active_users_block extends utility {
                 DAY(FROM_UNIXTIME(timecompleted)), course, USERDATE";
         }
 
-        $completions = $DB->get_records_sql($sql, $params);
-        $completionrate = array();
-        for ($i = 0; $i < $this->xlabelcount; $i++) {
-            $time = $this->timenow - $i * ONEDAY;
-            $logkey = date("j-n-Y", $time);
+        // Get data from cache if exist
+        if (!$completionrate = $this->cache->get($cachekey)) {
+            $completionrate = array();
+            $completions = $DB->get_records_sql($sql, $params);
 
-            if (isset($completions[$logkey])) {
-                $completionrate[] = $completions[$logkey]->usercount;
-            } else {
-                $completionrate[] = 0;
+            // Get completion for each day
+            for ($i = 0; $i < $this->xlabelcount; $i++) {
+                $time = $this->timenow - $i * ONEDAY;
+                $logkey = date("j-n-Y", $time);
+
+                if (isset($completions[$logkey])) {
+                    $completionrate[] = $completions[$logkey]->usercount;
+                } else {
+                    $completionrate[] = 0;
+                }
             }
+
+            // Set cache if data not exist
+            $this->cache->set($cachekey, $completionrate);
         }
+
+        /* Reverse the array because the graph take
+        value from left to right */
         return array_reverse($completionrate);
     }
 
@@ -467,16 +566,30 @@ class active_users_block extends utility {
      */
     public static function get_exportable_data_block($filter) {
         $cohortid = optional_param("cohortid", 0, PARAM_INT);
-        $export = array();
-        $export[] = self::get_header();
-        $activeusersdata = self::get_data($filter);
-        foreach ($activeusersdata->labels as $key => $lable) {
-            $export[] = array(
-                $lable,
-                $activeusersdata->data->activeUsers[$key],
-                $activeusersdata->data->enrolments[$key],
-                $activeusersdata->data->completionRate[$key],
-            );
+
+        // Make cache
+        $cache = cache::make('report_elucidsitereport', 'activeusers');
+        $cachekey = "exportabledatablock-" . $filter;
+
+        // If exportable data is set in cache then get it from there
+        if (!$export = $cache->get($cachekey)) {
+            // Get exportable data for active users block
+            $export = array();
+            $export[] = self::get_header();
+            $activeusersdata = self::get_data($filter);
+
+            // Generate active users data
+            foreach ($activeusersdata->labels as $key => $lable) {
+                $export[] = array(
+                    $lable,
+                    $activeusersdata->data->activeUsers[$key],
+                    $activeusersdata->data->enrolments[$key],
+                    $activeusersdata->data->completionRate[$key],
+                );
+            }
+
+            // Set cache for exportable data
+            $cache->set($cachekey, $export);
         }
 
         return $export;
@@ -488,15 +601,23 @@ class active_users_block extends utility {
      * @return [array] Array of exportable data
      */
     public static function get_exportable_data_report($filter) {
-        $export = array();
-        $export[] = active_users_block::get_header_report();
-        $activeusersdata = active_users_block::get_data($filter);
-        foreach ($activeusersdata->labels as $key => $lable) {
-            $export = array_merge($export,
-                self::get_usersdata($lable, "activeusers"),
-                self::get_usersdata($lable, "enrolments"),
-                self::get_usersdata($lable, "completions")
-            );
+        // Make cache
+        $cache = cache::make('report_elucidsitereport', 'activeusers');
+
+        if (!$export = $cache->get("exportabledatareport")) {
+            $export = array();
+            $export[] = active_users_block::get_header_report();
+            $activeusersdata = active_users_block::get_data($filter);
+            foreach ($activeusersdata->labels as $key => $lable) {
+                $export = array_merge($export,
+                    self::get_usersdata($lable, "activeusers"),
+                    self::get_usersdata($lable, "enrolments"),
+                    self::get_usersdata($lable, "completions")
+                );
+            }
+
+            // Set cache for exportable data
+            $cache->set("exportabledatablock", $export);
         }
 
         return $export;
