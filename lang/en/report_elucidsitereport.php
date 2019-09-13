@@ -53,7 +53,7 @@ $string['name'] = "Name";
 $string['course'] = "Course";
 $string['issued'] = "Issued";
 $string['notissued'] = "Not Issued";
-$string['nof2fmodule'] = "There is no previous face to face session available.";
+$string['nof2fmodule'] = "There is no face to face sessions are available.";
 $string['nof2fsessions'] = "There is no face to face session available for this module.";
 $string['nocertificates'] = "There is no certificate created";
 // $string['courseprogresstooltip'] = '{$a->data} users completion are {$a->label}.';
@@ -269,3 +269,6 @@ $string['updatingrecordended'] = "Updating reports and analytics record is ended
 $string['updatinguserrecord'] = 'Updating userid {$a->userid} in courseid {$a->courseid}';
 $string['gettinguserrecord'] = 'Getting userid {$a->userid} in courseid {$a->courseid}';
 $string['creatinguserrecord'] = 'Create records for users completions';
+
+/* Cache Strings */
+$string['cachedef_elucidsitereport'] = 'This is the caches of elucid site report';

@@ -26,6 +26,7 @@
 namespace report_elucidsitereport;
 use stdClass;
 use context_course;
+use cache;
 
 /**
  * Class Acive Users Block
@@ -38,7 +39,15 @@ class active_courses_block extends utility {
      */
     public static function get_data() {
         $response = new stdClass();
-        $response->data = self::get_course_data();
+
+        $cache = cache::make('report_elucidsitereport', 'activecourses');
+
+        if(!$data = $cache->get('activecoursesdata')) {
+            $data = self::get_course_data();
+            $cache->set('activecoursesdata', $data);
+        }
+
+        $response->data = $data;
         return $response;
     }
 

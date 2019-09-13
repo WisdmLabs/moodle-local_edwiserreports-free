@@ -30,6 +30,10 @@ $definitions = array(
         'mode' => cache_store::MODE_APPLICATION,
         'ttl' => 1 * 60 * 60
     ),
+    'courseprogress' => array(
+        'mode' => cache_store::MODE_APPLICATION,
+        'ttl' => 1 * 60 * 60
+    ),
     'activecourses' => array(
         'mode' => cache_store::MODE_APPLICATION,
         'ttl' => 3 * 60 * 60

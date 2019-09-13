@@ -32,6 +32,7 @@ use context_module;
 use context_course;
 use core_user;
 use html_writer;
+use cache;
 
 require_once($CFG->dirroot.'/grade/report/grader/lib.php');
 
@@ -47,7 +48,16 @@ class certificates_block extends utility {
     public static function get_data() {
         $response = new stdClass();
         $response->data = new stdClass();
-        $response->data->customcerts = self::get_certificate_list();
+
+        // Get response from cache
+        $cache = cache::make('report_elucidsitereport', 'certificates');
+        if (!$response = $cache->get('response')) {
+            $response->data->customcerts = self::get_certificate_list();
+
+            // Set cache for certificate response
+            $cache->set('response', $response);
+        }
+
         return $response;
     }
 
@@ -100,14 +110,6 @@ class certificates_block extends utility {
                 }
             }
 
-            // list($insql, $inparam) = $DB->get_in_or_equal($canviewcert, SQL_PARAMS_QM, 'param', true, true);
-
-
-            // $params = [$customcertid];
-            // $params = array_merge($params, $inparam);
-            // $issued = $DB->get_records("SELECT * FROM customcert_issues WHERE customcertid = ? AND userid =" . $insql, $params);
-            // $issued = $DB->get_records('customcert_issues', array('customcertid' => $certificate->id));
-
             $certificates[] = array(
                 "id" => $certificate->id,
                 "name" => $certificate->name,
@@ -126,21 +128,37 @@ class certificates_block extends utility {
      */
     public static function get_issued_users($certid, $cohortid = false) {
         global $DB;
-        $certificate = $DB->get_record("customcert", array("id" => $certid));
-        $course = get_course($certificate->course);
-        $issued = $DB->get_records('customcert_issues', array('customcertid' => $certid));
 
-        $response = new stdClass();
-        $issuedcert = array();
-        foreach ($issued as $issue) {
-            if ($cohortid) {
-                $cohorts = cohort_get_user_cohorts($issue->userid);
-                if (!array_key_exists($cohortid, $cohorts)) {
-                    continue;
+        $cache = cache::make('report_elucidsitereport', 'certificates');
+
+        $cachekey = "certificates-userslist-" . $certid . "-";
+        if ($cohortid) {
+            $cachekey .= $cohortid;
+        } else {
+            $cachekey .= "all";
+        }
+
+        // Get certificates details from cache
+        if (!$issuedcert = $cache->get($cachekey)) {
+            $certificate = $DB->get_record("customcert", array("id" => $certid));
+            $course = get_course($certificate->course);
+            $issued = $DB->get_records('customcert_issues', array('customcertid' => $certid));
+
+            $response = new stdClass();
+            $issuedcert = array();
+            foreach ($issued as $issue) {
+                if ($cohortid) {
+                    $cohorts = cohort_get_user_cohorts($issue->userid);
+                    if (!array_key_exists($cohortid, $cohorts)) {
+                        continue;
+                    }
                 }
+
+                $issuedcert[] = self::get_certinfo($course, $issue);
             }
 
-            $issuedcert[] = self::get_certinfo($course, $issue);
+            // Set cache for issued certificates
+            $cache->set($cachekey, $issuedcert);
         }
 
         $response->data = $issuedcert;

@@ -33,6 +33,7 @@ use html_writer;
 use html_table_cell;
 use html_table_row;
 use core_user;
+use cache;
 
 require_once($CFG->dirroot . "/cohort/lib.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/constants.php");
@@ -48,13 +49,28 @@ class course_progress_block extends utility {
      * @return [array] Array of course completion info
      */
     public static function get_data($courseid, $cohortid = 0) {
-        $course = get_course($courseid);
-        $coursecontext = context_course::instance($courseid);
-        // Get only students
-        $enrolledstudents = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+        // Make cache for courseprogress block
+        $cache = cache::make("report_elucidsitereport", "courseprogress");
+        $cachekey = "courseprogress-" . $courseid . "-" . $cohortid;
 
-        $response = new stdClass();
-        $response->data = self::get_completion_with_percentage($course, $enrolledstudents, $cohortid);
+        // If cache not set for course progress
+        if (!$response = $cache->get($cachekey)) {
+            // Get all courses for dropdown
+            $course = get_course($courseid);
+            $coursecontext = context_course::instance($courseid);
+
+            // Get only students
+            $enrolledstudents = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+
+            // Get response
+            $response = new stdClass();
+            $response->data = self::get_completion_with_percentage($course, $enrolledstudents, $cohortid);
+
+            // Set cache to get data for course progress
+            $cache->set($cachekey, $response);
+        }
+
+        // Return response
         return $response;
     }
 

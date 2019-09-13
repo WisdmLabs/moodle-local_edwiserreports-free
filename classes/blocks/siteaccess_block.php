@@ -28,6 +28,7 @@ namespace report_elucidsitereport;
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/constants.php");
 
 use stdClass;
+use cache;
 
 /**
  * Class Site Access Inforamtion Block
@@ -96,11 +97,17 @@ class siteaccess_block extends utility {
      * @return [object] Site access information
      */
     public static function get_data() {
-        $siteaccessblock = new siteaccess_block();
-
         $response = new stdClass();
         $siteaccessblock = new siteaccess_block();
-        $response->data = $siteaccessblock->get_siteaccess_info();
+
+        $cache = cache::make('report_elucidsitereport', 'siteaccess');
+
+        if(!$data = $cache->get('siteaccessinfodata')) {
+            $data = $siteaccessblock->get_siteaccess_info();
+            $cache->set('siteaccessinfodata', $data);
+        }
+
+        $response->data = $data;
         return $response;
     }
 

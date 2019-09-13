@@ -274,7 +274,6 @@ class export {
                 $table->data[] = $val;
             }
         }
-
         // Generate HTML to export
         $html = html_writer::tag("h1",
             get_string($this->blockname . "exportheader", "report_elucidsitereport"),
