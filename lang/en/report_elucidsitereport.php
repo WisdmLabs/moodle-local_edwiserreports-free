@@ -119,6 +119,7 @@ $string['noofactiveusers'] = "# Active Users";
 $string['noofenrolledusers'] = "# Enrolled Users";
 $string['noofcompletedusers'] = "# Completed Users";
 $string['email'] = "Email";
+$string['emailscheduled'] = "Email Scheduled";
 $string['usersnotavailable'] = "No Users are available for this day";
 
 /* Course Progress Page */
@@ -234,6 +235,19 @@ $string['completionexportheader'] = "Course Completion Report";
 $string['completionexporthelp'] = "This report will show the course completions by the users.";
 $string['courseanalyticsexportheader'] = "Course Completion Report";
 $string['courseanalyticsexporthelp'] = "This report will show the course completions by the users.";
+
+$string['week_1'] = "Monday";
+$string['week_2'] = "Tuesday";
+$string['week_3'] = "Wednesday";
+$string['week_4'] = "Thursday";
+$string['week_5'] = "Friday";
+$string['week_6'] = "Saturday";
+$string['week_7'] = "Sunday";
+$string['weeks_on'] = "Weeks on";
+$string['sendevery'] = "Send every";
+$string['schedule'] = "Schedule";
+$string['scheduledlist'] = "All Scheduled Reports";
+$string['reset'] = "Reset";
 
 /* Course Engagement Block */
 $string['activitystart'] = "At least one Activity Started";

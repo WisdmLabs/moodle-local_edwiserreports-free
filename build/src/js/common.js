@@ -16,6 +16,7 @@ define([
         var pageContent = $("#page-admin-report-elucidsitereport-index .page-content");
         var pageWidth = pageContent.width();
         var exportEmailDropdown = '.export-dropdown a[data-action="email"]';
+        var scheduledEmailDropdown = '.export-dropdown a[data-action="emailscheduled"]';
 
         rearrangeBlocks(pageWidth, isNavlink);
 
@@ -24,13 +25,6 @@ define([
             var pageWidth = v.pluginPage.width();
             rearrangeBlocks(pageWidth);
         });
-
-        /*$(document).on("click", toggleMenuAndPin, function() {
-            isNavlink = $(this).hasClass("nav-link");
-            pageWidth = pageContent.width();
-
-            rearrangeBlocks(pageWidth, isNavlink);
-        });*/
 
         // Send email the report
         $(document).on("click", exportEmailDropdown, function(e) {
@@ -44,7 +38,9 @@ define([
                     'email_dialog',
                     $(_this).data("contextid"),
                     {
-                        blockname : $(_this).data("blockname")
+                        blockname : $(_this).data("blockname"),
+                        region : $(_this).data("region"),
+                        href : $(_this).data("href")
                     }
                 ),
             }, $(this))
@@ -57,6 +53,36 @@ define([
                     sendMailToUser(_this, root);
                 });
                 modal.setSaveButtonText('Send');
+                modal.show();
+            });
+        });
+
+        /**
+         * Schedule emails to send reports                                    e.preventDefault();            var _this [description]
+         */
+        $(document).on("click", scheduledEmailDropdown, function(e) {
+            e.preventDefault();
+            var _this = this;
+            ModalFactory.create({
+                title: 'Schedule Emails',
+                body: fragment.loadFragment(
+                    'report_elucidsitereport',
+                    'schedule_email_dialog',
+                    $(_this).data("contextid")
+                ),
+            }, $(this))
+            .done(function(modal) {
+                var root = modal.getRoot();
+                root.on(ModalEvents.hidden, function() {
+                    modal.destroy();
+                });
+                root.on(ModalEvents.save, function() {
+                    
+                });
+
+                root.on(ModalEvents.bodyRendered, function() {
+                });
+
                 modal.show();
             });
         });

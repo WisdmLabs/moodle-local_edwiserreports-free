@@ -431,3 +431,59 @@
 #wdm-elucidsitereport #accessinfograph #accessinfodesctable td.empty-label p {
     left: -0.2rem;
 }
+
+/* Switch for shedules emails */
+.esr-switch {
+    height: 1rem;
+    width: 2rem;
+    margin-bottom: 0;
+    cursor: pointer;
+    display: block;
+}
+.esr-switch input {
+    display: none;
+}
+.esr-switch .switch-container {
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+.esr-switch .switch-container .switch-background {
+    height: .8rem;
+    width: inherit;
+    border-radius: 1rem;
+    opacity: .5;
+    margin: .35rem 0;
+    transition: background-color 0.2s linear;
+}
+
+.esr-switch input:checked+.switch-container .switch-lever {
+    left: 1rem;
+}
+.esr-switch .switch-container .switch-lever {
+    position: absolute;
+    height: 1rem;
+    width: 1rem;
+    border-radius: 50%;
+    top: -.1rem;
+    box-shadow: grey 0 0 1px 0;
+    transition: left 0.2s linear,background-color 0.2s linear;
+}
+
+.esr-switch input:not(:checked)+.switch-container .switch-background {
+    background-color: #000000!important;
+}
+
+.esr-switch input:not(:checked)+.switch-container .switch-lever {
+    left: 0;
+    background-color: white!important;
+}
+
+/* Scheduled email table */
+#listemailstab tbody.empty {
+    display: none;
+}
+
+#listemailstab thead th {
+    border-bottom: none;
+}

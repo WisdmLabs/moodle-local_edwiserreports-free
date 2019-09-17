@@ -32,6 +32,7 @@
  */
 
 require_once($CFG->dirroot."/report/elucidsitereport/classes/blocks/active_users_block.php");
+require_once($CFG->dirroot."/report/elucidsitereport/locallib.php");
 
 /**
  * Get Users List Fragments for diffrent pages
@@ -172,4 +173,84 @@ function report_elucidsitereport_output_fragment_email_dialog($args) {
     ob_start();
     $form->display();
     return ob_get_clean();
+}
+
+/**
+ * Create schedule email dialoge box 
+ * @param  [type] $args [description]
+ * @return [type]       [description]
+ */
+function report_elucidsitereport_output_fragment_schedule_email_dialog($args) {
+    $formaction = clean_param($args["href"], PARAM_TEXT);
+
+    $out = html_writer::start_div("nav-tabs-horizontal", array(
+        "data-plugin" => "tabs"
+    ));
+
+    $out .= html_writer::start_tag("ul", array(
+        "class" => "nav nav-tabs nav-tabs-line",
+        "role" => "tablist"
+    ));
+
+    // Tab 1
+    $out .= html_writer::start_tag("li", array(
+        "class" => "nav-item",
+        "role" => "presentation"
+    ));
+    $out .= html_writer::link("#scheduletab",
+        get_string("schedule", "report_elucidsitereport"),
+        array(
+            "class" => "nav-link active",
+            "data-toggle" => "tab",
+            "aria-controls" => "scheduletab",
+            "role" => "tab",
+            "aria-selected" => "true"
+        )
+    );
+    $out .= html_writer::end_tag("li");
+
+    // Tab 2
+    $out .= html_writer::start_tag("li", array(
+        "class" => "nav-item",
+        "role" => "presentation"
+    ));
+    $out .= html_writer::link("#listemailstab",
+        get_string("scheduledlist", "report_elucidsitereport"),
+        array(
+            "class" => "nav-link",
+            "data-toggle" => "tab",
+            "aria-controls" => "listemailstab",
+            "role" => "tab",
+            "aria-selected" => "true"
+        )
+    );
+    $out .= html_writer::end_tag("li");
+
+    $out .= html_writer::end_tag("ul");
+
+    // Tab Content
+    $out .= html_writer::start_div("tab-content pt-20");
+
+    // Tab Content 1
+    $out .= html_writer::div(get_schedule_emailform($formaction), "tab-pane active", array(
+        "id" => "scheduletab",
+        "role" => "tabpanel"
+    ));
+    $out .= html_writer::div("", "tab-pane", array(
+        "id" => "schedule",
+        "role" => "tabpanel"
+    ));
+
+    // Tab Content 2
+    $out .= html_writer::div(get_schedule_emaillist("", ""), "tab-pane", array(
+        "id" => "listemailstab",
+        "role" => "tabpanel"
+    ));
+    $out .= html_writer::div("", "tab-pane", array(
+        "id" => "listemails",
+        "role" => "tabpanel"
+    ));
+    $out .= html_writer::end_div();
+
+    return $out;
 }

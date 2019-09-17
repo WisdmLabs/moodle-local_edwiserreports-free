@@ -130,6 +130,14 @@ function get_exportlink_array($url, $blockname, $params) {
             "action" => 'email',
             "blockname" => $blockname,
             "contextid" => $context->id
+        ),
+        array(
+            "name" => get_string("emailscheduled", "report_elucidsitereport"),
+            "icon" => "envelope-o",
+            "link" => (new moodle_url($url, array_merge(array("format" => "emailscheduled"), $params)))->out(),
+            "action" => 'emailscheduled',
+            "blockname" => $blockname,
+            "contextid" => $context->id
         )/*,
         array(
             "name" => get_string("copy", "report_elucidsitereport"),
@@ -228,4 +236,217 @@ function has_plugin($plugintype, $puginname) {
     }
 
     return false;
+}
+
+/**
+ * Get Schedule Email form
+ * @param [string] Url for submiting form
+ * @return [string] HTML String of schedule form
+ */
+function get_schedule_emailform($formaction) {
+    // Create count dropdown 
+    $coutdropdown = html_writer::tag("button", "1", array(
+        "type" => "button",
+        "class" => "btn btn-default btn-sm dropdown-toggle",
+        "id" => "durationcount",
+        "data-toggle" => "dropdown",
+        "aria-expanded" => "false"
+    ));
+
+    $coutdropdown .= html_writer::start_div("dropdown-menu", array(
+        "aria-labelledby" => "durationcount",
+        "role" => "menu"
+    ));
+
+    for ($i = 1; $i < 5; $i++) {
+        $coutdropdown .= '<a class="dropdown-item" href="javascript:void(0)"
+        data-value="'. $i .'" role="menuitem">'. $i .'</a>';
+    }
+
+    $coutdropdown .= html_writer::end_div();
+
+    // Create weeks dropdown 
+    $weeksdropdown = html_writer::tag("button", get_string("week_1", "report_elucidsitereport"), array(
+        "type" => "button",
+        "class" => "btn btn-default btn-sm dropdown-toggle",
+        "id" => "weeksdropdown",
+        "data-toggle" => "dropdown",
+        "aria-expanded" => "false"
+    ));
+
+    $weeksdropdown .= html_writer::start_div("dropdown-menu", array(
+        "aria-labelledby" => "weeksdropdown",
+        "role" => "menu"
+    ));
+
+    // Get all 7 weeks
+    for ($i = 1; $i <= 7; $i++) {
+        $str = get_string("week_". $i, "report_elucidsitereport");
+        $weeksdropdown .= '<a class="dropdown-item" href="javascript:void(0)"
+        data-value="'. $i .'" role="menuitem">'. $str .'</a>';
+    }
+
+    $weeksdropdown .= html_writer::end_div();
+
+    /*
+     * Generate Modal for email schedule
+     */
+    // Form Start
+    $out = html_writer::start_tag("form", array(
+        "action" => $formaction
+    ));
+
+    // Start Main Div
+    $out .= html_writer::start_div();
+
+    // Start Header Div
+    $out .= html_writer::start_div("d-flex");
+
+    // Duration Count Dropdown Start
+    $out .= html_writer::tag("i", "", array(
+        "class" => "icon fa fa-calendar my-auto",
+        "aria-hidden" => "true"
+    ));
+    // Header Duration Count
+    $out .= html_writer::span(get_string("sendevery", "report_elucidsitereport"), "my-auto mr-10");
+    // Duration Count Dropdown
+    $out .= html_writer::span($coutdropdown, "dropdown");
+    // Duration Count Dropdown End
+
+    // Toggle Switch For Enable and Disable Start
+    $out .= html_writer::start_div("my-auto px-5");
+    $out .= html_writer::label(
+        html_writer::tag("input", "", array(
+            "id" => "test",
+            "type" => "checkbox",
+            "value" => "",
+            "name" => "esr-switch-input",
+            "checked" => "checked"
+        )).
+        html_writer::div(
+            html_writer::div("", "switch-background bg-primary").
+            html_writer::div("", "switch-lever bg-primary"),
+            "switch-container esr-enable-disable-form"
+        ), "test", true,
+        array(
+            "class" => "esr-switch",
+            "title" => "Enable/Disable email"
+        )
+    );
+    $out .= html_writer::end_div();
+    // Toggle Switch For Enable and Disable End
+
+    // Header Weeks Dropdown
+    $out .= html_writer::span(get_string("weeks_on", "report_elucidsitereport"), "ml-auto my-auto px-10");
+
+    // Weeks Dropdown
+    $out .= html_writer::span($weeksdropdown, "dropdown");
+    
+    // End Header Div 
+    $out .= html_writer::end_div();
+
+    // Start Body Div
+    $out .= html_writer::start_div("w-full py-10 mt-20");
+
+    $out .= html_writer::start_div("py-10");
+    $out .= html_writer::tag("i", "", array(
+        "class" => "icon fa fa-user my-auto",
+        "aria-hidden" => "true"
+    ));
+    $out .= html_writer::span("Custom Recepient");
+    $out .= html_writer::end_div();
+
+    $out .= html_writer::tag("textarea", "", array(
+        "class" =>"w-full",
+        "rows" => "7"
+    ));
+    // End Body Div
+    $out .= html_writer::end_div();
+
+    // End Main Div
+    $out .= html_writer::end_div();
+
+    $out .= html_writer::start_div("modal-footer px-0 py-5", array(
+        "data-region" => "footer"
+    ));
+    $out .= html_writer::tag("button",
+        get_string("schedule", "report_elucidsitereport"),
+        array(
+            "class" => "btn btn-primary",
+            "type" => "button",
+            "data-action" => "save"
+        )
+    );
+
+    $out .= html_writer::tag("button",
+        get_string("reset", "report_elucidsitereport"),
+        array(
+            "class" => "btn btn-secondary",
+            "type" => "button",
+            "data-action" => "cancel"
+        )
+    );
+    $out .= html_writer::end_div();
+
+    // End of Form
+    $out .= html_writer::end_tag("form");
+
+    return $out;
+}
+
+/**
+ * Get Scheduled email list
+ * @param [string] $blockname Block Name
+ * @param [string] $region Region Name
+ * @return [type] [description]
+ */
+function get_schedule_emaillist($blockname, $region) {
+    $tableheader = new html_table();
+
+    $tableheader->head = array(
+        '<span class="checkbox-custom checkbox-primary">
+          <input class="selectable-all" type="checkbox">
+          <label></label>
+        </span>',
+        "Name",
+        "Component",
+        "Next run" ,
+        "Manage"
+    );
+
+    // Size of table cell
+    $size = array("10%", "40%", "20%", "20%", "10%");
+    $tableheader->size = $size;
+    $tableheader->attributes = array(
+        "class" => "table table-hover",
+        "data-role" => "content",
+        "data-plugin" => "selectable",
+        "data-row-selectable" => "true"
+    );
+
+    $out = html_writer::table($tableheader);
+
+    $tabledata = new html_table();
+    $tabledata->size = $size;
+    for($i; $i<=100; $i++) {
+        $tabledata->data[] = array(
+            '<span class="checkbox-custom checkbox-primary">
+              <input class="selectable-item" type="checkbox">
+              <label></label>
+            </span>',
+            "Active Users Report",
+            "Block",
+            "12 Oct 2019",
+            ""
+        );
+    }
+
+    $out .= html_writer::div(
+        html_writer::table($tabledata),
+        "overflow-scroll",
+        array(
+            "style" => "max-height: 250px"
+        )
+    );
+    return $out;
 }
