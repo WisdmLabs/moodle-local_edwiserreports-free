@@ -47,9 +47,13 @@ if ($format = optional_param("format", false, PARAM_TEXT)) {
     $filter = optional_param("filter", false, PARAM_TEXT);
 
     $export = new export($format, $region, $blockname);
-    $data = $export->get_exportable_data($filter);
+    if ($format == "emailscheduled") {
+        $export->data_export($region."_".$blockname, false);
+    } else {
+        $data = $export->get_exportable_data($filter);
 
-    if ($data) {
-        $export->data_export($region."_".$blockname, $data);
+        if ($data) {
+            $export->data_export($region."_".$blockname, $data);
+        }
     }
 }

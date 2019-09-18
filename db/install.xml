@@ -21,5 +21,16 @@
                 <INDEX NAME="userid" UNIQUE="false" FIELDS="userid" COMMENT="The user id for reports"/>
             </INDEXES>
         </TABLE>
+        <TABLE NAME="elucidsitereport_schedemails" COMMENT="This table saves scheduled emails inforamtion.">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="blockname" TYPE="text" LENGTH="255" COMMENT="Block name."/>
+                <FIELD NAME="component" TYPE="text" LENGTH="255" COMMENT="Report component for the block (block/ individual)."/>
+                <FIELD NAME="emaildata" TYPE="text" LENGTH="big" COMMENT="Email data in json stringif format."/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="The unique id for this scheduledemail instance."/>
+            </KEYS>
+        </TABLE>
     </TABLES>
 </XMLDB>

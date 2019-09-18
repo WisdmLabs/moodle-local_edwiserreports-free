@@ -91,6 +91,9 @@ class export {
             case "email":
                 $this->data_export_email($filename, $data);
                 break;
+            case "emailscheduled":
+                $this->data_export_emailscheduled($filename);
+                break;
         }
     }
 
@@ -215,6 +218,61 @@ class export {
 
         // Remove file after email sending process
         unlink($filepath);
+    }
+
+    /**
+     * Save data scheduled email for users
+     * @param $filenme file name to export data
+     * @return Return status after save the scheduled email data
+     */
+    public function data_export_emailscheduled($filename) {
+        global $DB;
+        $response = new stdClass();
+        $response->error = false;
+        $data = new stdClass();
+        $data->blockname = $this->blockname;
+        $data->component = $this->region;
+
+        $table = "elucidsitereport_schedemails";
+        $sql = "SELECT id, emaildata FROM {elucidsitereport_schedemails}
+            WHERE blockname = :blockname
+            AND component = :component";
+        if ($rec = $DB->get_record_sql($sql, (array)$data)) {
+            $data->id = $rec->id;
+            $data->emaildata = $this->get_email_data($rec->emaildata);
+            $DB->update_record($table, $data);
+        } else {
+            $data->emaildata = $this->get_email_data();
+            $DB->insert_record($table, $data);
+        }
+
+        echo json_encode($response);
+    }
+
+    /**
+     * Get scheduled email data
+     * @return [string] email data encoded object
+     */
+    private function get_email_data($emaildata = false) {
+        global $DB;
+        $esremailenable = optional_param("esr-email-enable", false, PARAM_TEXT);
+        $esrrecepient = optional_param("esr-recepient", false, PARAM_TEXT);
+        $esrdurationcount = optional_param("esr-duration-count", false, PARAM_TEXT);
+        $esrdayweek = optional_param("esr-day-week", false, PARAM_TEXT);
+
+        $emailinfo = array(
+            'esremailenable' => $esremailenable,
+            'esrrecepient' => $esrrecepient, 
+            'esrdurationcount' => $esrdurationcount, 
+            'esrdayweek' => $esrdayweek,
+            'esrlastrun' => false
+        );
+        if ($emaildata && $emaildata == '') {
+            $data = json_decode($emaildata);
+            $emailinfo['esrlastrun'] = $data->esrlastrun;
+        }
+
+        return json_encode($emailinfo);
     }
 
     /**

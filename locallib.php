@@ -85,7 +85,7 @@ function get_exportlinks($url, $region, $blockname, $filter = false, $cohortid =
         $params["cohortid"] = $cohortid;
     }
 
-    $out->export = get_exportlink_array($url, $blockname, $params);
+    $out->export = get_exportlink_array($url, $blockname, $params, $region);
     return $out;
 }
 
@@ -96,7 +96,7 @@ function get_exportlinks($url, $region, $blockname, $filter = false, $cohortid =
  * @param  [array] $params Prameters for link
  * @return [array] Array of export link
  */
-function get_exportlink_array($url, $blockname, $params) {
+function get_exportlink_array($url, $blockname, $params, $region) {
     $context = context_system::instance();
     return array(
         array(
@@ -105,6 +105,7 @@ function get_exportlink_array($url, $blockname, $params) {
             "link" => (new moodle_url($url, array_merge(array("format" => "csv"), $params)))->out(),
             "action" => 'csv',
             "blockname" => $blockname,
+            "region" => $region,
             "contextid" => $context->id
         ),
         array(
@@ -113,6 +114,7 @@ function get_exportlink_array($url, $blockname, $params) {
             "link" => (new moodle_url($url, array_merge(array("format" => "excel"), $params)))->out(),
             "action" => 'excel',
             "blockname" => $blockname,
+            "region" => $region,
             "contextid" => $context->id
         ),
         array(
@@ -121,6 +123,7 @@ function get_exportlink_array($url, $blockname, $params) {
             "link" => (new moodle_url($url, array_merge(array("format" => "pdf"), $params)))->out(),
             "action" => 'pdf',
             "blockname" => $blockname,
+            "region" => $region,
             "contextid" => $context->id
         ),
         array(
@@ -129,6 +132,7 @@ function get_exportlink_array($url, $blockname, $params) {
             "link" => (new moodle_url($url, array_merge(array("format" => "email"), $params)))->out(),
             "action" => 'email',
             "blockname" => $blockname,
+            "region" => $region,
             "contextid" => $context->id
         ),
         array(
@@ -137,6 +141,7 @@ function get_exportlink_array($url, $blockname, $params) {
             "link" => (new moodle_url($url, array_merge(array("format" => "emailscheduled"), $params)))->out(),
             "action" => 'emailscheduled',
             "blockname" => $blockname,
+            "region" => $region,
             "contextid" => $context->id
         )/*,
         array(
@@ -243,9 +248,39 @@ function has_plugin($plugintype, $puginname) {
  * @param [string] Url for submiting form
  * @return [string] HTML String of schedule form
  */
-function get_schedule_emailform($formaction) {
+function get_schedule_emailform($formaction, $blockname, $region) {
+    global $DB;
+
+    // Default values for form
+    $duration = 1; // Default Value
+    $day = 1; // Default Value
+    $recepient = '';
+
+    // Get data from table
+    $table = "elucidsitereport_schedemails";
+    $sql = "SELECT * FROM {elucidsitereport_schedemails}
+        WHERE blockname = :blockname
+        AND component = :component";
+    $params = array(
+        "blockname" => $blockname,
+        "component" => $region
+    );
+    $rec = $DB->get_record_sql($sql, $params);
+
+    // If data exist then replace the data
+    if ($rec) {
+        $emaildata = $rec->emaildata;
+        if ($emaildata && $emaildata !== '') {
+            $emaildata = json_decode($emaildata);
+            $duration = $emaildata->esrdurationcount;
+            $day = $emaildata->esrdayweek;
+            $recepient = $emaildata->esrrecepient;
+        }
+    }
+
     // Create count dropdown 
-    $coutdropdown = html_writer::tag("button", "1", array(
+    $coutdropdown = html_writer::tag("button", $duration, array(
+        "value" => $duration,
         "type" => "button",
         "class" => "btn btn-default btn-sm dropdown-toggle",
         "id" => "durationcount",
@@ -266,7 +301,8 @@ function get_schedule_emailform($formaction) {
     $coutdropdown .= html_writer::end_div();
 
     // Create weeks dropdown 
-    $weeksdropdown = html_writer::tag("button", get_string("week_1", "report_elucidsitereport"), array(
+    $weeksdropdown = html_writer::tag("button", get_string("week_" . $day, "report_elucidsitereport"), array(
+        "value" => $day,
         "type" => "button",
         "class" => "btn btn-default btn-sm dropdown-toggle",
         "id" => "weeksdropdown",
@@ -310,24 +346,24 @@ function get_schedule_emailform($formaction) {
     // Header Duration Count
     $out .= html_writer::span(get_string("sendevery", "report_elucidsitereport"), "my-auto mr-10");
     // Duration Count Dropdown
-    $out .= html_writer::span($coutdropdown, "dropdown");
+    $out .= html_writer::span($coutdropdown, "duration-dropdown dropdown");
     // Duration Count Dropdown End
 
     // Toggle Switch For Enable and Disable Start
     $out .= html_writer::start_div("my-auto px-5");
     $out .= html_writer::label(
         html_writer::tag("input", "", array(
-            "id" => "test",
+            "id" => "esr-toggle",
             "type" => "checkbox",
-            "value" => "",
-            "name" => "esr-switch-input",
+            "value" => true,
+            "name" => "esr-email-enable",
             "checked" => "checked"
         )).
         html_writer::div(
             html_writer::div("", "switch-background bg-primary").
             html_writer::div("", "switch-lever bg-primary"),
             "switch-container esr-enable-disable-form"
-        ), "test", true,
+        ), "esr-toggle", true,
         array(
             "class" => "esr-switch",
             "title" => "Enable/Disable email"
@@ -340,7 +376,7 @@ function get_schedule_emailform($formaction) {
     $out .= html_writer::span(get_string("weeks_on", "report_elucidsitereport"), "ml-auto my-auto px-10");
 
     // Weeks Dropdown
-    $out .= html_writer::span($weeksdropdown, "dropdown");
+    $out .= html_writer::span($weeksdropdown, "weeks-dropdown dropdown");
     
     // End Header Div 
     $out .= html_writer::end_div();
@@ -356,10 +392,30 @@ function get_schedule_emailform($formaction) {
     $out .= html_writer::span("Custom Recepient");
     $out .= html_writer::end_div();
 
-    $out .= html_writer::tag("textarea", "", array(
+    $out .= html_writer::tag("textarea", $recepient, array(
+        "value" => $recepient,
+        "name" => "esr-recepient",
         "class" =>"w-full",
         "rows" => "7"
     ));
+
+    // Hidden inputs
+    $out .= html_writer::tag("input", "", array(
+        "value" => $duration,
+        "type" => "text",
+        "id" => "esr-sendduration",
+        "name" => "esr-duration-count",
+        "class" =>"d-none"
+    ));
+
+    $out .= html_writer::tag("input", "", array(
+        "value" => $day,
+        "type" => "text",
+        "id" => "esr-sendday",
+        "name" => "esr-day-week",
+        "class" =>"d-none"
+    ));
+
     // End Body Div
     $out .= html_writer::end_div();
 
@@ -391,18 +447,47 @@ function get_schedule_emailform($formaction) {
     // End of Form
     $out .= html_writer::end_tag("form");
 
+    // Script for modal
+    $out .= html_writer::script("
+        require(['jquery'], function($) {
+            // For duration dropdown
+            var durationSelector = '#scheduletab .dropdown.duration-dropdown a.dropdown-item';
+            var durationBtn = '#scheduletab button#durationcount';
+            var durationInput = '#scheduletab input#esr-sendduration';
+
+            // For duration day
+            var daySelector = '#scheduletab .dropdown.weeks-dropdown a.dropdown-item';
+            var dayBtn = '#scheduletab button#weeksdropdown';
+            var dayInput = '#scheduletab input#esr-sendday';
+
+            $(durationSelector)
+            .on('click', function() {
+                console.log(this);
+                $(durationBtn).text($(this).data('value'));
+                $(durationInput).val($(this).data('value'));
+            });
+
+            $(daySelector)
+            .on('click', function() {
+                console.log(this);
+                $(dayBtn).text($(this).text());
+                $(dayInput).val($(this).data('value'));
+            });
+        });
+    ");
+
     return $out;
 }
 
 /**
  * Get Scheduled email list
- * @param [string] $blockname Block Name
- * @param [string] $region Region Name
  * @return [type] [description]
  */
-function get_schedule_emaillist($blockname, $region) {
+function get_schedule_emaillist() {
+    global $DB;
     $tableheader = new html_table();
 
+    // Table fixed header
     $tableheader->head = array(
         '<span class="checkbox-custom checkbox-primary">
           <input class="selectable-all" type="checkbox">
@@ -416,19 +501,63 @@ function get_schedule_emaillist($blockname, $region) {
 
     // Size of table cell
     $size = array("10%", "40%", "20%", "20%", "10%");
-    $tableheader->size = $size;
-    $tableheader->attributes = array(
+    $align = array(null, null, "center", "center", "center");
+    $attributes = array(
         "class" => "table table-hover",
         "data-role" => "content",
         "data-plugin" => "selectable",
         "data-row-selectable" => "true"
     );
 
+    $tableheader->size = $size;
+    $tableheader->attributes = $attributes;
+    $tableheader->align = $align;
+
     $out = html_writer::table($tableheader);
 
     $tabledata = new html_table();
     $tabledata->size = $size;
-    for($i; $i<=100; $i++) {
+    $tabledata->attributes = $attributes;
+    $tabledata->align = $align;
+
+    $select = '<span class="checkbox-custom checkbox-primary">
+            <input class="selectable-item" type="checkbox">
+            <label></label>
+        </span>';
+    $manage = '<span class="esr-manage-scheduled-emails d-flex">
+        <a href="javascript:void(0)">
+            <i class="icon fa fa-cog"></i>
+        </a>
+        <a href="javascript:void(0)">
+            <i class="icon fa fa-times text-danger"></i>
+        </a>
+        </span>';
+    $data = array(
+        "esrselect" => $select,
+        "esrname" => false,
+        "esrcomponent" => false,
+        "esrnextrun" => false,
+        "esrmanage" => $manage
+    );
+
+    $table = 'elucidsitereport_schedemails';
+    $rec = $DB->get_records($table, array());
+    if (!empty($rec)) {
+        foreach($rec as $key => $val) {
+            $data["esrname"] = $val->blockname;
+            $data["esrcomponent"] = $val->component;
+
+            $emaildata = $val->emaildata;
+            if ($emaildata && $emaildata !== '') {
+                $emaildata = json_decode($emaildata);
+                $weekstr = '+' . ($emaildata->esrdurationcount - 1) . ' week ' . get_string("week_" . $emaildata->esrdayweek, "report_elucidsitereport");
+
+                $data["esrnextrun"] = date("d M y", strtotime($weekstr));
+            }
+            $tabledata->data[] = array_values($data);
+        }
+    }
+    /*for($i; $i<=100; $i++) {
         $tabledata->data[] = array(
             '<span class="checkbox-custom checkbox-primary">
               <input class="selectable-item" type="checkbox">
@@ -439,8 +568,7 @@ function get_schedule_emaillist($blockname, $region) {
             "12 Oct 2019",
             ""
         );
-    }
-
+    }*/
     $out .= html_writer::div(
         html_writer::table($tabledata),
         "overflow-scroll",

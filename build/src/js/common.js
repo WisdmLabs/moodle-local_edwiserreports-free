@@ -17,6 +17,8 @@ define([
         var pageWidth = pageContent.width();
         var exportEmailDropdown = '.export-dropdown a[data-action="email"]';
         var scheduledEmailDropdown = '.export-dropdown a[data-action="emailscheduled"]';
+        var durationDropdown = '#scheduletab .dropdown.duration-dropdown a.dropdown-item';
+        var weeksDropdown = '#scheduletab .dropdown.weeks-dropdown a.dropdown-item';
 
         rearrangeBlocks(pageWidth, isNavlink);
 
@@ -30,7 +32,7 @@ define([
         $(document).on("click", exportEmailDropdown, function(e) {
             e.preventDefault();
             var _this = this;
-            ModalFactory.create({            
+            ModalFactory.create({
                 type: ModalFactory.types.SAVE_CANCEL,
                 title: 'Email Dialog Box',
                 body: fragment.loadFragment(
@@ -38,9 +40,7 @@ define([
                     'email_dialog',
                     $(_this).data("contextid"),
                     {
-                        blockname : $(_this).data("blockname"),
-                        region : $(_this).data("region"),
-                        href : $(_this).data("href")
+                        blockname : $(_this).data("blockname")
                     }
                 ),
             }, $(this))
@@ -68,19 +68,37 @@ define([
                 body: fragment.loadFragment(
                     'report_elucidsitereport',
                     'schedule_email_dialog',
-                    $(_this).data("contextid")
+                    $(_this).data("contextid"),
+                    {
+                        blockname : $(_this).attr("data-blockname"),
+                        href : $(_this).attr("href"),
+                        region : $(_this).attr("data-region")
+                    }
                 ),
             }, $(this))
             .done(function(modal) {
                 var root = modal.getRoot();
+
+                root.addClass("esr-schedule-email");
+
                 root.on(ModalEvents.hidden, function() {
                     modal.destroy();
                 });
-                root.on(ModalEvents.save, function() {
-                    
-                });
 
-                root.on(ModalEvents.bodyRendered, function() {
+                root.on('click', '[data-action="save"]', function() {
+                    $.ajax({
+                        url: _this.href,
+                        type: "POST",
+                        data: root.find("form").serialize()
+                    }).done(function(response) {
+                        response = $.parseJSON(response);
+                        console.log(response);
+                    }).fail(function() {
+                        notif.addNotification({
+                            message: "Failed to send the email",
+                            type: "error"
+                        });
+                    });
                 });
 
                 modal.show();

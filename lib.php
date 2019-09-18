@@ -182,6 +182,8 @@ function report_elucidsitereport_output_fragment_email_dialog($args) {
  */
 function report_elucidsitereport_output_fragment_schedule_email_dialog($args) {
     $formaction = clean_param($args["href"], PARAM_TEXT);
+    $blockname = clean_param($args["blockname"], PARAM_TEXT);
+    $region = clean_param($args["region"], PARAM_TEXT);
 
     $out = html_writer::start_div("nav-tabs-horizontal", array(
         "data-plugin" => "tabs"
@@ -232,7 +234,7 @@ function report_elucidsitereport_output_fragment_schedule_email_dialog($args) {
     $out .= html_writer::start_div("tab-content pt-20");
 
     // Tab Content 1
-    $out .= html_writer::div(get_schedule_emailform($formaction), "tab-pane active", array(
+    $out .= html_writer::div(get_schedule_emailform($formaction, $blockname, $region), "tab-pane active", array(
         "id" => "scheduletab",
         "role" => "tabpanel"
     ));
@@ -242,7 +244,7 @@ function report_elucidsitereport_output_fragment_schedule_email_dialog($args) {
     ));
 
     // Tab Content 2
-    $out .= html_writer::div(get_schedule_emaillist("", ""), "tab-pane", array(
+    $out .= html_writer::div(get_schedule_emaillist(), "tab-pane", array(
         "id" => "listemailstab",
         "role" => "tabpanel"
     ));
