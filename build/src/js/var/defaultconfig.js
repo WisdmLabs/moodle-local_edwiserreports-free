@@ -200,6 +200,9 @@ define(["jquery", "report_elucidsitereport/variables", "report_elucidsitereport/
         // function to get Template
         getTemplate: function(template) {
             return "report_elucidsitereport/" + template;
-        }
+        },
+
+        // Get URL Params
+        getUrlParams: v.getUrlParams
     };
 });

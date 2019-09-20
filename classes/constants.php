@@ -57,3 +57,12 @@ define('YEARLY', "yearly");
 define('WEEKLY_DAYS', 7);
 define('MONTHLY_DAYS', 30);
 define('YEARLY_DAYS', 365);
+
+define('ESR_DAILY_EMAIL', 0);
+define('ESR_WEEKLY_EMAIL', 1);
+define('ESR_MONTHLY_EMAIL', 2);
+
+define('ESR_0630AM', 0);
+define('ESR_1000AM', 1);
+define('ESR_0430PM', 2);
+define('ESR_1030PM', 3);

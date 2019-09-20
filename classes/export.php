@@ -30,6 +30,7 @@ require_once($CFG->libdir."/excellib.class.php");
 require_once($CFG->libdir."/pdflib.php");
 require_once($CFG->dirroot."/report/elucidsitereport/classes/blocks/active_users_block.php");
 require_once($CFG->dirroot."/report/elucidsitereport/classes/blocks/active_courses_block.php");
+require_once($CFG->dirroot."/report/elucidsitereport/lib.php");
 
 use csv_export_writer;
 use moodle_exception;
@@ -226,9 +227,10 @@ class export {
      * @return Return status after save the scheduled email data
      */
     public function data_export_emailscheduled($filename) {
-        global $DB;
+        global $CFG, $DB;
         $response = new stdClass();
         $response->error = false;
+
         $data = new stdClass();
         $data->blockname = $this->blockname;
         $data->component = $this->region;
@@ -239,13 +241,21 @@ class export {
             AND component = :component";
         if ($rec = $DB->get_record_sql($sql, (array)$data)) {
             $data->id = $rec->id;
-            $data->emaildata = $this->get_email_data($rec->emaildata);
+            list($id, $data->emaildata) = $this->get_email_data($rec->emaildata);
             $DB->update_record($table, $data);
         } else {
-            $data->emaildata = $this->get_email_data();
+            list($id, $data->emaildata) = $this->get_email_data();
             $DB->insert_record($table, $data);
         }
 
+        $args = array(
+            "id" => optional_param("esrid", null, PARAM_INT),
+            "blockname" => $this->blockname,
+            "region" => $this->region,
+            "href" => $CFG->wwwroot . $_SERVER["REQUEST_URI"]
+        );
+
+        // Return data in json format
         echo json_encode($response);
     }
 
@@ -255,24 +265,45 @@ class export {
      */
     private function get_email_data($emaildata = false) {
         global $DB;
-        $esremailenable = optional_param("esr-email-enable", false, PARAM_TEXT);
-        $esrrecepient = optional_param("esr-recepient", false, PARAM_TEXT);
-        $esrdurationcount = optional_param("esr-duration-count", false, PARAM_TEXT);
-        $esrdayweek = optional_param("esr-day-week", false, PARAM_TEXT);
-
+        // Generate default email information array
         $emailinfo = array(
-            'esremailenable' => $esremailenable,
-            'esrrecepient' => $esrrecepient, 
-            'esrdurationcount' => $esrdurationcount, 
-            'esrdayweek' => $esrdayweek,
-            'esrlastrun' => false
+            'esrname' => required_param("esrname", PARAM_TEXT),
+            'esremailenable' => optional_param("esremailenable", false, PARAM_TEXT),
+            'esrrecepient' => required_param("esrrecepient", PARAM_TEXT), 
+            'esrsubject' => optional_param("esrsubject", '', PARAM_TEXT),
+            'esrmessage' => optional_param("esrmessage", '', PARAM_TEXT),
+            'esrduration' => optional_param("esrduration", 0, PARAM_TEXT), 
+            'esrtime' => optional_param("esrtime", 0, PARAM_TEXT),
+            'esrlastrun' => false,
+            'esrnextrun' => false,
+            'esrnextrun' => false,
+            'reportparams' => array(
+                'filter' => optional_param("filter", false, PARAM_TEXT),
+                'blockname' => optional_param("blockname", false, PARAM_TEXT),
+                'region' => optional_param("region", false, PARAM_TEXT)
+            )
         );
-        if ($emaildata && $emaildata == '') {
-            $data = json_decode($emaildata);
-            $emailinfo['esrlastrun'] = $data->esrlastrun;
+
+        // Calculate Next Run
+        list($fequency, $nextrun) = get_email_schedule_next_run($emailinfo["esrduration"], $emailinfo["esrtime"]);
+
+        $emailinfo["esrnextrun"] = $nextrun;
+        $emailinfo["esrfrequency"] = $fequency;
+
+        // Get previous data and update
+        if (!$emaildata = json_decode($emaildata)) {
+            $emaildata = array($emailinfo);
+        } else if (is_array($emaildata)){
+            $esrid = optional_param("esrid", false, PARAM_INT);
+            if ($esrid < 0) {
+                $emaildata[] = $emailinfo;
+            } else {
+                $emaildata[$esrid] = $emailinfo;
+            }
         }
 
-        return json_encode($emailinfo);
+        // Return array if of data and encoded email data
+        return array((count($emaildata) - 1), json_encode($emaildata));
     }
 
     /**

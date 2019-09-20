@@ -185,6 +185,9 @@ function report_elucidsitereport_output_fragment_schedule_email_dialog($args) {
     $blockname = clean_param($args["blockname"], PARAM_TEXT);
     $region = clean_param($args["region"], PARAM_TEXT);
 
+    // Get existing email id
+    $id = $args["id"];
+
     $out = html_writer::start_div("nav-tabs-horizontal", array(
         "data-plugin" => "tabs"
     ));
@@ -234,7 +237,7 @@ function report_elucidsitereport_output_fragment_schedule_email_dialog($args) {
     $out .= html_writer::start_div("tab-content pt-20");
 
     // Tab Content 1
-    $out .= html_writer::div(get_schedule_emailform($formaction, $blockname, $region), "tab-pane active", array(
+    $out .= html_writer::div(get_schedule_emailform($id, $formaction, $blockname, $region), "tab-pane active", array(
         "id" => "scheduletab",
         "role" => "tabpanel"
     ));

@@ -1,0 +1,264 @@
+<div class="nav-tabs-horizontal" data-plugin="tabs">
+    <ul class="nav nav-tabs nav-tabs-line" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link active show" data-toggle="tab" aria-controls="scheduletab" role="tab" aria-selected="false" href="#scheduletab">
+                {{#str}} schedule, report_elucidsitereport {{/str}}
+            </a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" data-toggle="tab" aria-controls="listemailstab" role="tab" aria-selected="true" href="#listemailstab">
+                {{#str}} scheduledlist, report_elucidsitereport {{/str}}
+            </a>
+        </li>
+    </ul>
+    <div class="tab-content pt-20">
+        <div class="tab-pane active show" id="scheduletab" role="tabpanel">
+            <form action="">
+                <div>
+                    <div class="d-flex">
+                        <i class="icon fa fa-calendar my-auto" aria-hidden="true"></i>
+                        <span class="my-auto mx-5">
+                            {{#str}} emailthisreport, report_elucidsitereport {{/str}}
+                        </span>
+                        <span class="duration-dropdown dropdown">
+                            <button data-value="0"
+                                type="button"
+                                class="btn btn-default btn-sm dropdown-toggle"
+                                id="durationcount"
+                                data-toggle="dropdown"
+                                aria-expanded="false">
+                                {{#str}} duration_0, report_elucidsitereport {{/str}}
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="durationcount" role="menu">
+                                <a class="dropdown-item"
+                                    href="javascript:void(0)"
+                                    data-value="0"
+                                    role="menuitem">
+                                    {{#str}} duration_0, report_elucidsitereport {{/str}}
+                                </a>
+                                <a class="dropdown-item"
+                                    href="javascript:void(0)"
+                                    data-value="1"
+                                    role="menuitem">
+                                    {{#str}} duration_1, report_elucidsitereport {{/str}}
+                                </a>
+                                <a class="dropdown-item"
+                                    href="javascript:void(0)"
+                                    data-value="2"
+                                    role="menuitem">
+                                    {{#str}} duration_2, report_elucidsitereport {{/str}}
+                                </a>
+                            </div>
+                        </span>
+                        <span class="my-auto mx-5">
+                            on every
+                        </span>
+                        <span class="weekly-dropdown dropdown">
+                            <button data-value="0"
+                                type="button"
+                                class="btn btn-default btn-sm dropdown-toggle mx-5"
+                                id="weeksdropdown"
+                                data-toggle="dropdown"
+                                data-managedby="1"
+                                aria-expanded="false"
+                                style="display: none;">
+                                {{#str}} week_0, report_elucidsitereport {{/str}}
+                            </button>
+                            <div class="dropdown-menu"
+                                aria-labelledby="weeksdropdown"
+                                role="menu">
+                                <a class="dropdown-item"
+                                    href="javascript:void(0)"
+                                    data-value="0"
+                                    role="menuitem">
+                                    {{#str}} week_0, report_elucidsitereport {{/str}}
+                                </a>
+                                <a class="dropdown-item"
+                                    href="javascript:void(0)"
+                                    data-value="1"
+                                    role="menuitem">
+                                    {{#str}} week_1, report_elucidsitereport {{/str}}
+                                </a>
+                                <a class="dropdown-item"
+                                    href="javascript:void(0)"
+                                    data-value="2"
+                                    role="menuitem">
+                                    {{#str}} week_2, report_elucidsitereport {{/str}}
+                                </a>
+                                <a class="dropdown-item"
+                                    href="javascript:void(0)"
+                                    data-value="3"
+                                    role="menuitem">
+                                    {{#str}} week_3, report_elucidsitereport {{/str}}
+                                </a>
+                                <a class="dropdown-item"
+                                    href="javascript:void(0)"
+                                    data-value="4"
+                                    role="menuitem">
+                                    {{#str}} week_4, report_elucidsitereport {{/str}}
+                                </a>
+                                <a class="dropdown-item"
+                                    href="javascript:void(0)"
+                                    data-value="5"
+                                    role="menuitem">
+                                    {{#str}} week_5, report_elucidsitereport {{/str}}
+                                </a>
+                                <a class="dropdown-item"
+                                    href="javascript:void(0)"
+                                    data-value="6"
+                                    role="menuitem">
+                                    {{#str}} week_6, report_elucidsitereport {{/str}}
+                                </a>
+                            </div>
+                        </span>
+                        <span class="daily-dropdown dropdown">
+                            <button data-value="0"
+                                type="button"
+                                class="btn btn-default btn-sm dropdown-toggle mx-5"
+                                id="timesdropdown"
+                                data-toggle="dropdown"
+                                data-managedby="0"
+                                aria-expanded="false"
+                                style="">
+                                {{#str}} times_0, report_elucidsitereport {{/str}}
+                            </button>
+                            <div class="dropdown-menu"
+                                aria-labelledby="timesdropdown"
+                                role="menu">
+                                <a class="dropdown-item"
+                                    href="javascript:void(0)"
+                                    data-value="0"
+                                    role="menuitem">
+                                    {{#str}} times_0, report_elucidsitereport {{/str}}
+                                </a>
+                                <a class="dropdown-item"
+                                    href="javascript:void(0)"
+                                    data-value="1"
+                                    role="menuitem">
+                                    {{#str}} times_1, report_elucidsitereport {{/str}}
+                                </a>
+                                <a class="dropdown-item"
+                                    href="javascript:void(0)"
+                                    data-value="2"
+                                    role="menuitem">
+                                    {{#str}} times_2, report_elucidsitereport {{/str}}
+                                </a>
+                                <a class="dropdown-item"
+                                    href="javascript:void(0)"
+                                    data-value="3"
+                                    role="menuitem">
+                                    {{#str}} times_3, report_elucidsitereport {{/str}}
+                                </a>
+                            </div>
+                        </span>
+                        <span class="monthly-dropdown dropdown">
+                            <button data-value="0"
+                                type="button"
+                                class="btn btn-default btn-sm dropdown-toggle mx-5"
+                                id="monthlydropdown"
+                                data-toggle="dropdown"
+                                data-managedby="2"
+                                aria-expanded="false"
+                                style="display: none;">
+                                {{#str}} monthly_0, report_elucidsitereport {{/str}}
+                            </button>
+                            <div class="dropdown-menu"
+                                aria-labelledby="monthlydropdown"
+                                role="menu">
+                                <a class="dropdown-item"
+                                    href="javascript:void(0)"
+                                    data-value="0"
+                                    role="menuitem">
+                                    {{#str}} monthly_0, report_elucidsitereport {{/str}}
+                                </a>
+                                <a class="dropdown-item"
+                                    href="javascript:void(0)"
+                                    data-value="1"
+                                    role="menuitem">
+                                    {{#str}} monthly_1, report_elucidsitereport {{/str}}
+                                </a>
+                                <a class="dropdown-item"
+                                    href="javascript:void(0)"
+                                    data-value="2"
+                                    role="menuitem">
+                                    {{#str}} monthly_2, report_elucidsitereport {{/str}}
+                                </a>
+                            </div>
+                        </span>
+
+                        {{! Toggle switch }}
+                        <div class="my-auto px-5 ml-auto">
+                            <label class="esr-switch" title="Enable/Disable email" for="esr-toggle-">
+                                <input id="esr-toggle-" type="checkbox" value="1" name="esremailenable" checked="checked">
+                                <div class="switch-container esr-enable-disable-form">
+                                    <div class="switch-background bg-primary"></div>
+                                    <div class="switch-lever bg-primary"></div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="w-full my-10">
+                        {{! Name field }}
+                        <div class="mb-5">
+                            <i class="icon fa fa-calendar-o my-auto" aria-hidden="true"></i>
+                            <span>Name</span>
+                        </div>
+                        <input type="text" value="" name="esrname" class="w-full mb-10">
+
+                        {{! Recepient field }}
+                        <div class="mb-5">
+                            <i class="icon fa fa-user my-auto" aria-hidden="true"></i>
+                            <span>Recepient</span>
+                        </div>
+                        <input type="text" value="" name="esrrecepient" class="w-full mb-10">
+                        
+                        {{! Subject fields }}
+                        <div class="mb-5">
+                            <span>Subject</span>
+                        </div>
+                        <input type="text" value="" name="esrsubject" class="w-full mb-10">
+
+                        {{! Message Fields }}
+                        <div class="mb-5">
+                            <span>Message</span>
+                        </div>
+                        <textarea value="" name="esrmessage" class="form-control w-full mb-10" rows="4"></textarea>
+
+                        {{! Error Box }}
+                        <div class="esr-form-error" style="display: none;"></div>
+
+                        {{! Hidden Input Fileds }}
+                        <input value="0" type="text" id="esr-sendduration" name="esrduration" class="d-none">
+                        <input value="0" type="text" id="esr-sendtime" name="esrtime" class="d-none">
+                        <input value="-1" type="text" id="esr-id" name="esrid" class="d-none">
+                        <input type="text" id="esr-blockname" name="blockname" class="d-none">
+                        <input type="text" id="esr-region" name="region" class="d-none">
+                    </div>
+                </div>
+                <div class="modal-footer px-0 py-5" data-region="footer">
+                    <button class="btn btn-primary" type="button" data-action="save">
+                        {{#str}} schedule, report_elucidsitereport {{/str}}
+                    </button>
+                    <button class="btn btn-secondary" type="button" data-action="cancel">Reset</button>
+                </div>
+            </form>
+        </div>
+        <div class="tab-pane" id="listemailstab" role="tabpanel">
+            <div class="table-responsive">
+                <table id="esr-shceduled-emails" class="table table-hover w-full" data-role="content" data-plugin="selectable" data-row-selectable="true">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Name</th>
+                            <th>Report</th>
+                            <th>Next run</th>
+                            <th>Frequency</th>
+                            <th>Manage</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

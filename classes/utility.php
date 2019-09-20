@@ -25,6 +25,7 @@
 
 namespace report_elucidsitereport;
 
+use stdClass;
 use completion_info;
 use context_course;
 use MoodleQuickForm;
@@ -519,5 +520,119 @@ class utility {
             "timecreated DESC"
         );
         return $records;
+    }
+
+    /* Get Scheduled emails Tabs */
+    public function get_scheduled_emails($data) {
+        $response = new stdClass();
+        $response->error = false;
+        $response->data = array();
+
+        $data = array(
+            "emailenalble" => '',
+            "name" => 'Teste Test Etse',
+            "report" => 'activeusers',
+            "nextrun" => '20 Sep 19',
+            "frequency" => 'Everyday 04:30 PM',
+            "manage" => ''
+        );
+
+        $response->data = self::get_schedule_emaillist();
+        return $response;
+    }
+
+
+    /**
+     * Get Scheduled email list
+     * @return [type] [description]
+     */
+    public static function get_schedule_emaillist() {
+        global $DB;
+
+        $emails = array();
+        $rec = $DB->get_records('elucidsitereport_schedemails');
+        foreach($rec as $key => $val) {
+            // If it dosent have email data
+            if (!$emaildata = json_decode($val->emaildata)) {
+                continue;
+            }
+
+            // If dta is not an array
+            if (!is_array($emaildata)) {
+                continue;
+            }
+
+            // If everythings is ok then
+            foreach($emaildata as $key => $emailinfo) {
+                $data = array();
+                $data["esrtoggle"] = create_toggle_switch_for_emails(
+                    $key,
+                    $val->blockname,
+                    $emailinfo->esremailenable
+                );
+                $data["esrname"] = $emailinfo->esrname;
+                $data["esrnextrun"] = date("d M y", $emailinfo->esrnextrun);
+                $data["esrfrequency"] = $emailinfo->esrfrequency;
+                $data["esrcomponent"] = $val->blockname;
+                $data["esrmanage"] = create_manage_icons_for_emaillist(
+                    $key,
+                    $val->blockname,
+                    $val->component,
+                    $emailinfo->esremailenable
+                );
+                $emails[] = $data;
+            }
+        }
+        return $emails;
+    }
+
+    /**
+     * Get Shceduled email details by id
+     * @return [type] [description]
+     */
+    public static function get_scheduled_email_details($data) {
+        global $DB;
+
+        // Get data from table
+        $table = "elucidsitereport_schedemails";
+        $sql = "SELECT * FROM {elucidsitereport_schedemails}
+            WHERE blockname = :blockname
+            AND component = :component";
+        $params = array(
+            "blockname" => $data->blockname,
+            "component" => $data->region
+        );
+
+        $response = new stdClass();
+        if (!$rec = $DB->get_record_sql($sql, $params)) {
+            $response->error = true;
+            $response->errormsg = "Record not found";
+            return $response;
+        }
+
+        // If it dosent have email data
+        if (!$emaildata = json_decode($rec->emaildata)) {
+            $response->error = true;
+            $response->errormsg = "Json decode failed";
+            return $response;
+        }
+
+        // If dta is not an array
+        if (!is_array($emaildata)) {
+            $response->error = true;
+            $response->errormsg = "Email data is not an array";
+            return $response;
+        }
+
+        if (!isset($emaildata[$data->id])) {
+            $response->error = true;
+            $response->errormsg = "Schedule email not exist";
+            return $response;
+        }
+
+        $response->error = false;
+        $emaildata[$data->id]->esrid = $data->id;
+        $response->data = $emaildata[$data->id];
+        return $response;
     }
 }
