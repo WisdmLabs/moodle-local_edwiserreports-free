@@ -313,7 +313,7 @@ class export {
      * @param [string] $destination location to create file
      * @return [string] File Path
      */
-    private function generate_pdf_file($filename, $data, $dest) {
+    public function generate_pdf_file($filename, $data, $dest) {
         global $CFG;
         $pdf = new pdf();
 

@@ -35,4 +35,13 @@ $tasks = [
         'month' => '*',
         'dayofweek' => '*',
     ],
+    [
+        'classname' => 'report_elucidsitereport\task\send_scheduled_emails',
+        'blocking' => 0,
+        'minute' => '*',
+        'hour' => '*',
+        'day' => '*',
+        'month' => '*',
+        'dayofweek' => '*',
+    ],
 ];

@@ -297,6 +297,8 @@ $string['updatingrecordended'] = "Updating reports and analytics record is ended
 $string['updatinguserrecord'] = 'Updating userid {$a->userid} in courseid {$a->courseid}';
 $string['gettinguserrecord'] = 'Getting userid {$a->userid} in courseid {$a->courseid}';
 $string['creatinguserrecord'] = 'Create records for users completions';
+$string['sendscheduledemails'] = 'Send Scheduled Emails';
+$string['sendingscheduledemails'] = 'Sending Scheduled Emails...';
 
 /* Cache Strings */
 $string['cachedef_elucidsitereport'] = 'This is the caches of elucid site report';
