@@ -485,7 +485,7 @@ function get_email_schedule_header($emailenable, $duration, $time) {
     // Monthly Dropdown
     $out .= html_writer::span(get_monthly_dropdown($dayofmonth, $monthly), "monthly-dropdown dropdown");
     
-    $out .= create_toggle_switch_for_emails("", $emailenable, "ml-auto");
+    $out .= create_toggle_switch_for_emails("", $emailenable, "", "", "ml-auto");
     // End Header Div 
     $out .= html_writer::end_div();
 
@@ -663,7 +663,7 @@ function get_schedule_emaillist() {
         // If everythings is ok then
         foreach($emaildata as $key => $emailinfo) {
             $data = array();
-            $data["esrselect"] = create_toggle_switch_for_emails($val->blockname, $emailinfo->esremailenable);
+            $data["esrselect"] = create_toggle_switch_for_emails($key, $emailinfo->esremailenable, $val->blockname, $val->component);
             $data["esrname"] = $emailinfo->esrname;
             $data["esrnextrun"] = date("d M y", $emailinfo->esrnextrun);
             $data["esrfrequency"] = $emailinfo->esrfrequency;
@@ -717,7 +717,16 @@ function create_manage_icons_for_emaillist($id, $blockname, $region) {
             "data-sesskey" => sesskey()
         )
     );
-    $manage .= html_writer::link('javascript:void(0)', '<i class="fa fa-trash mx-1 text-danger"></i>');
+    $manage .= html_writer::link('javascript:void(0)',
+        '<i class="fa fa-trash mx-1 text-danger"></i>',
+        array(
+            "class" => "esr-email-sched-delete",
+            "data-blockname" => $blockname,
+            "data-region" => $region,
+            "data-id" => $id,
+            "data-sesskey" => sesskey()
+        )
+    );
     
     return $manage;
 }
@@ -726,12 +735,17 @@ function create_manage_icons_for_emaillist($id, $blockname, $region) {
  * Create toggle switch to enable disable emails
  * @return [string] Html string for toggle switch
  */
-function create_toggle_switch_for_emails($id, $emailenable, $customclass = '') {
+function create_toggle_switch_for_emails($id, $emailenable, $blockname, $region, $customclass = '') {
+    $toggleid = "esr-toggle-" . $blockname . "-" . $region . "-" . $id;
     $switchparams = array(
-        "id" => "esr-toggle-" . $id,
+        "id" => $toggleid,
         "type" => "checkbox",
         "value" => true,
-        "name" => "esr-emailenable"
+        "name" => "esr-emailenable",
+        "data-sesskey" => sesskey(),
+        "data-blockname" => $blockname,
+        "data-region" => $region,
+        "data-id" => $id,
     );
 
     if ($emailenable) {
@@ -746,7 +760,7 @@ function create_toggle_switch_for_emails($id, $emailenable, $customclass = '') {
             html_writer::div("", "switch-background bg-primary").
             html_writer::div("", "switch-lever bg-primary"),
             "switch-container esr-enable-disable-form"
-        ), "esr-toggle-" . $id, true,
+        ), $toggleid, true,
         array(
             "class" => "esr-switch",
             "title" => "Enable/Disable email"

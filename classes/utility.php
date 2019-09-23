@@ -527,16 +527,6 @@ class utility {
         $response = new stdClass();
         $response->error = false;
         $response->data = array();
-
-        $data = array(
-            "emailenalble" => '',
-            "name" => 'Teste Test Etse',
-            "report" => 'activeusers',
-            "nextrun" => '20 Sep 19',
-            "frequency" => 'Everyday 04:30 PM',
-            "manage" => ''
-        );
-
         $response->data = self::get_schedule_emaillist();
         return $response;
     }
@@ -567,8 +557,9 @@ class utility {
                 $data = array();
                 $data["esrtoggle"] = create_toggle_switch_for_emails(
                     $key,
+                    $emailinfo->esremailenable,
                     $val->blockname,
-                    $emailinfo->esremailenable
+                    $val->component
                 );
                 $data["esrname"] = $emailinfo->esrname;
                 $data["esrnextrun"] = date("d M y", $emailinfo->esrnextrun);
@@ -633,6 +624,118 @@ class utility {
         $response->error = false;
         $emaildata[$data->id]->esrid = $data->id;
         $response->data = $emaildata[$data->id];
+        return $response;
+    }
+
+    /**
+     * Delete Shceduled emails
+     * @param  [object] $data paramters to delete scheduled emails
+     */
+    public static function delete_scheduled_email($data) {
+        global $DB;
+
+        // Get data from table
+        $table = "elucidsitereport_schedemails";
+        $sql = "SELECT * FROM {elucidsitereport_schedemails}
+            WHERE blockname = :blockname
+            AND component = :component";
+        $params = array(
+            "blockname" => $data->blockname,
+            "component" => $data->region
+        );
+
+        $response = new stdClass();
+        if (!$rec = $DB->get_record_sql($sql, $params)) {
+            $response->error = true;
+            $response->errormsg = "Record not found";
+            return $response;
+        }
+
+        // If it dosent have email data
+        if (!$emaildata = json_decode($rec->emaildata)) {
+            $response->error = true;
+            $response->errormsg = "Json decode failed";
+            return $response;
+        }
+
+        // If dta is not an array
+        if (!is_array($emaildata)) {
+            $response->error = true;
+            $response->errormsg = "Email data is not an array";
+            return $response;
+        }
+
+        if (!isset($emaildata[$data->id])) {
+            $response->error = true;
+            $response->errormsg = "Schedule email not exist";
+            return $response;
+        }
+
+        $response->error = false;
+        unset($emaildata[$data->id]);
+
+        $rec->emaildata = json_encode(array_values($emaildata));
+
+        // Updating the record
+        $DB->update_record($table, $rec);
+        return $response;
+    }
+
+    /**
+     * Change Shceduled emails
+     * @param  [object] $data paramters to delete scheduled emails
+     */
+    public static function change_scheduled_email_status($data) {
+        global $DB;
+
+        // Get data from table
+        $table = "elucidsitereport_schedemails";
+        $sql = "SELECT * FROM {elucidsitereport_schedemails}
+            WHERE blockname = :blockname
+            AND component = :component";
+        $params = array(
+            "blockname" => $data->blockname,
+            "component" => $data->region
+        );
+
+        $response = new stdClass();
+        if (!$rec = $DB->get_record_sql($sql, $params)) {
+            $response->error = true;
+            $response->errormsg = "Record not found";
+            return $response;
+        }
+
+        // If it dosent have email data
+        if (!$emaildata = json_decode($rec->emaildata)) {
+            $response->error = true;
+            $response->errormsg = "Json decode failed";
+            return $response;
+        }
+
+        // If dta is not an array
+        if (!is_array($emaildata)) {
+            $response->error = true;
+            $response->errormsg = "Email data is not an array";
+            return $response;
+        }
+
+        if (!isset($emaildata[$data->id])) {
+            $response->error = true;
+            $response->errormsg = "Schedule email not exist";
+            return $response;
+        }
+
+        $response->error = false;
+        if ($status = $emaildata[$data->id]->esremailenable) {
+            $emaildata[$data->id]->esremailenable = false;
+        } else {
+            $emaildata[$data->id]->esremailenable = true;
+        }
+
+        $rec->emaildata = json_encode(array_values($emaildata));
+
+        // Updating the record
+        $DB->update_record($table, $rec);
         return $response;
     }
 }

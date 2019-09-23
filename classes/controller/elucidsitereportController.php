@@ -127,4 +127,14 @@ class elucidsitereportController extends controllerAbstract
         $data = json_decode(required_param('data', PARAM_RAW));
         echo json_encode(\report_elucidsitereport\utility::get_scheduled_email_details($data));
     }
+
+    public function delete_scheduled_email_ajax_action() {
+        $data = json_decode(required_param('data', PARAM_RAW));
+        echo json_encode(\report_elucidsitereport\utility::delete_scheduled_email($data));
+    }
+
+    public function change_scheduled_email_status_ajax_action() {
+        $data = json_decode(required_param('data', PARAM_RAW));
+        echo json_encode(\report_elucidsitereport\utility::change_scheduled_email_status($data));
+    }
 }

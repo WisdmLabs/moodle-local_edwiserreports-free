@@ -40,6 +40,8 @@ define([
 
     // For email schedule setting
     var settingBtn = "#listemailstab .esr-email-sched-setting";
+    var deleteBtn = "#listemailstab .esr-email-sched-delete";
+    var emailListToggleSwitch = "#listemailstab [id^='esr-toggle-']";
 
     // Messaged for email schedule
     var loader = '<div class="w-full text-center"><i class="fa fa-spinner fa-spin" aria-hidden="true"></i></div>'
@@ -273,63 +275,148 @@ define([
                 action: 'get_scheduled_email_detail_ajax',
                 sesskey: $(_this).data("sesskey"),
                 data : JSON.stringify({
-                    id : $(_this).data("id"),
-                    blockname : $(_this).data("blockname"),
-                    region : $(_this).data("region")
+                    id : id,
+                    blockname : blockname,
+                    region : region
                 })
             }
         }).done(function(response) {
             if (!response.error) {
-                var esrDurationVal = null;
-                var esrTimeVal = null;
-
-                $.each(response.data, function(idx, val) {
-                    if (typeof val === 'object') {
-                        // Set block value name
-                        root.find("#esr-blockname").val(val.blockname);
-                        root.find("#esr-region").val(val.region);
-                    } else if (idx === "esrduration") {
-                        var esrDuration = '[aria-labelledby="durationcount"] .dropdown-item[data-value="' + val + '"]';
-                        esrDurationVal = val;
-                        // Trigger click event
-                        root.find(esrDuration).click();
-                    } else if (idx === "esrtime") {
-                        esrTimeVal = val;
-                    } else {
-                        // Set values for input text
-                        $('[name="' + idx + '"]').val(val);
-                    }
-
-                });
-
-                // Subdropdown click event
-                var subSelectedDropdpown = '.dropdown-item[data-value="' + esrTimeVal + '"]';
-                
-                // Show only selected dropdown
-                var subDropdown = null;
-                switch(esrDurationVal) {
-                    case "1": // Weekly
-                        console.log("test");
-                        subDropdown = $(".weekly-dropdown");
-                        break;
-                    case "2": // Monthly
-                        subDropdown = $(".monthly-dropdown");
-                        break;
-                    default: // Daily
-                        subDropdown = $(".daily-dropdown");
-                }
-
-                // Trigger click event
-                subDropdown.find(subSelectedDropdpown).click();
+                set_email_shedule_form_values(response, _this, root);
 
                 root.find(tabs).removeClass("active show");
                 root.find(formTab).addClass("active show");
             } else {
                 console.log(response);
             }
-            console.log(response);
         }).fail(function(error) {
             console.log(error);
+        });
+    }
+
+    /**
+     * Set email shcedule values in form
+     * @param {[type]} response [description]
+     */
+    function set_email_shedule_form_values(response, _this, root) {
+        var esrDurationVal = null;
+        var esrTimeVal = null;
+
+        $.each(response.data, function(idx, val) {
+            if (typeof val === 'object') {
+                // Set block value name
+                root.find("#esr-blockname").val(val.blockname);
+                root.find("#esr-region").val(val.region);
+            } else if (idx === "esrduration") {
+                var esrDuration = '[aria-labelledby="durationcount"] .dropdown-item[data-value="' + val + '"]';
+                esrDurationVal = val;
+                // Trigger click event
+                root.find(esrDuration).click();
+            } else if (idx === "esrtime") {
+                esrTimeVal = val;
+            } else if (idx === "esremailenable") {
+                var checkbox = $('input[name="' + idx + '"]');
+                if (val) {
+                    checkbox.prop("checked", true);
+                } else {
+                    checkbox.prop("checked", false);
+                }
+            } else {
+                // Set values for input text
+                $('[name="' + idx + '"]').val(val);
+            }
+
+        });
+
+        // Subdropdown click event
+        var subSelectedDropdpown = '.dropdown-item[data-value="' + esrTimeVal + '"]';
+        
+        // Show only selected dropdown
+        var subDropdown = null;
+        switch(esrDurationVal) {
+            case "1": // Weekly
+                subDropdown = $(".weekly-dropdown");
+                break;
+            case "2": // Monthly
+                subDropdown = $(".monthly-dropdown");
+                break;
+            default: // Daily
+                subDropdown = $(".daily-dropdown");
+        }
+
+        // Trigger click event
+        subDropdown.find(subSelectedDropdpown).click();
+    }
+
+    /**
+     * Delete Scheduled email
+     * @param  {[type]} _this [description]
+     * @param  {[type]} root  [description]
+     * @param  {[type]} modal  [description]
+     * @return {[type]}       [description]
+     */
+    function email_schedule_delete_init(_this, root, modal) {
+        var id = $(_this).data("id");
+        var blockname = $(_this).data("blockname");
+        var region = $(_this).data("region");
+
+        $.ajax({
+            url: v.requestUrl,
+            type: v.requestType,
+            sesskey : $(_this).data("sesskey"),
+            data: {
+                action: 'delete_scheduled_email_ajax',
+                sesskey: $(_this).data("sesskey"),
+                data : JSON.stringify({
+                    id : id,
+                    blockname : blockname,
+                    region : region
+                })
+            }
+        }).done(function(response) {
+            if (!response.error) {
+                if (emailListTable) {
+                    emailListTable.destroy();
+                }
+                emailListTable = render_all_scheduled_emails(_this, modal);
+                errorBox.html(successmsg);
+            }
+        });
+    }
+
+    /**
+     * Change scheduled email status
+     * @param  {[type]} _this [description]
+     * @param  {[type]} root  [description]
+     * @param  {[type]} modal  [description]
+     * @return {[type]}       [description]
+     */
+    function change_scheduled_email_status_init(_this, root, modal) {
+        var id = $(_this).data("id");
+        var blockname = $(_this).data("blockname");
+        var region = $(_this).data("region");
+
+        $.ajax({
+            url: v.requestUrl,
+            type: v.requestType,
+            sesskey : $(_this).data("sesskey"),
+            data: {
+                action: 'change_scheduled_email_status_ajax',
+                sesskey: $(_this).data("sesskey"),
+                data : JSON.stringify({
+                    id : id,
+                    blockname : blockname,
+                    region : region
+                })
+            }
+        }).done(function(response) {
+            if (!response.error) {
+                if (emailListTable) {
+                    emailListTable.destroy();
+                }
+                emailListTable = render_all_scheduled_emails(_this, modal);
+                errorBox.html(successmsg);
+            }
         });
     }
 
@@ -356,6 +443,16 @@ define([
         // When setting button clicked then
         root.on('click', settingBtn, function() {
             email_schedule_setting_init(this, root);
+        });
+
+        // When delete button clicked then
+        root.on('click', deleteBtn, function() {
+            email_schedule_delete_init(this, root, modal);
+        });
+
+        // When toggle switch clicked then
+        root.on('change', emailListToggleSwitch, function() {
+            change_scheduled_email_status_init(this, root, modal);
         });
 
         // On save perform operation
