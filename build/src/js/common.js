@@ -47,6 +47,8 @@ define([
     var loader = '<div class="w-full text-center"><i class="fa fa-spinner fa-spin" aria-hidden="true"></i></div>'
     var errormsg = '<div class="alert alert-danger"><b>ERROR:</b> Error while scheduling email<div>';
     var successmsg = '<div class="alert alert-success"><b>Success:</b> Email scheduled successfully<div>';
+    var emptyerrormsg = '<div class="alert alert-danger"><b>ERROR:</b> Name and Recepient Fields can not be empty<div>';
+    var emailinvaliderrormsg = '<div class="alert alert-danger"><b>ERROR:</b> Invalid email adderesses space not allowed<div>';
 
     var tabs = '[data-plugin="tabs"] .nav-link, [data-plugin="tabs"] .tab-pane';
     var formTab = '[aria-controls="scheduletab"], #scheduletab';
@@ -173,41 +175,66 @@ define([
     }
 
     /**
+     * Validate email shceduled form
+     * @param  {object} form Form object
+     * @param  {object} Error Box to show error
+     * @return {boolean} Return form validation status
+     */
+    function validate_email_scheduled_form(form, errorBox) {
+        var esrname = form.find('[name="esrname"]').val();
+        var esrrecepient = form.find('[name="esrrecepient"]').val();
+        if (esrname == "" || esrrecepient == "") {
+            errorBox.html(emptyerrormsg).show();
+            return false;
+        }
+
+        var re = /^(\s?[^\s,]+@[^\s,]+\.[^\s,]+\s?,)*(\s?[^\s,]+@[^\s,]+\.[^\s,]+)$/g;
+        if (!re.test(esrrecepient)) {
+            errorBox.html(emailinvaliderrormsg).show();
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Save scheduled emails
      * @param  {object} root Modal root object
      */
-    function save_schedule_email(_this, root, modal) {
+    function save_schedule_email_init(_this, root, modal) {
         // On save perform operation
         root.on('click', '[data-action="save"]', function() {
             var errorBox = root.find(".esr-form-error");
             errorBox.html(loader).show();
 
-            var filter = v.getUrlParams(_this.href, "filter");
-            // Send ajax to save the scheduled email
-            $.ajax({
-                url: M.cfg.wwwroot + "/report/elucidsitereport/download.php?format=emailscheduled&filter=" + filter,
-                type: "POST",
-                data: root.find("form").serialize()
-            }).done(function(response) {
-                response = $.parseJSON(response);
+            if (validate_email_scheduled_form(root.find("form"), errorBox)) {
+                var filter = v.getUrlParams(_this.href, "filter");
+                // Send ajax to save the scheduled email
+                $.ajax({
+                    url: M.cfg.wwwroot + "/report/elucidsitereport/download.php?format=emailscheduled&filter=" + filter,
+                    type: "POST",
+                    data: root.find("form").serialize()
+                }).done(function(response) {
+                    response = $.parseJSON(response);
 
-                // If error then log the error
-                if (response.error) {
-                    errorBox.html(errormsg);
-                    console.log(response.error);
-                } else {
-                    if (emailListTable) {
-                        emailListTable.destroy();
+                    // If error then log the error
+                    if (response.error) {
+                        errorBox.html(errormsg);
+                        console.log(response.error);
+                    } else {
+                        if (emailListTable) {
+                            emailListTable.destroy();
+                        }
+                        emailListTable = render_all_scheduled_emails(_this, modal);
+                        errorBox.html(successmsg);
                     }
-                    emailListTable = render_all_scheduled_emails(_this, modal);
-                    errorBox.html(successmsg);
-                }
-            }).fail(function(error) {
-                errorBox.html(errormsg);
-                console.log(error);
-            }).always(function() {
-                errorBox.delay(3000).fadeOut('slow');
-            });
+                }).fail(function(error) {
+                    errorBox.html(errormsg);
+                    console.log(error);
+                }).always(function() {
+                    errorBox.delay(3000).fadeOut('slow');
+                });
+            }
         });
     }
 
@@ -456,7 +483,7 @@ define([
         });
 
         // On save perform operation
-        save_schedule_email(_this, root, modal);
+        save_schedule_email_init(_this, root, modal);
     }
 
     /**
