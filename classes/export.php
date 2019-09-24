@@ -276,7 +276,6 @@ class export {
             'esrtime' => optional_param("esrtime", 0, PARAM_TEXT),
             'esrlastrun' => false,
             'esrnextrun' => false,
-            'esrnextrun' => false,
             'reportparams' => array(
                 'filter' => optional_param("filter", false, PARAM_TEXT),
                 'blockname' => optional_param("blockname", false, PARAM_TEXT),

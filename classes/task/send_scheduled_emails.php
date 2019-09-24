@@ -69,18 +69,25 @@ class send_scheduled_emails extends \core\task\scheduled_task {
                 continue;
             }
 
-            // Send emails
+            // If empty then continue
+            if (empty($emaildata)) {
+                continue;
+            }
+
             foreach ($emaildata as $k => $email) {
                 // Not scheduled for this time
                 if ($timenow < $email->esrnextrun) {
+                    echo "Not scheduled yet";
                     continue;
                 }
 
                 if (!$email->esremailenable) {
+                    echo "Email Disable";
                     continue;
                 }
 
                 if (!isset($email->reportparams)) {
+                    echo "No reports param";
                     continue;
                 }
 
@@ -91,13 +98,23 @@ class send_scheduled_emails extends \core\task\scheduled_task {
                 $export = new export("email", $region, $blockname);
                 $data = $export->get_exportable_data($filter);
 
+                // If data exist then send emails
                 if ($data) {
                     mtrace(get_string('sendingscheduledemails', 'report_elucidsitereport'));
                     ob_start();
+
+                    // If email successfully sent
                     $this->send_sceduled_email($export, $data, $email);
+                    $email->esrlastrun = time();
+                    list($frequency, $schedtime) = get_email_schedule_next_run($email->esrduration, $email->esrtime);
+                    $email->esrnextrun = $schedtime;
+                    $emaildata[$k] = $email;
                     ob_clean();
                 }
             }
+
+            $record->emaildata = json_encode($emaildata);
+            $DB->update_record($table, $record);
         }
     }
 

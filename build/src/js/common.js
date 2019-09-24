@@ -236,6 +236,11 @@ define([
                 });
             }
         });
+
+        // Reset scheduled form
+        root.on('click', '[data-action="cancel"]', function() {
+            root.find('[name^=esr]').val("");
+        });
     }
 
     /**
