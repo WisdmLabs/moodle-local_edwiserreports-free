@@ -780,7 +780,7 @@ function create_toggle_switch_for_emails($id, $emailenable, $blockname, $region,
  */
 function get_email_schedule_next_run($duration, $time) {
     $timenow = time();
-$frequency = '';
+    $frequency = '';
     // According to duation and time calculate the next scheduled time
     switch($duration) {
         case ESR_WEEKLY_EMAIL:
@@ -792,18 +792,20 @@ $frequency = '';
             $frequency = get_string("everyweeks", "report_elucidsitereport", array("day" => $day));
             break;
         case ESR_MONTHLY_EMAIL:
-            if ($time == 1) {
-                $monthstr = date('15 M Y', $timenow);
-            } else if ($time == 2) {
-                $monthstr = date("d M Y", strtotime('last day of this month'));
-            } else {
-                $monthstr = date('1 M Y', $timenow);
-                $day = "start";
+            // Get last date of the month
+            $lastdate = date("d", strtotime('last day of this month'));
+            $day = $time;
+
+            // If it is greater then then assign as time
+            if ($time > (int) $lastdate) {
+                $time = (int) $lastdate;
             }
+
+            // Get month string
+            $monthstr = date($time . ' M Y', $timenow);
 
             // Calculate time
             $schedtime = strtotime($monthstr);
-            $day = get_string("monthly_" . $time, "report_elucidsitereport");
             $frequency = get_string("everymonths", "report_elucidsitereport",array("time" => $day));
 
             // If time has passed the add one month
@@ -813,27 +815,21 @@ $frequency = '';
             break;
 
         default: // Default daily emails
-            switch($time) {
-                case ESR_1000AM: // 10:00 AM
-                    $dailystr = date("d M Y 10:00", $timenow);
-                    $day = "10:00 AM";
-                    break;
-                case ESR_0430PM: // 04:30 PM
-                    $dailystr = date("d M Y 16:30", $timenow);
-                    $day = "04:30 PM";
-                    break;
-                case ESR_1030PM: // 10:30 PM
-                    $dailystr = date("d M Y 22:00", $timenow);
-                    $day = "10:30 PM";
-                    break;
-                default: // Default morning 06:30 AM
-                    $dailystr = date("d M Y 06:30", $timenow);
-                    $day = "06:30 AM";
-            }
+            $dailystr = date("d M Y", $timenow);
 
             // Calculate time
-            $schedtime = strtotime($dailystr);
+            $schedtime = strtotime($dailystr) + $time * 60 * 60;
+
+            if ($time < 10) {
+                $day = get_string("time0".$time, "report_elucidsitereport");
+            } else {
+                $day = get_string("time".$time, "report_elucidsitereport");
+            }
+
+            // Get frequency string
             $frequency = get_string("everydays", "report_elucidsitereport",array("time" => $day));
+
+            // If scheduledtime has been passed then add one day
             if ($timenow > $schedtime) {
                 $schedtime = $schedtime + ONEDAY;
             }

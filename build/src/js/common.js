@@ -109,7 +109,7 @@ define([
         $(document).on("click", scheduledEmailDropdown, function(e) {
             e.preventDefault();
             var _this = this;
-            var context = {};
+            var context = v.getScheduledEmailFormContext();
 
             ModalFactory.create({
                 title: 'Schedule Emails',
@@ -170,13 +170,32 @@ define([
             oLanguage : {
                 sEmptyTable : "There is no scheduled emails"
             },
+            order : [[ 1, "asc" ]],
             columns : [
-                { "data": "esrtoggle" },
-                { "data": "esrname" }, 
-                { "data": "esrcomponent" },
-                { "data": "esrnextrun" },
-                { "data": "esrfrequency" },
-                { "data": "esrmanage" }
+                {
+                    "data" : "esrtoggle",
+                    "orderable" : false
+                },
+                {
+                    "data" : "esrname",
+                    "orderable" : true
+                }, 
+                {
+                    "data" : "esrcomponent",
+                    "orderable" : true
+                },
+                {
+                    "data" : "esrnextrun",
+                    "orderable" : true
+                },
+                {
+                    "data" : "esrfrequency",
+                    "orderable" : true
+                },
+                {
+                    "data" : "esrmanage",
+                    "orderable" : false
+                }
             ],
             responsive : true,
             bInfo : false,

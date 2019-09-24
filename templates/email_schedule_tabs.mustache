@@ -120,69 +120,41 @@
                                 data-managedby="0"
                                 aria-expanded="false"
                                 style="">
-                                {{#str}} times_0, report_elucidsitereport {{/str}}
+                                {{#str}} time00, report_elucidsitereport {{/str}}
                             </button>
                             <div class="dropdown-menu"
                                 aria-labelledby="timesdropdown"
-                                role="menu">
+                                role="menu" style="max-height: 300px;overflow-y: scroll;">
+                                {{#timesdropdown}}
                                 <a class="dropdown-item"
                                     href="javascript:void(0)"
-                                    data-value="0"
+                                    data-value="{{value}}"
                                     role="menuitem">
-                                    {{#str}} times_0, report_elucidsitereport {{/str}}
+                                    {{timestring}}
                                 </a>
-                                <a class="dropdown-item"
-                                    href="javascript:void(0)"
-                                    data-value="1"
-                                    role="menuitem">
-                                    {{#str}} times_1, report_elucidsitereport {{/str}}
-                                </a>
-                                <a class="dropdown-item"
-                                    href="javascript:void(0)"
-                                    data-value="2"
-                                    role="menuitem">
-                                    {{#str}} times_2, report_elucidsitereport {{/str}}
-                                </a>
-                                <a class="dropdown-item"
-                                    href="javascript:void(0)"
-                                    data-value="3"
-                                    role="menuitem">
-                                    {{#str}} times_3, report_elucidsitereport {{/str}}
-                                </a>
+                                {{/timesdropdown}}
                             </div>
                         </span>
                         <span class="monthly-dropdown dropdown">
-                            <button data-value="0"
+                            <button data-value="1"
                                 type="button"
                                 class="btn btn-default btn-sm dropdown-toggle mx-5"
                                 id="monthlydropdown"
                                 data-toggle="dropdown"
                                 data-managedby="2"
                                 aria-expanded="false"
-                                style="display: none;">
-                                {{#str}} monthly_0, report_elucidsitereport {{/str}}
-                            </button>
+                                style="display: none;">1</button>
                             <div class="dropdown-menu"
                                 aria-labelledby="monthlydropdown"
-                                role="menu">
+                                role="menu" style="max-height: 300px;overflow-y: scroll;">
+                                {{#daysdropdown}}
                                 <a class="dropdown-item"
                                     href="javascript:void(0)"
-                                    data-value="0"
+                                    data-value="{{value}}"
                                     role="menuitem">
-                                    {{#str}} monthly_0, report_elucidsitereport {{/str}}
+                                    {{string}}
                                 </a>
-                                <a class="dropdown-item"
-                                    href="javascript:void(0)"
-                                    data-value="1"
-                                    role="menuitem">
-                                    {{#str}} monthly_1, report_elucidsitereport {{/str}}
-                                </a>
-                                <a class="dropdown-item"
-                                    href="javascript:void(0)"
-                                    data-value="2"
-                                    role="menuitem">
-                                    {{#str}} monthly_2, report_elucidsitereport {{/str}}
-                                </a>
+                                {{/daysdropdown}}
                             </div>
                         </span>
 
