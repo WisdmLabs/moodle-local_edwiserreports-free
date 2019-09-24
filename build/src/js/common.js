@@ -137,11 +137,21 @@ define([
 
     /**
      * Render all emails in modal
-     * @param  {object} _this Anchor tag object
-     * @param  {Object} modal Modal object
+     * @param {object} _this Anchor tag object
+     * @param {Object} modal Modal object
      */
     function render_all_scheduled_emails(_this, modal) {
-        return modal.getRoot().find("#esr-shceduled-emails").DataTable({
+        var table = modal.getRoot().find("#esr-shceduled-emails");
+
+        // Resize event to adjust datatable when click on the all list tab
+        // Not able to call resize when ajax completed
+        // So got the temporary solution
+        $(document).on('click', '[aria-controls="listemailstab"]', function() {
+            $(window).resize();
+        });
+
+        // Create datatable
+        return table.DataTable({
             ajax : {
                 url: v.requestUrl,
                 type: v.requestType,
@@ -153,7 +163,7 @@ define([
                         href : $(_this).attr("href"),
                         region : $(_this).attr("data-region")
                     })
-                } 
+                }
             },
             scrollY : "300px",
             scrollCollapse : true,
@@ -168,6 +178,7 @@ define([
                 { "data": "esrfrequency" },
                 { "data": "esrmanage" }
             ],
+            responsive : true,
             bInfo : false,
             lengthChange : false,
             paging :   false

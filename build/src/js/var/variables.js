@@ -190,7 +190,7 @@ define(['report_elucidsitereport/variables'], function(V) {
         // Get URL Params
         getUrlParams: function (url, paramKey) {
             var vars = {};
-            var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+            var parts = url.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
                 vars[key] = value;
             });
             return vars[paramKey];
