@@ -132,8 +132,8 @@ class send_scheduled_emails extends \core\task\scheduled_task {
         $senduser = core_user::get_noreply_user();
 
         // Generate file to send emails
-        $filename = $region . '_' . $blockname . '.pdf';
-        $filepath = $export->generate_pdf_file($filename, $data, "F");
+        $filename = $region . '_' . $blockname . '.csv';
+        $filepath = $export->generate_csv_file($filename, $data, "F");
 
         // Get email data from submited form
         $emailids = trim($emailinfo->esrrecepient);

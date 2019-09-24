@@ -259,3 +259,41 @@ function report_elucidsitereport_output_fragment_schedule_email_dialog($args) {
 
     return $out;
 }
+
+/**
+ * Serves any files associated with the theme settings.
+ *
+ * @param stdClass $course
+ * @param stdClass $cm
+ * @param context $context
+ * @param string $filearea
+ * @param array $args
+ * @param bool $forcedownload
+ * @param array $options
+ * @return bool
+ */
+function report_elucidsitereport_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options = array())
+{
+    static $report;
+    $course = $course;
+    $cm = $cm;
+
+    if ($context->contextlevel != CONTEXT_USER) {
+        send_file_not_found();
+    }
+
+    $itemid = (int)array_shift($args);
+    if ($itemid != 0) {
+        send_file_not_found();
+    }
+
+    $relativepath = implode('/', $args);
+
+    $fullpath = "/{$context->id}/report_elucidsitereport/$filearea/$itemid/$relativepath";
+
+    $fs = get_file_storage();
+    if (!$file = $fs->get_file_by_hash(sha1($fullpath)) or $file->is_directory()) {
+        send_file_not_found();
+    }
+    send_stored_file($file, 0, 0, $forcedownload, $options);
+}

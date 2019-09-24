@@ -44,6 +44,9 @@ use html_table_row;
 use html_table_cell;
 use file_storage;
 use stdClass;
+use moodle_url;
+use context_system;
+use context_user;
 
 class export {
     /**
@@ -146,19 +149,86 @@ class export {
     }
 
     /**
+     * Genereate csv file to export
+     * @param  [string] $filename Filename
+     * @param  [array] $data Data to render
+     * @return [string] File path
+     */
+    public function generate_csv_file($filename, $data) {
+        global $USER, $CFG;
+
+        $context = context_user::instance($USER->id);
+        $fs = get_file_storage();
+ 
+        // Prepare file record object
+        $fileinfo = array(
+            'contextid' => $context->id, // ID of context
+            'component' => 'report_elucidsitereport',     // usually = table name
+            'filearea' => 'downloadreport',     // usually = table name
+            'itemid' => 0,               // usually = ID of row in table
+            'filepath' => '/',           // any path beginning and ending in /
+            'filename' => $filename); // any filename
+        
+        // Create csv data
+        $csvdata = csv_export_writer::print_array($data, 'comma', '"', true);
+
+        // Get file if already exist
+        $file = $fs->get_file(
+            $fileinfo['contextid'],
+            $fileinfo['component'],
+            $fileinfo['filearea'], 
+            $fileinfo['itemid'],
+            $fileinfo['filepath'],
+            $fileinfo['filename']
+        );
+
+        // Delete it if it exists
+        if ($file) {
+            $file->delete();
+        }
+
+        // Create file containing text 'hello world'
+        $fs->create_file_from_string($fileinfo, $csvdata);
+        $fileurl = moodle_url::make_pluginfile_url(
+            $fileinfo['contextid'],
+            $fileinfo['component'],
+            $fileinfo['filearea'],
+            $fileinfo['itemid'],
+            $fileinfo['filepath'],
+            $fileinfo['filename'],
+            false
+        );
+
+        // Copy content to temporary file
+        $filepath = $CFG->tempdir . '/' . $filename;
+        $file->copy_content_to($filepath);
+
+        // Delete file when content has been copied
+        if ($file) {
+            $file->delete();
+        }
+
+        return $filepath;
+    }
+
+    /**
      * Export data email to user
      * @param $filenme file name to export data
      * @param $data data to be export
      * @return Return status after export the data
      */
     public function data_export_email($filename, $data) {
-        global $USER;
+        global $CFG, $USER;
         $recuser = $USER;
         $senduser = core_user::get_noreply_user();
 
-        // Generate file to send emails
-        $filename .= '.pdf';
-        $filepath = $this->generate_pdf_file($filename, $data, "F");
+        // Generate csv file
+        $filename .= ".csv";
+        $filepath = $this->generate_csv_file($filename, $data);
+
+        // Generate PDF file
+        // $filename .= '.pdf';
+        // $filepath = $this->generate_pdf_file($filename, $data, "F");
 
         // Get email data from submited form
         $emailids = trim(optional_param("email", false, PARAM_TEXT));
