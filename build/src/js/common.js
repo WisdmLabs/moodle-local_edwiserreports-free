@@ -239,9 +239,11 @@ define([
 
             if (validate_email_scheduled_form(root.find("form"), errorBox)) {
                 var filter = v.getUrlParams(_this.href, "filter");
+                var cohortid = v.getUrlParams(_this.href, "cohortid");
+
                 // Send ajax to save the scheduled email
                 $.ajax({
-                    url: M.cfg.wwwroot + "/report/elucidsitereport/download.php?format=emailscheduled&filter=" + filter,
+                    url: M.cfg.wwwroot + "/report/elucidsitereport/download.php?format=emailscheduled&filter=" + filter + "&cohortid=" + cohortid,
                     type: "POST",
                     data: root.find("form").serialize()
                 }).done(function(response) {
