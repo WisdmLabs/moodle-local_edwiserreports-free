@@ -34,6 +34,7 @@ use html_writer;
 use html_table;
 use html_table_cell;
 use html_table_row;
+use moodle_url;
 
 /**
  * Class Course Engagement Block
@@ -126,10 +127,14 @@ class courseengage_block extends utility {
      * @return [object] 
      */
     public static function get_engagement($course, $cohortid, $values) {
-        global $DB;
+        global $CFG, $DB;
 
+        // Get course context
         $coursecontext = context_course::instance($course->id);
+
+        // Get only enrolled students
         $enrolledstudents = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+
         /* If cohort filter is there then select only cohort users */
         if($cohortid) {
             foreach($enrolledstudents as $key => $user) {
@@ -140,33 +145,51 @@ class courseengage_block extends utility {
             }
         }
 
+        // Create engagement object
         $engagement = new stdClass();
-        $engagement->coursename = $course->fullname;
+
+        // Generate course url
+        $courseurl = new moodle_url($CFG->wwwroot . "/course/view.php", array("id" => $course->id));
+
+        // Get course name with course url
+        $engagement->coursename = html_writer::link($courseurl, $course->fullname);
+
+        // Generate enrolments link
         $engagement->enrolment = self::get_engagement_attr(
             "enrolment",
             $course,
             count($enrolledstudents)
         );
+
+        // Generate visits link
         $engagement->visited = self::get_engagement_attr(
             "visited",
             $course,
             count(self::get_course_visites($course->id, $cohortid))
         );
+
+        // Generate activity started link
         $engagement->activitystart = self::get_engagement_attr(
             "activitystart",
             $course,
             $values["completiononemodule"]
         );
+
+        // Generate completed 50% of course link
         $engagement->completedhalf = self::get_engagement_attr(
             "completedhalf",
             $course,
             $values["completed50"]
         );
+
+        // Generate course completion link
         $engagement->coursecompleted = self::get_engagement_attr(
             "coursecompleted",
             $course,
             $values["completed100"]
         );
+
+        // Return engagement object
         return $engagement;
     }
 

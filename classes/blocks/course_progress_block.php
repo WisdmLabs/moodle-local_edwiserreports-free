@@ -34,6 +34,7 @@ use html_table_cell;
 use html_table_row;
 use core_user;
 use cache;
+use moodle_url;
 
 require_once($CFG->dirroot . "/cohort/lib.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/constants.php");
@@ -180,6 +181,7 @@ class course_progress_block extends utility {
         $completions = parent::get_course_completions();
         $response = array();
         foreach ($courses as $course) {
+            // Generate response object for a course
             $res = (object) array(
                 "completed100" => 0,
                 "completed80" => 0,
@@ -190,10 +192,20 @@ class course_progress_block extends utility {
                 "enrolments" => 0
             );
 
+            // Assign response data
             $res->id = $course->id;
             $res->fullname = $course->fullname;
+
+            // Create course url
+            $res->courseurl = (new moodle_url($CFG->wwwroot . "/course/view.php", array("id" => $course->id)))->out();
+
+            // Get course context
             $coursecontext = context_course::instance($course->id);
+
+            // Get only enrolled student
             $enrolledstudents = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+
+            // For each enrolled student get completions
             foreach ($enrolledstudents as $user) {
                 // If cohort filter in there then remove the users
                 // who is not belongs to the cohort
@@ -205,12 +217,16 @@ class course_progress_block extends utility {
                     }
                 }
 
+                // Generate $key to save completion in an array
                 $key = $user->id."-".$course->id;
                 if (!isset($completions[$key])) {
                     // Completed 0% of course
                     $res->completed00++;
                 } else {
+                    // Calculated progress percantage
                     $progress = $completions[$key]->progress;
+
+                    // Create array based on the completion
                     switch (true) {
                         case $progress == COURSE_COMPLETE_100PER:
                             // Completed 100% of course
@@ -237,10 +253,16 @@ class course_progress_block extends utility {
                             $res->completed00++;
                     }
                 }
+
+                // increament enrolment count
                 $res->enrolments++;
             }
+
+            // Added response object in response array
             $response[] = $res;
         }
+
+        // Return response
         return $response;
     }
 

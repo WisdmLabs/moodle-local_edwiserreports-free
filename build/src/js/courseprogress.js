@@ -13,7 +13,7 @@ define([
         var PageId = "#wdm-courseprogress-individual";
         var CourseProgressTable = PageId + " .table";
         var loader = PageId + " .loader";
-        var ModalTrigger = CourseProgressTable + " a";
+        var ModalTrigger = CourseProgressTable + " a.modal-trigger";
         var dropdownBody = ".table-dropdown";
         var dropdownTable = PageId + " .dataTables_wrapper .row:first-child > div:first-child";
         var datatable = null;
