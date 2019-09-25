@@ -492,3 +492,8 @@
 #listemailstab thead th {
     border-bottom: none;
 }
+
+/* Fixed active courses table serach icon */
+#mostactivecourses input[type="search"] {
+    margin: 0;
+}

@@ -24,8 +24,8 @@ define([
                 $(panelBody + ' .singleselect').select2();
 
                 $(selectedCourse).on("change", function () {
-                    $(chart).addClass("d-none");
-                    $(loader).removeClass("d-none");
+                    $(chart).hide();
+                    $(loader).show();
 
                     if (courseProgress) {
                         courseProgress.destroy();
@@ -59,8 +59,8 @@ define([
             })
             .always(function() {
                 generateCourseProgressGraph();
-                $(loader).addClass("d-none");
-                $(chart).removeClass("d-none");
+                $(loader).hide();
+                $(chart).fadeIn("slow");
 
                 /* Notify that this event is completed */
                 notifyListner("courseProgress");
