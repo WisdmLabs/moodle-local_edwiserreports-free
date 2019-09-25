@@ -45,11 +45,6 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
                 $(table + " td:not(.bg-secondary)").addClass("bg-white");
             }).draw();
 
-
-            /* Remove laoder and display table after table is created */
-            $(loader).addClass('d-none');
-            $(table).removeClass('d-none');
-
             /* Notify that this event is completed */
             notifyListner("activeCourses");
         });
@@ -77,7 +72,11 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
                     searchPlaceholder: "Search Courses"
                 },
                 initComplete: function() {
-                    $(dropdownBody).show();
+                    /* Remove laoder and display table after table is created */
+                    $(loader).hide();
+                    $(table).fadeIn("slow");
+                    $(dropdownBody).fadeIn();
+                    $(window).resize();
                 },
                 columnDefs: [
                     {
@@ -96,12 +95,7 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
                     }
                 ],
                 scrollY : "300px",
-                scrollCollapse : true,
-                fixedHeader: {
-                    header: true,
-                    headerOffset: 45
-                },
-                scrollX: true,
+                scrollX : true,
                 paging: false,
                 bInfo : false
             });

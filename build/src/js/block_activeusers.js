@@ -105,8 +105,8 @@ define([
 
         /* Get data for active users block */
         function getActiveUsersBlockData(filter) {
-            $(chart).addClass('d-none');
-            $(loader).removeClass('d-none');
+            $(chart).hide();
+            $(loader).show();
 
             $.ajax({
                 url: defaultConfig.requestUrl,
@@ -130,8 +130,8 @@ define([
                 resetUpdateTime();
                 setInterval(inceamentUpdateTime, 1000 * 60);
                 $(refreshBtn).removeClass('refresh-spin');
-                $(loader).addClass('d-none');
-                $(chart).removeClass('d-none');
+                $(loader).hide();
+                $(chart).fadeIn("slow");
 
                 /* Notify that this event is completed */
                 listner("activeUsers");
