@@ -80,7 +80,7 @@ $string['lastupdate'] = "Last updated <span class='minute'>0</span> min ago";
 $string['lastweek'] = "Last Week";
 $string['lastmonth'] = "Last Month";
 $string['lastyear'] = "Last Year";
-$string['custom'] = "Custom";
+$string['custom'] = "Custom Date";
 $string['rank'] = "Rank";
 $string['enrolments'] = "Enrolments";
 $string['visits'] = "Visits";
@@ -115,9 +115,9 @@ $string['before2month'] = "Before 2 Month";
 $string['before3month'] = "Before 3 Month";
 
 /* Active Users Page */
-$string['noofactiveusers'] = "# Active Users";
-$string['noofenrolledusers'] = "# Enrolled Users";
-$string['noofcompletedusers'] = "# Completed Users";
+$string['noofactiveusers'] = "No. of active users";
+$string['noofenrolledusers'] = "No. of enrolled users";
+$string['noofcompletedusers'] = "No. of completed users";
 $string['email'] = "Email";
 $string['emailscheduled'] = "Email Scheduled";
 $string['usersnotavailable'] = "No Users are available for this day";
