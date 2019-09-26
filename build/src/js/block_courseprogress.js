@@ -6,7 +6,7 @@ define([
     'report_elucidsitereport/select2'
 ], function ($, Chart, cfg, V) {
     function init(notifyListner) {
-        var courseProgress = null;
+        var cpGraph = null;
         var panel = cfg.getPanel("#courseprogressblock");
         var panelBody = cfg.getPanel("#courseprogressblock", "body")
         var panelTitle = cfg.getPanel("#courseprogressblock", "header");
@@ -15,11 +15,16 @@ define([
         var chart = panelBody + " .ct-chart";
         var loader = panelBody + " .loader";
         var exportUrlLink = panel + " .dropdown-menu[aria-labelledby='export-dropdown'] .dropdown-item";
-        var courseProgressBlock = false;
+        var cpBlockData = false;
 
+        /**
+         * On document ready generate course progress block
+         */
         $(document).ready(function($) {
-            courseProgressBlock = cfg.getCourseProgressBlock();
-            if (courseProgressBlock) {
+            cpBlockData = cfg.getCourseProgressBlock();
+
+            // if course progress block is there
+            if (cpBlockData) {
                 getCourseProgressData();
                 $(panelBody + ' .singleselect').select2();
 
@@ -27,22 +32,30 @@ define([
                     $(chart).hide();
                     $(loader).show();
 
-                    if (courseProgress) {
-                        courseProgress.destroy();
-                    }
                     getCourseProgressData();
                 });
+            } else {
+                /* Notify that this event is completed */
+                notifyListner("courseProgress");
             }
         });
 
+        /**
+         * Get progress data through ajax
+         */
         function getCourseProgressData() {
             var courseId = $(selectedCourse).val();
             cfg.changeExportUrl(courseId, exportUrlLink, V.filterReplaceFlag);
 
+            // If progress graph already exist then destroy
+            if (cpGraph) {
+                cpGraph.destroy();
+            }
+
             $.ajax({
                 url: cfg.requestUrl,
-                type: 'GET',
-                dataType: 'json',
+                type: cfg.requestType,
+                dataType: cfg.requestDataType,
                 data: {
                     action: 'get_courseprogress_graph_data_ajax',
                     sesskey: $(panel).data("sesskey"),
@@ -52,13 +65,13 @@ define([
                 },
             })
             .done(function(response) {
-                courseProgressBlock.graph.data = response.data;
+                cpBlockData.graph.data = response.data;
             })
             .fail(function(error) {
                 console.log(error);
             })
             .always(function() {
-                generateCourseProgressGraph();
+                cpGraph = generateCourseProgressGraph();
                 $(loader).hide();
                 $(chart).fadeIn("slow");
 
@@ -67,20 +80,25 @@ define([
             });
         }
 
+        /**
+         * Generate course progress graph
+         */
         function generateCourseProgressGraph() {
+            // Create configuration data for course progress block
             var data = {
-                labels: courseProgressBlock.graph.labels,
+                labels: cpBlockData.graph.labels,
                 datasets: [{
-                    label: courseProgressBlock.graph.label,
-                    data: courseProgressBlock.graph.data,
-                    backgroundColor: courseProgressBlock.graph.backgroundColor
+                    label: cpBlockData.graph.label,
+                    data: cpBlockData.graph.data,
+                    backgroundColor: cpBlockData.graph.backgroundColor
                 }]
             };
 
-            courseProgress = new Chart(courseProgressBlock.ctx, {
+            // Return chart object
+            return new Chart(cpBlockData.ctx, {
                 data: data,
-                type: courseProgressBlock.graph.type,
-                options: courseProgressBlock.graph.options
+                type: cpBlockData.graph.type,
+                options: cpBlockData.graph.options
             });
         }
     }

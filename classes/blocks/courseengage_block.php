@@ -152,7 +152,7 @@ class courseengage_block extends utility {
         $courseurl = new moodle_url($CFG->wwwroot . "/course/view.php", array("id" => $course->id));
 
         // Get course name with course url
-        $engagement->coursename = html_writer::link($courseurl, $course->fullname);
+        $engagement->coursename = html_writer::link($courseurl, $course->fullname, array("class" => "text-decoration-none"));
 
         // Generate enrolments link
         $engagement->enrolment = self::get_engagement_attr(

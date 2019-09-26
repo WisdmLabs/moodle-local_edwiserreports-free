@@ -55,6 +55,9 @@ define(['report_elucidsitereport/variables'], function(V) {
         cohortReplaceFlag : "C",
         filterReplaceFlag : "F",
 
+        // Plugin component
+        component : 'report_elucidsitereport',
+
         // Get scheduled email context
         getScheduledEmailFormContext : function() {
             return {

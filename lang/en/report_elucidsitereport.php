@@ -56,8 +56,11 @@ $string['notissued'] = "Not Issued";
 $string['nof2fmodule'] = "There is no face to face sessions are available.";
 $string['nof2fsessions'] = "There is no face to face session available for this module.";
 $string['nocertificates'] = "There is no certificate created";
-// $string['courseprogresstooltip'] = '{$a->data} users completion are {$a->label}.';
-$string['courseprogresstooltip'] = 'Course Completed By Users';
+
+// Breakdown the tooltip string to display in 2 lines
+$string['cpblocktooltip1'] = '{$a->per} course completed';
+$string['cpblocktooltip2'] = 'by {$a->val} users';
+
 $string['lpstatstooltip'] = '{$a->data} users completed {$a->label}.';
 $string['fullname'] = "Full Name";
 $string['onlinesince'] = "Online Since";
@@ -124,13 +127,14 @@ $string['usersnotavailable'] = "No Users are available for this day";
 
 /* Course Progress Page */
 $string['coursename'] = "Course Name";
-$string['noofenrolled'] = "Enrolled Users";
-$string['noofcompleted'] = "Completed Users";
-$string['noofcompleted20'] = "Atleast 20% Completed";
-$string['noofcompleted40'] = "Atleast 40% Completed";
-$string['noofcompleted60'] = "Atleast 60% Completed";
-$string['noofcompleted80'] = "Atleast 80% Completed";
-$string['noofincompleted'] = "Not Completed";
+$string['enrolled'] = "Enrolled";
+$string['completed'] = "Completed";
+$string['per40-20'] = "20% - 40%";
+$string['per60-40'] = "40% - 60%";
+$string['per80-60'] = "60% - 80%";
+$string['per100-80'] = "80% - 100%";
+$string['per20-0'] = "0% - 20%";
+$string['per100'] = "100%";
 
 /* Certificates Page */
 $string['username'] = 'User Name';
@@ -192,7 +196,6 @@ $string['nosignups'] = 'No Signups are available';
 $string['nosessions'] = 'There is no face to face sessions';
 
 /* Learning Program Page */
-$string['enrolled'] = "Enrolled On";
 $string['lastaccess'] = "Last Access";
 $string['progress'] = "Progress";
 $string['avgprogress'] = "Avg Progress";

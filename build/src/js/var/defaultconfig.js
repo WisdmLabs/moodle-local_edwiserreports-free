@@ -4,6 +4,7 @@ define(["jquery", "report_elucidsitereport/variables", "report_elucidsitereport/
         requestUrl : v.requestUrl,
         requestType : v.requestType,
         requestDataType : v.requestDataType,
+        component : v.component,
 
         // Todays Activity Block
         todaysActivityBlock : {
@@ -103,12 +104,17 @@ define(["jquery", "report_elucidsitereport/variables", "report_elucidsitereport/
             }
         },
 
+        /**
+         * Get course progress block object
+         * @return {object} Course progress graph object
+         */
         getCourseProgressBlock: function () {
-            courseProgressBlock = $(v.courseProgressBlock);
-            if (courseProgressBlock.length == 0) {
+            cpBlockData = $(v.courseProgressBlock);
+            if (cpBlockData.length == 0) {
                 return false;
             }
 
+            // Return course progress graph object
             return {
                 ctx : $(v.courseProgressBlock)[0].getContext("2d"),
                 graph : {
@@ -121,13 +127,34 @@ define(["jquery", "report_elucidsitereport/variables", "report_elucidsitereport/
                         aspectRatio: 1,
                         tooltips: {
                             callbacks: {
-                                title: function(tooltipItem, data) {
-                                    return M.util.get_string('courseprogresstooltip', 'report_elucidsitereport');
+                                title : function(tooltipItem, data) {
+                                    return [
+                                        M.util.get_string('cpblocktooltip1',
+                                        v.component,
+                                        {
+                                            "per" : data.labels[tooltipItem[0].index],
+                                        }),
+                                        M.util.get_string('cpblocktooltip2',
+                                        v.component,
+                                        {
+                                            "val" : data.datasets[0].data[tooltipItem[0].index]
+                                        })
+                                    ];
+                                },
+                                label : function() {
+                                    return '';
                                 }
                             }
                         }
                     },
-                    labels : ['0%', '20%', '40%', '60%', '80%', '100%'],
+                    labels : [
+                        M.util.get_string('per20-0', v.component),
+                        M.util.get_string('per40-20', v.component),
+                        M.util.get_string('per60-40', v.component),
+                        M.util.get_string('per80-60', v.component),
+                        M.util.get_string('per100-80', v.component),
+                        M.util.get_string('per100', v.component)
+                    ],
                     backgroundColor : ["#fe6384", "#36a2eb", "#fdce56", "#cacbd0", "#4ac0c0", "#ff851b"]
                 }
             }
@@ -154,7 +181,7 @@ define(["jquery", "report_elucidsitereport/variables", "report_elucidsitereport/
                         tooltips: {
                             callbacks: {
                                 label: function(tooltipItem, data) {
-                                    return M.util.get_string('lpstatstooltip', 'report_elucidsitereport', {
+                                    return M.util.get_string('lpstatstooltip', v.component, {
                                         label: data.labels[tooltipItem.index],
                                         data: data.datasets[0].data[tooltipItem.index]
                                     });

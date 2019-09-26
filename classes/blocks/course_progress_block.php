@@ -90,8 +90,9 @@ class course_progress_block extends utility {
             PERCENTAGE_40 => 0,
             PERCENTAGE_60 => 0,
             PERCENTAGE_80 => 0,
-            PERCENTAGE_100 => 0,
+            PERCENTAGE_100 => 0
         );
+        $count = 0;
         foreach ($users as $user) {
 
             /* If cohort filter is there then get only users from cohort */
@@ -104,7 +105,7 @@ class course_progress_block extends utility {
 
             // If not set the completion then this user is not completed
             if (!isset($completions[$user->id])) {
-                $completedusers["0%"]++;
+                $completedusers[PERCENTAGE_00]++;
             } else {
                 $progress = $completions[$user->id]->progress;
                 switch (true) {
@@ -159,13 +160,13 @@ class course_progress_block extends utility {
     public static function get_header_report() {
         $header = array(
             get_string("coursename", "report_elucidsitereport"),
-            get_string("noofenrolled", "report_elucidsitereport"),
-            get_string("noofincompleted", "report_elucidsitereport"),
-            get_string("noofcompleted20", "report_elucidsitereport"),
-            get_string("noofcompleted40", "report_elucidsitereport"),
-            get_string("noofcompleted60", "report_elucidsitereport"),
-            get_string("noofcompleted80", "report_elucidsitereport"),
-            get_string("noofcompleted", "report_elucidsitereport"),
+            get_string("enrolled", "report_elucidsitereport"),
+            get_string("completed", "report_elucidsitereport"),
+            get_string("per100-80", "report_elucidsitereport"),
+            get_string("per80-60", "report_elucidsitereport"),
+            get_string("per60-40", "report_elucidsitereport"),
+            get_string("per40-20", "report_elucidsitereport"),
+            get_string("per20-0", "report_elucidsitereport"),
         );
         return $header;
     }

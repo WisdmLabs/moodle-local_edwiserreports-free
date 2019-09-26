@@ -15,25 +15,25 @@
                 {{#str}} coursename, report_elucidsitereport {{/str}}
             </th>
             <th class="text-nowrap bg-image-none no-sorting-arrow">
-                {{#str}} noofenrolled, report_elucidsitereport {{/str}}
+                {{#str}} enrolled, report_elucidsitereport {{/str}}
             </th>
             <th class="text-nowrap bg-image-none no-sorting-arrow">
-                {{#str}} noofcompleted, report_elucidsitereport {{/str}}
+                {{#str}} completed, report_elucidsitereport {{/str}}
             </th>
             <th class="text-nowrap bg-image-none no-sorting-arrow">
-                {{#str}} noofcompleted20, report_elucidsitereport {{/str}}
+                {{#str}} per100-80, report_elucidsitereport {{/str}}
             </th>
             <th class="text-nowrap bg-image-none no-sorting-arrow">
-                {{#str}} noofcompleted40, report_elucidsitereport {{/str}}
+                {{#str}} per80-60, report_elucidsitereport {{/str}}
             </th>
             <th class="text-nowrap bg-image-none no-sorting-arrow">
-                {{#str}} noofcompleted60, report_elucidsitereport {{/str}}
+                {{#str}} per60-40, report_elucidsitereport {{/str}}
             </th>
             <th class="text-nowrap bg-image-none no-sorting-arrow">
-                {{#str}} noofcompleted80, report_elucidsitereport {{/str}}
+                {{#str}} per40-20, report_elucidsitereport {{/str}}
             </th>
             <th class="text-nowrap bg-image-none no-sorting-arrow">
-                {{#str}} noofincompleted, report_elucidsitereport {{/str}}
+                {{#str}} per20-0, report_elucidsitereport {{/str}}
             </th>
         </thead>
         <tbody>
@@ -55,8 +55,13 @@
                 	</a>
                 </td>
                 <td>
+                    <a href="javascript:void(0)" class="w-full modal-trigger" data-action="completed80" data-minvalue="80" data-maxvalue="100" data-courseid="{{id}}" data-coursename="{{fullname}}">
+                        {{completed80}}
+                    </a>
+                </td>
+                <td>
                     <a href="javascript:void(0)" class="w-full modal-trigger" data-action="completed20" data-minvalue="20" data-maxvalue="40" data-courseid="{{id}}" data-coursename="{{fullname}}">
-                        {{completed20}}
+                        {{completed60}}
                     </a>
                 </td>
                 <td>
@@ -66,12 +71,7 @@
                 </td>
                 <td>
                     <a href="javascript:void(0)" class="w-full modal-trigger" data-action="completed60" data-minvalue="60" data-maxvalue="80" data-courseid="{{id}}" data-coursename="{{fullname}}">
-                        {{completed60}}
-                    </a>
-                </td>
-                <td>
-                    <a href="javascript:void(0)" class="w-full modal-trigger" data-action="completed80" data-minvalue="80" data-maxvalue="100" data-courseid="{{id}}" data-coursename="{{fullname}}">
-                        {{completed80}}
+                        {{completed20}}
                     </a>
                 </td>
                 <td>
