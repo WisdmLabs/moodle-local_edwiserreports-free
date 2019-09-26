@@ -79,20 +79,27 @@ define([
         /* Create modal of Users list */
         function createModalOfUsersList() {
             $(document).on('click', ModalTrigger, function() {
-                var title;
+                var title = "";
                 var action = $(this).data("action");
                 var filter = $(this).data("filter");
                 var ModalRoot = null;
 
+                var titleDate = V.formatDate(new Date(eval(filter*1000)), "d MMM yyyy");
+
                 if (action == "activeusers") {
-                    title = "Active Users on ";
+                    title = M.util.get_string('activeusersmodaltitle', V.component, {
+                        "date" : titleDate
+                    });
                 } else if (action == "enrolments") {
-                    title = "Enroled Users on ";
+                    title = M.util.get_string('enrolmentsmodaltitle', V.component, {
+                        "date" : titleDate
+                    });
                 } else if (action == "completions") {
-                    title = "Completed Users on ";
+                    title = M.util.get_string('completionsmodaltitle', V.component, {
+                        "date" : titleDate
+                    });
                 }
-                var titleDate = new Date(eval(filter*1000));
-                title += V.formatDate(titleDate, "d MMMM yyyy");
+
 
                 ModalFactory.create({
                     body: Fragment.loadFragment(

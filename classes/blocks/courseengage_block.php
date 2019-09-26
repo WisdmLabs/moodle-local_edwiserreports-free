@@ -152,38 +152,44 @@ class courseengage_block extends utility {
         $courseurl = new moodle_url($CFG->wwwroot . "/course/view.php", array("id" => $course->id));
 
         // Get course name with course url
-        $engagement->coursename = html_writer::link($courseurl, $course->fullname, array("class" => "text-decoration-none"));
+        $engagement->coursename = html_writer::link(
+            $courseurl,
+            $course->fullname,
+            array(
+                "class" => "text-dark text-decoration-none"
+            )
+        );
 
         // Generate enrolments link
-        $engagement->enrolment = self::get_engagement_attr(
+        $engagement->enrolment = self::get_course_engagement_link(
             "enrolment",
             $course,
             count($enrolledstudents)
         );
 
         // Generate visits link
-        $engagement->visited = self::get_engagement_attr(
+        $engagement->visited = self::get_course_engagement_link(
             "visited",
             $course,
             count(self::get_course_visites($course->id, $cohortid))
         );
 
         // Generate activity started link
-        $engagement->activitystart = self::get_engagement_attr(
+        $engagement->activitystart = self::get_course_engagement_link(
             "activitystart",
             $course,
             $values["completiononemodule"]
         );
 
         // Generate completed 50% of course link
-        $engagement->completedhalf = self::get_engagement_attr(
+        $engagement->completedhalf = self::get_course_engagement_link(
             "completedhalf",
             $course,
             $values["completed50"]
         );
 
         // Generate course completion link
-        $engagement->coursecompleted = self::get_engagement_attr(
+        $engagement->coursecompleted = self::get_course_engagement_link(
             "coursecompleted",
             $course,
             $values["completed100"]
@@ -198,10 +204,10 @@ class courseengage_block extends utility {
      * @param [object] $course Course Object
      * @param [object] $user Users List 
      */
-    public static function get_engagement_attr($attrname, $course, $val) {
+    public static function get_course_engagement_link($attrname, $course, $val) {
         return html_writer::link("javascript:void(0)", $val,
             array(
-                "class" => "modal-trigger text-decoration-none",
+                "class" => "modal-trigger text-dark text-decoration-none",
                 "data-courseid" => $course->id,
                 "data-coursename" => $course->fullname,
                 "data-action" => $attrname

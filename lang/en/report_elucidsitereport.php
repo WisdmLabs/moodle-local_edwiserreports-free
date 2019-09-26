@@ -124,6 +124,9 @@ $string['noofcompletedusers'] = "No. of completed users";
 $string['email'] = "Email";
 $string['emailscheduled'] = "Email Scheduled";
 $string['usersnotavailable'] = "No Users are available for this day";
+$string['activeusersmodaltitle'] = 'Users active on {$a->date}';
+$string['enrolmentsmodaltitle'] = 'Users enrolled into courses on {$a->date}';
+$string['completionsmodaltitle'] = 'Users who have completed a course on {$a->date}';
 
 /* Course Progress Page */
 $string['coursename'] = "Course Name";

@@ -43,6 +43,13 @@ if (!has_capability('moodle/site:config', $context)) {
     print_error('accessdenied', 'admin');
 }
 
+// Add js string for this page
+$PAGE->requires->strings_for_js([
+    'activeusersmodaltitle',
+    'enrolmentsmodaltitle',
+    'completionsmodaltitle'
+], 'report_elucidsitereport');
+
 $PAGE->requires->js_call_amd('report_elucidsitereport/activeusers', 'init', array($context->id));
 
 $pageurl = new moodle_url($CFG->wwwroot . "/report/elucidsitereport/activeusers.php");

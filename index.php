@@ -38,7 +38,7 @@ $PAGE->requires->strings_for_js([
     'per60-40',
     'per40-20',
     'per20-0',
-    'per100',
+    'per100'
 ], 'report_elucidsitereport');
 
 admin_externalpage_setup('elucidsitereport');

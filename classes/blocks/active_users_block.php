@@ -199,6 +199,36 @@ class active_users_block extends utility {
     }
 
     /**
+     * Get popup modal header by action
+     * @param  [string] $action Action name
+     * @return [array] Table header
+     */
+    public static function get_modal_table_header($action) {
+        switch($action) {
+            case 'completions':
+                // Return table header
+                return array(
+                    get_string("fullname", "report_elucidsitereport"),
+                    get_string("email", "report_elucidsitereport"),
+                    get_string("coursename", "report_elucidsitereport")
+                ); 
+            case 'enrolments':
+                // Return table header
+                return array(
+                    get_string("fullname", "report_elucidsitereport"),
+                    get_string("email", "report_elucidsitereport"),
+                    get_string("coursename", "report_elucidsitereport")
+                ); 
+            default:
+                // Return table header
+                return array(
+                    get_string("fullname", "report_elucidsitereport"),
+                    get_string("email", "report_elucidsitereport")
+                ); 
+        }
+    }
+
+    /**
      * Create users list table for active users block
      * @param [string] $filter Time filter to get users for this day
      * @param [string] $action Get users list for this action
@@ -214,11 +244,8 @@ class active_users_block extends utility {
         if (!$table = $cache->get($cachekey)) {
             $table = new html_table();
 
-            // Set table header
-            $table->head = array(
-                get_string("fullname", "report_elucidsitereport"),
-                get_string("email", "report_elucidsitereport"),
-            );
+            // Get table header
+            $table->head = self::get_modal_table_header($action);
 
             // Set table attributes
             $table->attributes = array (
@@ -261,7 +288,7 @@ class active_users_block extends utility {
     public static function get_userslist($filter, $action, $cohortid = false) {
         global $DB;
         
-        $sql = "SELECT DISTINCT l.userid 
+        $sql = "SELECT DISTINCT l.userid, l.courseid 
             FROM {logstore_standard_log} l";
         $params = array();
 
@@ -288,7 +315,7 @@ class active_users_block extends utility {
                 $params["action"] = 'created';
                 break;
             case "completions";
-                $sql = "SELECT DISTINCT l.userid, l.course
+                $sql = "SELECT DISTINCT l.userid, l.course as courseid
                     FROM {course_completions} l" . $sqlext;
                 $sql .= " WHERE l.timecompleted IS NOT NULL
                     AND l.timecompleted >= :starttime
@@ -304,16 +331,17 @@ class active_users_block extends utility {
         if (!empty($records)) {
             foreach ($records as $record) {
                 $user = core_user::get_user($record->userid);
-                $userdata = array();
-                $userdata[] = fullname($user);
-                $userdata[] = $user->email;
-                if ($action == "completions") {
-                    $course = get_course($record->course);
-                    $userdata[] = $course->name;
+                $userdata = new stdClass();
+                $userdata->username = fullname($user);
+                $userdata->useremail = $user->email;
+                if ($action == "completions" || $action == "enrolments") {
+                    $course = get_course($record->courseid);
+                    $userdata->coursename = $course->fullname;
                 }
-                $data[] = $userdata;
+                $data[] = array_values((array)$userdata);
             }
         }
+
         return $data;
     }
 
