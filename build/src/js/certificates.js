@@ -66,15 +66,18 @@ define([
                     { "data": "grade" },
                     { "data": "courseprogress" }
                 ],
-                oLanguage : {
-                    sEmptyTable : "No certificates are awarded"
+                language : {
+                  emptyTable : "No certificates are awarded"
                 },
                 initComplete: function(settings, json) {
                     $('.pie-progress').asPieProgress();
                     CertTable.show();
                 },
                 bInfo : false,
-                lengthChange : false
+                lengthChange : false,
+                paginate : false,
+                scrollY : 350,
+                scrollX : true
             });
         }
 
