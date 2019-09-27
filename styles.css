@@ -497,3 +497,7 @@
 #mostactivecourses input[type="search"] {
     margin: 0;
 }
+
+div[id^="wdm-"][id*="-individual"] table.table {
+    min-width: 100%;
+}

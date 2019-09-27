@@ -220,7 +220,9 @@ define([
                         ],
                         info : false,
                         bLengthChange : false,
-
+                        scrollY : 300,
+                        scrollX : true,
+                        paginate : false
                     });
                     $(ActiveUsersTable).show();
                     $(loader).hide();
