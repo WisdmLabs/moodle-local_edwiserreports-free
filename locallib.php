@@ -206,7 +206,7 @@ function get_cohort_filter() {
 
 /**
  * Create individual pageheader
- * @return [type] [description]
+ * @return [string] HTML header string
  */
 function create_page_header($blockname) {
     global $CFG;

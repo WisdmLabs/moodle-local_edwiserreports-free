@@ -34,7 +34,7 @@ $string['realtimeusers'] = 'Real Time Users';
 $string['activeusersheader'] = 'Active Users, Course Enrolment and Course Completion Rate';
 $string['courseprogress'] = 'Course Progress';
 $string['courseengagement'] = 'Course Engagement';
-$string['coursereports'] = 'Course Reports';
+$string['coursereportsheader'] = 'Course Reports';
 $string['more'] = '<i class="fa fa-angle-right"></i> More';
 $string['activecoursesheader'] = 'Popular Courses';
 $string['f2fsessionsheader'] = 'Instructor-Led Sessions';

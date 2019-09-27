@@ -34,7 +34,10 @@ require_once('classes/output/elucidreport_renderable.php');
 
 require_login();
 
+// System Context
 $context = context_system::instance();
+$component = "report_elucidsitereport";
+
 // The requested section isn't in the admin tree
 // It could be because the user has inadequate capapbilities or because the section doesn't exist
 if (!has_capability('moodle/site:config', $context)) {
@@ -43,21 +46,25 @@ if (!has_capability('moodle/site:config', $context)) {
     print_error('accessdenied', 'admin');
 }
 
-$context = context_system::instance();
+// Include JS for course report page
 $PAGE->requires->js_call_amd('report_elucidsitereport/courseprogress', 'init', array($context->id));
 $PAGE->requires->js_call_amd('report_elucidsitereport/courseengage', 'init', array($context->id));
 
+// Get page URL
 $pageurl = new moodle_url($CFG->wwwroot . "/report/elucidsitereport/coursereport.php");
 
+// Set page context
 $PAGE->set_context($context);
+
+// Set page url
 $PAGE->set_url($pageurl);
 
-$coursereport = new \report_elucidsitereport\output\coursereport();
-$coursereportrenderable = new \report_elucidsitereport\output\coursereport_renderable();
-$output = $coursereport->get_renderer()->render($coursereportrenderable);
+// Get renderable
+$renderable = new \report_elucidsitereport\output\coursereport_renderable();
+$output = $PAGE->get_renderer($component)->render($renderable);
 
+// Print output in page
 echo $OUTPUT->header();
-echo create_back_button($CFG->wwwroot . "/report/elucidsitereport/");
-echo $OUTPUT->heading(get_string("coursereports", "report_elucidsitereport"), 1, "page-title p-5 mb-20");
+echo $OUTPUT->heading(create_page_header("coursereports"), "1", "page-title p-5");
 echo $output;
 echo $OUTPUT->footer();

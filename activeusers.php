@@ -50,9 +50,9 @@ if (!has_capability('moodle/site:config', $context)) {
 
 // Require JS for active users page
 $PAGE->requires->js_call_amd(
-	'report_elucidsitereport/activeusers',
-	'init',
-	array($context->id)
+    'report_elucidsitereport/activeusers',
+    'init',
+    array($context->id)
 );
 
 // Set css for active usres page
@@ -80,10 +80,6 @@ $output = $PAGE->get_renderer($component)->render($renderable);
 
 // Print output in the page
 echo $OUTPUT->header();
-echo $OUTPUT->heading(
-	create_page_header("activeusers"),
-	"1",
-	"page-title p-5"
-);
+echo $OUTPUT->heading(create_page_header("activeusers"), "1", "page-title p-5");
 echo $output;
 echo $OUTPUT->footer();
