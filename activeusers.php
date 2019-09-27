@@ -32,9 +32,13 @@ require_once(__DIR__ . '/../../config.php');
 require_once('classes/output/elucidreport_renderer.php');
 require_once('classes/output/elucidreport_renderable.php');
 
+// Required login
 require_login();
 
+// System Context
 $context = context_system::instance();
+$component = 'report_elucidsitereport';
+
 // The requested section isn't in the admin tree
 // It could be because the user has inadequate capapbilities or because the section doesn't exist
 if (!has_capability('moodle/site:config', $context)) {
@@ -43,27 +47,43 @@ if (!has_capability('moodle/site:config', $context)) {
     print_error('accessdenied', 'admin');
 }
 
+
+// Require JS for active users page
+$PAGE->requires->js_call_amd(
+	'report_elucidsitereport/activeusers',
+	'init',
+	array($context->id)
+);
+
+// Set css for active usres page
+$PAGE->requires->css('/report/elucidsitereport/styles/flatpickr.min.css');
+
 // Add js string for this page
 $PAGE->requires->strings_for_js([
     'activeusersmodaltitle',
     'enrolmentsmodaltitle',
     'completionsmodaltitle'
-], 'report_elucidsitereport');
+], $component);
 
-$PAGE->requires->js_call_amd('report_elucidsitereport/activeusers', 'init', array($context->id));
-
+// Page URL for active users page
 $pageurl = new moodle_url($CFG->wwwroot . "/report/elucidsitereport/activeusers.php");
 
+// Set page context
 $PAGE->set_context($context);
+
+// Set page URL
 $PAGE->set_url($pageurl);
-$PAGE->requires->css('/report/elucidsitereport/styles/flatpickr.min.css');
 
-$activeusers = new \report_elucidsitereport\output\activeusers();
-$activeusersrenderable = new \report_elucidsitereport\output\activeusers_renderable();
-$output = $activeusers->get_renderer()->render($activeusersrenderable);
+// Get active users renderable
+$renderable = new \report_elucidsitereport\output\activeusers_renderable();
+$output = $PAGE->get_renderer($component)->render($renderable);
 
+// Print output in the page
 echo $OUTPUT->header();
-echo create_back_button($CFG->wwwroot . "/report/elucidsitereport/");
-echo $OUTPUT->heading(get_string("activeusersheader", "report_elucidsitereport"), 1, "page-title p-5 mb-10");
+echo $OUTPUT->heading(
+	create_page_header("activeusers"),
+	"1",
+	"page-title p-5"
+);
 echo $output;
 echo $OUTPUT->footer();

@@ -203,6 +203,44 @@ function get_cohort_filter() {
     return $cohortfilter;
 }
 
+
+/**
+ * Create individual pageheader
+ * @return [type] [description]
+ */
+function create_page_header($blockname) {
+    global $CFG;
+
+    // Create backurl
+    $backurl = $CFG->wwwroot . "/report/elucidsitereport/";
+    $component = "report_elucidsitereport";
+
+    // Start page header
+    $out = html_writer::start_div("d-md-flex mb-10", array("id" => "esr-page-header"));
+
+    // Back button link
+    $out .= html_writer::start_div("");
+    $out .= html_writer::link($backurl,
+        '<i class="icon fa fa-arrow-left"></i>',
+        array(
+            "class" => "btn btn-sm btn-default",
+            "data-toggle" => "tooltip",
+            "data-original-title" => get_string("back"),
+            "data-placement" => "bottom"
+        )
+    );
+    $out .= html_writer::end_div();
+
+    // Create header
+    $out .= html_writer::span(get_string($blockname . "header", $component), "px-md-10");
+
+    // End pageheader
+    $out .= html_writer::end_div();
+
+    // Return output
+    return $out;
+}
+
 /**
  * Create back button for each individual page
  * @param [object] $backurl Moodle Url Object
