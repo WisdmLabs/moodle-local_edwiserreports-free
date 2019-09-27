@@ -34,9 +34,10 @@ require_once(__DIR__ . '/../../config.php');
 require_once('classes/output/elucidreport_renderer.php');
 require_once('classes/output/elucidreport_renderable.php');
 
-require_login();
-
+// Context system
 $context = context_system::instance();
+$component = "report_elucidsitereport";
+
 // The requested section isn't in the admin tree
 // It could be because the user has inadequate capapbilities or because the section doesn't exist
 if (!has_capability('moodle/site:config', $context)) {
@@ -45,27 +46,33 @@ if (!has_capability('moodle/site:config', $context)) {
     print_error('accessdenied', 'admin');
 }
 
+// Get require param course id
 $courseid = required_param("courseid", PARAM_INT);
+
+// Require login for course
+require_login(get_course($courseid));
+
+// Get course context
 $coursecontext = context_course::instance($courseid);
-$params = array(
-	"courseid" => $courseid
-);
 
-$pageurl = new moodle_url($CFG->wwwroot . "/report/elucidsitereport/completion.php", $params);
+// Page URL
+$pageurl = new moodle_url($CFG->wwwroot . "/report/elucidsitereport/completion.php", array("courseid" => $courseid));
 
+// Set page context
 $PAGE->set_context($coursecontext);
+
+// Set page URL
 $PAGE->set_url($pageurl);
+
+// Require JS for course completion page
 $PAGE->requires->js_call_amd('report_elucidsitereport/completion', 'init', array($coursecontext->id));
 
-$course = get_course($courseid);
-require_login($course);
+// Get renderable for coourse completion page
+$renderable = new \report_elucidsitereport\output\completion_renderable();
+$output = $PAGE->get_renderer($component)->render($renderable);
 
-$completion = new \report_elucidsitereport\output\completion();
-$completionrenderable = new \report_elucidsitereport\output\completion_renderable();
-$output = $completion->get_renderer()->render($completionrenderable);
-
+// Print output for course completion page
 echo $OUTPUT->header();
-echo create_back_button($CFG->wwwroot . "/report/elucidsitereport/");
-echo $OUTPUT->heading(get_string("completionheader", "report_elucidsitereport"), 1 , "page-title p-5 mb-10");
+echo $OUTPUT->heading(create_page_header("completion"), "1", "page-title p-5");
 echo $output;
 echo $OUTPUT->footer();
