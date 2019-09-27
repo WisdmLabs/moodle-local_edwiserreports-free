@@ -32,9 +32,13 @@ require_once(__DIR__ . '/../../config.php');
 require_once('classes/output/elucidreport_renderer.php');
 require_once('classes/output/elucidreport_renderable.php');
 
+// Require login
 require_login();
 
+// System Context
 $context = context_system::instance();
+$component = "report_elucidsitereport";
+
 // The requested section isn't in the admin tree
 // It could be because the user has inadequate capapbilities or because the section doesn't exist
 if (!has_capability('moodle/site:config', $context)) {
@@ -43,20 +47,27 @@ if (!has_capability('moodle/site:config', $context)) {
     print_error('accessdenied', 'admin');
 }
 
+// Require JS for certificates page
 $PAGE->requires->js_call_amd('report_elucidsitereport/certificates', 'init', array($context->id));
+
+// Require CSS for certificates page
 $PAGE->requires->css('/report/elucidsitereport/styles/select2.min.css');
 
+// Page URL
 $pageurl = new moodle_url($CFG->wwwroot . "/report/elucidsitereport/certificates.php");
 
+// Set page context
 $PAGE->set_context($context);
+
+// Set page URL
 $PAGE->set_url($pageurl);
 
-$certificates = new \report_elucidsitereport\output\certificates();
-$certificatesrenderable = new \report_elucidsitereport\output\certificates_renderable();
-$output = $certificates->get_renderer()->render($certificatesrenderable);
+// Get renderable for certificates page
+$renderable = new \report_elucidsitereport\output\certificates_renderable();
+$output = $PAGE->get_renderer($component)->render($renderable);
 
+// Print output in page
 echo $OUTPUT->header();
-echo create_back_button($CFG->wwwroot . "/report/elucidsitereport/");
-echo $OUTPUT->heading(get_string("certificatestats", "report_elucidsitereport"), 1, "page-title p-5 mb-10");
+echo $OUTPUT->heading(create_page_header("certificatestats"), "1", "page-title p-5");
 echo $output;
 echo $OUTPUT->footer();
