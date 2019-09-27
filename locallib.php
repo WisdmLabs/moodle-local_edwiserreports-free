@@ -208,7 +208,7 @@ function get_cohort_filter() {
  * Create individual pageheader
  * @return [string] HTML header string
  */
-function create_page_header($blockname) {
+function create_page_header($blockname, $coursename = false) {
     global $CFG;
 
     // Create backurl
@@ -231,8 +231,14 @@ function create_page_header($blockname) {
     );
     $out .= html_writer::end_div();
 
+    // If coursename then send as param in getstring
+    $param = array();
+    if ($coursename) {
+        $params["coursename"] = $coursename;
+    }
+
     // Create header
-    $out .= html_writer::span(get_string($blockname . "header", $component), "px-md-10");
+    $out .= html_writer::span(get_string($blockname . "header", $component, $params), "px-md-10");
 
     // End pageheader
     $out .= html_writer::end_div();

@@ -46,7 +46,7 @@ if (!has_capability('moodle/site:config', $context)) {
 $courseid = required_param("courseid", PARAM_INT);
 $coursecontext = context_course::instance($courseid);
 $params = array(
-	"courseid" => $courseid
+    "courseid" => $courseid
 );
 
 $pageurl = new moodle_url($CFG->wwwroot . "/report/elucidsitereport/courseaccess.php", $params);

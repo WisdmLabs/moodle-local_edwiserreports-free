@@ -50,6 +50,7 @@ if (!has_capability('moodle/site:config', $context)) {
 $courseid = required_param("courseid", PARAM_INT);
 
 // Require login for course
+$course = get_course($courseid);
 require_login(get_course($courseid));
 
 // Get course context
@@ -73,6 +74,6 @@ $output = $PAGE->get_renderer($component)->render($renderable);
 
 // Print output for course completion page
 echo $OUTPUT->header();
-echo $OUTPUT->heading(create_page_header("completion"), "1", "page-title p-5");
+echo $OUTPUT->heading(create_page_header("completion", $course->fullname), "1", "page-title p-5");
 echo $output;
 echo $OUTPUT->footer();

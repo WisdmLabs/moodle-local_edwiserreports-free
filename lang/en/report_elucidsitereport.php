@@ -278,14 +278,14 @@ $string['coursecompleted'] = "Course Completed";
 $string['nousersavailable'] = "No Users Available";
 
 /* Course Completion Page */
-$string['completionheader'] = "Course Completion Reports";
+$string['completionheader'] = 'Course Completion Reports: {$a->coursename}';
 $string['completionreports'] = "Completion Reports";
 $string['activitycompletion'] = "Activity Completion";
 $string['completionpercantage'] = "Completion Percentage";
 $string['activitycompleted'] = '{$a->completed} out of {$a->total}';
 
 /* Course Analytics Page */
-$string['courseanalyticsheader'] = "Course Analytics";
+$string['courseanalyticsheader'] = 'Course Analytics: {$a->coursename}';
 $string['recentvisits'] = "Recent Visits";
 $string['lastvisit'] = "Last Visit";
 $string['enrolledon'] = "Enrolled On";

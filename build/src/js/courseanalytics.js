@@ -10,7 +10,7 @@ define([
         var RecentVisits = PageId.find(".recent-visits .table");
         var RecentEnroled = PageId.find(".recent-enrolment .table");
         var RecentCompletion = PageId.find(".recent-completion .table");
-        var loader = PageId.find(".loader");
+        var loader = $(".loader");
         var RecentVisitsTable = null;
         var RecentEnroledTable = null;
         var RecentCompletionTable = null;
@@ -66,6 +66,9 @@ define([
             })
             .fail(function(error) {
                 console.log(error);
+            }).always(function() {
+                $(window).resize();
+                PageId.fadeIn("slow");
             });
         }
 
@@ -76,7 +79,7 @@ define([
          * @param  {array} data Data to create table
          */
         function generateDataTable(tableId, table, data) {
-            var emptyStr = "No users has Enrolled in this course";;
+            var emptyStr = "No users has Enrolled in this course";
 
             if (tableId == RecentCompletion){
                 emptyStr = "No users has completed this course";
@@ -85,13 +88,16 @@ define([
             }
 
             if(table != null) {
-                $(loader).hide();
                 table.destroy();
             }
 
-            $(tableId).show();
-            return tableId.DataTable({
+            loader.hide();
+            tableId.fadeIn("slow");
+            PageId.fadeIn("slow");
+
+            return table = tableId.DataTable({
                 data : data,
+                responsive: true,
                 oLanguage : {
                     sEmptyTable : emptyStr
                 },
@@ -100,14 +106,17 @@ define([
                     { className: "text-center", targets: "_all" }
                 ],
                 order: [[ 1, 'desc' ]],
-                initComplete: function() {
-                    $(loader).hide();
-                },
+                scrollY: 350,
+                scrollX:true,
                 paging: true,
                 bInfo : false,
                 searching : false,
-                lengthChange: false
+                lengthChange: false,
+                paging:false
             });
+
+            // Return table
+            return table;
         }
     }
 

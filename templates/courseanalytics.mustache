@@ -1,7 +1,7 @@
 {{#userfilters}}
     {{> report_elucidsitereport/userfilters }}
 {{/userfilters}}
-<div id="wdm-courseanalytics-individual" class="row" data-sesskey="{{sesskey}}">
+<div id="wdm-courseanalytics-individual" class="row" data-sesskey="{{sesskey}}" style="display: none;">
     <div class="recent-visits table-responsive col-lg-4 col-md-6 col-sm-12">
         <h4 class="panel-title px-0">
             {{#str}} recentvisits , report_elucidsitereport{{/str}}
@@ -80,4 +80,7 @@
             <tbody></tbody>
         </table>
     </div>
+</div>
+<div class="loader w-full text-center py-100 my-50">
+    {{# pix }} loader, report_elucidsitereport{{/ pix }}
 </div>
