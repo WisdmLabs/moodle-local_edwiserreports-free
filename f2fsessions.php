@@ -32,7 +32,10 @@ require_once(__DIR__ . '/../../config.php');
 require_once('classes/output/elucidreport_renderer.php');
 require_once('classes/output/elucidreport_renderable.php');
 
+// System context
 $context = context_system::instance();
+$component = "report_elucidsitereport";
+
 // The requested section isn't in the admin tree
 // It could be because the user has inadequate capapbilities or because the section doesn't exist
 if (!has_capability('moodle/site:config', $context)) {
@@ -41,20 +44,27 @@ if (!has_capability('moodle/site:config', $context)) {
     print_error('accessdenied', 'admin');
 }
 
+// Require JS for f2fsessions page
 $PAGE->requires->js_call_amd('report_elucidsitereport/f2fsessions', 'init', array($context->id));
+
+// Require CSS for f2fsessions page
 $PAGE->requires->css('/report/elucidsitereport/styles/select2.min.css');
 
+// Page URL
 $pageurl = new moodle_url($CFG->wwwroot . "/report/elucidsitereport/f2fsessions.php");
 
+// Set page context
 $PAGE->set_context($context);
+
+// Set page URL
 $PAGE->set_url($pageurl);
 
-$f2fsessions = new \report_elucidsitereport\output\f2fsessions();
-$f2fsessionsrenderable = new \report_elucidsitereport\output\f2fsessions_renderable();
-$output = $f2fsessions->get_renderer()->render($f2fsessionsrenderable);
+// Get Renderable for f2fsession page
+$renderable = new \report_elucidsitereport\output\f2fsessions_renderable();
+$output = $PAGE->get_renderer($component)->render($renderable);
 
+// Print output in page
 echo $OUTPUT->header();
-echo create_back_button($CFG->wwwroot . "/report/elucidsitereport/");
-echo $OUTPUT->heading(get_string("f2fsessionsheader", "report_elucidsitereport"), 1, "page-title p-5 mb-10");
+echo $OUTPUT->heading(create_page_header("f2fsessions"), "1", "page-title p-5");
 echo $output;
 echo $OUTPUT->footer();

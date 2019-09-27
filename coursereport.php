@@ -32,6 +32,7 @@ require_once(__DIR__ . '/../../config.php');
 require_once('classes/output/elucidreport_renderer.php');
 require_once('classes/output/elucidreport_renderable.php');
 
+// Required login
 require_login();
 
 // System Context
