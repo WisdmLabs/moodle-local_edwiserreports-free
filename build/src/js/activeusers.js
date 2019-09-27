@@ -207,6 +207,7 @@ define([
                 }).always(function() {
                     DataTable = $(ActiveUsersTable).DataTable({
                         responsive: true,
+                        dom : '<"pull-left"f><t><p>',
                         order : [[0, 'desc']],
                         columnDefs: [
                             {
@@ -220,7 +221,7 @@ define([
                         ],
                         info : false,
                         bLengthChange : false,
-                        scrollY : 300,
+                        scrollY : 350,
                         scrollX : true,
                         paginate : false
                     });

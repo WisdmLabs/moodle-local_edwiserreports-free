@@ -90,7 +90,10 @@ define([
                 initComplete: function() {
                     $(CourseEngageTable).show();
                     $(loader).hide();
-                }
+                },    
+                scrollY : 350,
+                scrollX : true,
+                paginate : false
             });
         }
     }

@@ -99,7 +99,6 @@ define([
                         dom : '<"pull-left"f><t><p>',
                         order : [[0, 'desc']],
                         bLengthChange : false,
-                        pageLength : 50,
                         initComplete: function() {
                             $(dropdownTable + " .dropdown").show();
                         },
@@ -112,7 +111,10 @@ define([
                                 "targets": "_all",
                                 "className": "text-center",
                             }
-                        ]
+                        ],
+                        scrollY : 350,
+                        scrollX : true,
+                        paginate : false
                     });
                     $(CourseProgressTable).show();
                     $(loader).hide();
