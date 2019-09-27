@@ -48,7 +48,7 @@
 }
 .path-admin-report-elucidsitereport tr[aria-expanded="true"] .accordion-arrow.icon,
 .path-report-elucidsitereport tr[aria-expanded="true"] .accordion-arrow.icon {
-    transform: rotate(-90deg);
+    transform: rotate(90deg);
 }
 /* Accordion transition on click event End */
 
@@ -185,8 +185,8 @@
 }
 
 /* F2f sessions page css */
-#wdm-f2fsessions-individual #f2fsessionstable {
-    min-height: 150px;
+#wdm-f2fsessions-individual {
+    min-height: 350px;
 }
 
 /* Custom Scrollbar Design Start */

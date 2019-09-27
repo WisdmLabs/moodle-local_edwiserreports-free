@@ -5,8 +5,8 @@
     {{> report_elucidsitereport/userfilters }}
 {{/userfilters}}
 
-<div id="wdm-f2fsessions-individual" data-sesskey="{{sesskey}}">
-    <div class="table-reponsive overflow-scroll">
+<div id="wdm-f2fsessions-individual" class="overflow-scroll" data-sesskey="{{sesskey}}">
+    <div class="table-reponsive">
         <div class="loader w-full text-center py-110 my-50">
             {{# pix }} loader, report_elucidsitereport{{/ pix }}
         </div>
@@ -47,7 +47,10 @@
                         {{#str}} canceled, report_elucidsitereport {{/str}}
                     </th>
                     <th>
-                        Download
+                        {{#str}} download, report_elucidsitereport {{/str}}
+                    </th>
+                    <th>
+                        {{#str}} f2fmore, report_elucidsitereport {{/str}}
                     </th>
                 </tr>
             </thead>
@@ -55,26 +58,28 @@
                 {{#f2fmodules}}
                 {{#sessions}}
                 <tr class="text-nowrap" data-toggle="collapse" data-target="#accordion-{{sessionid}}" class="clickable">
-                    <td>{{date}}</td>
-                    <td>{{time}}</td>
-                    <td>{{name}}</td>
-                    <td>{{coursename}}</td>
-                    <td>{{signupvenue}}</td>
-                    <td class="text-center">{{signups}}</td>
-                    <td class="text-center">{{confirmed}}</td>
-                    <td class="text-center">{{attendend}}</td>
-                    <td class="text-center">{{waitlisted}}</td>
-                    <td class="text-center">{{declined}}</td>
-                    <td class="text-center">{{canceled}}</td>
-                    <td class="text-center py-0 d-flex">
+                    <td class="pb-10">{{date}}</td>
+                    <td class="pb-10">{{time}}</td>
+                    <td class="pb-10">{{name}}</td>
+                    <td class="pb-10">{{coursename}}</td>
+                    <td class="pb-10">{{signupvenue}}</td>
+                    <td class="text-center pb-10">{{signups}}</td>
+                    <td class="text-center pb-10">{{confirmed}}</td>
+                    <td class="text-center pb-10">{{attendend}}</td>
+                    <td class="text-center pb-10">{{waitlisted}}</td>
+                    <td class="text-center pb-10">{{declined}}</td>
+                    <td class="text-center pb-10">{{canceled}}</td>
+                    <td class="text-center pb-10 py-0 d-flex justify-content-center">
                         {{#exportlink}}
                             {{> report_elucidsitereport/exportdropdown }}
                         {{/exportlink}}
-                        <i class="icon accordion-arrow fa fa-angle-left my-auto"></i>
+                    </td>
+                    <td class="text-center">
+                        <i class="icon accordion-arrow fa fa-angle-down my-auto"></i>
                     </td>
                 </tr>
                 <tr>
-                    <td class="border-0 collapse-td py-0 pl-30" colspan="11">
+                    <td class="border-0 collapse-td py-0 pl-30" colspan="12">
                         <div  id="accordion-{{sessionid}}" class="collapse">
                             <table class="table">
                                 <thead>
@@ -113,7 +118,7 @@
                 {{/sessions}}
                 {{^sessions}}
                 <tr>
-                    <td class="text-center" colspan="11">
+                    <td class="text-center" colspan="12">
                         {{#str}} nosessions, report_elucidsitereport{{/str}}
                     </td>
                 </tr>
@@ -121,7 +126,7 @@
                 {{/f2fmodules}}
                 {{^f2fmodules}}
                 <tr>
-                    <td class="text-center" colspan="11">
+                    <td class="text-center" colspan="12">
                         {{#str}} nosessions, report_elucidsitereport{{/str}}
                     </td>
                 </tr>

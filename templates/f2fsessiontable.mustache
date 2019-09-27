@@ -2,10 +2,21 @@
     <table id="f2fsessionstable" class="table border-bottom-0">
         <thead class="bg-secondary">
             <tr>
-                <th class="bg-secondary border-bottom-0">{{#str}} name, report_elucidsitereport{{/str}}</th>
-                <th class="bg-secondary border-bottom-0">{{#str}} course, report_elucidsitereport {{/str}}</th>
-                <th class="bg-secondary border-bottom-0">{{#str}} signups, report_elucidsitereport {{/str}}</th>
-                <th class="bg-secondary border-bottom-0">{{#str}} attendees,report_elucidsitereport {{/str}}</th>
+                <th class="bg-secondary border-bottom-0">
+                    {{#str}} name, report_elucidsitereport{{/str}}
+                </th>
+                <th class="bg-secondary border-bottom-0">
+                    {{#str}} course, report_elucidsitereport {{/str}}
+                </th>
+                <th class="bg-secondary border-bottom-0">
+                    {{#str}} signups, report_elucidsitereport {{/str}}
+                </th>
+                <th class="bg-secondary border-bottom-0">
+                    {{#str}} attendees, report_elucidsitereport {{/str}}
+                </th>
+                <th class="bg-secondary border-bottom-0 w-50">
+                    {{#str}} f2fmore, report_elucidsitereport {{/str}}
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -17,16 +28,18 @@
                 <td>
                     {{coursename}}
                 </td>
-                <td>
+                <td class="text-center">
                     {{overallsignups}}
                 </td>
-                <td data-value="1" class="footable-last-column">
+                <td data-value="1" class="text-center">
                     {{overallattendend}}
-                    <i class="icon accordion-arrow pull-right fa fa-angle-left text-center"></i>
+                </td>
+                <td class="footable-last-column">
+                    <i class="icon accordion-arrow pull-right fa fa-angle-down text-center"></i>
                 </td>
             </tr>
             <tr>
-                <td class="border-0 py-0 pl-30" colspan="4">
+                <td class="border-0 py-0 pl-30" colspan="5">
                     <div  id="accordion-{{id}}" class="collapse">
                         <table class="table">
                             <thead>
@@ -44,8 +57,8 @@
                                     <td>{{date}}</td>
                                     <td>{{time}}</td>
                                     <td>{{signupvenue}}</td>
-                                    <td>{{signups}}</td>
-                                    <td>{{attendend}}</td>
+                                    <td class="text-center">{{signups}}</td>
+                                    <td class="text-center">{{attendend}}</td>
                                 </tr>
                                 {{/sessions}}
                                 {{^sessions}}

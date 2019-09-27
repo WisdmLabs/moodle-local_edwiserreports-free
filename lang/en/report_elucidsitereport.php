@@ -156,6 +156,8 @@ $string['requested'] = "Requested";
 $string['canceled'] = "Canceled";
 $string['approved'] = "Approved";
 $string['booked'] = "Booked";
+$string['f2fmore'] = "More";
+$string['download'] = "Download";
 
 /* Site Access Block*/
 $string['sun'] = "SUN";
