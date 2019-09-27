@@ -31,8 +31,7 @@ use moodle_url;
 use context_helper;
 
 require_once(__DIR__ . '/../../config.php');
-require_once('classes/output/elucidreport_renderer.php');
-require_once('classes/output/elucidreport_renderable.php');
+require_once('classes/output/renderable.php');
 
 // Context system
 $context = context_system::instance();

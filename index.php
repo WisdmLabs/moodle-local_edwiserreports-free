@@ -25,10 +25,10 @@
 
 require_once __DIR__ .'/../../config.php';
 require_once $CFG->libdir.'/adminlib.php';
-require_once 'classes/output/elucidreport_renderer.php';
-require_once 'classes/output/elucidreport_renderable.php';
+require_once 'classes/output/renderable.php';
 require_once 'classes/export.php';
 
+// Strings for js
 $PAGE->requires->strings_for_js([
     'cpblocktooltip1',
     'cpblocktooltip2',
@@ -41,23 +41,32 @@ $PAGE->requires->strings_for_js([
     'per100'
 ], 'report_elucidsitereport');
 
+// Set external page admin
 admin_externalpage_setup('elucidsitereport');
+$component = "report_elucidsitereport";
 
+// Page URL
 $pageurl = new moodle_url($CFG->wwwroot."/report/elucidsitereport/index.php");
 
+// Require JS for index page
 $PAGE->requires->js_call_amd('report_elucidsitereport/main', 'init');
+
+// Require CSS for index page
 $PAGE->requires->css('/report/elucidsitereport/styles/datatable.css');
 $PAGE->requires->css('/report/elucidsitereport/styles/flatpickr.min.css');
 $PAGE->requires->css('/report/elucidsitereport/styles/select2.min.css');
 
+// Set page URL
 $PAGE->set_url($pageurl);
 
-$elucidreport = new \report_elucidsitereport\output\elucidreport();
-$reportrenderable = new \report_elucidsitereport\output\elucidreport_renderable();
-$output = $elucidreport->get_renderer()->render($reportrenderable);
+// Get renderable
+$renderable = new \report_elucidsitereport\output\elucidreport_renderable();
+$output = $PAGE->get_renderer($component)->render($renderable);
 
+// Set page heading
 $PAGE->set_heading(get_string("pluginname", "report_elucidsitereport"));
 
+// Print output in page
 echo $OUTPUT->header();
 echo $output;
 echo $OUTPUT->footer();

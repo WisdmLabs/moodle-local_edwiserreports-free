@@ -29,24 +29,33 @@ use context_system;
 use moodle_url;
 
 require_once(__DIR__ . '/../../config.php');
-require_once('classes/output/elucidreport_renderer.php');
-require_once('classes/output/elucidreport_renderable.php');
+require_once('classes/output/renderable.php');
 
+// System Context
 $context = context_system::instance();
+$component = "report_elucidsitereport";
+
+// Require JS for lpstats page
 $PAGE->requires->js_call_amd('report_elucidsitereport/lpstats', 'init', array($context->id));
+
+// Require CSS for lpstats page
 $PAGE->requires->css('/report/elucidsitereport/styles/select2.min.css');
 
+// Page URL
 $pageurl = new moodle_url($CFG->wwwroot . "/report/elucidsitereport/lpstats.php");
 
+// Set page context
 $PAGE->set_context($context);
+
+// Set page URL
 $PAGE->set_url($pageurl);
 
-$lpstats = new \report_elucidsitereport\output\lpstats();
+// Get lpstats renderer
 $lpstatsrenderable = new \report_elucidsitereport\output\lpstats_renderable();
-$output = $lpstats->get_renderer()->render($lpstatsrenderable);
+$output = $PAGE->get_renderer($component)->render($lpstatsrenderable);
 
+// Print output in page
 echo $OUTPUT->header();
-echo create_back_button($CFG->wwwroot . "/report/elucidsitereport/");
-echo $OUTPUT->heading(get_string("lpstatsheader", "report_elucidsitereport"), 1, "page-title p-5 mb-10");
+echo $OUTPUT->heading(create_page_header("lpstats"), "1", "page-title p-5");
 echo $output;
 echo $OUTPUT->footer();

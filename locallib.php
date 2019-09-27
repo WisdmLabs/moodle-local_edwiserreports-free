@@ -232,7 +232,7 @@ function create_page_header($blockname, $coursename = false) {
     $out .= html_writer::end_div();
 
     // If coursename then send as param in getstring
-    $param = array();
+    $params = array();
     if ($coursename) {
         $params["coursename"] = $coursename;
     }

@@ -29,8 +29,7 @@ use context_course;
 use moodle_url;
 
 require_once(__DIR__ . '/../../config.php');
-require_once('classes/output/elucidreport_renderer.php');
-require_once('classes/output/elucidreport_renderable.php');
+require_once('classes/output/renderable.php');
 
 require_login();
 
