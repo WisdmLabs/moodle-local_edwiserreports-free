@@ -72,7 +72,10 @@ define([
                 ],
                 initComplete: function() {
                     $(loader).hide();
-                }
+                },
+                scrollY : 350,
+                scrollX : true,
+                paginate : false
             });
         }
     }
