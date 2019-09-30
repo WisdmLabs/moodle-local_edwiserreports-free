@@ -202,7 +202,7 @@
 .path-report-elucidsitereport ::-webkit-scrollbar-track,
 .path-admin-report-elucidsitereport ::-webkit-scrollbar-track {
    border-radius: 0;
-   background: #f1f1f1;
+   background: #fff;
 }
 
 /* Handle */
