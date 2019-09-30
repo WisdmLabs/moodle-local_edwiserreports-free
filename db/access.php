@@ -15,20 +15,24 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Plugin administration pages are defined here.
+ * Code to be executed after the plugin's database scheme has been installed is defined here.
  *
  * @package     report_elucidsitereport
- * @category    admin
+ * @category    upgrade
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-if ($hassiteconfig) {
-    /*$url = $CFG->wwwroot . '/report/elucidsitereport/index.php';
-    $ADMIN->add('reports', new admin_externalpage('elucidsitereport', get_string('pluginname', 'report_elucidsitereport'), $url);
-
-    // No report settings.
-    $settings = null;*/
-}
+$capabilities = array(
+    'report/report_elucidsitereport:view' => array(
+        'riskbitmask' => RISK_CONFIG,
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => array(
+            'coursecreator' => CAP_ALLOW,
+            'manager' => CAP_ALLOW,
+        ),
+    )
+);

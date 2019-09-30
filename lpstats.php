@@ -35,6 +35,14 @@ require_once('classes/output/renderable.php');
 $context = context_system::instance();
 $component = "report_elucidsitereport";
 
+// The requested section isn't in the admin tree
+// It could be because the user has inadequate capapbilities or because the section doesn't exist
+if (!has_capability('report/report_elucidsitereport:view', $context)) {
+    // The requested section could depend on a different capability
+    // but most likely the user has inadequate capabilities
+    print_error('accessdenied', 'admin');
+}
+
 // Require JS for lpstats page
 $PAGE->requires->js_call_amd('report_elucidsitereport/lpstats', 'init', array($context->id));
 

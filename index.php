@@ -42,8 +42,17 @@ $PAGE->requires->strings_for_js([
 ], 'report_elucidsitereport');
 
 // Set external page admin
-admin_externalpage_setup('elucidsitereport');
+// admin_externalpage_setup('elucidsitereport');
+$context = context_system::instance();
 $component = "report_elucidsitereport";
+
+// The requested section isn't in the admin tree
+// It could be because the user has inadequate capapbilities or because the section doesn't exist
+if (!has_capability('report/report_elucidsitereport:view', $context)) {
+    // The requested section could depend on a different capability
+    // but most likely the user has inadequate capabilities
+    print_error('accessdenied', 'admin');
+}
 
 // Page URL
 $pageurl = new moodle_url($CFG->wwwroot."/report/elucidsitereport/index.php");
@@ -55,6 +64,9 @@ $PAGE->requires->js_call_amd('report_elucidsitereport/main', 'init');
 $PAGE->requires->css('/report/elucidsitereport/styles/datatable.css');
 $PAGE->requires->css('/report/elucidsitereport/styles/flatpickr.min.css');
 $PAGE->requires->css('/report/elucidsitereport/styles/select2.min.css');
+
+// Set page context
+$PAGE->set_context($context);
 
 // Set page URL
 $PAGE->set_url($pageurl);

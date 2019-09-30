@@ -40,7 +40,7 @@ $component = 'report_elucidsitereport';
 
 // The requested section isn't in the admin tree
 // It could be because the user has inadequate capapbilities or because the section doesn't exist
-if (!has_capability('moodle/site:config', $context)) {
+if (!has_capability('report/report_elucidsitereport:view', $context)) {
     // The requested section could depend on a different capability
     // but most likely the user has inadequate capabilities
     print_error('accessdenied', 'admin');
