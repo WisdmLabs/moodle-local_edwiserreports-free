@@ -70,6 +70,7 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
                         "className": "text-center",
                     }
                 ],
+                responsive : true,
                 scrollY : "320px",
                 scrollCollapse : true,
                 scrollX: true,
