@@ -312,3 +312,6 @@ $string['sendingscheduledemails'] = 'Sending Scheduled Emails...';
 
 /* Cache Strings */
 $string['cachedef_elucidsitereport'] = 'This is the caches of elucid site report';
+
+/* Capabilties */
+$string['elucidsitereport:view'] = 'View Reports and analytics dashboard';
