@@ -245,29 +245,15 @@ class utility {
 
     /**
      * Get Course Completions by users
-     * @return [type] [description]
+     * @param [int] Course Id
+     * @return [array] Array of course completion
      */
     public static function get_course_completion($courseid) {
         global $DB;
 
-        $sql = "SELECT mc.userid, m.course,(COUNT(mc.userid)/
-            (SELECT COUNT(*) FROM {course_modules}
-            WHERE completion = m.completion
-            AND course = m.course)) AS 'progress'
-            FROM {course_modules} m, {course_modules_completion} mc
-            WHERE m.id=mc.coursemoduleid
-            AND mc.completionstate = :completionstatus
-            AND m.completion > :completion
-            AND m.course = :courseid
-            GROUP BY mc.userid";
-
-        $params = array(
-            "completion" => 0,
-            "completionstatus" => true,
-            "courseid" => $courseid
-        );
-
-        return $DB->get_records_sql($sql, $params);
+        // Return course completion from report completion table
+        $table = "elucidsitereport_completion";
+        return $DB->get_records($table, array("courseid" => $courseid), "", "userid, completion");
     }
 
     /**

@@ -102,12 +102,11 @@ class course_progress_block extends utility {
                     continue;
                 }
             }
-
             // If not set the completion then this user is not completed
             if (!isset($completions[$user->id])) {
                 $completedusers[PERCENTAGE_00]++;
             } else {
-                $progress = $completions[$user->id]->progress;
+                $progress = $completions[$user->id]->completion / 100;
                 switch (true) {
                     case $progress == COURSE_COMPLETE_100PER:
                         // Completed 100% of course
@@ -327,7 +326,7 @@ class course_progress_block extends utility {
             if (!isset($completions[$enrolleduser->id])) {
                 $progress = 0;
             } else {
-                $progress = $completions[$enrolleduser->id]->progress * 100;
+                $progress = $completions[$enrolleduser->id]->completion;
             }
 
             // If progress between the min and max value
