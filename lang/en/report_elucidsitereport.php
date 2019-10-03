@@ -305,6 +305,7 @@ $string['updatetables'] = "Updating Reports and Analytics Table";
 $string['updatingrecordstarted'] = "Updating reports and analytics record is srated...";
 $string['updatingrecordended'] = "Updating reports and analytics record is ended...";
 $string['updatinguserrecord'] = 'Updating userid {$a->userid} in courseid {$a->courseid}';
+$string['deletingguserrecord'] = 'Deleting userid {$a->userid} in courseid {$a->courseid}';
 $string['gettinguserrecord'] = 'Getting userid {$a->userid} in courseid {$a->courseid}';
 $string['creatinguserrecord'] = 'Create records for users completions';
 $string['sendscheduledemails'] = 'Send Scheduled Emails';
