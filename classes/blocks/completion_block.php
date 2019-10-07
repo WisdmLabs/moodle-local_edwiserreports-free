@@ -135,7 +135,7 @@ class completion_block extends utility {
         ));
 
         if (isset($coursecompletion) && $coursecompletion->timecompleted) {
-            return $coursecompletion->timecompleted;
+            return date("d M y", $coursecompletion->timecompleted);
         } else {
             return get_string("notyet", "report_elucidsitereport");
         }
