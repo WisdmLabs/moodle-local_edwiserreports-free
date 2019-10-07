@@ -287,6 +287,7 @@ $string['completionpercantage'] = "Completion Percentage";
 $string['activitycompleted'] = '{$a->completed} out of {$a->total}';
 
 /* Course Analytics Page */
+$string['courseanalytics'] = 'Course Analytics';
 $string['courseanalyticsheader'] = 'Course Analytics: {$a->coursename}';
 $string['recentvisits'] = "Recent Visits";
 $string['lastvisit'] = "Last Visit";
