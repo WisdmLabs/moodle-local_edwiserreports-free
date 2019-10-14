@@ -499,7 +499,8 @@
 }
 
 div[id^="wdm-"][id*="-individual"] table.table,
-#wdm-elucidsitereport .table {
+#wdm-elucidsitereport .table,
+.modal-dialog .table {
     min-width: 100%;
 }
 

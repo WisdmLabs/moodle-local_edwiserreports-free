@@ -166,6 +166,7 @@ define([
                 }
             },
             scrollY : "300px",
+            scrollX: true,
             scrollCollapse : true,
             oLanguage : {
                 sEmptyTable : "There is no scheduled emails"
