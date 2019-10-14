@@ -5,11 +5,12 @@ define([
     'core/modal_factory',
     'core/modal_events', 
     'core/templates',
+    'core/str',
     'report_elucidsitereport/variables',
     'report_elucidsitereport/select2',
     'report_elucidsitereport/jquery.dataTables',
     'report_elucidsitereport/dataTables.bootstrap4'
-    ], function($, notif, fragment, ModalFactory, ModalEvents, Templates, v) {
+    ], function($, notif, fragment, ModalFactory, ModalEvents, Templates, str, v) {
     var emailListTable = null;
     /**
      * Email Shcedule Modal Related Psrametres start
@@ -47,6 +48,8 @@ define([
     var loader = '<div class="w-full text-center"><i class="fa fa-spinner fa-spin" aria-hidden="true"></i></div>'
     var errormsg = '<div class="alert alert-danger"><b>ERROR:</b> Error while scheduling email<div>';
     var successmsg = '<div class="alert alert-success"><b>Success:</b> Email scheduled successfully<div>';
+    var deletesuccessmsg = '<div class="alert alert-success"><b>Success:</b> Email deleted successfully<div>';
+    var deleteerrormsg = '<div class="alert alert-danger"><b>ERROR:</b> Email deletion failed<div>';
     var emptyerrormsg = '<div class="alert alert-danger"><b>ERROR:</b> Name and Recepient Fields can not be empty<div>';
     var emailinvaliderrormsg = '<div class="alert alert-danger"><b>ERROR:</b> Invalid email adderesses space not allowed<div>';
 
@@ -171,6 +174,9 @@ define([
             oLanguage : {
                 sEmptyTable : "There is no scheduled emails"
             },
+            language: {
+                searchPlaceholder: "Search shceduled email"
+            },
             order : [[ 1, "asc" ]],
             columns : [
                 {
@@ -272,7 +278,7 @@ define([
 
         // Reset scheduled form
         root.on('click', '[data-action="cancel"]', function() {
-            root.find('[name^=esr]').val("");
+            root.find('[name^=esr]:not(.d-none):not([id="esr-toggle-"])').val("");
             root.find('#esr-id').val(-1);
         });
     }
@@ -425,6 +431,8 @@ define([
         var id = $(_this).data("id");
         var blockname = $(_this).data("blockname");
         var region = $(_this).data("region");
+        var errorBox = root.find(".esr-form-error");
+        errorBox.html(loader).show();
 
         $.ajax({
             url: v.requestUrl,
@@ -445,8 +453,15 @@ define([
                     emailListTable.destroy();
                 }
                 emailListTable = render_all_scheduled_emails(_this, modal);
-                errorBox.html(successmsg);
+                errorBox.html(deletesuccessmsg);
+            } else {
+                errorBox.html(deleteerrormsg);
             }
+        }).fail(function(error) {
+            errorBox.html(deleteerrormsg);
+            console.log(error);
+        }).always(function() {
+            errorBox.delay(3000).fadeOut('slow');
         });
     }
 
@@ -512,8 +527,31 @@ define([
         });
 
         // When delete button clicked then
-        root.on('click', deleteBtn, function() {
-            email_schedule_delete_init(this, root, modal);
+        root.on('click', deleteBtn, function(e) {
+            var _this = this;
+
+            str.get_strings([
+                {
+                    key:        'confirmemailremovaltitle',
+                    component:  'report_elucidsitereport'
+                },
+                {
+                    key:        'confirmemailremovalquestion',
+                    component:  'report_elucidsitereport'
+                },
+                {
+                    key:        'yes',
+                    component:  'moodle'
+                },
+                {
+                    key:        'no',
+                    component:  'moodle'
+                }
+            ]).done(function(s) {
+                notif.confirm(s[0], s[1], s[2], s[3], $.proxy(function() {
+                    email_schedule_delete_init(_this, root, modal);
+                }, e.currentTarget));
+            });
         });
 
         // When toggle switch clicked then

@@ -272,6 +272,8 @@ $string['everymonths'] = 'Every month at {$a->time}';
 $string['schedule'] = "Schedule";
 $string['scheduledlist'] = "All Scheduled Reports";
 $string['reset'] = "Reset";
+$string['confirmemailremovaltitle'] = "Delete Scheduled Email";
+$string['confirmemailremovalquestion'] = "<p class='px-20'>Do you really want to delete this sheduled email</p>";
 
 /* Course Engagement Block */
 $string['activitystart'] = "At least one Activity Started";
