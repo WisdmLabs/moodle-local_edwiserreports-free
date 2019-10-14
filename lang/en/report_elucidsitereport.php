@@ -116,8 +116,8 @@ $string['nolearningprograms'] = "No Learning Programs Found";
 /* Block Inactive Users */
 $string['siteaccess'] = "Site Access:";
 $string['before1month'] = "Before 1 Month";
-$string['before2month'] = "Before 2 Month";
 $string['before3month'] = "Before 3 Month";
+$string['before6month'] = "Before 6 Month";
 
 /* Active Users Page */
 $string['noofactiveusers'] = "No. of active users";

@@ -30,7 +30,7 @@ define(["jquery", "report_elucidsitereport/defaultconfig", "report_elucidsiterep
             console.log(error);
         }).always(function(){
             listner("realTimeUsers");
-            setTimeout(getOnlineUsersData, 1000 * 30);
+            setTimeout(getOnlineUsersData, 2 * 60 * 1000);
         });
     }
 

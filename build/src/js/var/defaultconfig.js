@@ -230,6 +230,9 @@ define(["jquery", "report_elucidsitereport/variables", "report_elucidsitereport/
         },
 
         // Get URL Params
-        getUrlParams: v.getUrlParams
+        getUrlParams: v.getUrlParams,
+
+        // Generate URL
+        generateUrl: v.generateUrl
     };
 });

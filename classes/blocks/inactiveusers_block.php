@@ -24,41 +24,77 @@
  */
 
 namespace report_elucidsitereport;
+
 use stdClass;
+use cache;
+
+require_once($CFG->dirroot . "/report/elucidsitereport/classes/constants.php");
 
 /**
  * Class Inacive Users Block
  * To get the data related to inactive users block
  */
 class inactiveusers_block extends utility {
+    /**
+     * Get Inactive users data
+     * @param  [String] $filter Filter
+     * @return [object] response object
+     */
     public static function get_data($filter) {
-        $response = new stdClass();
-        $response->data = self::get_inactiveusers($filter);
+        // Make cache for inactive users block
+        $cache = cache::make("report_elucidsitereport", "courseprogress");
+        $cachekey = "inactiveusers-" . $filter;
+
+        // If cache not set for course progress
+        if (!$response = $cache->get($cachekey)) {
+            $response = new stdClass();
+
+            // Get response data
+            $response->data = self::get_inactiveusers($filter);
+
+            // Set cache to get data for course progress
+            $cache->set($cachekey, $response);
+        }
+
+        // Return response
         return $response;
     }
 
+    /**
+     * Get inactive users list
+     * @param  [String] $filter Filter
+     * @return [Array] Array of inactive users
+     */
     public static function get_inactiveusers($filter) {
         global $DB;
 
-        $lastlogin = 0;
+        // Get current time
         $timenow = time();
+
+        // Get last login time using filter
         switch ($filter) {
             case '1month':
-                $lastlogin = $timenow - 1 * 30 * 24 * 60 * 60;
+                $lastlogin = $timenow - 1 * ONEMONTH;
                 break;
             case '3month':
-                $lastlogin = $timenow - 3 * 30 * 24 * 60 * 60;
+                $lastlogin = $timenow - 3 * ONEMONTH;
                 break;
             case '6month':
-                $lastlogin = $timenow - 6 * 30 * 24 * 60 * 60;
+                $lastlogin = $timenow - 6 * ONEMONTH;
                 break;
+            default:
+                $lastlogin = 0;
         }
 
+        // Query to get users who have not logged in
         $sql = "SELECT * FROM {user} WHERE lastlogin <= ?
                 AND deleted = 0 AND id > 1";
-        $inactiveusers = array();
+
+        // Get all users who are inactive
         $users = $DB->get_records_sql($sql, array($lastlogin));
 
+        // Geenerate Inactive users return array
+        $inactiveusers = array();
         foreach ($users as $user) {
             $inactiveuser = array(
                 "name" => fullname($user),
@@ -74,6 +110,8 @@ class inactiveusers_block extends utility {
 
             $inactiveusers[] = array_values($inactiveuser);
         }
+
+        // Return inactive users array
         return $inactiveusers;
     }
 }
