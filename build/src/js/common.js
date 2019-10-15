@@ -604,7 +604,7 @@ define([
             $(blocks).removeClass("col-lg-12");
         }
 
-        $(document).find('.table.dataTable').DataTable().draw();
+        $(blocks).find('.table.dataTable').DataTable().draw();
     }
 
     /**
