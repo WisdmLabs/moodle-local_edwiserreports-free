@@ -442,6 +442,8 @@ class utility {
      * @return [array] Array of Users ID who have completed half activities 
      */
     public static function users_completed_half_modules($course, $users, $cohortid) {
+        global $DB;
+
         $records = array();
         foreach($users as $user) {
             /* If cohort filter is there then get only users from cohort */
@@ -452,8 +454,25 @@ class utility {
                 }
             }
 
-            $completion = self::get_course_completion_info($course, $user->id);
-            if ($completion["progresspercentage"] > 50) {
+            $completionsql = "SELECT id, completion
+                FROM {elucidsitereport_completion}
+                WHERE userid = :userid
+                AND courseid = :courseid
+                AND completion
+                BETWEEN :completionstart
+                AND :completionend";
+
+            // Calculate 50% Completion Count for Courses 
+            $params = array(
+                "completionstart" => 50.00,
+                "completionend" => 99.99,
+                "courseid" => $course->id,
+                "userid" => $user->id 
+            );
+            $completion = $DB->get_record_sql($completionsql, $params);
+
+            // $completion = self::get_course_completion_info($course, $user->id);
+            if ($completion && $completion->completion >= 50 && $completion->completion < 100) {
                 $records[] = $user;
             }
         }

@@ -279,20 +279,11 @@ class course_progress_block extends utility {
             get_string("fullname", "report_elucidsitereport"),
             get_string("email", "report_elucidsitereport")
         );
-        $table->attributes["class"] = "generaltable modal-table";
+        $table->attributes["class"] = "modal-table";
+        $table->attributes["style"] = "min-width: 100%;";
 
         $data = self::get_userslist($courseid, $minval, $maxval, $cohortid);
-        if (empty($data)) {
-            $notavail = get_string("nousersavailable", "report_elucidsitereport");
-            $emptycell = new html_table_cell($notavail);
-            $row = new html_table_row();
-            $emptycell->colspan = count($table->head);
-            $emptycell->attributes = array(
-                "class" => "text-center"
-            );
-            $row->cells = array($emptycell);
-            $table->data = array($row);
-        } else {
+        if (!empty($data)) {
             $table->data = $data;
         }
         return html_writer::table($table);

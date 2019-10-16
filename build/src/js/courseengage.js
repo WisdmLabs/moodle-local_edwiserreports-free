@@ -67,6 +67,27 @@ define([
                     ModalRoot.on(ModalEvents.hidden, function () {
                         modal.destroy();
                     });
+
+                    ModalRoot.on(ModalEvents.bodyRendered, function () {
+                        var ModalTable = ModalRoot.find(".modal-table");
+
+                        // If empty then remove colspan
+                        if (ModalTable.find("tbody").hasClass("empty")) {
+                            ModalTable.find("tbody").empty();
+                        }
+
+                        // Create dataTable for userslist
+                        ModalRoot.find(".modal-table").DataTable({
+                            language: {
+                                searchPlaceholder: "Search users",
+                                emptyTable: "There are no users"
+                            },
+                            scrollY : "350px",
+                            scrollX : true,
+                            paging: false,
+                            bInfo : false
+                        });
+                    });
                 });
             });
         });

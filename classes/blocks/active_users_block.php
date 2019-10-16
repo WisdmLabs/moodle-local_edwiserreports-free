@@ -249,24 +249,15 @@ class active_users_block extends utility {
 
             // Set table attributes
             $table->attributes = array (
-                "class" => "generaltable modal-table"
+                "class" => "modal-table",
+                "style" => "min-width: 100%;"
             );
 
             // Get Users data
             $data = self::get_userslist($filter, $action, $cohortid);
 
             // Set table cell
-            if (empty($data)) {
-                $notavail = get_string("usersnotavailable", "report_elucidsitereport");
-                $emptycell = new html_table_cell($notavail);
-                $row = new html_table_row();
-                $emptycell->colspan = count($table->head);
-                $emptycell->attributes = array(
-                    "class" => "text-center"
-                );
-                $row->cells = array($emptycell);
-                $table->data = array($row);
-            } else {
+            if (!empty($data)) {
                 $table->data = $data;
             }
 

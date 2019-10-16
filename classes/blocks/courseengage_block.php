@@ -62,7 +62,7 @@ class courseengage_block extends utility {
         $engagedata = array();
         $courses = self::get_courses(true);
 
-        $completionsql = "SELECT c.courseid, COUNT(c.userid) AS usercount
+        $completionsql = "SELECT c.courseid, COUNT(c.userid) AS usercount, c.completion
             FROM {elucidsitereport_completion} c
             JOIN {user} u ON u.id = c.userid
             WHERE c.completion
@@ -89,7 +89,7 @@ class courseengage_block extends utility {
         $completionmodulesql = "SELECT c.courseid, COUNT(c.userid) AS usercount
             FROM {elucidsitereport_completion} c
             JOIN {user} u ON u.id = c.userid
-            WHERE completedactivities = :completedactivities
+            WHERE completedactivities >= :completedactivities
             AND u.deleted = 0
             GROUP BY c.courseid";
         $params = array(
@@ -103,7 +103,6 @@ class courseengage_block extends utility {
                 "completiononemodule" => 0
             );
 
-            $completed50 = $completed100 = 0;
             if (isset($completion50[$course->id])) {
                 $values["completed50"] = $completion50[$course->id]->usercount;
             }
@@ -224,22 +223,15 @@ class courseengage_block extends utility {
     public static function get_userslist_table($courseid, $action, $cohortid) {
         $table = new html_table();
         $table->attributes = array (
-            "class" => "generaltable modal-table"
+            "class" => "modal-table",
+            "style" => "min-width: 100%;",
         );
+
+        // Get userslist to display
         $data = self::get_userslist($courseid, $action, $cohortid);
 
         $table->head = $data->head;
-        if (empty($data->data)) {
-            $notavail = get_string("usersnotavailable", "report_elucidsitereport");
-            $emptycell = new html_table_cell($notavail);
-            $row = new html_table_row();
-            $emptycell->colspan = count($table->head);
-            $emptycell->attributes = array(
-                "class" => "text-center"
-            );
-            $row->cells = array($emptycell);
-            $table->data = array($row);
-        } else {
+        if (!empty($data->data)) {
             $table->data = $data->data;
         }
         return html_writer::table($table);
