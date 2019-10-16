@@ -25,12 +25,15 @@
 
 use report_elucidsitereport\export;
 
-require_once __DIR__ .'/../../config.php';
-require_once $CFG->dirroot."/report/elucidsitereport/classes/export.php";
+require_once(__DIR__ .'/../../config.php');
+require_once($CFG->dirroot."/report/elucidsitereport/classes/export.php");
 
+// Check if users is logged in
 require_login();
 
+// Get system context
 $context = context_system::instance();
+
 // The requested section isn't in the admin tree
 // It could be because the user has inadequate capapbilities or because the section doesn't exist
 if (!has_capability('report/report_elucidsitereport:view', $context)) {
@@ -39,21 +42,37 @@ if (!has_capability('report/report_elucidsitereport:view', $context)) {
     print_error('accessdenied', 'admin');
 }
 
+// Set page context
 $PAGE->set_context($context);
 
+// If format is there then go ahead to export
 if ($format = optional_param("format", false, PARAM_TEXT)) {
+    // Get required and option paramerter for export
     $region = required_param("region", PARAM_TEXT);
     $blockname = required_param("blockname", PARAM_TEXT);
     $filter = optional_param("filter", false, PARAM_TEXT);
 
+    // Generate file name
+    $filename = $region ."_" . $blockname . "_" . date("d_M_y", time());
+
+    // If filter is there then add filter in the file name
+    if ($filter) {
+        $filename .= "_" . $filter;
+    }
+
+    // Get export object 
     $export = new export($format, $region, $blockname);
+
+    // If format is scheduled email then dont prepare data
     if ($format == "emailscheduled") {
-        $export->data_export($region."_".$blockname, false);
+        $export->data_export($filename, false);
     } else {
+        // Prepare exportable data
         $data = $export->get_exportable_data($filter);
 
+        // If data is there then download data with files
         if ($data) {
-            $export->data_export($region."_".$blockname, $data);
+            $export->data_export($filename, $data);
         }
     }
 }
