@@ -93,6 +93,9 @@ define([
         });
 
         function createCourseEngageTable(cohortId) {
+            $(CourseEngageTable).show();
+            $(loader).hide();
+
             datatable = $(CourseEngageTable).DataTable( {
                 ajax : url + "&cohortid=" + cohortId,
                 dom : '<"pull-left"f><t><p>',
@@ -108,10 +111,10 @@ define([
                     { className: "text-left", targets: 0 },
                     { className: "text-center modal-trigger", targets: "_all" }
                 ],
-                initComplete: function() {
-                    $(CourseEngageTable).show();
-                    $(loader).hide();
-                },    
+                language: {
+                    searchPlaceholder: "Search courses",
+                    emptyTable: "There are no courses"
+                },
                 scrollY : 350,
                 scrollX : true,
                 paginate : false

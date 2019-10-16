@@ -133,6 +133,10 @@ define([
                                 "className": "text-center",
                             }
                         ],
+                        language: {
+                            searchPlaceholder: "Search courses",
+                            emptyTable: "There are no courses"
+                        },
                         scrollY : 350,
                         scrollX : true,
                         paginate : false
