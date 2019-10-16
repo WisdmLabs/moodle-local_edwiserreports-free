@@ -171,11 +171,9 @@ define([
             scrollY : "300px",
             scrollX: true,
             scrollCollapse : true,
-            oLanguage : {
-                sEmptyTable : "There is no scheduled emails"
-            },
             language: {
-                searchPlaceholder: "Search shceduled email"
+                searchPlaceholder: "Search shceduled email",
+                emptyTable: "There is no scheduled emails"
             },
             order : [[ 1, "asc" ]],
             columns : [
