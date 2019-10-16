@@ -507,3 +507,24 @@ div[id^="wdm-"][id*="-individual"] table.table,
 .no-wrap {
     white-space: nowrap;
 }
+
+/* Course analytics page widht issue */
+@media (max-width: 1024px) and (min-width: 769px) {
+    body.site-menubar-unfold #wdm-courseanalytics-individual [class^="recent-"] {
+        min-width: 50%;
+    }
+    
+    body.pinaside #wdm-courseanalytics-individual [class^="recent-"] {
+        min-width: 50%;
+    }
+    
+    body.pinaside.site-menubar-unfold #wdm-courseanalytics-individual [class^="recent-"] {
+        min-width: 100% !important;
+    }
+}
+
+@media (max-width: 768px) {
+    body.site-menubar-unfold #wdm-courseanalytics-individual [class^="recent-"] {
+        min-width: 100%;
+    }
+}
