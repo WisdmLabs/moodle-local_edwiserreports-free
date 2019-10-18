@@ -18,6 +18,7 @@ var sources = [
     'src/js/vendor/jquery.dataTables.js',
     'src/js/vendor/select2.min.js',
     'src/js/vendor/jquery-asPieProgress.min.js',
+    'src/js/vendor/jspdf.js',
     'src/js/main.js',
     'src/js/block_accessinfo.js',
     'src/js/block_activecourses.js',

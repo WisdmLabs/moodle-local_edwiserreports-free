@@ -7,10 +7,21 @@ define([
     'core/templates',
     'core/str',
     'report_elucidsitereport/variables',
+    'report_elucidsitereport/jspdf',
     'report_elucidsitereport/select2',
     'report_elucidsitereport/jquery.dataTables',
     'report_elucidsitereport/dataTables.bootstrap4'
-    ], function($, notif, fragment, ModalFactory, ModalEvents, Templates, str, v) {
+    ], function(
+        $,
+        notif,
+        fragment,
+        ModalFactory,
+        ModalEvents,
+        Templates,
+        str,
+        v,
+        jsPDF
+    ) {
     var emailListTable = null;
     /**
      * Email Shcedule Modal Related Psrametres start
@@ -63,6 +74,7 @@ define([
         var isNavlink = null;
         var pageContent = $("#page-admin-report-elucidsitereport-index .page-content");
         var pageWidth = pageContent.width();
+        var exportPdf = '.export-dropdown a[data-action="pdf"]';
         var exportEmailDropdown = '.export-dropdown a[data-action="email"]';
         var scheduledEmailDropdown = '.export-dropdown a[data-action="emailscheduled"]';
         var durationDropdown = '#scheduletab .dropdown.duration-dropdown a.dropdown-item';
@@ -75,6 +87,53 @@ define([
         $(window).on('resize', function() {
             var pageWidth = v.pluginPage.width();
             rearrangeBlocks(pageWidth);
+        });
+
+        // Export data in pdf
+        $(document).on("click", exportPdf, function(e) {
+            e.preventDefault();
+
+            var _this = this;
+            $.ajax({
+                url: this.href,
+            }).done(function(response) {
+                response = JSON.parse(response);
+                var pdf = new jsPDF('p', 'pt', 'a4');
+                var margins = {
+                    top: 80,
+                    bottom: 60,
+                    left: 10,
+                    width: "100%"
+                };
+
+                // we support special element handlers. Register them with jQuery-style 
+                // ID selector for either ID or node name. ("#iAmID", "div", "span" etc.)
+                // There is no support for any other type of selectors 
+                // (class, of compound) at this time.
+                var specialElementHandlers = {
+                    // element with id of "bypass" - jQuery style selector
+                    '#bypassme': function (element, renderer) {
+                        // true = "handled elsewhere, bypass text extraction"
+                        return true
+                    }
+                };
+
+                // all coords and widths are in jsPDF instance's declared units
+                // 'inches' in this case
+                pdf.fromHTML(
+                response.data.html, // HTML string or DOM elem ref.
+                margins.left, // x coord
+                margins.top, { // y coord
+                    'width': margins.width, // max width of content on PDF
+                    'elementHandlers': specialElementHandlers
+                },
+
+                function (dispose) {
+                    // dispose: object with X, Y of the last line add to the PDF 
+                    //          this allow the insertion of new lines after html
+                    pdf.save(response.data.filename);
+                }, margins);
+            });
         });
 
         // Send email the report

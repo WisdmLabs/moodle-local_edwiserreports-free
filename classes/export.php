@@ -145,7 +145,16 @@ class export {
      */
     public function data_export_pdf($filename, $data) {
         $filename .= '.pdf';
-        $this->generate_pdf_file($filename, $data, "D");
+        $html = $this->generate_pdf_file($data);
+
+        $res = new stdClass();
+        $res->error = false;
+        $res->data = array(
+            "filename" => $filename,
+            "html" => $html
+        );
+        echo json_encode($res);
+        die;
     }
 
     /**
@@ -382,33 +391,28 @@ class export {
      * @param [string] $destination location to create file
      * @return [string] File Path
      */
-    public function generate_pdf_file($filename, $data, $dest) {
+    public function generate_pdf_file($data) {
         global $CFG;
-        $pdf = new pdf();
+        // $pdf = new pdf();
 
-        $pdf->setPrintHeader(false);
-        $pdf->setPrintFooter(false);
+        // $pdf->setPrintHeader(false);
+        // $pdf->setPrintFooter(false);
         // $pdf->SetAutoPageBreak(true, 72);
 
-        $pdf->AddPage();
+        // $pdf->AddPage();
 
         // Generate HTML to export
         ob_start();
         $html = $this->get_html_for_pdf($data);
         ob_clean();
 
+
         //  Create proper HTML ro export in PDF
-        $pdf->writeHTML($html);
+        // $pdf->writeHTML($html);
 
-        if ($dest == "F") {
-            $filepath = $CFG->tempdir . '/' . $filename;
-        } else {
-            $filepath = $filename;
-        }
+        // $pdf->Output($filepath, $dest);
 
-        $pdf->Output($filepath, $dest);
-
-        return $filepath;
+        return $html;
     }
 
     /**
@@ -418,35 +422,35 @@ class export {
      */
     public function get_html_for_pdf($data) {
         $table = new html_table();
-        foreach ($data as $key => $val) {
-            if ($key == 0) {
-                foreach($val as $v) {
-                    $table->head[] = html_writer::tag("h4", $v);
-                }
-                $cell = new html_table_cell();
-                $cell->colspan = count($val);
-                $cell->style = "border-top: 1px solid #000; padding: 5px;";
-                $row = new html_table_row(array($cell));
-                $table->data[] = $row;
-            } else {
-                $table->data[] = $val;
-            }
-        }
+        $table->align = array("left", "left", "center", "center", "center");
+        $table->attributes = array(
+            "style" => "width: 100%; font-size:10px;"
+        );
+
         // Generate HTML to export
         $html = html_writer::tag("h1",
             get_string($this->blockname . "exportheader", "report_elucidsitereport"),
             array(
-                "style" => "text-align:center" 
+                "style" => "width:100%;text-align:center" 
             )
-        ).
-        html_writer::tag("p",
+        );
+
+        $html .= html_writer::tag("p",
             get_string($this->blockname . "exporthelp", "report_elucidsitereport"),
             array(
                 "style" => "text-indent: 50px"
             )
-        ).
-        html_writer::table($table);
+        );
 
+        foreach ($data as $key => $val) {
+            if ($key == 0) {
+                $table->head = $val;
+            } else {
+                $table->data[] = $val;
+            }
+        }
+
+        $html .= html_writer::table($table);
         return $html;
     }
 
