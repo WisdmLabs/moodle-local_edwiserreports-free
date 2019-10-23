@@ -66,6 +66,9 @@ define([
 
     var tabs = '[data-plugin="tabs"] .nav-link, [data-plugin="tabs"] .tab-pane';
     var formTab = '[aria-controls="scheduletab"], #scheduletab';
+
+    var windowLoader = '<div id="cover-spin"></div>';
+
     /**
      * Email Shcedule Modal Related Psrametres end
      */
@@ -92,6 +95,12 @@ define([
         // Export data in pdf
         $(document).on("click", exportPdf, function(e) {
             e.preventDefault();
+
+            if ($(document).find('#cover-spin')) {
+                $("body").append(windowLoader);
+            }
+
+            $(document).find('#cover-spin').show(0);
 
             var _this = this;
             $.ajax({
@@ -133,6 +142,8 @@ define([
                     //          this allow the insertion of new lines after html
                     pdf.save(response.data.filename);
                 }, margins);
+            }).always(function() {
+                $(document).find('#cover-spin').hide();
             });
         });
 
