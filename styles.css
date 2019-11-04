@@ -563,3 +563,9 @@ div[id^="wdm-"][id*="-individual"] table.table,
     -webkit-animation: spin .8s linear infinite;
     animation: spin .8s linear infinite;
 }
+
+/* Fixed modal mfrom alignement issue */
+.modal-body .form-group {
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+}

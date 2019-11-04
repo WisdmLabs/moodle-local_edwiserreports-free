@@ -153,7 +153,7 @@ define([
             var _this = this;
             ModalFactory.create({
                 type: ModalFactory.types.SAVE_CANCEL,
-                title: 'Email Dialog Box',
+                title: v.getEmailModalHeader($(_this).data("blockname"), 0),
                 body: fragment.loadFragment(
                     'report_elucidsitereport',
                     'email_dialog',
@@ -185,7 +185,7 @@ define([
             var context = v.getScheduledEmailFormContext();
 
             ModalFactory.create({
-                title: 'Schedule Emails',
+                title: v.getEmailModalHeader($(_this).data("blockname"), 1),
                 body: Templates.render('report_elucidsitereport/email_schedule_tabs', context)
             }, $(this))
             .done(function(modal) {

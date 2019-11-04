@@ -428,6 +428,53 @@ define(['report_elucidsitereport/variables'], function(V) {
                 vars[key] = value;
             });
             return vars[paramKey];
+        },
+
+        getEmailModalHeader: function(blockname, emailtype) {
+            var modalHeader = "";
+            switch(emailtype) {
+                case 1:
+                    modalHeader = "Schedule Emails for ";
+                    break;
+                default:
+                    modalHeader = "Send ";
+            }
+
+            switch(blockname) {
+                case "activeusers":
+                    modalHeader += "Active Users";
+                    break;
+                case "activecourses":
+                    modalHeader += "Populer Courses";
+                    break;
+                case "courseprogress":
+                    modalHeader += "Course Progress";
+                    break;
+                case "certificates":
+                    modalHeader += "Certificates";
+                    break;
+                case "f2fsession":
+                    modalHeader += "Instructor-Led Sessions";
+                    break;
+                case "lpstats":
+                    modalHeader += "Learning Program";
+                    break;
+                case "courseengage":
+                    modalHeader += "Course Engagement";
+                    break;
+                case "courseanalytics":
+                    modalHeader += "Course Analytics";
+                    break;
+                case "completion":
+                    modalHeader += "Course Completion";
+                    break;
+            }
+
+            if (modalHeader != "Send " && emailtype != 1) {
+                modalHeader += " Reports";
+            }
+
+            return modalHeader;
         }
     }
 });

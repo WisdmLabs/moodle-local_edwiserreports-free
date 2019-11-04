@@ -129,7 +129,6 @@ define([
                 console.log(error);
             }).always(function() {
                 activeUsersGraph = generateActiveUsersGraph();
-                console.log(filter);
                 V.changeExportUrl(filter, exportUrlLink, V.filterReplaceFlag);
 
                 // Change graph variables
