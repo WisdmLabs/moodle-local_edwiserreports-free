@@ -39,6 +39,10 @@
     clear: both;
     overflow-x: scroll;
 }
+
+.dataTables_filter .form-control[type="search"] {
+    margin-left: 0 !important;
+}
 /* DataTables Custom CSS End */
 
 /* Accordion transition on click event Start */
@@ -176,7 +180,7 @@
 
 .path-admin-report-elucidsitereport .dataTables_scrollHeadInner,
 .path-report-elucidsitereport .dataTables_scrollHeadInner {
-    width: 100% !important;
+    min-width: 100% !important;
 }
 
 .path-admin-report-elucidsitereport .collapse-td,

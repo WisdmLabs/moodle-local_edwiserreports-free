@@ -68,6 +68,10 @@ define([
                         modal.destroy();
                     });
 
+                    ModalRoot.on(ModalEvents.shown, function () {
+                        $(window).resize();
+                    });
+
                     ModalRoot.on(ModalEvents.bodyRendered, function () {
                         var ModalTable = ModalRoot.find(".modal-table");
 
@@ -92,6 +96,10 @@ define([
             });
         });
 
+        /**
+         * Create course engagement table
+         * @param  {int} cohortId Cohort ID
+         */
         function createCourseEngageTable(cohortId) {
             $(CourseEngageTable).show();
             $(loader).hide();
@@ -117,7 +125,9 @@ define([
                 },
                 scrollY : 350,
                 scrollX : true,
-                paginate : false
+                paginate : false,
+                sScrollX : "100%",
+                bScrollCollapse : true
             });
         }
     }

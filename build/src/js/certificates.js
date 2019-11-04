@@ -67,7 +67,8 @@ define([
                     { "data": "courseprogress" }
                 ],
                 language : {
-                  emptyTable : "No certificates are awarded"
+                    searchPlaceholder: "Search users",
+                    emptyTable : "No certificates are awarded"
                 },
                 initComplete: function(settings, json) {
                     $('.pie-progress').asPieProgress();
@@ -76,8 +77,11 @@ define([
                 bInfo : false,
                 lengthChange : false,
                 paginate : false,
-                scrollY : 350,
-                scrollX : true
+                responsive : true,
+                scrollY : "350px",
+                scrollX : true,
+                sScrollX : "100%",
+                bScrollCollapse : true
             });
         }
 

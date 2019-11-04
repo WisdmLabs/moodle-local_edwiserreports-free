@@ -113,9 +113,6 @@ define([
                 Templates.render('report_elucidsitereport/courseprogress', context)
                 .then(function(html, js) {
                     Templates.replaceNode(PageId, html, js);
-                }).fail(function(ex) {
-                    console.log(ex);
-                }).always(function() {
                     datatable = $(CourseProgressTable).DataTable({
                         dom : '<"pull-left"f><t><p>',
                         order : [[0, 'desc']],
@@ -139,10 +136,16 @@ define([
                         },
                         scrollY : 350,
                         scrollX : true,
-                        paginate : false
+                        paginate : false,
+                        sScrollX : "100%",
+                        bScrollCollapse : true
                     });
                     $(CourseProgressTable).show();
                     $(loader).hide();
+                }).fail(function(ex) {
+                    console.log(ex);
+                }).always(function() {
+                    $(window).resize();
                 });
             }).fail(function(error) {
                 console.log(error);
