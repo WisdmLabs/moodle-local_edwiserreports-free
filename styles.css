@@ -100,6 +100,7 @@
 #wdm-elucidsitereport #activeusersblock .dropdown-body .dropdown-item,
 .path-report-elucidsitereport .dropdown-body .dropdown-item {
     cursor: pointer;
+    width: calc(100% - 10px);
 }
 
 #wdm-elucidsitereport .dropdown-menu.dropdown-menu-right,
