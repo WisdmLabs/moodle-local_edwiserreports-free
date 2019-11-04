@@ -28,6 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 $string['pluginname'] = 'Reports & Analytics Dashboard';
 $string['reportsandanalytics'] = "Reports & Analytics";
 $string['all'] = "All";
+$string['refresh'] = "Refresh";
 
 /* Blocks Name */
 $string['realtimeusers'] = 'Real Time Users';

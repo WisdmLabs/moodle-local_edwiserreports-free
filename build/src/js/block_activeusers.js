@@ -108,6 +108,11 @@ define([
             $(chart).hide();
             $(loader).show();
 
+            /* If filter is not set then select all */
+            if (!filter) {
+                filter = "weekly";
+            }
+
             $.ajax({
                 url: defaultConfig.requestUrl,
                 data: {
@@ -124,6 +129,7 @@ define([
                 console.log(error);
             }).always(function() {
                 activeUsersGraph = generateActiveUsersGraph();
+                console.log(filter);
                 V.changeExportUrl(filter, exportUrlLink, V.filterReplaceFlag);
 
                 // Change graph variables
