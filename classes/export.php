@@ -403,7 +403,7 @@ class export {
 
         // Generate HTML to export
         ob_start();
-        $html = $this->get_html_for_pdf($data);
+        $html = $this->get_html_for_pdf2($data);
         ob_clean();
 
 
@@ -428,7 +428,7 @@ class export {
         );
 
         // Generate HTML to export
-        $html = html_writer::tag("h1",
+        $html .= html_writer::tag("h1",
             get_string($this->blockname . "exportheader", "report_elucidsitereport"),
             array(
                 "style" => "width:100%;text-align:center" 
@@ -451,6 +451,52 @@ class export {
         }
 
         $html .= html_writer::table($table);
+        $html = str_replace("\n","", $html);
+        return $html;
+    }
+
+    /**
+     * Get HTML Content to export
+     * @param  [array] $data Array of exportable Data
+     * @return [string] HTML String
+     */
+    public function get_html_for_pdf2($data) {
+        // Generate HTML to export
+        $html .= html_writer::tag("h1",
+            get_string($this->blockname . "exportheader", "report_elucidsitereport"),
+            array(
+                "style" => "width:100%;text-align:center" 
+            )
+        );
+
+        $html .= html_writer::tag("p",
+            get_string($this->blockname . "exporthelp", "report_elucidsitereport"),
+            array(
+                "style" => "text-indent: 50px"
+            )
+        );
+
+        $html .= "<table style='font-size: 10px; width: 50px; display: block;'>";
+
+        foreach ($data as $key => $val) {
+            $html .= "<tr>";
+            $width = 0;
+            if ($key == 0) {
+                foreach ($val as $v) {
+                    $cols = count($val);
+                    $width = 100 / $cols;
+                    $html .= "<th style='background-color: #ddd; width: " . $width . "%; display: block; word-break: break-word;'>".$v."</th>";
+                }
+            } else {
+                foreach ($val as $v) {
+                    $html .= "<td style='background-color: #ddd; " . $width . "%; display: block; word-break: break-word;'>".$v."</td>";
+                }
+            }
+            $html .= "</tr>";
+        }
+
+        $html .= '</table>';
+        $html = str_replace("\n","", $html);
         return $html;
     }
 

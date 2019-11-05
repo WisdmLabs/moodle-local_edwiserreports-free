@@ -109,11 +109,13 @@ define([
                 response = JSON.parse(response);
                 var pdf = new jsPDF('p', 'pt', 'a4');
                 var margins = {
-                    top: 80,
-                    bottom: 60,
+                    top: 40,
+                    bottom: 30,
                     left: 10,
                     width: "100%"
                 };
+
+                pdf.setFontSize(10)
 
                 // we support special element handlers. Register them with jQuery-style 
                 // ID selector for either ID or node name. ("#iAmID", "div", "span" etc.)

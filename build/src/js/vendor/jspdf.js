@@ -1947,7 +1947,7 @@
                 }
                 this.setFontStyle("bold");
                 var u = [];
-                for (o = 0, c = this.tableHeaderRow.length; o < c; o += 1) this.setFillColor(200, 200, 200), n = this.tableHeaderRow[o], e && (this.margins.top = 13, n[1] = this.margins && this.margins.top || 0, u.push(n)), r = [].concat(n), this.cell.apply(this, r.concat(t));
+                for (o = 0, c = this.tableHeaderRow.length; o < c; o += 1) this.setFillColor(200, 200, 200), n = this.tableHeaderRow[o], e && (this.margins.top = 9, n[1] = this.margins && this.margins.top || 0, u.push(n)), r = [].concat(n), this.cell.apply(this, r.concat(t));
                 u.length > 0 && this.setTableHeaderRow(u), this.setFontStyle("normal"), this.printingHeaderRow = !1
             }
         }(e.API),
