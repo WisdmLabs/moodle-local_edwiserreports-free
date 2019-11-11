@@ -161,7 +161,7 @@ class siteaccess_block extends utility {
                 $row = number_format(date("H", $log->timecreated));
 
                 // Calculate site access for row and colums
-                $this->siteaccess[$row]["access"][$col]["value"] += (1 / ($weeks));
+                $this->siteaccess[$row]["access"][$col]["value"] += (1 / ($weeks * 10));
 
                 // Maximum value in week
                 if ($weekmax < $this->siteaccess[$row]["access"][$col]["value"]) {
