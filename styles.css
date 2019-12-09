@@ -574,3 +574,8 @@ div[id^="wdm-"][id*="-individual"] table.table,
     margin-right: 0 !important;
     margin-left: 0 !important;
 }
+
+.path-report-elucidsitereport .filters .dropdown-menu {
+    max-height: 300px;
+    overflow: scroll;
+}
