@@ -1,4 +1,16 @@
-define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'report_elucidsitereport/jquery.dataTables', 'report_elucidsitereport/dataTables.bootstrap4'], function ($, Chart, cfg) {
+define([
+    'jquery',
+    'core/chartjs',
+    'report_elucidsitereport/defaultconfig',
+    'report_elucidsitereport/variables',
+    'report_elucidsitereport/jquery.dataTables',
+    'report_elucidsitereport/dataTables.bootstrap4'
+ ], function (
+    $,
+    Chart,
+    cfg,
+    V
+) {
     function init(notifyListner) {
         var activeUsersTable;
         var panel = cfg.getPanel("#inactiveusersblock");
@@ -10,6 +22,7 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
         var dropdown = panelTitle + " .dropdown-menu .dropdown-item";
         var dropdownToggle = panelTitle + " button.dropdown-toggle";
         var inActiveUsersTable = null;
+        var exportUrlLink = panel + " .dropdown-menu[aria-labelledby='export-dropdown'] .dropdown-item";
 
         // Get inactive users data on load
         getInactiveUsersData($(dropdown).data("value"));
@@ -18,14 +31,26 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
          * On click of dropdown get inactive user list based on filter
          */
         $(dropdown).on("click", function() {
+            // Get filter
+            var filter = $(this).data("value");
+
+            // If table is already created then destroy the tablw
             if (activeUsersTable) {
                 activeUsersTable.destroy();
             }
 
+            // Show load and remove table
             $(loader).show();
             $(table).hide();
             $(tableWrapper).hide();
+
+            // Set dropdown button value
             $(dropdownToggle).html($(this).html());
+
+            // Change export data url
+            cfg.changeExportUrl(filter, exportUrlLink, V.filterReplaceFlag);
+            
+            // Get inactive users
             getInactiveUsersData($(this).data("value"));
         });
 

@@ -47,6 +47,7 @@ $string['accessinfo'] = 'Site Access Information';
 $string['inactiveusers'] = 'Inactive Users List';
 $string['todaysactivityheader'] = 'Daily Activities';
 $string['overallengagementheader'] = 'Overall Engagement in Courses';
+$string['inactiveusersexportheader'] = 'Inactive Users Report';
 $string['date'] = "Date";
 $string['time'] = "Time";
 $string['venue'] = "Venue";
@@ -106,6 +107,7 @@ $string['accessinfoblockhelp'] = "This block will show the avg usage of the site
 $string['lpstatsblockhelp'] = "This block will show all the course completed by the users in a learning program.";
 $string['todaysactivityblockhelp'] = "This block will show the todays activities performed by in this website.";
 $string['inactiveusersblockhelp'] = "This block will show list of users inactive in this site.";
+$string['inactiveusersexporthelp'] = "This report will show inactivity of users in the website";
 $string['none'] = "None";
 
 /* Block Course Progress */

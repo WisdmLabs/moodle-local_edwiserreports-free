@@ -548,6 +548,9 @@ class export {
             case "lpstats":
                 $export = lpstats_block::get_exportable_data_block($filter);
                 break;
+            case "inactiveusers":
+                $export = inactiveusers_block::get_exportable_data_block($filter);
+                break;
         }
         return $export;
     }

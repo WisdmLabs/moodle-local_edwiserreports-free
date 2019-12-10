@@ -48,12 +48,14 @@ function get_block_exportlinks($url, $data) {
         $lpfilter = false;
     }
 
-    $links->blockactiveusers = get_exportlinks($url, "block", "activeusers", "weekly");
-    $links->blockactivecourses = get_exportlinks($url, "block", "activecourses");
-    $links->blockcourseprogress = get_exportlinks($url, "block", "courseprogress", $cpfilter);
-    $links->blockcertificates = get_exportlinks($url, "block", "certificates");
-    $links->blockf2fsessions = get_exportlinks($url, "block", "f2fsession");
-    $links->blocklpstats = get_exportlinks($url, "block", "lpstats", $lpfilter);
+    $region = "block";
+    $links->blockactiveusers = get_exportlinks($url, $region, "activeusers", "weekly");
+    $links->blockactivecourses = get_exportlinks($url, $region, "activecourses");
+    $links->blockcourseprogress = get_exportlinks($url, $region, "courseprogress", $cpfilter);
+    $links->blockcertificates = get_exportlinks($url, $region, "certificates");
+    $links->blockf2fsessions = get_exportlinks($url, $region, "f2fsession");
+    $links->blocklpstats = get_exportlinks($url, $region, "lpstats", "", $lpfilter);
+    $links->blockinactiveusers = get_exportlinks($url, $region, "inactiveusers", "mt-20", "never");
     return $links;
 }
 
@@ -66,9 +68,7 @@ function get_block_exportlinks($url, $data) {
  * @param  [string] $action Action of a page report
  * @return [array] Array of export link
  */
-function get_exportlinks($url, $region, $blockname, $filter = false, $cohortid = false, $action = false) {
-    $out = new stdClass();
-
+function get_exportlinks($url, $region, $blockname, $customclass = '', $filter = false, $cohortid = false, $action = false) {
     $params = array(
         "region" => $region,
         "blockname" => $blockname
@@ -86,7 +86,9 @@ function get_exportlinks($url, $region, $blockname, $filter = false, $cohortid =
         $params["cohortid"] = $cohortid;
     }
 
+    $out = new stdClass();
     $out->export = get_exportlink_array($url, $blockname, $params, $region);
+    $out->customclass = $customclass;
     return $out;
 }
 

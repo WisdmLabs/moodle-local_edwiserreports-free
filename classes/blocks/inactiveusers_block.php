@@ -65,7 +65,7 @@ class inactiveusers_block extends utility {
      * @param  [String] $filter Filter
      * @return [Array] Array of inactive users
      */
-    public static function get_inactiveusers($filter) {
+    public static function get_inactiveusers($filter = 'all', $isCsv = false) {
         global $DB;
 
         // Get current time
@@ -101,17 +101,51 @@ class inactiveusers_block extends utility {
                 "email" => $user->email
             );
 
-            $inactiveuser["lastlogin"] = '<div class="d-none">'.$user->lastlogin.'</div>';
+            // If downloading the reports
+            if (!$isCsv) {
+                $inactiveuser["lastlogin"] = '<div class="d-none">'.$user->lastlogin.'</div>';
+            } else {
+                $inactiveuser["lastlogin"] = '';
+            }
+
+            // Get last login by users
             if ($user->lastlogin) {
                 $inactiveuser["lastlogin"] .= format_time($timenow - $user->lastlogin);
             } else {
                 $inactiveuser["lastlogin"] .= get_string('never');
             }
 
+            // Put inactive users in inactive users table
             $inactiveusers[] = array_values($inactiveuser);
         }
 
         // Return inactive users array
+        return $inactiveusers;
+    }
+
+    /**
+     * Get headers for exportable data
+     * @return [type] [description]
+     */
+    private static function get_headers() {
+        return array(
+            get_string('fullname', 'report_elucidsitereport'),
+            get_string('email', 'report_elucidsitereport'),
+            get_string('lastaccess', 'report_elucidsitereport')
+        );
+    }
+
+    /**
+     * Get exportable data for inactive users
+     * @return [type] [description]
+     */
+    public static function get_exportable_data_block($filter) {
+        // Prepare inactive users data
+        $inactiveusers = array();
+        $inactiveusers[] = self::get_headers();
+        $inactiveusers = array_merge($inactiveusers, self::get_inactiveusers($filter, true));
+
+        // Return all inactive users
         return $inactiveusers;
     }
 }

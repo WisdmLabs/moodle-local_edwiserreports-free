@@ -1,6 +1,6 @@
 <div id="inactiveusersblock" class="panel h-auto" data-sesskey="{{sesskey}}">
     <div class="panel-header row mx-0">
-        <div class="panel-title px-0 col-lg-6 col-md-6 col-sm-12">
+        <div class="panel-title px-0 col-lg-5 col-md-5 col-sm-12">
             <strong>
                 {{#str}} inactiveusers, report_elucidsitereport {{/str}}
                 <a href="javascript:void(0)"
@@ -13,7 +13,7 @@
                 </a>
             </strong>
         </div>
-        <div class="panel-title dropdown col-lg-6 col-md-6 col-sm-12 text-right px-0">
+        <div class="panel-title dropdown col-lg-7 col-md-7 col-sm-12 text-right pr-50 pl-0">
             <small class="font-weight-500 font-size-12">
                 {{#str}} siteaccess, report_elucidsitereport {{/str}}
             </small>
@@ -33,18 +33,29 @@
                 </a>
             </div>
         </div>
+        {{#exportlinks}}
+            {{#blockinactiveusers}}
+                {{> report_elucidsitereport/exportdropdown }}
+            {{/blockinactiveusers}}
+        {{/exportlinks}}
     </div>
     <div class="panel-body p-0">
         <div class="loader w-full text-center py-100 my-50">
             {{# pix }} loader, report_elucidsitereport{{/ pix }}
         </div>
-        <div class="table-responsive w-full">
+        <div class="table-responsive">
             <table id="inactiveuserstable" class="table" style="display: none;">
                 <thead class="bg-secondary">
                   <tr>
-                    <th class="bg-secondary bg-image-none no-sorting-arrow border-bottom-0">Full Name</th>
-                    <th class="d-none d-sm-none d-md-table-cell d-lg-table-cell bg-secondary bg-image-none no-sorting-arrow border-bottom-0">Email</th>
-                    <th class="bg-secondary bg-image-none no-sorting-arrow border-bottom-0">Last Access</th>
+                    <th class="bg-secondary bg-image-none no-sorting-arrow border-bottom-0">
+                        {{#str}} fullname, report_elucidsitereport{{/str}}
+                    </th>
+                    <th class="d-none d-sm-none d-md-table-cell d-lg-table-cell bg-secondary bg-image-none no-sorting-arrow border-bottom-0">
+                        {{#str}} email, report_elucidsitereport{{/str}}
+                    </th>
+                    <th class="bg-secondary bg-image-none no-sorting-arrow border-bottom-0">
+                        {{#str}} lastaccess, report_elucidsitereport{{/str}}
+                    </th>
                   </tr>
                 </thead>
             </table>
