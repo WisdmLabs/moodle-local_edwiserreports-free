@@ -1,0 +1,325 @@
+<div id="customReportBlock" data-sesskey="{{sesskey}}">
+    <div class="panel h-auto mb-0">
+        <div class="panel-header clearfix">
+            <div class="panel-title px-0">
+                <strong>
+                    {{#str}} downloadcustomtreport, report_elucidsitereport {{/str}}
+                </strong>
+            </div>
+        </div>
+        <div class="panel-body p-0">
+            <table class="wdmCustomReportsFilters">
+                <tr>
+                    <td>
+                        <b>{{#str}} selectreporttype, report_elucidsitereport {{/str}}</b>
+                    </td>
+                    {{! Dropdown to get reports type }}
+                    <td class="dropdown">
+                        <button type="button"
+                                class="btn btn-default dropdown-toggle mb-5"
+                                id="customReportDrodown"
+                                data-toggle="dropdown"
+                                aria-expanded="true"
+                                data-val="course">
+                                {{#str}} select, report_elucidsitereport {{/str}}
+                        </button>
+                        <div class="dropdown-menu"
+                             aria-labelledby="customReportDrodown"
+                             role="menu"
+                             x-placement="top-start">
+                            <a class="dropdown-item" href="javascript:void(0)" role="menuitem" data-val="courses">
+                                {{#str}} courses, report_elucidsitereport {{/str}}
+                            </a>
+                            <a class="dropdown-item" href="javascript:void(0)" role="menuitem" data-val="lps">
+                                {{#str}} learningprograms, report_elucidsitereport {{/str}}
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>{{#str}} enrolmentdaterange, report_elucidsitereport {{/str}}</b>
+                    </td>
+                    <td>
+                        {{! Flatpicker to select date range }}
+                        <input id="wdmCustomReportRangeSelector" class="w-200" placeholder="{{#str}} selectdaterange, report_elucidsitereport{{/str}}"  data-input/>
+                    </td>
+                </tr>
+            </table>
+
+            {{! Actual panel body }}
+            <div class="rootContainer" style="display: none;">
+                <div class="customReportSelectors mt-10">
+                    <table class="table w-full">
+                        <thead>
+                            <th class="bg-secondary">
+                                <span class="checkbox-custom"><input type="checkbox" name="selectAllCustom"><label class="selectAllCustomReports" for="selectAllCustom"></label></span>
+                            </th>
+                            <th class="bg-secondary">
+                                {{#str}} name , report_elucidsitereport {{/str}}
+                            </th>
+                            <th class="bg-secondary">
+                                {{#str}} shortname , report_elucidsitereport {{/str}}
+                            </th>
+                            <th class="bg-secondary">
+                                {{#str}} startdate , report_elucidsitereport {{/str}}
+                            </th>
+                            <th class="bg-secondary">
+                                {{#str}} enddate , report_elucidsitereport {{/str}}
+                            </th>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div class="text-right mt-10">
+                    <form action="#" method="post" id="customReportsForm" class="hidden">
+                        <input type="text" name="enrolstartdate"/>
+                        <input type="text" name="enrolenddate"/>
+                    </form>
+                    <button id="customReportDownload" class="btn btn-secondary">
+                        {{#str}} downloadreportincsv , report_elucidsitereport {{/str}}
+                    </button>
+                </div>
+            </div>
+            <div id="errorMsg" class="alert alert-danger fade hide mt-10" role="alert">
+                {{#str}} customreportfailed, report_elucidsitereport {{/str}}
+            </div>
+        </div>
+    </div>
+</div>
+
+{{#js}}
+require([
+    'jquery',
+    'report_elucidsitereport/defaultconfig',
+    'report_elucidsitereport/variables',
+    'report_elucidsitereport/flatpickr',
+    'report_elucidsitereport/jquery.dataTables',
+    'report_elucidsitereport/dataTables.bootstrap4'
+], ($, config, v) => {
+    /**
+     * Selector datable variable
+     * @type {object | null}
+     */
+    let selectorTable = null;
+
+    /**
+     * Get panel of custom reports block
+     * @type {string}
+     */
+    const panel = config.getPanel("#customReportBlock");
+
+    /**
+     * Report type selector
+     * @type {string}
+     */
+    const reportSelector = `${panel} .dropdown-menu .dropdown-item`
+
+    /**
+     * Report type selector
+     * @type {string}
+     */
+    let selectorType = `courses`
+
+    /**
+     * Custom report download button
+     * @type {string}
+     */
+    let downloadBtn =  `${panel} #customReportDownload`
+
+    /**
+     * Custom Report Download Dropdown
+     * @type {object}
+     */
+    let customDropdown = $(panel).find('#customReportDrodown')
+
+    /**
+     * Custom Reports form
+     * @type {object}
+     */
+    let reportForm = $(panel).find('#customReportsForm')
+
+    /**
+     * Selected Checkboxes
+     * @type {object}
+     */
+    let checkboxes = `${panel} input[name^=customReportSelect-]`
+
+    /**
+     * Loader to download reports
+     * @type {String}
+     */
+    let windowLoader = '<div id="cover-spin"></div>';
+
+    /*
+     * Get custom report selectors
+     * It may be courses of learning program
+     * Courses | Learning Programs
+     */
+    const getCustomReportSelector = (selectedDates, dateStr, instance) => {
+        if (selectedDates.length == 2) {
+            // Get starttime and end time
+            let startTime = selectedDates[0].getTime()
+            let endTime = selectedDates[1].getTime()
+
+            // Set form value startdate and enddate
+            reportForm.find('input[name=enrolstartdate]').val(startTime / 1000)
+            reportForm.find('input[name=enrolenddate]').val(endTime / 1000)
+        }
+    }
+
+    /**
+     * Creat Selector Table to select courses/lps
+     * @param  {string} type      Selector type courses/lps
+     * @param  {int} startdate    Enrolment Start Date
+     * @param  {int} enddate      Enrolment End Date
+     */
+    let createSelectorTable = (type) => {
+        // If table is already there then remove table
+        if (selectorTable) {
+            selectorTable.destroy()
+        }
+
+        $(`${panel} input[name="selectAllCustom"]`).prop("checked", false)
+
+        // Custom Report Selector Body
+        const customReportSelectors = $(panel).find('.customReportSelectors')
+        const rootContainer = $(panel).find('.rootContainer')
+
+        // Prepare filter to get selectors data
+        let filter = JSON.stringify({
+            type : type
+        })
+
+        // Prepare url to get selector related data
+        let url = `${v.requestUrl}?action=get_customreport_selectors_ajax&sesskey={{sesskey}}&filter=${filter}`
+
+        // Show custom report selectors
+        rootContainer.show();
+
+        // Get all courses/learningprogram
+        selectorTable = customReportSelectors.find('.table').DataTable( {
+            ajax : url,
+            columns : [
+                { "data": "select"},
+                { "data": "fullname" },
+                { "data": "shortname" },
+                { "data": "startdate" },
+                { "data": "enddate" },
+            ],
+            language: {
+                searchPlaceholder: "Search courses",
+                emptyTable: "There are no courses"
+            },
+            responsive : true,
+            scrollY : "320px",
+            scroller: {
+                loadingIndicator: true
+            },
+            scrollCollapse : true,
+            scrollX: true,
+            paging: false,
+            bInfo : false,
+            bSort : false
+        }).columns.adjust();
+    }
+
+    /**
+     *  Create flatpicker to select custom date range
+     */
+    $(panel).find('#wdmCustomReportRangeSelector').flatpickr({
+        mode: 'range',
+        altInput: true,
+        altFormat: "d/m/Y",
+        dateFormat: "Y-m-d",
+        maxDate: "today",
+        onChange: getCustomReportSelector
+    })
+
+    /**
+     * Check all courses/lps
+     * @param  {String} document).on('change', `${panel}   input[name [description]
+     * @return {[type]}                        [description]
+     */
+    $(document).on('change', `${panel} input[name="selectAllCustom"]`, (event) => {
+        if ($(event.target).is(':checked')) {
+            $(checkboxes).prop("checked", true)
+        } else {
+            $(checkboxes).prop("checked", false)
+        }
+    })
+
+    /**
+     * Get courses/lps when dropdown selected 
+     */
+    $(document).on('click', reportSelector, (event) => {
+        let filter = $(event.target).data('val')
+        let dropdown = $(event.target).closest('.dropdown')
+
+        // Set dropdown value
+        customDropdown.html($(event.target).html())
+        customDropdown.data('val', filter)
+        
+        // Create table for selectors table
+        createSelectorTable(filter)
+    })
+
+    /**
+     * Download reports in csv format
+     */
+    $(document).on('click', downloadBtn, (event) => {
+        // If no data selected
+        if (!$(`${checkboxes}:checked`).length) {
+            $(panel).find('#errorMsg').addClass('show').removeClass('hide');
+            setTimeout(() => {
+                $(panel).find('#errorMsg').hide();
+            }, 5000)
+            return false;
+        }
+
+        console.log($(document).find('#cover-spin'));
+        if (!$(document).find('#cover-spin').length) {
+            $("body").append(windowLoader);
+        }
+
+        $(document).find('#cover-spin').show(0);
+
+        // Get all id filters
+        filters = [];
+        $(`${checkboxes}:checked`).each((idx, ele) => {
+            filters.push($(ele).data('id'))
+        })
+
+        // Get startdate and end date
+        let startdate = reportForm.find('input[name=enrolstartdate]').val()
+        let enddate = reportForm.find('input[name=enrolenddate]').val()
+
+        // Ajax call to get reports
+        $.ajax({
+            url: config.requestUrl,
+            type: config.requestType,
+            dataType: config.requestDataType,
+            data: {
+                action: 'get_customreport_data_ajax',
+                sesskey: '{{sesskey}}',
+                data: JSON.stringify({
+                    type : customDropdown.data('val'),
+                    filters : filters,
+                    startdate : startdate.length ? startdate : null,
+                    enddate : enddate.length ? enddate : null
+                })
+            },
+        })
+        .done(function(response) {
+            if (response.status) {
+                config.download(response.data, 'dowload.csv', 'text/csv;encoding:utf-8');
+            }
+        })
+        .fail(function(error) {
+            console.log(error)
+        }).always(function() {
+            $(document).find('#cover-spin').hide();
+        })
+    })
+})
+{{/js}}

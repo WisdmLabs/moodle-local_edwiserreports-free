@@ -137,4 +137,24 @@ class elucidsitereportController extends controllerAbstract
         $data = json_decode(required_param('data', PARAM_RAW));
         echo json_encode(\report_elucidsitereport\utility::change_scheduled_email_status($data));
     }
+
+    /**
+     * Get course reports selectors
+     * @return string selectors data
+     */
+    public function get_customreport_selectors_ajax_action() {
+        // Get filters
+        $filter = json_decode(required_param('filter', PARAM_RAW));
+
+        // Response for ajax action
+        echo json_encode(\report_elucidsitereport\utility::get_customreport_selectors($filter));
+    }
+
+    public function get_customreport_data_ajax_action() {
+        // Get data
+        $data = json_decode(required_param('data', PARAM_RAW));
+
+        // Response for ajax action
+        echo json_encode(\report_elucidsitereport\utility::get_customreport_data($data));
+    }
 }

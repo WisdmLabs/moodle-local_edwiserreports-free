@@ -25,16 +25,11 @@
 
 namespace report_elucidsitereport;
 
-use stdClass;
-use completion_info;
-use context_course;
-use MoodleQuickForm;
-use progress;
-
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . "/completion/classes/progress.php");
 require_once($CFG->dirroot . "/cohort/lib.php");
+require_once($CFG->libdir."/csvlib.class.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/active_users_block.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/active_courses_block.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/course_progress_block.php");
@@ -48,6 +43,16 @@ require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/inactiveus
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/courseengage_block.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/completion_block.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/courseanalytics_block.php");
+
+use stdClass;
+use completion_info;
+use context_course;
+use MoodleQuickForm;
+use progress;
+use html_writer;
+use csv_export_writer;
+use core_user;
+use core_course_category;
 
 /**
  * Utilty class to add all utility function
@@ -742,5 +747,403 @@ class utility {
         // Updating the record
         $DB->update_record($table, $rec);
         return $response;
+    }
+
+    /**
+     * Get custom report selectors
+     * @param  [type] $filter [description]
+     * @return [type]         [description]
+     */
+    public static function get_customreport_selectors($filter) {
+        global $DB;
+
+        switch($filter->type) {
+            case 'lps' :
+                $selectors = self::get_customreport_lp_selectors();;
+                break;
+            case 'courses' :
+            default :
+                $selectors = self::get_customreport_course_selectors();
+        }
+
+        // Return courses
+        $response = new stdClass();
+        $response->data = array_values($selectors);
+        return $response;
+    }
+
+    /**
+     * Get custom selectors for lps
+     * @return array Learning program array
+     */
+    private static function get_customreport_lp_selectors() {
+        global $DB;
+
+        // Get all learning programs
+        $table = 'wdm_learning_program';
+        $lps = $DB->get_records($table, array());
+
+        // Prepare lp related data
+        $response = array();
+        foreach ($lps as $key => $lp) {
+            $res = new stdClass();
+            $res->fullname = $lp->name;
+            $res->shortname = $lp->shortname;
+
+            // Prepare selector checkbox to select courses
+            $res->select = html_writer::start_tag('span',
+                array("class" => "checkbox-custom"));
+            $res->select .= html_writer::tag('input', '',
+                array(
+                    "type" => "checkbox",
+                    "name" => "customReportSelect-" . $lp->id,
+                    "data-id" => $lp->id
+                )
+            );
+            $res->select .= html_writer::tag('label', '',
+                array(
+                    "class" => "selectorCheckbox-" . $lp->id,
+                    "for" => "customReportSelect-" . $lp->id
+                )
+            );
+            $res->select .= html_writer::end_tag('span');
+
+            // Get learning programs startdate in redable format
+            $res->startdate = date('d-M-Y', $lp->timestart);
+
+            // Get learning programs end date in readable format
+            if ($lp->timeend) {
+                $res->enddate = date('d-M-Y', $lp->timeend);
+            } else {
+                $res->enddate = get_string('never');
+            }
+
+            $response[] = $res;
+        }
+
+        // Return response
+        return $response;
+    }
+
+    /**
+     * Get custom course selectors
+     * @return array Courses Array
+     */
+    private static function get_customreport_course_selectors() {
+        // Get all courses
+        $courses = get_courses();
+
+        // Prepare course related data
+        $response = array();
+        foreach($courses as $key => $course) {
+            // Skip system course
+            if ($course->id == 1) {
+                continue;
+            }
+
+            // Prepare response object
+            $res = new stdClass();
+            $res->fullname = $course->fullname;
+            $res->shortname = $course->shortname;
+
+            // Prepare selector checkbox to select courses
+            $res->select = html_writer::start_tag('span',
+                array("class" => "checkbox-custom"));
+            $res->select .= html_writer::tag('input', '',
+                array(
+                    "type" => "checkbox",
+                    "name" => "customReportSelect-" . $course->id,
+                    "data-id" => $course->id
+                )
+            );
+            $res->select .= html_writer::tag('label', '',
+                array(
+                    "class" => "selectorCheckbox-" . $course->id,
+                    "for" => "customReportSelect-" . $course->id
+                )
+            );
+            $res->select .= html_writer::end_tag('span');
+
+            // Get course startdate in redable format
+            $res->startdate = date('d-M-Y', $course->startdate);
+
+            // Get course end date in readable format
+            if ($course->enddate) {
+                $res->enddate = date('d-M-Y', $course->enddate);
+            } else {
+                $res->enddate = get_string('never');
+            }
+
+            $response[] = $res;
+        }
+
+        // Return courses
+        return $response;
+    }
+
+    /**
+     * Get custom report data in csvformat
+     * @param  stdClass $data Filter object to get reports data
+     * @return stdClass       Status of reports
+     */
+    public static function get_customreport_data($data) {
+        switch($data->type) {
+            case "lps":
+                $export = self::get_lps_report_exportable_data($data->filters, $data->startdate, $data->enddate);
+                break;
+            case "courses":
+            default:
+                $export = self::get_courses_report_exportable_data($data->filters, $data->startdate, $data->enddate);
+        }
+
+        // Prepare response
+        $res = new stdClass();
+        $res->data = csv_export_writer::print_array($export, 'comma', '"', true);
+        $res->status = true;
+        return $res;
+    }
+
+    /**
+     * Get learning program related exportable data
+     * @param  array $courseids       Course Ids
+     * @param  int $enrolstartdate    Enrolment Start Date
+     * @param  int $enrolenddate      Enrolment End Date
+     * @return array                  Array of exportable data
+     */
+    private static function get_lps_report_exportable_data($lpids, $enrolstartdate, $enrolenddate) {
+        global $DB;
+        $component = 'report_elucidsitereport';
+        
+        // Get all custom fields to add in header
+        $customfields = profile_get_custom_fields();
+
+        // Header for reports
+        $head = array();
+        $head['firstname'] = get_string('firstname', $component);
+        $head['lastname'] = get_string('lastname', $component);
+        $head['email'] = get_string('email', $component);
+        $head['username'] = get_string('username', $component);
+        // Add custom fields
+        $isDynamicMenu = false;
+        foreach ($customfields as $customfield) {
+            $head[$customfield->shortname] = $customfield->name;
+            if ($customfield->datatype == 'dynamicmenu') {
+                $isDynamicMenu = $customfield->datatype;
+                $dynamicquery = $customfield->param1;
+            }
+        }
+        $head['lpname'] = get_string('lpname', $component);
+        $head['enrolledon'] = get_string('enrolledon', $component);
+        $head['average'] = get_string('average', $component);
+
+        // Prepare export header
+        $export = array();
+        $export[] = array_values($head);
+
+        // Export course data from courses
+        foreach ($lpids as $lpid) {
+            // Get course and course context
+            $table = 'wdm_learning_program';
+            $lp = $DB->get_record($table, array("id" => $lpid, "visible" => true));
+
+            // Get only enrolled students
+            // '0' Is students role ID
+            $table = 'wdm_learning_program_enrol';
+            $enrolments = $DB->get_records($table, array("learningprogramid" => $lpid, "roleid" => 0));
+
+            // Prepare reports for each students
+            foreach ($enrolments as $enrolment) {
+                // Get Lp startdate and enddate
+                if ($lp->duration) {
+                    $startdate = $enrolment->timeneroled;
+                    $enddate = $startdate + $lp->durationtime;
+                } else {
+                    $startdate = $lp->timestart;
+                    $enddate = $lp->timeend;
+                }
+
+                if ($startdate < $enrolstartdate && $enddate > $enrolenddate) {
+                    continue;
+                }
+
+                // Get all course reports which is in learning program
+                $completionavg = 0;
+                $coursecount = 0;
+                foreach(json_decode($lp->courses) as $courseid) {
+                    // If course is not there then return from here
+                    if (!$course = $DB->get_record('course', array('id' => $courseid))) {
+                        continue;
+                    }
+
+                    // Get completions data
+                    $completion = (object) self::get_course_completion_info($course, $user->id);
+                    if ($completion) {
+                        $completionavg += $completion->progresspercentage;
+                    }
+
+                    // Increase course count
+                    $coursecount++;
+                }
+
+                // Add completion report to the export array
+                $user = core_user::get_user($enrolment->userid);
+                $customfieldsdata = profile_user_record($user->id);
+
+                // Prepare data object
+                $data = new stdClass();
+                $data->firstname = $user->firstname;
+                $data->lastname = $user->lastname;
+                $data->email = $user->email;
+                $data->username = $user->username;
+                $data->enrolledon = date('d-M-y', $enrolment->timeenroled);
+                $data->lpname = $lp->name;
+                $data->average = $completionavg / $coursecount . "%";
+
+                // Get customdata
+                foreach($customfieldsdata as $key => $customdata) {
+                    if ($isDynamicMenu) {
+                        $dynamicdata = $DB->get_records_sql($dynamicquery);
+                        $data->$key = $dynamicdata[$customdata]->data;
+                    } else {
+                        $data->$key = $customdata;
+                    }
+                }
+
+                // Get appropreate data according to header
+                $reportdata = $head;
+                foreach($head as $key => $cell)  {
+                    $reportdata[$key] = $data->$key;
+                }
+
+                // Export the report data
+                $export[] = array_values($reportdata);
+            }
+        }
+
+        // Return export data
+        return $export;
+    }
+
+    /**
+     * Get course related exportable data
+     * @param  array $courseids       Course Ids
+     * @param  int $enrolstartdate    Enrolment Start Date
+     * @param  int $enrolenddate      Enrolment End Date
+     * @return array                  Array of exportable data
+     */
+    private static function get_courses_report_exportable_data($courseids, $enrolstartdate, $enrolenddate) {
+        global $DB;
+
+        $component = 'report_elucidsitereport';
+
+        // Get all custom fields to add in header
+        $customfields = profile_get_custom_fields();
+
+        // Header for reports
+        $head = array();
+        $head['firstname'] = get_string('firstname', $component);
+        $head['lastname'] = get_string('lastname', $component);
+        $head['email'] = get_string('email', $component);
+        $head['username'] = get_string('username', $component);
+        // Add custom fields
+        $isDynamicMenu = false;
+        foreach ($customfields as $customfield) {
+            $head[$customfield->shortname] = $customfield->name;
+            if ($customfield->datatype == 'dynamicmenu') {
+                $isDynamicMenu = $customfield->datatype;
+                $dynamicquery = $customfield->param1;
+            }
+        }
+        $head['coursename'] = get_string('coursename', $component);
+        $head['category'] = get_string('category', $component);
+        $head['enrolledon'] = get_string('enrolledon', $component);
+        $head['completedactivities'] = get_string('completedactivities', $component);
+        $head['completionsper'] = get_string('completionsper', $component);
+
+        // Get export header
+        $export[] = array_values($head);
+
+        // Export course data from courses
+        foreach ($courseids as $courseid) {
+            // Get course and course context
+            $course = get_course($courseid);
+            $coursecontext = context_course::instance($course->id);
+
+            // Get only enrolled students
+            $users = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+
+            // Prepare reports for each students
+            foreach ($users as $user) {
+                // Get completions data
+                $completion = (object) self::get_course_completion_info($course, $user->id);
+
+                // Get enrolment informations
+                $enrolinfo = self::get_course_enrolment_info($course->id, $user->id);
+                
+                // If startdate is less then the selected start date
+                if ($enrolinfo->timestart < $enrolstartdate) {
+                    continue;
+                }
+
+                // If end date is set then 
+                if ($enrolinfo->timeend && $enrolinfo->timeend > $enrolenddate) {
+                    continue;
+                }
+
+                $completedmodule = $completion->completedactivities . '/' . $completion->totalactivities;
+
+                // Get category
+                $category = core_course_category::get($course->category);
+
+                // Prepare data object
+                $data = new stdClass();
+                $data->firstname = $user->firstname;
+                $data->lastname = $user->lastname;
+                $data->email = $user->email;
+                $data->username = $user->username;
+                $data->enrolledon = date('d-M-y', $enrolinfo->timecreated);
+                $data->coursename = $course->fullname;
+                $data->category = $category->get_formatted_name();
+                $data->completedactivities = $completedmodule;
+                $data->completionsper = $completion->progresspercentage . "%";
+
+                // Get customdata
+                $customfieldsdata = profile_user_record($user->id);
+                foreach($customfieldsdata as $key => $customdata) {
+                    if ($isDynamicMenu) {
+                        $dynamicdata = $DB->get_records_sql($dynamicquery);
+                        $data->$key = $dynamicdata[$customdata]->data;
+                    } else {
+                        $data->$key = $customdata;
+                    }
+                }
+
+                // Get appropreate data according to header
+                $reportdata = $head;
+                foreach($head as $key => $cell)  {
+                    $reportdata[$key] = $data->$key;
+                }
+
+                // Export the report data
+                $export[] = array_values($reportdata);
+            }
+        }
+
+        // Return export data
+        return $export;
+    }
+
+    /**
+     * Get course enrolment information
+     * @param  int $courseid Course Id
+     * @param  int $userid User Id
+     * @return stdClass|false enrolment information
+     */
+    public static function get_course_enrolment_info($courseid, $userid) {
+        global $DB;
+        $sql = "SELECT ue.*, e.enrol FROM {user_enrolments} ue
+            JOIN {enrol} e ON e.id = ue.enrolid
+            WHERE ue.userid = :uid AND e.courseid = :cid";
+        return $DB->get_record_sql($sql, array('uid' => $userid, 'cid' => $courseid));
     }
 }
