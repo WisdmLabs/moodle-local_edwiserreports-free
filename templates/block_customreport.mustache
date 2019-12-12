@@ -406,7 +406,12 @@ require([
         })
         .done(function(response) {
             if (response.status) {
-                config.download(response.data, 'dowload.csv', 'text/csv;encoding:utf-8');
+                // File name
+                let date = v.formatDate(new Date(), "d_MMM_yyyy")
+                let filename = `report_${selectorType}_${date}.csv`
+
+                // Download file in csv format
+                config.download(response.data, filename, 'text/csv;encoding:utf-8');
             }
         })
         .fail(function(error) {
