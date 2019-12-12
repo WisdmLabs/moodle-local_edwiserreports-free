@@ -47,6 +47,7 @@ use stdClass;
 use moodle_url;
 use context_system;
 use context_user;
+use core_course_category;
 
 class export {
     /**
@@ -590,5 +591,325 @@ class export {
                 break;
         }
         return $export;
+    }
+
+    /**
+     * Set CSV header to download files in csv format
+     */
+    public function set_csv_header($filename) {
+        header("Content-type: text/csv");
+        header("Content-Disposition: attachment; filename=" . $filename);
+        header("Pragma: no-cache");
+        header("Expires: 0");
+    }
+
+    /**
+     * Render csv 
+     * @param  stdClass $data Filter object to get reports data
+     * @return stdClass       Status of reports
+     */
+    public function export_csv_customreport_data($type, $filters, $startdate, $enddate) {
+        $filename = "report_" . $type . "_" . date('d_m_y') . ".csv";
+        // Set Csv headers
+        $this->set_csv_header($filename);
+
+        // Default starttime
+        if (!$startdate || $startdate == "") {
+            $startdate = 0;
+        }
+
+        // Default end time
+        if (!$enddate || $enddate == "") {
+            $enddate = time();
+        }
+
+        // Calculate end date by getting 23:59:59 time
+        // Added 23:59:59 to get end date
+        $enddate += (24 * 60 * 60 - 1);
+
+        // Explode data filter
+        $filters = explode(",", $filters);
+
+        // According to datatype perform operation
+        switch($type) {
+            case "lps":
+                $export = $this->render_lps_report_exportable_data($filters, $startdate, $enddate);
+                break;
+            case "courses":
+            default:
+                $export = $this->render_courses_report_exportable_data($filters, $startdate, $enddate);
+        }
+    }
+
+    /**
+     * Render course exportable header
+     * @return array Report Header
+     */
+    private function render_course_report_exportable_header() {
+        // Plugin component
+        $component = 'report_elucidsitereport';
+
+        // Header for reports
+        $head = array();
+        $head['firstname'] = get_string('firstname', $component);
+        $head['lastname'] = get_string('lastname', $component);
+        $head['email'] = get_string('email', $component);
+        $head['username'] = get_string('username', $component);
+
+        // Add custom fields header
+        $this->inseart_custom_filed_header($head);
+
+        $head['coursename'] = get_string('coursename', $component);
+        $head['category'] = get_string('category', $component);
+        $head['enrolledon'] = get_string('enrolledon', $component);
+        $head['completedactivities'] = get_string('completedactivities', $component);
+        $head['completionsper'] = get_string('completionsper', $component);
+
+        // Print export header
+        echo implode(",", array_values($head)). "\n";
+
+        return $head;
+    }
+
+    /**
+     * Render learning program report header
+     * @return array Learning Program header
+     */
+    private function render_lp_report_exportable_header() {
+        // Plugin component
+        $component = 'report_elucidsitereport';
+
+        // Header for reports
+        $head = array();
+        $head['firstname'] = get_string('firstname', $component);
+        $head['lastname'] = get_string('lastname', $component);
+        $head['email'] = get_string('email', $component);
+        $head['username'] = get_string('username', $component);
+
+        // Inseart custom fields as header
+        $this->inseart_custom_filed_header($head);
+
+        $head['lpname'] = get_string('lpname', $component);
+        $head['enrolledon'] = get_string('enrolledon', $component);
+        $head['average'] = get_string('average', $component);
+
+        // Print export header
+        echo implode(",", array_values($head)). "\n";
+
+        return $head;
+    }
+
+    /**
+     * Inseart custom field header in reports file
+     * @param  [type] &$head [description]
+     * @return [type]        [description]
+     */
+    private function inseart_custom_filed_header(&$head) {
+        // Get all custom fields to add in header
+        $customfields = profile_get_custom_fields();
+
+        // Add custom fields
+        foreach ($customfields as $key => $customfield) {
+            $head[$customfield->shortname] = $customfield->name;
+        }
+    }
+
+    /**
+     * Inseart custom field data in reports file
+     * @param  [type] &$data [description]
+     * @return [type]        [description]
+     */
+    private function inseart_custom_filed_data(&$data, $userid) {
+        global $DB;
+
+        // Get customdata
+        $customfieldsdata = profile_user_record($userid);
+        foreach($customfieldsdata as $key => $customdata) {
+            // Get field data
+            $field = $DB->get_record('user_info_field', array(
+                'shortname' => $key
+            ));
+            
+            if ($field->datatype == 'dynamicmenu') {
+                $dynamicdata = $DB->get_records_sql($field->param1);
+                if (isset($dynamicdata[$customdata]) && $dynamicdata[$customdata] !== "") {
+                    $data->$key = $dynamicdata[$customdata]->data;
+                } else {
+                    $data->$key = "";
+                }
+            } else {
+                $data->$key = $customdata;
+            }
+        }
+    }
+
+    /**
+     * Render course related exportable data
+     * @param  array $courseids       Course Ids
+     * @param  int $enrolstartdate    Enrolment Start Date
+     * @param  int $enrolenddate      Enrolment End Date
+     * @return array                  Array of exportable data
+     */
+    private function render_courses_report_exportable_data($courseids, $enrolstartdate, $enrolenddate) {
+        global $DB;
+
+        // Render course exportable header
+        $head = $this->render_course_report_exportable_header();
+
+        // Export course data from courses
+        foreach ($courseids as $courseid) {
+            // Get course and course context
+            $course = get_course($courseid);
+            $coursecontext = context_course::instance($course->id);
+
+            // Get only enrolled students
+            $users = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+
+            // Prepare reports for each students
+            foreach ($users as $user) {
+                // Get enrolment informations
+                $enrolinfo = \report_elucidsitereport\utility::get_course_enrolment_info($course->id, $user->id);
+                
+                // If startdate is less then the selected start date
+                if ($enrolinfo->timestart < $enrolstartdate) {
+                    continue;
+                }
+
+                // If end date is set then 
+                if ($enrolinfo->timeend && $enrolinfo->timeend > $enrolenddate) {
+                    continue;
+                }
+
+
+                // Get category
+                $category = core_course_category::get($course->category);
+
+                // Prepare data object
+                $data = new stdClass();
+                $data->firstname = $user->firstname;
+                $data->lastname = $user->lastname;
+                $data->email = $user->email;
+                $data->username = $user->username;
+                $data->enrolledon = date('d-M-y', $enrolinfo->timecreated);
+                $data->coursename = $course->fullname;
+                $data->category = $category->get_formatted_name();
+                
+                // Get completions data
+                $completion = (object) \report_elucidsitereport\utility::get_course_completion_info($course, $user->id);
+                if ($completion && !empty($completion)) {
+                    $data->completedactivities = $completion->completedactivities . '/' . $completion->totalactivities;
+                    $data->completionsper = $completion->progresspercentage . "%";
+                } else {
+                    $data->completedactivities = get_string('na', 'report_elucidsitereport');
+                    $data->completionsper = get_string('na', 'report_elucidsitereport');
+                }
+
+                $this->inseart_custom_filed_data($data, $user->id);
+
+                // Get appropreate data according to header
+                $reportdata = $head;
+                foreach($head as $key => $cell)  {
+                    $reportdata[$key] = $data->$key;
+                }
+
+                // Rnder the report data
+                echo implode(",", array_values($reportdata)) . "\n";
+            }
+        }
+
+        // Return true
+        return true;
+    }
+
+    /**
+     * Render learning program related exportable data
+     * @param  array $courseids       Course Ids
+     * @param  int $enrolstartdate    Enrolment Start Date
+     * @param  int $enrolenddate      Enrolment End Date
+     * @return array                  Array of exportable data
+     */
+    private function render_lps_report_exportable_data($lpids, $enrolstartdate, $enrolenddate) {
+        global $DB;
+        $component = 'report_elucidsitereport';
+
+        // Render reports header
+        $head = $this->render_lp_report_exportable_header();
+
+        // Export course data from courses
+        foreach ($lpids as $lpid) {
+            // Get course and course context
+            $table = 'wdm_learning_program';
+            $lp = $DB->get_record($table, array("id" => $lpid, "visible" => true));
+
+            // Get only enrolled students
+            // '0' Is students role ID
+            $table = 'wdm_learning_program_enrol';
+            $enrolments = $DB->get_records($table, array("learningprogramid" => $lpid, "roleid" => 0));
+
+            // Prepare reports for each students
+            foreach ($enrolments as $enrolment) {
+                // Get Lp startdate and enddate
+                if ($lp->duration) {
+                    $startdate = $enrolment->timeneroled;
+                    $enddate = $startdate + $lp->durationtime;
+                } else {
+                    $startdate = $lp->timestart;
+                    $enddate = $lp->timeend;
+                }
+
+                if ($startdate < $enrolstartdate && $enddate > $enrolenddate) {
+                    continue;
+                }
+
+                // Get all course reports which is in learning program
+                $completionavg = 0;
+                $coursecount = 0;
+                foreach(json_decode($lp->courses) as $courseid) {
+                    // If course is not there then return from here
+                    if (!$course = $DB->get_record('course', array('id' => $courseid))) {
+                        continue;
+                    }
+
+                    // Get completions data
+                    $completion = (object) \report_elucidsitereport\utility::get_course_completion_info($course, $enrolment->userid);
+
+                    if ($completion && empty($completion)) {
+                        $completionavg += $completion->progresspercentage;
+                    }
+
+                    // Increase course count
+                    $coursecount++;
+                }
+
+                // Add completion report to the export array
+                $user = core_user::get_user($enrolment->userid);
+                $customfieldsdata = profile_user_record($user->id);
+
+                // Prepare data object
+                $data = new stdClass();
+                $data->firstname = $user->firstname;
+                $data->lastname = $user->lastname;
+                $data->email = $user->email;
+                $data->username = $user->username;
+                $data->enrolledon = date('d-M-y', $enrolment->timeenroled);
+                $data->lpname = $lp->name;
+                $data->average = $completionavg / $coursecount . "%";
+
+                // Inseart custom field data
+                $this->inseart_custom_filed_data($data, $user->id);
+
+                // Get appropreate data according to header
+                $reportdata = $head;
+                foreach($head as $key => $cell)  {
+                    $reportdata[$key] = $data->$key;
+                }
+
+                // Render the report data
+                echo implode(",", array_values($reportdata)) . "\n";
+            }
+        }
+
+        // Return status
+        return true;
     }
 }

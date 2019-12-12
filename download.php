@@ -27,6 +27,7 @@ use report_elucidsitereport\export;
 
 require_once(__DIR__ .'/../../config.php');
 require_once($CFG->dirroot."/report/elucidsitereport/classes/export.php");
+require_once($CFG->dirroot."/report/elucidsitereport/classes/utility.php");
 
 // Check if users is logged in
 require_login();
@@ -75,4 +76,15 @@ if ($format = optional_param("format", false, PARAM_TEXT)) {
             $export->data_export($filename, $data);
         }
     }
+} else if ($reporttype = required_param('reporttype', PARAM_TEXT)) {
+    // Get Url parameter
+    $filters = required_param('filters', PARAM_TEXT);
+    $enrolstartdate = optional_param('enrolstartdate', null, PARAM_TEXT);
+    $enrolenddate = optional_param('enrolenddate', null, PARAM_TEXT);
+
+    // Get export object 
+    $export = new export(null, null, null);
+
+    // Render csv data in csv file
+    $export->export_csv_customreport_data($reporttype, $filters, $enrolstartdate, $enrolenddate);
 }

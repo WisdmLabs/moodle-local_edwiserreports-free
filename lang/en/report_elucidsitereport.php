@@ -324,7 +324,7 @@ $string['cachedef_elucidsitereport'] = 'This is the caches of elucid site report
 $string['elucidsitereport:view'] = 'View Reports and analytics dashboard';
 
 /* Custom report block */
-$string['downloadcustomtreport'] = 'Download Custom Reports';
+$string['downloadcustomtreport'] = 'Download Users Pogress Reports';
 $string['selectdaterange'] = 'Select Date Range';
 $string['learningprograms'] = 'Learning Programs';
 $string['courses'] = 'Courses';
@@ -333,13 +333,13 @@ $string['downloadreportincsv'] = 'Download Reports in CSV';
 $string['startdate'] = 'Start Date';
 $string['enddate'] = 'End Date';
 $string['select'] = 'Select';
-$string['selectreporttype'] = 'Select Report Type :';
+$string['selectreporttype'] = 'Select Report Type';
 $string['completedactivities'] = 'Activity Completed';
 $string['completionsper'] = 'Completion(%)';
 $string['firstname'] = 'First Name';
 $string['lastname'] = 'Last Name';
 $string['average'] = 'Average(%)';
-$string['enrolmentdaterange'] = 'Enrolment Date';
+$string['enrolmentrangeselector'] = 'Enrolment Range Selector';
 $string['category'] = 'Category';
 $string['customreportsuccess'] = '<h4><i class="fa fa-check" aria-hidden="true"></i> Success!</h4>Notifications sent successfully.';
 $string['customreportfailed'] = '<h4><i class="fa fa-check" aria-hidden="true"></i> Failed!</h4>Select any of the checkboxes to get reports.';
