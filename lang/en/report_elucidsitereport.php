@@ -343,3 +343,5 @@ $string['enrolmentdaterange'] = 'Enrolment Date';
 $string['category'] = 'Category';
 $string['customreportsuccess'] = '<h4><i class="fa fa-check" aria-hidden="true"></i> Success!</h4>Notifications sent successfully.';
 $string['customreportfailed'] = '<h4><i class="fa fa-check" aria-hidden="true"></i> Failed!</h4>Select any of the checkboxes to get reports.';
+$string['duration'] = 'Duration';
+$string['na'] = 'NA';

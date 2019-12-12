@@ -30,9 +30,11 @@
                             <a class="dropdown-item" href="javascript:void(0)" role="menuitem" data-val="courses">
                                 {{#str}} courses, report_elucidsitereport {{/str}}
                             </a>
+                            {{#haslppluign}}
                             <a class="dropdown-item" href="javascript:void(0)" role="menuitem" data-val="lps">
                                 {{#str}} learningprograms, report_elucidsitereport {{/str}}
                             </a>
+                            {{/haslppluign}}
                         </div>
                     </td>
                 </tr>
@@ -50,7 +52,33 @@
             {{! Actual panel body }}
             <div class="rootContainer" style="display: none;">
                 <div class="customReportSelectors mt-10">
-                    <table class="table w-full">
+                    {{! Course table }}
+                    <table class="table course-table w-full">
+                        <thead>
+                            <th class="bg-secondary">
+                                <span class="checkbox-custom"><input type="checkbox" name="selectAllCustom"><label class="selectAllCustomReports" for="selectAllCustom"></label></span>
+                            </th>
+                            <th class="bg-secondary">
+                                {{#str}} name , report_elucidsitereport {{/str}}
+                            </th>
+                            <th class="bg-secondary">
+                                {{#str}} shortname , report_elucidsitereport {{/str}}
+                            </th>
+                            <th class="bg-secondary">
+                                {{#str}} category , report_elucidsitereport {{/str}}
+                            </th>
+                            <th class="bg-secondary">
+                                {{#str}} startdate , report_elucidsitereport {{/str}}
+                            </th>
+                            <th class="bg-secondary">
+                                {{#str}} enddate , report_elucidsitereport {{/str}}
+                            </th>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+
+                    {{! Leanring Program }}
+                    <table class="table lp-table w-full">
                         <thead>
                             <th class="bg-secondary">
                                 <span class="checkbox-custom"><input type="checkbox" name="selectAllCustom"><label class="selectAllCustomReports" for="selectAllCustom"></label></span>
@@ -66,6 +94,9 @@
                             </th>
                             <th class="bg-secondary">
                                 {{#str}} enddate , report_elucidsitereport {{/str}}
+                            </th>
+                            <th class="bg-secondary">
+                                {{#str}} duration , report_elucidsitereport {{/str}}
                             </th>
                         </thead>
                         <tbody></tbody>
@@ -140,16 +171,18 @@ require([
     let reportForm = $(panel).find('#customReportsForm')
 
     /**
-     * Selected Checkboxes
-     * @type {object}
-     */
-    let checkboxes = `${panel} input[name^=customReportSelect-]`
-
-    /**
      * Loader to download reports
      * @type {String}
      */
     let windowLoader = '<div id="cover-spin"></div>';
+
+    /**
+     * Selected Checkboxes
+     * @type {object}
+     */
+    let getCheckboxesSelector = (tableSelector) => {
+        return `${panel} ${tableSelector} input[name^=customReportSelect-]`
+    }
 
     /*
      * Get custom report selectors
@@ -169,12 +202,51 @@ require([
     }
 
     /**
+     * Get datatable config for report
+     * @param  {string} selectorType Report Type
+     * @return {object}            Datatable config
+     */
+    const getDatatableConfig = (selectorType) => {
+        if (selectorType == 'lps') {
+            return {
+                "columns" : [
+                    { "data": "select"},
+                    { "data": "fullname" },
+                    { "data": "shortname" },
+                    { "data": "startdate" },
+                    { "data": "enddate" },
+                    { "data": "duration" },
+                ],
+                "language" : {
+                    "searchPlaceholder": "Search Learning Programs",
+                    "emptyTable": "There are no learning programs"
+                }
+            }
+        } else {
+            return {
+                "columns" : [
+                    { "data": "select"},
+                    { "data": "fullname" },
+                    { "data": "shortname" },
+                    { "data": "category" },
+                    { "data": "startdate" },
+                    { "data": "enddate" },
+                ],
+                "language" : {
+                    "searchPlaceholder": "Search courses",
+                    "emptyTable": "There are no courses"
+                }
+            }
+        }
+    }
+
+    /**
      * Creat Selector Table to select courses/lps
      * @param  {string} type      Selector type courses/lps
      * @param  {int} startdate    Enrolment Start Date
      * @param  {int} enddate      Enrolment End Date
      */
-    let createSelectorTable = (type) => {
+    let createSelectorTable = (type, tableSelectorClass) => {
         // If table is already there then remove table
         if (selectorTable) {
             selectorTable.destroy()
@@ -197,22 +269,16 @@ require([
         // Show custom report selectors
         rootContainer.show();
 
+        // Get dataTable config
+        let dtConfig = getDatatableConfig(type)
+
         // Get all courses/learningprogram
-        selectorTable = customReportSelectors.find('.table').DataTable( {
+        selectorTable = customReportSelectors.find(tableSelectorClass).show().DataTable( {
             ajax : url,
-            columns : [
-                { "data": "select"},
-                { "data": "fullname" },
-                { "data": "shortname" },
-                { "data": "startdate" },
-                { "data": "enddate" },
-            ],
-            language: {
-                searchPlaceholder: "Search courses",
-                emptyTable: "There are no courses"
-            },
+            columns : dtConfig.columns,
+            language: dtConfig.language,
             responsive : true,
-            scrollY : "320px",
+            scrollY : "380px",
             scroller: {
                 loadingIndicator: true
             },
@@ -242,6 +308,14 @@ require([
      * @return {[type]}                        [description]
      */
     $(document).on('change', `${panel} input[name="selectAllCustom"]`, (event) => {
+        // Get table selector
+        let tableSelectorClass = '.course-table'
+        if (selectorType == 'lps') {
+            tableSelectorClass = '.lp-table'
+        }
+
+        // Get checkboxes
+        let checkboxes = getCheckboxesSelector(tableSelectorClass)
         if ($(event.target).is(':checked')) {
             $(checkboxes).prop("checked", true)
         } else {
@@ -253,39 +327,59 @@ require([
      * Get courses/lps when dropdown selected 
      */
     $(document).on('click', reportSelector, (event) => {
-        let filter = $(event.target).data('val')
         let dropdown = $(event.target).closest('.dropdown')
+        selectorType = $(event.target).data('val')
 
         // Set dropdown value
         customDropdown.html($(event.target).html())
-        customDropdown.data('val', filter)
+        customDropdown.data('val', selectorType)
+
+        // Get table selector
+        let tableSelectorClass = '.course-table'
+        if (selectorType == 'lps') {
+            tableSelectorClass = '.lp-table'
+        }
         
+        // Hide table in panel body
+        $(panel).find('.table').hide()
+
         // Create table for selectors table
-        createSelectorTable(filter)
+        createSelectorTable(selectorType, tableSelectorClass)
     })
 
     /**
      * Download reports in csv format
      */
     $(document).on('click', downloadBtn, (event) => {
+        // Get table selector
+        let tableSelectorClass = '.course-table'
+        if (selectorType == 'lps') {
+            tableSelectorClass = '.lp-table'
+        }
+
+        // Get checkboxes
+        let checkboxes = getCheckboxesSelector(tableSelectorClass)
+
         // If no data selected
         if (!$(`${checkboxes}:checked`).length) {
             $(panel).find('#errorMsg').addClass('show').removeClass('hide');
             setTimeout(() => {
-                $(panel).find('#errorMsg').hide();
+                $(panel).find('#errorMsg').addClass('hide').removeClass('show');
             }, 5000)
             return false;
         }
 
-        console.log($(document).find('#cover-spin'));
+        // Add cover spin when trying to download reports
         if (!$(document).find('#cover-spin').length) {
             $("body").append(windowLoader);
         }
 
+        // Show cover spin
         $(document).find('#cover-spin').show(0);
 
         // Get all id filters
         filters = [];
+
         $(`${checkboxes}:checked`).each((idx, ele) => {
             filters.push($(ele).data('id'))
         })

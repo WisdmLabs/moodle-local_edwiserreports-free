@@ -579,3 +579,8 @@ div[id^="wdm-"][id*="-individual"] table.table,
     max-height: 300px;
     overflow: scroll;
 }
+
+/* Custom Report Block Table Style */
+.path-report-elucidsitereport #customReportBlock table td {
+    padding: 10px 18px!important;
+}

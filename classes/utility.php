@@ -808,14 +808,27 @@ class utility {
             );
             $res->select .= html_writer::end_tag('span');
 
-            // Get learning programs startdate in redable format
-            $res->startdate = date('d-M-Y', $lp->timestart);
+            // If duration is set in learning program
+            if ($lp->duration) {
+                // Get duration time
+                $res->duration = format_time($lp->durationtime);
 
-            // Get learning programs end date in readable format
-            if ($lp->timeend) {
-                $res->enddate = date('d-M-Y', $lp->timeend);
+                // Set starttime and endtime not applicable
+                $res->startdate = get_string('na', 'report_elucidsitereport');
+                $res->enddate = get_string('na', 'report_elucidsitereport');
             } else {
-                $res->enddate = get_string('never');
+                // Get learning programs startdate in redable format
+                $res->startdate = date('d-M-Y', $lp->timestart);
+
+                // Get learning programs end date in readable format
+                if ($lp->timeend) {
+                    $res->enddate = date('d-M-Y', $lp->timeend);
+                } else {
+                    $res->enddate = get_string('never');
+                }
+
+                // Set duration not applicable
+                $res->duration = get_string('na', 'report_elucidsitereport');
             }
 
             $response[] = $res;
@@ -873,6 +886,10 @@ class utility {
             } else {
                 $res->enddate = get_string('never');
             }
+
+            // Get category
+            $category = core_course_category::get($course->category);
+            $res->category = $category->get_formatted_name();
 
             $response[] = $res;
         }
