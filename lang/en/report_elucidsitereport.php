@@ -324,7 +324,7 @@ $string['cachedef_elucidsitereport'] = 'This is the caches of elucid site report
 $string['elucidsitereport:view'] = 'View Reports and analytics dashboard';
 
 /* Custom report block */
-$string['downloadcustomtreport'] = 'Download Users Pogress Reports';
+$string['downloadcustomtreport'] = 'Download Users Progress Report';
 $string['selectdaterange'] = 'Select Date Range';
 $string['learningprograms'] = 'Learning Programs';
 $string['courses'] = 'Courses';

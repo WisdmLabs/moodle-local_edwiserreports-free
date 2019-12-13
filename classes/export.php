@@ -609,19 +609,25 @@ class export {
      * @return stdClass       Status of reports
      */
     public function export_csv_customreport_data($type, $filters, $startdate, $enddate) {
-        $filename = "report_" . $type . "_" . date('d_m_y') . ".csv";
-        // Set Csv headers
-        $this->set_csv_header($filename);
+        // Reports filename
+        $filename = 'custom_' . $type . '_report';
 
         // Default starttime
         if (!$startdate || $startdate == "") {
             $startdate = 0;
+        } else {
+            $filename .= '_' . date('d_m_Y', $startdate) . '_to_';
         }
 
         // Default end time
         if (!$enddate || $enddate == "") {
             $enddate = time();
         }
+
+        $filename .= date('d_m_Y', $enddate) . '.csv';
+
+        // Set Csv headers
+        $this->set_csv_header($filename);
 
         // Calculate end date by getting 23:59:59 time
         // Added 23:59:59 to get end date
@@ -795,7 +801,7 @@ class export {
                 // Get completions data
                 $completion = (object) \report_elucidsitereport\utility::get_course_completion_info($course, $user->id);
                 if ($completion && !empty($completion)) {
-                    $data->completedactivities = $completion->completedactivities . '/' . $completion->totalactivities;
+                    $data->completedactivities = '(' . $completion->completedactivities . '/' . $completion->totalactivities . ')';
                     $data->completionsper = $completion->progresspercentage . "%";
                 } else {
                     $data->completedactivities = get_string('na', 'report_elucidsitereport');
