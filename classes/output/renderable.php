@@ -90,6 +90,8 @@ class elucidreport_renderable implements renderable, templatable {
 
         $export->exportlinks = get_block_exportlinks($downloadurl, $data);
 
+        $export->downloadurl = $downloadurl;
+
         return $export;
     }
 }

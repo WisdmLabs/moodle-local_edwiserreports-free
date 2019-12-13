@@ -651,19 +651,18 @@ class export {
 
         // Header for reports
         $head = array();
+        $head['username'] = get_string('username', $component);
+        $head['coursename'] = get_string('coursename', $component);
+        $head['enrolledon'] = get_string('enrolledon', $component);
+        $head['category'] = get_string('category', $component);
+        $head['completionsper'] = get_string('completionsper', $component);
+        $head['completedactivities'] = get_string('completedactivities', $component);
         $head['firstname'] = get_string('firstname', $component);
         $head['lastname'] = get_string('lastname', $component);
         $head['email'] = get_string('email', $component);
-        $head['username'] = get_string('username', $component);
 
         // Add custom fields header
         $this->inseart_custom_filed_header($head);
-
-        $head['coursename'] = get_string('coursename', $component);
-        $head['category'] = get_string('category', $component);
-        $head['enrolledon'] = get_string('enrolledon', $component);
-        $head['completedactivities'] = get_string('completedactivities', $component);
-        $head['completionsper'] = get_string('completionsper', $component);
 
         // Print export header
         echo implode(",", array_values($head)). "\n";
@@ -681,17 +680,16 @@ class export {
 
         // Header for reports
         $head = array();
-        $head['firstname'] = get_string('firstname', $component);
-        $head['lastname'] = get_string('lastname', $component);
-        $head['email'] = get_string('email', $component);
         $head['username'] = get_string('username', $component);
-
-        // Inseart custom fields as header
-        $this->inseart_custom_filed_header($head);
-
         $head['lpname'] = get_string('lpname', $component);
         $head['enrolledon'] = get_string('enrolledon', $component);
         $head['average'] = get_string('average', $component);
+        $head['firstname'] = get_string('firstname', $component);
+        $head['lastname'] = get_string('lastname', $component);
+        $head['email'] = get_string('email', $component);
+
+        // Inseart custom fields as header
+        $this->inseart_custom_filed_header($head);
 
         // Print export header
         echo implode(",", array_values($head)). "\n";
