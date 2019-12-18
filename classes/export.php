@@ -610,13 +610,17 @@ class export {
      */
     public function export_csv_customreport_data($type, $filters, $startdate, $enddate) {
         // Reports filename
-        $filename = 'custom_' . $type . '_report';
+        if ($type == 'lps') {
+            $filename = 'Custom_Lp_Reports_';
+        } else {
+            $filename = 'Custom_Course_Reports_';
+        }
 
         // Default starttime
         if (!$startdate || $startdate == "") {
             $startdate = 0;
         } else {
-            $filename .= '_' . date('d_m_Y', $startdate) . '_to_';
+            $filename .= date('d_m_Y', $startdate) . '_to_';
         }
 
         // Default end time
@@ -773,9 +777,9 @@ class export {
             foreach ($users as $user) {
                 // Get enrolment informations
                 $enrolinfo = \report_elucidsitereport\utility::get_course_enrolment_info($course->id, $user->id);
-                
+
                 // If startdate is less then the selected start date
-                if ($enrolinfo->timestart < $enrolstartdate) {
+                if ($enrolinfo->timecreated < $enrolstartdate) {
                     continue;
                 }
 
