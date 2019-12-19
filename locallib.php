@@ -54,8 +54,8 @@ function get_block_exportlinks($url, $data) {
     $links->blockcourseprogress = get_exportlinks($url, $region, "courseprogress", $cpfilter);
     $links->blockcertificates = get_exportlinks($url, $region, "certificates");
     $links->blockf2fsessions = get_exportlinks($url, $region, "f2fsession");
-    $links->blocklpstats = get_exportlinks($url, $region, "lpstats", "", $lpfilter);
-    $links->blockinactiveusers = get_exportlinks($url, $region, "inactiveusers", "mt-20", "never");
+    $links->blocklpstats = get_exportlinks($url, $region, "lpstats", $lpfilter);
+    $links->blockinactiveusers = get_exportlinks($url, $region, "inactiveusers", "never", false, false, "mt-20");
     return $links;
 }
 
@@ -68,7 +68,7 @@ function get_block_exportlinks($url, $data) {
  * @param  [string] $action Action of a page report
  * @return [array] Array of export link
  */
-function get_exportlinks($url, $region, $blockname, $customclass = '', $filter = false, $cohortid = false, $action = false) {
+function get_exportlinks($url, $region, $blockname, $filter = false, $cohortid = false, $action = false, $customclass = '') {
     $params = array(
         "region" => $region,
         "blockname" => $blockname
