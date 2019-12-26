@@ -211,6 +211,8 @@ $string['avgprogress'] = "Avg Progress";
 $string['notyet'] = "Not Yet";
 $string['lpname'] = "Learning Program Name";
 $string['lpdetailedreport'] = "Download Learning Programs Detailed Report";
+$string['searchlps'] = "Search Learning Programs";
+$string['exportlpdetailedreport'] = "Export Detailed Report";
 
 /* Export Strings */
 $string['csv'] = "CSV";

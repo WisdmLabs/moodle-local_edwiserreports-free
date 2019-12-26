@@ -108,7 +108,10 @@ define([
 
                         // Set Modal Body
                         modal.setBody(Templates.render(
-                            'report_elucidsitereport/lpdetailedreport', {}
+                            'report_elucidsitereport/lpdetailedreport', {
+                                sesskey : $(PageId).data('sesskey'),
+                                formaction : M.cfg.wwwroot + "/report/elucidsitereport/download.php" 
+                            }
                         ));
 
                         // Show learning program modal

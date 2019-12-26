@@ -1,24 +1,38 @@
 {{! Leanring Program }}
-<table class="table lp-table w-full">
+<table id="wdm-lplist-table" class="table lp-table" style="min-width: 100%;">
     <thead>
-        <th class="bg-secondary">
-            <span class="checkbox-custom"><input type="checkbox" name="selectAllCustom"><label class="selectAllCustomReports" for="selectAllCustom"></label></span>
+        <th class="">
+            <span class="checkbox-custom">
+                <input type="checkbox" name="selectAllCustom">
+                <label class="selectAllCustomReports" for="selectAllCustom"></label>
+            </span>
         </th>
-        <th class="bg-secondary">
+        <th class="">
             {{#str}} name , report_elucidsitereport {{/str}}
         </th>
-        <th class="bg-secondary">
+        <th class="">
             {{#str}} shortname , report_elucidsitereport {{/str}}
         </th>
-        <th class="bg-secondary">
+        <th class="">
             {{#str}} startdate , report_elucidsitereport {{/str}}
         </th>
-        <th class="bg-secondary">
+        <th class="">
             {{#str}} enddate , report_elucidsitereport {{/str}}
         </th>
-        <th class="bg-secondary">
+        <th class="">
             {{#str}} duration , report_elucidsitereport {{/str}}
         </th>
     </thead>
     <tbody></tbody>
 </table>
+<a id="wdm-lpdetailedreport" class="btn btn-secondary mt-5 pull-right">
+    {{#str}} exportlpdetailedreport, report_elucidsitereport {{/str}}
+</a>
+<form id="wdm-lpdetailedreport-form" action="{{formaction}}" target="_blank" class="hidden">
+    <input class="" name="filters"/>
+</form>
+{{#js}}
+require(['report_elucidsitereport/lpdetailedreport'], function() {
+    Breakpoints();
+});
+{{/js}}
