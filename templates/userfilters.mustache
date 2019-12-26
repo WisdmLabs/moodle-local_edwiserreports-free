@@ -32,6 +32,11 @@
         </div>
         <div class="col-6">
             <div class="filters d-flex justify-content-end">
+                {{#lpexportdetailed}}
+                    <button id="wdm-export-detail-lpsreports" class="btn btn-sm input-group-addon mx-5">
+                        {{#str}} exportlpdetailedreports, report_elucidsitereport {{/str}}
+                    </button>
+                {{/lpexportdetailed}}
                 {{#cohortfilter}}
                 <div class="dropdown">
                     <button type="button" class="btn btn-sm dropdown-toggle input-group-addon" id="cohortfilter" data-toggle="dropdown">

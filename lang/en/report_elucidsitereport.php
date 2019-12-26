@@ -248,6 +248,7 @@ $string['completionexportheader'] = "Course Completion Report";
 $string['completionexporthelp'] = "This report will show the course completions by the users.";
 $string['courseanalyticsexportheader'] = "Course Completion Report";
 $string['courseanalyticsexporthelp'] = "This report will show the course completions by the users.";
+$string['exportlpdetailedreports'] = 'Export Detailed Reports';
 
 $string['times_0'] = "06:30 AM";
 $string['times_1'] = "10:00 AM";

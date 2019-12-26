@@ -218,6 +218,7 @@ class lpstats_renderable implements renderable, templatable {
             $output->userfilters = get_userfilters(false, true, false);
         }
         $output->backurl = new moodle_url($CFG->wwwroot."/report/elucidsitereport/index.php");
+        $output->lpexportdetailed = true;
         return $output;
     }
 }
