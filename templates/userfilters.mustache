@@ -1,6 +1,6 @@
-<div id="wdm-userfilter" class="h-40 my-10">
+<div id="wdm-userfilter" class="h-auto my-10">
     <div class="row">
-        <div class="col-6 d-flex">
+        <div class="col-md-6 col-12 d-flex mb-5">
             {{#customfields}}
             <div class="dropdown px-10">
                 <button type="button" class="btn btn-default dropdown-toggle" id="customfields" data-toggle="dropdown">
@@ -30,13 +30,15 @@
             </div>
             {{/customfieldvalue}}
         </div>
-        <div class="col-6">
-            <div class="filters d-flex justify-content-end">
-                {{#lpexportdetailed}}
-                    <button id="wdm-export-detail-lpsreports" class="btn btn-sm input-group-addon mx-5">
-                        {{#str}} exportlpdetailedreports, report_elucidsitereport {{/str}}
-                    </button>
-                {{/lpexportdetailed}}
+        <div class="col-md-6 col-12 d-md-flex mb-5">
+            {{#lpexportdetailed}}
+            <div class="ml-auto mr-5 mb-5">
+                <button id="wdm-export-detail-lpsreports" class="btn btn-sm input-group-addon">
+                    {{#str}} exportlpdetailedreports, report_elucidsitereport {{/str}}
+                </button>
+            </div>
+            {{/lpexportdetailed}}
+            <div class="filters d-flex justify-content-sm-end mb-5">
                 {{#cohortfilter}}
                 <div class="dropdown">
                     <button type="button" class="btn btn-sm dropdown-toggle input-group-addon" id="cohortfilter" data-toggle="dropdown">

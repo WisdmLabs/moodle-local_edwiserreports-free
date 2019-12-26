@@ -10,7 +10,7 @@ define([
         var LpSelect = "#wdm-lp-select";
         var LpTable = PageId + " .table";
         var loader = PageId + " .loader";
-        var filterSection = $("#wdm-userfilter .row .col-6:first-child");
+        var filterSection = $("#wdm-userfilter .row .col-md-6:first-child");
         var LpDropdown = $(PageId).find("#wdm-lp-dropdown");
         var Table = null;
 
