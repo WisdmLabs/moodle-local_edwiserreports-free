@@ -38,6 +38,7 @@ use moodle_url;
 
 require_once($CFG->dirroot . "/cohort/lib.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/constants.php");
+require_once($CFG->dirroot . "/report/elucidsitereport/classes/completions.php");
 
 /**
  * Class Course Progress Block
@@ -178,7 +179,6 @@ class course_progress_block extends utility {
     public static function get_courselist($cohortid) {
         $courses = \report_elucidsitereport\utility::get_courses(true);
 
-        $completions = parent::get_course_completions();
         $response = array();
         foreach ($courses as $course) {
             // Generate response object for a course
@@ -205,6 +205,10 @@ class course_progress_block extends utility {
             // Get only enrolled student
             $enrolledstudents = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
 
+            // Get completions
+            $compobj = new \report_elucidsitereport\completions();
+            $completions = $compobj->get_course_completions($course->id);
+
             // For each enrolled student get completions
             foreach ($enrolledstudents as $user) {
                 // If cohort filter in there then remove the users
@@ -218,33 +222,32 @@ class course_progress_block extends utility {
                 }
 
                 // Generate $key to save completion in an array
-                $key = $user->id."-".$course->id;
-                if (!isset($completions[$key])) {
+                if (!isset($completions[$user->id])) {
                     // Completed 0% of course
                     $res->completed00++;
                 } else {
                     // Calculated progress percantage
-                    $progress = $completions[$key]->progress;
+                    $progress = $completions[$user->id]->completion;
 
                     // Create array based on the completion
                     switch (true) {
-                        case $progress == COURSE_COMPLETE_100PER:
+                        case $progress == 100:
                             // Completed 100% of course
                             $res->completed100++;
                             break;
-                        case $progress >= COURSE_COMPLETE_80PER && $progress < COURSE_COMPLETE_100PER:
+                        case $progress >= 80 && $progress < 100:
                             // Completed 80% of course
                             $res->completed80++;
                             break;
-                        case $progress >= COURSE_COMPLETE_60PER && $progress < COURSE_COMPLETE_80PER:
+                        case $progress >= 60 && $progress < 80:
                             // Completed 60% of course
                             $res->completed60++;
                             break;
-                        case $progress >= COURSE_COMPLETE_40PER && $progress < COURSE_COMPLETE_60PER:
+                        case $progress >= 40 && $progress < 60:
                             // Completed 40% of course
                             $res->completed40++;
                             break;
-                        case $progress >= COURSE_COMPLETE_20PER && $progress < COURSE_COMPLETE_40PER:
+                        case $progress >= 20 && $progress < 40:
                             // Completed 20% of course
                             $res->completed20++;
                             break;

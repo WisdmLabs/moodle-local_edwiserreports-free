@@ -156,4 +156,17 @@ class completions {
             $DB->insert_records($this->tablename, $dataobjects);
         }
     }
+
+    /**
+     * Get course completions for each users
+     * @param  [int] $courseid  Course ID
+     * @return [array]          Array of completions
+     */
+    public function get_course_completions($courseid) {
+        global $DB;
+        $completions = $DB->get_records('elucidsitereport_completion', array(
+            'courseid' => $courseid
+        ), '', "userid, completion");
+        return $completions;
+    }
 }
