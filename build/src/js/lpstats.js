@@ -2,9 +2,20 @@ define([
     'jquery',
     'core/templates',
     'core/fragment',
+    'core/modal_factory',
+    'core/modal_events',
+    'core/str',
     'report_elucidsitereport/variables',
     'report_elucidsitereport/common'
-], function($, Templates, Fragment, V) {
+], function(
+    $,
+    Templates,
+    Fragment,
+    ModalFactory,
+    ModalEvents,
+    str,
+    V
+) {
     function init(CONTEXTID) {
         var PageId = "#wdm-lpstats-individual";
         var LpSelect = "#wdm-lp-select";
@@ -13,6 +24,27 @@ define([
         var filterSection = $("#wdm-userfilter .row .col-md-6:first-child");
         var LpDropdown = $(PageId).find("#wdm-lp-dropdown");
         var Table = null;
+
+        /**
+         * Learning program export detailed report button
+         * @type {[type]}
+         */
+        var lpExportDetail = $("#wdm-export-detail-lpsreports");
+        var lpListModal = null;
+
+        /**
+         * Plugin Component
+         * @type {String}
+         */
+        var component = 'report_elucidsitereport';
+
+        /**
+         * Get translation to use strings
+         * @type {object}
+         */
+        var translation = str.get_strings([
+            {key: 'lpdetailedreport', component: component}
+        ]);
 
         // Varibales for cohort filter
         var cohortId = 0;
@@ -41,9 +73,56 @@ define([
                 lpid = $(document).find(LpSelect).val();
                 V.changeExportUrl(lpid, V.exportUrlLink, V.filterReplaceFlag);
                 addLpStatsTable(lpid, cohortId);
+            });
+
+            /* Export Detailed Report */
+            lpExportDetail.on('click', function() {
+                exportDetailedReport(lpExportDetail);
             })
         });
 
+        /**
+         * Export Detailed Report
+         */
+        function exportDetailedReport(trigger) {
+            // If modal already exist then show modal
+            if (lpListModal) {
+                lpListModal.show();
+            } else {
+                // When translation is redy then create modal
+                translation.then(function() {
+                    // Create Learning Program Modal
+                    ModalFactory.create({
+                        title : M.util.get_string(
+                            'lpdetailedreport', component
+                        )
+                    }, trigger).done(function(modal) {
+                        // Get modal root
+                        var root = modal.getRoot();
+                        
+                        // Set global Modal
+                        lpListModal = modal;
+                        root.on(ModalEvents.cancel, function() {
+                            modal.hide();
+                        });
+
+                        // Set Modal Body
+                        modal.setBody(Templates.render(
+                            'report_elucidsitereport/lpdetailedreport', {}
+                        ));
+
+                        // Show learning program modal
+                        modal.show();
+                    });
+                });
+            }
+        }
+
+        /**
+         * Add Lp stats table in learning program page
+         * @param {int} lpid     Learning Program ID
+         * @param {int} cohortId Cohort ID
+         */
         function addLpStatsTable(lpid, cohortId) {
             if (Table) {
                 Table.destroy();

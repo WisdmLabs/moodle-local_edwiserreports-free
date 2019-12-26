@@ -46,7 +46,6 @@ gulp.task('purge', function(done) {
     .pipe(exec('php ../../../admin/cli/purge_caches.php'))
     .pipe(gulp.dest('.'))
     .pipe(notify('Purged All'));
-    done;
 });
 
 gulp.task('uglify', function () {

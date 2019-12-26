@@ -196,7 +196,6 @@ $string['time22'] = "10:00 PM";
 $string['time23'] = "11:00 PM";
 $string['siteaccessinfo'] = "Avg users access";
 
-
 /* f2f Sessions Page*/
 $string['waitlist'] = 'Waitlist';
 $string['declined'] = 'Declined';
@@ -211,6 +210,7 @@ $string['progress'] = "Progress";
 $string['avgprogress'] = "Avg Progress";
 $string['notyet'] = "Not Yet";
 $string['lpname'] = "Learning Program Name";
+$string['lpdetailedreport'] = "Download Learning Programs Detailed Report";
 
 /* Export Strings */
 $string['csv'] = "CSV";
