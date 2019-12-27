@@ -27,6 +27,8 @@ namespace report_elucidsitereport;
 
 defined('MOODLE_INTERNAL') || die();
 
+require_once($CFG->dirroot . "/report/elucidsitereport/classes/reporting_manager.php");
+
 use stdClass;
 use html_writer;
 use context_system;
@@ -62,8 +64,20 @@ class liveusers_block extends utility {
         $activeusers = $activefetcher->get_users(0);
         $inactiveusers = $inactivefetcher->get_users(0);
 
+        // Get Reporting manager students
+        $rpmusers = array();
+        $rpm = new reporting_manager();
+        $isrpm = $rpm->check_user_is_reporting_manager();
+        if ($isrpm) {
+            $rpmusers = $rpm->get_repoting_manager_students();
+        }
+
         $users = array();
         foreach ($inactiveusers as $inactiveuser) {
+            // check if current user is reporting manager and if the inactive user is in reporting manager students array
+            if ($isrpm && !in_array($inactiveuser->id, $rpmusers)) {
+                continue;
+            }
             $user = array();
             $user["name"] = fullname($inactiveuser);
 

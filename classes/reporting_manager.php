@@ -40,6 +40,10 @@ class reporting_manager
 		global $USER;
 		$this->userid = $USER->id;
 	}
+	/**
+	 * Check user is reporting manager or not
+	 * @return [boolean] Reporting manager
+	 */
 	public function check_user_is_reporting_manager() {
 		$roles = get_user_roles(\context_system::instance(), $this->userid);
         $rpm = false;
@@ -52,6 +56,10 @@ class reporting_manager
         }
         return $rpm;
 	}
+	/**
+	 * Get reporting manager students
+	 * @return [array] [reporting manager students]
+	 */
 	public function get_repoting_manager_students() {
 		global $DB;
 		// Query to get users of reporting manager
