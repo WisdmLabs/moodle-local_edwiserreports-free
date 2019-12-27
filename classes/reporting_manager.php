@@ -41,6 +41,25 @@ class reporting_manager
 		$this->userid = $USER->id;
 	}
 	public function check_user_is_reporting_manager() {
-		
+		$roles = get_user_roles(\context_system::instance(), $this->userid);
+        $rpm = false;
+        if (!empty($roles)) {
+            foreach ($roles as $role) {
+                if ($role->shortname == 'reportingmanager') {
+                    $rpm = true;
+                }
+            }
+        }
+        return $rpm;
+	}
+	public function get_repoting_manager_students() {
+		global $DB;
+		// Query to get users of reporting manager
+        $sql = "SELECT userid FROM {user_info_data} WHERE data = ? OR data IN (SELECT userid FROM {user_info_data} WHERE data = ?)";
+
+        // Get all users who are inactive
+        $users = $DB->get_records_sql($sql, array($this->userid, $this->userid));
+        $users = array_keys($users);
+        return $users;
 	}
 }
