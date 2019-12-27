@@ -6,7 +6,8 @@ var gulp = require('gulp'),
     remove = require('gulp-rm'),
     sequence = require('run-sequence'),
     exec = require('gulp-exec'),
-    notify = require('gulp-notify');
+    notify = require('gulp-notify'),
+    shell  = require('gulp-shell');
 
 var sources = [
     'src/js/var/defaultconfig.js',
@@ -42,12 +43,7 @@ var sources = [
     'src/js/lpdetailedreport.js'
 ];
 
-gulp.task('purge', function(done) {
-    gulp.src('.')
-    .pipe(exec('php ../../../admin/cli/purge_caches.php'))
-    .pipe(gulp.dest('.'))
-    .pipe(notify('Purged All'));
-});
+gulp.task('purge', shell.task('php '+__dirname+'/../../../admin/cli/purge_caches.php'));
 
 gulp.task('uglify', function () {
     return gulp.src(sources)
