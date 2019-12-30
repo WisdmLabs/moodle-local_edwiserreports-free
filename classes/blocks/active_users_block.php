@@ -614,6 +614,13 @@ class active_users_block extends utility {
         // Make cache
         $cache = cache::make('report_elucidsitereport', 'activeusers');
         $cachekey = "exportabledatablock-" . $filter;
+        self::$rpm = new reporting_manager();
+        // Check current user is reporting manager or not
+        self::$isrpm = self::$rpm->check_user_is_reporting_manager();
+        // if user is reporting manager then get his students
+        if (self::$isrpm) {
+            $cachekey .= "_".self::$rpm->userid;
+        }
         // If exportable data is set in cache then get it from there
         if (!$export = $cache->get($cachekey)) {
             // Get exportable data for active users block
