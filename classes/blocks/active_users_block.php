@@ -46,7 +46,15 @@ class active_users_block extends utility {
     public $labels;
     public $xlabelcount;
     public $cache;
-
+    // is user reporting manager
+    public static $isrpm = false;
+    // reporting manager class object
+    public static $rpm = null;
+    // reporting manager students
+    public static $rpmusers = array();
+    public static $insql = '> 1';
+    public static $inparams = array();
+    public static $rpmcache = '';
     /**
      * Constructor
      * @param [string] $filter Range selector
@@ -70,7 +78,7 @@ class active_users_block extends utility {
             $this->cache->set("activeusers-log", $records);
         }
 
-        $cachekey = "activeusers-labels-" . $filter;
+        $cachekey = "activeusers-labels-" . $filter.''.self::$rpmcache;
         if (!empty($records)) {
             // Getting first access of the site
             $this->firstaccess = $records[0]->timecreated;
@@ -150,7 +158,15 @@ class active_users_block extends utility {
         } else {
             $cachekey .= "all";
         }
-
+        self::$rpm = new reporting_manager();
+        // Check current user is reporting manager or not
+        self::$isrpm = self::$rpm->check_user_is_reporting_manager();
+        // if user is reporting manager then get his students
+        if (self::$isrpm) {
+            self::$rpmusers = self::$rpm->get_repoting_manager_students();
+            $cachekey .= "_".self::$rpm->userid;
+            self::get_reporting_manager_sql();
+        }
         // If response is in cache then return from cache
         if (!$response = $activeusersblock->cache->get($cachekey)) {
             $response = new stdClass();
@@ -192,6 +208,7 @@ class active_users_block extends utility {
             get_string("date", "report_elucidsitereport"),
             get_string("fullname", "report_elucidsitereport"),
             get_string("email", "report_elucidsitereport"),
+            get_string("coursename", "report_elucidsitereport"),
             get_string("status", "report_elucidsitereport"),
         );
 
@@ -238,9 +255,16 @@ class active_users_block extends utility {
     public static function get_userslist_table($filter, $action, $cohortid) {
         // Make cache
         $cache = cache::make('report_elucidsitereport', 'activeusers');
-
+        self::$rpm = new reporting_manager();
+        // Check current user is reporting manager or not
+        self::$isrpm = self::$rpm->check_user_is_reporting_manager();
+        // if user is reporting manager then get his students
+        if (self::$isrpm) {
+            self::$rpmusers = self::$rpm->get_repoting_manager_students();
+            self::get_reporting_manager_sql();
+        }
         // Get values from cache if it is set
-        $cachekey = "userslist-" . $filter . "-" . $action . "-" . "-" . $cohortid;
+        $cachekey = "userslist-" . $filter . "-" . $action . "-" . "-" . $cohortid.''.self::$rpmcache;
         if (!$table = $cache->get($cachekey)) {
             $table = new html_table();
 
@@ -267,73 +291,74 @@ class active_users_block extends utility {
 
         return html_writer::table($table);
     }
-    
+
     /**
-     * Get users list data for active users block
-     * @param [string] $filter Time filter to get users for this day
-     * @param [string] $action Get users list for this action
-     * @param [int] $cohortid Cohort Id
-     * @return [string] HTML table string of users list
-     * Columns are (Full Name, Email)
-     */
+    * Get users list data for active users block
+    * @param [string] $filter Time filter to get users for this day
+    * @param [string] $action Get users list for this action
+    * @param [int] $cohortid Cohort Id
+    * @return [string] HTML table string of users list
+    * Columns are (Full Name, Email)
+    */
     public static function get_userslist($filter, $action, $cohortid = false) {
-        global $DB;
-        
-        $sql = "SELECT DISTINCT l.userid, l.courseid 
-            FROM {logstore_standard_log} l";
-        $params = array();
+       global $DB;
+       // If cohort ID is there then add cohort filter in sqlquery
+       $sqlcohort = "";
+       if ($cohortid) {
+           $sqlcohort .= " JOIN {cohort_members} cm
+                   ON cm.userid = l.relateduserid";
+           $params["cohortid"] = $cohortid;
+       }
 
-        $sqlext = "";
-        if ($cohortid) {
-            $sqlext .= " JOIN {cohort_members} cm
-                    ON cm.userid = l.userid";
-            $params["cohortid"] = $cohortid;
-        }
+       // Based on action prepare query
+       switch($action) {
+           case "activeusers":
+               $sql = "SELECT DISTINCT l.userid as relateduserid
+                   FROM {logstore_standard_log} l $sqlcohort
+                   WHERE l.userid ".self::$insql."
+                   AND l.timecreated >= :starttime
+                   AND l.timecreated < :endtime
+                   AND l.action = :action";
+               $params["action"] = 'viewed';
+               break;
+           case "enrolments":
+               $sql = "SELECT l.id, l.userid, l.relateduserid, l.courseid
+                   FROM {logstore_standard_log} l $sqlcohort
+                   WHERE l.relateduserid ".self::$insql."
+                   AND l.timecreated >= :starttime
+                   AND l.timecreated < :endtime
+                   AND l.eventname = :eventname";
+               $params["eventname"] = '\core\event\user_enrolment_created';
+               break;
+           case "completions";
+               $sql = "SELECT DISTINCT l.userid as relateduserid, l.course as courseid
+                   FROM {course_completions} l $sqlcohort
+                   WHERE l.timecompleted IS NOT NULL
+                   AND l.timecompleted >= :starttime
+                   AND l.timecompleted < :endtime
+                   AND l.userid ".self::$insql."";
+       }
 
-        $sql .= $sqlext;
-        $sql .= " WHERE l.userid > 1
-            AND l.timecreated >= :starttime
-            AND l.timecreated < :endtime";
+       $params["starttime"] = $filter;
+       $params["endtime"] = $filter + ONEDAY;
+       $params = array_merge($params, self::$inparams);
+       $data = array();
+       $records = $DB->get_records_sql($sql, $params);
+       if (!empty($records)) {
+           foreach ($records as $record) {
+               $user = core_user::get_user($record->relateduserid);
+               $userdata = new stdClass();
+               $userdata->username = fullname($user);
+               $userdata->useremail = $user->email;
+               if ($action == "completions" || $action == "enrolments") {
+                   $course = get_course($record->courseid);
+                   $userdata->coursename = $course->fullname;
+               }
+               $data[] = array_values((array)$userdata);
+           }
+       }
 
-        switch($action) {
-            case "activeusers":
-                $sql .= " AND l.action = :action";
-                $params["action"] = 'viewed';
-                break;
-            case "enrolments":
-                $sql .= " AND l.eventname = :eventname";
-                $params["eventname"] = '\core\event\user_enrolment_created';
-                $params["action"] = 'created';
-                break;
-            case "completions";
-                $sql = "SELECT DISTINCT l.userid, l.course as courseid
-                    FROM {course_completions} l" . $sqlext;
-                $sql .= " WHERE l.timecompleted IS NOT NULL
-                    AND l.timecompleted >= :starttime
-                    AND l.timecompleted < :endtime";
-        }
-
-        $params["starttime"] = $filter;
-        $params["endtime"] = $filter + ONEDAY;
-
-        $data = array();
-        $records = $DB->get_records_sql($sql, $params);
-
-        if (!empty($records)) {
-            foreach ($records as $record) {
-                $user = core_user::get_user($record->userid);
-                $userdata = new stdClass();
-                $userdata->username = fullname($user);
-                $userdata->useremail = $user->email;
-                if ($action == "completions" || $action == "enrolments") {
-                    $course = get_course($record->courseid);
-                    $userdata->coursename = $course->fullname;
-                }
-                $data[] = array_values((array)$userdata);
-            }
-        }
-
-        return $data;
+       return $data;
     }
 
     /**
@@ -351,10 +376,10 @@ class active_users_block extends utility {
             "endtime" => $this->timenow,
             "action" => "viewed"
         );
-
+        $params = array_merge($params, self::$inparams);
         // Query to get activeusers from logs
         if ($cohortid) {
-            $cachekey = "activeusers-activeusers-" . $filter . "-" . $cohortid;
+            $cachekey = "activeusers-activeusers-" . $filter . "-" . $cohortid .''.self::$rpmcache;
             $params["cohortid"] = $cohortid;
             $sql = "SELECT
                CONCAT(
@@ -370,12 +395,12 @@ class active_users_block extends utility {
                AND l.action = :action
                AND l.timecreated >= :starttime
                AND l.timecreated < :endtime
-               AND l.userid > 1
+               AND l.userid ".self::$insql."
                GROUP BY YEAR(FROM_UNIXTIME(l.timecreated)),
                MONTH(FROM_UNIXTIME(l.timecreated)),
                DAY(FROM_UNIXTIME(l.timecreated)), USERDATE";
        } else {
-            $cachekey = "activeusers-activeusers-" . $filter . "-all";
+            $cachekey = "activeusers-activeusers-" . $filter . "-all".''.self::$rpmcache;
             $sql = "SELECT
                CONCAT(
                    DAY(FROM_UNIXTIME(timecreated)), '-',
@@ -387,12 +412,11 @@ class active_users_block extends utility {
                WHERE action = :action
                AND timecreated >= :starttime
                AND timecreated < :endtime
-               AND userid > 1
+               AND userid ".self::$insql."
                GROUP BY YEAR(FROM_UNIXTIME(timecreated)),
                MONTH(FROM_UNIXTIME(timecreated)),
                DAY(FROM_UNIXTIME(timecreated)), USERDATE";
         };
-
         // Get active users data from cache
         if (!$activeusers = $this->cache->get($cachekey)) {
             // Get Logs to generate active users data
@@ -435,49 +459,48 @@ class active_users_block extends utility {
             "eventname" => '\core\event\user_enrolment_created',
             "action" => "created"
         );
-
+        $params = array_merge($params, self::$inparams);
         if ($cohortid) {
-            $cachekey = "activeusers-enrolments-" . $filter . "-" . $cohortid;
+            $cachekey = "activeusers-enrolments-" . $filter . "-" . $cohortid.''.self::$rpmcache;
             $sql = "SELECT
                 CONCAT(
                     DAY(FROM_UNIXTIME(l.timecreated)), '-',
                     MONTH(FROM_UNIXTIME(l.timecreated)), '-',
                     YEAR(FROM_UNIXTIME(l.timecreated))
                 ) USERDATE,
-                COUNT( DISTINCT l.userid ) as usercount
+                COUNT( l.relateduserid ) as usercount
                 FROM {logstore_standard_log} l
                 JOIN {cohort_members} cm
-                ON l.userid = cm.userid
+                ON l.relateduserid = cm.userid
                 WHERE cm.cohortid = :cohortid
                 AND l.eventname = :eventname
                 AND l.action = :action
                 AND l.timecreated >= :starttime
                 AND l.timecreated < :endtime
-                AND l.userid > 1
+                AND l.relateduserid ".self::$insql."
                 GROUP BY YEAR(FROM_UNIXTIME(l.timecreated)),
                 MONTH(FROM_UNIXTIME(l.timecreated)),
                 DAY(FROM_UNIXTIME(l.timecreated)), USERDATE";
             $params["cohortid"] = $cohortid;
         } else {
-            $cachekey = "activeusers-enrolments-". $filter . "-all";
+            $cachekey = "activeusers-enrolments-". $filter . "-all".''.self::$rpmcache;
             $sql = "SELECT
                 CONCAT(
                     DAY(FROM_UNIXTIME(timecreated)), '-',
                     MONTH(FROM_UNIXTIME(timecreated)), '-',
                     YEAR(FROM_UNIXTIME(timecreated))
                 ) USERDATE,
-                COUNT( DISTINCT userid ) as usercount
+                COUNT( relateduserid ) as usercount
                 FROM {logstore_standard_log}
                 WHERE eventname = :eventname
                 AND action = :action
                 AND timecreated >= :starttime
                 AND timecreated < :endtime
-                AND userid > 1
+                AND relateduserid ".self::$insql."
                 GROUP BY YEAR(FROM_UNIXTIME(timecreated)),
                 MONTH(FROM_UNIXTIME(timecreated)),
                 DAY(FROM_UNIXTIME(timecreated)), USERDATE";
         }
-
         // Get data from cache if exist
         if (!$enrolments = $this->cache->get($cachekey)) {
             // Get enrolments log
@@ -499,7 +522,6 @@ class active_users_block extends utility {
             // Set cache ifnot exist
             $this->cache->set($cachekey, $enrolments);
         }
-
         /* Reverse the array because the graph take
         value from left to right */
         return array_reverse($enrolments);
@@ -515,8 +537,10 @@ class active_users_block extends utility {
         global $DB;
 
         $params = array();
+        $params = array_merge($params, self::$inparams);
+
         if ($cohortid) {
-            $cachekey = "activeusers-completionrate-" . $filter . "-" . $cohortid;
+            $cachekey = "activeusers-completionrate-" . $filter . "-" . $cohortid.''.self::$rpmcache;
             $params["cohortid"] = $cohortid;
             $sql = "SELECT
                 CONCAT(
@@ -531,11 +555,12 @@ class active_users_block extends utility {
                 ON cc.userid = cm.userid
                 WHERE cc.timecompleted IS NOT NULL
                 AND cm.cohortid = :cohortid
+                AND cm.userid ".self::$insql."
                 GROUP BY YEAR(FROM_UNIXTIME(cc.timecompleted)),
                 MONTH(FROM_UNIXTIME(cc.timecompleted)),
                 DAY(FROM_UNIXTIME(cc.timecompleted)), cc.course, USERDATE";
         } else {
-            $cachekey = "activeusers-completionrate-" . $filter . "-all";
+            $cachekey = "activeusers-completionrate-" . $filter . "-all".''.self::$rpmcache;
             $sql = "SELECT
                 CONCAT(
                     DAY(FROM_UNIXTIME(timecompleted)), '-',
@@ -546,6 +571,7 @@ class active_users_block extends utility {
                 COUNT( DISTINCT userid ) as usercount
                 FROM {course_completions}
                 WHERE timecompleted IS NOT NULL
+                AND userid ".self::$insql."
                 GROUP BY YEAR(FROM_UNIXTIME(timecompleted)),
                 MONTH(FROM_UNIXTIME(timecompleted)),
                 DAY(FROM_UNIXTIME(timecompleted)), course, USERDATE";
@@ -585,11 +611,9 @@ class active_users_block extends utility {
      */
     public static function get_exportable_data_block($filter) {
         $cohortid = optional_param("cohortid", 0, PARAM_INT);
-
         // Make cache
         $cache = cache::make('report_elucidsitereport', 'activeusers');
         $cachekey = "exportabledatablock-" . $filter;
-
         // If exportable data is set in cache then get it from there
         if (!$export = $cache->get($cachekey)) {
             // Get exportable data for active users block
@@ -643,25 +667,42 @@ class active_users_block extends utility {
     }
 
     /**
-     * Get User Data for Active Users Block
-     * @param [string] $lable Date for lable
-     * @param [string] $action Action for getting data
-     */
+    * Get User Data for Active Users Block
+    * @param [string] $lable Date for lable
+    * @param [string] $action Action for getting data
+    */
     public static function get_usersdata($lable, $action) {
-        $usersdata = array();
-        $users = active_users_block::get_userslist(strtotime($lable), "activeusers");
-        foreach ($users as $key => $user) {
-            $user = array_merge(
-                array(
-                    $lable
-                ),
-                $user,
-                array(
-                    get_string($action . "_status", "report_elucidsitereport")
-                )
-            );
-            $usersdata[] = $user;
-        }
-        return $usersdata;
+       $usersdata = array();
+       $users = active_users_block::get_userslist(strtotime($lable), $action);
+
+       foreach ($users as $key => $user) {
+           $user = array_merge(
+               array($lable),
+               $user
+           );
+
+           // If course is not set then skip one block for course
+           // Add empty value in course header
+           if (!isset($user[3])) {
+               $user = array_merge($user, array(''));
+           }
+
+           $user = array_merge($user, array(get_string($action . "_status", "report_elucidsitereport")));
+           $usersdata[] = $user;
+       }
+
+       // print_r($usersdata);
+       return $usersdata;
+    }
+
+    /**
+     * Function to get reportingmanager SQL IN query
+     */
+    public static function get_reporting_manager_sql() {
+        global $DB;
+        // get reporeting manager studets in "In" query.
+        list(self::$insql, self::$inparams) = $DB->get_in_or_equal(self::$rpmusers, SQL_PARAMS_NAMED, 'param', true);
+        // set cache for reporting manager
+        self::$rpmcache = "_".self::$rpm->userid;
     }
 }
