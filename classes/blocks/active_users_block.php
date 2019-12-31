@@ -158,14 +158,11 @@ class active_users_block extends utility {
         } else {
             $cachekey .= "all";
         }
-        self::$rpm = new reporting_manager();
-        // Check current user is reporting manager or not
-        self::$isrpm = self::$rpm->check_user_is_reporting_manager();
+        // Create reporting manager instance
+        $rpm = reporting_manager::get_instance();
         // if user is reporting manager then get his students
-        if (self::$isrpm) {
-            self::$rpmusers = self::$rpm->get_repoting_manager_students();
-            $cachekey .= "_".self::$rpm->userid;
-            self::get_reporting_manager_sql();
+        if ($rpm->isrpm) {
+            $cachekey .= "_".$rpm->userid;
         }
         // If response is in cache then return from cache
         if (!$response = $activeusersblock->cache->get($cachekey)) {
@@ -255,16 +252,10 @@ class active_users_block extends utility {
     public static function get_userslist_table($filter, $action, $cohortid) {
         // Make cache
         $cache = cache::make('report_elucidsitereport', 'activeusers');
-        self::$rpm = new reporting_manager();
-        // Check current user is reporting manager or not
-        self::$isrpm = self::$rpm->check_user_is_reporting_manager();
-        // if user is reporting manager then get his students
-        if (self::$isrpm) {
-            self::$rpmusers = self::$rpm->get_repoting_manager_students();
-            self::get_reporting_manager_sql();
-        }
+        // Create reporting manager instance
+        $rpm = reporting_manager::get_instance();
         // Get values from cache if it is set
-        $cachekey = "userslist-" . $filter . "-" . $action . "-" . "-" . $cohortid.''.self::$rpmcache;
+        $cachekey = "userslist-" . $filter . "-" . $action . "-" . "-" . $cohortid.''.$rpm->rpmcache;
         if (!$table = $cache->get($cachekey)) {
             $table = new html_table();
 
@@ -309,13 +300,14 @@ class active_users_block extends utility {
                    ON cm.userid = l.relateduserid";
            $params["cohortid"] = $cohortid;
        }
-
+       // Create reporting manager instance
+       $rpm = reporting_manager::get_instance();
        // Based on action prepare query
        switch($action) {
            case "activeusers":
                $sql = "SELECT DISTINCT l.userid as relateduserid
                    FROM {logstore_standard_log} l $sqlcohort
-                   WHERE l.userid ".self::$insql."
+                   WHERE l.userid ".$rpm->insql."
                    AND l.timecreated >= :starttime
                    AND l.timecreated < :endtime
                    AND l.action = :action";
@@ -324,7 +316,7 @@ class active_users_block extends utility {
            case "enrolments":
                $sql = "SELECT l.id, l.userid, l.relateduserid, l.courseid
                    FROM {logstore_standard_log} l $sqlcohort
-                   WHERE l.relateduserid ".self::$insql."
+                   WHERE l.relateduserid ".$rpm->insql."
                    AND l.timecreated >= :starttime
                    AND l.timecreated < :endtime
                    AND l.eventname = :eventname";
@@ -336,12 +328,12 @@ class active_users_block extends utility {
                    WHERE l.timecompleted IS NOT NULL
                    AND l.timecompleted >= :starttime
                    AND l.timecompleted < :endtime
-                   AND l.userid ".self::$insql."";
+                   AND l.userid ".$rpm->insql."";
        }
 
        $params["starttime"] = $filter;
        $params["endtime"] = $filter + ONEDAY;
-       $params = array_merge($params, self::$inparams);
+       $params = array_merge($params, $rpm->inparams);
        $data = array();
        $records = $DB->get_records_sql($sql, $params);
        if (!empty($records)) {
@@ -376,10 +368,12 @@ class active_users_block extends utility {
             "endtime" => $this->timenow,
             "action" => "viewed"
         );
-        $params = array_merge($params, self::$inparams);
+        // Create reporting manager instance
+        $rpm = reporting_manager::get_instance();
+        $params = array_merge($params, $rpm->inparams);
         // Query to get activeusers from logs
         if ($cohortid) {
-            $cachekey = "activeusers-activeusers-" . $filter . "-" . $cohortid .''.self::$rpmcache;
+            $cachekey = "activeusers-activeusers-" . $filter . "-" . $cohortid .''.$rpm->rpmcache;
             $params["cohortid"] = $cohortid;
             $sql = "SELECT
                CONCAT(
@@ -395,12 +389,12 @@ class active_users_block extends utility {
                AND l.action = :action
                AND l.timecreated >= :starttime
                AND l.timecreated < :endtime
-               AND l.userid ".self::$insql."
+               AND l.userid ".$rpm->insql."
                GROUP BY YEAR(FROM_UNIXTIME(l.timecreated)),
                MONTH(FROM_UNIXTIME(l.timecreated)),
                DAY(FROM_UNIXTIME(l.timecreated)), USERDATE";
        } else {
-            $cachekey = "activeusers-activeusers-" . $filter . "-all".''.self::$rpmcache;
+            $cachekey = "activeusers-activeusers-" . $filter . "-all".''.$rpm->rpmcache;
             $sql = "SELECT
                CONCAT(
                    DAY(FROM_UNIXTIME(timecreated)), '-',
@@ -412,7 +406,7 @@ class active_users_block extends utility {
                WHERE action = :action
                AND timecreated >= :starttime
                AND timecreated < :endtime
-               AND userid ".self::$insql."
+               AND userid ".$rpm->insql."
                GROUP BY YEAR(FROM_UNIXTIME(timecreated)),
                MONTH(FROM_UNIXTIME(timecreated)),
                DAY(FROM_UNIXTIME(timecreated)), USERDATE";
@@ -459,9 +453,11 @@ class active_users_block extends utility {
             "eventname" => '\core\event\user_enrolment_created',
             "action" => "created"
         );
-        $params = array_merge($params, self::$inparams);
+        // Create reporting manager instance
+        $rpm = reporting_manager::get_instance();
+        $params = array_merge($params, $rpm->inparams);
         if ($cohortid) {
-            $cachekey = "activeusers-enrolments-" . $filter . "-" . $cohortid.''.self::$rpmcache;
+            $cachekey = "activeusers-enrolments-" . $filter . "-" . $cohortid.''.$rpm->rpmcache;
             $sql = "SELECT
                 CONCAT(
                     DAY(FROM_UNIXTIME(l.timecreated)), '-',
@@ -477,13 +473,13 @@ class active_users_block extends utility {
                 AND l.action = :action
                 AND l.timecreated >= :starttime
                 AND l.timecreated < :endtime
-                AND l.relateduserid ".self::$insql."
+                AND l.relateduserid ".$rpm->insql."
                 GROUP BY YEAR(FROM_UNIXTIME(l.timecreated)),
                 MONTH(FROM_UNIXTIME(l.timecreated)),
                 DAY(FROM_UNIXTIME(l.timecreated)), USERDATE";
             $params["cohortid"] = $cohortid;
         } else {
-            $cachekey = "activeusers-enrolments-". $filter . "-all".''.self::$rpmcache;
+            $cachekey = "activeusers-enrolments-". $filter . "-all".''.$rpm->rpmcache;
             $sql = "SELECT
                 CONCAT(
                     DAY(FROM_UNIXTIME(timecreated)), '-',
@@ -496,7 +492,7 @@ class active_users_block extends utility {
                 AND action = :action
                 AND timecreated >= :starttime
                 AND timecreated < :endtime
-                AND relateduserid ".self::$insql."
+                AND relateduserid ".$rpm->insql."
                 GROUP BY YEAR(FROM_UNIXTIME(timecreated)),
                 MONTH(FROM_UNIXTIME(timecreated)),
                 DAY(FROM_UNIXTIME(timecreated)), USERDATE";
@@ -537,10 +533,12 @@ class active_users_block extends utility {
         global $DB;
 
         $params = array();
-        $params = array_merge($params, self::$inparams);
+        // Create reporting manager instance
+        $rpm = reporting_manager::get_instance();
+        $params = array_merge($params, $rpm->inparams);
 
         if ($cohortid) {
-            $cachekey = "activeusers-completionrate-" . $filter . "-" . $cohortid.''.self::$rpmcache;
+            $cachekey = "activeusers-completionrate-" . $filter . "-" . $cohortid.''.$rpm->rpmcache;
             $params["cohortid"] = $cohortid;
             $sql = "SELECT
                 CONCAT(
@@ -555,12 +553,12 @@ class active_users_block extends utility {
                 ON cc.userid = cm.userid
                 WHERE cc.timecompleted IS NOT NULL
                 AND cm.cohortid = :cohortid
-                AND cm.userid ".self::$insql."
+                AND cm.userid ".$rpm->insql."
                 GROUP BY YEAR(FROM_UNIXTIME(cc.timecompleted)),
                 MONTH(FROM_UNIXTIME(cc.timecompleted)),
                 DAY(FROM_UNIXTIME(cc.timecompleted)), cc.course, USERDATE";
         } else {
-            $cachekey = "activeusers-completionrate-" . $filter . "-all".''.self::$rpmcache;
+            $cachekey = "activeusers-completionrate-" . $filter . "-all".''.$rpm->rpmcache;
             $sql = "SELECT
                 CONCAT(
                     DAY(FROM_UNIXTIME(timecompleted)), '-',
@@ -571,7 +569,7 @@ class active_users_block extends utility {
                 COUNT( DISTINCT userid ) as usercount
                 FROM {course_completions}
                 WHERE timecompleted IS NOT NULL
-                AND userid ".self::$insql."
+                AND userid ".$rpm->insql."
                 GROUP BY YEAR(FROM_UNIXTIME(timecompleted)),
                 MONTH(FROM_UNIXTIME(timecompleted)),
                 DAY(FROM_UNIXTIME(timecompleted)), course, USERDATE";
@@ -614,13 +612,9 @@ class active_users_block extends utility {
         // Make cache
         $cache = cache::make('report_elucidsitereport', 'activeusers');
         $cachekey = "exportabledatablock-" . $filter;
-        self::$rpm = new reporting_manager();
-        // Check current user is reporting manager or not
-        self::$isrpm = self::$rpm->check_user_is_reporting_manager();
-        // if user is reporting manager then get his students
-        if (self::$isrpm) {
-            $cachekey .= "_".self::$rpm->userid;
-        }
+        // Create reporting manager instance
+        $rpm = reporting_manager::get_instance();
+        $cachekey .= $rpm->rpmcache;
         // If exportable data is set in cache then get it from there
         if (!$export = $cache->get($cachekey)) {
             // Get exportable data for active users block
@@ -700,16 +694,5 @@ class active_users_block extends utility {
 
        // print_r($usersdata);
        return $usersdata;
-    }
-
-    /**
-     * Function to get reportingmanager SQL IN query
-     */
-    public static function get_reporting_manager_sql() {
-        global $DB;
-        // get reporeting manager studets in "In" query.
-        list(self::$insql, self::$inparams) = $DB->get_in_or_equal(self::$rpmusers, SQL_PARAMS_NAMED, 'param', true);
-        // set cache for reporting manager
-        self::$rpmcache = "_".self::$rpm->userid;
     }
 }

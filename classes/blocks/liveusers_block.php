@@ -66,16 +66,12 @@ class liveusers_block extends utility {
 
         // Get Reporting manager students
         $rpmusers = array();
-        $rpm = new reporting_manager();
-        $isrpm = $rpm->check_user_is_reporting_manager();
-        if ($isrpm) {
-            $rpmusers = $rpm->get_repoting_manager_students();
-        }
+        $rpm = reporting_manager::get_instance();
 
         $users = array();
         foreach ($inactiveusers as $inactiveuser) {
             // check if current user is reporting manager and if the inactive user is in reporting manager students array
-            if ($isrpm && !in_array($inactiveuser->id, $rpmusers)) {
+            if ($rpm->isrpm && !in_array($inactiveuser->id, $rpm->rpmusers)) {
                 continue;
             }
             $user = array();

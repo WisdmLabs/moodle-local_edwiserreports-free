@@ -49,13 +49,11 @@ class inactiveusers_block extends utility {
     public static function get_data($filter) {
         // Make cache for inactive users block
         $cache = cache::make("report_elucidsitereport", "courseprogress");
-        self::$rpm = new reporting_manager();
-        // Check current user is reporting manager or not
-        self::$isrpm = self::$rpm->check_user_is_reporting_manager();
+        // Create reporting manager instance
+        $rpm = reporting_manager::get_instance();
         // if user is reporting manager then get his students
-        if (self::$isrpm) {
-            self::$rpmusers = self::$rpm->get_repoting_manager_students();
-            $cachekey = "inactiveusers-" . $filter . "_".self::$rpm->userid;
+        if ($rpm->isrpm) {
+            $cachekey = "inactiveusers-" . $filter . "_".$rpm->userid;
         } else {
             $cachekey = "inactiveusers-" . $filter;
         }
@@ -101,18 +99,18 @@ class inactiveusers_block extends utility {
                 $lastlogin = 0;
         }
         $inparams = array();
-        if (self::$isrpm) {
-            // get reporting manager students in "IN" for SQL
-            list($insql, $inparams) = $DB->get_in_or_equal(self::$rpmusers, SQL_PARAMS_NAMED, 'param', true);
+        $rpm = reporting_manager::get_instance();
+        if ($rpm->isrpm) {
             // Query to get users who have not logged in from reporting manager students
             $sql = "SELECT * FROM {user} WHERE lastlogin <= :lastlogin
-                AND deleted = 0 AND id ".$insql;
+                AND deleted = 0 AND id ".$rpm->insql;
         } else {
             // Query to get users who have not logged in
             $sql = "SELECT * FROM {user} WHERE lastlogin <= :lastlogin
                     AND deleted = 0 AND id > 1";
         }
         $inparams['lastlogin'] = $lastlogin;
+        $inparams = array_merge($inparams, $rpm->inparams);
         // Get all users who are inactive
         $users = $DB->get_records_sql($sql, $inparams);
 

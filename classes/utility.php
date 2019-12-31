@@ -183,7 +183,7 @@ class utility {
             }
             $coursecontext = context_course::instance($course->id);
             // Get only students
-            $enrolledstudents = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+            $enrolledstudents = \report_elucidsitereport\course_progress_block::rep_get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
             if (!$all && count($enrolledstudents) == 0) {
                 continue;
             }

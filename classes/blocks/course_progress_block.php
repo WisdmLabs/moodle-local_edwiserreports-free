@@ -45,6 +45,14 @@ require_once($CFG->dirroot . "/report/elucidsitereport/classes/completions.php")
  * To get the data related to active users block
  */
 class course_progress_block extends utility {
+     // is user reporting manager
+    public static $isrpm = false;
+    // reporting manager class object
+    public static $rpm = null;
+    public static $rpmusers = array();
+    public static $insql = '> 1';
+    public static $inparams = array();
+    public static $rpmcache = '';
     /**
      * Get data for course progress block
      * @param [int] $courseid Course Id
@@ -53,7 +61,9 @@ class course_progress_block extends utility {
     public static function get_data($courseid, $cohortid = 0) {
         // Make cache for courseprogress block
         $cache = cache::make("report_elucidsitereport", "courseprogress");
-        $cachekey = "courseprogress-" . $courseid . "-" . $cohortid;
+        // Create reporting manager instance
+        $rpm = reporting_manager::get_instance();
+        $cachekey = "courseprogress-" . $courseid . "-" . $cohortid."".$rpm->rpmcache;
 
         // If cache not set for course progress
         if (!$response = $cache->get($cachekey)) {
@@ -62,7 +72,7 @@ class course_progress_block extends utility {
             $coursecontext = context_course::instance($courseid);
 
             // Get only students
-            $enrolledstudents = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+            $enrolledstudents = self::rep_get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
 
             // Get response
             $response = new stdClass();
@@ -203,8 +213,10 @@ class course_progress_block extends utility {
             $coursecontext = context_course::instance($course->id);
 
             // Get only enrolled student
-            $enrolledstudents = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
-
+            $enrolledstudents = self::rep_get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+            if (!count($enrolledstudents) && !is_siteadmin()) {
+                continue;
+            }
             // Get completions
             $compobj = new \report_elucidsitereport\completions();
             $completions = $compobj->get_course_completions($course->id);
@@ -264,7 +276,6 @@ class course_progress_block extends utility {
             // Added response object in response array
             $response[] = $res;
         }
-
         // Return response
         return $response;
     }
@@ -345,7 +356,7 @@ class course_progress_block extends utility {
         $export[] = course_progress_block::get_header();
         $coursecontext = context_course::instance($filter);
         $course = get_course($filter);
-        $enrolledstudents = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+        $enrolledstudents = self::rep_get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
         foreach($enrolledstudents as $key => $student) {
             $completion = course_progress_block::get_course_completion_info($course, $student->id);
             $completed = $completion["completedactivities"] . "/" . $completion["totalactivities"];
@@ -374,7 +385,7 @@ class course_progress_block extends utility {
         foreach ($courses as $key => $course) {
             $courseprogress = course_progress_block::get_data($course->id, $cohortid);
             $coursecontext = context_course::instance($course->id);
-            $enrolledstudents = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+            $enrolledstudents = self::rep_get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
             if($cohortid) {
                 foreach($enrolledstudents as $key => $user) {
                     $cohorts = cohort_get_user_cohorts($user->id);
@@ -394,5 +405,39 @@ class course_progress_block extends utility {
         }
 
         return $export;
+    }
+    /**
+     * Returns list of users enrolled into course.
+     *
+     * @param context $context
+     * @param string $withcapability
+     * @param int $groupid 0 means ignore groups, USERSWITHOUTGROUP without any group and any other value limits the result by group id
+     * @param string $userfields requested user record fields
+     * @param string $orderby
+     * @param int $limitfrom return a subset of records, starting at this point (optional, required if $limitnum is set).
+     * @param int $limitnum return a subset comprising this many records (optional, required if $limitfrom is set).
+     * @param bool $onlyactive consider only active enrolments in enabled plugins and time restrictions
+     * @return array of user records
+     */
+    public static function rep_get_enrolled_users(\context $context, $withcapability = '', $groupid = 0, $userfields = 'u.*', $orderby = null,
+            $limitfrom = 0, $limitnum = 0, $onlyactive = false) {
+        global $DB;
+        // Create reporting manager instance
+        $rpm = reporting_manager::get_instance();
+        list($esql, $params) = get_enrolled_sql($context, $withcapability, $groupid, $onlyactive);
+        $sql = "SELECT $userfields
+                  FROM {user} u
+                  JOIN ($esql) je ON je.id = u.id
+                 WHERE u.deleted = 0
+                 AND u.id ".$rpm->insql."";
+        if ($orderby) {
+            $sql = "$sql ORDER BY $orderby";
+        } else {
+            list($sort, $sortparams) = users_order_by_sql('u');
+            $sql = "$sql ORDER BY $sort";
+            $params = array_merge($params, $sortparams);
+        }
+        $params = array_merge($params, $rpm->inparams);
+        return $DB->get_records_sql($sql, $params, $limitfrom, $limitnum);
     }
 }

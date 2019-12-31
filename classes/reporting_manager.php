@@ -31,30 +31,53 @@ defined('MOODLE_INTERNAL') || die();
  */
 class reporting_manager
 {
+	public static $instance = false;
 	public $userid;
+	public $isrpm = false;
+	public $rpmusers = array();
+	public $insql = '> 1';
+	public $inparams = array();
+	public $rpmcache = '';
 	/**
-     * Constructor to create reporting_manager object
+     * Private constructor to make this a singleton
+     *
+     * @access private
      */
-	public function __construct()
-	{
-		global $USER;
-		$this->userid = $USER->id;
-	}
+    private function __construct()
+    {
+    	$this->check_user_is_reporting_manager();
+    	if ($this->isrpm) {
+	    	$this->get_repoting_manager_students();
+	    	$this->get_reporting_manager_sql();
+	    	$this->get_reporting_manager_cachekey();
+    	}
+    }
+
+    /**
+     * Function to instantiate our class and make it a singleton
+     */
+    public static function get_instance()
+    {
+        if (!self::$instance) {
+            self::$instance = new self;
+        }
+        return self::$instance;
+    }
 	/**
 	 * Check user is reporting manager or not
 	 * @return [boolean] Reporting manager
 	 */
 	public function check_user_is_reporting_manager() {
+		global $USER;
+		$this->userid = $USER->id;
 		$roles = get_user_roles(\context_system::instance(), $this->userid);
-        $rpm = false;
         if (!empty($roles)) {
             foreach ($roles as $role) {
                 if ($role->shortname == 'reportingmanager') {
-                    $rpm = true;
+                    $this->isrpm = true;
                 }
             }
         }
-        return $rpm;
 	}
 	/**
 	 * Get reporting manager students
@@ -67,7 +90,21 @@ class reporting_manager
 
         // Get all users who are inactive
         $users = $DB->get_records_sql($sql, array($this->userid, $this->userid));
-        $users = array_keys($users);
-        return $users;
+        $this->rpmusers = array_keys($users);
 	}
+	/**
+     * Function to get reportingmanager SQL IN query
+     */
+    public function get_reporting_manager_sql() {
+        global $DB;
+        // get reporeting manager studets in "In" query.
+        list($this->insql, $this->inparams) = $DB->get_in_or_equal($this->rpmusers, SQL_PARAMS_NAMED, 'param', true);
+    }
+    /**
+     * Function to get reportingmanager cachekey
+     */
+    public function get_reporting_manager_cachekey() {
+        // set cache for reporting manager
+        $this->rpmcache = "_".$this->userid;
+    }
 }
