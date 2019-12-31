@@ -61,65 +61,73 @@ class todaysactivity_block extends utility {
         $todaysactivity = array();
         $total = 0;
         $context = context_system::instance();
-
+        // Create reporting manager instance
+        $rpm = reporting_manager::get_instance();
         // Enrolments
         $enrollmentsql = "SELECT * FROM {user_enrolments}
-            WHERE timecreated >= ?
-            AND timecreated < ? ";
-        $enrollments = $DB->get_records_sql($enrollmentsql, array($starttime, $endtime));
+            WHERE timecreated >= :starttime
+            AND timecreated < :endtime
+            AND userid ".$rpm->insql."";
+        $params['starttime'] = $starttime;
+        $params['endtime'] = $endtime;
+        $params = array_merge($params, $rpm->inparams);
+        $enrollments = $DB->get_records_sql($enrollmentsql, $params);
         $todaysactivity["enrollments"] = count($enrollments);
         $total += count($enrollments);
 
         // Activity Completion
         $activitycompletionsql = "SELECT * FROM {course_modules_completion}
-            WHERE timemodified >= ?
-            AND timemodified < ?";
-        $activitycompletions = $DB->get_records_sql($activitycompletionsql, array($starttime, $endtime));
+            WHERE timemodified >= :starttime
+            AND timemodified < :endtime
+            AND userid ".$rpm->insql."";
+        $activitycompletions = $DB->get_records_sql($activitycompletionsql, $params);
         $todaysactivity["activitycompletions"] = count($activitycompletions);
         $total += count($activitycompletions);
 
         // Course Completion
         $coursecompletionsql = "SELECT * FROM {course_completions}
-            WHERE timecompleted >= ?
-            AND timecompleted < ?";
-        $coursecompletions = $DB->get_records_sql($coursecompletionsql,
-            array($starttime, $endtime)
-        );
+            WHERE timecompleted >= :starttime
+            AND timecompleted < :endtime
+            AND userid ".$rpm->insql."";
+        $coursecompletions = $DB->get_records_sql($coursecompletionsql, $params);
         $todaysactivity["coursecompletions"] = count($coursecompletions);
         $total += count($coursecompletions);
 
         // Registration
         $registrationssql = "SELECT * FROM {user}
-            WHERE timecreated >= ?
-            AND timecreated < ?";
-        $registrations = $DB->get_records_sql($registrationssql,
-            array($starttime, $endtime)
-        );
+            WHERE timecreated >= :starttime
+            AND timecreated < :endtime
+            AND id ".$rpm->insql."";
+        $registrations = $DB->get_records_sql($registrationssql, $params);
         $todaysactivity["registrations"] = count($registrations);
         $total += count($registrations);
 
         // Visits
         $visitsssql = "SELECT DISTINCT userid
             FROM {logstore_standard_log}
-            WHERE timecreated >= ?
-            AND timecreated < ?
-            AND userid > 1"; // Remove guest users
-        $visits = $DB->get_records_sql($visitsssql,
-            array($starttime, $endtime)
-        );
+            WHERE timecreated >= :starttime
+            AND timecreated < :endtime
+            AND userid ".$rpm->insql.""; // Remove guest users
+        $visits = $DB->get_records_sql($visitsssql, $params);
         $todaysactivity["visits"] = count($visits);
         $total += count($visits);
 
         $starttimehour = $starttime;
         $endtimehour = $starttime + 60 * 60;
         $todaysactivity["visitshour"] = array();
+        $params = array();
+        $params['starttime'] = $starttimehour;
+        $params['endtime'] = $endtimehour;
+        $params = array_merge($params, $rpm->inparams);
         do {
-            $visitshour = $DB->get_records_sql($visitsssql,
-                array($starttimehour, $endtimehour)
-            );
+            $visitshour = $DB->get_records_sql($visitsssql, $params);
             $todaysactivity["visitshour"][] = count($visitshour);
             $starttimehour = $endtimehour;
             $endtimehour = $endtimehour + 60 * 60;
+            $params = array();
+            $params['starttime'] = $starttimehour;
+            $params['endtime'] = $endtimehour;
+            $params = array_merge($params, $rpm->inparams);
         } while ($starttimehour < $endtime);
 
         /*$fetcher = new fetcher(null, $endtime, $starttime, $context);
