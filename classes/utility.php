@@ -392,7 +392,8 @@ class utility {
             "courseid" => $courseid,
             "action" => "viewed"
         );
-
+        // Create reporting manager instance
+        $rpm = reporting_manager::get_instance();
         if ($cohortid) {
             $params["cohortid"] = $cohortid;
             $sql = "SELECT DISTINCT l.userid
@@ -404,7 +405,8 @@ class utility {
                 WHERE cm.cohortid = :cohortid
                 AND l.action = :action
                 AND l.courseid = :courseid
-                AND u.delete = 0";
+                AND u.delete = 0
+                AND u.id ".$rpm->insql."";
         } else {
             $sql = "SELECT DISTINCT l.userid
                 FROM {logstore_standard_log} l
@@ -412,9 +414,10 @@ class utility {
                 ON u.id = l.userid
                 WHERE l.action = :action
                 AND l.courseid = :courseid
-                AND u.deleted = 0";
+                AND u.deleted = 0
+                AND u.id ".$rpm->insql."";
         }
-
+        $params = array_merge($params, $rpm->inparams);
         $records = $DB->get_records_sql($sql, $params);
         return $records;
     }

@@ -61,7 +61,8 @@ class courseengage_block extends utility {
 
         $engagedata = array();
         $courses = self::get_courses(true);
-
+        // Create reporting manager instance
+        $rpm = reporting_manager::get_instance();
         $completionsql = "SELECT c.courseid, COUNT(c.userid) AS usercount, c.completion
             FROM {elucidsitereport_completion} c
             JOIN {user} u ON u.id = c.userid
@@ -69,6 +70,7 @@ class courseengage_block extends utility {
             BETWEEN :completionstart
             AND :completionend
             AND u.deleted = 0
+            AND u.id ".$rpm->insql."
             GROUP BY c.courseid";
 
         // Calculate 50% Completion Count for Courses 
@@ -76,6 +78,7 @@ class courseengage_block extends utility {
             "completionstart" => 50.00,
             "completionend" => 99.99
         );
+        $params = array_merge($params, $rpm->inparams);
         $completion50 = $DB->get_records_sql($completionsql, $params);
 
         // Calculate 100% Completion Count for Courses 
@@ -83,18 +86,21 @@ class courseengage_block extends utility {
             "completionstart" => 100.00,
             "completionend" => 100.00
         );
+        $params = array_merge($params, $rpm->inparams);
         $completion100 = $DB->get_records_sql($completionsql, $params);
 
-        // Calculate atleast completed one modules 
+        // Calculate atleast completed one modules
         $completionmodulesql = "SELECT c.courseid, COUNT(c.userid) AS usercount
             FROM {elucidsitereport_completion} c
             JOIN {user} u ON u.id = c.userid
             WHERE completedactivities >= :completedactivities
             AND u.deleted = 0
+            AND u.id ".$rpm->insql."
             GROUP BY c.courseid";
         $params = array(
             "completedactivities" => 1
         );
+        $params = array_merge($params, $rpm->inparams);
         $completiononemodule = $DB->get_records_sql($completionmodulesql, $params);
         foreach($courses as $course) {
             $values = array(
@@ -114,8 +120,10 @@ class courseengage_block extends utility {
             if (isset($completiononemodule[$course->id])) {
                 $values["completiononemodule"] = $completiononemodule[$course->id]->usercount;
             }
-
-            $engagedata[] = self::get_engagement($course, $cohortid, $values);
+            $courseenageresp = self::get_engagement($course, $cohortid, $values);
+            if ($courseenageresp) {
+                $engagedata[] = $courseenageresp;
+            }
         }
         return $engagedata;
     }
@@ -123,7 +131,7 @@ class courseengage_block extends utility {
     /**
      * Get Course Engagement for a course
      * @param [int] $courseid Courese ID to get course engagement
-     * @return [object] 
+     * @return [object]
      */
     public static function get_engagement($course, $cohortid, $values) {
         global $CFG, $DB;
@@ -131,9 +139,13 @@ class courseengage_block extends utility {
         // Get course context
         $coursecontext = context_course::instance($course->id);
 
+        // Create engagement object
+        $engagement = new stdClass();
         // Get only enrolled students
-        $enrolledstudents = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
-
+        $enrolledstudents = course_progress_block::rep_get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+        if (empty($enrolledstudents)) {
+            return false;
+        }
         /* If cohort filter is there then select only cohort users */
         if($cohortid) {
             foreach($enrolledstudents as $key => $user) {
@@ -144,8 +156,6 @@ class courseengage_block extends utility {
             }
         }
 
-        // Create engagement object
-        $engagement = new stdClass();
 
         // Generate course url
         $courseurl = new moodle_url($CFG->wwwroot . "/course/view.php", array("id" => $course->id));
@@ -275,7 +285,7 @@ class courseengage_block extends utility {
      */
     public static function get_enrolled_users($course, $cohortid) {
         $coursecontext = context_course::instance($course->id);
-        $users = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+        $users = course_progress_block::rep_get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
 
         $usersdata = new stdClass();
         $usresdata->head = array(
@@ -341,7 +351,7 @@ class courseengage_block extends utility {
      */
     public static function get_users_started_an_activity($course, $cohortid) {
         $coursecontext = context_course::instance($course->id);
-        $enrolledusers = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+        $enrolledusers = course_progress_block::rep_get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
         $users = self::users_completed_a_module($course, $enrolledusers, $cohortid);
 
         $usersdata = new stdClass();
@@ -375,7 +385,7 @@ class courseengage_block extends utility {
      */
     public static function get_users_completed_half_courses($course, $cohortid) {
         $coursecontext = context_course::instance($course->id);
-        $enrolledusers = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+        $enrolledusers = course_progress_block::rep_get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
         $users = self::users_completed_half_modules($course, $enrolledusers, $cohortid);
 
         $usersdata = new stdClass();
@@ -409,7 +419,7 @@ class courseengage_block extends utility {
      */
     public static function get_users_completed_courses($course, $cohortid) {
         $coursecontext = context_course::instance($course->id);
-        $enrolledusers = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+        $enrolledusers = course_progress_block::rep_get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
         $users = self::users_completed_all_module($course, $enrolledusers, $cohortid);
 
         $usersdata = new stdClass();
