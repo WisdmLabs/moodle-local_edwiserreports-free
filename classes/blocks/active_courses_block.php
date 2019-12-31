@@ -41,10 +41,11 @@ class active_courses_block extends utility {
         $response = new stdClass();
 
         $cache = cache::make('report_elucidsitereport', 'activecourses');
-
-        if(!$data = $cache->get('activecoursesdata')) {
+        // Create reporting manager instance
+        $rpm = reporting_manager::get_instance();
+        if(!$data = $cache->get('activecoursesdata'.$rpm->rpmcache)) {
             $data = self::get_course_data();
-            $cache->set('activecoursesdata', $data);
+            $cache->set('activecoursesdata'.$rpm->rpmcache, $data);
         }
 
         $response->data = $data;
@@ -79,14 +80,18 @@ class active_courses_block extends utility {
         $count = 0;
         $response = array();
         // $completions = parent::get_course_completions();
-        
+        // Create reporting manager instance
+        $rpm = reporting_manager::get_instance();
         // Calculate Completion Count for All Course 
         $sql = "SELECT courseid, COUNT(userid) AS users
             FROM {elucidsitereport_completion}
             WHERE completion = :completion
+            AND userid ".$rpm->insql."
             GROUP BY courseid";
+        $params = array("completion" => 100);
+        $params = array_merge($params, $rpm->inparams);
         // Get records with 100% completions
-        $coursecompletion = $DB->get_records_sql($sql, array("completion" => 100));
+        $coursecompletion = $DB->get_records_sql($sql, $params);
 
         foreach ($courses as $course) {
             // If moodle course then return false
@@ -99,13 +104,16 @@ class active_courses_block extends utility {
                 $count++,
                 $course->fullname
             );
-            
+
 
             // Get Course Context
             $coursecontext = context_course::instance($course->id);
 
             // Get Enrolled users
-            $enrolledstudents = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+            $enrolledstudents = course_progress_block::rep_get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+            if (empty($enrolledstudents)) {
+                continue;
+            }
             $res[] = count($enrolledstudents);
 
             // Get Completion count
