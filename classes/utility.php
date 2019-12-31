@@ -197,9 +197,18 @@ class utility {
      */
     public static function get_lps() {
         global $DB;
-        $fields = "id, name, shortname, courses";
+        $fields = "DISTINCT(lp.id), lp.name, lp.shortname, lp.courses";
+        // $fields = "id, name, shortname, courses";
         $form = new MoodleQuickForm('learningprogram', 'post', '#');
-        $records = $DB->get_records('wdm_learning_program', array(), '', $fields);
+        // Create reporting manager instance
+        $rpm = reporting_manager::get_instance();
+        $sql = "SELECT ".$fields."
+                FROM {wdm_learning_program} lp
+                JOIN {wdm_learning_program_enrol} lpen
+                ON lp.id = lpen.learningprogramid
+                WHERE lpen.userid ".$rpm->insql."";
+        $records = $DB->get_records_sql($sql, $rpm->inparams);
+        // $records = $DB->get_records('wdm_learning_program', array(), '', $fields);
 
         $lps = array();
         foreach ($records as $lp) {

@@ -47,7 +47,16 @@ class lpstats_block extends utility {
     public static function get_lpstats($lpid) {
     	global $DB;
     	$lp = $DB->get_record("wdm_learning_program", array("id" => $lpid), "courses");
-    	$lpenrolment = $DB->get_records("wdm_learning_program_enrol", array("learningprogramid" => $lpid), "userid");
+        // Create reporting manager instance
+        $rpm = reporting_manager::get_instance();
+        $sql = "SELECT *
+                FROM {wdm_learning_program_enrol} lpen
+                WHERE lpen.learningprogramid = :learningprogramid
+                AND lpen.userid ".$rpm->insql."";
+        $params['learningprogramid'] = $lpid;
+        $params = array_merge($params, $rpm->inparams);
+        $lpenrolment = $DB->get_records_sql($sql, $params);
+    	// $lpenrolment = $DB->get_records("wdm_learning_program_enrol", array("learningprogramid" => $lpid), "userid");
     	$courses = json_decode($lp->courses);
 
     	$lpstats = new stdClass();
@@ -93,7 +102,15 @@ class lpstats_block extends utility {
         global $DB;
 
         $lp = $DB->get_record("wdm_learning_program", array("id" => $lpid), "courses");
-        $lpenrolment = $DB->get_records("wdm_learning_program_enrol", array("learningprogramid" => $lpid), "userid");
+        // Create reporting manager instance
+        $rpm = reporting_manager::get_instance();
+        $sql = "SELECT *
+                FROM {wdm_learning_program_enrol} lpen
+                WHERE lpen.learningprogramid = :learningprogramid
+                AND lpen.userid ".$rpm->insql."";
+        $params['learningprogramid'] = $lpid;
+        $params = array_merge($params, $rpm->inparams);
+        $lpenrolment = $DB->get_records_sql($sql, $params);
         $courses = json_decode($lp->courses);
 
         $lpinfo = new stdClass();
@@ -155,7 +172,7 @@ class lpstats_block extends utility {
             }
 
             if ($lpinfo->coursecount > 1) {
-                $userinfo->avgprogress = number_format($avgprogress / ($lpinfo->coursecount - 1)) . "%";   
+                $userinfo->avgprogress = number_format($avgprogress / ($lpinfo->coursecount - 1)) . "%";
             } else {
                 $userinfo->avgprogress = 0;
             }
