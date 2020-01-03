@@ -99,12 +99,13 @@ class siteaccess_block extends utility {
     public static function get_data() {
         $response = new stdClass();
         $siteaccessblock = new siteaccess_block();
-
+         // Create reporting manager instance
+        $rpm = reporting_manager::get_instance();
         $cache = cache::make('report_elucidsitereport', 'siteaccess');
 
-        if(!$data = $cache->get('siteaccessinfodata')) {
+        if(!$data = $cache->get('siteaccessinfodata'.$rpm->rpmcache)) {
             $data = $siteaccessblock->get_siteaccess_info();
-            $cache->set('siteaccessinfodata', $data);
+            $cache->set('siteaccessinfodata'.$rpm->rpmcache, $data);
         }
 
         $response->data = $data;
@@ -117,12 +118,14 @@ class siteaccess_block extends utility {
      */
     public function get_siteaccess_info() {
         global $DB;
-
+        // Create reporting manager instance
+        $rpm = reporting_manager::get_instance();
         // SQL to gey access info log
         $sql = "SELECT id, action, timecreated
             FROM {logstore_standard_log}
             WHERE action = :action
-            AND timecreated > :timecreated";
+            AND timecreated > :timecreated
+            AND userid ".$rpm->insql."";
 
         // Getting access log
         $timenow = time();
@@ -130,6 +133,7 @@ class siteaccess_block extends utility {
             "action" => "viewed",
             "timecreated" => $timenow - ONEYEAR
         );
+        $params = array_merge($params, $rpm->inparams);
         $accesslog = $DB->get_records_sql($sql, $params);
 
         // Getting site access information object
