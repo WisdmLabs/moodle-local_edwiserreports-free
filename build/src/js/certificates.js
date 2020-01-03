@@ -18,7 +18,7 @@ define([
         var CertDropdown = $("#wdm-certificates-dropdown");
         var CertSelect = "#wdm-certificates-select";
         var exportUrlLink = ".dropdown-menu[aria-labelledby='export-dropdown'] .dropdown-item";
-        var filterSection = $("#wdm-userfilter .row .col-6:first-child");
+        var filterSection = $("#wdm-userfilter .row .col-md-6:first-child");
         var dataTable = null;
         var certificateid = null;
 

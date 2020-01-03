@@ -54,7 +54,8 @@ class completion_block extends utility {
     public static function get_completions($courseid, $cohortid) {
         global $DB;
         $timenow = time();
-
+        // Create reporting manager instance
+        $rpm = reporting_manager::get_instance();
         $enrolsql = "SELECT *
             FROM {user_enrolments} ue
             JOIN {enrol} e ON (e.id = ue.enrolid AND e.courseid = :courseid)
@@ -62,7 +63,9 @@ class completion_block extends utility {
             WHERE ue.userid = :userid AND u.deleted = 0";
 
         $coursecontext = context_course::instance($courseid);
-        $enrolledstudents = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+        // Get only enrolled students
+        $enrolledstudents = course_progress_block::rep_get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+        // $enrolledstudents = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
         $course = get_course($courseid);
 
         $userscompletion = array();

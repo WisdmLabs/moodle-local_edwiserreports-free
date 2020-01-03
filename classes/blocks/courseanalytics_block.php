@@ -52,7 +52,9 @@ class courseanalytics_block extends utility {
         global $DB;
 
         $coursecontext = context_course::instance($courseid);
-        $enrolledstudents = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+        // Get only enrolled students
+        $enrolledstudents = course_progress_block::rep_get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+        // $enrolledstudents = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
         $course = get_course($courseid);
 
         $courseanalytics = new stdClass();

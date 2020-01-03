@@ -35,6 +35,8 @@ use templatable;
 
 require_once $CFG->dirroot."/report/elucidsitereport/lib.php";
 require_once $CFG->dirroot."/report/elucidsitereport/classes/blocks/active_users_block.php";
+require_once $CFG->dirroot."/report/elucidsitereport/classes/blocks/course_progress_block.php";
+require_once $CFG->dirroot."/report/elucidsitereport/classes/reporting_manager.php";
 require_once $CFG->dirroot."/report/elucidsitereport/locallib.php";
 
 class elucidreport_renderable implements renderable, templatable {
@@ -153,8 +155,14 @@ class certificates_renderable implements renderable, templatable {
 
         $output = new stdClass();
         $output->sesskey = sesskey();
-		$customcerts = $DB->get_records("customcert", array());
-		
+        $params = array();
+		// $customcerts = $DB->get_records("customcert", array());
+        // Create reporting manager instance
+        $rpm = \report_elucidsitereport\reporting_manager::get_instance();
+        $sql = "SELECT DISTINCT(c.id), c.course FROM {customcert} c
+                JOIN {customcert_issues} ci ON ci.customcertid = c.id WHERE ci.userid ".$rpm->insql;
+        $params = array_merge($params, $rpm->inparams);
+        $customcerts = $DB->get_records_sql($sql, $params);
 		if (!empty($customcerts)) {
 			$output->hascertificates = true;
             $firstcertid = 0;
