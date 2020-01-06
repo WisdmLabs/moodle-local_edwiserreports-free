@@ -71,7 +71,6 @@ class elucidreport_renderable implements renderable, templatable {
             $PAGE->requires->js_call_amd('report_elucidsitereport/block_f2fsessions', 'init');
             $export->f2fsessionlink = new moodle_url($CFG->wwwroot."/report/elucidsitereport/f2fsessions.php");
         }
-
         $export->hascustomcertpluign = has_plugin("mod", "customcert");
 
         if ($export->hascustomcertpluign) {

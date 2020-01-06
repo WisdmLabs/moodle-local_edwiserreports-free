@@ -11,21 +11,28 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig'], func
          * On document ready do the bellow stuff
          */
         $(document).ready(function() {
-            getTodaysActivity();
+            cfg.todaysActivityBlock = cfg.getTodaysActivityBlock();
 
-            /** 
-             * Generate flatpicker for
-             * date filter in todays activity block
-             */
-            $(flatpickrCalender).flatpickr({
-                dateFormat: "d M Y",
-                maxDate: "today",
-                defaultDate: ["today"],
-                onChange: function(selectedDates, dateStr, instance) {
-                    $(panelBody).find("loader").show();
-                    getTodaysActivity(dateStr);
-                }
-            });
+            // if course progress block is there
+            if (cfg.todaysActivityBlock) {
+                getTodaysActivity();
+                /**
+                 * Generate flatpicker for
+                 * date filter in todays activity block
+                 */
+                $(flatpickrCalender).flatpickr({
+                    dateFormat: "d M Y",
+                    maxDate: "today",
+                    defaultDate: ["today"],
+                    onChange: function(selectedDates, dateStr, instance) {
+                        $(panelBody).find("loader").show();
+                        getTodaysActivity(dateStr);
+                    }
+                });
+            } else {
+                /* Notify that this event is completed */
+                notifyListner("todaysActivity");
+            }
         });
 
         /**

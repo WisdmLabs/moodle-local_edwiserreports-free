@@ -7,99 +7,115 @@ define(["jquery", "report_elucidsitereport/variables", "report_elucidsitereport/
         component : v.component,
 
         // Todays Activity Block
-        todaysActivityBlock : {
-            ctx : $(v.todaysActivityBlock)[0].getContext("2d"),
-            labelName : "Page Access",
-            graph : {
-                type : "bar",
-                options : {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    aspectRatio: 1,
-                    scales:{
-                        xAxes: [{
+        getTodaysActivityBlock : function () {
+            cpBlockData = $(v.todaysActivityBlock);
+            if (cpBlockData.length == 0) {
+                return false;
+            }
+
+            // Return course progress graph object
+            return {
+                ctx : $(v.todaysActivityBlock)[0].getContext("2d"),
+                labelName : "Page Access",
+                graph : {
+                    type : "bar",
+                    options : {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        aspectRatio: 1,
+                        scales:{
+                            xAxes: [{
+                                display: false
+                            }],
+                            yAxes: [{
+                                display: false,
+                            }]
+                        },
+                        legend: {
                             display: false
-                        }],
-                        yAxes: [{
-                            display: false,
-                        }]
+                        }
                     },
-                    legend: {
-                        display: false
-                    }
+                    borderColor : v.whiteColor,
+                    backgroundColor : v.whiteColor,
+                    borderWidth: 2,
+                    labels : [
+                        v.clock12_0, v.clock12_1, v.clock12_2,
+                        v.clock12_3, v.clock12_4, v.clock12_5,
+                        v.clock12_6, v.clock12_7, v.clock12_8,
+                        v.clock12_9, v.clock12_10, v.clock12_11,
+                        v.clock12_12, v.clock12_13, v.clock12_14,
+                        v.clock12_15, v.clock12_16, v.clock12_17,
+                        v.clock12_18, v.clock12_19, v.clock12_20,
+                        v.clock12_21, v.clock12_22, v.clock12_23,
+                    ],
+                    data : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
                 },
-                borderColor : v.whiteColor,
-                backgroundColor : v.whiteColor,
-                borderWidth: 2,
-                labels : [
-                    v.clock12_0, v.clock12_1, v.clock12_2,
-                    v.clock12_3, v.clock12_4, v.clock12_5,
-                    v.clock12_6, v.clock12_7, v.clock12_8,
-                    v.clock12_9, v.clock12_10, v.clock12_11,
-                    v.clock12_12, v.clock12_13, v.clock12_14,
-                    v.clock12_15, v.clock12_16, v.clock12_17,
-                    v.clock12_18, v.clock12_19, v.clock12_20,
-                    v.clock12_21, v.clock12_22, v.clock12_23,
-                ],
-                data : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-            },
+            }
         },
 
         // Active Users Block
-        activeUsersBlock : {
-            ctx : $(v.activeUsersBlock)[0].getContext("2d"),
-            labelName : "Page Access",
-            graph : {
-                type : "line",
-                fontFamily : "Open Sans",
-                fontStyle : "bold",
-                pointStyle: "line",
-                showInLegend: true,
-                options : {
-                    legend: {
-                        labels: {
-                            usePointStyle: true
-                        }
-                    },
-                    elements: {
-                        borderWidth: 4
-                    },
-                    scales:{
-                        yAxes: [{
-                            ticks : {
-                                beginAtZero: true,
-                                min : 0,
-                                callback: function (value) {
-                                    if (Number.isInteger(value)) {
-                                        return value;
+        getActiveUsersBlock : function () {
+            cpBlockData = $(v.activeUsersBlock);
+            if (cpBlockData.length == 0) {
+                return false;
+            }
+
+            // Return course progress graph object
+            return {
+                ctx : $(v.activeUsersBlock)[0].getContext("2d"),
+                labelName : "Page Access",
+                graph : {
+                    type : "line",
+                    fontFamily : "Open Sans",
+                    fontStyle : "bold",
+                    pointStyle: "line",
+                    showInLegend: true,
+                    options : {
+                        legend: {
+                            labels: {
+                                usePointStyle: true
+                            }
+                        },
+                        elements: {
+                            borderWidth: 4
+                        },
+                        scales:{
+                            yAxes: [{
+                                ticks : {
+                                    beginAtZero: true,
+                                    min : 0,
+                                    callback: function (value) {
+                                        if (Number.isInteger(value)) {
+                                            return value;
+                                        }
                                     }
-                                }
-                            },
-                        }]
+                                },
+                            }]
+                        },
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        aspectRatio: 1
                     },
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    aspectRatio: 1
-                },
-                labelName : {
-                    activeUsers : "Active Users",
-                    enrolments : "Course Enrolment",
-                    completionRate : "Course Completion Rate"
-                },
-                backgroundColor : {
-                    activeUsers : "rgba(0, 0, 0, 0)",
-                    enrolments : "rgba(0, 0, 0, 0)",
-                    completionRate : "rgba(0, 0, 0, 0)"
-                },
-                borderColor : {
-                    activeUsers : "rgba(255, 99, 132, 1)",
-                    enrolments : "rgba(73, 222, 148, 1)",
-                    completionRate : "rgba(62, 142, 247, 1)"
-                },
-                data : {
-                    activeUsers : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                    enrolments : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                    completionRate : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                    labelName : {
+                        activeUsers : "Active Users",
+                        enrolments : "Course Enrolment",
+                        completionRate : "Course Completion Rate"
+                    },
+                    backgroundColor : {
+                        activeUsers : "rgba(0, 0, 0, 0)",
+                        enrolments : "rgba(0, 0, 0, 0)",
+                        completionRate : "rgba(0, 0, 0, 0)"
+                    },
+                    borderColor : {
+                        activeUsers : "rgba(255, 99, 132, 1)",
+                        enrolments : "rgba(73, 222, 148, 1)",
+                        completionRate : "rgba(62, 142, 247, 1)"
+                    },
+                    data : {
+                        activeUsers : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        enrolments : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        completionRate : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                    }
                 }
             }
         },

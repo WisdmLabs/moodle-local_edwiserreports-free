@@ -6,7 +6,9 @@ define([
     'report_elucidsitereport/flatpickr'
 ], function ($, Chart, defaultConfig, V) {
     /* Varible for active users block */
-    var cfg               = defaultConfig.activeUsersBlock;
+    //var cfg               = defaultConfig.activeUsersBlock;
+    var cfg               = null;
+    var activeUsersGraph  = null;
     var panel             = defaultConfig.getPanel("#activeusersblock");
     var panelBody         = defaultConfig.getPanel("#activeusersblock", "body");
     var panelTitle        = defaultConfig.getPanel("#activeusersblock", "title");
@@ -29,46 +31,57 @@ define([
 
         /* Custom Dropdown hide and show */
         $(document).ready(function() {
-            /* Show custom dropdown */
-            $(dropdownToggle).on("click", function() {
-                $(dropdownMenu).addClass("show");
-            });
+            cfg = defaultConfig.getActiveUsersBlock();
 
-            /* Added Custom Value in Dropdown */
-            $(dropdownInput).ready(function() {
-                var placeholder = $(dropdownInput).attr("placeholder");
-                $(dropdownInput).val(placeholder);
-            });
+            // if course progress block is there
+            if (cfg) {
+                /* Show custom dropdown */
+                $(dropdownToggle).on("click", function() {
+                    $(dropdownMenu).addClass("show");
+                });
 
-            /* Hide dropdown when click anywhere in the screen */
-            $(document).click(function(e){
-                if (!($(e.target).hasClass("dropdown-menu") || 
-                    $(e.target).parents(".dropdown-menu").length)) {
+                /* Added Custom Value in Dropdown */
+                $(dropdownInput).ready(function() {
+                    var placeholder = $(dropdownInput).attr("placeholder");
+                    $(dropdownInput).val(placeholder);
+                });
+
+                /* Hide dropdown when click anywhere in the screen */
+                $(document).click(function(e){
+                    if (!($(e.target).hasClass("dropdown-menu") || 
+                        $(e.target).parents(".dropdown-menu").length)) {
+                        $(dropdownMenu).removeClass('show');
+                    }
+                });
+
+                /* Select filter for active users block */
+                $(dropdownItem + ":not(.custom)").on('click', function() {
+                    filter = $(this).attr('value');
                     $(dropdownMenu).removeClass('show');
-                }
-            });
+                    $(dropdownButton).html($(this).text());
+                    getActiveUsersBlockData(filter);
+                    $(flatpickrCalender).val("Custom");
+                    $(dropdownInput).val("Custom");
+                });
 
-            /* Select filter for active users block */
-            $(dropdownItem + ":not(.custom)").on('click', function() {
-                filter = $(this).attr('value');
-                $(dropdownMenu).removeClass('show');
-                $(dropdownButton).html($(this).text());
-                getActiveUsersBlockData(filter);
-                $(flatpickrCalender).val("Custom");
-                $(dropdownInput).val("Custom");
-            });
+                /* Refresh when click on the refresh button */
+                $(refreshBtn).on('click', function() {
+                    $(this).addClass("refresh-spin");
+                    getActiveUsersBlockData(filter);
+                });
 
-            /* Refresh when click on the refresh button */
-            $(refreshBtn).on('click', function() {
-                $(this).addClass("refresh-spin");
-                getActiveUsersBlockData(filter);
-            });
-
-            createDropdownCalendar();
+                createDropdownCalendar();
+            } else {
+                /* Notify that this event is completed */
+                listner("activeUsers");
+            }
         });
 
         /* Create Calender in dropdown tp select range */
         function createDropdownCalendar() {
+            /* Call function to initialize the active users block graph */
+            activeUsersGraph = getActiveUsersBlockData();
+
             $(flatpickrCalender).flatpickr({
                 mode: 'range',
                 altInput: true,
@@ -201,9 +214,6 @@ define([
                 }]
             };
         }
-
-        /* Call function to initialize the active users block graph */
-        var activeUsersGraph = getActiveUsersBlockData();
     }
 
     // Must return the init function
