@@ -297,3 +297,12 @@ function report_elucidsitereport_pluginfile($course, $cm, $context, $filearea, $
     }
     send_stored_file($file, 0, 0, $forcedownload, $options);
 }
+/**
+ * Save setting for reporting manager block options
+ * @param  [array] $form_data [form submission data]
+ */
+function save_settings_form_data($form_data) {
+    $blocks = $form_data->rpmblocks;
+    // save the data in config
+    set_config("ed_reporting_manager_blocks", serialize($blocks));
+}

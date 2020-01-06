@@ -55,6 +55,35 @@ class elucidreport_renderable implements renderable, templatable {
         $export->sesskey = sesskey();
         $export->timenow = date("Y-m-d", time());
         $export->courses = \report_elucidsitereport\utility::get_courses();
+        $export->isreportingmanager = false;
+        // Create reporting manager instance
+        $rpm = \report_elucidsitereport\reporting_manager::get_instance();
+        if ($rpm->isrpm) {
+            $export->isreportingmanager = true;
+        }
+        // Blocks
+        $blocks = array(
+            'activeusers' => get_string('activeusersheader', 'report_elucidsitereport'),
+            'courseprogress' => get_string('courseprogress', 'report_elucidsitereport'),
+            'activecourses' => get_string('activecoursesheader', 'report_elucidsitereport'),
+            'certificatestats' => get_string('certificatestats', 'report_elucidsitereport'),
+            'realtimeusers' => get_string('realtimeusers', 'report_elucidsitereport'),
+            'f2fsessions' => get_string('f2fsessionsheader', 'report_elucidsitereport'),
+            'accessinfo' => get_string('accessinfo', 'report_elucidsitereport'),
+            'lpstats' => get_string('lpstatsheader', 'report_elucidsitereport'),
+            'todaysactivity' => get_string('todaysactivityheader', 'report_elucidsitereport'),
+            'inactiveusers' => get_string('inactiveusers', 'report_elucidsitereport'),
+        );
+        // Get Reporting Manager hidden blocks
+        $added_blocks = isset($CFG->ed_reporting_manager_blocks) ? unserialize($CFG->ed_reporting_manager_blocks) : array();
+        // If block is hidden then add true because we have added a not condition in mustache file
+        foreach ($blocks as $key => $value) {
+            if (in_array($key, $added_blocks)) {
+                $export->$key = true;
+            } else {
+                $export->$key = false;
+            }
+        }
 
         $downloadurl = $CFG->wwwroot."/report/elucidsitereport/download.php";
         $data = new stdClass();

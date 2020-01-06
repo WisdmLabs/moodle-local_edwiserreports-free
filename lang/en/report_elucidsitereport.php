@@ -348,3 +348,10 @@ $string['customreportsuccess'] = '<h4><i class="fa fa-check" aria-hidden="true">
 $string['customreportfailed'] = '<h4><i class="fa fa-check" aria-hidden="true"></i> Failed!</h4>Select any of the checkboxes to get reports.';
 $string['duration'] = 'Duration';
 $string['na'] = 'NA';
+
+// Setting
+$string['elucidsitereport_settings'] = 'Reports & Analytics Dashboard Settings';
+$string['selectblocks'] = 'Select blocks to show for Reporting Managers: ';
+$string['rpmblocks'] = 'Reporting Manager Blocks';
+$string['addblocks'] = 'Add Blocks';
+$string['notselected'] = 'Not Selected';
