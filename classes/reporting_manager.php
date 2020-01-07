@@ -31,26 +31,26 @@ defined('MOODLE_INTERNAL') || die();
  */
 class reporting_manager
 {
-	public static $instance = false;
-	public $userid;
-	public $isrpm = false;
-	public $rpmusers = array();
-	public $insql = '> 1';
-	public $inparams = array();
-	public $rpmcache = '';
-	/**
+    public static $instance = false;
+    public $userid;
+    public $isrpm = false;
+    public $rpmusers = array();
+    public $insql = '> 1';
+    public $inparams = array();
+    public $rpmcache = '';
+    /**
      * Private constructor to make this a singleton
      *
      * @access private
      */
     private function __construct()
     {
-    	$this->check_user_is_reporting_manager();
-    	if ($this->isrpm) {
-	    	$this->get_repoting_manager_students();
-	    	$this->get_reporting_manager_sql();
-	    	$this->get_reporting_manager_cachekey();
-    	}
+        $this->check_user_is_reporting_manager();
+        if ($this->isrpm) {
+            $this->get_repoting_manager_students();
+            $this->get_reporting_manager_sql();
+            $this->get_reporting_manager_cachekey();
+        }
     }
 
     /**
@@ -63,14 +63,14 @@ class reporting_manager
         }
         return self::$instance;
     }
-	/**
-	 * Check user is reporting manager or not
-	 * @return [boolean] Reporting manager
-	 */
-	public function check_user_is_reporting_manager() {
-		global $USER;
-		$this->userid = $USER->id;
-		$roles = get_user_roles(\context_system::instance(), $this->userid);
+    /**
+     * Check user is reporting manager or not
+     * @return [boolean] Reporting manager
+     */
+    public function check_user_is_reporting_manager() {
+        global $USER;
+        $this->userid = $USER->id;
+        $roles = get_user_roles(\context_system::instance(), $this->userid);
         if (!empty($roles)) {
             foreach ($roles as $role) {
                 if ($role->shortname == 'reportingmanager') {
@@ -78,27 +78,32 @@ class reporting_manager
                 }
             }
         }
-	}
-	/**
-	 * Get reporting manager students
-	 * @return [array] [reporting manager students]
-	 */
-	public function get_repoting_manager_students() {
-		global $DB;
-		// Query to get users of reporting manager
+    }
+    /**
+     * Get reporting manager students
+     * @return [array] [reporting manager students]
+     */
+    public function get_repoting_manager_students() {
+        global $DB;
+        // Query to get users of reporting manager
         $sql = "SELECT userid FROM {user_info_data} WHERE data = ? OR data IN (SELECT userid FROM {user_info_data} WHERE data = ?)";
 
         // Get all users who are inactive
         $users = $DB->get_records_sql($sql, array($this->userid, $this->userid));
         $this->rpmusers = array_keys($users);
-	}
-	/**
+    }
+    /**
      * Function to get reportingmanager SQL IN query
      */
     public function get_reporting_manager_sql() {
         global $DB;
-        // get reporeting manager studets in "In" query.
-        list($this->insql, $this->inparams) = $DB->get_in_or_equal($this->rpmusers, SQL_PARAMS_NAMED, 'param', true);
+        if (empty($this->rpmusers )) {
+            $this->insql = 'IN(1.2)';
+            $this->inparams = array();
+        } else {
+            // get reporeting manager studets in "In" query.
+            list($this->insql, $this->inparams) = $DB->get_in_or_equal($this->rpmusers, SQL_PARAMS_NAMED, 'param', true);
+        }
     }
     /**
      * Function to get reportingmanager cachekey

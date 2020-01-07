@@ -414,7 +414,7 @@ class utility {
                 WHERE cm.cohortid = :cohortid
                 AND l.action = :action
                 AND l.courseid = :courseid
-                AND u.delete = 0
+                AND u.deleted = 0
                 AND u.id ".$rpm->insql."";
         } else {
             $sql = "SELECT DISTINCT l.userid

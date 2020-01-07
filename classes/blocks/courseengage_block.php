@@ -61,34 +61,68 @@ class courseengage_block extends utility {
 
         $engagedata = array();
         $courses = self::get_courses(true);
+        $params = array();
         // Create reporting manager instance
         $rpm = reporting_manager::get_instance();
-        $completionsql = "SELECT c.courseid, COUNT(c.userid) AS usercount, c.completion
-            FROM {elucidsitereport_completion} c
-            JOIN {user} u ON u.id = c.userid
-            WHERE c.completion
-            BETWEEN :completionstart
-            AND :completionend
-            AND u.deleted = 0
-            AND u.id ".$rpm->insql."
-            GROUP BY c.courseid";
+        $sqlcohort = "";
+        if ($cohortid) {
+            $completionsql = "SELECT c.courseid, COUNT(c.userid) AS usercount, c.completion
+                FROM {elucidsitereport_completion} c
+                JOIN {user} u ON u.id = c.userid
+                JOIN {cohort_members} cm ON cm.userid = u.id
+                WHERE c.completion
+                BETWEEN :completionstart
+                AND :completionend
+                AND u.deleted = 0
+                AND cm.cohortid = :cohortid
+                AND u.id ".$rpm->insql."
+                GROUP BY c.courseid";
+
+            // Calculate atleast completed one modules 
+            $completionmodulesql = "SELECT c.courseid, COUNT(c.userid) AS usercount
+                FROM {elucidsitereport_completion} c
+                JOIN {user} u ON u.id = c.userid
+                JOIN {cohort_members} cm ON cm.userid = u.id
+                WHERE completedactivities >= :completedactivities
+                AND u.deleted = 0
+                AND cm.cohortid = :cohortid
+                AND u.id ".$rpm->insql."
+                GROUP BY c.courseid";
+            $params["cohortid"] = $cohortid;
+        } else {
+            $completionsql = "SELECT c.courseid, COUNT(c.userid) AS usercount,
+                c.completion
+                FROM {elucidsitereport_completion} c
+                JOIN {user} u ON u.id = c.userid
+                WHERE c.completion
+                BETWEEN :completionstart
+                AND :completionend
+                AND u.deleted = 0
+                AND u.id ".$rpm->insql."
+                GROUP BY c.courseid";
+            // Calculate atleast completed one modules
+            $completionmodulesql = "SELECT c.courseid, COUNT(c.userid) AS usercount
+                FROM {elucidsitereport_completion} c
+                JOIN {user} u ON u.id = c.userid
+                WHERE completedactivities >= :completedactivities
+                AND u.deleted = 0
+                AND u.id ".$rpm->insql."
+                GROUP BY c.courseid";
+        }
+
 
         // Calculate 50% Completion Count for Courses 
-        $params = array(
-            "completionstart" => 50.00,
-            "completionend" => 99.99
-        );
+        $params["completionstart"] = 50.00;
+        $params["completionend"] = 99.99;
         $params = array_merge($params, $rpm->inparams);
         $completion50 = $DB->get_records_sql($completionsql, $params);
 
         // Calculate 100% Completion Count for Courses 
-        $params = array(
-            "completionstart" => 100.00,
-            "completionend" => 100.00
-        );
+        $params["completionstart"] = 100.00;
+        $params["completionend"] = 100.00;
         $params = array_merge($params, $rpm->inparams);
         $completion100 = $DB->get_records_sql($completionsql, $params);
-
+        /*
         // Calculate atleast completed one modules
         $completionmodulesql = "SELECT c.courseid, COUNT(c.userid) AS usercount
             FROM {elucidsitereport_completion} c
@@ -96,10 +130,8 @@ class courseengage_block extends utility {
             WHERE completedactivities >= :completedactivities
             AND u.deleted = 0
             AND u.id ".$rpm->insql."
-            GROUP BY c.courseid";
-        $params = array(
-            "completedactivities" => 1
-        );
+            GROUP BY c.courseid";*/
+        $params ["completedactivities"] = 1;
         $params = array_merge($params, $rpm->inparams);
         $completiononemodule = $DB->get_records_sql($completionmodulesql, $params);
         foreach($courses as $course) {
@@ -353,7 +385,6 @@ class courseengage_block extends utility {
         $coursecontext = context_course::instance($course->id);
         $enrolledusers = course_progress_block::rep_get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
         $users = self::users_completed_a_module($course, $enrolledusers, $cohortid);
-
         $usersdata = new stdClass();
         $userdata->head = array(
             get_string("name", "report_elucidsitereport"),
