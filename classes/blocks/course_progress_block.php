@@ -313,7 +313,7 @@ class course_progress_block extends utility {
     public static function get_userslist($courseid, $minval, $maxval, $cohortid) {
         $course = get_course($courseid);
         $coursecontext = context_course::instance($courseid);
-        $enrolledstudents = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+        $enrolledstudents = self::rep_get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
         $completions = parent::get_course_completion($courseid);
 
         $usersdata = array();
@@ -400,7 +400,7 @@ class course_progress_block extends utility {
                     $course->fullname,
                     count($enrolledstudents)
                 ),
-                $courseprogress->data
+                array_reverse($courseprogress->data)
             );
         }
 
