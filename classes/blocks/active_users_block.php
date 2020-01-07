@@ -66,7 +66,8 @@ class active_users_block extends utility {
         $this->timenow = time();
         // Set cache for active users block
         $this->cache = cache::make('report_elucidsitereport', 'activeusers');
-
+        // Create reporting manager instance
+        $rpm = reporting_manager::get_instance();
         // Get logs from cache
         if (!$records = $this->cache->get("activeusers-log")) {
             $sql = "SELECT id, userid, timecreated
@@ -78,7 +79,7 @@ class active_users_block extends utility {
             $this->cache->set("activeusers-log", $records);
         }
 
-        $cachekey = "activeusers-labels-" . $filter.''.self::$rpmcache;
+        $cachekey = "activeusers-labels-" . $filter.''.$rpm->rpmcache;
         if (!empty($records)) {
             // Getting first access of the site
             $this->firstaccess = $records[0]->timecreated;
@@ -150,7 +151,6 @@ class active_users_block extends utility {
      */
     public static function get_data($filter, $cohortid = false) {
         $activeusersblock = new active_users_block($filter);
-
         // Get cache key
         $cachekey = "activeusers-response" . $filter . "-";
         if ($cohortid) {
@@ -323,6 +323,12 @@ class active_users_block extends utility {
                $params["eventname"] = '\core\event\user_enrolment_created';
                break;
            case "completions";
+                   $sqlcohort = "";
+               if ($cohortid) {
+                   $sqlcohort .= " JOIN {cohort_members} cm
+                           ON cm.userid = l.userid";
+                   $params["cohortid"] = $cohortid;
+               }
                $sql = "SELECT DISTINCT l.userid as relateduserid, l.course as courseid
                    FROM {course_completions} l $sqlcohort
                    WHERE l.timecompleted IS NOT NULL
@@ -535,7 +541,6 @@ class active_users_block extends utility {
         $params = array();
         // Create reporting manager instance
         $rpm = reporting_manager::get_instance();
-        $params = array_merge($params, $rpm->inparams);
 
         if ($cohortid) {
             $cachekey = "activeusers-completionrate-" . $filter . "-" . $cohortid.''.$rpm->rpmcache;
@@ -574,12 +579,11 @@ class active_users_block extends utility {
                 MONTH(FROM_UNIXTIME(timecompleted)),
                 DAY(FROM_UNIXTIME(timecompleted)), course, USERDATE";
         }
-
+        $params = array_merge($params, $rpm->inparams);
         // Get data from cache if exist
         if (!$completionrate = $this->cache->get($cachekey)) {
             $completionrate = array();
             $completions = $DB->get_records_sql($sql, $params);
-
             // Get completion for each day
             for ($i = 0; $i < $this->xlabelcount; $i++) {
                 $time = $this->timenow - $i * ONEDAY;
