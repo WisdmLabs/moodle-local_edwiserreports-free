@@ -49,7 +49,6 @@ class elucidreport_renderable implements renderable, templatable {
      */
     public function export_for_template(renderer_base $output) {
         global $CFG, $PAGE;
-
         $output = null;
         $export = new stdClass();
         $export->sesskey = sesskey();
@@ -117,14 +116,49 @@ class elucidreport_renderable implements renderable, templatable {
             }
             $export->lpstatslink = new moodle_url($CFG->wwwroot."/report/elucidsitereport/lpstats.php");
         }
-
+        // Custom Query Report
+        $rpmgrs = $rpm->get_all_reporting_managers();
+        $export->rpmgrs = $rpmgrs;
         $export->exportlinks = get_block_exportlinks($downloadurl, $data);
-
+        $export->reportfields = elucidreport_renderable::get_report_fields();
         $export->downloadurl = $downloadurl;
 
         return $export;
     }
+    public static function get_report_fields() {
+        $userfields = array(
+            array('key' => 'username', 'value'=>get_string('username', 'report_elucidsitereport'), 'dbkey' => 'u.username'),
+            array('key' => 'email', 'value'=>get_string('useremail', 'report_elucidsitereport'), 'dbkey' => 'u.email'),
+            array('key' => 'firstname', 'value'=>get_string('firstname', 'report_elucidsitereport'), 'dbkey' => 'u.firstname'),
+            array('key' => 'lastname', 'value'=>get_string('lastname', 'report_elucidsitereport'), 'dbkey' => 'u.lastname')
+        );
+        $coursefields = array(
+            array('key' => 'coursename', 'value'=>get_string('course', 'report_elucidsitereport'), 'dbkey' => 'c.fullname'),
+            array('key' => 'courseprogress', 'value'=>get_string('courseprogress', 'report_elucidsitereport'), 'dbkey' => 'ec.completion'),
+            array('key' => 'completionstatus', 'value'=>get_string('completions_status', 'report_elucidsitereport'), 'dbkey' => 'ec.completion'),
+            array('key' => 'activitiescompleted', 'value'=>get_string('completedactivities', 'report_elucidsitereport'), 'dbkey' => 'ec.completedactivities'),
+            array('key' => 'coursestartdate', 'value'=>get_string('coursestartdate', 'report_elucidsitereport'), 'dbkey' => 'FROM_UNIXTIME(c.startdate, "%D %M %Y")'),
+            array('key' => 'courseenddate', 'value'=>get_string('courseenddate', 'report_elucidsitereport'), 'dbkey' => 'FROM_UNIXTIME(c.enddate, "%D %M %Y")'),
+        );
+        $lpfields = array(
+            array('key' => 'lpname', 'value'=>get_string('lpname', 'report_elucidsitereport'), 'dbkey' => 'lp.name'),
+            array('key' => 'lpstartdate', 'value'=>get_string('lpstartdate', 'report_elucidsitereport'), 'dbkey' => 'FROM_UNIXTIME(lp.timestart, "%D %M %Y")'),
+            array('key' => 'lpenddate', 'value'=>get_string('lpenddate', 'report_elucidsitereport'), 'dbkey' => 'FROM_UNIXTIME(lp.timeend, "%D %M %Y")'),
+            array('key' => 'lpduration', 'value'=>get_string('lpduration', 'report_elucidsitereport'), 'dbkey' => 'lp.durationtime'),
+        );
+        $rpmfields = array();
+        // Create reporting manager instance
+        $rpm = \report_elucidsitereport\reporting_manager::get_instance();
+        if (!$rpm->isrpm) {
+            $rpmfields = array(
+                array('key' => 'rpmname', 'value'=>get_string('rpmname', 'report_elucidsitereport'), 'dbkey' => 'CONCAT(rpm.firstname, " ", rpm.lastname)'),
+            );
+        }
+        $fields = array_merge($userfields, $coursefields, $lpfields, $rpmfields);
+        return $fields;
+    }
 }
+
 
 class activeusers_renderable implements renderable, templatable {
     /**
@@ -301,6 +335,25 @@ class courseanalytics_renderable implements renderable, templatable {
         $output->completionexportlink = get_exportlinks($downloadurl, "report", "courseanalytics", $courseid, 0, "completion");
         $output->userfilters = get_userfilters(false, true, false);
         $output->backurl = new moodle_url($CFG->wwwroot."/report/elucidsitereport/index.php");
+        return $output;
+    }
+}
+
+
+class customqueryreport_renderable {
+    /**
+     * Function to export the renderer data in a format that is suitable for a
+     * edit mustache template.
+     *
+     * @param renderer_base $output Used to do a final render of any components that need to be rendered for export.
+     * @return stdClass|array
+     */
+    public function export_for_template() {
+        global $CFG, $DB;
+
+        $output = new stdClass();
+        $output->sesskey = sesskey();
+        $output->temp = "This is temp";
         return $output;
     }
 }

@@ -1,0 +1,107 @@
+<div id="customQueryReportBlock" data-sesskey="{{sesskey}}">
+    <div class="panel h-auto mb-0">
+        <div class="panel-header clearfix">
+            <div class="panel-title px-0">
+                <strong>
+                    {{#str}} customqueryreport, report_elucidsitereport {{/str}}
+                </strong>
+            </div>
+        </div>
+        <div class="panel-body">
+        	<div class="row">
+            {{^isreportingmanager}}
+        		<div class="col-md-4">
+		        	<label>Reporting Managers</label>
+		          	<select id="ed_rpm" class="js-states form-control select25">
+		          		<option value="0">All</option>
+		          		{{#rpmgrs}}
+			            <option value="{{id}}">{{uname}}</option>
+			            {{/rpmgrs}}
+		          	</select>
+		        </div>
+            {{/isreportingmanager}}
+		        <div class="col-md-4">
+		          	<label>Learning Programs</label>
+		          	<select id="ed_lps" class="js-states form-control select25">
+		          		{{> report_elucidsitereport/customquery_lpoptions}}
+		          	</select>
+		        </div>
+		        <div class="col-md-4">
+		          	<label>Courses</label>
+		          	<select id="ed_courses" class="js-states form-control select25">
+			            {{> report_elucidsitereport/customquery_options}}
+		          	</select>
+		        </div>
+          	</div>
+          	<div class="row mt-25">
+          		<div class="col-md-4">
+          			<label>{{#str}} enrolmentrangeselector, report_elucidsitereport {{/str}}</label>
+          			<div class="form-group mb-0">
+                        <div class="input-search input-search-dark">
+                            <input type="text" id="customqueryenroll" placeholder="{{#str}} selectdaterange, report_elucidsitereport{{/str}}" class="form-control rounded w-250" data-input/>
+                            <button type="button" class="input-search-close icon wb-close" aria-label="Close"></button>
+                        </div>
+                    </div>
+          		</div>
+          		<div class="col-md-4">
+          			<label>{{#str}} completionrangeselector, report_elucidsitereport {{/str}}</label>
+          			<div class="form-group mb-0">
+                        <div class="input-search input-search-dark">
+                            <input type="text" id="customquerycompletion" placeholder="{{#str}} selectdaterange, report_elucidsitereport{{/str}}" class="form-control rounded w-250" data-input/>
+                            <button type="button" class="input-search-close icon wb-close" aria-label="Close"></button>
+                        </div>
+                    </div>
+          		</div>
+          	</div>
+          	<div class="row mt-25">
+          		<div class="col-md-4">
+	          		<label>Report Fields</label>
+          		</div>
+          	</div>
+          	<div class="row">
+          		{{#reportfields}}
+          		<div class="{{key}} col-md-3">
+          			<div class="checkbox-custom checkbox-primary">
+	                  <input type="checkbox" id="{{key}}" checked>
+	                  <label for="{{key}}">{{value}}</label>
+	                </div>
+          		</div>
+          		{{/reportfields}}
+          	</div>
+          	<div class="row">
+              <div class="col-md-3">
+            		<div class="text-right mt-30">
+                      <form action="{{downloadurl}}" target="_blank" method="post" id="customQueryReportsForm">
+                          <input type="hidden" name="reportingmanagers">
+                          <input type="hidden" name="lps">
+                          <input type="hidden" name="courses">
+                          <input type="hidden" name="enrolstartdate"/>
+                          <input type="hidden" name="enrolenddate"/>
+                          <input type="hidden" name="completionstartdate"/>
+                          <input type="hidden" name="completionenddate"/>
+                          <input type="hidden" name="reporttype"/>
+                          <input type="hidden" name="filters"/>
+                          <input type="hidden" name="checkedFields">
+                          <button type="submit" id="customQueryReportDownload" class="btn btn-secondary">
+                              {{#str}} downloadreportincsv , report_elucidsitereport {{/str}}
+                          </button>
+                      </form>
+                </div>
+              </div>
+              <div class="col-md-5 mt-30">
+                <div class="coursealert alert alert-danger hidden" role="alert">
+                  <button type="button" class="close" data-hide="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                  </button>
+                  {{#str}} selectatleastonecvourse, report_elucidsitereport {{/str}}
+                </div>
+              </div>
+          	</div>
+        </div>
+    </div>
+</div>
+
+{{#js}}
+require(['report_elucidsitereport/block_queryreport'], function ($) {
+});
+{{/js}}

@@ -584,3 +584,7 @@ div[id^="wdm-"][id*="-individual"] table.table,
 .path-report-elucidsitereport #customReportBlock table td {
     padding: 10px 18px!important;
 }
+/* Custom Query Report */
+.select25 {
+    /*width: 20% !important;*/
+}
