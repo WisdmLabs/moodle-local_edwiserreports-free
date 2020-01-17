@@ -157,4 +157,18 @@ class elucidsitereportController extends controllerAbstract
         // Response for ajax action
         echo json_encode(\report_elucidsitereport\utility::get_customreport_data($data));
     }
+    public function get_customqueryreport_data_ajax_action() {
+        // Get data
+        $data = json_decode(required_param('data', PARAM_RAW));
+
+        // Response for ajax action
+        echo json_encode(\report_elucidsitereport\utility::get_lp_courses($data->lpids));
+    }
+    public function get_customqueryreport_rpm_data_ajax_action() {
+        // Get data
+        $data = json_decode(required_param('data', PARAM_RAW));
+
+        // Response for ajax action
+        echo json_encode(\report_elucidsitereport\utility::get_rpm_data($data));
+    }
 }

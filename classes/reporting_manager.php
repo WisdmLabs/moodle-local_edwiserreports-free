@@ -112,4 +112,33 @@ class reporting_manager
         // set cache for reporting manager
         $this->rpmcache = "_".$this->userid;
     }
+    public function get_all_reporting_managers() {
+        global $DB;
+        $sql = 'SELECT u.id, concat(u.firstname, " ", u.lastname) as uname
+        FROM {user} u
+        JOIN {role_assignments} ra ON ra.userid = u.id
+        JOIN {role} r ON r.id = ra.roleid
+        WHERE r.shortname = :shortname';
+        $params['shortname'] = 'reportingmanager';
+        $rpms =  $DB->get_records_sql($sql, $params);
+        return array_values($rpms);
+    }
+    public function get_all_reporting_managers_students($reportingmanagers = NULL) {
+        global $DB;
+
+        $insql = '> 1';
+        $inparams = array();
+        if ($reportingmanagers) {
+            list($insql, $inparams) = $DB->get_in_or_equal($reportingmanagers, SQL_PARAMS_NAMED, 'rpm', true);
+        }
+        $sql = 'SELECT d.userid
+        FROM {user_info_data} d
+        JOIN {role_assignments} ra ON ra.userid = d.data
+        JOIN {role} r ON r.id = ra.roleid
+        WHERE r.shortname = :shortname AND d.data '.$insql;
+        $params['shortname'] = 'reportingmanager';
+        $params = array_merge($params, $inparams);
+        $records = $DB->get_records_sql($sql, $params);
+        return array_keys($records);
+    }
 }
