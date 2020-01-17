@@ -81,10 +81,22 @@ if ($format = optional_param("format", false, PARAM_TEXT)) {
     $filters = required_param('filters', PARAM_TEXT);
     $enrolstartdate = optional_param('enrolstartdate', null, PARAM_TEXT);
     $enrolenddate = optional_param('enrolenddate', null, PARAM_TEXT);
-
-    // Get export object 
+    // Get export object
     $export = new export(null, null, null);
-
-    // Render csv data in csv file
-    $export->export_csv_customreport_data($reporttype, $filters, $enrolstartdate, $enrolenddate);
+    // check report type is query report
+    if ($reporttype == 'queryReport') {
+        $fields = optional_param('checkedFields', null, PARAM_TEXT);
+        $reportingmanagers = optional_param('reportingmanagers', null, PARAM_TEXT);
+        $lps = optional_param('lps', null, PARAM_TEXT);
+        $courses = optional_param('courses', null, PARAM_TEXT);
+        $enrolstartdate = optional_param('enrolstartdate', null, PARAM_TEXT);
+        $enrolenddate = optional_param('enrolenddate', null, PARAM_TEXT);
+        $completionstartdate = optional_param('completionstartdate', null, PARAM_TEXT);
+        $completionenddate = optional_param('completionenddate', null, PARAM_TEXT);
+        // Render csv data in csv file
+        $export->export_csv_customquery_report_data($fields, $reportingmanagers, $lps, $courses, $enrolstartdate, $enrolenddate, $completionstartdate, $completionenddate);
+    } else {
+        // Render csv data in csv file
+        $export->export_csv_customreport_data($reporttype, $filters, $enrolstartdate, $enrolenddate);
+    }
 }

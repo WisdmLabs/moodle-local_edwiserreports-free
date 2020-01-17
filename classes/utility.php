@@ -199,7 +199,7 @@ class utility {
         global $DB;
         $fields = "DISTINCT(lp.id), lp.name, lp.shortname, lp.courses";
         // $fields = "id, name, shortname, courses";
-        $form = new MoodleQuickForm('learningprogram', 'post', '#');
+        //$form = new MoodleQuickForm('learningprogram', 'post', '#');
         // Create reporting manager instance
         $rpm = reporting_manager::get_instance();
         $sql = "SELECT ".$fields."
@@ -208,9 +208,13 @@ class utility {
                 ON lp.id = lpen.learningprogramid
                 WHERE lpen.userid ".$rpm->insql."";
         $records = $DB->get_records_sql($sql, $rpm->inparams);
+        // Create reporting manager instance
+        $rpm = \report_elucidsitereport\reporting_manager::get_instance();
+        $lps = array();
         // $records = $DB->get_records('wdm_learning_program', array(), '', $fields);
 
         $lps = array();
+        $rpms = array();
         foreach ($records as $lp) {
             /* If there in no courses available */
             if (empty(json_decode($lp->courses))) {
@@ -219,7 +223,14 @@ class utility {
 
             /* If there in no userss available */
             $lpenrolment = $DB->get_records("wdm_learning_program_enrol", array("learningprogramid" => $lp->id), "userid");
-            if (empty($lpenrolment)) {
+            if ($rpm->isrpm) {
+                $lpusers = array();
+                array_map(function($value) use (&$lpusers){
+                    $lpusers[] = $value->userid;
+                }, $lpenrolment);
+                $rpms = array_intersect($lpusers, $rpm->rpmusers);
+            }
+            if (empty($lpenrolment) || ($rpm->isrpm && empty($rpms))) {
                 continue;
             }
 
@@ -928,5 +939,58 @@ class utility {
             JOIN {enrol} e ON e.id = ue.enrolid
             WHERE ue.userid = :uid AND e.courseid = :cid";
         return $DB->get_record_sql($sql, array('uid' => $userid, 'cid' => $courseid));
+    }
+    /**
+     * [get_lp_courses description]
+     * @param  [type] $data [description]
+     * @return [type]       [description]
+     */
+    public static function get_lp_courses($lpids) {
+        global $DB;
+        if (in_array(0, $lpids) || empty($lpids)) {
+            return \report_elucidsitereport\utility::get_courses();
+        }
+        list($insql, $inparams) = $DB->get_in_or_equal($lpids, SQL_PARAMS_NAMED, 'param', true);
+        $sql = 'SELECT courses FROM {wdm_learning_program} WHERE id '.$insql;
+        $lpcourses = array_values($DB->get_records_sql($sql, $inparams));
+        $catIds = array_map(create_function('$o', 'return $o->courses;'), $lpcourses);
+        $coursesarr = array();
+        if (!empty($catIds)) {
+            foreach ($catIds as $catId) {
+                foreach (json_decode($catId) as $cid) {
+                    $course = new \stdClass();
+                    $course->id = $cid;
+                    $course->fullname = get_course($cid)->fullname;
+                    array_push($coursesarr, $course);
+                }
+            }
+        }
+        return $coursesarr;
+    }
+    public static function get_rpm_data($data) {
+        global $DB;
+        if (in_array(0, $data->rpmids) || empty($data->rpmids)) {
+            $courses = \report_elucidsitereport\utility::get_courses();
+            $lps = \report_elucidsitereport\utility::get_lps();
+            return array('courses' => $courses, 'lps' =>$lps);
+        }
+        list($insql, $inparams) = $DB->get_in_or_equal($data->rpmids, SQL_PARAMS_NAMED, 'param', true);
+        // Query to get users of reporting manager
+        $sql = "SELECT userid FROM {user_info_data} WHERE data ".$insql;
+        $users = $DB->get_records_sql($sql, $inparams);
+        $rpmusers = array_keys($users);
+
+        $lps = array();
+        $courses = array();
+        list($insql, $inparams) = $DB->get_in_or_equal($rpmusers, SQL_PARAMS_NAMED, 'param', true);
+        $sql = "SELECT DISTINCT(lp.id), lp.name as fullname FROM {wdm_learning_program} lp
+        JOIN {wdm_learning_program_enrol} lpe ON lpe.learningprogramid = lp.id
+        WHERE lpe.userid ".$insql;
+        $lps = array_values($DB->get_records_sql($sql, $inparams));
+        $lpIds = array_map(create_function('$o', 'return $o->id;'), $lps);
+        if (!empty($lpIds)) {
+            $courses = \report_elucidsitereport\utility::get_lp_courses($lpIds);
+        }
+        return array('courses' => $courses, 'lps' =>$lps);
     }
 }

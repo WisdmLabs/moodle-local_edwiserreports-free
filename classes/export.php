@@ -31,6 +31,8 @@ require_once($CFG->libdir."/pdflib.php");
 require_once($CFG->dirroot."/report/elucidsitereport/classes/blocks/active_users_block.php");
 require_once($CFG->dirroot."/report/elucidsitereport/classes/blocks/active_courses_block.php");
 require_once($CFG->dirroot."/report/elucidsitereport/lib.php");
+require_once($CFG->dirroot."/report/elucidsitereport/classes/output/renderable.php");
+require_once($CFG->dirroot."/report/elucidsitereport/classes/reporting_manager.php");
 
 use csv_export_writer;
 use moodle_exception;
@@ -602,9 +604,199 @@ class export {
         header("Pragma: no-cache");
         header("Expires: 0");
     }
+    /**
+     * Export CSV for custom query report
+     * @param  [strinf] $fields              [Selected Fields]
+     * @param  [string] $reportingmanagers   [Selected reporting managers]
+     * @param  [string] $lps                 [Selected learning programs]
+     * @param  [string] $courses             [Selected courses]
+     * @param  [string] $enrolstartdate      [Selected course enroll start date]
+     * @param  [string] $enrolenddate        [Selected course enroll end date]
+     * @param  [string] $completionstartdate [Selected course completion start date]
+     * @param  [string] $completionenddate   [Selected course completion end date]
+     */
+    public function export_csv_customquery_report_data($fields, $reportingmanagers, $lps, $courses, $enrolstartdate, $enrolenddate, $completionstartdate, $completionenddate){
+        global $DB;
+        $fields = explode(',', $fields);
+        // remove the lp fields if lp is not selected
+        if ($lps == "") {
+            $fields = array_filter($fields, function ($string) {
+                return strpos($string, 'lp') === false;
+            });
+        }
+        //if enroldate not selected
+        if ($enrolenddate == "") {
+            $enrolenddate = time();
+        } else {
+            $enrolenddate += 24 * 60 * 60 - 1;
+        }
+        //if completiondate not selected
+        $completionsql =  '';
+        if ($completionenddate !== "") {
+            $completionenddate += 24 * 60 * 60 - 1;
+            $completionsql =  ' AND ec.timecompleted >= :completionstartdate AND ec.timecompleted <= :completionenddate';
+        }
+        // get selected fields in query format
+        list($customFields, $headers) =  $this->createQueryFields($fields);
+
+        $params = array();
+        // check courses
+        $courses = explode(',', $courses);
+        $coursedb = '> 1';
+        if (!in_array(0, $courses)) {
+            list($coursedb, $inparams) = $DB->get_in_or_equal($courses, SQL_PARAMS_NAMED, 'course', true);
+            $params = array_merge($params, $inparams);
+        }
+        // check learning programs
+        $lpdb = '';
+        $lpjoinquery = '';
+        if ($lps !== "") {
+            $lpdb = '> 0';
+            $lps = explode(',', $lps);
+            // get lps in In query
+            if (!in_array(0, $lps)) {
+                list($lpdb, $inparams) = $DB->get_in_or_equal($lps, SQL_PARAMS_NAMED, 'lps', true);
+                $params = array_merge($params, $inparams);
+            }
+            $tablename = 'lp_course_data';
+            $isChecked = $this->createTempTable($tablename, $lpdb, $params);
+            $lpjoinquery = 'JOIN {wdm_learning_program_enrol} lpe ON lpe.userid = u.id AND lpe.learningprogramid '.$lpdb.'
+                JOIN {wdm_learning_program} lp ON lp.id = lpe.learningprogramid
+                JOIN {lp_course_data} lcd ON lcd.courseid = c.id AND lcd.lpid = lp.id';
+        }
+        // check for reporting manager
+        $rpmdb = '> 1';
+        $rpmnamedb = '';
+        if ($reportingmanagers !== "") {
+            // Create reporting manager instance
+            $rpm = \report_elucidsitereport\reporting_manager::get_instance();
+            $reportingmanagers = explode(',', $reportingmanagers);
+            // check if All selected in reporting managers
+            if (in_array(0, $reportingmanagers)) {
+                $students = $rpm->get_all_reporting_managers_students();
+            } else {
+                $students = $rpm->get_all_reporting_managers_students($reportingmanagers);
+            }
+            list($rpmdb, $inparams) = $DB->get_in_or_equal($students, SQL_PARAMS_NAMED, 'students', true);
+            $params = array_merge($params, $inparams);
+            $rpmnamedb = "JOIN {user_info_data} uifd ON uifd.userid = u.id
+                JOIN {user} rpm ON uifd.data = rpm.id";
+        }
+        // Create reporting manager instance
+        $rpm = \report_elucidsitereport\reporting_manager::get_instance();
+        if ($rpm->isrpm) {
+            $rpmdb = $rpm->insql;
+            $params = array_merge($params, $rpm->inparams);
+        }
+        // Main query to execute the custom query reports
+        $sql = 'SELECT (@cnt := @cnt + 1) AS id, '.$customFields.' FROM {user} u
+                CROSS JOIN (SELECT @cnt := 0) AS dummy
+                JOIN {role_assignments} ra ON ra.userid = u.id
+                JOIN {role} r ON r.id = ra.roleid
+                JOIN {context} ct ON ct.id = ra.contextid
+                JOIN {course} c ON c.id = ct.instanceid '.$lpjoinquery.'
+                JOIN {elucidsitereport_completion} ec ON ec.courseid = c.id AND ec.userid = u.id AND c.id '.$coursedb.' '.$rpmnamedb.'
+                WHERE u.id '.$rpmdb.'
+                AND ct.contextlevel = '.CONTEXT_COURSE.'
+                AND r.archetype = "student"
+                AND u.deleted = false
+                AND ra.timemodified >= :enrolstartdate AND ra.timemodified <= :enrolenddate'.$completionsql;
+
+        $params['enrolstartdate'] = $enrolstartdate;
+        $params['enrolenddate'] = $enrolenddate;
+        $params['completionstartdate'] = $completionstartdate;
+        $params['completionenddate'] = $completionenddate;
+        $records = $DB->get_records_sql($sql, $params);
+        // drop lp and course relation temporary table after query execution
+        if (isset($tablename)) {
+            $this->drop_table($tablename);
+        }
+        $filename = "Report_".time().".csv";
+        $this->set_csv_header($filename);
+        echo implode(",", array_values((array)$headers)). "\n";
+        foreach ($records as $record) {
+            unset($record->id);
+            // Print export header
+            echo implode(",", array_values((array)$record)). "\n";
+        }
+    }
+    /**
+     * Temporary table for lp and courses relation
+     * @param  [string] $tablename [table name]
+     * @param  [string] $lpdb      [learning programs join query]
+     * @param  [array] $params    [params for learning programs join query]
+     */
+    public function createTempTable($tablename, $lpdb, $params) {
+        global $DB, $CFG;
+        $dbman = $DB->get_manager();
+
+        // create table schema
+        $table = new \xmldb_table($tablename);
+        $table->add_field('id', XMLDB_TYPE_INTEGER, 10, null, XMLDB_NOTNULL, XMLDB_SEQUENCE);
+        $table->add_field('lpid', XMLDB_TYPE_INTEGER, 10, null, null, false);
+        $table->add_field('courseid', XMLDB_TYPE_INTEGER, 10,null, null, false);
+        $table->add_key('id', XMLDB_KEY_PRIMARY, array('id'));
+
+        if ($dbman->table_exists($tablename)) {
+            $dbman->drop_table($table);
+        }
+
+        $dbman->create_temp_table($table);
+        // get courses from selected lps
+        $sql = "SELECT id, courses FROM {wdm_learning_program} WHERE id ".$lpdb;
+        $records = $DB->get_records_sql($sql,  $params);
+        $tempArray = array();
+
+        // iterate and add new entry in table for each course with respect to lp
+        array_map(function($value) use (&$tempArray) {
+            $courseids = json_decode($value->courses);
+            foreach ($courseids as $id) {
+                array_push($tempArray, array("lpid" => $value->id, "courseid" => $id));
+            }
+        }, $records);
+        $DB->insert_records($tablename, $tempArray);
+        return true;
+    }
+    /**
+     * Delete temporary created table
+     * @param  String $tablename Table name
+     */
+    public function drop_table($tablename) {
+        global $DB;
+
+        $dbman = $DB->get_manager();
+
+        $table = new \xmldb_table($tablename);
+
+        if ($dbman->table_exists($tablename)) {
+            $dbman->drop_table($table);
+        }
+    }
 
     /**
-     * Render csv 
+     * Create Query Fields by Filters
+     * @param  [Array] $fields filtered fields
+     */
+    public function createQueryFields($fields) {
+        // Get all the fields
+        $allFields = \report_elucidsitereport\output\elucidreport_renderable::get_report_fields();
+        // sort fields according to selected fields
+        $header = array();
+        $allFields = array_map(function($value) use ($fields, &$header) {
+            if (in_array($value['key'], $fields) ) {
+                $header[] = $value['value'];
+                return $value['dbkey'].' as '.$value['key'];
+            }
+            return false;
+        }, $allFields);
+        // filter it and make a string
+        $allFields = array_filter( $allFields);
+        $allFields = implode(', ', $allFields);
+        return array($allFields, $header);
+    }
+
+    /**
+     * Render csv
      * @param  stdClass $data Filter object to get reports data
      * @return stdClass       Status of reports
      */

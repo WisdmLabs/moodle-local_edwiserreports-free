@@ -355,3 +355,15 @@ $string['selectblocks'] = 'Select blocks to show for Reporting Managers: ';
 $string['rpmblocks'] = 'Reporting Manager Blocks';
 $string['addblocks'] = 'Add Blocks';
 $string['notselected'] = 'Not Selected';
+
+
+// Custom Query Report
+$string['customqueryreport'] = 'Custom Query Report';
+$string['completionrangeselector'] = 'Completion Range Selector';
+$string['selectatleastonecvourse'] = 'Please, Select at least one course';
+$string['coursestartdate'] = 'Course Start Date';
+$string['courseenddate'] = 'Course End Date';
+$string['lpstartdate'] = 'Learning Program Start Date';
+$string['lpenddate'] = 'Learning Program End Date';
+$string['lpduration'] = 'Learning Program Duration';
+$string['rpmname'] = 'Reporting Manager';
