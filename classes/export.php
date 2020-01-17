@@ -618,12 +618,7 @@ class export {
     public function export_csv_customquery_report_data($fields, $reportingmanagers, $lps, $courses, $enrolstartdate, $enrolenddate, $completionstartdate, $completionenddate){
         global $DB;
         $fields = explode(',', $fields);
-        // remove the lp fields if lp is not selected
-        if ($lps == "") {
-            $fields = array_filter($fields, function ($string) {
-                return strpos($string, 'lp') === false;
-            });
-        }
+        $fields = $this->getFilterBasedFields($lps, $reportingmanagers, $fields);
         //if enroldate not selected
         if ($enrolenddate == "") {
             $enrolenddate = time();
@@ -665,11 +660,11 @@ class export {
                 JOIN {lp_course_data} lcd ON lcd.courseid = c.id AND lcd.lpid = lp.id';
         }
         // check for reporting manager
+        // Create reporting manager instance
+        $rpm = \report_elucidsitereport\reporting_manager::get_instance();
         $rpmdb = '> 1';
         $rpmnamedb = '';
         if ($reportingmanagers !== "") {
-            // Create reporting manager instance
-            $rpm = \report_elucidsitereport\reporting_manager::get_instance();
             $reportingmanagers = explode(',', $reportingmanagers);
             // check if All selected in reporting managers
             if (in_array(0, $reportingmanagers)) {
@@ -682,8 +677,6 @@ class export {
             $rpmnamedb = "JOIN {user_info_data} uifd ON uifd.userid = u.id
                 JOIN {user} rpm ON uifd.data = rpm.id";
         }
-        // Create reporting manager instance
-        $rpm = \report_elucidsitereport\reporting_manager::get_instance();
         if ($rpm->isrpm) {
             $rpmdb = $rpm->insql;
             $params = array_merge($params, $rpm->inparams);
@@ -712,6 +705,7 @@ class export {
             $this->drop_table($tablename);
         }
         $filename = "Report_".time().".csv";
+        // Download csv based on query result.
         $this->set_csv_header($filename);
         echo implode(",", array_values((array)$headers)). "\n";
         foreach ($records as $record) {
@@ -719,6 +713,27 @@ class export {
             // Print export header
             echo implode(",", array_values((array)$record)). "\n";
         }
+    }
+    /**
+     * Get filter based results
+     * @param  [string] $lps               Learnig Programs
+     * @param  [string] $reportingmanagers Reporting Managers
+     * @param  [array] $fields            Checkboxes fields
+     */
+    public function getFilterBasedFields($lps, $reportingmanagers, $fields) {
+        // remove the lp fields if lp is not selected
+        if ($lps == "") {
+            $fields = array_filter($fields, function ($string) {
+                return strpos($string, 'lp') === false;
+            });
+        }
+        // remove the lp fields if lp is not selected
+        if ($reportingmanagers == "") {
+            $fields = array_filter($fields, function ($string) {
+                return strpos($string, 'rpm') === false;
+            });
+        }
+        return $fields;
     }
     /**
      * Temporary table for lp and courses relation

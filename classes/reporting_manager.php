@@ -112,6 +112,9 @@ class reporting_manager
         // set cache for reporting manager
         $this->rpmcache = "_".$this->userid;
     }
+    /**
+     * Get all reporting managers
+     */
     public function get_all_reporting_managers() {
         global $DB;
         $sql = 'SELECT u.id, concat(u.firstname, " ", u.lastname) as uname
@@ -123,9 +126,12 @@ class reporting_manager
         $rpms =  $DB->get_records_sql($sql, $params);
         return array_values($rpms);
     }
+    /**
+     * Get students of all reporting managers
+     * @param  [array] $reportingmanagers
+     */
     public function get_all_reporting_managers_students($reportingmanagers = NULL) {
         global $DB;
-
         $insql = '> 1';
         $inparams = array();
         if ($reportingmanagers) {

@@ -138,12 +138,12 @@ class elucidreport_renderable implements renderable, templatable {
             array('key' => 'completionstatus', 'value'=>get_string('completions_status', 'report_elucidsitereport'), 'dbkey' => 'ec.completion'),
             array('key' => 'activitiescompleted', 'value'=>get_string('completedactivities', 'report_elucidsitereport'), 'dbkey' => 'ec.completedactivities'),
             array('key' => 'coursestartdate', 'value'=>get_string('coursestartdate', 'report_elucidsitereport'), 'dbkey' => 'FROM_UNIXTIME(c.startdate, "%D %M %Y")'),
-            array('key' => 'courseenddate', 'value'=>get_string('courseenddate', 'report_elucidsitereport'), 'dbkey' => 'FROM_UNIXTIME(c.enddate, "%D %M %Y")'),
+            array('key' => 'courseenddate', 'value'=>get_string('courseenddate', 'report_elucidsitereport'), 'dbkey' => '(CASE c.enddate WHEN 0 THEN "Never" ELSE FROM_UNIXTIME(c.enddate, "%D %M %Y") END)'),
         );
         $lpfields = array(
             array('key' => 'lpname', 'value'=>get_string('lpname', 'report_elucidsitereport'), 'dbkey' => 'lp.name'),
             array('key' => 'lpstartdate', 'value'=>get_string('lpstartdate', 'report_elucidsitereport'), 'dbkey' => 'FROM_UNIXTIME(lp.timestart, "%D %M %Y")'),
-            array('key' => 'lpenddate', 'value'=>get_string('lpenddate', 'report_elucidsitereport'), 'dbkey' => 'FROM_UNIXTIME(lp.timeend, "%D %M %Y")'),
+            array('key' => 'lpenddate', 'value'=>get_string('lpenddate', 'report_elucidsitereport'), 'dbkey' => '(CASE lp.timeend WHEN 0 THEN "Never" ELSE FROM_UNIXTIME(lp.timeend, "%D %M %Y") END)'),
             array('key' => 'lpduration', 'value'=>get_string('lpduration', 'report_elucidsitereport'), 'dbkey' => 'lp.durationtime'),
         );
         $rpmfields = array();
