@@ -1,7 +1,7 @@
 var gulp = require('gulp'),
     concat = require('gulp-concat'),
     rename = require('gulp-rename'),
-    uglify = require('gulp-uglify'),
+    uglify = require('gulp-uglify-es').default;
     sourcemaps = require('gulp-sourcemaps'),
     remove = require('gulp-rm'),
     sequence = require('run-sequence'),
@@ -40,7 +40,8 @@ var sources = [
     'src/js/completion.js',
     'src/js/courseanalytics.js',
     'src/js/common.js',
-    'src/js/lpdetailedreport.js'
+    'src/js/lpdetailedreport.js',
+    'src/js/block_queryreport.js'
 ];
 
 gulp.task('purge', shell.task('php '+__dirname+'/../../../admin/cli/purge_caches.php'));
