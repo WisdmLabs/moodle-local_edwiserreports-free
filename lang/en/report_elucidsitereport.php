@@ -366,6 +366,7 @@ $string['courseenddate'] = 'Course End Date';
 $string['lpstartdate'] = 'Learning Program Start Date';
 $string['lpenddate'] = 'Learning Program End Date';
 $string['lpduration'] = 'Learning Program Duration';
+$string['lpcompletion'] = 'Learning Program Completion Date';
 $string['rpmname'] = 'Reporting Manager';
 $string['totalactivities'] = 'Total Activities';
 $string['completiontime'] = 'Course Completion Date';
