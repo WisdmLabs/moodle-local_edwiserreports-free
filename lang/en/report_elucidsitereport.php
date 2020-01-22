@@ -342,7 +342,7 @@ $string['completionsper'] = 'Completion(%)';
 $string['firstname'] = 'First Name';
 $string['lastname'] = 'Last Name';
 $string['average'] = 'Average(%)';
-$string['enrolmentrangeselector'] = 'Enrolment Range Selector';
+$string['enrolmentrangeselector'] = 'Enrolment Date Range Selector';
 $string['category'] = 'Category';
 $string['customreportsuccess'] = '<h4><i class="fa fa-check" aria-hidden="true"></i> Success!</h4>Notifications sent successfully.';
 $string['customreportfailed'] = '<h4><i class="fa fa-check" aria-hidden="true"></i> Failed!</h4>Select any of the checkboxes to get reports.';
@@ -359,7 +359,7 @@ $string['notselected'] = 'Not Selected';
 
 // Custom Query Report
 $string['customqueryreport'] = 'Custom Query Report';
-$string['completionrangeselector'] = 'Completion Range Selector';
+$string['completionrangeselector'] = 'Course Completion Date Range Selector';
 $string['selectatleastonecvourse'] = 'Please, Select at least one course';
 $string['coursestartdate'] = 'Course Start Date';
 $string['courseenddate'] = 'Course End Date';
@@ -367,3 +367,7 @@ $string['lpstartdate'] = 'Learning Program Start Date';
 $string['lpenddate'] = 'Learning Program End Date';
 $string['lpduration'] = 'Learning Program Duration';
 $string['rpmname'] = 'Reporting Manager';
+$string['totalactivities'] = 'Total Activities';
+$string['completiontime'] = 'Course Completion Date';
+$string['activitiescompleted'] = 'Activities Completed';
+$string['incompletedactivities'] = 'Incompleted Activities';

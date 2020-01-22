@@ -27,6 +27,13 @@ define([
             $(event.currentTarget).find("option:selected").each(function(i, selected){
                values[i] = $(selected).val();
             });
+            if (values.length > 1) {
+                var index = values.indexOf("0");
+                if (index > -1) {
+                   values.splice(index, 1);
+                   $("#ed_lps").select2('val', values);
+                }
+            }
             $.ajax({
                 url: cfg.requestUrl,
                 type: cfg.requestType,
@@ -64,6 +71,13 @@ define([
             $(event.currentTarget).find("option:selected").each(function(i, selected){
                values[i] = $(selected).val();
             });
+            if (values.length > 1) {
+                var index = values.indexOf("0");
+                if (index > -1) {
+                   values.splice(index, 1);
+                   $("#ed_rpm").select2('val', values);
+                }
+            }
             $.ajax({
                 url: cfg.requestUrl,
                 type: cfg.requestType,
@@ -101,7 +115,21 @@ define([
                 $( "div[class^='lp']" ).hide();
             }
         });
-
+        // Courses dropdown change
+        $('#ed_courses').on('change', function(event){
+            var values = [];
+            // copy all option values from selected
+            $(event.currentTarget).find("option:selected").each(function(i, selected){
+               values[i] = $(selected).val();
+            });
+            if (values.length > 1) {
+                var index = values.indexOf("0");
+                if (index > -1) {
+                   values.splice(index, 1);
+                   $("#ed_courses").select2('val', values);
+                }
+            }
+        });
         /**
          * Get panel of custom reports block
          * @type {string}
@@ -138,6 +166,7 @@ define([
             altFormat: "d/m/Y",
             dateFormat: "Y-m-d",
             maxDate: "today",
+            defaultDate: ["today", new Date().fp_incr(-30)],
             onClose: getCustomEnrollSelector
         });
 
@@ -169,6 +198,7 @@ define([
             altFormat: "d/m/Y",
             dateFormat: "Y-m-d",
             maxDate: "today",
+            defaultDate: ["today", new Date().fp_incr(-30)],
             onClose: getCustomCompletionSelector
         });
 

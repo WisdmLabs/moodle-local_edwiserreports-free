@@ -127,21 +127,24 @@ class elucidreport_renderable implements renderable, templatable {
     }
     public static function get_report_fields() {
         $userfields = array(
-            array('key' => 'username', 'value'=>get_string('username', 'report_elucidsitereport'), 'dbkey' => 'u.username'),
+            array('key' => 'username', 'value'=>get_string('username', 'report_elucidsitereport'), 'dbkey' => 'u.username', 'disbaled' => true),
             array('key' => 'email', 'value'=>get_string('useremail', 'report_elucidsitereport'), 'dbkey' => 'u.email'),
             array('key' => 'firstname', 'value'=>get_string('firstname', 'report_elucidsitereport'), 'dbkey' => 'u.firstname'),
             array('key' => 'lastname', 'value'=>get_string('lastname', 'report_elucidsitereport'), 'dbkey' => 'u.lastname')
         );
         $coursefields = array(
-            array('key' => 'coursename', 'value'=>get_string('course', 'report_elucidsitereport'), 'dbkey' => 'c.fullname'),
-            array('key' => 'courseprogress', 'value'=>get_string('courseprogress', 'report_elucidsitereport'), 'dbkey' => 'ec.completion'),
-            array('key' => 'completionstatus', 'value'=>get_string('completions_status', 'report_elucidsitereport'), 'dbkey' => 'ec.completion'),
-            array('key' => 'activitiescompleted', 'value'=>get_string('completedactivities', 'report_elucidsitereport'), 'dbkey' => 'ec.completedactivities'),
+            array('key' => 'coursename', 'value'=>get_string('course', 'report_elucidsitereport'), 'dbkey' => 'c.fullname', 'disbaled' => true),
+            array('key' => 'courseprogress', 'value'=>get_string('courseprogress', 'report_elucidsitereport'), 'dbkey' => 'ec.progress'),
+            array('key' => 'completionstatus', 'value'=>get_string('completions_status', 'report_elucidsitereport'), 'dbkey' => '(CASE ec.progress WHEN 100 THEN "Completed" ELSE "" END)'),
+            array('key' => 'activitiescompleted', 'value'=>get_string('activitiescompleted', 'report_elucidsitereport'), 'dbkey' => 'LENGTH(ec.completedmodules) - LENGTH(REPLACE(ec.completedmodules, ",", "")) + 1'),
+            array('key' => 'incompletedactivities', 'value'=>get_string('incompletedactivities', 'report_elucidsitereport'), 'dbkey' => 'ec.totalmodules - (LENGTH(ec.completedmodules) - LENGTH(REPLACE(ec.completedmodules, ",", "")) + 1)'),
+            array('key' => 'totalactivities', 'value'=>get_string('totalactivities', 'report_elucidsitereport'), 'dbkey' => 'ec.totalmodules'),
+            array('key' => 'completiontime', 'value'=>get_string('completiontime', 'report_elucidsitereport'), 'dbkey' => 'FROM_UNIXTIME(ec.completiontime, "%D %M %Y")'),
             array('key' => 'coursestartdate', 'value'=>get_string('coursestartdate', 'report_elucidsitereport'), 'dbkey' => 'FROM_UNIXTIME(c.startdate, "%D %M %Y")'),
             array('key' => 'courseenddate', 'value'=>get_string('courseenddate', 'report_elucidsitereport'), 'dbkey' => '(CASE c.enddate WHEN 0 THEN "Never" ELSE FROM_UNIXTIME(c.enddate, "%D %M %Y") END)'),
         );
         $lpfields = array(
-            array('key' => 'lpname', 'value'=>get_string('lpname', 'report_elucidsitereport'), 'dbkey' => 'lp.name'),
+            array('key' => 'lpname', 'value'=>get_string('lpname', 'report_elucidsitereport'), 'dbkey' => 'lp.name', 'disbaled' => true),
             array('key' => 'lpstartdate', 'value'=>get_string('lpstartdate', 'report_elucidsitereport'), 'dbkey' => 'FROM_UNIXTIME(lp.timestart, "%D %M %Y")'),
             array('key' => 'lpenddate', 'value'=>get_string('lpenddate', 'report_elucidsitereport'), 'dbkey' => '(CASE lp.timeend WHEN 0 THEN "Never" ELSE FROM_UNIXTIME(lp.timeend, "%D %M %Y") END)'),
             array('key' => 'lpduration', 'value'=>get_string('lpduration', 'report_elucidsitereport'), 'dbkey' => 'lp.durationtime'),
@@ -154,7 +157,10 @@ class elucidreport_renderable implements renderable, templatable {
                 array('key' => 'rpmname', 'value'=>get_string('rpmname', 'report_elucidsitereport'), 'dbkey' => 'CONCAT(rpm.firstname, " ", rpm.lastname)'),
             );
         }
-        $fields = array_merge($userfields, $coursefields, $lpfields, $rpmfields);
+        $fields['userfields']   = $userfields;
+        $fields['coursefields'] = $coursefields;
+        $fields['lpfields']     = $lpfields;
+        $fields['rpmfields']    = $rpmfields;
         return $fields;
     }
 }

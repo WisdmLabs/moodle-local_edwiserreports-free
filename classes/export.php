@@ -618,7 +618,7 @@ class export {
     public function export_csv_customquery_report_data($fields, $reportingmanagers, $lps, $courses, $enrolstartdate, $enrolenddate, $completionstartdate, $completionenddate){
         global $DB;
         $fields = explode(',', $fields);
-        $fields = $this->getFilterBasedFields($lps, $reportingmanagers, $fields);
+        $fields = $this->get_filter_based_fields($lps, $reportingmanagers, $fields);
         //if enroldate not selected
         if ($enrolenddate == "") {
             $enrolenddate = time();
@@ -632,7 +632,7 @@ class export {
             $completionsql =  ' AND ec.timecompleted >= :completionstartdate AND ec.timecompleted <= :completionenddate';
         }
         // get selected fields in query format
-        list($customFields, $headers) =  $this->createQueryFields($fields);
+        list($customFields, $headers) =  $this->create_query_fields($fields);
 
         $params = array();
         // check courses
@@ -654,7 +654,7 @@ class export {
                 $params = array_merge($params, $inparams);
             }
             $tablename = 'lp_course_data';
-            $isChecked = $this->createTempTable($tablename, $lpdb, $params);
+            $isChecked = $this->create_temp_table($tablename, $lpdb, $params);
             $lpjoinquery = 'JOIN {wdm_learning_program_enrol} lpe ON lpe.userid = u.id AND lpe.learningprogramid '.$lpdb.'
                 JOIN {wdm_learning_program} lp ON lp.id = lpe.learningprogramid
                 JOIN {lp_course_data} lcd ON lcd.courseid = c.id AND lcd.lpid = lp.id';
@@ -688,13 +688,12 @@ class export {
                 JOIN {role} r ON r.id = ra.roleid
                 JOIN {context} ct ON ct.id = ra.contextid
                 JOIN {course} c ON c.id = ct.instanceid '.$lpjoinquery.'
-                JOIN {elucidsitereport_completion} ec ON ec.courseid = c.id AND ec.userid = u.id AND c.id '.$coursedb.' '.$rpmnamedb.'
+                JOIN {edw_course_progress} ec ON ec.courseid = c.id AND ec.userid = u.id AND c.id '.$coursedb.' '.$rpmnamedb.'
                 WHERE u.id '.$rpmdb.'
                 AND ct.contextlevel = '.CONTEXT_COURSE.'
                 AND r.archetype = "student"
                 AND u.deleted = false
                 AND ra.timemodified >= :enrolstartdate AND ra.timemodified <= :enrolenddate'.$completionsql;
-
         $params['enrolstartdate'] = $enrolstartdate;
         $params['enrolenddate'] = $enrolenddate;
         $params['completionstartdate'] = $completionstartdate;
@@ -720,7 +719,7 @@ class export {
      * @param  [string] $reportingmanagers Reporting Managers
      * @param  [array] $fields            Checkboxes fields
      */
-    public function getFilterBasedFields($lps, $reportingmanagers, $fields) {
+    public function get_filter_based_fields($lps, $reportingmanagers, $fields) {
         // remove the lp fields if lp is not selected
         if ($lps == "") {
             $fields = array_filter($fields, function ($string) {
@@ -741,7 +740,7 @@ class export {
      * @param  [string] $lpdb      [learning programs join query]
      * @param  [array] $params    [params for learning programs join query]
      */
-    public function createTempTable($tablename, $lpdb, $params) {
+    public function create_temp_table($tablename, $lpdb, $params) {
         global $DB, $CFG;
         $dbman = $DB->get_manager();
 
@@ -792,9 +791,11 @@ class export {
      * Create Query Fields by Filters
      * @param  [Array] $fields filtered fields
      */
-    public function createQueryFields($fields) {
+    public function create_query_fields($fields) {
         // Get all the fields
         $allFields = \report_elucidsitereport\output\elucidreport_renderable::get_report_fields();
+        $allFields = array_values($allFields);
+        $allFields = array_reduce($allFields, 'array_merge', array());
         // sort fields according to selected fields
         $header = array();
         $allFields = array_map(function($value) use ($fields, &$header) {

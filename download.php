@@ -61,7 +61,7 @@ if ($format = optional_param("format", false, PARAM_TEXT)) {
         $filename .= "_" . $filter;
     }
 
-    // Get export object 
+    // Get export object
     $export = new export($format, $region, $blockname);
 
     // If format is scheduled email then dont prepare data

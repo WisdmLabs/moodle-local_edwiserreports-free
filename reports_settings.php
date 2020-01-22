@@ -76,6 +76,7 @@ $mform = new report_blocks_form();
 //Form processing and displaying is done here
 if ($mform->is_cancelled()) {
     //Handle form cancel operation, if cancel button is present on form
+    redirect(new moodle_url('/report/elucidsitereport/reports_settings.php'));
 } elseif ($form_data = $mform->get_data()) {
     //In this case you process validated data. $mform->get_data() returns data posted in form.
     save_settings_form_data($form_data);
