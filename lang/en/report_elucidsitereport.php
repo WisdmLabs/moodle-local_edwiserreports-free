@@ -375,3 +375,4 @@ $string['incompletedactivities'] = 'Incompleted Activities';
 $string['coursecategory'] = 'Course Category';
 $string['lpenroldate'] = 'Learning Program Enrol Date';
 $string['courseenroldate'] = 'Course Enrol Date';
+$string['course_completion_status'] = 'Course Completion Status';

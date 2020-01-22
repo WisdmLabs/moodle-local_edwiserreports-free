@@ -137,7 +137,7 @@ class elucidreport_renderable implements renderable, templatable {
             array('key' => 'coursecategory', 'value'=>get_string('coursecategory', 'report_elucidsitereport'), 'dbkey' => 'ctg.name'),
             array('key' => 'courseenroldate', 'value'=>get_string('courseenroldate', 'report_elucidsitereport'), 'dbkey' => 'FROM_UNIXTIME(ra.timemodified, "%D %M %Y")'),
             array('key' => 'courseprogress', 'value'=>get_string('courseprogress', 'report_elucidsitereport'), 'dbkey' => 'ec.progress'),
-            array('key' => 'completionstatus', 'value'=>get_string('completions_status', 'report_elucidsitereport'), 'dbkey' => '(CASE ec.progress WHEN 100 THEN "Completed" ELSE "" END)'),
+            array('key' => 'completionstatus', 'value'=>get_string('course_completion_status', 'report_elucidsitereport'), 'dbkey' => '(CASE ec.progress WHEN 100 THEN "Completed" ELSE "In Progress" END)'),
             array('key' => 'activitiescompleted', 'value'=>get_string('activitiescompleted', 'report_elucidsitereport'), 'dbkey' => 'LENGTH(ec.completedmodules) - LENGTH(REPLACE(ec.completedmodules, ",", "")) + 1'),
             array('key' => 'incompletedactivities', 'value'=>get_string('incompletedactivities', 'report_elucidsitereport'), 'dbkey' => 'ec.totalmodules - (LENGTH(ec.completedmodules) - LENGTH(REPLACE(ec.completedmodules, ",", "")) + 1)'),
             array('key' => 'totalactivities', 'value'=>get_string('totalactivities', 'report_elucidsitereport'), 'dbkey' => 'ec.totalmodules'),
