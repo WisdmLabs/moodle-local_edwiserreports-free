@@ -135,6 +135,7 @@ class elucidreport_renderable implements renderable, templatable {
         $coursefields = array(
             array('key' => 'coursename', 'value'=>get_string('course', 'report_elucidsitereport'), 'dbkey' => 'c.fullname', 'disbaled' => true),
             array('key' => 'coursecategory', 'value'=>get_string('coursecategory', 'report_elucidsitereport'), 'dbkey' => 'ctg.name'),
+            array('key' => 'courseenroldate', 'value'=>get_string('courseenroldate', 'report_elucidsitereport'), 'dbkey' => 'FROM_UNIXTIME(ra.timemodified, "%D %M %Y")'),
             array('key' => 'courseprogress', 'value'=>get_string('courseprogress', 'report_elucidsitereport'), 'dbkey' => 'ec.progress'),
             array('key' => 'completionstatus', 'value'=>get_string('completions_status', 'report_elucidsitereport'), 'dbkey' => '(CASE ec.progress WHEN 100 THEN "Completed" ELSE "" END)'),
             array('key' => 'activitiescompleted', 'value'=>get_string('activitiescompleted', 'report_elucidsitereport'), 'dbkey' => 'LENGTH(ec.completedmodules) - LENGTH(REPLACE(ec.completedmodules, ",", "")) + 1'),
@@ -146,6 +147,7 @@ class elucidreport_renderable implements renderable, templatable {
         );
         $lpfields = array(
             array('key' => 'lpname', 'value'=>get_string('lpname', 'report_elucidsitereport'), 'dbkey' => 'lp.name', 'disbaled' => true),
+            array('key' => 'lpenroldate', 'value'=>get_string('lpenroldate', 'report_elucidsitereport'), 'dbkey' => 'FROM_UNIXTIME(lpe.timeenroled, "%D %M %Y")'),
             array('key' => 'lpstartdate', 'value'=>get_string('lpstartdate', 'report_elucidsitereport'), 'dbkey' => 'FROM_UNIXTIME(lp.timestart, "%D %M %Y")'),
             array('key' => 'lpenddate', 'value'=>get_string('lpenddate', 'report_elucidsitereport'), 'dbkey' => '(CASE lp.timeend WHEN 0 THEN "Never" ELSE FROM_UNIXTIME(lp.timeend, "%D %M %Y") END)'),
             array('key' => 'lpduration', 'value'=>get_string('lpduration', 'report_elucidsitereport'), 'dbkey' => 'lp.durationtime'),
