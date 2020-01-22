@@ -56,7 +56,6 @@ define([
                 );
             })
             .fail(function(error) {
-                console.log(error);
             });
             // hide checkboxes of Learning programs if LP is not selected
             if (!values.length) {

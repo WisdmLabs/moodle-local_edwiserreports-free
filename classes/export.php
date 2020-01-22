@@ -619,6 +619,7 @@ class export {
         global $DB;
         $fields = explode(',', $fields);
         $fields = $this->get_filter_based_fields($lps, $reportingmanagers, $fields);
+
         //if enroldate not selected
         if ($enrolenddate == "") {
             $enrolenddate = time();
@@ -639,7 +640,7 @@ class export {
         $courses = explode(',', $courses);
         $coursedb = '> 1';
         if (!in_array(0, $courses)) {
-            list($coursedb, $inparams) = $DB->get_in_or_equal($courses, SQL_PARAMS_NAMED, 'course', true);
+            list($coursedb, $inparams) = $DB->get_in_or_equal($courses, SQL_PARAMS_NAMED, 'course', true,true);
             $params = array_merge($params, $inparams);
         }
         // check learning programs
@@ -650,7 +651,7 @@ class export {
             $lps = explode(',', $lps);
             // get lps in In query
             if (!in_array(0, $lps)) {
-                list($lpdb, $inparams) = $DB->get_in_or_equal($lps, SQL_PARAMS_NAMED, 'lps', true);
+                list($lpdb, $inparams) = $DB->get_in_or_equal($lps, SQL_PARAMS_NAMED, 'lps', true, true);
                 $params = array_merge($params, $inparams);
             }
             $tablename = 'lp_course_data';
@@ -672,7 +673,7 @@ class export {
             } else {
                 $students = $rpm->get_all_reporting_managers_students($reportingmanagers);
             }
-            list($rpmdb, $inparams) = $DB->get_in_or_equal($students, SQL_PARAMS_NAMED, 'students', true);
+            list($rpmdb, $inparams) = $DB->get_in_or_equal($students, SQL_PARAMS_NAMED, 'students', true, true);
             $params = array_merge($params, $inparams);
             $rpmnamedb = "JOIN {user_info_data} uifd ON uifd.userid = u.id
                 JOIN {user} rpm ON uifd.data = rpm.id";
