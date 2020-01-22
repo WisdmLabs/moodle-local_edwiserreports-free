@@ -134,6 +134,7 @@ class elucidreport_renderable implements renderable, templatable {
         );
         $coursefields = array(
             array('key' => 'coursename', 'value'=>get_string('course', 'report_elucidsitereport'), 'dbkey' => 'c.fullname', 'disbaled' => true),
+            array('key' => 'coursecategory', 'value'=>get_string('coursecategory', 'report_elucidsitereport'), 'dbkey' => 'ctg.name'),
             array('key' => 'courseprogress', 'value'=>get_string('courseprogress', 'report_elucidsitereport'), 'dbkey' => 'ec.progress'),
             array('key' => 'completionstatus', 'value'=>get_string('completions_status', 'report_elucidsitereport'), 'dbkey' => '(CASE ec.progress WHEN 100 THEN "Completed" ELSE "" END)'),
             array('key' => 'activitiescompleted', 'value'=>get_string('activitiescompleted', 'report_elucidsitereport'), 'dbkey' => 'LENGTH(ec.completedmodules) - LENGTH(REPLACE(ec.completedmodules, ",", "")) + 1'),

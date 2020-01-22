@@ -372,3 +372,4 @@ $string['totalactivities'] = 'Total Activities';
 $string['completiontime'] = 'Course Completion Date';
 $string['activitiescompleted'] = 'Activities Completed';
 $string['incompletedactivities'] = 'Incompleted Activities';
+$string['coursecategory'] = 'Course Category';

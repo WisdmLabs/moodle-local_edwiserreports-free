@@ -689,6 +689,7 @@ class export {
                 JOIN {context} ct ON ct.id = ra.contextid
                 JOIN {course} c ON c.id = ct.instanceid '.$lpjoinquery.'
                 JOIN {edw_course_progress} ec ON ec.courseid = c.id AND ec.userid = u.id AND c.id '.$coursedb.' '.$rpmnamedb.'
+                JOIN {course_categories} ctg ON ctg.id = c.category
                 WHERE u.id '.$rpmdb.'
                 AND ct.contextlevel = '.CONTEXT_COURSE.'
                 AND r.archetype = "student"
