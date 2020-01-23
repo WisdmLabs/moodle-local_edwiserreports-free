@@ -91,19 +91,23 @@ define([
             })
             .done(function(response) {
                 $("#ed_lps").html('');
+                $("#ed_courses").html('');
                 var template = "report_elucidsitereport/customquery_lpoptions";
                 var context = {lps:response.lps};
-                Templates.render(template, context).then(function(html, js) {
-                        Templates.appendNodeContents($("#ed_lps"), html , js);
-                    }
-                );
-                $("#ed_courses").html('');
-                var template = "report_elucidsitereport/customquery_options";
-                var context = {courses:response.courses};
-                Templates.render(template, context).then(function(html, js) {
-                        Templates.appendNodeContents($("#ed_courses"), html , js);
-                    }
-                );
+                if (response.lps.length > 0) {
+                    Templates.render(template, context).then(function(html, js) {
+                            Templates.appendNodeContents($("#ed_lps"), html , js);
+                        }
+                    );
+                }
+                if (response.courses.length > 0) {
+                    var template = "report_elucidsitereport/customquery_options";
+                    var context = {courses:response.courses};
+                    Templates.render(template, context).then(function(html, js) {
+                            Templates.appendNodeContents($("#ed_courses"), html , js);
+                        }
+                    );
+                }
             })
             .fail(function(error) {
                 console.log(error);
