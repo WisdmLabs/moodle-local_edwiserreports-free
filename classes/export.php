@@ -604,6 +604,115 @@ class export {
         header("Pragma: no-cache");
         header("Expires: 0");
     }
+
+    /**
+     * Get Lp detailed reports
+     * @param  [type] $lpid [description]
+     * @param  [type] $xls  [description]
+     * @return [type]       [description]
+     */
+    public function get_lpdetailed_report_excel($lpid, &$workbook, $cohortid = false) {
+        global $CFG, $DB;
+
+        require_once($CFG->dirroot."/report/elucidsitereport/classes/blocks/lpstats_block.php");
+
+        // Get learning program
+        $table = 'wdm_learning_program';
+        $lp = $DB->get_record($table, array('id' => $lpid));
+
+        // If no learning program found
+        if (!$lp) {
+            return false;
+        }
+        // Adding the worksheet
+        $xls = $workbook->add_worksheet($lp->name);
+
+        // Get Lp reports
+        $lpreports = \report_elucidsitereport\lpstats_block::get_lpstats_usersdata($lpid, $cohortid);
+
+        // Prepare report header
+        $header = \report_elucidsitereport\lpstats_block::get_header_report();
+        $courseids = json_decode($lp->courses);
+        foreach ($lpreports->courses as $course) {
+            $header[] = $course->shortname;
+        }
+
+        // Add additional headers
+        $header = array_merge($header, array(
+            get_string('avgprogress', 'report_elucidsitereport'),
+            get_string('completedactivity', 'report_elucidsitereport'),
+        ));
+
+        // Add custom fields
+        $this->inseart_custom_filed_header($header);
+
+        // Render reporting header
+        $colnum = 0;
+        foreach (array_values($header) as $colnum => $head) {
+            $xls->write_string(0, $colnum, $head);
+        }
+
+        // Add reports data
+        foreach($lpreports->users as $key => $user) {
+            $colnum = 0;
+            $ckey = $key + 1;
+            $xls->write_string($ckey, $colnum++, $user->name);
+            $xls->write_string($ckey, $colnum++, $user->email);
+            $xls->write_string($ckey, $colnum++, $user->enrolled);
+            $xls->write_string($ckey, $colnum++, $user->lastaccess);
+            $xls->write_string($ckey, $colnum++, $user->grade);
+
+            // Prepare progress fpor each courses
+            foreach ($user->progress as $progress) {
+                $xls->write_string($ckey, $colnum++, $progress);
+            }
+
+            // Add avg progress
+            $xls->write_string($ckey, $colnum++, $user->avgprogress);
+
+            // Add completed activities
+            $xls->write_string($ckey, $colnum++, $user->completedactivities);
+
+            // Add custom data
+            $customdata = new stdClass();
+            $this->inseart_custom_filed_data($customdata, $user->id);
+            foreach ($customdata as $data) {
+                $xls->write_string($ckey, $colnum++, $data);
+            }
+        }
+    }
+
+    /**
+     * Export Learning progra
+     * @param  [type] $type      [description]
+     * @param  [type] $filters   [description]
+     * @param  [type] $startdate [description]
+     * @param  [type] $enddate   [description]
+     * @return [type]            [description]
+     */
+    public function export_lpdetailed_report_data($type, $filters, $startdate, $enddate) {
+        $filename = 'Lp_Deailed_Reports_';
+
+        $filename .= date('d_m_Y', time()) . '.xls';
+
+        // Get Cohort ID
+        $cohortid = optional_param('cohortid', false, PARAM_INT);
+
+        // Creating a workbook
+        $workbook = new MoodleExcelWorkbook($filename);
+        
+        // For each pages create worksheet
+        $filters = explode(',', $filters);
+        foreach($filters as $filter) {
+            $this->get_lpdetailed_report_excel($filter, $workbook, $cohortid);
+        }
+
+        // Sending HTTP headers
+        $workbook->send($filename);
+
+        // Close the workbook
+        $workbook->close();
+    }
     /**
      * Export CSV for custom query report
      * @param  [strinf] $fields              [Selected Fields]
@@ -907,6 +1016,7 @@ class export {
         $head['firstname'] = get_string('firstname', $component);
         $head['lastname'] = get_string('lastname', $component);
         $head['email'] = get_string('email', $component);
+        $head['activitycompleted'] = get_string('completedactivity', $component);
 
         // Inseart custom fields as header
         $this->inseart_custom_filed_header($head);
@@ -950,13 +1060,17 @@ class export {
             
             if ($field->datatype == 'dynamicmenu') {
                 $dynamicdata = $DB->get_records_sql($field->param1);
-                if (isset($dynamicdata[$customdata]) && $dynamicdata[$customdata] !== "") {
-                    $data->$key = $dynamicdata[$customdata]->data;
-                } else {
+                if ($customdata == 0) {
                     $data->$key = "";
+                } else {
+                    if (isset($dynamicdata[$customdata]) && $dynamicdata[$customdata] !== "") {
+                        $data->$key = $dynamicdata[$customdata]->data;
+                    } else {
+                        $data->$key = "";
+                    }
                 }
             } else {
-                $data->$key = $customdata;
+                $data->$key = '"' . $customdata . '"';
             }
         }
     }
@@ -1067,21 +1181,24 @@ class export {
             // Prepare reports for each students
             foreach ($enrolments as $enrolment) {
                 // Get Lp startdate and enddate
-                if ($lp->duration) {
+                /*if ($lp->duration) {
                     $startdate = $enrolment->timeneroled;
                     $enddate = $startdate + $lp->durationtime;
                 } else {
                     $startdate = $lp->timestart;
                     $enddate = $lp->timeend;
-                }
+                }*/
 
-                if ($startdate < $enrolstartdate && $enddate > $enrolenddate) {
+                // If startdate is less then the selected start date
+                if ($enrolment->timeenroled < $enrolstartdate || $enrolment->timeenroled > $enrolenddate) {
                     continue;
                 }
 
                 // Get all course reports which is in learning program
                 $completionavg = 0;
                 $coursecount = 0;
+                $completedactivities = 0;
+                $totalactivities = 0;
                 foreach(json_decode($lp->courses) as $courseid) {
                     // If course is not there then return from here
                     if (!$course = $DB->get_record('course', array('id' => $courseid))) {
@@ -1089,10 +1206,12 @@ class export {
                     }
 
                     // Get completions data
-                    $completion = (object) \report_elucidsitereport\utility::get_course_completion_info($course, $enrolment->userid);
+                    $completion = \report_elucidsitereport\utility::get_course_completion_info($course, $enrolment->userid);
 
-                    if ($completion && empty($completion)) {
-                        $completionavg += $completion->progresspercentage;
+                    if ($completion && !empty($completion)) {
+                        $completionavg += $completion['progresspercentage'];
+                        $completedactivities += $completion['completedactivities'];
+                        $totalactivities += $completion['totalactivities'];
                     }
 
                     // Increase course count
@@ -1111,7 +1230,8 @@ class export {
                 $data->username = $user->username;
                 $data->enrolledon = date('d-M-y', $enrolment->timeenroled);
                 $data->lpname = $lp->name;
-                $data->average = $completionavg / $coursecount . "%";
+                $data->average = number_format($completionavg / $coursecount, 2) . "%";
+                $data->activitycompleted = '(' . $completedactivities . '/' . $totalactivities . ')';
 
                 // Inseart custom field data
                 $this->inseart_custom_filed_data($data, $user->id);

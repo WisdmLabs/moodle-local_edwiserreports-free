@@ -25,11 +25,13 @@
     </thead>
     <tbody></tbody>
 </table>
-<a id="wdm-lpdetailedreport" class="btn btn-secondary mt-5 pull-right">
+<a id="wdm-lpdetailedreport" class="btn btn-secondary mt-10 pull-right" style="display: none;">
     {{#str}} exportlpdetailedreport, report_elucidsitereport {{/str}}
 </a>
-<form id="wdm-lpdetailedreport-form" action="{{formaction}}" target="_blank" class="hidden">
-    <input class="" name="filters"/>
+<form id="wdm-lpdetailedreport-form" action="{{formaction}}" target="_blank" class="hidden" method="post">
+    <input type="hidden" name="filters"/>
+    <input type="hidden" name="reporttype" value="lpdetailed"/>
+    <input type="hidden" name="cohortid" value="{{cohortid}}"/>
 </form>
 {{#js}}
 require(['report_elucidsitereport/lpdetailedreport'], function() {

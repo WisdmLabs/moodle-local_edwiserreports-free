@@ -937,7 +937,7 @@ class utility {
         global $DB;
         $sql = "SELECT ue.*, e.enrol FROM {user_enrolments} ue
             JOIN {enrol} e ON e.id = ue.enrolid
-            WHERE ue.userid = :uid AND e.courseid = :cid";
+            WHERE ue.userid = :uid AND e.courseid = :cid LIMIT 1";
         return $DB->get_record_sql($sql, array('uid' => $userid, 'cid' => $courseid));
     }
     /**

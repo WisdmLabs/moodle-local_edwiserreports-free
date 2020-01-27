@@ -38,15 +38,29 @@
                         </div>
                     </td>
                 </tr>
-                <tr>
+                <tr class="enrol-selector" style="display: none;">
                     <td>
-                        <b>{{#str}} enrolmentrangeselector, report_elucidsitereport {{/str}} :</b>
+                        <b>{{#str}} enrolmentstartdate, report_elucidsitereport {{/str}} :</b>
                     </td>
                     <td>
-                        {{! Flatpicker to select date range }}
+                        {{! Flatpicker to start date }}
                         <div class="form-group mb-0">
                             <div class="input-search input-search-dark">
-                                <input type="text" id="wdmCustomReportRangeSelector" placeholder="{{#str}} selectdaterange, report_elucidsitereport{{/str}}" class="form-control rounded w-250" data-input/>
+                                <input type="text" id="wdmCustomReportEnrolStart" placeholder="{{#str}} enrolmentstartdate, report_elucidsitereport{{/str}}" class="custom-flatpicker form-control rounded w-200" data-input/>
+                                <button type="button" class="input-search-close icon wb-close" aria-label="Close"></button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="enrol-selector" style="display: none;">
+                    <td>
+                        <b>{{#str}} enrolmentenddate, report_elucidsitereport {{/str}} :</b>
+                    </td>
+                    <td>
+                        {{! Flatpicker to end date }}
+                        <div class="form-group mb-0">
+                            <div class="input-search input-search-dark">
+                                <input type="text" id="wdmCustomReportEnrolEnd" placeholder="{{#str}} enrolmentenddate, report_elucidsitereport{{/str}}" class="custom-flatpicker form-control rounded w-200" data-input/>
                                 <button type="button" class="input-search-close icon wb-close" aria-label="Close"></button>
                             </div>
                         </div>
@@ -120,283 +134,14 @@
                 </div>
             </div>
             <div id="errorMsg" class="alert alert-danger fade hide mt-10" role="alert">
-                {{#str}} customreportfailed, report_elucidsitereport {{/str}}
+                {{#str}} customreportselectfailed, report_elucidsitereport {{/str}}
             </div>
         </div>
     </div>
 </div>
 
 {{#js}}
-require([
-    'jquery',
-    'report_elucidsitereport/defaultconfig',
-    'report_elucidsitereport/variables',
-    'report_elucidsitereport/flatpickr',
-    'report_elucidsitereport/jquery.dataTables',
-    'report_elucidsitereport/dataTables.bootstrap4'
-], ($, config, v) => {
-    /**
-     * Selector datable variable
-     * @type {object | null}
-     */
-    let selectorTable = null;
-
-    /**
-     * Get panel of custom reports block
-     * @type {string}
-     */
-    const panel = config.getPanel("#customReportBlock");
-
-    /**
-     * Report type selector
-     * @type {string}
-     */
-    const reportSelector = `${panel} .dropdown-menu .dropdown-item`
-
-    /**
-     * Report type selector
-     * @type {string}
-     */
-    let selectorType = `courses`
-
-    /**
-     * Custom report download button
-     * @type {string}
-     */
-    let downloadBtn =  `${panel} #customReportDownload`
-
-    /**
-     * Custom Report Download Dropdown
-     * @type {object}
-     */
-    let customDropdown = $(panel).find('#customReportDrodown')
-
-    /**
-     * Custom Reports form
-     * @type {object}
-     */
-    let reportForm = $(panel).find('#customReportsForm')
-
-    /**
-     * Loader to download reports
-     * @type {String}
-     */
-    let windowLoader = '<div id="cover-spin"></div>';
-
-    /**
-     * Selected Checkboxes
-     * @type {object}
-     */
-    let getCheckboxesSelector = (tableSelector) => {
-        return `${panel} ${tableSelector} input[name^=customReportSelect-]`
-    }
-
-    /*
-     * Get custom report selectors
-     * It may be courses of learning program
-     * Courses | Learning Programs
-     */
-    const getCustomReportSelector = (selectedDates, dateStr, instance) => {
-        if (selectedDates.length == 2) {
-            // Get starttime and end time
-            let startTime = selectedDates[0].getTime()
-            let endTime = selectedDates[1].getTime()
-
-            // Set form value startdate and enddate
-            reportForm.find('input[name=enrolstartdate]').val(startTime / 1000)
-            reportForm.find('input[name=enrolenddate]').val(endTime / 1000)
-        } else {
-            // Set form value startdate and enddate
-            reportForm.find('input[name=enrolstartdate]').val("")
-            reportForm.find('input[name=enrolenddate]').val("")
-        }
-    }
-
-    /**
-     * Get datatable config for report
-     * @param  {string} selectorType Report Type
-     * @return {object}            Datatable config
-     */
-    const getDatatableConfig = (selectorType) => {
-        if (selectorType == 'lps') {
-            return {
-                "columns" : [
-                    { "data": "select"},
-                    { "data": "fullname" },
-                    { "data": "shortname" },
-                    { "data": "startdate" },
-                    { "data": "enddate" },
-                    { "data": "duration" },
-                ],
-                "language" : {
-                    "searchPlaceholder": "Search Learning Programs",
-                    "emptyTable": "There are no learning programs"
-                }
-            }
-        } else {
-            return {
-                "columns" : [
-                    { "data": "select"},
-                    { "data": "fullname" },
-                    { "data": "shortname" },
-                    { "data": "category" },
-                    { "data": "startdate" },
-                    { "data": "enddate" },
-                ],
-                "language" : {
-                    "searchPlaceholder": "Search courses",
-                    "emptyTable": "There are no courses"
-                }
-            }
-        }
-    }
-
-    /**
-     * Creat Selector Table to select courses/lps
-     * @param  {string} type      Selector type courses/lps
-     * @param  {int} startdate    Enrolment Start Date
-     * @param  {int} enddate      Enrolment End Date
-     */
-    let createSelectorTable = (type, tableSelectorClass) => {
-        // If table is already there then remove table
-        if (selectorTable) {
-            selectorTable.destroy()
-        }
-
-        $(`${panel} input[name="selectAllCustom"]`).prop("checked", false)
-
-        // Custom Report Selector Body
-        const customReportSelectors = $(panel).find('.customReportSelectors')
-        const rootContainer = $(panel).find('.rootContainer')
-
-        // Prepare filter to get selectors data
-        let filter = JSON.stringify({
-            type : type
-        })
-
-        // Prepare url to get selector related data
-        let url = `${v.requestUrl}?action=get_customreport_selectors_ajax&sesskey={{sesskey}}&filter=${filter}`
-
-        // Show custom report selectors
-        rootContainer.show();
-
-        // Get dataTable config
-        let dtConfig = getDatatableConfig(type)
-
-        // Get all courses/learningprogram
-        selectorTable = customReportSelectors.find(tableSelectorClass).show().DataTable( {
-            ajax : url,
-            columns : dtConfig.columns,
-            language: dtConfig.language,
-            responsive : true,
-            scrollY : "380px",
-            scroller: {
-                loadingIndicator: true
-            },
-            scrollCollapse : true,
-            scrollX: true,
-            paging: false,
-            bInfo : false,
-            bSort : false
-        }).columns.adjust();
-    }
-
-    /**
-     *  Create flatpicker to select custom date range
-     */
-    $(panel).find('#wdmCustomReportRangeSelector').flatpickr({
-        mode: 'range',
-        altInput: true,
-        altFormat: "d/m/Y",
-        dateFormat: "Y-m-d",
-        maxDate: "today",
-        onClose: getCustomReportSelector
-    })
-
-    // Clear search input text
-    $(document).on('click', '#wdmCustomReportRangeSelector ~ button.input-search-close', function() {
-        $('#wdmCustomReportRangeSelector ~ input.form-control').val("")
-
-        // Set form value startdate and enddate
-        reportForm.find('input[name=enrolstartdate]').val("")
-        reportForm.find('input[name=enrolenddate]').val("")
-    })
-
-    /**
-     * Check all courses/lps
-     * @param  {String} document).on('change', `${panel}   input[name [description]
-     * @return {[type]}                        [description]
-     */
-    $(document).on('change', `${panel} input[name="selectAllCustom"]`, (event) => {
-        // Get table selector
-        let tableSelectorClass = '.course-table'
-        if (selectorType == 'lps') {
-            tableSelectorClass = '.lp-table'
-        }
-
-        // Get checkboxes
-        let checkboxes = getCheckboxesSelector(tableSelectorClass)
-        if ($(event.target).is(':checked')) {
-            $(checkboxes).prop("checked", true)
-        } else {
-            $(checkboxes).prop("checked", false)
-        }
-    })
-
-    /**
-     * Get courses/lps when dropdown selected 
-     */
-    $(document).on('click', reportSelector, (event) => {
-        let dropdown = $(event.target).closest('.dropdown')
-        selectorType = $(event.target).data('val')
-
-        // Set dropdown value
-        customDropdown.html($(event.target).html())
-        customDropdown.data('val', selectorType)
-
-        // Get table selector
-        let tableSelectorClass = '.course-table'
-        if (selectorType == 'lps') {
-            tableSelectorClass = '.lp-table'
-        }
-        
-        // Hide table in panel body
-        $(panel).find('.table').hide()
-
-        // Set form value
-        reportForm.find('input[name=reporttype]').val(selectorType)
-
-        // Create table for selectors table
-        createSelectorTable(selectorType, tableSelectorClass)
-    })
-
-    /**
-     * Download reports in csv format
-     */
-    $(document).on('click', downloadBtn, (event) => {
-        // Get table selector
-        let tableSelectorClass = '.course-table'
-        if (selectorType == 'lps') {
-             tableSelectorClass = '.lp-table'
-        }
-        // Get checkboxes
-        let checkboxes = getCheckboxesSelector(tableSelectorClass)
-        // If no data selected
-        if (!$(`${checkboxes}:checked`).length) {
-            $(panel).find('#errorMsg').addClass('show').removeClass('hide');
-            setTimeout(() => {
-                $(panel).find('#errorMsg').addClass('hide').removeClass('show');
-            }, 5000)
-            return false;
-        }
-
-        filters = [];
-        $(`${checkboxes}:checked`).each((idx, ele) => {
-           filters.push($(ele).data('id'))
-        })
-
-        // Set form value
-        reportForm.find('input[name=filters]').val(filters.join(","))
-   })
-})
+require(['report_elucidsitereport/block_customreports'], function () {
+    Breakpoints();
+});
 {{/js}}

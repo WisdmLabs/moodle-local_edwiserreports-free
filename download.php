@@ -61,7 +61,7 @@ if ($format = optional_param("format", false, PARAM_TEXT)) {
         $filename .= "_" . $filter;
     }
 
-    // Get export object
+    // Get export object 
     $export = new export($format, $region, $blockname);
 
     // If format is scheduled email then dont prepare data
@@ -84,7 +84,10 @@ if ($format = optional_param("format", false, PARAM_TEXT)) {
     // Get export object
     $export = new export(null, null, null);
     // check report type is query report
-    if ($reporttype == 'queryReport') {
+    if ($reporttype == 'lpdetailed') {
+        // Render csv data in csv file
+        $export->export_lpdetailed_report_data($reporttype, $filters, $enrolstartdate, $enrolenddate);
+    } else if ($reporttype == 'queryReport') {
         $fields = optional_param('checkedFields', null, PARAM_TEXT);
         $reportingmanagers = optional_param('reportingmanagers', null, PARAM_TEXT);
         $lps = optional_param('lps', null, PARAM_TEXT);

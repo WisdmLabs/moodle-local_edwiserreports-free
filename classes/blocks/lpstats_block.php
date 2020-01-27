@@ -116,7 +116,7 @@ class lpstats_block extends utility {
         $lpinfo = new stdClass();
         $lpinfo->courses = array();
         $lpinfo->users = array();
-        $lpinfo->coursecount = count($courses) + 1;
+        $lpinfo->coursecount = $courses ? count($courses) + 1 : 0;
         $flag = true;
 
         foreach ($lpenrolment as $enrol) {
@@ -127,11 +127,14 @@ class lpstats_block extends utility {
                 }
             }
 
-            $user = core_user::get_user($enrol->userid, "id, firstname, lastname, email");
+            $user = core_user::get_user($enrol->userid);
 
             $userinfo = new stdClass();
             $avgprogress = 0;
-            $userinfo->name = $user->firstname . " " . $user->lastname;
+            $completedactivities = 0;
+            $totalactivities = 0;
+            $userinfo->id = $user->id;
+            $userinfo->name = fullname($user);
             $userinfo->email = $user->email;
             $userinfo->enrolled = date("d M y", $enrol->timeenroled);
             $userinfo->lastaccess = $enrol->lastaccess ? date("d M y", $enrol->lastaccess) : get_string("notyet", "report_elucidsitereport");
@@ -161,6 +164,8 @@ class lpstats_block extends utility {
                 if (isset($completion["progresspercentage"])) {
                     $userinfo->progress[] = $completion["progresspercentage"] . "%";
                     $avgprogress += $completion["progresspercentage"];
+                    $completedactivities += $completion["completedactivities"];
+                    $totalactivities += $completion["totalactivities"];
                 } else {
                     $userinfo->progress[] = "NA";
                 }
@@ -172,10 +177,13 @@ class lpstats_block extends utility {
             }
 
             if ($lpinfo->coursecount > 1) {
-                $userinfo->avgprogress = number_format($avgprogress / ($lpinfo->coursecount - 1)) . "%";
+                $userinfo->avgprogress = number_format($avgprogress / ($lpinfo->coursecount - 1), 2) . "%";
             } else {
-                $userinfo->avgprogress = 0;
+                $userinfo->avgprogress = number_format(0, 2);
             }
+
+            // Add completed activities in lp completions information
+            $userinfo->completedactivities = '(' . $completedactivities . '/' . $totalactivities . ')';
 
             $userinfo->grade = number_format($userinfo->grade, 2);
             $lpinfo->users[] = $userinfo;
