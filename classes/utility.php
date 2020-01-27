@@ -837,18 +837,18 @@ class utility {
             // If duration is set in learning program
             if ($lp->duration) {
                 // Get duration time
-                $res->duration = format_time($lp->durationtime);
+                $res->duration = format_time($lp['durationtime']);
 
                 // Set starttime and endtime not applicable
                 $res->startdate = get_string('na', 'report_elucidsitereport');
                 $res->enddate = get_string('na', 'report_elucidsitereport');
             } else {
                 // Get learning programs startdate in redable format
-                $res->startdate = date('d-M-Y', $lp->timestart);
+                $res->startdate = date('d-M-Y', $lp['timestart']);
 
                 // Get learning programs end date in readable format
-                if ($lp->timeend) {
-                    $res->enddate = date('d-M-Y', $lp->timeend);
+                if ($lp['timeend']) {
+                    $res->enddate = date('d-M-Y', $lp['timeend']);
                 } else {
                     $res->enddate = get_string('never');
                 }
