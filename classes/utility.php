@@ -197,7 +197,8 @@ class utility {
      */
     public static function get_lps() {
         global $DB;
-        $fields = "DISTINCT(lp.id), lp.name, lp.shortname, lp.courses";
+        $fields = "DISTINCT(lp.id) as id, lp.name, lp.shortname, lp.programid, lp.visible, lp.selfenrolment, lp.description, lp.featureimage, lp.courses, lp.duration, lp.durationtime, lp.coursesequenceenable, lp.timecreated, lp.timemodified, lp.timestart, lp.timeend";
+
         // $fields = "id, name, shortname, courses";
         //$form = new MoodleQuickForm('learningprogram', 'post', '#');
         // Create reporting manager instance
@@ -234,10 +235,7 @@ class utility {
                 continue;
             }
 
-            $lps[] = array(
-                "id" => $lp->id,
-                "fullname" => $lp->name
-            );
+            $lps[] = (array) $lp;
         }
 
         return $lps;
@@ -809,15 +807,14 @@ class utility {
         global $DB;
 
         // Get all learning programs
-        $table = 'wdm_learning_program';
-        $lps = $DB->get_records($table, array());
+        $lps = self::get_lps();
 
         // Prepare lp related data
         $response = array();
         foreach ($lps as $key => $lp) {
             $res = new stdClass();
-            $res->fullname = $lp->name;
-            $res->shortname = $lp->shortname;
+            $res->fullname = $lp['name'];
+            $res->shortname = $lp['shortname'];
 
             // Prepare selector checkbox to select courses
             $res->select = html_writer::start_tag('span',
@@ -825,14 +822,14 @@ class utility {
             $res->select .= html_writer::tag('input', '',
                 array(
                     "type" => "checkbox",
-                    "name" => "customReportSelect-" . $lp->id,
-                    "data-id" => $lp->id
+                    "name" => "customReportSelect-" . $lp['id'],
+                    "data-id" => $lp['id']
                 )
             );
             $res->select .= html_writer::tag('label', '',
                 array(
-                    "class" => "selectorCheckbox-" . $lp->id,
-                    "for" => "customReportSelect-" . $lp->id
+                    "class" => "selectorCheckbox-" . $lp['id'],
+                    "for" => "customReportSelect-" . $lp['id']
                 )
             );
             $res->select .= html_writer::end_tag('span');
@@ -992,5 +989,35 @@ class utility {
             $courses = \report_elucidsitereport\utility::get_lp_courses($lpIds);
         }
         return array('courses' => $courses, 'lps' =>$lps);
+    }
+
+    /**
+     * Get learning program students
+     * @param  $lpid   Lp Id
+     * @return [array] Array of users
+     */
+    public static function get_lp_students($lpid) {
+        global $DB;
+
+        // Reporting manager object
+        $rpm = reporting_manager::get_instance();
+
+        // Prepare parameters
+        $params = array(
+            'lpid' => $lpid,
+            'roleid' => 0
+        );
+
+        // SQL to get leraning program records
+        $sql = "SELECT * FROM {wdm_learning_program_enrol}
+                WHERE learningprogramid = :lpid
+                AND roleid = :roleid
+                AND userid " . $rpm->insql;
+
+        // Merge params for reporting manager
+        $params = array_merge($params, $rpm->inparams);
+
+        // Return all erolments
+        return $DB->get_records_sql($sql, $params);
     }
 }

@@ -28,6 +28,7 @@ namespace report_elucidsitereport;
 require_once($CFG->libdir."/csvlib.class.php");
 require_once($CFG->libdir."/excellib.class.php");
 require_once($CFG->libdir."/pdflib.php");
+require_once($CFG->dirroot."/report/elucidsitereport/classes/utility.php");
 require_once($CFG->dirroot."/report/elucidsitereport/classes/blocks/active_users_block.php");
 require_once($CFG->dirroot."/report/elucidsitereport/classes/blocks/active_courses_block.php");
 require_once($CFG->dirroot."/report/elucidsitereport/lib.php");
@@ -1174,20 +1175,10 @@ class export {
             $lp = $DB->get_record($table, array("id" => $lpid, "visible" => true));
 
             // Get only enrolled students
-            // '0' Is students role ID
-            $table = 'wdm_learning_program_enrol';
-            $enrolments = $DB->get_records($table, array("learningprogramid" => $lpid, "roleid" => 0));
+            $enrolments = \report_elucidsitereport\utility::get_lp_students($lpid);
 
             // Prepare reports for each students
             foreach ($enrolments as $enrolment) {
-                // Get Lp startdate and enddate
-                /*if ($lp->duration) {
-                    $startdate = $enrolment->timeneroled;
-                    $enddate = $startdate + $lp->durationtime;
-                } else {
-                    $startdate = $lp->timestart;
-                    $enddate = $lp->timeend;
-                }*/
 
                 // If startdate is less then the selected start date
                 if ($enrolment->timeenroled < $enrolstartdate || $enrolment->timeenroled > $enrolenddate) {
