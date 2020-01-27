@@ -173,7 +173,7 @@ class utility {
      */
     public static function get_courses($all = false) {
         global $DB;
-        $fields = "id, fullname, shortname";
+        $fields = "*";
         $records = $DB->get_records('course', array(), '', $fields);
 
         $courses = array();
@@ -873,7 +873,7 @@ class utility {
      */
     private static function get_customreport_course_selectors() {
         // Get all courses
-        $courses = get_courses();
+        $courses = \report_elucidsitereport\utility::get_courses();
 
         // Prepare course related data
         $response = array();

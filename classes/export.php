@@ -1095,7 +1095,7 @@ class export {
             $coursecontext = context_course::instance($course->id);
 
             // Get only enrolled students
-            $users = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+            $users = course_progress_block::rep_get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
 
             // Prepare reports for each students
             foreach ($users as $user) {
