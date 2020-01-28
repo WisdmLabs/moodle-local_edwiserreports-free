@@ -740,7 +740,7 @@ class export {
         $completionsql =  '';
         if ($completionenddate !== "") {
             $completionenddate += 24 * 60 * 60 - 1;
-            $completionsql =  ' AND ec.timecompleted >= :completionstartdate AND ec.timecompleted <= :completionenddate';
+            // $completionsql =  ' AND ec.timecompleted >= :completionstartdate AND ec.timecompleted <= :completionenddate';
         }
         // get selected fields in query format
         list($customFields, $headers) =  $this->create_query_fields($fields);

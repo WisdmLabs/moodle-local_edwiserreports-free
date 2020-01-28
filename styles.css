@@ -585,7 +585,7 @@ div[id^="wdm-"][id*="-individual"] table.table,
     padding: 10px 18px!important;
 }
 /* Custom Query Report */
-.row.reportfields {
+.reportfields {
     padding: 2%;
     border: 1px solid #8a8a8a52;
     margin: 1% 0 1% 0;

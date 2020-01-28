@@ -55,40 +55,51 @@
           	</div>
           	<div class="row mt-25">
           		<div class="col-md-4">
-	          		<label>Report Fields</label>
+	          		<label>{{#str}} reportfields, report_elucidsitereport {{/str}}</label>
           		</div>
           	</div>
-            <div class="row reportfields">
-              {{#reportfields.userfields}}
-              <div class="{{key}} col-md-3">
-                <div class="checkbox-custom checkbox-primary">
-                    <input type="checkbox" id="{{key}}" {{#disbaled}}disabled{{/disbaled}} checked>
-                    <label for="{{key}}">{{value}}</label>
-                  </div>
+            <div class="example-wrap reportfields">
+              <h5 class="example-title"><strong> {{#str}} userfields, report_elucidsitereport {{/str}} </strong></h5>
+              <div class="row">
+                {{#reportfields.userfields}}
+                <div class="{{key}} col-md-3">
+                  <div class="checkbox-custom checkbox-primary">
+                      <input type="checkbox" id="{{key}}" {{#disbaled}}disabled{{/disbaled}} checked>
+                      <label for="{{key}}">{{value}}</label>
+                    </div>
+                </div>
+                {{/reportfields.userfields}}
               </div>
-              {{/reportfields.userfields}}
             </div>
-          	<div class="row reportfields">
-          		{{#reportfields.coursefields}}
-          		<div class="{{key}} col-md-3">
-          			<div class="checkbox-custom checkbox-primary">
-	                  <input type="checkbox" id="{{key}}" {{#disbaled}}disabled{{/disbaled}} checked>
-	                  <label for="{{key}}">{{value}}</label>
-	                </div>
-          		</div>
-          		{{/reportfields.coursefields}}
-          	</div>
-            <div class="lpfields row reportfields">
-              {{#reportfields.lpfields}}
-              <div class="{{key}} col-md-3">
-                <div class="checkbox-custom checkbox-primary">
-                    <input type="checkbox" id="{{key}}" {{#disbaled}}disabled{{/disbaled}} checked>
-                    <label for="{{key}}">{{value}}</label>
-                  </div>
+            <div class="example-wrap reportfields">
+              <h5 class="example-title"><strong> {{#str}} coursefields, report_elucidsitereport {{/str}} </strong></h5>
+            	<div class="row">
+            		{{#reportfields.coursefields}}
+            		<div class="{{key}} col-md-3">
+            			<div class="checkbox-custom checkbox-primary">
+  	                  <input type="checkbox" id="{{key}}" {{#disbaled}}disabled{{/disbaled}} checked>
+  	                  <label for="{{key}}">{{value}}</label>
+  	                </div>
+            		</div>
+            		{{/reportfields.coursefields}}
+            	</div>
+            </div>
+            <div class="example-wrap reportfields">
+              <h5 class="example-title"><strong> {{#str}} lpfields, report_elucidsitereport {{/str}} </strong></h5>
+              <div class="lpfields row">
+                {{#reportfields.lpfields}}
+                <div class="{{key}} col-md-3">
+                  <div class="checkbox-custom checkbox-primary">
+                      <input type="checkbox" id="{{key}}" {{#disbaled}}disabled{{/disbaled}} checked>
+                      <label for="{{key}}">{{value}}</label>
+                    </div>
+                </div>
+                {{/reportfields.lpfields}}
               </div>
-              {{/reportfields.lpfields}}
             </div>
-            <div class="rpmfields row reportfields">
+            <div class="example-wrap reportfields">
+              <h5 class="example-title"><strong> {{#str}} rpfields, report_elucidsitereport {{/str}} </strong></h5>
+            <div class="rpmfields row">
               {{#reportfields.rpmfields}}
               <div class="{{key}} col-md-3">
                 <div class="checkbox-custom checkbox-primary">
@@ -98,6 +109,7 @@
               </div>
               {{/reportfields.rpmfields}}
             </div>
+          </div>
           	<div class="row">
               <div class="col-md-3">
             		<div class="text-right mt-30">
