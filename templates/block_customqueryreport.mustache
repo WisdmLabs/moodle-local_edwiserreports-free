@@ -126,16 +126,16 @@
               <div class="col-md-3">
             		<div class="text-right mt-30">
                       <form action="{{downloadurl}}" target="_blank" method="post" id="customQueryReportsForm">
-                          <input type="text" name="reportingmanagers">
-                          <input type="text" name="lps">
-                          <input type="text" name="courses">
-                          <input type="text" name="enrolstartdate"/>
-                          <input type="text" name="enrolenddate"/>
-                          <input type="text" name="completionstartdate"/>
-                          <input type="text" name="completionenddate"/>
-                          <input type="text" name="reporttype"/>
-                          <input type="text" name="filters"/>
-                          <input type="text" name="checkedFields">
+                          <input type="hidden" name="reportingmanagers">
+                          <input type="hidden" name="lps">
+                          <input type="hidden" name="courses">
+                          <input type="hidden" name="enrolstartdate"/>
+                          <input type="hidden" name="enrolenddate"/>
+                          <input type="hidden" name="completionstartdate"/>
+                          <input type="hidden" name="completionenddate"/>
+                          <input type="hidden" name="reporttype"/>
+                          <input type="hidden" name="filters"/>
+                          <input type="hidden" name="checkedFields">
                           <button type="submit" id="customQueryReportDownload" class="btn btn-secondary">
                               {{#str}} downloadreportincsv , report_elucidsitereport {{/str}}
                           </button>
