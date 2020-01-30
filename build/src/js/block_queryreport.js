@@ -333,5 +333,40 @@ define([
         $("[data-hide]").on("click", function(){
             $(this).closest("." + $(this).attr("data-hide")).hide();
         });
+
+        // Unselect all fields
+        $('.reportfields a[class^="unselect-"]').on('click', function() {
+            $(this).closest('.reportfields')
+                .find('input[type="checkbox"]:not(:disabled)')
+                .prop("checked", false);
+            $(this).hide().siblings('a[class^="select-"]').show();
+        });
+
+        // Select  all fields
+        $('.reportfields a[class^="select-"]').on('click', function() {
+            $(this).closest('.reportfields')
+                .find('input[type="checkbox"]:not(:disabled)')
+                .prop("checked", true);
+            $(this).hide().siblings('a[class^="unselect-"]').show();
+        });
+
+        // Select and unselect on click of checkbox
+        $(panel).find('.checkbox-custom').on('click', function() {
+            const allCheckboxCount = $(this).closest('.reportfields')
+                .find('input[type="checkbox"]').length;
+            const selectedCheckboxCount = $(this).closest('.reportfields')
+                .find('input[type="checkbox"]:checked').length;
+
+            // If all checkboxes are seleced
+            if (allCheckboxCount == selectedCheckboxCount) {
+                $(this).closest('.reportfields')
+                    .find('a[class^="select-"]')
+                    .hide().siblings('a[class^="unselect-"]').show();
+            } else {
+                $(this).closest('.reportfields')
+                    .find('a[class^="unselect-"]')
+                    .hide().siblings('a[class^="select-"]').show();
+            }
+        })
     });
 });

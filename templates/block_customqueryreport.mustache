@@ -66,12 +66,20 @@
 	          		<label>{{#str}} reportfields, report_elucidsitereport {{/str}}</label>
           		</div>
           	</div>
-            <div class="example-wrap reportfields">
-              <h5 class="example-title"><strong> {{#str}} userfields, report_elucidsitereport {{/str}} </strong></h5>
+            <div class="userfields example-wrap reportfields">
+              <h5 class="example-title">
+                <strong> {{#str}} userfields, report_elucidsitereport {{/str}} </strong>
+                <a class="unselect-userfields pull-right text-sm" href="javascript:void(0)">
+                    <small>{{#str}} unselectall, report_elucidsitereport {{/str}}</small>
+                </a>
+                <a class="select-userfields pull-right text-sm hidden" href="javascript:void(0)">
+                    <small>{{#str}} selectall, report_elucidsitereport {{/str}}</small>
+                </a>
+              </h5>
               <div class="row">
                 {{#reportfields.userfields}}
                 <div class="{{key}} col-md-3">
-                  <div class="checkbox-custom checkbox-primary">
+                    <div class="checkbox-custom checkbox-primary">
                       <input type="checkbox" id="{{key}}" {{#disbaled}}disabled{{/disbaled}} checked>
                       <label for="{{key}}">{{value}}</label>
                     </div>
@@ -79,8 +87,16 @@
                 {{/reportfields.userfields}}
               </div>
             </div>
-            <div class="example-wrap reportfields">
-              <h5 class="example-title"><strong> {{#str}} coursefields, report_elucidsitereport {{/str}} </strong></h5>
+            <div class="coursefields example-wrap reportfields">
+                <h5 class="example-title">
+                    <strong> {{#str}} coursefields, report_elucidsitereport {{/str}} </strong>
+                    <a class="unselect-coursefields pull-right text-sm" href="javascript:void(0)">
+                        <small>{{#str}} unselectall, report_elucidsitereport {{/str}}</small>
+                    </a>
+                    <a class="select-coursefields pull-right text-sm hidden" href="javascript:void(0)">
+                        <small>{{#str}} selectall, report_elucidsitereport {{/str}}</small>
+                    </a>
+                </h5>
             	<div class="row">
             		{{#reportfields.coursefields}}
             		<div class="{{key}} col-md-3">
@@ -94,7 +110,15 @@
             </div>
 
             <div class="lpreportfields example-wrap reportfields">
-              <h5 class="example-title"><strong> {{#str}} lpfields, report_elucidsitereport {{/str}} </strong></h5>
+              <h5 class="example-title">
+                  <strong> {{#str}} lpfields, report_elucidsitereport {{/str}} </strong>
+                  <a class="unselect-lpreportfields pull-right text-sm" href="javascript:void(0)">
+                  <small>{{#str}} unselectall, report_elucidsitereport {{/str}}</small>
+                  </a>
+                  <a class="select-lpreportfields pull-right text-sm hidden" href="javascript:void(0)">
+                      <small>{{#str}} selectall, report_elucidsitereport {{/str}}</small>
+                  </a>
+              </h5>
               <div class="lpfields row">
                 {{#reportfields.lpfields}}
                 <div class="{{key}} col-md-3">
@@ -109,18 +133,26 @@
 
             {{^isreportingmanager}}
             <div class="rpmreportfields example-wrap reportfields">
-              <h5 class="example-title"><strong> {{#str}} rpfields, report_elucidsitereport {{/str}} </strong></h5>
-            <div class="rpmfields row">
-              {{#reportfields.rpmfields}}
-              <div class="{{key}} col-md-3">
-                <div class="checkbox-custom checkbox-primary">
-                    <input type="checkbox" id="{{key}}" {{#disbaled}}disabled{{/disbaled}} checked>
-                    <label for="{{key}}">{{value}}</label>
+              <h5 class="example-title">
+                <strong> {{#str}} rpfields, report_elucidsitereport {{/str}} </strong>
+                <a class="unselect-rpmreportfields pull-right text-sm" href="javascript:void(0)">
+                  <small>{{#str}} unselectall, report_elucidsitereport {{/str}}</small>
+                </a>
+                <a class="select-rpmreportfields pull-right text-sm hidden" href="javascript:void(0)">
+                    <small>{{#str}} selectall, report_elucidsitereport {{/str}}</small>
+                </a>
+              </h5>
+              <div class="rpmfields row">
+                  {{#reportfields.rpmfields}}
+                  <div class="{{key}} col-md-3">
+                    <div class="checkbox-custom checkbox-primary">
+                        <input type="checkbox" id="{{key}}" {{#disbaled}}disabled{{/disbaled}} checked>
+                        <label for="{{key}}">{{value}}</label>
+                      </div>
                   </div>
+                  {{/reportfields.rpmfields}}
               </div>
-              {{/reportfields.rpmfields}}
             </div>
-          </div>
           {{/isreportingmanager}}
           	<div class="row">
               <div class="col-md-3">

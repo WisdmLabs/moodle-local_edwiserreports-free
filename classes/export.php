@@ -872,14 +872,16 @@ class export {
         $sql = "SELECT id, courses FROM {wdm_learning_program} WHERE id ".$lpdb;
         $records = $DB->get_records_sql($sql,  $params);
         $tempArray = array();
-
         // iterate and add new entry in table for each course with respect to lp
         array_map(function($value) use (&$tempArray) {
-            $courseids = json_decode($value->courses);
-            foreach ($courseids as $id) {
-                array_push($tempArray, array("lpid" => $value->id, "courseid" => $id));
+            if ($value->courses != NULL) {
+                $courseids = json_decode($value->courses);
+                foreach ($courseids as $id) {
+                    array_push($tempArray, array("lpid" => $value->id, "courseid" => $id));
+                }
             }
         }, $records);
+
         $DB->insert_records($tablename, $tempArray);
         return true;
     }
