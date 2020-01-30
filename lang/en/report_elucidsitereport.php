@@ -385,3 +385,7 @@ $string['coursecategory'] = 'Course Category';
 $string['lpenroldate'] = 'Learning Program Enrol Date';
 $string['courseenroldate'] = 'Course Enrol Date';
 $string['course_completion_status'] = 'Course Completion Status';
+
+/* ERROR string */
+$string['completiondatealert'] = "Select correct completion date range";
+$string['enroldatealert'] = "Select correct enrolment date range";

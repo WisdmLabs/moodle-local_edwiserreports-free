@@ -1,7 +1,7 @@
 var gulp = require('gulp'),
     concat = require('gulp-concat'),
     rename = require('gulp-rename'),
-    uglify = require('gulp-uglify-es').default;
+    uglify = require('gulp-uglify-es').default,
     sourcemaps = require('gulp-sourcemaps'),
     remove = require('gulp-rm'),
     sequence = require('run-sequence'),

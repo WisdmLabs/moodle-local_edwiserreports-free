@@ -140,89 +140,102 @@ define([
          */
         var panel = cfg.getPanel("#customQueryReportBlock");
 
+        /**
+         * Report form
+         * @type {Object}
+         */
         let reportForm = $(panel).find('#customQueryReportsForm');
-        /*
-         * Get custom report selectors
-         * It may be courses of learning program
-         * Courses | Learning Programs
-         */
-        const getCustomEnrollSelector = function(selectedDates, dateStr, instance) {
-            if (selectedDates.length == 2) {
-                // Get starttime and end time
-                let startTime = selectedDates[0].getTime()
-                let endTime = selectedDates[1].getTime()
-                // Set form value startdate and enddate
-                reportForm.find('input[name=enrolstartdate]').val(startTime / 1000)
-                reportForm.find('input[name=enrolenddate]').val(endTime / 1000)
-            } else {
-                // Set form value startdate and enddate
-                reportForm.find('input[name=enrolstartdate]').val("")
-                reportForm.find('input[name=enrolenddate]').val("")
-            }
-        }
 
         /**
-         *  Create flatpicker to select custom date range
+         * Create flatpicker
+         * @param  {string} type      [description]
+         * @param  {string} startdate [description]
+         * @param  {string} enddate   [description]
+         * @return {[type]}           [description]
          */
-        $(panel).find('#customqueryenroll').flatpickr({
-            mode: 'range',
-            altInput: true,
-            altFormat: "d/m/Y",
-            dateFormat: "Y-m-d",
-            maxDate: "today",
-            defaultDate: ["today", new Date().fp_incr(-30)],
-            onClose: getCustomEnrollSelector
-        });
+        const createFlatpicker = function(selector, type, startdate, maxdate) {
+            $(panel).find(selector).flatpickr({
+                mode: type,
+                altInput: true,
+                altFormat: "d/m/Y",
+                dateFormat: "Y-m-d",
+                maxDate: maxdate,
+                defaultDate: startdate,
+                onClose: getDateSelectorData,
+                onReady: getDateSelectorData
+            });
+        }
 
         /*
          * Get custom report selectors
          * It may be courses of learning program
          * Courses | Learning Programs
          */
-        const getCustomCompletionSelector = function(selectedDates, dateStr, instance) {
-            if (selectedDates.length == 2) {
-                // Get starttime and end time
-                let startTime = selectedDates[0].getTime()
-                let endTime = selectedDates[1].getTime()
-                // Set form value startdate and enddate
-                reportForm.find('input[name=completionstartdate]').val(startTime / 1000)
-                reportForm.find('input[name=completionenddate]').val(endTime / 1000)
-            } else {
-                // Set form value startdate and enddate
-                reportForm.find('input[name=completionstartdate]').val("")
-                reportForm.find('input[name=completionenddate]').val("")
+        const getDateSelectorData = function(selectedDates, dateStr, instance) {
+            // Get selected time
+            const time = selectedDates[0].getTime() / 1000;
+
+            // set values according to the selector
+            switch(true) {
+                case $(instance.element).is('#customqueryenrollstart'):
+                    reportForm.find('input[name=enrolstartdate]').val(time);
+                    break;
+
+                case $(instance.element).is('#customqueryenrollend'):
+                    reportForm.find('input[name=enrolenddate]').val(time);
+                    break;
+
+                case $(instance.element).is('#customquerycompletionstart'):
+                    reportForm.find('input[name=completionstartdate]').val(time);
+                    break;
+
+                case $(instance.element).is('#customquerycompletionend'):
+                    reportForm.find('input[name=completionenddate]').val(time);
+                    break;
             }
         }
+
+        // Create selectors for flatpicker
         /**
-         *  Create flatpicker to select custom date range
+         * Flat Picker Selectors
+         * @type {String}
          */
-        $(panel).find('#customquerycompletion').flatpickr({
-            mode: 'range',
-            altInput: true,
-            altFormat: "d/m/Y",
-            dateFormat: "Y-m-d",
-            maxDate: "today",
-            defaultDate: ["today", new Date().fp_incr(-30)],
-            onClose: getCustomCompletionSelector
-        });
+        const flatPickerSelectorStart = '#customqueryenrollstart, #customquerycompletionstart';
+        const flatPickerSelectorEnd = '#customqueryenrollend, #customquerycompletionend';
+        const threeMothsAgo = new Date().setDate(new Date().getDate() - 90);
+        createFlatpicker(flatPickerSelectorStart, 'single', threeMothsAgo, 'today');
+        createFlatpicker(flatPickerSelectorEnd, 'single', 'today', 'today');
 
-         // Clear search input text
-        $(document).on('click', '#customqueryenroll ~ button.input-search-close', function() {
-            $('#customqueryenroll ~ input.form-control').val("")
+        // Clear search input text
+        $(document).on('click', '#customqueryenrollstart ~ button.input-search-close', function() {
+            $('#customqueryenrollstart ~ input.form-control').val("")
 
-            // Set form value startdate and enddate
+            // Set form value startdate
             reportForm.find('input[name=enrolstartdate]').val("")
+        });
+
+        $(document).on('click', '#customqueryenrollend ~ button.input-search-close', function() {
+            $('#customqueryenrollend ~ input.form-control').val("")
+
+            // Set form value enddate
             reportForm.find('input[name=enrolenddate]').val("")
-        })
+        });
 
-         // Clear search input text
-        $(document).on('click', '#customquerycompletion ~ button.input-search-close', function() {
-            $('#customquerycompletion ~ input.form-control').val("")
+        // Clear search input text
+        $(document).on('click', '#customquerycompletionstart ~ button.input-search-close', function() {
+            $('#customquerycompletionstart ~ input.form-control').val("")
 
-            // Set form value startdate and enddate
-            reportForm.find('input[name=completionstartdate]').val("")
+            // Set form value startdate
             reportForm.find('input[name=completionenddate]').val("")
-        })
+        });
+
+        // Clear search input text
+        $(document).on('click', '#customquerycompletionend ~ button.input-search-close', function() {
+            $('#customquerycompletionend ~ input.form-control').val("")
+
+            // Set form value enddate
+            reportForm.find('input[name=completionstartdate]').val("")
+        });
 
         // function ti get the selected fileds from checkboxes
         function getSelectedFields() {
@@ -233,6 +246,7 @@ define([
             reportForm.find('input[name=reporttype]').val("queryReport");
             reportForm.find('input[name=checkedFields]').val(checkedFields);
         }
+
         // function to get filtered values
         function getFilters() {
             // Get Selected Reporting Managers
@@ -248,9 +262,61 @@ define([
             courses = $(panel).find("#ed_courses").val();
             reportForm.find('input[name=courses]').val(courses);
         }
+
+        /**
+         * Validate the custom report form
+         * @return {[type]} [description]
+         */
+        function validateCustomQueryReportForm(element) {
+            // Get courses
+            const courses = jQuery("#ed_courses > option:selected").length;
+
+            // Formdata
+            const formData = reportForm.serializeArray();
+
+            // Get form data for validation
+            const data = {};
+            $.each(formData, function(idx, val) {
+                data[val.name] = val.value;
+            });
+
+            // Validate form data
+            if (courses < 1) {
+                $(".coursealert").show();
+                setTimeout(function(){
+                    $(".coursealert").hide();
+                }, 3000);
+                element.preventDefault();
+            } else if (
+                (data.enrolstartdate > data.enrolenddate) ||
+                (data.enrolstartdate == "" && data.enrolenddate !== "") ||
+                (data.enrolstartdate !== "" && data.enrolenddate == "")
+            ) {
+                $(".enroldatealert").show();
+                setTimeout(function(){
+                    $(".enroldatealert").hide();
+                }, 3000);
+                element.preventDefault();
+            } else if (
+                (data.completionstartdate > data.completionenddate) ||
+                (data.completionstartdate == "" && data.completionenddate !== "") ||
+                (data.completionstartdate !== "" && data.completionenddate == "")
+            ) {
+                $(".completiondatealert").show();
+                setTimeout(function(){
+                    $(".completiondatealert").hide();
+                }, 3000);
+                element.preventDefault();
+            } else {
+                getSelectedFields();
+                getFilters();
+            }
+        }
+
         // get selected fields and filter values on click of download reports
-        $("#customQueryReportDownload").click(function(e){
-            var courses = jQuery("#ed_courses > option:selected").length;
+        $("#customQueryReportDownload").click(function(element){
+            validateCustomQueryReportForm(element);
+            /*var courses = jQuery("#ed_courses > option:selected").length;
             if (courses >= 1) {
                 getSelectedFields();
                 getFilters();
@@ -260,8 +326,9 @@ define([
                     $(".coursealert").hide();
                 }, 3000);
                 e.preventDefault();
-            }
+            }*/
         });
+
         // handle alert for course selection
         $("[data-hide]").on("click", function(){
             $(this).closest("." + $(this).attr("data-hide")).hide();
