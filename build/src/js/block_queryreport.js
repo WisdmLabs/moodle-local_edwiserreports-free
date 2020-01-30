@@ -31,6 +31,7 @@ define([
                 var index = values.indexOf("0");
                 if (index > -1) {
                    values.splice(index, 1);
+                   event.preventDefault();
                    $("#ed_lps").select2('val', values);
                 }
             }
@@ -51,7 +52,7 @@ define([
                 var template = "report_elucidsitereport/customquery_options";
                 var context = {courses:response};
                 Templates.render(template, context).then(function(html, js) {
-                        Templates.appendNodeContents($("#ed_courses"), html , js);
+                        Templates.replaceNodeContents($("#ed_courses"), html , js);
                     }
                 );
             })

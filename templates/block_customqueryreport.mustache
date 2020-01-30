@@ -84,7 +84,8 @@
             		{{/reportfields.coursefields}}
             	</div>
             </div>
-            <div class="example-wrap reportfields">
+
+            <div class="lpreportfields example-wrap reportfields">
               <h5 class="example-title"><strong> {{#str}} lpfields, report_elucidsitereport {{/str}} </strong></h5>
               <div class="lpfields row">
                 {{#reportfields.lpfields}}
@@ -97,7 +98,9 @@
                 {{/reportfields.lpfields}}
               </div>
             </div>
-            <div class="example-wrap reportfields">
+
+            {{^isreportingmanager}}
+            <div class="rpmreportfields example-wrap reportfields">
               <h5 class="example-title"><strong> {{#str}} rpfields, report_elucidsitereport {{/str}} </strong></h5>
             <div class="rpmfields row">
               {{#reportfields.rpmfields}}
@@ -110,6 +113,7 @@
               {{/reportfields.rpmfields}}
             </div>
           </div>
+          {{/isreportingmanager}}
           	<div class="row">
               <div class="col-md-3">
             		<div class="text-right mt-30">

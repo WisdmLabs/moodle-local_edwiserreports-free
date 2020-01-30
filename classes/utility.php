@@ -197,7 +197,7 @@ class utility {
      */
     public static function get_lps() {
         global $DB;
-        $fields = "DISTINCT(lp.id) as id, lp.name, lp.shortname, lp.programid, lp.visible, lp.selfenrolment, lp.description, lp.featureimage, lp.courses, lp.duration, lp.durationtime, lp.coursesequenceenable, lp.timecreated, lp.timemodified, lp.timestart, lp.timeend";
+        $fields = "DISTINCT(lp.id) as id, lp.name as fullname, lp.shortname, lp.programid, lp.visible, lp.selfenrolment, lp.description, lp.featureimage, lp.courses, lp.duration, lp.durationtime, lp.coursesequenceenable, lp.timecreated, lp.timemodified, lp.timestart, lp.timeend";
 
         // $fields = "id, name, shortname, courses";
         //$form = new MoodleQuickForm('learningprogram', 'post', '#');
