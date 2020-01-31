@@ -20,11 +20,12 @@ define([
 
 
         // Change Learning Programs and accordignly get courses
+        selectedLps = ["0"];
         $('#ed_lps').on('change', function(event){
             $( "div[class^='lp']" ).show();
             var values = [];
             // copy all option values from selected
-            $(event.currentTarget).find("option:selected").each(function(i, selected){
+            /*$(event.currentTarget).find("option:selected").each(function(i, selected){
                values[i] = $(selected).val();
             });
             if (values.length > 1) {
@@ -34,41 +35,70 @@ define([
                    event.preventDefault();
                    $("#ed_lps").select2('val', values);
                 }
-            }
-            $.ajax({
-                url: cfg.requestUrl,
-                type: cfg.requestType,
-                dataType: cfg.requestDataType,
-                data: {
-                    action: 'get_customqueryreport_data_ajax',
-                    sesskey: M.cfg.sesskey,
-                    data: JSON.stringify({
-                        lpids: values
-                    })
-                },
-            })
-            .done(function(response) {
-                $("#ed_courses").html('');
-                var template = "report_elucidsitereport/customquery_options";
-                var context = {courses:response};
-                Templates.render(template, context).then(function(html, js) {
-                        Templates.replaceNodeContents($("#ed_courses"), html , js);
-                    }
-                );
-            })
-            .fail(function(error) {
+            }*/
+
+            $(event.currentTarget).find("option:selected").each(function(i, selected){
+               values[i] = $(selected).val();
             });
-            // hide checkboxes of Learning programs if LP is not selected
-            if (!values.length) {
-                $( "div[class^='lp']" ).hide();
+
+            if (JSON.stringify(selectedLps) !== JSON.stringify(values)) {
+                oldIndex = selectedLps.indexOf("0");
+                newIndex = values.indexOf("0");
+
+                switch(true) {
+                    case (oldIndex == -1 && newIndex > -1):
+                        // Assign the selected courses
+                        values = ["0"];
+                        selectedLps = values;
+                        $("#ed_lps").select2('val', values);
+                        break;
+                    case (oldIndex > -1 && newIndex > -1):
+                        values.splice(newIndex, 1);
+
+                        // Assign the selected courses
+                        selectedLps = values;
+                        $("#ed_lps").select2('val', values);
+                        break;
+                }
+
+                selectedLps = values;
+
+                $.ajax({
+                    url: cfg.requestUrl,
+                    type: cfg.requestType,
+                    dataType: cfg.requestDataType,
+                    data: {
+                        action: 'get_customqueryreport_data_ajax',
+                        sesskey: M.cfg.sesskey,
+                        data: JSON.stringify({
+                            lpids: values
+                        })
+                    },
+                })
+                .done(function(response) {
+                    $("#ed_courses").html('');
+                    var template = "report_elucidsitereport/customquery_options";
+                    var context = {courses:response};
+                    Templates.render(template, context).then(function(html, js) {
+                            Templates.replaceNodeContents($("#ed_courses"), html , js);
+                        }
+                    );
+                })
+                .fail(function(error) {
+                });
+                // hide checkboxes of Learning programs if LP is not selected
+                if (!values.length) {
+                    $( "div[class^='lp']" ).hide();
+                }
             }
         });
         // Reporting manager dropdown change
+        selectedRPM = ["0"];
         $('#ed_rpm').on('change', function(event){
             $( "div[class^='rpm']" ).show();
             var values = [];
             // copy all option values from selected
-            $(event.currentTarget).find("option:selected").each(function(i, selected){
+            /*$(event.currentTarget).find("option:selected").each(function(i, selected){
                values[i] = $(selected).val();
             });
             if (values.length > 1) {
@@ -77,61 +107,107 @@ define([
                    values.splice(index, 1);
                    $("#ed_rpm").select2('val', values);
                 }
-            }
-            $.ajax({
-                url: cfg.requestUrl,
-                type: cfg.requestType,
-                dataType: cfg.requestDataType,
-                data: {
-                    action: 'get_customqueryreport_rpm_data_ajax',
-                    sesskey: M.cfg.sesskey,
-                    data: JSON.stringify({
-                        rpmids: values
-                    })
-                },
-            })
-            .done(function(response) {
-                $("#ed_lps").html('');
-                $("#ed_courses").html('');
-                var template = "report_elucidsitereport/customquery_lpoptions";
-                var context = {lps:response.lps};
-                if (response.lps.length > 0) {
-                    Templates.render(template, context).then(function(html, js) {
-                            Templates.appendNodeContents($("#ed_lps"), html , js);
-                        }
-                    );
-                }
-                if (response.courses.length > 0) {
-                    var template = "report_elucidsitereport/customquery_options";
-                    var context = {courses:response.courses};
-                    Templates.render(template, context).then(function(html, js) {
-                            Templates.appendNodeContents($("#ed_courses"), html , js);
-                        }
-                    );
-                }
-            })
-            .fail(function(error) {
-                console.log(error);
-            });
-            // hide checkboxes of Learning programs if LP is not selected
-            if (!values.length) {
-                $( "div[class^='rpm']" ).hide();
-                $( "div[class^='lp']" ).hide();
-            }
-        });
-        // Courses dropdown change
-        $('#ed_courses').on('change', function(event){
-            var values = [];
-            // copy all option values from selected
+            }*/
+
             $(event.currentTarget).find("option:selected").each(function(i, selected){
                values[i] = $(selected).val();
             });
-            if (values.length > 1) {
-                var index = values.indexOf("0");
-                if (index > -1) {
-                   values.splice(index, 1);
-                   $("#ed_courses").select2('val', values);
+
+            if (JSON.stringify(selectedRPM) !== JSON.stringify(values)) {
+                oldIndex = selectedRPM.indexOf("0");
+                newIndex = values.indexOf("0");
+
+                switch(true) {
+                    case (oldIndex == -1 && newIndex > -1):
+                        // Assign the selected courses
+                        values = ["0"];
+                        selectedRPM = values;
+                        $("#ed_rpm").select2('val', values);
+                        break;
+                    case (oldIndex > -1 && newIndex > -1):
+                        values.splice(newIndex, 1);
+
+                        // Assign the selected courses
+                        selectedRPM = values;
+                        $("#ed_rpm").select2('val', values);
+                        break;
                 }
+
+                selectedRPM = values;
+
+                $.ajax({
+                    url: cfg.requestUrl,
+                    type: cfg.requestType,
+                    dataType: cfg.requestDataType,
+                    data: {
+                        action: 'get_customqueryreport_rpm_data_ajax',
+                        sesskey: M.cfg.sesskey,
+                        data: JSON.stringify({
+                            rpmids: values
+                        })
+                    },
+                })
+                .done(function(response) {
+                    $("#ed_lps").html('');
+                    $("#ed_courses").html('');
+                    var template = "report_elucidsitereport/customquery_lpoptions";
+                    var context = {lps:response.lps};
+                    if (response.lps.length > 0) {
+                        Templates.render(template, context).then(function(html, js) {
+                                Templates.appendNodeContents($("#ed_lps"), html , js);
+                            }
+                        );
+                    }
+                    if (response.courses.length > 0) {
+                        var template = "report_elucidsitereport/customquery_options";
+                        var context = {courses:response.courses};
+                        Templates.render(template, context).then(function(html, js) {
+                                Templates.appendNodeContents($("#ed_courses"), html , js);
+                            }
+                        );
+                    }
+                })
+                .fail(function(error) {
+                    console.log(error);
+                });
+                // hide checkboxes of Learning programs if LP is not selected
+                if (!values.length) {
+                    $( "div[class^='rpm']" ).hide();
+                    $( "div[class^='lp']" ).hide();
+                }
+            }
+        });
+        // Courses dropdown change
+        var selectedCourses = ["0"];
+        $('#ed_courses').on('change', function(event){
+            var values = [];
+
+            // Copy all option values from selected
+            $(event.currentTarget).find("option:selected").each(function(i, selected){
+               values[i] = $(selected).val();
+            });
+
+            if (JSON.stringify(selectedCourses) !== JSON.stringify(values)) {
+                oldIndex = selectedCourses.indexOf("0");
+                newIndex = values.indexOf("0");
+
+                switch(true) {
+                    case (oldIndex == -1 && newIndex > -1):
+                        // Assign the selected courses
+                        values = ["0"];
+                        selectedCourses = values;
+                        $("#ed_courses").select2('val', values);
+                        break;
+                    case (oldIndex > -1 && newIndex > -1):
+                        values.splice(newIndex, 1);
+
+                        // Assign the selected courses
+                        selectedCourses = values;
+                        $("#ed_courses").select2('val', values);
+                        break;
+                }
+
+                selectedCourses = values;
             }
         });
         /**

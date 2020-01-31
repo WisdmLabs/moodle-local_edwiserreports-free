@@ -955,10 +955,12 @@ class utility {
         if (!empty($catIds)) {
             foreach ($catIds as $catId) {
                 foreach (json_decode($catId) as $cid) {
-                    $course = new \stdClass();
-                    $course->id = $cid;
-                    $course->fullname = get_course($cid)->fullname;
-                    array_push($coursesarr, $course);
+                    if ($course = $DB->get_record('course', array('id' => $cid))) {
+                        $courseinfo = new \stdClass();
+                        $courseinfo->id = $course->id;
+                        $courseinfo->fullname = $course->fullname;
+                        array_push($coursesarr, $courseinfo);
+                    }
                 }
             }
         }
