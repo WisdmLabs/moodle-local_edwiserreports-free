@@ -23,6 +23,7 @@ define([
         selectedLps = ["0"];
         $('#ed_lps').on('change', function(event){
             $( "div[class^='lp']" ).show();
+            $("#ed_courses").html('');
             var values = [];
             // copy all option values from selected
             /*$(event.currentTarget).find("option:selected").each(function(i, selected){
@@ -96,6 +97,8 @@ define([
         selectedRPM = ["0"];
         $('#ed_rpm').on('change', function(event){
             $( "div[class^='rpm']" ).show();
+            $("#ed_lps").html('');
+            $("#ed_courses").html('');
             var values = [];
             // copy all option values from selected
             /*$(event.currentTarget).find("option:selected").each(function(i, selected){

@@ -982,11 +982,14 @@ class utility {
         $lps = array();
         $courses = array();
         list($insql, $inparams) = $DB->get_in_or_equal($rpmusers, SQL_PARAMS_NAMED, 'param', true);
-        $sql = "SELECT DISTINCT(lp.id), lp.name as fullname FROM {wdm_learning_program} lp
+        $sql = "SELECT DISTINCT(lp.id) as id, lp.name as fullname FROM {wdm_learning_program} lp
         JOIN {wdm_learning_program_enrol} lpe ON lpe.learningprogramid = lp.id
         WHERE lpe.userid ".$insql;
-        $lps = array_values($DB->get_records_sql($sql, $inparams));
-        $lpIds = array_map(create_function('$o', 'return $o->id;'), $lps);
+        
+        $records = $DB->get_records_sql($sql, $inparams);
+        $lpIds = array_keys($records);
+        $lps = array_values($records);
+        // $lpIds = array_map(create_function('$o', 'return $o->id;'), $lps);
         if (!empty($lpIds)) {
             $courses = \report_elucidsitereport\utility::get_lp_courses($lpIds);
         }
