@@ -69,20 +69,20 @@ class active_users_block extends utility {
         // Create reporting manager instance
         $rpm = reporting_manager::get_instance();
         // Get logs from cache
-        if (!$records = $this->cache->get("activeusers-log")) {
+        if (!$record = $this->cache->get("activeusers-first-log")) {
             $sql = "SELECT id, userid, timecreated
                 FROM {logstore_standard_log}
-                ORDER BY timecreated ASC";
-            $records = array_values($DB->get_records_sql($sql));
+                ORDER BY timecreated ASC LIMIT 1";
+            $record = $DB->get_record_sql($sql);
 
             // Set cache if log is not available
-            $this->cache->set("activeusers-log", $records);
+            $this->cache->set("activeusers-first-log", $record);
         }
 
         $cachekey = "activeusers-labels-" . $filter.''.$rpm->rpmcache;
-        if (!empty($records)) {
+        if ($record) {
             // Getting first access of the site
-            $this->firstaccess = $records[0]->timecreated;
+            $this->firstaccess = $record->timecreated;
             switch ($filter) {
                 case ALL:
                     // Calculate the days for all active users data
