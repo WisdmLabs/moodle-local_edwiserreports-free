@@ -9,13 +9,16 @@ define([
     $(document).ready(function() {
         // Add select2 for the dropdowns
         $('#ed_rpm').select2({
-            multiple:true
+            multiple:true,
+            closeOnSelect: false
         });
         $('#ed_lps').select2({
-            multiple:true
+            multiple:true,
+            closeOnSelect: false
         });
         $('#ed_courses').select2({
-            multiple:true
+            multiple:true,
+            closeOnSelect: false
         });
 
 
