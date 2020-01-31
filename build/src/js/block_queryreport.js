@@ -7,18 +7,27 @@ define([
     $, cfg,Templates
 ) {
     $(document).ready(function() {
+        /**
+         * Loader HTML String
+         * @type {String}
+         */
+        var loader = '<span class="px-10 py-5 pull-right"><i class="fa fa-spinner fa-spin"></i></span>';
+        
         // Add select2 for the dropdowns
         $('#ed_rpm').select2({
             multiple:true,
-            closeOnSelect: false
+            closeOnSelect: false,
+            placeholder: "Reporting Managers"
         });
         $('#ed_lps').select2({
             multiple:true,
-            closeOnSelect: false
+            closeOnSelect: false,
+            placeholder: "Leraning Programs"
         });
         $('#ed_courses').select2({
             multiple:true,
-            closeOnSelect: false
+            closeOnSelect: false,
+            placeholder: "Courses"
         });
 
 
@@ -26,26 +35,19 @@ define([
         selectedLps = ["0"];
         $('#ed_lps').on('change', function(event){
             $( "div[class^='lp']" ).show();
-            $("#ed_courses").html('');
+
             var values = [];
             // copy all option values from selected
-            /*$(event.currentTarget).find("option:selected").each(function(i, selected){
-               values[i] = $(selected).val();
-            });
-            if (values.length > 1) {
-                var index = values.indexOf("0");
-                if (index > -1) {
-                   values.splice(index, 1);
-                   event.preventDefault();
-                   $("#ed_lps").select2('val', values);
-                }
-            }*/
-
             $(event.currentTarget).find("option:selected").each(function(i, selected){
                values[i] = $(selected).val();
             });
 
             if (JSON.stringify(selectedLps) !== JSON.stringify(values)) {
+                $("#ed_courses").html('')
+                    .siblings('.select2-container')
+                    .find('.select2-selection')
+                    .html(loader);
+
                 oldIndex = selectedLps.indexOf("0");
                 newIndex = values.indexOf("0");
 
@@ -89,7 +91,15 @@ define([
                     );
                 })
                 .fail(function(error) {
+                    console.log(error);
+                }).always(function() {
+                    $("#ed_courses").select2({
+                        multiple:true,
+                        closeOnSelect: false,
+                        placeholder: "Courses"
+                    });
                 });
+
                 // hide checkboxes of Learning programs if LP is not selected
                 if (!values.length) {
                     $( "div[class^='lp']" ).hide();
@@ -99,27 +109,23 @@ define([
         // Reporting manager dropdown change
         selectedRPM = ["0"];
         $('#ed_rpm').on('change', function(event){
-            $( "div[class^='rpm']" ).show();
-            $("#ed_lps").html('');
-            $("#ed_courses").html('');
             var values = [];
             // copy all option values from selected
-            /*$(event.currentTarget).find("option:selected").each(function(i, selected){
-               values[i] = $(selected).val();
-            });
-            if (values.length > 1) {
-                var index = values.indexOf("0");
-                if (index > -1) {
-                   values.splice(index, 1);
-                   $("#ed_rpm").select2('val', values);
-                }
-            }*/
-
             $(event.currentTarget).find("option:selected").each(function(i, selected){
                values[i] = $(selected).val();
             });
 
             if (JSON.stringify(selectedRPM) !== JSON.stringify(values)) {
+                $( "div[class^='rpm']" ).show();
+                $("#ed_lps").html('')
+                    .siblings('.select2-container')
+                    .find('.select2-selection')
+                    .html(loader);
+                $("#ed_courses").html('')
+                    .siblings('.select2-container')
+                    .find('.select2-selection')
+                    .html(loader);
+
                 oldIndex = selectedRPM.indexOf("0");
                 newIndex = values.indexOf("0");
 
@@ -175,7 +181,19 @@ define([
                 })
                 .fail(function(error) {
                     console.log(error);
+                }).always(function() {
+                    $("#ed_lps").select2({
+                        multiple:true,
+                        closeOnSelect: false,
+                        placeholder: "Leraning Programs"
+                    });
+                    $("#ed_courses").select2({
+                        multiple:true,
+                        closeOnSelect: false,
+                        placeholder: "Courses"
+                    });
                 });
+
                 // hide checkboxes of Learning programs if LP is not selected
                 if (!values.length) {
                     $( "div[class^='rpm']" ).hide();
