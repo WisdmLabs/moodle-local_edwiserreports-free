@@ -153,6 +153,17 @@ class elucidreport_renderable implements renderable, templatable {
             array('key' => 'lpduration', 'value'=>get_string('lpduration', 'report_elucidsitereport'), 'dbkey' => 'lp.durationtime'),
             array('key' => 'lpcompletion', 'value'=>get_string('lpcompletion', 'report_elucidsitereport'), 'dbkey' => 'FROM_UNIXTIME(lpe.completed, "%D %M %Y")'),
         );
+
+        // Check if leraning hours plugin is present
+        if (has_plugin('report', 'learning_hours')) {
+            $coursefields[] = array(
+                'key' => 'learninghours',
+                'value'=>get_string('learninghours', 'report_elucidsitereport'),
+                'dbkey' => '
+                (CASE ulh.totalhours WHEN NULL THEN "0.00" ELSE ulh.totalhours END)'
+            );
+        }
+
         $rpmfields = array();
         // Create reporting manager instance
         $rpm = \report_elucidsitereport\reporting_manager::get_instance();

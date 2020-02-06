@@ -32,6 +32,7 @@ require_once($CFG->dirroot."/report/elucidsitereport/classes/utility.php");
 require_once($CFG->dirroot."/report/elucidsitereport/classes/blocks/active_users_block.php");
 require_once($CFG->dirroot."/report/elucidsitereport/classes/blocks/active_courses_block.php");
 require_once($CFG->dirroot."/report/elucidsitereport/lib.php");
+require_once($CFG->dirroot."/report/elucidsitereport/locallib.php");
 require_once($CFG->dirroot."/report/elucidsitereport/classes/output/renderable.php");
 require_once($CFG->dirroot."/report/elucidsitereport/classes/reporting_manager.php");
 
@@ -792,6 +793,14 @@ class export {
             $rpmdb = $rpm->insql;
             $params = array_merge($params, $rpm->inparams);
         }
+
+        // Check if learning hour plugin is available
+        $lhdb = '';
+        if (has_plugin('report', 'learning_hours')) {
+            $lhdb = 'LEFT JOIN {edw_learning_hours} lh ON lh.courseid = c.id
+                LEFT JOIN {edw_users_learning_hours} ulh ON ulh.userid = u.id AND ulh.lhid = lh.id';
+        }
+
         // Main query to execute the custom query reports
         $sql = 'SELECT (@cnt := @cnt + 1) AS id, '.$customFields.' FROM {user} u
                 CROSS JOIN (SELECT @cnt := 0) AS dummy
@@ -800,7 +809,7 @@ class export {
                 JOIN {context} ct ON ct.id = ra.contextid
                 JOIN {course} c ON c.id = ct.instanceid '.$lpjoinquery.'
                 JOIN {edw_course_progress} ec ON ec.courseid = c.id AND ec.userid = u.id AND c.id '.$coursedb.' '.$rpmnamedb.'
-                JOIN {course_categories} ctg ON ctg.id = c.category
+                JOIN {course_categories} ctg ON ctg.id = c.category ' . $lhdb . '
                 WHERE u.id '.$rpmdb.'
                 AND ct.contextlevel = '.CONTEXT_COURSE.'
                 AND r.archetype = "student"
