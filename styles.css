@@ -591,3 +591,7 @@ div[id^="wdm-"][id*="-individual"] table.table,
     margin: 1% 0 1% 0;
     border-radius: 5px;
 }
+
+#customQueryReportBlock .input-search .input-search-close {
+    right: 0px !important;
+}
