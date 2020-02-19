@@ -185,7 +185,7 @@ define([
                     $("#ed_lps").select2({
                         multiple:true,
                         closeOnSelect: false,
-                        placeholder: "Leraning Programs"
+                        placeholder: "Learning Programs"
                     });
                     $("#ed_courses").select2({
                         multiple:true,
