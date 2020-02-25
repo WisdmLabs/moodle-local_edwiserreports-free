@@ -32,6 +32,7 @@ use renderable;
 use renderer_base;
 use stdClass;
 use templatable;
+use context_system;
 
 require_once $CFG->dirroot."/report/elucidsitereport/lib.php";
 require_once $CFG->dirroot."/report/elucidsitereport/classes/blocks/active_users_block.php";
@@ -49,6 +50,10 @@ class elucidreport_renderable implements renderable, templatable {
      */
     public function export_for_template(renderer_base $output) {
         global $CFG, $PAGE;
+
+        // Get system context
+        $context = context_system::instance();
+
         $output = null;
         $export = new stdClass();
         $export->sesskey = sesskey();
@@ -57,7 +62,9 @@ class elucidreport_renderable implements renderable, templatable {
         $export->isreportingmanager = false;
         // Create reporting manager instance
         $rpm = \report_elucidsitereport\reporting_manager::get_instance();
-        if ($rpm->isrpm) {
+
+        // Check capability also because if user is admin or manager then show all reporting managers
+        if ($rpm->isrpm && !has_capability('moodle/site:configview', $context)) {
             $export->isreportingmanager = true;
         }
         // Blocks
