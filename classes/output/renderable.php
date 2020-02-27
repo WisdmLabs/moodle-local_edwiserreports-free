@@ -166,8 +166,13 @@ class elucidreport_renderable implements renderable, templatable {
             $coursefields[] = array(
                 'key' => 'learninghours',
                 'value'=>get_string('learninghours', 'report_elucidsitereport'),
-                'dbkey' => '
-                (CASE ulh.totalhours WHEN NULL THEN "0:00" ELSE CONCAT(FLOOR(ulh.totalhours/60),":", LPAD(MOD(ulh.totalhours,60),2,"0")) END)'
+                'dbkey' => '(CASE WHEN ulh.totalhours THEN
+                             CONCAT(
+                                FLOOR(ulh.totalhours/60), "h ",
+                                      RPAD(MOD(ROUND(ulh.totalhours), 60), 2, "00"), "m")
+                             ELSE
+                                "00h 00m"
+                             END)'
             );
         }
 
