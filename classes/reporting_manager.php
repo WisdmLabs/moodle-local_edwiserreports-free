@@ -26,6 +26,8 @@ namespace report_elucidsitereport;
 
 defined('MOODLE_INTERNAL') || die();
 
+use context_system;
+
 /**
  * Class to make reporting manager related operations.
  */
@@ -38,19 +40,187 @@ class reporting_manager
     public $insql = '> 1';
     public $inparams = array();
     public $rpmcache = '';
+    public $rpmindentusers = array();
+
     /**
      * Private constructor to make this a singleton
      *
      * @access private
      */
-    private function __construct()
-    {
+    private function __construct() {
+        global $DB;
         $this->check_user_is_reporting_manager();
         if ($this->isrpm) {
             $this->get_repoting_manager_students();
             $this->get_reporting_manager_sql();
             $this->get_reporting_manager_cachekey();
         }
+
+        // Get system context
+        $context = context_system::instance();
+        if (!has_capability('moodle/site:configview', $context)) {
+            // Get reporting managers hierarchy
+            $this->get_rpm_hierarchy2($this->rpmindentusers, '', $this->userid, 0);
+        } else {
+            /*$sql = "SELECT DISTINCT(uid.data)
+                    FROM {user_info_data} uid,
+                         {user_info_field} uif
+                    WHERE data NOT IN (
+                        SELECT userid
+                        FROM {user_info_data}
+                        WHERE data > 0
+                    )
+                    AND uif.shortname = :rolename
+                    AND uid.fieldid = uif.id
+                    AND uid.data != 0";*/
+            $sql = "SELECT DISTINCT(uid.data)
+                    FROM {user_info_data} uid,
+                         {user_info_field} uif
+                    WHERE uif.shortname = :rolename
+                    AND uid.fieldid = uif.id
+                    AND uid.data != 0";
+            $params = array('rolename' =>  'reportingmanager');
+            $data = $DB->get_records_sql($sql, $params);
+
+            // Get all reporting top level reporting managers
+            foreach ($data as $key => $d) {
+                $prefix = '';
+                $data = new \stdClass();
+                $data->id = $key . $d->data;
+                $data->userid = $d->data;
+                $this->prepare_rpm_uers_data($this->rpmindentusers, $data, $prefix, 0, true);
+                $this->rpmindentusers = array_replace($this->rpmindentusers, $this->get_rpm_hierarchy2($this->rpmindentusers, $prefix, $d->data, 0));
+            }
+        }
+
+        // Check if there is no reporting managers
+        if (empty(array_filter($this->rpmindentusers))) {
+            $this->rpmindentusers = false;
+        }
+    }
+
+    /**
+     * Get RPM level hierarchy
+     * @param  [int]   &$indentlvl Indent Level
+     * @param  [int]   $userid     User Id
+     */
+    public function get_rpm_hierarchy2(&$rpmindentusers, $prefix, $userid, $level) {
+        global $DB;
+
+        // Restrict levels of reporting managers
+        if ($level > 2) {
+            return false;
+        }
+
+        // Get curent users reporting persons
+        $sql = "SELECT uid.* 
+                FROM {user_info_data} uid,
+                     {user_info_field} uif
+                WHERE uif.shortname = :rolename
+                AND uid.data = :data
+                AND uid.fieldid = uif.id
+                AND uid.data > 0";
+        $params = array('rolename' =>  'reportingmanager', 'data' => $userid);
+        $data = $DB->get_records_sql($sql, $params);
+
+        // If data is empty then return false
+        if (empty($data)) {
+            return false;
+        }
+
+        // Get all rpm users data
+        foreach($data as $key => $d) {
+            $this->prepare_rpm_uers_data($rpmindentusers, $d, $prefix, $level);
+        }
+        // Return RPM indent data
+        return $rpmindentusers;
+    }
+
+    /**
+     * Prepare rpm users data
+     * @param  [type] &$rpmindentusers [description]
+     * @param  [type] $d               [description]
+     * @param  [type] &$prefix         [description]
+     * @param  [type] $level           [description]
+     * @return [type]                  [description]
+     */
+    public function prepare_rpm_uers_data(&$rpmindentusers, $d, &$prefix, $level) {
+        $user = \core_user::get_user($d->userid);
+        $uname = fullname($user);
+        if ($prefix !== '') {
+            $uname = $prefix . '  / ' . $uname; 
+        }
+        
+        // If already get all child reporting manager then ingnore
+        if (isset($rpmindentusers[$d->userid]) && $rpmindentusers[$d->userid]) {
+            if (strlen($rpmindentusers[$d->userid]->uname) > strlen($uname)) {
+                return false;
+            } 
+        }
+
+        $rpmindentusers[$d->userid] = new \stdClass();
+        $rpmindentusers[$d->userid]->id = $d->userid;
+        $rpmindentusers[$d->userid]->level = $level;
+
+        $rpmindentusers[$d->userid]->uname = $uname;
+        $child = $this->get_rpm_hierarchy2($rpmindentusers, $uname, $d->userid, $level + 1);
+
+        // If there is no children then remove this from reporting managers
+        if (!$child || empty(array_filter($child))) {
+            $rpmindentusers[$d->userid] = false;
+        }
+
+        // If it is an array then add in the reporting managers list
+        if (is_array($child) && !empty($child)) {
+            $rpmindentusers = array_replace($rpmindentusers, $child);
+            // Update the prefix
+            $prefix = $uname;
+        }
+
+        return $rpmindentusers;
+    }
+
+    /**
+     * Get RPM level hierarchy
+     * @param  [int]   &$indentlvl Indent Level
+     * @param  [int]   $userid     User Id
+     */
+    public function get_rpm_hierarchy($indentlvl, $userid) {
+        global $DB;
+
+        // If indent level exceeded
+        if ($indentlvl > 5) {
+            return false;
+        }
+
+        // Get curent users reporting persons
+        $sql = "SELECT * FROM {user_info_data} WHERE data = :data";
+        $data = $DB->get_records_sql($sql, array('data' => $userid));
+
+        // If data is empty then return false
+        if (empty($data)) {
+            return false;
+        }
+
+        // Get reporting managers hierarchy
+        $rpmindentusers = array();
+
+        // Get all rpm users data
+        $count = 0;
+        foreach($data as $key => $d) {
+            $user = \core_user::get_user($d->userid);
+            $rpmindentusers[$count] = new \stdClass();
+            $rpmindentusers[$count]->id = $d->userid;
+            $rpmindentusers[$count]->uname = fullname($user);
+            $rpmindentusers[$count]->child = $this->get_rpm_hierarchy($indentlvl++, $d->userid);
+            if ($rpmindentusers[$count]->child) {
+                $rpmindentusers[$count]->haschild = true;
+            }
+            $count++;
+        }
+
+        // Return RPM indent data
+        return $rpmindentusers;
     }
 
     /**

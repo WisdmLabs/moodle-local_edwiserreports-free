@@ -9,17 +9,19 @@
         </div>
         <div class="panel-body">
         	<div class="row">
-            {{^isreportingmanager}}
+            {{#hasrpmanagers}}
         		<div class="col-md-4">
 		        	<label>Reporting Managers</label>
 		          	<select id="ed_rpm" class="js-states form-control select25">
 		          		<option value="0">All</option>
 		          		{{#rpmgrs}}
-			            <option value="{{id}}">{{uname}}</option>
+			            <option value="{{id}}">
+                    {{{uname}}}
+                  </option>
 			            {{/rpmgrs}}
 		          	</select>
 		        </div>
-            {{/isreportingmanager}}
+            {{/hasrpmanagers}}
 		        <div class="col-md-4">
 		          	<label>Learning Programs</label>
 		          	<select id="ed_lps" class="js-states form-control select25">

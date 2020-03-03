@@ -966,6 +966,13 @@ class utility {
         }
         return $coursesarr;
     }
+
+    /**
+     * Get reporting managers related data for
+     * courses and leraning programs
+     * @param  [object] $data Data object
+     * @return [array]        Courses and Leraning Programs
+     */
     public static function get_rpm_data($data) {
         global $DB;
         if (in_array(0, $data->rpmids) || empty($data->rpmids)) {
@@ -977,8 +984,13 @@ class utility {
         // Query to get users of reporting manager
         $sql = "SELECT userid FROM {user_info_data} WHERE data ".$insql;
         $users = $DB->get_records_sql($sql, $inparams);
-        $rpmusers = array_keys($users);
 
+        // If there is no users for this reporting managers
+        if (empty($users)) {
+            return array('courses' => array(), 'lps' => array());
+        }
+
+        $rpmusers = array_keys($users);
         $lps = array();
         $courses = array();
         list($insql, $inparams) = $DB->get_in_or_equal($rpmusers, SQL_PARAMS_NAMED, 'param', true);

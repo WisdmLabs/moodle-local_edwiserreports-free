@@ -595,3 +595,7 @@ div[id^="wdm-"][id*="-individual"] table.table,
 #customQueryReportBlock .input-search .input-search-close {
     right: 0px !important;
 }
+
+#customQueryReportBlock .select2-container--default .select2-selection--multiple .select2-selection__rendered {
+    white-space: normal;
+}
