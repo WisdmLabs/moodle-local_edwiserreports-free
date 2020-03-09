@@ -151,7 +151,7 @@ class elucidreport_renderable implements renderable, templatable {
             array('key' => 'lastname', 'value'=>get_string('lastname', 'report_elucidsitereport'), 'dbkey' => 'u.lastname')
         );
         $coursefields = array(
-            array('key' => 'coursename', 'value'=>get_string('course', 'report_elucidsitereport'), 'dbkey' => 'c.fullname', 'disbaled' => true),
+            array('key' => 'coursename', 'value'=>get_string('course', 'report_elucidsitereport'), 'dbkey' => 'CONCAT(\'"\', c.fullname, \'"\')', 'disbaled' => true),
             array('key' => 'coursecategory', 'value'=>get_string('coursecategory', 'report_elucidsitereport'), 'dbkey' => 'ctg.name'),
             array('key' => 'courseenroldate', 'value'=>get_string('courseenroldate', 'report_elucidsitereport'), 'dbkey' => 'FROM_UNIXTIME(ra.timemodified, "%D %M %Y")'),
             array('key' => 'courseprogress', 'value'=>get_string('courseprogress', 'report_elucidsitereport'), 'dbkey' => 'ec.progress'),
