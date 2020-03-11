@@ -275,8 +275,8 @@ class utility {
         global $DB;
 
         // Return course completion from report completion table
-        $table = "elucidsitereport_completion";
-        return $DB->get_records($table, array("courseid" => $courseid), "", "userid, completion");
+        $table = "edw_course_progress";
+        return $DB->get_records($table, array("courseid" => $courseid), "", "userid, progress as completion");
     }
 
     /**
@@ -486,11 +486,11 @@ class utility {
                 }
             }
 
-            $completionsql = "SELECT id, completion
-                FROM {elucidsitereport_completion}
+            $completionsql = "SELECT id, progress as completion
+                FROM {edw_course_progress}
                 WHERE userid = :userid
                 AND courseid = :courseid
-                AND completion
+                AND progress
                 BETWEEN :completionstart
                 AND :completionend";
 

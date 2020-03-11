@@ -47,7 +47,7 @@ class completions {
      * Completions table name for plugin
      * @var string
      */
-    public $tablename = "elucidsitereport_completion";
+    public $tablename = "edw_course_progress";
 
 
     /**
@@ -164,9 +164,9 @@ class completions {
      */
     public function get_course_completions($courseid) {
         global $DB;
-        $completions = $DB->get_records('elucidsitereport_completion', array(
+        $completions = $DB->get_records($this->tablename, array(
             'courseid' => $courseid
-        ), '', "userid, completion");
+        ), '', "userid, progress as completion");
         return $completions;
     }
 }

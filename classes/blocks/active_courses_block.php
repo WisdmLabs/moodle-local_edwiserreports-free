@@ -84,11 +84,11 @@ class active_courses_block extends utility {
         $rpm = reporting_manager::get_instance();
         // Calculate Completion Count for All Course 
         $sql = "SELECT courseid, COUNT(userid) AS users
-            FROM {elucidsitereport_completion}
-            WHERE completion = :completion
+            FROM {edw_course_progress}
+            WHERE progress = :progress
             AND userid ".$rpm->insql."
             GROUP BY courseid";
-        $params = array("completion" => 100);
+        $params = array("progress" => 100);
         $params = array_merge($params, $rpm->inparams);
         // Get records with 100% completions
         $coursecompletion = $DB->get_records_sql($sql, $params);

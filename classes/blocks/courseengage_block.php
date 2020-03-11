@@ -66,11 +66,11 @@ class courseengage_block extends utility {
         $rpm = reporting_manager::get_instance();
         $sqlcohort = "";
         if ($cohortid) {
-            $completionsql = "SELECT c.courseid, COUNT(c.userid) AS usercount, c.completion
-                FROM {elucidsitereport_completion} c
+            $completionsql = "SELECT c.courseid, COUNT(c.userid) AS usercount, c.progress as completion
+                FROM {edw_course_progress} c
                 JOIN {user} u ON u.id = c.userid
                 JOIN {cohort_members} cm ON cm.userid = u.id
-                WHERE c.completion
+                WHERE c.progress
                 BETWEEN :completionstart
                 AND :completionend
                 AND u.deleted = 0
@@ -80,10 +80,12 @@ class courseengage_block extends utility {
 
             // Calculate atleast completed one modules 
             $completionmodulesql = "SELECT c.courseid, COUNT(c.userid) AS usercount
-                FROM {elucidsitereport_completion} c
+                FROM {edw_course_progress} c
                 JOIN {user} u ON u.id = c.userid
                 JOIN {cohort_members} cm ON cm.userid = u.id
-                WHERE completedactivities >= :completedactivities
+                WHERE ( LENGTH(completedmodules) -
+                        LENGTH(REPLACE(completedmodules, ',', '')) + 1
+                      ) >= :completedactivities
                 AND u.deleted = 0
                 AND cm.cohortid = :cohortid
                 AND u.id ".$rpm->insql."
@@ -91,10 +93,10 @@ class courseengage_block extends utility {
             $params["cohortid"] = $cohortid;
         } else {
             $completionsql = "SELECT c.courseid, COUNT(c.userid) AS usercount,
-                c.completion
-                FROM {elucidsitereport_completion} c
+                c.progress as completion
+                FROM {edw_course_progress} c
                 JOIN {user} u ON u.id = c.userid
-                WHERE c.completion
+                WHERE c.progress
                 BETWEEN :completionstart
                 AND :completionend
                 AND u.deleted = 0
@@ -102,9 +104,11 @@ class courseengage_block extends utility {
                 GROUP BY c.courseid";
             // Calculate atleast completed one modules
             $completionmodulesql = "SELECT c.courseid, COUNT(c.userid) AS usercount
-                FROM {elucidsitereport_completion} c
+                FROM {edw_course_progress} c
                 JOIN {user} u ON u.id = c.userid
-                WHERE completedactivities >= :completedactivities
+                WHERE ( LENGTH(completedmodules) -
+                        LENGTH(REPLACE(completedmodules, ',', '')) + 1
+                      ) >= :completedactivities
                 AND u.deleted = 0
                 AND u.id ".$rpm->insql."
                 GROUP BY c.courseid";
@@ -122,15 +126,7 @@ class courseengage_block extends utility {
         $params["completionend"] = 100.00;
         $params = array_merge($params, $rpm->inparams);
         $completion100 = $DB->get_records_sql($completionsql, $params);
-        /*
-        // Calculate atleast completed one modules
-        $completionmodulesql = "SELECT c.courseid, COUNT(c.userid) AS usercount
-            FROM {elucidsitereport_completion} c
-            JOIN {user} u ON u.id = c.userid
-            WHERE completedactivities >= :completedactivities
-            AND u.deleted = 0
-            AND u.id ".$rpm->insql."
-            GROUP BY c.courseid";*/
+
         $params ["completedactivities"] = 1;
         $params = array_merge($params, $rpm->inparams);
         $completiononemodule = $DB->get_records_sql($completionmodulesql, $params);
