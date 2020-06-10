@@ -49,7 +49,7 @@ class elucidreport_renderable implements renderable, templatable {
      * @return stdClass|array
      */
     public function export_for_template(renderer_base $output) {
-        global $CFG, $PAGE;
+        global $CFG, $DB, $PAGE;
 
         // Get system context
         $context = context_system::instance();
@@ -139,6 +139,30 @@ class elucidreport_renderable implements renderable, templatable {
             $export->hasrpmanagers = true;
             $export->rpmgrs = $rpm->get_all_reporting_managers();
         }*/
+
+        // Get all cohort filters
+        $cohorts = get_cohort_filter();
+        $export->hascohorts = false;
+        if (isset($cohorts->values) && !empty($cohorts->values)) {
+            $export->cohorts = $cohorts->values;
+            $export->hascohorts = true;
+            
+            // Get users for relevent filters
+            list($insql, $inparams) = $DB->get_in_or_equal($export->cohorts, SQL_PARAMS_NAMED, 'param', true);
+        }
+
+        // Get all users
+        $sql = 'SELECT id, CONCAT(u.firstname, " ", u.lastname) as name
+                FROM {user} u
+                WHERE u.deleted = :deleted
+                AND u.confirmed = :confirmed
+                AND u.id > 1
+                ORDER BY name DESC';
+        $params =  array(
+            'deleted' => false,
+            'confirmed' => true
+        );
+        $export->users = array_values($DB->get_records_sql($sql, $params));
 
         $export->exportlinks = get_block_exportlinks($downloadurl, $data);
         $export->reportfields = elucidreport_renderable::get_report_fields();

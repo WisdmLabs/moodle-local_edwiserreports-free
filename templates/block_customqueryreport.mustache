@@ -9,7 +9,7 @@
         </div>
         <div class="panel-body">
         	<div class="row">
-            {{#hasrpmanagers}}
+                {{#hasrpmanagers}}
         		<div class="col-md-4">
 		        	<label>Reporting Managers</label>
 		          	<select id="ed_rpm" class="js-states form-control select25">
@@ -21,7 +21,7 @@
 			            {{/rpmgrs}}
 		          	</select>
 		        </div>
-            {{/hasrpmanagers}}
+                {{/hasrpmanagers}}
 		        <div class="col-md-4">
 		          	<label>Learning Programs</label>
 		          	<select id="ed_lps" class="js-states form-control select25">
@@ -33,6 +33,9 @@
 		          	<select id="ed_courses" class="js-states form-control select25">
 			            {{> report_elucidsitereport/customquery_options}}
 		          	</select>
+		        </div>
+                <div class="col-md-12 row px-0 mx-0 mt-2">
+                    {{> report_elucidsitereport/customquery_cohortoptions }}
 		        </div>
           	</div>
           	<div class="row mx-0">

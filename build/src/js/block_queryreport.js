@@ -29,6 +29,16 @@ define([
             closeOnSelect: false,
             placeholder: "Courses"
         });
+        $('#ed_cohorts').select2({
+            multiple:true,
+            closeOnSelect: false,
+            placeholder: "Cohorts"
+        });
+        $('#ed_users').select2({
+            multiple:true,
+            closeOnSelect: false,
+            placeholder: "Users"
+        });
 
 
         // Change Learning Programs and accordignly get courses
@@ -234,6 +244,41 @@ define([
                 selectedCourses = values;
             }
         });
+
+        // Cohort dropdown change
+        var selectedCohort = ["-1"];
+        $('#ed_cohorts').on('change', function(event){
+            var values = [];
+
+            // Copy all option values from selected
+            $(event.currentTarget).find("option:selected").each(function(i, selected){
+                values[i] = $(selected).val();
+            });
+
+            if (JSON.stringify(selectedCohort) !== JSON.stringify(values)) {
+                oldIndex = selectedCohort.indexOf("0");
+                newIndex = values.indexOf("0");
+
+                switch(true) {
+                    case (oldIndex == -1 && newIndex > -1):
+                        // Assign the selected courses
+                        values = ["0"];
+                        selectedCohort = values;
+                        $("#ed_cohorts").select2('val', values);
+                        break;
+                    case (oldIndex > -1 && newIndex > -1):
+                        values.splice(newIndex, 1);
+
+                        // Assign the selected courses
+                        selectedCourses = values;
+                        $("#ed_cohorts").select2('val', values);
+                        break;
+                }
+
+                selectedCourses = values;
+            }
+        });
+
         /**
          * Get panel of custom reports block
          * @type {string}
