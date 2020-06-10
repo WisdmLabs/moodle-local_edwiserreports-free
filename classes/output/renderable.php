@@ -124,14 +124,17 @@ class elucidreport_renderable implements renderable, templatable {
             $export->lpstatslink = new moodle_url($CFG->wwwroot."/report/elucidsitereport/lpstats.php");
         }
         // Custom Query Report
-        // $rpmgrs = $rpm->get_all_reporting_managers();
+        $export->rpmgrs = $rpm->get_all_reporting_managers();
         /*echo "<pre>";
         print_r($rpm->rpmindentusers);
         die;*/
         // Get reporting manager
-        if (!empty($rpm->rpmindentusers)) {
+        if (!empty($export->rpmgrs)) {
             $export->hasrpmanagers = true;
-            $export->rpmgrs = array_values($rpm->rpmindentusers);
+            usort($export->rpmgrs, function($first, $second) {
+                return strtolower($first->uname) > strtolower($second->uname);
+            });
+            // $export->rpmgrs = array_values($rpm->rpmindentusers);
         } /*else if (has_capability('moodle/site:configview', $context)) {
             $export->hasrpmanagers = true;
             $export->rpmgrs = $rpm->get_all_reporting_managers();
