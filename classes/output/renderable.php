@@ -146,18 +146,21 @@ class elucidreport_renderable implements renderable, templatable {
         if (isset($cohorts->values) && !empty($cohorts->values)) {
             $export->cohorts = $cohorts->values;
             $export->hascohorts = true;
-            
-            // Get users for relevent filters
-            list($insql, $inparams) = $DB->get_in_or_equal($export->cohorts, SQL_PARAMS_NAMED, 'param', true);
+        }
+
+        $cohortjoinsql = '';
+        if ($export->hascohorts) {
+            $cohortjoinsql = 'JOIN {cohort_members} co ON co.userid = u.id';
         }
 
         // Get all users
-        $sql = 'SELECT id, CONCAT(u.firstname, " ", u.lastname) as name
+        $sql = "SELECT u.id, CONCAT(u.firstname, ' ', u.lastname) as name
                 FROM {user} u
+                $cohortjoinsql
                 WHERE u.deleted = :deleted
                 AND u.confirmed = :confirmed
                 AND u.id > 1
-                ORDER BY name DESC';
+                ORDER BY name DESC";
         $params =  array(
             'deleted' => false,
             'confirmed' => true

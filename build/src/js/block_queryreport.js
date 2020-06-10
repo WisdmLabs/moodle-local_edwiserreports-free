@@ -270,12 +270,46 @@ define([
                         values.splice(newIndex, 1);
 
                         // Assign the selected courses
-                        selectedCourses = values;
+                        selectedCohort = values;
                         $("#ed_cohorts").select2('val', values);
                         break;
                 }
 
-                selectedCourses = values;
+                selectedCohort = values;
+            }
+        });
+
+        // Cohort dropdown change
+        var selectedUsers = ["-1"];
+        $('#ed_users').on('change', function(event){
+            var values = [];
+
+            // Copy all option values from selected
+            $(event.currentTarget).find("option:selected").each(function(i, selected){
+                values[i] = $(selected).val();
+            });
+
+            if (JSON.stringify(selectedUsers) !== JSON.stringify(values)) {
+                oldIndex = selectedUsers.indexOf("0");
+                newIndex = values.indexOf("0");
+
+                switch(true) {
+                    case (oldIndex == -1 && newIndex > -1):
+                        // Assign the selected courses
+                        values = ["0"];
+                        selectedUsers = values;
+                        $("#ed_users").select2('val', values);
+                        break;
+                    case (oldIndex > -1 && newIndex > -1):
+                        values.splice(newIndex, 1);
+
+                        // Assign the selected courses
+                        selectedUsers = values;
+                        $("#ed_users").select2('val', values);
+                        break;
+                }
+
+                selectedUsers = values;
             }
         });
 
