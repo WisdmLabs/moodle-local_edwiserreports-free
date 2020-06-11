@@ -246,7 +246,7 @@ define([
         });
 
         // Cohort dropdown change
-        var selectedCohort = ["-1"];
+        var selectedCohort = ["0"];
         $('#ed_cohorts').on('change', function(event){
             var values = [];
 
@@ -256,6 +256,11 @@ define([
             });
 
             if (JSON.stringify(selectedCohort) !== JSON.stringify(values)) {
+                $("#ed_users").html('')
+                    .siblings('.select2-container')
+                    .find('.select2-selection')
+                    .html(loader);
+
                 oldIndex = selectedCohort.indexOf("0");
                 newIndex = values.indexOf("0");
 
@@ -276,6 +281,40 @@ define([
                 }
 
                 selectedCohort = values;
+
+                // Load only cohort based users
+                $.ajax({
+                    url: cfg.requestUrl,
+                    type: cfg.requestType,
+                    dataType: cfg.requestDataType,
+                    data: {
+                        action: 'get_customqueryreport_cohort_users_ajax',
+                        sesskey: M.cfg.sesskey,
+                        data: JSON.stringify({
+                            cohortids: values
+                        })
+                    },
+                })
+                .done(function(response) {
+                    $("#ed_users").html('');
+                    var template = "report_elucidsitereport/customquery_lpoptions"; // Work same as lp filter
+                    var context = {lps:response.users}; // work same as lp filters
+                    if (response.users.length > 0) {
+                        Templates.render(template, context).then(function(html, js) {
+                                Templates.appendNodeContents($("#ed_users"), html , js);
+                            }
+                        );
+                    }
+                })
+                .fail(function(error) {
+                    console.log(error);
+                }).always(function() {
+                    $("#ed_users").select2({
+                        multiple:true,
+                        closeOnSelect: false,
+                        placeholder: "Users"
+                    });
+                });
             }
         });
 

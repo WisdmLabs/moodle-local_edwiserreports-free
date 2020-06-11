@@ -1037,4 +1037,43 @@ class utility {
         // Return all erolments
         return $DB->get_records_sql($sql, $params);
     }
+
+    /**
+     * Get all cohort based users
+     * @param  array    $cohortids  Cohort Ids
+     * @return array                Users array
+     */
+    public static function get_cohort_users($cohortids) {
+        global $DB;
+
+        if (in_array(0, $cohortids)) {
+            $cohorts = get_cohort_filter();
+            if (isset($cohorts->values) && !empty($cohorts->values)) {
+                $cohortids = array_column($cohorts->values, 'id');
+            }
+        }
+
+        $cohortjoinsql = '';
+        $insql = '';
+        $param == array();
+        if (!empty($cohortids)) {
+            list($insql, $inparams) = $DB->get_in_or_equal($cohortids);
+            $cohortjoinsql = "JOIN {cohort_members} co ON co.userid = u.id";
+            $insql = " AND co.cohortid $insql ";
+            $params = $inparams;
+        }
+
+        // Get all users
+        $sql = "SELECT u.id, CONCAT(u.firstname, ' ', u.lastname) as fullname
+                FROM {user} u
+                $cohortjoinsql
+                WHERE u.deleted = false
+                AND u.confirmed = true
+                AND u.id > 1 $insql
+                ORDER BY fullname ASC";
+
+        return array(
+            'users' => array_values($DB->get_records_sql($sql, $params))
+        );
+    }
 }

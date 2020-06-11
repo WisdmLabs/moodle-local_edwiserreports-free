@@ -154,13 +154,13 @@ class elucidreport_renderable implements renderable, templatable {
         }
 
         // Get all users
-        $sql = "SELECT u.id, CONCAT(u.firstname, ' ', u.lastname) as name
+        $sql = "SELECT u.id, CONCAT(u.firstname, ' ', u.lastname) as fullname
                 FROM {user} u
                 $cohortjoinsql
                 WHERE u.deleted = :deleted
                 AND u.confirmed = :confirmed
                 AND u.id > 1
-                ORDER BY name DESC";
+                ORDER BY fullname ASC";
         $params =  array(
             'deleted' => false,
             'confirmed' => true
