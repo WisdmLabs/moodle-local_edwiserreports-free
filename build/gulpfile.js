@@ -9,18 +9,7 @@ var gulp = require('gulp'),
     notify = require('gulp-notify'),
     shell  = require('gulp-shell');
 
-var sources = [
-    'src/js/var/defaultconfig.js',
-    'src/js/var/variables.js',
-    'src/js/vendor/dataTables.bootstrap4.js',
-    'src/js/vendor/dataTables.buttons.min.js',
-    'src/js/vendor/dataTables.js',
-    'src/js/vendor/flatpickr.min.js',
-    'src/js/vendor/jquery.dataTables.js',
-    'src/js/vendor/select2.min.js',
-    'src/js/vendor/jquery-asPieProgress.min.js',
-    'src/js/vendor/jspdf.js',
-    'src/js/main.js',
+var sources = ['src/js/main.js',
     'src/js/block_accessinfo.js',
     'src/js/block_activecourses.js',
     'src/js/block_activeusers.js',
@@ -57,9 +46,7 @@ gulp.task('copy', function() {
         .pipe(gulp.dest('../amd/build/'));
 });
 
-gulp.task('dist-js',
-    gulp.series('uglify', 'copy', 'purge')
-);
+gulp.task('dist-js', gulp.series('uglify', 'copy'));
 
 gulp.task('watch', function(done) {
   gulp.watch('src/js/**/*.js', gulp.series('dist-js'));

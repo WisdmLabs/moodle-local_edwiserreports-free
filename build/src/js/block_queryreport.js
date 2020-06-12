@@ -125,6 +125,11 @@ define([
                values[i] = $(selected).val();
             });
 
+            var cohortids = [];
+            $("#ed_cohorts").find("option:selected").each(function(i, selected){
+                cohortids[i] = $(selected).val();
+            });
+
             if (JSON.stringify(selectedRPM) !== JSON.stringify(values)) {
                 $( "div[class^='rpm']" ).show();
                 $("#ed_lps").html('')
@@ -132,6 +137,10 @@ define([
                     .find('.select2-selection')
                     .html(loader);
                 $("#ed_courses").html('')
+                    .siblings('.select2-container')
+                    .find('.select2-selection')
+                    .html(loader);
+                $("#ed_users").html('')
                     .siblings('.select2-container')
                     .find('.select2-selection')
                     .html(loader);
@@ -165,7 +174,8 @@ define([
                         action: 'get_customqueryreport_rpm_data_ajax',
                         sesskey: M.cfg.sesskey,
                         data: JSON.stringify({
-                            rpmids: values
+                            rpmids: values,
+                            cohortids: cohortids
                         })
                     },
                 })
@@ -188,6 +198,18 @@ define([
                             }
                         );
                     }
+
+                    // Render users
+                    if (response.users.length > 0) {
+                        var template = "report_elucidsitereport/customquery_lpoptions"; // Work same as lp filter
+                        var context = {lps:response.users}; // work same as lp filters
+                        if (response.users.length > 0) {
+                            Templates.render(template, context).then(function(html, js) {
+                                    Templates.appendNodeContents($("#ed_users"), html , js);
+                                }
+                            );
+                        }
+                    }
                 })
                 .fail(function(error) {
                     console.log(error);
@@ -201,6 +223,11 @@ define([
                         multiple:true,
                         closeOnSelect: false,
                         placeholder: "Courses"
+                    });
+                    $("#ed_users").select2({
+                        multiple:true,
+                        closeOnSelect: false,
+                        placeholder: "Users"
                     });
                 });
 
@@ -255,6 +282,12 @@ define([
                 values[i] = $(selected).val();
             });
 
+            var rpmids = [];
+            // copy all option values from selected
+            $("#ed_rpm").find("option:selected").each(function(i, selected){
+                rpmids[i] = $(selected).val();
+            });
+
             if (JSON.stringify(selectedCohort) !== JSON.stringify(values)) {
                 $("#ed_users").html('')
                     .siblings('.select2-container')
@@ -291,12 +324,12 @@ define([
                         action: 'get_customqueryreport_cohort_users_ajax',
                         sesskey: M.cfg.sesskey,
                         data: JSON.stringify({
-                            cohortids: values
+                            cohortids: values,
+                            rpmids: rpmids
                         })
                     },
                 })
                 .done(function(response) {
-                    $("#ed_users").html('');
                     var template = "report_elucidsitereport/customquery_lpoptions"; // Work same as lp filter
                     var context = {lps:response.users}; // work same as lp filters
                     if (response.users.length > 0) {
@@ -479,6 +512,16 @@ define([
             var courses = [];
             courses = $(panel).find("#ed_courses").val();
             reportForm.find('input[name=courses]').val(courses);
+
+            // Get selected cohorts
+            var cohortids = [];
+            cohortids = $(panel).find("#ed_cohorts").val();
+            reportForm.find('input[name=cohortids]').val(cohortids);
+
+            // Get selected users
+            var userids = [];
+            userids = $(panel).find("#ed_users").val();
+            reportForm.find('input[name=userids]').val(userids);
         }
 
         /**
@@ -501,7 +544,7 @@ define([
             // Validate form data
             if (courses < 1) {
                 $(".coursealert").show();
-                setTimeout(function(){
+                setTimeout(function() {
                     $(".coursealert").hide();
                 }, 3000);
                 element.preventDefault();
@@ -534,17 +577,6 @@ define([
         // get selected fields and filter values on click of download reports
         $("#customQueryReportDownload").click(function(element){
             validateCustomQueryReportForm(element);
-            /*var courses = jQuery("#ed_courses > option:selected").length;
-            if (courses >= 1) {
-                getSelectedFields();
-                getFilters();
-            } else {
-                $(".coursealert").show();
-                setTimeout(function(){
-                    $(".coursealert").hide();
-                }, 3000);
-                e.preventDefault();
-            }*/
         });
 
         // handle alert for course selection
