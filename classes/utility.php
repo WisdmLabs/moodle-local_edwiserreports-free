@@ -978,12 +978,12 @@ class utility {
         
         // Get all users
         $cohorts = self::get_cohort_users($data->cohortids, $data->rpmids);
-        $users = $cohorts['users'];
+        $userinfo = $cohorts['users'];
 
         if (in_array(0, $data->rpmids) || empty($data->rpmids)) {
             $courses = \report_elucidsitereport\utility::get_courses();
             $lps = \report_elucidsitereport\utility::get_lps();
-            return array('courses' => $courses, 'lps' => $lps, 'users' => $users);
+            return array('courses' => $courses, 'lps' => $lps, 'users' => $userinfo);
         }
         list($insql, $inparams) = $DB->get_in_or_equal($data->rpmids, SQL_PARAMS_NAMED, 'param', true);
         // Query to get users of reporting manager
@@ -1011,7 +1011,7 @@ class utility {
             $courses = \report_elucidsitereport\utility::get_lp_courses($lpIds);
         }
 
-        return array('courses' => $courses, 'lps' =>$lps, 'users' => $users);
+        return array('courses' => $courses, 'lps' =>$lps, 'users' => $userinfo);
     }
 
     /**
@@ -1060,19 +1060,18 @@ class utility {
         }
 
         $rpmdb = '';
-        $rpmparams = array();
-        if (in_array(0, $rpmids)) {
+        $params = array();
+        if (!empty($rpmids)) {
             // Create reporting manager instance
             $rpm = \report_elucidsitereport\reporting_manager::get_instance();
             $students = $rpm->get_all_reporting_managers_students($rpmids);
             if (!empty($students)) {
-                list($rpmdb, $rpmparams) = $DB->get_in_or_equal($students);
+                list($rpmdb, $params) = $DB->get_in_or_equal($students);
             }
         }
 
         $cohortjoinsql = '';
         $insql = '';
-        $param = array();
         if (!empty($cohortids)) {
             list($insql, $inparams) = $DB->get_in_or_equal($cohortids);
             $cohortjoinsql = "JOIN {cohort_members} co ON co.userid = u.id";

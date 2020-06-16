@@ -817,18 +817,22 @@ class export {
         // Check Cohorts
         $allusers = false;
         if ($cohortids === "0") {
-            $cohorts = \report_elucidsitereport\utility::get_cohort_users(array(0));
+            $cohorts = \report_elucidsitereport\utility::get_cohort_users(array(0), $reportingmanagers);
             $userids = array_column($cohorts['users'], 'id');
         } else if ($cohortids !== "") {
             if ($userids === "0") {
                 $cohortids = explode(",", $cohortids);
-                $cohorts = \report_elucidsitereport\utility::get_cohort_users($cohortids);
+                $cohorts = \report_elucidsitereport\utility::get_cohort_users($cohortids, $reportingmanagers);
                 $userids = array_column($cohorts['users'], 'id');
             } else {
                 $userids = explode(",", $userids);
             }
         } else {
-            $allusers = true;
+            if ($userids === "0" || $userid === "") {
+                $allusers = true;
+            } else {
+                $userids = explode(",", $userids);
+            }
         }
 
         if (!$allusers) {
