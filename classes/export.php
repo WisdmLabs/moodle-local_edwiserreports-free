@@ -726,8 +726,20 @@ class export {
      * @param  [string] $completionstartdate [Selected course completion start date]
      * @param  [string] $completionenddate   [Selected course completion end date]
      */
-    public function export_csv_customquery_report_data($fields, $reportingmanagers, $lps, $courses, $enrolstartdate, $enrolenddate, $completionstartdate, $completionenddate){
+    public function export_csv_customquery_report_data($data) {
         global $DB;
+
+        $fields = $data->fields;
+        $reportingmanagers = $data->reportingmanagers;
+        $lps = $data->lps;
+        $courses = $data->courses;
+        $enrolstartdate = $data->enrolstartdate;
+        $enrolenddate = $data->enrolenddate;
+        $completionstartdate = $data->completionstartdate;
+        $completionenddate = $data->completionenddate;
+        $cohortids = $data->cohortids;
+        $userids = $data->userids;
+
         $fields = explode(',', $fields);
         $fields = $this->get_filter_based_fields($lps, $reportingmanagers, $fields);
 
@@ -737,6 +749,7 @@ class export {
         } else {
             $enrolenddate += 24 * 60 * 60 - 1;
         }
+
         //if completiondate not selected
         $completionsql =  '';
         if ($completionenddate !== "") {
@@ -801,6 +814,28 @@ class export {
                 LEFT JOIN {edw_users_learning_hours} ulh ON ulh.userid = u.id AND ulh.lhid = lh.id';
         }
 
+        // Check Cohorts
+        $allusers = false;
+        if ($cohortids === "0") {
+            $cohorts = \report_elucidsitereport\utility::get_cohort_users(array(0));
+            $userids = array_column($cohorts['users'], 'id');
+        } else if ($cohortids !== "") {
+            if ($userids === "0") {
+                $cohortids = explode(",", $cohortids);
+                $cohorts = \report_elucidsitereport\utility::get_cohort_users($cohortids);
+                $userids = array_column($cohorts['users'], 'id');
+            } else {
+                $userids = explode(",", $userids);
+            }
+        } else {
+            $allusers = true;
+        }
+
+        if (!$allusers) {
+            list($userdb, $uparams) = $DB->get_in_or_equal($userids, SQL_PARAMS_NAMED, 'user', true, true);
+            $params = array_merge($params, $uparams);
+        }
+
         // Main query to execute the custom query reports
         $sql = 'SELECT (@cnt := @cnt + 1) AS id, '.$customFields.' FROM {user} u
                 CROSS JOIN (SELECT @cnt := 0) AS dummy
@@ -811,6 +846,7 @@ class export {
                 JOIN {edw_course_progress} ec ON ec.courseid = c.id AND ec.userid = u.id AND c.id '.$coursedb.' '.$rpmnamedb.'
                 JOIN {course_categories} ctg ON ctg.id = c.category ' . $lhdb . '
                 WHERE u.id '.$rpmdb.'
+                AND u.id '.$userdb.'
                 AND ct.contextlevel = '.CONTEXT_COURSE.'
                 AND r.archetype = "student"
                 AND u.deleted = false

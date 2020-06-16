@@ -180,6 +180,6 @@ class elucidsitereportController extends controllerAbstract
         $data = json_decode(required_param('data', PARAM_RAW));
 
         // Response for ajax action
-        echo json_encode(\report_elucidsitereport\utility::get_cohort_users($data->cohortids));
+        echo json_encode(\report_elucidsitereport\utility::get_cohort_users($data->cohortids, $data->rpmids));
     }
 }

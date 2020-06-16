@@ -39,7 +39,7 @@
 		        </div>
           	</div>
           	<div class="row mx-0">
-          		<div class="mr-25 mt-25">
+          		<div class="mr-25 mt-25 pl-15">
           			<label>{{#str}} enrolmentrangeselector, report_elucidsitereport {{/str}}</label>
           			<div class="form-group w-250 mb-0">
                         <div class="input-search input-search-dark">
@@ -52,7 +52,7 @@
                         </div>
                     </div>
           		</div>
-          		<div class="mr-25 mt-25">
+          		<div class="mr-25 mt-25 pl-25">
           			<label>{{#str}} completionrangeselector, report_elucidsitereport {{/str}}</label>
           			<div class="form-group w-250 mb-0">
                         <div class="input-search input-search-dark">
@@ -172,7 +172,9 @@
                           <input type="hidden" name="completionenddate"/>
                           <input type="hidden" name="reporttype"/>
                           <input type="hidden" name="filters"/>
-                          <input type="hidden" name="checkedFields">
+                          <input type="hidden" name="checkedFields"/>
+                          <input type="hidden" name="cohortids"/>
+                          <input type="hidden" name="userids"/>
                           <button type="submit" id="customQueryReportDownload" class="btn btn-secondary">
                               {{#str}} downloadreportincsv , report_elucidsitereport {{/str}}
                           </button>

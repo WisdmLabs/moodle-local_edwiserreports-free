@@ -975,10 +975,15 @@ class utility {
      */
     public static function get_rpm_data($data) {
         global $DB;
+        
+        // Get all users
+        $cohorts = self::get_cohort_users($data->cohortids, $data->rpmids);
+        $users = $cohorts['users'];
+
         if (in_array(0, $data->rpmids) || empty($data->rpmids)) {
             $courses = \report_elucidsitereport\utility::get_courses();
             $lps = \report_elucidsitereport\utility::get_lps();
-            return array('courses' => $courses, 'lps' =>$lps);
+            return array('courses' => $courses, 'lps' => $lps, 'users' => $users);
         }
         list($insql, $inparams) = $DB->get_in_or_equal($data->rpmids, SQL_PARAMS_NAMED, 'param', true);
         // Query to get users of reporting manager
@@ -987,7 +992,7 @@ class utility {
 
         // If there is no users for this reporting managers
         if (empty($users)) {
-            return array('courses' => array(), 'lps' => array());
+            return array('courses' => array(), 'lps' => array(), 'users' => array());
         }
 
         $rpmusers = array_keys($users);
@@ -1005,7 +1010,8 @@ class utility {
         if (!empty($lpIds)) {
             $courses = \report_elucidsitereport\utility::get_lp_courses($lpIds);
         }
-        return array('courses' => $courses, 'lps' =>$lps);
+
+        return array('courses' => $courses, 'lps' =>$lps, 'users' => $users);
     }
 
     /**
@@ -1043,7 +1049,7 @@ class utility {
      * @param  array    $cohortids  Cohort Ids
      * @return array                Users array
      */
-    public static function get_cohort_users($cohortids) {
+    public static function get_cohort_users($cohortids, $rpmids) {
         global $DB;
 
         if (in_array(0, $cohortids)) {
@@ -1053,21 +1059,33 @@ class utility {
             }
         }
 
+        $rpmdb = '';
+        $rpmparams = array();
+        if (in_array(0, $rpmids)) {
+            // Create reporting manager instance
+            $rpm = \report_elucidsitereport\reporting_manager::get_instance();
+            $students = $rpm->get_all_reporting_managers_students($rpmids);
+            if (!empty($students)) {
+                list($rpmdb, $rpmparams) = $DB->get_in_or_equal($students);
+            }
+        }
+
         $cohortjoinsql = '';
         $insql = '';
-        $param == array();
+        $param = array();
         if (!empty($cohortids)) {
             list($insql, $inparams) = $DB->get_in_or_equal($cohortids);
             $cohortjoinsql = "JOIN {cohort_members} co ON co.userid = u.id";
             $insql = " AND co.cohortid $insql ";
-            $params = $inparams;
+            $params = array_merge($rpmparams, $inparams);
         }
 
         // Get all users
-        $sql = "SELECT u.id, CONCAT(u.firstname, ' ', u.lastname) as fullname
+        $sql = "SELECT DISTINCT(u.id), CONCAT(u.firstname, ' ', u.lastname) as fullname
                 FROM {user} u
                 $cohortjoinsql
-                WHERE u.deleted = false
+                WHERE u.id $rpmdb
+                AND u.deleted = false
                 AND u.confirmed = true
                 AND u.id > 1 $insql
                 ORDER BY fullname ASC";

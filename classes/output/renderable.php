@@ -153,11 +153,17 @@ class elucidreport_renderable implements renderable, templatable {
             $cohortjoinsql = 'JOIN {cohort_members} co ON co.userid = u.id';
         }
 
+        // Create reporting manager instance
+        $rpm = \report_elucidsitereport\reporting_manager::get_instance();
+        $students = $rpm->get_all_reporting_managers_students();
+        list($rpmdb, $inparams) = $DB->get_in_or_equal($students, SQL_PARAMS_NAMED, 'students', true, true);
+
         // Get all users
-        $sql = "SELECT u.id, CONCAT(u.firstname, ' ', u.lastname) as fullname
+        $sql = "SELECT DISTINCT(u.id), CONCAT(u.firstname, ' ', u.lastname) as fullname
                 FROM {user} u
                 $cohortjoinsql
-                WHERE u.deleted = :deleted
+                WHERE u.id $rpmdb 
+                AND u.deleted = :deleted
                 AND u.confirmed = :confirmed
                 AND u.id > 1
                 ORDER BY fullname ASC";
@@ -165,6 +171,11 @@ class elucidreport_renderable implements renderable, templatable {
             'deleted' => false,
             'confirmed' => true
         );
+        $params = array_merge(array(
+            'deleted' => false,
+            'confirmed' => true
+        ), $inparams);
+
         $export->users = array_values($DB->get_records_sql($sql, $params));
 
         $export->exportlinks = get_block_exportlinks($downloadurl, $data);

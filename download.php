@@ -88,16 +88,21 @@ if ($format = optional_param("format", false, PARAM_TEXT)) {
         // Render csv data in csv file
         $export->export_lpdetailed_report_data($reporttype, $filters, $enrolstartdate, $enrolenddate);
     } else if ($reporttype == 'queryReport') {
-        $fields = optional_param('checkedFields', null, PARAM_TEXT);
-        $reportingmanagers = optional_param('reportingmanagers', null, PARAM_TEXT);
-        $lps = optional_param('lps', null, PARAM_TEXT);
-        $courses = optional_param('courses', null, PARAM_TEXT);
-        $enrolstartdate = optional_param('enrolstartdate', null, PARAM_TEXT);
-        $enrolenddate = optional_param('enrolenddate', null, PARAM_TEXT);
-        $completionstartdate = optional_param('completionstartdate', null, PARAM_TEXT);
-        $completionenddate = optional_param('completionenddate', null, PARAM_TEXT);
+        $data = array (
+            'fields' => optional_param('checkedFields', null, PARAM_TEXT),
+            'reportingmanagers' => optional_param('reportingmanagers', null, PARAM_TEXT),
+            'lps' => optional_param('lps', null, PARAM_TEXT),
+            'courses' => optional_param('courses', null, PARAM_TEXT),
+            'enrolstartdate' => optional_param('enrolstartdate', null, PARAM_TEXT),
+            'enrolenddate' => optional_param('enrolenddate', null, PARAM_TEXT),
+            'completionstartdate' => optional_param('completionstartdate', null, PARAM_TEXT),
+            'completionenddate' => optional_param('completionenddate', null, PARAM_TEXT),
+            'cohortids' => required_param('cohortids', PARAM_TEXT),
+            'userids' => required_param('userids', PARAM_TEXT)
+        );
+
         // Render csv data in csv file
-        $export->export_csv_customquery_report_data($fields, $reportingmanagers, $lps, $courses, $enrolstartdate, $enrolenddate, $completionstartdate, $completionenddate);
+        $export->export_csv_customquery_report_data((object) $data);
     } else {
         // Render csv data in csv file
         $export->export_csv_customreport_data($reporttype, $filters, $enrolstartdate, $enrolenddate);
