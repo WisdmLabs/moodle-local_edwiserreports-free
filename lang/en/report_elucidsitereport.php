@@ -355,6 +355,7 @@ $string['customreportsuccess'] = '<h4><i class="fa fa-check" aria-hidden="true">
 $string['customreportfailed'] = '<h4><i class="fa fa-check" aria-hidden="true"></i> Failed!</h4>Select any of the checkboxes to get reports.';
 $string['duration'] = 'Duration';
 $string['na'] = 'NA';
+$string['activityname'] = 'Activity Name';
 
 // Setting
 $string['elucidsitereport_settings'] = 'Reports & Analytics Dashboard Settings';
@@ -373,6 +374,7 @@ $string['userfields'] = 'User Fields';
 $string['coursefields'] = 'Course Fields';
 $string['lpfields'] = 'Learning Program Fields';
 $string['rpfields'] = 'Reporting Manager Fields';
+$string['activityfields'] = 'Activity Fields';
 $string['coursestartdate'] = 'Course Start Date';
 $string['courseenddate'] = 'Course End Date';
 $string['lpstartdate'] = 'Learning Program Start Date';

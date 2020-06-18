@@ -186,6 +186,11 @@ class elucidreport_renderable implements renderable, templatable {
 
         return $export;
     }
+
+    /**
+     * Get all reports field to prepare sql query
+     * @return [Array] Array of all available field
+     */
     public static function get_report_fields() {
         $userfields = array(
             array('key' => 'username', 'value'=>get_string('username', 'report_elucidsitereport'), 'dbkey' => 'u.username', 'disbaled' => true),
@@ -215,6 +220,11 @@ class elucidreport_renderable implements renderable, templatable {
             array('key' => 'lpcompletion', 'value'=>get_string('lpcompletion', 'report_elucidsitereport'), 'dbkey' => 'FROM_UNIXTIME(lpe.completed, "%D %M %Y")'),
         );
 
+        $activityfields = array(
+            array('key' => 'activityname', 'value'=>get_string('activityname', 'report_elucidsitereport'), 'dbkey' => 'lp.name', 'disbaled' => true),
+            array('key' => 'grade', 'value'=>get_string('grade', 'report_elucidsitereport'), 'dbkey' => 'lp.name'),
+        );
+
         // Check if leraning hours plugin is present
         if (has_plugin('report', 'learning_hours')) {
             $coursefields[] = array(
@@ -242,6 +252,7 @@ class elucidreport_renderable implements renderable, templatable {
         $fields['coursefields'] = $coursefields;
         $fields['lpfields']     = $lpfields;
         $fields['rpmfields']    = $rpmfields;
+        $fields['activityfields'] = $activityfields;
         return $fields;
     }
 }

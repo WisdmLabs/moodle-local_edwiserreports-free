@@ -632,8 +632,10 @@ define([
             if ($(this).val() == 'activities') {
                 console.log($(panel).find('#ed_activitytype'));
                 $(panel).find('#ed_activitytype').closest('.activitytype.select').show();
+                $(panel).find('.activityreportfields').show();
             } else {
                 $(panel).find('#ed_activitytype').closest('.activitytype.select').hide();
+                $(panel).find('.activityreportfields').hide();
             }
         });
     });

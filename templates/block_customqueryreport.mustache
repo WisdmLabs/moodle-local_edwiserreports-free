@@ -148,6 +148,28 @@
               </div>
             </div>
 
+            <div class="activityreportfields example-wrap reportfields hidden">
+              <h5 class="example-title">
+                  <strong> {{#str}} activityfields, report_elucidsitereport {{/str}} </strong>
+                  <a class="unselect-lpreportfields pull-right text-sm" href="javascript:void(0)">
+                  <small>{{#str}} unselectall, report_elucidsitereport {{/str}}</small>
+                  </a>
+                  <a class="select-lpreportfields pull-right text-sm hidden" href="javascript:void(0)">
+                      <small>{{#str}} selectall, report_elucidsitereport {{/str}}</small>
+                  </a>
+              </h5>
+              <div class="activityfields row">
+                {{#reportfields.activityfields}}
+                <div class="{{key}} col-md-3">
+                  <div class="checkbox-custom checkbox-primary">
+                      <input type="checkbox" id="{{key}}" {{#disbaled}}disabled{{/disbaled}} checked>
+                      <label for="{{key}}">{{value}}</label>
+                    </div>
+                </div>
+                {{/reportfields.activityfields}}
+              </div>
+            </div>
+
             {{^isreportingmanager}}
             <div class="rpmreportfields example-wrap reportfields">
               <h5 class="example-title">
