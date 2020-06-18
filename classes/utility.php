@@ -1061,12 +1061,13 @@ class utility {
 
         $rpmdb = '';
         $params = array();
+        $rpmparams = array();
         if (!empty($rpmids)) {
             // Create reporting manager instance
             $rpm = \report_elucidsitereport\reporting_manager::get_instance();
             $students = $rpm->get_all_reporting_managers_students($rpmids);
             if (!empty($students)) {
-                list($rpmdb, $params) = $DB->get_in_or_equal($students);
+                list($rpmdb, $rpmparams) = $DB->get_in_or_equal($students);
             }
         }
 
