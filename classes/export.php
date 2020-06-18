@@ -864,7 +864,9 @@ class export {
         if (isset($tablename)) {
             $this->drop_table($tablename);
         }
-        $filename = "Report_".time().".csv";
+        $filename = get_string('reportname', 'report_elucidsitereport', array(
+            "date" => date('d_M_y_h-t-s', time())
+        ));
         // Download csv based on query result.
         $this->set_csv_header($filename);
         echo implode(",", array_values((array)$headers)). "\n";

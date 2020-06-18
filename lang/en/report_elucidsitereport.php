@@ -395,3 +395,6 @@ $string['learninghours'] = 'Learning Hours';
 /* ERROR string */
 $string['completiondatealert'] = "Select correct completion date range";
 $string['enroldatealert'] = "Select correct enrolment date range";
+
+/* Report name */
+$string['reportname'] = 'custom_reports_{$a->date}.csv';
