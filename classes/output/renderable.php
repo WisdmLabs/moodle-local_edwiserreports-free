@@ -178,6 +178,8 @@ class elucidreport_renderable implements renderable, templatable {
 
         $export->users = array_values($DB->get_records_sql($sql, $params));
 
+        $export->modules = \report_elucidsitereport\utility::get_available_reports_modules();
+
         $export->exportlinks = get_block_exportlinks($downloadurl, $data);
         $export->reportfields = elucidreport_renderable::get_report_fields();
         $export->downloadurl = $downloadurl;

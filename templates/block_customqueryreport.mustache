@@ -8,6 +8,18 @@
             </div>
         </div>
         <div class="panel-body">
+          <div id="edw_custom_reporttype" class="col-12 px-0 text-right">
+              <div class="btn-group" data-toggle="buttons" role="group">
+                  <label class="btn btn-outline btn-primary active">
+                      <input type="radio" name="reporttype" autocomplete="off" value="courses" checked="" class="d-none">
+                      {{#str}} course, report_elucidsitereport {{/str}}
+                  </label>
+                  <label class="btn btn-outline btn-primary">
+                      <input type="radio" name="reporttype" autocomplete="off" value="activities" class="d-none">
+                      {{#str}} activity, report_elucidsitereport {{/str}}
+                  </label>
+              </div>
+          </div>
         	<div class="row">
                 {{#hasrpmanagers}}
         		<div class="col-md-4">
@@ -36,7 +48,7 @@
 		        </div>
                 <div class="col-md-12 row px-0 mx-0 mt-2">
                     {{> report_elucidsitereport/customquery_cohortoptions }}
-		        </div>
+		            </div>
           	</div>
           	<div class="row mx-0">
           		<div class="mr-25 mt-25 pl-15">

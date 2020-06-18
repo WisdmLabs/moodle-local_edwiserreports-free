@@ -1094,4 +1094,21 @@ class utility {
             'users' => array_values($DB->get_records_sql($sql, $params))
         );
     }
+
+    /**
+     * Get all available modules for reports
+     * @return array Modules array
+     */
+    public static function get_available_reports_modules () {
+        global $DB;
+        $availablemod = array(
+            'quiz'
+        );
+
+        list($insql, $inparams) = $DB->get_in_or_equal($availablemod);
+        $sql = "SELECT id, name FROM {modules}
+                WHERE name $insql";
+
+        return array_values($DB->get_records_sql($sql, $inparams));
+    }
 }

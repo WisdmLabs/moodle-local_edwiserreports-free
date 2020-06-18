@@ -18,3 +18,11 @@
         {{/users}}
     </select>
 </div>
+<div class="col-md-4 activitytype select hidden">
+    <label>Activity Type</label>
+    <select id="ed_activitytype" class="js-states form-control select25">
+        {{#modules}}
+        <option value={{id}}>{{name}}</option>
+        {{/modules}}
+    </select>
+</div>

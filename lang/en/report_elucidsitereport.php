@@ -62,6 +62,7 @@ $string['nof2fsessions'] = "There is no face to face session available for this 
 $string['nocertificates'] = "There is no certificate created";
 $string['unselectall'] = 'Unselect All';
 $string['selectall'] = 'Select All';
+$string['activity'] = 'Activity';
 
 // Breakdown the tooltip string to display in 2 lines
 $string['cpblocktooltip1'] = '{$a->per} course completed';

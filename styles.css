@@ -599,3 +599,7 @@ div[id^="wdm-"][id*="-individual"] table.table,
 #customQueryReportBlock .select2-container--default .select2-selection--multiple .select2-selection__rendered {
     white-space: normal;
 }
+
+#customQueryReportBlock .activitytype.select .select2-container {
+    width: 100% !important;
+}

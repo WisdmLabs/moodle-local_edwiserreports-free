@@ -39,6 +39,12 @@ define([
             closeOnSelect: false,
             placeholder: "Users"
         });
+        $('#ed_activitytype').select2({
+            maximumSelectionLength:1,
+            multiple:true,
+            closeOnSelect: true,
+            placeholder: "Activity Type"
+        });
 
 
         // Change Learning Programs and accordignly get courses
@@ -617,6 +623,18 @@ define([
                     .find('a[class^="unselect-"]')
                     .hide().siblings('a[class^="select-"]').show();
             }
-        })
+        });
+
+        // On change of activity plugin
+        var reportsTypeSelector = "#edw_custom_reporttype input[type='radio']";
+        $(panel).find(reportsTypeSelector).on('change', function() {
+            console.log($(this).val());
+            if ($(this).val() == 'activities') {
+                console.log($(panel).find('#ed_activitytype'));
+                $(panel).find('#ed_activitytype').closest('.activitytype.select').show();
+            } else {
+                $(panel).find('#ed_activitytype').closest('.activitytype.select').hide();
+            }
+        });
     });
 });
