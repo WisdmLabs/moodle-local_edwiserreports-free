@@ -162,7 +162,7 @@
                 {{#reportfields.activityfields}}
                 <div class="{{key}} col-md-3">
                   <div class="checkbox-custom checkbox-primary">
-                      <input type="checkbox" id="{{key}}" {{#disbaled}}disabled{{/disbaled}} checked>
+                      <input type="checkbox" id="{{key}}" {{#disbaled}}disabled{{/disbaled}}>
                       <label for="{{key}}">{{value}}</label>
                     </div>
                 </div>
@@ -205,10 +205,12 @@
                           <input type="hidden" name="completionstartdate"/>
                           <input type="hidden" name="completionenddate"/>
                           <input type="hidden" name="reporttype"/>
+                          <input type="hidden" name="reportlevel" value="courses"/>
                           <input type="hidden" name="filters"/>
                           <input type="hidden" name="checkedFields"/>
                           <input type="hidden" name="cohortids"/>
                           <input type="hidden" name="userids"/>
+                          <input type="hidden" name="activitytype"/>
                           <button type="submit" id="customQueryReportDownload" class="btn btn-secondary">
                               {{#str}} downloadreportincsv , report_elucidsitereport {{/str}}
                           </button>

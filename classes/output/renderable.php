@@ -221,8 +221,13 @@ class elucidreport_renderable implements renderable, templatable {
         );
 
         $activityfields = array(
-            array('key' => 'activityname', 'value'=>get_string('activityname', 'report_elucidsitereport'), 'dbkey' => 'lp.name', 'disbaled' => true),
-            array('key' => 'grade', 'value'=>get_string('grade', 'report_elucidsitereport'), 'dbkey' => 'lp.name'),
+            array('key' => 'activityname', 'value'=>get_string('activityname', 'report_elucidsitereport'), 'dbkey' => 'q.name', 'disbaled' => true),
+            array('key' => 'grade', 'value'=>get_string('grade', 'report_elucidsitereport'), 'dbkey' => 'ROUND(qg.grade, 2)'),
+            array('key' => 'totalgrade', 'value'=>get_string('totalgrade', 'report_elucidsitereport'), 'dbkey' => 'ROUND(q.grade, 2)'),
+            array('key' => 'status', 'value'=>get_string('status', 'report_elucidsitereport'), 'dbkey' => 'qa.state'),
+            array('key' => 'attempt', 'value'=>get_string('attempt', 'report_elucidsitereport'), 'dbkey' => 'qa.attempt'),
+            array('key' => 'attemptstart', 'value'=>get_string('attemptstart', 'report_elucidsitereport'), 'dbkey' => 'FROM_UNIXTIME(qa.timestart, "%D %M %Y %h:%i:%m")'),
+            array('key' => 'attemptfinish', 'value'=>get_string('attemptfinish', 'report_elucidsitereport'), 'dbkey' => 'FROM_UNIXTIME(qa.timefinish, "%D %M %Y %h:%i:%m")'),
         );
 
         // Check if leraning hours plugin is present

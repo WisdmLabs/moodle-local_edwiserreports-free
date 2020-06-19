@@ -398,3 +398,7 @@ $string['enroldatealert'] = "Select correct enrolment date range";
 
 /* Report name */
 $string['reportname'] = 'custom_reports_{$a->date}.csv';
+$string['totalgrade'] = 'Total Grade';
+$string['attempt'] = 'Attempt';
+$string['attemptstart'] = 'Attempt Start';
+$string['attemptfinish'] = 'Attempt Finish';

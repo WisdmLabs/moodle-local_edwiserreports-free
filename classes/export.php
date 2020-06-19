@@ -739,6 +739,8 @@ class export {
         $completionenddate = $data->completionenddate;
         $cohortids = $data->cohortids;
         $userids = $data->userids;
+        $reportlevel = $data->reportlevel;
+        $activitytype = $data->activitytype;
 
         $fields = explode(',', $fields);
         $fields = $this->get_filter_based_fields($lps, $reportingmanagers, $fields);
@@ -828,16 +830,36 @@ class export {
                 $userids = explode(",", $userids);
             }
         } else {
-            if ($userids === "0" || $userid === "") {
+            if ($userids === "0" || $userids === "") {
                 $allusers = true;
             } else {
                 $userids = explode(",", $userids);
             }
         }
 
+        $userdb = '';
         if (!$allusers) {
             list($userdb, $uparams) = $DB->get_in_or_equal($userids, SQL_PARAMS_NAMED, 'user', true, true);
             $params = array_merge($params, $uparams);
+        }
+
+        // Check for report type
+        $activitytypejoin = '';
+        $activitytypedb = '';
+        if ($reportlevel == 'activities') {
+            $activitytype = $DB->get_record("modules", array("id" => $activitytype));
+
+            if (!empty($activitytype)) {
+                switch ($activitytype->name) {
+                    case 'quiz':
+                        $activitytypejoin = 'JOIN {quiz_grades} qg ON qg.userid = u.id
+                                             JOIN {quiz} q ON q.id = qg.quiz AND q.course = c.id
+                                             JOIN {quiz_attempts} qa ON qa.userid = u.id AND qa.quiz = q.id';
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
 
         // Main query to execute the custom query reports
@@ -846,7 +868,7 @@ class export {
                 JOIN {role_assignments} ra ON ra.userid = u.id
                 JOIN {role} r ON r.id = ra.roleid
                 JOIN {context} ct ON ct.id = ra.contextid
-                JOIN {course} c ON c.id = ct.instanceid '.$lpjoinquery.'
+                JOIN {course} c ON c.id = ct.instanceid '.$lpjoinquery.' ' . $activitytypejoin . '
                 JOIN {edw_course_progress} ec ON ec.courseid = c.id AND ec.userid = u.id AND c.id '.$coursedb.' '.$rpmnamedb.'
                 JOIN {course_categories} ctg ON ctg.id = c.category ' . $lhdb . '
                 WHERE u.id '.$rpmdb.'
@@ -860,6 +882,11 @@ class export {
         $params['completionstartdate'] = $completionstartdate;
         $params['completionenddate'] = $completionenddate;
         $records = $DB->get_records_sql($sql, $params);
+
+        echo "<pre>";
+        var_dump($sql);
+        var_dump($params);
+        die;
         // drop lp and course relation temporary table after query execution
         if (isset($tablename)) {
             $this->drop_table($tablename);

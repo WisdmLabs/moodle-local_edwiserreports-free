@@ -528,6 +528,11 @@ define([
             var userids = [];
             userids = $(panel).find("#ed_users").val();
             reportForm.find('input[name=userids]').val(userids);
+
+            // Get selected activity type
+            var activitytype = [];
+            activitytype = $(panel).find("#ed_activitytype").val();
+            reportForm.find('input[name=activitytype]').val(activitytype);
         }
 
         /**
@@ -628,15 +633,17 @@ define([
         // On change of activity plugin
         var reportsTypeSelector = "#edw_custom_reporttype input[type='radio']";
         $(panel).find(reportsTypeSelector).on('change', function() {
-            console.log($(this).val());
             if ($(this).val() == 'activities') {
-                console.log($(panel).find('#ed_activitytype'));
                 $(panel).find('#ed_activitytype').closest('.activitytype.select').show();
                 $(panel).find('.activityreportfields').show();
+                $(panel).find('.activityfields input[type="checkbox"]').attr("checked", true);
             } else {
                 $(panel).find('#ed_activitytype').closest('.activitytype.select').hide();
                 $(panel).find('.activityreportfields').hide();
+                $(panel).find('.activityfields input[type="checkbox"]').removeAttr("checked");
             }
+
+            $(reportForm).find('input[name="reportlevel"]').val($(this).val());
         });
     });
 });
