@@ -883,10 +883,6 @@ class export {
         $params['completionenddate'] = $completionenddate;
         $records = $DB->get_records_sql($sql, $params);
 
-        echo "<pre>";
-        var_dump($sql);
-        var_dump($params);
-        die;
         // drop lp and course relation temporary table after query execution
         if (isset($tablename)) {
             $this->drop_table($tablename);
