@@ -20,7 +20,7 @@ define([
     var chart             = panelBody + " .ct-chart";
     var loader            = panelBody + " .loader";
     var dropdownButton    = panel + " button#filter-dropdown";
-    var refreshBtn        = panelTitle + " .refresh";
+    var refreshBtn        = panelBody + " .refresh";
     var exportUrlLink     = panel + V.exportUrlLink;
     var filter            = null;
     var dropdownInput     = panelTitle + " input.form-control.input";
@@ -158,12 +158,12 @@ define([
 
         /* Reset Update time in panel header */
         function resetUpdateTime() {
-            $(panelTitle + " #updated-time > span.minute").html(0);
+            $(panelBody + " #updated-time > span.minute").html(0);
         }
 
         /* Increament update time in panel header */
         function inceamentUpdateTime() {
-            $(panelTitle + " #updated-time > span.minute").html(parseInt($(panelTitle + " #updated-time > span.minute").text()) + 1);
+            $(panelBody + " #updated-time > span.minute").html(parseInt($(panelBody + " #updated-time > span.minute").text()) + 1);
         }
 
         /* Generate Active Users graph */
