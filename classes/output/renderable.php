@@ -37,6 +37,7 @@ use context_system;
 require_once $CFG->dirroot."/report/elucidsitereport/lib.php";
 require_once $CFG->dirroot."/report/elucidsitereport/classes/blocks/active_users_block.php";
 require_once $CFG->dirroot."/report/elucidsitereport/classes/blocks/course_progress_block.php";
+require_once $CFG->dirroot."/report/elucidsitereport/classes/report_blocks.php";
 require_once $CFG->dirroot."/report/elucidsitereport/classes/reporting_manager.php";
 require_once $CFG->dirroot."/report/elucidsitereport/locallib.php";
 
@@ -56,6 +57,18 @@ class elucidreport_renderable implements renderable, templatable {
 
         $output = null;
         $export = new stdClass();
+
+        // TODO: Temp preparation of block remove after done
+        $activeusersblock = new stdClass();
+        $activeusersblock->classname = 'activeusersblock';
+        $reportblocks = array(
+            'activeusers' => $activeusersblock
+        );
+
+        // Prepare reports blocks
+        $reportblocks = new \report_elucidsitereport\report_blocks($reportblocks);
+        $export->blocks = $reportblocks->get_report_blocks();
+
         $export->sesskey = sesskey();
         $export->timenow = date("Y-m-d", time());
         $export->courses = \report_elucidsitereport\utility::get_courses();
@@ -438,25 +451,6 @@ class courseanalytics_renderable implements renderable, templatable {
         $output->completionexportlink = get_exportlinks($downloadurl, "report", "courseanalytics", $courseid, 0, "completion");
         $output->userfilters = get_userfilters(false, true, false);
         $output->backurl = new moodle_url($CFG->wwwroot."/report/elucidsitereport/index.php");
-        return $output;
-    }
-}
-
-
-class customqueryreport_renderable {
-    /**
-     * Function to export the renderer data in a format that is suitable for a
-     * edit mustache template.
-     *
-     * @param renderer_base $output Used to do a final render of any components that need to be rendered for export.
-     * @return stdClass|array
-     */
-    public function export_for_template() {
-        global $CFG, $DB;
-
-        $output = new stdClass();
-        $output->sesskey = sesskey();
-        $output->temp = "This is temp";
         return $output;
     }
 }

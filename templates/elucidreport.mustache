@@ -1,4 +1,56 @@
-<div id="wdm-elucidsitereport" class="row mx-0">
+<div id="wdm-elucidsitereport" class="row m-0">
+    {{# blocks }}
+        <div class="{{class}}">
+            <div id="{{id}}" data-sesskey="{{sesskey}}">
+                <div class="panel h-auto">
+                    <div class="panel-header clearfix">
+                        <div class="panel-title px-0">
+                            <strong>
+                                {{{name}}}
+                                <a href="javascript:void(0)" data-title="{{info}}" class="small" data-toggle="tooltip" data-trigger="hover" data-placement="bottom">
+                                    <i class="fa fa-question-circle"></i>
+                                </a>
+                            </strong>
+
+                            {{{ filters }}}
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        {{{ blockview }}}
+                        <div class="loader w-full text-center">
+                            {{# pix }} loader, report_elucidsitereport{{/ pix }}
+                        </div>
+                    </div>
+                    <div class="panel-footer row">
+                        {{# morelink }}
+                            <div class="">
+                                <a href="{{{.}}}" class="btn btn-primary btn-sm">{{#str}} more, report_elucidsitereport {{/str}}</a>
+                            </div>
+                        {{/ morelink }}
+                        {{# hasdownloadlink }}
+                            <div class="ml-auto">
+                                <a href="{{{.}}}" class="">
+                                    <i class="fa fa-file text-success"></i>
+                                </a>
+                                <a href="{{{.}}}" class="">
+                                    <i class="fa fa-file"></i>
+                                </a>
+                                <a href="{{{.}}}" class="">
+                                    <i class="fa fa-file"></i>
+                                </a>
+                                <a href="{{{.}}}" class="">
+                                    <i class="fa fa-file"></i>
+                                </a>
+                            </div>
+                        {{/ hasdownloadlink }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{/ blocks }}
+</div>
+
+<div class="d-none">
     {{! If user is admin }}
     {{^isreportingmanager}}
     <div class="col-12 px-0">
