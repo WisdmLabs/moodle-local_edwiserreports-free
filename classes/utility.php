@@ -1111,4 +1111,22 @@ class utility {
 
         return array_values($DB->get_records_sql($sql, $inparams));
     }
+
+    /**
+     * Get all available modules for reports
+     * @return array Modules array
+     */
+    public static function get_reports_block() {
+        // TODO: Temp preparation of block remove after done
+        $activeusersblock = new stdClass();
+        $activeusersblock->classname = 'activeusersblock';
+        $courseprogressblock = new stdClass();
+        $courseprogressblock->classname = 'courseprogressblock';
+        $reportblocks = array(
+            'activeusers' => $activeusersblock,
+            'courseprogress' => $courseprogressblock
+        );
+
+        return $reportblocks;
+    }
 }

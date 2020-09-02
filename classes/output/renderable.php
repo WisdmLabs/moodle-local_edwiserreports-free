@@ -61,11 +61,15 @@ class elucidreport_renderable implements renderable, templatable {
         // TODO: Temp preparation of block remove after done
         $activeusersblock = new stdClass();
         $activeusersblock->classname = 'activeusersblock';
+        $courseprogressblock = new stdClass();
+        $courseprogressblock->classname = 'courseprogressblock';
         $reportblocks = array(
-            'activeusers' => $activeusersblock
+            'activeusers' => $activeusersblock,
+            'courseprogress' => $courseprogressblock
         );
 
         // Prepare reports blocks
+        $reportblocks = \report_elucidsitereport\utility::get_reports_block();
         $reportblocks = new \report_elucidsitereport\report_blocks($reportblocks);
         $export->blocks = $reportblocks->get_report_blocks();
 
