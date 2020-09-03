@@ -28,18 +28,26 @@
                             </div>
                         {{/ morelink }}
                         {{# hasdownloadlink }}
-                            <div class="ml-auto">
-                                <a href="{{{.}}}" class="">
-                                    <i class="fa fa-file text-success"></i>
+                            <div class="ml-auto row m-0">
+                                <a href="{{{.}}}" class="fi fi-csv">
+                                    <div class="fi-content">
+                                        <strong>csv</strong>
+                                    </div>
                                 </a>
-                                <a href="{{{.}}}" class="">
-                                    <i class="fa fa-file"></i>
+                                <a href="{{{.}}}" class="fi fi-excel">
+                                    <div class="fi-content">
+                                        <strong>excel</strong>
+                                    </div>
                                 </a>
-                                <a href="{{{.}}}" class="">
-                                    <i class="fa fa-file"></i>
+                                <a href="{{{.}}}" class="fi fi-pdf">
+                                    <div class="fi-content">
+                                        <strong>pdf</strong>
+                                    </div>
                                 </a>
-                                <a href="{{{.}}}" class="">
-                                    <i class="fa fa-file"></i>
+                                <a href="{{{.}}}" class="fi fi-email">
+                                    <div class="fi-content">
+                                        <strong>email</strong>
+                                    </div>
                                 </a>
                             </div>
                         {{/ hasdownloadlink }}

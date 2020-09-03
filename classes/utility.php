@@ -30,9 +30,7 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot . "/completion/classes/progress.php");
 require_once($CFG->dirroot . "/cohort/lib.php");
 require_once($CFG->libdir."/csvlib.class.php");
-require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/active_users_block.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/active_courses_block.php");
-require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/course_progress_block.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/f2fsession_block.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/certificates_block.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/liveusers_block.php");
@@ -199,7 +197,7 @@ class utility {
             }
             $coursecontext = context_course::instance($course->id);
             // Get only students
-            $enrolledstudents = \report_elucidsitereport\course_progress_block::rep_get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+            $enrolledstudents = \report_elucidsitereport\courseprogressblock::rep_get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
             if (!$all && count($enrolledstudents) == 0) {
                 continue;
             }

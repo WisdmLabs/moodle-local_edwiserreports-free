@@ -64,6 +64,7 @@ $PAGE->requires->js_call_amd('report_elucidsitereport/main', 'init');
 $PAGE->requires->css('/report/elucidsitereport/styles/datatable.css');
 $PAGE->requires->css('/report/elucidsitereport/styles/flatpickr.min.css');
 $PAGE->requires->css('/report/elucidsitereport/styles/select2.min.css');
+$PAGE->requires->css('/report/elucidsitereport/styles/file-icons.css');
 
 // Set page context
 $PAGE->set_context($context);

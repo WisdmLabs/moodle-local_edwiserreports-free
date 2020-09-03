@@ -31,7 +31,6 @@
  * @return boolean Return boolean
  */
 
-require_once($CFG->dirroot."/report/elucidsitereport/classes/blocks/active_users_block.php");
 require_once($CFG->dirroot."/report/elucidsitereport/locallib.php");
 
 /**

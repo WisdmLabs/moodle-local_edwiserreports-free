@@ -35,8 +35,6 @@ use templatable;
 use context_system;
 
 require_once $CFG->dirroot."/report/elucidsitereport/lib.php";
-require_once $CFG->dirroot."/report/elucidsitereport/classes/blocks/active_users_block.php";
-require_once $CFG->dirroot."/report/elucidsitereport/classes/blocks/course_progress_block.php";
 require_once $CFG->dirroot."/report/elucidsitereport/classes/report_blocks.php";
 require_once $CFG->dirroot."/report/elucidsitereport/classes/reporting_manager.php";
 require_once $CFG->dirroot."/report/elucidsitereport/locallib.php";

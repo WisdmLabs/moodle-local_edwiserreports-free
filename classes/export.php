@@ -29,8 +29,6 @@ require_once($CFG->libdir."/csvlib.class.php");
 require_once($CFG->libdir."/excellib.class.php");
 require_once($CFG->libdir."/pdflib.php");
 require_once($CFG->dirroot."/report/elucidsitereport/classes/utility.php");
-require_once($CFG->dirroot."/report/elucidsitereport/classes/blocks/active_users_block.php");
-require_once($CFG->dirroot."/report/elucidsitereport/classes/blocks/active_courses_block.php");
 require_once($CFG->dirroot."/report/elucidsitereport/lib.php");
 require_once($CFG->dirroot."/report/elucidsitereport/locallib.php");
 require_once($CFG->dirroot."/report/elucidsitereport/classes/output/renderable.php");
