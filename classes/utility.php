@@ -59,7 +59,14 @@ use core_course_category;
  * to perform in the eLucid report plugin
  */
 class utility {
+    /**
+     * Get active users data for active users blocks
+     */
     public static function get_active_users_data($data) {
+        global $CFG;
+
+        require_once($CFG->dirroot . '/report/elucidsitereport/classes/blocks/activeusersblock.php');
+
         if (isset($data->filter)) {
             $filter = $data->filter;
         } else {
@@ -71,7 +78,9 @@ class utility {
         } else {
             $cohortid = 0; // Default Cohort ID
         }
-        return \report_elucidsitereport\active_users_block::get_data($filter, $cohortid);
+
+        $activeusersblock =  new \report_elucidsitereport\activeusersblock($filter);
+        return $activeusersblock->get_data($filter, $cohortid);
     }
 
     /**
