@@ -50,7 +50,7 @@ class block_base {
     /**
      * Create blocks data
      */
-    public function get_data() {
+    public function get_data($id, $cohortid = 0) {
         debugging('extend the reports_block class and add get_data function');
     }
 
@@ -69,5 +69,12 @@ class block_base {
 
         $base = new \plugin_renderer_base($PAGE, RENDERER_TARGET_GENERAL);
         return $base->render_from_template('report_elucidsitereport/' . $templatename, $context);
+    }
+
+    /**
+     * Generate cache key for blocks
+     */
+    public function generate_cache_key($blockname, $id, $cohortid = 0) {
+        return $blockname . "-" . $id . "-" . $cohortid;
     }
 }

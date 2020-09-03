@@ -33,7 +33,7 @@ class activeusersblock extends block_base {
     /**
      * Get reports data for active users block
      */
-    public function get_data() {
+    public function get_data($id, $cohortid = 0) {
 
     }
 

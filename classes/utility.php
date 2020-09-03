@@ -80,10 +80,17 @@ class utility {
      * @return [array] Course Progress array
      */
     public static function get_course_progress_data($data) {
+        global $CFG;
+
+        require_once($CFG->dirroot . '/report/elucidsitereport/classes/blocks/courseprogressblock.php');
+
+        $data = json_decode(required_param('data', PARAM_RAW));
+
+        $courseprogress = new \report_elucidsitereport\courseprogressblock();
         if ($data->courseid == "all") {
-            return \report_elucidsitereport\course_progress_block::get_courselist($data->cohortid);
+            return $courseprogress->get_courselist($data->cohortid);
         }
-        return \report_elucidsitereport\course_progress_block::get_data($data->courseid);
+        return $courseprogress->get_data($data->courseid);
     }
 
     public static function get_active_courses_data() {
