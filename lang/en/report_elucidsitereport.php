@@ -402,3 +402,7 @@ $string['totalgrade'] = 'Total Grade';
 $string['attempt'] = 'Attempt';
 $string['attemptstart'] = 'Attempt Start';
 $string['attemptfinish'] = 'Attempt Finish';
+
+$string['editblockview'] = 'Edit Block View';
+$string['hide'] = 'Hide Block';
+$string['editcapability'] = 'Change Capability';

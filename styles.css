@@ -124,9 +124,9 @@
     .path-report-elucidsitereport .dropdown-menu .dropdown-body {
         float: right !important;
     }
-    #wdm-elucidsitereport #activeusersblock .panel-header {
+    /* #wdm-elucidsitereport #activeusersblock .panel-header {
         margin-right: 170px;
-    }
+    } */
     #wdm-elucidsitereport #activeusersblock .panel-header .filters,
     #wdm-elucidsitereport #courseprogressblock .panel-header .dropdown,
     #wdm-elucidsitereport #mostactivecourses .panel-header .dropdown,
@@ -138,21 +138,21 @@
         top: 0;
         right: 0;
     }
-    #wdm-elucidsitereport #courseprogressblock .panel-header,
+    /* #wdm-elucidsitereport #courseprogressblock .panel-header,
     #wdm-elucidsitereport #mostactivecourses .panel-header,
     #wdm-elucidsitereport #certificatestatsblock .panel-header,
     #wdm-elucidsitereport #f2fsessionsblock .panel-header,
     #wdm-elucidsitereport #lpstatsblock .panel-header,
     .path-report-elucidsitereport .page-title {
         margin-right: 50px;
-    }
-    #wdm-elucidsitereport #courseprogressblock .panel-header .dropdown,
+    } */
+    /* #wdm-elucidsitereport #courseprogressblock .panel-header .dropdown,
     #wdm-elucidsitereport #mostactivecourses .panel-header .dropdown,
     #wdm-elucidsitereport #certificatestatsblock .panel-header .dropdown,
     #wdm-elucidsitereport #f2fsessionsblock .panel-header .dropdown,
     #wdm-elucidsitereport #lpstatsblock .panel-header .dropdown {
         margin-top: 20px;
-    }
+    } */
 }
 
 #export-dropdown.dropdown-toggle:after {
@@ -602,4 +602,28 @@ div[id^="wdm-"][id*="-individual"] table.table,
 
 #customQueryReportBlock .activitytype.select .select2-container {
     width: 100% !important;
+}
+
+/** Blocks setting button */
+#wdm-elucidsitereport .blocksetting {
+	position: absolute;
+    right: 0;
+    top: 0;
+    padding: 5px;
+}
+
+#wdm-elucidsitereport a[id^="blocksetting-"],
+#wdm-elucidsitereport a[id^="blocksetting-"] .icon {
+	font-size: 26px;
+	text-decoration: none !important;
+}
+
+#wdm-elucidsitereport .panel-title {
+	min-height: 60px;
+}
+
+#wdm-elucidsitereport .panel-body {
+	height: 400px;
+	min-height: 400px;
+	min-height: 400px;
 }

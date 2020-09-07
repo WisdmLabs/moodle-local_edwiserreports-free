@@ -1,10 +1,10 @@
 <div id="wdm-elucidsitereport" class="row m-0">
     {{# blocks }}
-        <div class="{{class}}">
+        <div class="{{class}} mb-5">
             <div id="{{id}}" data-sesskey="{{sesskey}}">
-                <div class="panel h-auto">
-                    <div class="panel-header clearfix">
-                        <div class="panel-title px-0">
+                <div class="panel m-0">
+                    <div class="panel-header d-flex">
+                        <div class="panel-title px-0 col-10">
                             <strong>
                                 {{{name}}}
                                 <a href="javascript:void(0)" data-title="{{info}}" class="small" data-toggle="tooltip" data-trigger="hover" data-placement="bottom">
@@ -14,8 +14,11 @@
 
                             {{{ filters }}}
                         </div>
+                        <div class="col-2 p-0">
+                            {{> report_elucidsitereport/blocksettingdropdown }}
+                        </div>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body p-0">
                         {{{ blockview }}}
                         <div class="loader w-full text-center">
                             {{# pix }} loader, report_elucidsitereport{{/ pix }}

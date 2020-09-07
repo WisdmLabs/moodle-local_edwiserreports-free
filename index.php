@@ -61,10 +61,11 @@ $pageurl = new moodle_url($CFG->wwwroot."/report/elucidsitereport/index.php");
 $PAGE->requires->js_call_amd('report_elucidsitereport/main', 'init');
 
 // Require CSS for index page
-$PAGE->requires->css('/report/elucidsitereport/styles/datatable.css');
-$PAGE->requires->css('/report/elucidsitereport/styles/flatpickr.min.css');
-$PAGE->requires->css('/report/elucidsitereport/styles/select2.min.css');
-$PAGE->requires->css('/report/elucidsitereport/styles/file-icons.css');
+// $PAGE->requires->css('/report/elucidsitereport/styles/datatable.css');
+// $PAGE->requires->css('/report/elucidsitereport/styles/flatpickr.min.css');
+// $PAGE->requires->css('/report/elucidsitereport/styles/select2.min.css');
+// $PAGE->requires->css('/report/elucidsitereport/styles/file-icons.css');
+$PAGE->requires->css('/report/elucidsitereport/styles/loader.css');
 
 // Set page context
 $PAGE->set_context($context);
