@@ -61,7 +61,10 @@ class activecoursesblock extends block_base {
      * Get Data for Active Courses
      * @return [objext] Response for Active Courses
      */
-    public function get_data($id = 0, $cohortid = false) {
+    public function get_data($params = false) {
+        $id = isset($params->id) ? $params->id : false;
+        $cohortid = isset($params->cohortid) ? $params->cohortid : false;
+
         $response = new stdClass();
 
         $cache = cache::make('report_elucidsitereport', 'activecourses');

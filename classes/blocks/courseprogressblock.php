@@ -35,7 +35,10 @@ class courseprogressblock extends block_base {
     /**
      * Get reports data for Course Progress block
      */
-    public function get_data($courseid, $cohortid = 0) {
+    public function get_data($params = false) {        
+        $courseid = isset($params->courseid) ? $params->courseid : false;
+        $cohortid = isset($params->cohortid) ? $params->cohortid : false;
+
         // Make cache for courseprogress block
         $cache = cache::make("report_elucidsitereport", "courseprogress");
         // Create reporting manager instance

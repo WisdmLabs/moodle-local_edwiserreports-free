@@ -33,6 +33,7 @@ use context_course;
 use core_user;
 use html_writer;
 use cache;
+use moodle_url;
 
 require_once($CFG->dirroot.'/grade/report/grader/lib.php');
 
@@ -40,12 +41,38 @@ require_once($CFG->dirroot.'/grade/report/grader/lib.php');
  * Class Certifictes Block
  * To get the data for certificates
  */
-class certificates_block extends utility {
+class certificatesblock extends block_base {
+    /**
+     * Preapre layout for each block
+     */
+    public function get_layout() {
+        global $CFG;
+
+        // Layout related data
+        $this->layout->id = 'certificatesblock';
+        $this->layout->class = 'col-6';
+        $this->layout->name = get_string('certificatestatsheader', 'report_elucidsitereport');
+        $this->layout->info = get_string('certificatestatsblockhelp', 'report_elucidsitereport');
+        $this->layout->morelink = new moodle_url($CFG->wwwroot . "/report/elucidsitereport/certificates.php");
+        $this->layout->hasdownloadlink = true;
+        $this->layout->filters = '';
+
+        // Block related data
+        $this->block = new stdClass();
+        $this->block->displaytype = 'line-chart';
+
+        // Add block view in layout
+        $this->layout->blockview = $this->render_block('certificatestatsblock', $this->block);
+
+        // Return blocks layout
+        return $this->layout;
+    }
+
     /**
      * Get data for certificates block
      * @return [object] Response object for Certificates Block
      */
-    public static function get_data() {
+    public function get_data($params = false) {
         $response = new stdClass();
         $response->data = new stdClass();
         // Create reporting manager instance

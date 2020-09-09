@@ -1,6 +1,6 @@
 define(["jquery", "core/templates", "report_elucidsitereport/defaultconfig"], function($, templates, cfg) {
-    var panel = cfg.getPanel("#certificatestatsblock");
-    var panelBody = cfg.getPanel("#certificatestatsblock", "body");
+    var panel = cfg.getPanel("#certificatesblock");
+    var panelBody = cfg.getPanel("#certificatesblock", "body");
     var table = panel + " .table";
     var dropdownBody = panel + " .table-dropdown";
 

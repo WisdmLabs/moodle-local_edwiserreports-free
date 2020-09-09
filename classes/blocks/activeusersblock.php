@@ -166,7 +166,10 @@ class activeusersblock extends block_base {
      * @param  string $filter date filter to get data
      * @return stdClass active users graph data
      */
-    public function get_data($filter, $cohortid = false) {
+    public function get_data($params = false) {        
+        $id = isset($params->id) ? $params->id : false;
+        $cohortid = isset($params->cohortid) ? $params->cohortid : false;
+
         // Generate active users data label
         $this->generate_labels($filter);
 

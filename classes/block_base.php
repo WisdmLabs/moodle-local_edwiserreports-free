@@ -50,7 +50,7 @@ class block_base {
     /**
      * Create blocks data
      */
-    public function get_data($id, $cohortid = 0) {
+    public function get_data($params = false) {
         debugging('extend the reports_block class and add get_data function');
     }
 

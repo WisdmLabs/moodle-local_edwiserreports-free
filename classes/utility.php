@@ -32,7 +32,7 @@ require_once($CFG->dirroot . "/cohort/lib.php");
 require_once($CFG->libdir."/csvlib.class.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/activecoursesblock.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/f2fsession_block.php");
-require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/certificates_block.php");
+require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/certificatesblock.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/liveusers_block.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/siteaccess_block.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/todaysactivity_block.php");
@@ -97,7 +97,7 @@ class utility {
         if ($data->courseid == "all") {
             return $courseprogress->get_courselist($data->cohortid);
         }
-        return $courseprogress->get_data($data->courseid);
+        return $courseprogress->get_data($data);
     }
 
     public static function get_active_courses_data() {
@@ -124,10 +124,14 @@ class utility {
     }
 
     public static function get_certificates_data($data) {
+        global $CFG;
+        require_once($CFG->dirroot . '/report/elucidsitereport/classes/blocks/certificatesblock.php');
+
+        $certificatesblock = new \report_elucidsitereport\certificatesblock();
         if (isset($data->certificateid)) {
             return \report_elucidsitereport\certificates_block::get_issued_users($data->certificateid, $data->cohortid);
         }
-        return \report_elucidsitereport\certificates_block::get_data();
+        return $certificatesblock->get_data();
     }
 
     public static function get_liveusers_data() {
@@ -1143,10 +1147,13 @@ class utility {
         $courseprogressblock->classname = 'courseprogressblock';
         $activecoursesblock = new stdClass();
         $activecoursesblock->classname = 'activecoursesblock';
+        $certificatesblock = new stdClass();
+        $certificatesblock->classname = 'certificatesblock';
         $reportblocks = array(
             'activeusers' => $activeusersblock,
             'courseprogress' => $courseprogressblock,
-            'activecourses' => $activecoursesblock
+            'activecourses' => $activecoursesblock,
+            'certificates' => $certificatesblock
         );
 
         return $reportblocks;

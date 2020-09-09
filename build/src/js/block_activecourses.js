@@ -33,11 +33,11 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
             activeCourseTable.on('order.dt search.dt', function () {
                 activeCourseTable.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
                     if (i == 0) {
-                        cell.innerHTML = "<i class='fa fa-trophy text-gold font-size-24'></i>";
+                        cell.innerHTML = "<i class='fa fa-trophy text-gold'></i>";
                     } else if (i == 1) {
-                        cell.innerHTML = "<i class='fa fa-trophy text-silver font-size-20'></i>";
+                        cell.innerHTML = "<i class='fa fa-trophy text-silver'></i>";
                     } else if (i == 2) {
-                        cell.innerHTML = "<i class='fa fa-trophy text-bronze font-size-16'></i>";
+                        cell.innerHTML = "<i class='fa fa-trophy text-bronze'></i>";
                     } else {
                         cell.innerHTML = i+1;
                     }
