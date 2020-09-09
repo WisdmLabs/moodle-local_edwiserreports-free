@@ -30,7 +30,7 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot . "/completion/classes/progress.php");
 require_once($CFG->dirroot . "/cohort/lib.php");
 require_once($CFG->libdir."/csvlib.class.php");
-require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/active_courses_block.php");
+require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/activecoursesblock.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/f2fsession_block.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/certificates_block.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/liveusers_block.php");
@@ -101,7 +101,12 @@ class utility {
     }
 
     public static function get_active_courses_data() {
-        return \report_elucidsitereport\active_courses_block::get_data();
+        global $CFG;
+
+        require_once($CFG->dirroot . '/report/elucidsitereport/classes/blocks/activecoursesblock.php');
+
+        $activecourses = new \report_elucidsitereport\activecoursesblock();
+        return $activecourses->get_data(false);
     }
 
     /**
@@ -1136,9 +1141,12 @@ class utility {
         $activeusersblock->classname = 'activeusersblock';
         $courseprogressblock = new stdClass();
         $courseprogressblock->classname = 'courseprogressblock';
+        $activecoursesblock = new stdClass();
+        $activecoursesblock->classname = 'activecoursesblock';
         $reportblocks = array(
             'activeusers' => $activeusersblock,
-            'courseprogress' => $courseprogressblock
+            'courseprogress' => $courseprogressblock,
+            'activecourses' => $activecoursesblock
         );
 
         return $reportblocks;

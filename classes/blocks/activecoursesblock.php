@@ -24,6 +24,7 @@
  */
 
 namespace report_elucidsitereport;
+
 use stdClass;
 use context_course;
 use cache;
@@ -32,12 +33,35 @@ use cache;
  * Class Acive Users Block
  * To get the data related to active users block
  */
-class active_courses_block extends utility {
+class activecoursesblock extends block_base {
+    /**
+     * Preapre layout for active courses block
+     */
+    public function get_layout() {
+        global $CFG;
+
+        // Layout related data
+        $this->layout->id = 'activecoursesblock';
+        $this->layout->class = 'col-6';
+        $this->layout->name = get_string('activecoursesheader', 'report_elucidsitereport');
+        $this->layout->info = get_string('activecoursesblockhelp', 'report_elucidsitereport');
+
+        // Block related data
+        $this->block = new stdClass();
+        $this->block->displaytype = 'line-chart';
+
+        // Add block view in layout
+        $this->layout->blockview = $this->render_block('activecoursesblock', $this->block);
+
+        // Return blocks layout
+        return $this->layout;
+    }
+
     /**
      * Get Data for Active Courses
      * @return [objext] Response for Active Courses
      */
-    public static function get_data() {
+    public function get_data($id = 0, $cohortid = false) {
         $response = new stdClass();
 
         $cache = cache::make('report_elucidsitereport', 'activecourses');
@@ -110,9 +134,11 @@ class active_courses_block extends utility {
             $coursecontext = context_course::instance($course->id);
 
             // Get Enrolled users
-            $enrolledstudents = course_progress_block::rep_get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+            // 'moodle/course:isincompletionreports' - this capability is allowed to only students
+            $enrolledstudents = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+            // $enrolledstudents = courseprogressblock::rep_get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
             if (empty($enrolledstudents)) {
-                continue;
+               continue;
             }
             $res[] = count($enrolledstudents);
 

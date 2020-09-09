@@ -2,10 +2,10 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
     function init(notifyListner) {
         var activeCourseTable;
 
-        var panel = cfg.getPanel("#mostactivecourses");
-        var panelBody = cfg.getPanel("#mostactivecourses", "body");
-        var panelTitle = cfg.getPanel("#mostactivecourses", "title");
-        var panelFooter = cfg.getPanel("#mostactivecourses", "footer");
+        var panel = cfg.getPanel("#activecoursesblock");
+        var panelBody = cfg.getPanel("#activecoursesblock", "body");
+        var panelTitle = cfg.getPanel("#activecoursesblock", "title");
+        var panelFooter = cfg.getPanel("#activecoursesblock", "footer");
         var dropdownBody = panel + " .table-dropdown";
         var dropdownTable = panelBody + " .dataTables_wrapper .row:first-child > div:first-child";
         var loader = panelBody + " .loader";
