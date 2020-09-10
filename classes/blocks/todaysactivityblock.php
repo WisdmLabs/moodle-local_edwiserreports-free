@@ -34,8 +34,35 @@ use theme_remui\utility;
  * Class Acive Users Block
  * To get the data related to active users block
  */
-class todaysactivity_block extends utility {
-    public static function get_data($date = false) {
+class todaysactivityblock extends block_base {
+    /**
+     * Preapre layout for each block
+     */
+    public function get_layout() {
+        global $CFG;
+
+        // Layout related data
+        $this->layout->id = 'todaysactivityblock';
+        $this->layout->class = 'col-6';
+        $this->layout->name = get_string('todaysactivityheader', 'report_elucidsitereport');
+        $this->layout->info = get_string('todaysactivityblockhelp', 'report_elucidsitereport');
+        $this->layout->filter = '<input class="btn btn-sm dropdown-toggle input-group-addon border-0 position-absolute w-150 my-20" id="flatpickrCalender" placeholder="{{#str}} selectdate, report_elucidsitereport {{/str}}" data-input/>';
+
+        // Block related data
+        $this->block = new stdClass();
+
+        // Add block view in layout
+        $this->layout->blockview = $this->render_block('todaysactivityblock', $this->block);
+
+        // Return blocks layout
+        return $this->layout;
+    }
+
+    /**
+     * Get todays activity data
+     */
+    public function get_data($params = false) {
+        $date = isset($date) ? $date : false;
         $response = new stdClass();
         $response->data = self::get_todaysactivity($date);
         return $response;

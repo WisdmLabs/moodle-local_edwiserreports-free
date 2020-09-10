@@ -35,7 +35,7 @@ require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/f2fsession
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/certificatesblock.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/liveusersblock.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/siteaccessblock.php");
-require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/todaysactivity_block.php");
+require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/todaysactivityblock.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/lpstatsblock.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/inactiveusers_block.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/courseengage_block.php");
@@ -150,12 +150,11 @@ class utility {
     }
 
     public static function get_todaysactivity_data($data) {
-        if (isset($data->date)) {
-            $date = $data->date;
-        } else {
-            $date = false;
-        }
-        return \report_elucidsitereport\todaysactivity_block::get_data($date);
+        global $CFG;
+        require_once($CFG->dirroot . '/report/elucidsitereport/classes/blocks/todaysactivityblock.php');
+
+        $todaysactivityblock = new \report_elucidsitereport\todaysactivityblock();
+        return $todaysactivityblock->get_data($date);
     }
 
     public static function get_lpstats_data($data) {
@@ -1168,6 +1167,8 @@ class utility {
         $siteaccessblock->classname = 'siteaccessblock';
         $lpstatsblock = new stdClass();
         $lpstatsblock->classname = 'lpstatsblock';
+        $todaysactivityblock = new stdClass();
+        $todaysactivityblock->classname = 'todaysactivityblock';
         $reportblocks = array(
             'activeusers' => $activeusersblock,
             'courseprogress' => $courseprogressblock,
@@ -1177,6 +1178,7 @@ class utility {
             'f2fsessions' => $f2fsessionsblock,
             'siteaccess' => $siteaccessblock,
             'lpstats' => $lpstatsblock,
+            'todaysactivity' => $todaysactivityblock
         );
 
         return $reportblocks;

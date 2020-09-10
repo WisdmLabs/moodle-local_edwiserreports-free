@@ -25,7 +25,7 @@ define([
                 },
             })
             .done(function(response) {
-                templates.render(cfg.getTemplate("block_accessinfo"), response.data)
+                templates.render(cfg.getTemplate("siteaccessblock"), response.data)
                 .then(function(html, js) {
                     templates.replaceNode(panel, html, js);
                 })
