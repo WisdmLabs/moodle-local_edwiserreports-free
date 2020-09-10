@@ -24,15 +24,51 @@
  */
 
 namespace report_elucidsitereport;
+
 use stdClass;
 use core_user;
+use moodle_url;
 
 /**
  * Learning Program Stats Block
  * To get the data related to learning program block
  */
-class lpstats_block extends utility {
-    public static function get_data($lpid) {
+class lpstatsblock extends block_base {
+    /**
+     * Preapre layout for each block
+     */
+    public function get_layout() {
+        global $CFG;
+
+        // Layout related data
+        $this->layout->id = 'lpstatsblock';
+        $this->layout->class = 'col-6';
+        $this->layout->name = get_string('lpstatsheader', 'report_elucidsitereport');
+        $this->layout->info = get_string('lpstatsblockhelp', 'report_elucidsitereport');
+        $this->layout->morelink = new moodle_url($CFG->wwwroot . "/report/elucidsitereport/lpstats.php");
+        $this->layout->hasdownloadlink = true;
+        $this->layout->filters = '';
+
+        // Block related data
+        $this->block = new stdClass();
+        $lps = \report_elucidsitereport\utility::get_lps();
+        if (!empty($export->lps)) {
+            $this->block->haslps = true;
+            $this->block->firstlpid = $this->block->lps[0]["id"];
+        }
+
+        // Add block view in layout
+        $this->layout->blockview = $this->render_block('lpstatsblock', $this->block);
+
+        // Return blocks layout
+        return $this->layout;
+    }
+
+    /**
+     * Get Learning program data
+     */
+    public function get_data($params = false) {
+        $lpid = isset($params->lpid) ? $params->lpid : false;
     	$response = new stdClass();
     	$response->data = self::get_lpstats($lpid);
 

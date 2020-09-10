@@ -36,7 +36,7 @@ require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/certificat
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/liveusersblock.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/siteaccessblock.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/todaysactivity_block.php");
-require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/lpstats_block.php");
+require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/lpstatsblock.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/inactiveusers_block.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/courseengage_block.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/completion_block.php");
@@ -159,7 +159,11 @@ class utility {
     }
 
     public static function get_lpstats_data($data) {
-        return \report_elucidsitereport\lpstats_block::get_data($data->lpid);
+        global $CFG;
+        require_once($CFG->dirroot . '/report/elucidsitereport/classes/blocks/lpstatsblock.php');
+
+        $lpstatsblock = new \report_elucidsitereport\lpstatsblock();
+        return $lpstatsblock->get_data($data);
     }
 
     public static function get_courseengage_data($cohortid) {
@@ -1162,6 +1166,8 @@ class utility {
         $f2fsessionsblock->classname = 'f2fsessionsblock';
         $siteaccessblock = new stdClass();
         $siteaccessblock->classname = 'siteaccessblock';
+        $lpstatsblock = new stdClass();
+        $lpstatsblock->classname = 'lpstatsblock';
         $reportblocks = array(
             'activeusers' => $activeusersblock,
             'courseprogress' => $courseprogressblock,
@@ -1169,7 +1175,8 @@ class utility {
             'certificates' => $certificatesblock,
             'liveusers' => $liveusersblock,
             'f2fsessions' => $f2fsessionsblock,
-            'siteaccess' => $siteaccessblock
+            'siteaccess' => $siteaccessblock,
+            'lpstats' => $lpstatsblock,
         );
 
         return $reportblocks;
