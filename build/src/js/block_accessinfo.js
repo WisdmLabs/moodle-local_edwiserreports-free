@@ -3,10 +3,10 @@ define([
     'core/templates',
     'report_elucidsitereport/defaultconfig'
 ], function ($, templates, cfg) {
-    var panel = cfg.getPanel("#accessinfograph");
-    var panelBody = cfg.getPanel("#accessinfograph", "body");
-    var table = cfg.getPanel("#accessinfograph", "table");
-    var loader = cfg.getPanel("#accessinfograph", "loader");
+    var panel = cfg.getPanel("#siteaccesssblock");
+    var panelBody = cfg.getPanel("#siteaccesssblock", "body");
+    var table = cfg.getPanel("#siteaccesssblock", "table");
+    var loader = cfg.getPanel("#siteaccesssblock", "loader");
     var accessDesc = "#accessinfodesctable";
 
     function init(notifyListner) {

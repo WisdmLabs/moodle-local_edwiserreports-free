@@ -34,7 +34,7 @@ use cache;
  * Class Site Access Inforamtion Block
  * To get the data related to site access
  */
-class siteaccess_block extends utility {
+class siteaccessblock extends block_base {
     /**
      * Set response object for site access information
      * @var array
@@ -42,9 +42,35 @@ class siteaccess_block extends utility {
     public $siteaccess = array();
 
     /**
+     * Preapre layout for each block
+     */
+    public function get_layout() {
+        global $CFG;
+
+        // Layout related data
+        $this->layout->id = 'siteaccesssblock';
+        $this->layout->class = 'col-6';
+        $this->layout->name = get_string('accessinfo', 'report_elucidsitereport');
+        $this->layout->info = get_string('accessinfoblockhelp', 'report_elucidsitereport');
+
+        // Block related data
+        $this->block = new stdClass();
+        $this->block->displaytype = 'line-chart';
+
+        // Add block view in layout
+        $this->layout->blockview = $this->render_block('siteaccessblock', $this->block);
+
+        // Return blocks layout
+        return $this->layout;
+    }
+
+    /**
      * Constructoe
      */
     public function __construct() {
+        // Call parent constructor
+        parent::__construct();
+
         // Initialize the site access information response
         $value = array(
             "opacity" => 0,
@@ -96,15 +122,15 @@ class siteaccess_block extends utility {
      * Get Site access inforamtion data
      * @return [object] Site access information
      */
-    public static function get_data() {
+    public function get_data($params = false) {
         $response = new stdClass();
-        $siteaccessblock = new siteaccess_block();
+
          // Create reporting manager instance
         $rpm = reporting_manager::get_instance();
         $cache = cache::make('report_elucidsitereport', 'siteaccess');
 
         if(!$data = $cache->get('siteaccessinfodata'.$rpm->rpmcache)) {
-            $data = $siteaccessblock->get_siteaccess_info();
+            $data = $this->get_siteaccess_info();
             $cache->set('siteaccessinfodata'.$rpm->rpmcache, $data);
         }
 

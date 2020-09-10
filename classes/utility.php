@@ -34,7 +34,7 @@ require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/activecour
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/f2fsessionsblock.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/certificatesblock.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/liveusersblock.php");
-require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/siteaccess_block.php");
+require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/siteaccessblock.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/todaysactivity_block.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/lpstats_block.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/inactiveusers_block.php");
@@ -142,7 +142,11 @@ class utility {
     }
 
     public static function get_siteaccess_data() {
-        return \report_elucidsitereport\siteaccess_block::get_data();
+        global $CFG;
+        require_once($CFG->dirroot . '/report/elucidsitereport/classes/blocks/liveusersblock.php');
+
+        $siteaccess = new \report_elucidsitereport\siteaccessblock();
+        return $siteaccess->get_data();
     }
 
     public static function get_todaysactivity_data($data) {
@@ -1156,13 +1160,16 @@ class utility {
         $liveusersblock->classname = 'liveusersblock';
         $f2fsessionsblock = new stdClass();
         $f2fsessionsblock->classname = 'f2fsessionsblock';
+        $siteaccessblock = new stdClass();
+        $siteaccessblock->classname = 'siteaccessblock';
         $reportblocks = array(
             'activeusers' => $activeusersblock,
             'courseprogress' => $courseprogressblock,
             'activecourses' => $activecoursesblock,
             'certificates' => $certificatesblock,
             'liveusers' => $liveusersblock,
-            'f2fsessions' => $f2fsessionsblock
+            'f2fsessions' => $f2fsessionsblock,
+            'siteaccess' => $siteaccessblock
         );
 
         return $reportblocks;
