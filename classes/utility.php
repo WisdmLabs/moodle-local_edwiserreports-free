@@ -37,7 +37,7 @@ require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/liveusersb
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/siteaccessblock.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/todaysactivityblock.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/lpstatsblock.php");
-require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/inactiveusers_block.php");
+require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/inactiveusersblock.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/courseengage_block.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/completion_block.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/courseanalytics_block.php");
@@ -170,12 +170,11 @@ class utility {
     }
 
     public static function get_inactiveusers_data($data) {
-        if (isset($data->filter)) {
-            $filter = $data->filter;
-        } else {
-            $filter = 'never'; // Default filter
-        }
-        return \report_elucidsitereport\inactiveusers_block::get_data($filter);
+        global $CFG;
+        require_once($CFG->dirroot . '/report/elucidsitereport/classes/blocks/inactiveusersblock.php');
+
+        $inactiveusers = new \report_elucidsitereport\inactiveusersblock();
+        return $inactiveusers->get_data($data);
     }
 
     /** 
@@ -1169,6 +1168,8 @@ class utility {
         $lpstatsblock->classname = 'lpstatsblock';
         $todaysactivityblock = new stdClass();
         $todaysactivityblock->classname = 'todaysactivityblock';
+        $inactiveusersblock = new stdClass();
+        $inactiveusersblock->classname = 'inactiveusersblock';
         $reportblocks = array(
             'activeusers' => $activeusersblock,
             'courseprogress' => $courseprogressblock,
@@ -1178,7 +1179,8 @@ class utility {
             'f2fsessions' => $f2fsessionsblock,
             'siteaccess' => $siteaccessblock,
             'lpstats' => $lpstatsblock,
-            'todaysactivity' => $todaysactivityblock
+            'todaysactivity' => $todaysactivityblock,
+            'inactiveusers' => $inactiveusersblock
         );
 
         return $reportblocks;

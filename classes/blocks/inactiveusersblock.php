@@ -34,19 +34,47 @@ require_once($CFG->dirroot . "/report/elucidsitereport/classes/reporting_manager
  * Class Inacive Users Block
  * To get the data related to inactive users block
  */
-class inactiveusers_block extends utility {
+class inactiveusersblock extends block_base {
     // is user reporting manager
     public static $isrpm = false;
     // reporting manager class object
     public static $rpm = null;
     // reporting manager students
     public static $rpmusers = array();
+
+    /**
+     * Preapre layout for each block
+     */
+    public function get_layout() {
+        global $CFG;
+
+        // Layout related data
+        $this->layout->id = 'inactiveusersblock';
+        $this->layout->class = 'col-6';
+        $this->layout->name = get_string('inactiveusers', 'report_elucidsitereport');
+        $this->layout->info = get_string('inactiveusersblockhelp', 'report_elucidsitereport');
+        $this->layout->hasdownloadlink = true;
+        $this->layout->filters = '';
+
+        // Block related data
+        $this->block = new stdClass();
+        $this->block->displaytype = 'line-chart';
+
+        // Add block view in layout
+        $this->layout->blockview = $this->render_block('inactiveusersblock', $this->block);
+
+        // Return blocks layout
+        return $this->layout;
+    }
+
     /**
      * Get Inactive users data
      * @param  [String] $filter Filter
      * @return [object] response object
      */
-    public static function get_data($filter) {
+    public function get_data($params = false) {
+        $filter = isset($params->filter) ? $params->filter : false;
+
         // Make cache for inactive users block
         $cache = cache::make("report_elucidsitereport", "courseprogress");
         // Create reporting manager instance
