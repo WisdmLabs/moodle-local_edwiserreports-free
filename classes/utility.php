@@ -33,7 +33,7 @@ require_once($CFG->libdir."/csvlib.class.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/activecoursesblock.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/f2fsession_block.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/certificatesblock.php");
-require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/liveusers_block.php");
+require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/liveusersblock.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/siteaccess_block.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/todaysactivity_block.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/lpstats_block.php");
@@ -135,7 +135,11 @@ class utility {
     }
 
     public static function get_liveusers_data() {
-        return \report_elucidsitereport\liveusers_block::get_data();
+        global $CFG;
+        require_once($CFG->dirroot . '/report/elucidsitereport/classes/blocks/liveusersblock.php');
+
+        $liveusers = new \report_elucidsitereport\liveusersblock();
+        return $liveusers->get_data();
     }
 
     public static function get_siteaccess_data() {
@@ -1149,11 +1153,14 @@ class utility {
         $activecoursesblock->classname = 'activecoursesblock';
         $certificatesblock = new stdClass();
         $certificatesblock->classname = 'certificatesblock';
+        $liveusersblock = new stdClass();
+        $liveusersblock->classname = 'liveusersblock';
         $reportblocks = array(
             'activeusers' => $activeusersblock,
             'courseprogress' => $courseprogressblock,
             'activecourses' => $activecoursesblock,
-            'certificates' => $certificatesblock
+            'certificates' => $certificatesblock,
+            'liveusers' => $liveusersblock
         );
 
         return $reportblocks;

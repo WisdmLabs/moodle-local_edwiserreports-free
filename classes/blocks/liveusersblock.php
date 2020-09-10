@@ -39,8 +39,30 @@ use block_online_users\fetcher;
  * Class live users Block
  * To get the data of live users
  */
-class liveusers_block extends utility {
-    public static function get_data() {
+class liveusersblock extends block_base {
+    /**
+     * Preapre layout for active courses block
+     */
+    public function get_layout() {
+        global $CFG;
+
+        // Layout related data
+        $this->layout->id = 'liveusersblock';
+        $this->layout->class = 'col-6';
+        $this->layout->name = get_string('realtimeusers', 'report_elucidsitereport');
+        $this->layout->info = get_string('liveusersblockhelp', 'report_elucidsitereport');
+
+        // Add block view in layout
+        $this->layout->blockview = $this->render_block('liveusersblock', $this->block);
+
+        // Return blocks layout
+        return $this->layout;
+    }
+
+    /**
+     * Get blocks data
+     */
+    public function get_data($params = false) {
         $response = new stdClass();
         $response->data = self::get_online_users();
         return $response;
