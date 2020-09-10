@@ -31,6 +31,7 @@ use stdClass;
 use context_module;
 use html_writer;
 use core_user;
+use moodle_url;
 
 require_once($CFG->dirroot . '/report/elucidsitereport/locallib.php');
 
@@ -38,8 +39,36 @@ require_once($CFG->dirroot . '/report/elucidsitereport/locallib.php');
  * Class f2fsession Block
  * To get the data related to active users block
  */
-class f2fsession_block extends utility {
-    public static function get_data($cohortid) {
+class f2fsessionsblock extends block_base {
+    /**
+     * Preapre layout for active courses block
+     */
+    public function get_layout() {
+        global $CFG;
+
+        // Layout related data
+        $this->layout->id = 'f2fsessionsblock';
+        $this->layout->class = 'col-6';
+        $this->layout->name = get_string('f2fsessionsheader', 'report_elucidsitereport');
+        $this->layout->info = get_string('f2fsessionsblockhelp', 'report_elucidsitereport');
+        $this->layout->morelink = new moodle_url($CFG->wwwroot . "/report/elucidsitereport/f2fsessions.php");
+        $this->layout->hasdownloadlink = true;
+
+        // Block related data
+        $this->block = new stdClass();
+
+        // Add block view in layout
+        $this->layout->blockview = $this->render_block('f2fsessionsblock', $this->block);
+
+        // Return blocks layout
+        return $this->layout;
+    }
+
+    /**
+     * Get data for F2F session block
+     */
+    public function get_data($params = false) {
+        $cohortid = isset($params->cohortid) ? $params->cohortid : false;
         $response = new stdClass();
         $response->data = new stdClass();
         $response->data->f2fmodules = self::get_f2fmodules($cohortid);

@@ -31,7 +31,7 @@ require_once($CFG->dirroot . "/completion/classes/progress.php");
 require_once($CFG->dirroot . "/cohort/lib.php");
 require_once($CFG->libdir."/csvlib.class.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/activecoursesblock.php");
-require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/f2fsession_block.php");
+require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/f2fsessionsblock.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/certificatesblock.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/liveusersblock.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/siteaccess_block.php");
@@ -114,13 +114,12 @@ class utility {
      * @param [string] $data Data for external service
      */
     public static function get_f2fsessiondata_data($data) {
-        if (isset($data->cohortid)) {
-            $cohortid = $data->cohortid;
-        } else {
-            $cohortid = 0;
-        }
+        global $CFG;
 
-        return \report_elucidsitereport\f2fsession_block::get_data($cohortid);
+        require_once($CFG->dirroot . '/report/elucidsitereport/classes/blocks/f2fsessionsblock.php');
+
+        $f2fsession = new \report_elucidsitereport\f2fsessionsblock();
+        return $f2fsession->get_data($data);
     }
 
     public static function get_certificates_data($data) {
@@ -1155,12 +1154,15 @@ class utility {
         $certificatesblock->classname = 'certificatesblock';
         $liveusersblock = new stdClass();
         $liveusersblock->classname = 'liveusersblock';
+        $f2fsessionsblock = new stdClass();
+        $f2fsessionsblock->classname = 'f2fsessionsblock';
         $reportblocks = array(
             'activeusers' => $activeusersblock,
             'courseprogress' => $courseprogressblock,
             'activecourses' => $activecoursesblock,
             'certificates' => $certificatesblock,
-            'liveusers' => $liveusersblock
+            'liveusers' => $liveusersblock,
+            'f2fsessions' => $f2fsessionsblock
         );
 
         return $reportblocks;
