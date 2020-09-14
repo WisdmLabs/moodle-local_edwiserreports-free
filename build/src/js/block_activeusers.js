@@ -6,21 +6,20 @@ define([
     'report_elucidsitereport/flatpickr'
 ], function ($, Chart, defaultConfig, V) {
     /* Varible for active users block */
-    //var cfg               = defaultConfig.activeUsersBlock;
     var cfg               = null;
     var activeUsersGraph  = null;
     var panel             = defaultConfig.getPanel("#activeusersblock");
     var panelBody         = defaultConfig.getPanel("#activeusersblock", "body");
     var panelTitle        = defaultConfig.getPanel("#activeusersblock", "title");
     var panelFooter       = defaultConfig.getPanel("#activeusersblock", "footer");
-    var dropdownMenu      = panel + " .dropdown-menu[aria-labelledby='filter-dropdown']";
+    var dropdownMenu      = panel + " .dropdown-menu[aria-labelledby='filter-dropdown']:not('custom')";
     var dropdownItem      = dropdownMenu + " .dropdown-item";
     var dropdownToggle    = panel + " #filter-dropdown.dropdown-toggle";
     var flatpickrCalender = panel + " #flatpickrCalender";
     var chart             = panelBody + " .ct-chart";
     var loader            = panelBody + " .loader";
     var dropdownButton    = panel + " button#filter-dropdown";
-    var refreshBtn        = panelBody + " .refresh";
+    var refreshBtn        = panelTitle + " .refresh";
     var exportUrlLink     = panel + V.exportUrlLink;
     var filter            = null;
     var dropdownInput     = panelTitle + " input.form-control.input";
@@ -56,6 +55,7 @@ define([
 
                 /* Select filter for active users block */
                 $(dropdownItem + ":not(.custom)").on('click', function() {
+                    console.log(this);
                     filter = $(this).attr('value');
                     $(dropdownMenu).removeClass('show');
                     $(dropdownButton).html($(this).text());
@@ -158,12 +158,12 @@ define([
 
         /* Reset Update time in panel header */
         function resetUpdateTime() {
-            $(panelBody + " #updated-time > span.minute").html(0);
+            $(panelTitle + " #updated-time > span.minute").html(0);
         }
 
         /* Increament update time in panel header */
         function inceamentUpdateTime() {
-            $(panelBody + " #updated-time > span.minute").html(parseInt($(panelBody + " #updated-time > span.minute").text()) + 1);
+            $(panelTitle + " #updated-time > span.minute").html(parseInt($(panelTitle + " #updated-time > span.minute").text()) + 1);
         }
 
         /* Generate Active Users graph */

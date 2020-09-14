@@ -59,26 +59,16 @@ use core_course_category;
 class utility {
     /**
      * Get active users data for active users blocks
+     * @param [object] $data Data Object
      */
     public static function get_active_users_data($data) {
         global $CFG;
 
+        // Require block file
         require_once($CFG->dirroot . '/report/elucidsitereport/classes/blocks/activeusersblock.php');
 
-        if (isset($data->filter)) {
-            $filter = $data->filter;
-        } else {
-            $filter = 'weekly'; // Default filter
-        }
-
-        if (isset($data->cohortid)) {
-            $cohortid = $data->cohortid;
-        } else {
-            $cohortid = 0; // Default Cohort ID
-        }
-
-        $activeusersblock =  new \report_elucidsitereport\activeusersblock($filter);
-        return $activeusersblock->get_data($filter, $cohortid);
+        $activeusersblock =  new \report_elucidsitereport\activeusersblock($data);
+        return $activeusersblock->get_data($data);
     }
 
     /**

@@ -101,11 +101,11 @@
     float: left;
 }
 
-#wdm-elucidsitereport #activeusersblock .dropdown-body .dropdown-item,
+/* #wdm-elucidsitereport #activeusersblock .dropdown-body .dropdown-item,
 .path-report-elucidsitereport .dropdown-body .dropdown-item {
     cursor: pointer;
     width: calc(100% - 10px);
-}
+} */
 
 #wdm-elucidsitereport .dropdown-menu.dropdown-menu-right,
 .path-report-elucidsitereport .dropdown-menu.dropdown-menu-right {
@@ -629,4 +629,23 @@ div[id^="wdm-"][id*="-individual"] table.table,
 	height: 400px;
 	min-height: 400px;
 	min-height: 400px;
+}
+
+#wdm-elucidsitereport input.dropdown-item {
+    background-color: transparent;
+    color: inherit;
+}
+
+#wdm-elucidsitereport .loader {
+	height: 100%;
+	position: relative;
+}
+
+#wdm-elucidsitereport .loader img {
+    width: 10%;
+    height: 10%;
+    position: absolute;
+    top: 40%;
+    left: 45%;
+    right: 45%;
 }

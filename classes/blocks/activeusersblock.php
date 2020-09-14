@@ -27,6 +27,7 @@ namespace report_elucidsitereport;
 use stdClass;
 use moodle_url;
 use cache;
+use html_writer;
 
 require_once($CFG->dirroot . '/report/elucidsitereport/classes/block_base.php');
 
@@ -54,12 +55,12 @@ class activeusersblock extends block_base {
 
         // Layout related data
         $this->layout->id = 'activeusersblock';
-        $this->layout->class = 'col-6';
+        $this->layout->class = 'col-12';
         $this->layout->name = get_string('activeusersheader', 'report_elucidsitereport');
         $this->layout->info = get_string('activeusersblocktitlehelp', 'report_elucidsitereport');
         $this->layout->morelink = new moodle_url($CFG->wwwroot . "/report/elucidsitereport/activeusers.php");
         $this->layout->hasdownloadlink = true;
-        $this->layout->filters = '';
+        $this->layout->filters = $this->get_activeusers_filter();
 
         // Block related data
         $this->block = new stdClass();
@@ -70,6 +71,100 @@ class activeusersblock extends block_base {
 
         // Return blocks layout
         return $this->layout;
+    }
+
+    /**
+     * Prepare active users block filters
+     */
+    public function get_activeusers_filter() {
+        // Add last updated text in header
+        $lastupdatetext = html_writer::start_tag('small', array(
+            'id' => 'update-time',
+            'class' => 'font-size-12'
+        ));
+        $lastupdatetext .= get_string('lastupdate', 'report_elucidsitereport');
+        $lastupdatetext .= html_writer::tag('i', '', array(
+            'class' => 'refresh fa fa-refresh px-1',
+            'data-toggle' => 'tooltip',
+            'title' => get_string('refresh', 'report_elucidsitereport')
+        ));
+        $lastupdatetext .= html_writer::end_tag('small');
+
+        // Prepare filter HTML for active users block
+        $filterhtml = html_writer::start_tag('form', array("action" => "javascript:void(0)"));
+        $filterhtml .= html_writer::start_tag('div', array('class' => 'd-flex mt-1'));
+        $filterhtml .= html_writer::tag('button', get_string('lastweek', 'report_elucidsitereport'), array(
+            'type' => 'button',
+            'class' => 'btn btn-sm dropdown-toggle',
+            'data-toggle' => 'dropdown',
+            'id' => 'filter-dropdown',
+            'aria-expanded' => 'false'
+        ));
+        $filterhtml .= html_writer::start_tag('div', array(
+            'class' => 'dropdown-menu',
+            'aria-labelledby' => 'filter-dropdown',
+            'role' => 'menu'
+        ));
+        $filterhtml .= html_writer::tag('div', '', array(
+            'id' => 'activeUser-calendar',
+            'class' => 'dropdown-calendar'
+        ));
+        $filterhtml .= html_writer::start_tag('div', array('class' => 'dropdown-body'));
+
+        // Prepare filter link
+        $datefilter = html_writer::empty_tag('input', array(
+            'class'=> 'dropdown-item border-0 custom p-0',
+            'id' => 'flatpickrCalender',
+            'placeholder' => get_string('custom', 'report_elucidsitereport'),
+            'data-input'
+        ));
+        $filteropt = array(
+            'weekly' => array(
+                'name' => get_string('lastweek', 'report_elucidsitereport'),
+                'value' => 'weekly',
+                'classes' => ''
+            ),
+            'monthly' => array(
+                'name' => get_string('lastmonth', 'report_elucidsitereport'),
+                'value' => 'monthly',
+                'classes' => ''
+            ),
+            'yearly' => array(
+                'name' => get_string('lastyear', 'report_elucidsitereport'),
+                'value' => 'yearly',
+                'classes' => ''
+            ),
+            'custom' => array(
+                'name' => $datefilter,
+                'value' => 'custom',
+                'classes' => 'custom'
+            )
+        );
+
+        // Prepare dropdown items for active users filter
+        foreach ($filteropt as $key => $value) {
+            $filterhtml .= html_writer::link('javascript:void(0)', $value['name'], array(
+                'class' => 'dropdown-item',
+                'role' => 'menuitem',
+                'value' => $value['value']
+            ));
+        }
+
+        // End tags
+        $filterhtml .= html_writer::end_tag('div');
+        $filterhtml .= html_writer::end_tag('div');
+        $filterhtml .= html_writer::end_tag('div');
+        $filterhtml .= html_writer::end_tag('form');
+
+        // Create filter for active users block
+        $filters = html_writer::start_tag('div');
+        $filters .= html_writer::tag('div', $lastupdatetext);
+        $filters .= html_writer::start_tag('div');
+        $filters .= $filterhtml;
+        $filters .= html_writer::end_tag('div');
+        $filters .= html_writer::end_tag('div');
+
+        return $filters;
     }
 
     /**
@@ -166,8 +261,9 @@ class activeusersblock extends block_base {
      * @param  string $filter date filter to get data
      * @return stdClass active users graph data
      */
-    public function get_data($params = false) {        
-        $id = isset($params->id) ? $params->id : false;
+    public function get_data($params = false) { 
+        // Get data from params
+        $filter = isset($params->filter) ? $params->filter : false;
         $cohortid = isset($params->cohortid) ? $params->cohortid : false;
 
         // Generate active users data label
@@ -181,12 +277,7 @@ class activeusersblock extends block_base {
         } else {
             $cachekey .= "all";
         }
-        // Create reporting manager instance
-        $rpm = reporting_manager::get_instance();
-        // if user is reporting manager then get his students
-        if ($rpm->isrpm) {
-            $cachekey .= "_".$rpm->userid;
-        }
+
         // If response is in cache then return from cache
         if (!$response = $this->cache->get($cachekey)) {
             $response = new stdClass();
