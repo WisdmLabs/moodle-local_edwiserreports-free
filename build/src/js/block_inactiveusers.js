@@ -101,7 +101,7 @@ define([
             // Create inactive users table
             inActiveUsersTable = $(table).DataTable( {
                 data : data,
-                dom : '<"pull-left"f><t>',
+                // dom : '<"pull-left"f><t>',
                 aaSorting: [[2, 'desc']],
                 oLanguage: {
                     sEmptyTable: "No inactive users are available."
@@ -114,15 +114,20 @@ define([
                         "targets": 2,
                         "className": "text-center"
                     }
-                ],
-                responsive : true,
-                scrollY : "320px",
-                scroller: {
-                    loadingIndicator: true
+                ],    
+                drawCallback: function () {
+                    $('.dataTables_paginate > .pagination').addClass('pagination-sm pull-right');
+                    $('.dataTables_filter').addClass('pagination-sm pull-right');
                 },
-                scrollCollapse : true,
-                scrollX: true,
-                paging: false,
+                responsive : true,
+                // scrollY : "320px",
+                // scroller: {
+                //     loadingIndicator: true
+                // },
+                // scrollCollapse : true,
+                // scrollX: true,
+                // paging: false,
+                lengthChange: false,
                 bInfo : false
             });
         }

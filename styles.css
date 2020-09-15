@@ -627,11 +627,11 @@ div[id^="wdm-"][id*="-individual"] table.table,
 	min-height: 60px;
 }
 
-#wdm-elucidsitereport .panel-body {
+/* #wdm-elucidsitereport .panel-body {
 	height: 400px;
 	min-height: 400px;
 	min-height: 400px;
-}
+} */
 
 #wdm-elucidsitereport input.dropdown-item {
     background-color: transparent;
