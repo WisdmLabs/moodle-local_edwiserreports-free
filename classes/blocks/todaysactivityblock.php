@@ -46,7 +46,7 @@ class todaysactivityblock extends block_base {
         $this->layout->class = 'col-6';
         $this->layout->name = get_string('todaysactivityheader', 'report_elucidsitereport');
         $this->layout->info = get_string('todaysactivityblockhelp', 'report_elucidsitereport');
-        $this->layout->filter = '<input class="btn btn-sm dropdown-toggle input-group-addon border-0 position-absolute w-150 my-20" id="flatpickrCalender" placeholder="{{#str}} selectdate, report_elucidsitereport {{/str}}" data-input/>';
+        $this->layout->filters = '<input class="btn btn-sm dropdown-toggle input-group-addon" id="flatpickrCalender" placeholder="' . get_string('selectdate', 'report_elucidsitereport') . '" data-input/>';
 
         // Block related data
         $this->block = new stdClass();
@@ -62,7 +62,7 @@ class todaysactivityblock extends block_base {
      * Get todays activity data
      */
     public function get_data($params = false) {
-        $date = isset($date) ? $date : false;
+        $date = isset($params->date) ? $params->date : false;
         $response = new stdClass();
         $response->data = self::get_todaysactivity($date);
         return $response;

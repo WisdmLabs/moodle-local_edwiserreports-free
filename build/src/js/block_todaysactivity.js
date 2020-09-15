@@ -25,7 +25,7 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig'], func
                     maxDate: "today",
                     defaultDate: ["today"],
                     onChange: function(selectedDates, dateStr, instance) {
-                        $(panelBody).find("loader").show();
+                        // $(panelBody).find("loader").show();
                         getTodaysActivity(dateStr);
                     }
                 });
@@ -63,7 +63,7 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig'], func
                  */
                 $.each(response.data, function(indx, el) {
                     var section = $(panelBody + " #todays-" + indx);
-                    section.find(".loader").hide();
+                    // section.find(".loader").hide();
                     section.find(".data").html(el);
                 });
 

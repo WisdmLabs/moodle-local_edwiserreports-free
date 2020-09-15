@@ -1,118 +1,118 @@
-<div class="card card-inverse card-shadow bg-primary" id="widgetSaleBar">
-    <div class="card-block p-0">
-        <div class="pt-25 px-30">
-            <div class="row no-space">
-                <div class="col-md-4 col-sm-12 pr-10">
-                    <div class="bold mb-5">
-                        {{#str}} todayslogin, report_elucidsitereport {{/str}}
-                    </div>
-                    <div class="row mx-0 text-center pb-10">
-                        <div class="col-12 todays-block bg-primary mb-10 py-10">
-                            <div id="todays-onlinelearners" class=" font-size-30 font-weight-600 w-full">
-                                <div class="loader w-full text-center">
-                                    {{# pix }} loader, report_elucidsitereport{{/ pix }}
-                                </div>
-                                <div class="data"></div>
-                            </div>
-                            <small>
-                                {{#str}} learners, report_elucidsitereport {{/str}}
-                            </small>
-                        </div>
-                        <div class="col-12 todays-block bg-primary mb-10 py-10">
-                            <div id="todays-onlineteachers" class=" font-size-30 font-weight-600 w-full">
-                                <div class="loader w-full text-center">
-                                    {{# pix }} loader, report_elucidsitereport{{/ pix }}
-                                </div>
-                                <div class="data"></div>
-                            </div>
-                            <small>
-                                {{#str}} teachers, report_elucidsitereport {{/str}}
-                            </small>
-                        </div>
-                    </div>
+<div class="card bg-primary">
+    <div class="card-block text-white">
+        <div class="row mx-0">
+            <div class="col-5">
+                <div class="bold mb-1">
+                    {{#str}} todayslogin, report_elucidsitereport {{/str}}
                 </div>
-                <div class="col-md-8 col-sm-12  pl-10">
-                    <table class="summary w-full">
-                        <thead class="border-bottom">
-                            <tr>
-                                <th class="text-left">
-                                    {{#str}} eventtoday, report_elucidsitereport {{/str}}
-                                </th>
-                                <th class="text-right ">
-                                    {{#str}} value, report_elucidsitereport {{/str}}
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td align="left">
-                                    {{#str}} enrollment, report_elucidsitereport {{/str}}
-                                </td>
-                                <td align="right" class="" id="todays-enrollments">
-                                    <span class="data">0</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td align="left">
-                                    {{#str}} activitycompletion, report_elucidsitereport {{/str}}
-                                </td>
-                                <td align="right" class="" id="todays-activitycompletions">
-                                    <span class="data">0</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td align="left">
-                                    {{#str}} coursecompletion, report_elucidsitereport {{/str}}
-                                </td>
-                                <td align="right" class="" id="todays-coursecompletions">
-                                    <span class="data">0</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td align="left">
-                                    {{#str}} newregistration, report_elucidsitereport {{/str}}
-                                </td>
-                                <td align="right" class="" id="todays-registrations">
-                                    <span class="data">0</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td align="left">
-                                    {{#str}} visits, report_elucidsitereport {{/str}}
-                                </td>
-                                <td align="right" class="" id="todays-visits">
-                                    <span class="data">0</span>
-                                </td>
-                            </tr>
-                            <tr class="d-none">
-                                <td align="left">
-                                    {{#str}} timespent, report_elucidsitereport {{/str}}
-                                </td>
-                                <td align="right" class="" id="todays-timespend">
-                                    <span class="data">00:00:00</span>
-                                </td>
-                            </tr>
-                            <tr class="border-top bold">
-                                <td align="left">
-                                    {{#str}} totalusers, report_elucidsitereport {{/str}}
-                                </td>
-                                <td align="right" class="" id="todays-totalusers">
-                                    <span class="data">0</span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="row mx-0 text-center">
+                    <div class="col-12 todays-block bg-primary">
+                        <div id="todays-onlinelearners" class=" font-size-30 font-weight-600 w-full">
+                            <div class="loader text-center">0</div>
+                            <div class="data"></div>
+                        </div>
+                        <small>
+                            {{#str}} learners, report_elucidsitereport {{/str}}
+                        </small>
+                    </div>
+                    <div class="col-12 todays-block bg-primary">
+                        <div id="todays-onlineteachers" class=" font-size-30 font-weight-600 w-full">
+                            <div class="loader w-full text-center">0</div>
+                            <div class="data"></div>
+                        </div>
+                        <small>
+                            {{#str}} teachers, report_elucidsitereport {{/str}}
+                        </small>
+                    </div>
                 </div>
             </div>
+            <div class="col-7">
+                <table class="summary ml-auto">
+                    <thead class="border-bottom">
+                        <tr>
+                            <th class="text-left">
+                                {{#str}} eventtoday, report_elucidsitereport {{/str}}
+                            </th>
+                            <th class="text-right ">
+                                {{#str}} value, report_elucidsitereport {{/str}}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td align="left">
+                                {{#str}} enrollment, report_elucidsitereport {{/str}}
+                            </td>
+                            <td align="right" class="" id="todays-enrollments">
+                                <span class="data">0</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="left">
+                                {{#str}} activitycompletion, report_elucidsitereport {{/str}}
+                            </td>
+                            <td align="right" class="" id="todays-activitycompletions">
+                                <span class="data">0</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="left">
+                                {{#str}} coursecompletion, report_elucidsitereport {{/str}}
+                            </td>
+                            <td align="right" class="" id="todays-coursecompletions">
+                                <span class="data">0</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="left">
+                                {{#str}} newregistration, report_elucidsitereport {{/str}}
+                            </td>
+                            <td align="right" class="" id="todays-registrations">
+                                <span class="data">0</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="left">
+                                {{#str}} visits, report_elucidsitereport {{/str}}
+                            </td>
+                            <td align="right" class="" id="todays-visits">
+                                <span class="data">0</span>
+                            </td>
+                        </tr>
+                        <tr class="d-none">
+                            <td align="left">
+                                {{#str}} timespent, report_elucidsitereport {{/str}}
+                            </td>
+                            <td align="right" class="" id="todays-timespend">
+                                <span class="data">00:00:00</span>
+                            </td>
+                        </tr>
+                        <tr class="border-top bold">
+                            <td align="left">
+                                {{#str}} totalusers, report_elucidsitereport {{/str}}
+                            </td>
+                            <td align="right" class="" id="todays-totalusers">
+                                <span class="data">0</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <div class="visual mb-30 px-30">
+        <div class="visual col-12">
             <p class="visual-head bold">
                 {{#str}} pageview, report_elucidsitereport {{/str}}
             </p>
             <div class="visual-body">
-                <canvas class="ct-chart py-5"></canvas>
+                <canvas class="ct-chart"></canvas>
                 <div class="w-full bg-white" style="height: 1px;"></div>
             </div>
         </div>
     </div>
 </div>
+
+{{#js}}
+require(['jquery'], function($) {
+    $('#todaysactivityblock .loader').hide();
+})
+{{/js}}

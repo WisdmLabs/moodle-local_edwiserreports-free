@@ -65,6 +65,10 @@ define(["jquery", "report_elucidsitereport/defaultconfig", "report_elucidsiterep
                     "orderable": false
                 }
             ],
+            drawCallback: function () {
+                $('.dataTables_paginate > .pagination').addClass('pagination-sm pull-right');
+                $('.dataTables_filter').addClass('pagination-sm pull-right');
+            },
             // scrollY : "200px",
             // scrollCollapse : true,
             // fixedHeader: {

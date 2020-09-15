@@ -144,7 +144,7 @@ class utility {
         require_once($CFG->dirroot . '/report/elucidsitereport/classes/blocks/todaysactivityblock.php');
 
         $todaysactivityblock = new \report_elucidsitereport\todaysactivityblock();
-        return $todaysactivityblock->get_data($date);
+        return $todaysactivityblock->get_data($data);
     }
 
     public static function get_lpstats_data($data) {
