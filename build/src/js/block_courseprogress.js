@@ -16,6 +16,7 @@ define([
         var loader = panelBody + " .loader";
         var exportUrlLink = panel + " .dropdown-menu[aria-labelledby='export-dropdown'] .dropdown-item";
         var cpBlockData = false;
+        var form = $(panel + ' form.download-links');
 
         /**
          * On document ready generate course progress block
@@ -46,6 +47,10 @@ define([
         function getCourseProgressData() {
             var courseId = $(selectedCourse).val();
             cfg.changeExportUrl(courseId, exportUrlLink, V.filterReplaceFlag);
+
+            console.log(form.find('input[name="filter"]'));
+            console.log(form);
+            form.find('input[name="filter"]').val(courseId);
 
             // If progress graph already exist then destroy
             if (cpGraph) {

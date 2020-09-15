@@ -52,7 +52,7 @@ class courseprogressblock extends block_base {
             $coursecontext = context_course::instance($courseid);
 
             // Get only students
-            $enrolledstudents = self::rep_get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+            $enrolledstudents = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
 
             // Get response
             $response = new stdClass();
@@ -360,14 +360,15 @@ class courseprogressblock extends block_base {
      * @param $filter [string] Filter to get data from specific range
      * @return [array] Array of exportable data
      */
-    public static function get_exportable_data_block($filter) {
+    public function get_exportable_data_block($filter) {
         $export = array();
-        $export[] = course_progress_block::get_header();
+        $export[] = courseprogressblock::get_header();
         $coursecontext = context_course::instance($filter);
         $course = get_course($filter);
-        $enrolledstudents = self::rep_get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+        // $enrolledstudents = self::rep_get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+        $enrolledstudents = get_enrolled_students($filter);
         foreach($enrolledstudents as $key => $student) {
-            $completion = course_progress_block::get_course_completion_info($course, $student->id);
+            $completion = \report_elucidsitereport\utility::get_course_completion_info($course, $student->id);
             $completed = $completion["completedactivities"] . "/" . $completion["totalactivities"];
             $export[] = array(
                 fullname($student),

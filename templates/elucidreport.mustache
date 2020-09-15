@@ -1,4 +1,4 @@
-<div id="wdm-elucidsitereport" class="row m-0">
+<div id="wdm-elucidsitereport" method="post" class="row m-0">
     {{# blocks }}
         <div class="{{class}} mb-5">
             <div id="{{id}}" data-sesskey="{{sesskey}}">
@@ -31,28 +31,7 @@
                             </div>
                         {{/ morelink }}
                         {{# hasdownloadlink }}
-                            <div class="ml-auto row m-0">
-                                <a href="{{{.}}}" class="fi fi-csv">
-                                    <div class="fi-content">
-                                        <strong>csv</strong>
-                                    </div>
-                                </a>
-                                <a href="{{{.}}}" class="fi fi-excel">
-                                    <div class="fi-content">
-                                        <strong>excel</strong>
-                                    </div>
-                                </a>
-                                <a href="{{{.}}}" class="fi fi-pdf">
-                                    <div class="fi-content">
-                                        <strong>pdf</strong>
-                                    </div>
-                                </a>
-                                <a href="{{{.}}}" class="fi fi-email">
-                                    <div class="fi-content">
-                                        <strong>email</strong>
-                                    </div>
-                                </a>
-                            </div>
+                            {{> report_elucidsitereport/exportreports }}
                         {{/ hasdownloadlink }}
                     </div>
                 </div>

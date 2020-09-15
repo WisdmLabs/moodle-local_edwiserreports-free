@@ -26,6 +26,7 @@
 use report_elucidsitereport\export;
 
 require_once(__DIR__ .'/../../config.php');
+require_once($CFG->dirroot."/report/elucidsitereport/locallib.php");
 require_once($CFG->dirroot."/report/elucidsitereport/classes/export.php");
 require_once($CFG->dirroot."/report/elucidsitereport/classes/utility.php");
 
@@ -46,26 +47,26 @@ if (!has_capability('report/report_elucidsitereport:view', $context)) {
 // Set page context
 $PAGE->set_context($context);
 
-// If format is there then go ahead to export
-if ($format = optional_param("format", false, PARAM_TEXT)) {
-    // Get required and option paramerter for export
+// If type is there then go ahead to export
+if ($type = optional_param("type", false, PARAM_TEXT)) {
+    // Get parameters to export reports
     $region = required_param("region", PARAM_TEXT);
-    $blockname = required_param("blockname", PARAM_TEXT);
+    $blockname = required_param("block", PARAM_TEXT);
     $filter = optional_param("filter", false, PARAM_TEXT);
 
-    // Generate file name
-    $filename = $region ."_" . $blockname . "_" . date("d_M_y", time());
-
-    // If filter is there then add filter in the file name
-    if ($filter) {
-        $filename .= "_" . $filter;
-    }
+    // Prepare export filname
+    $filename = prepare_export_filename(array(
+        "region" => $region,
+        "blockname" => $blockname,
+        "date" => date("d_M_y", time()),
+        "filter" => $filter ? $filter : ""
+    ));
 
     // Get export object 
-    $export = new export($format, $region, $blockname);
+    $export = new export($type, $region, $blockname);
 
     // If format is scheduled email then dont prepare data
-    if ($format == "emailscheduled") {
+    if ($type == "emailscheduled") {
         $export->data_export($filename, false);
     } else {
         // Prepare exportable data

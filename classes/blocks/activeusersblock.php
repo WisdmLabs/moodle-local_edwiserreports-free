@@ -62,6 +62,10 @@ class activeusersblock extends block_base {
         $this->layout->hasdownloadlink = true;
         $this->layout->filters = $this->get_activeusers_filter();
 
+        // Selected default filters
+        $this->layout->filter = 'weekly';
+        $this->layout->cohortid = '0';
+
         // Block related data
         $this->block = new stdClass();
         $this->block->displaytype = 'line-chart';
@@ -725,7 +729,7 @@ class activeusersblock extends block_base {
      * @param $filter [string] Filter to get data from specific range
      * @return [array] Array of exportable data
      */
-    public static function get_exportable_data_block($filter) {
+    public function get_exportable_data_block($filter) {
         $cohortid = optional_param("cohortid", 0, PARAM_INT);
         // Make cache
         $cache = cache::make('report_elucidsitereport', 'activeusers');

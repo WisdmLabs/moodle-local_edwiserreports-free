@@ -884,3 +884,11 @@ function get_email_schedule_next_run($duration, $time) {
     // Return scheduled time
     return array($frequency, $schedtime);
 }
+
+/**
+ * Prepare export filename
+ * @param [array] $param Params to prepare filename
+ */
+function prepare_export_filename($params) {
+    return "report_" . implode("_", $params);
+}

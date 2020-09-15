@@ -115,6 +115,19 @@ class export {
     }
 
     /**
+     * Prepare output for export data
+     */
+    function prepare_output($data, $message, $status) {
+        $res = new stdClass();
+        $res->status = $status;
+        $res->message = $message;
+        $res->data = $data;
+
+        // Print Output
+        echo json_encode($res);
+    }
+
+    /**
      * Export data in Excel format
      * @param $filenme file name to export data
      * @param $data data to be export
@@ -135,7 +148,6 @@ class export {
 
         // Sending HTTP headers
         $workbook->send($filename);
-
         // Close the workbook
         $workbook->close();
     }
@@ -531,31 +543,20 @@ class export {
      * @return [array] Array of exportable data
      */
     private function exportable_data_block($blockname, $filter) {
-        $export = null;
-        switch ($blockname) {
-            case "activeusers":
-                $export = active_users_block::get_exportable_data_block($filter);
-                break;
-            case "activecourses":
-                $export = active_courses_block::get_exportable_data_block();
-                break;
-            case "courseprogress":
-                $export = course_progress_block::get_exportable_data_block($filter);
-                break;
-            case "certificates":
-                $export = certificates_block::get_exportable_data_block($filter);
-                break;
-            case "f2fsession":
-                $export = f2fsession_block::get_exportable_data_block($filter);
-                break;
-            case "lpstats":
-                $export = lpstats_block::get_exportable_data_block($filter);
-                break;
-            case "inactiveusers":
-                $export = inactiveusers_block::get_exportable_data_block($filter);
-                break;
+        global $CFG;
+
+        // Check if class file exist
+        $classname = $blockname;
+        $filepath = $CFG->dirroot . '/report/elucidsitereport/classes/blocks/' . $classname . '.php';
+        if (!file_exists($filepath)) {
+            debugging('Class file dosn\'t exist ' . $classname);
         }
-        return $export;
+        require_once($filepath);
+
+        $classname = '\\report_elucidsitereport\\' . $classname;
+        $blockbase = new $classname();
+
+        return $blockbase->get_exportable_data_block($filter);
     }
 
     /**

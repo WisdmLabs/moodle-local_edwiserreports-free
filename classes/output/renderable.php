@@ -61,6 +61,8 @@ class elucidreport_renderable implements renderable, templatable {
         $reportblocks = new \report_elucidsitereport\report_blocks($reportblocks);
         $export->blocks = $reportblocks->get_report_blocks();
 
+        $export->downloadurl = $CFG->wwwroot."/report/elucidsitereport/download.php";
+
         $export->sesskey = sesskey();
         $export->timenow = date("Y-m-d", time());
         $export->courses = \report_elucidsitereport\utility::get_courses();
@@ -130,9 +132,7 @@ class elucidreport_renderable implements renderable, templatable {
         }
         // Custom Query Report
         $export->rpmgrs = $rpm->get_all_reporting_managers();
-        /*echo "<pre>";
-        print_r($rpm->rpmindentusers);
-        die;*/
+
         // Get reporting manager
         if (!empty($export->rpmgrs)) {
             $export->hasrpmanagers = true;

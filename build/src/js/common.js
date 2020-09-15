@@ -77,11 +77,15 @@ define([
         var isNavlink = null;
         var pageContent = $("#page-admin-report-elucidsitereport-index .page-content");
         var pageWidth = pageContent.width();
-        var exportPdf = '.export-dropdown a[data-action="pdf"]';
-        var exportEmailDropdown = '.export-dropdown a[data-action="email"]';
-        var scheduledEmailDropdown = '.export-dropdown a[data-action="emailscheduled"]';
+        var exportPdf = '.download-links button[value="pdf"]';
+        var exportEmailDropdown = '.download-links button[value="email"]';
+        var scheduledEmailDropdown = '.download-links button[value="emailscheduled"]';
         var durationDropdown = '#scheduletab .dropdown.duration-dropdown a.dropdown-item';
         var weeksDropdown = '#scheduletab .dropdown.weeks-dropdown a.dropdown-item';
+
+        // Export Selectors
+        var exportLinks = '.download-links';
+        var exportLink = '.download-links a[data-typr="pdf"], .download-links a[data-typr="csv"]';
 
 
         rearrangeBlocks(pageWidth, isNavlink);
@@ -91,6 +95,40 @@ define([
             var pageWidth = v.pluginPage.width();
             rearrangeBlocks(pageWidth);
         });
+
+        // function showCoverLoader() {
+        //     if ($(document).find('#cover-spin')) {
+        //         $("body").append(windowLoader);
+        //     }
+        //     $(document).find('#cover-spin').show(0);
+        // }
+
+        // // Export data in various formats
+        // $(document).on("click", exportLink, function(e) {
+        //     // Remove the default action
+        //     e.preventDefault();
+
+        //     // Show loader while downloading the csv content
+        //     showCoverLoader();
+
+        //     var _this = this;
+        //     $.ajax({
+        //         url: this.href,
+        //         type: 'POST',
+        //         data: {
+        //             'type': $(_this).data('type'),
+        //             'block': $(exportLinks).data('block'),
+        //             'filter': $(exportLinks).data('filter'),
+        //             'cohortid': $(exportLinks).data('cohortid'),
+        //             'region': $(exportLinks).data('region')
+        //         }
+        //     }).done(function(response) {
+        //         response = JSON.parse(response);
+        //         window.open(response.data);
+        //     }).always(function() {
+        //         $(document).find('#cover-spin').remove();
+        //     });
+        // });
 
         // Export data in pdf
         $(document).on("click", exportPdf, function(e) {
@@ -103,8 +141,17 @@ define([
             $(document).find('#cover-spin').show(0);
 
             var _this = this;
+            var form = $(_this).closest("form");
             $.ajax({
-                url: this.href,
+                url: form.attr('action'),
+                type: 'POST',
+                data: {
+                    'type': $(_this).val(),
+                    'block': form.find('input[name="block"]').val(),
+                    'filter': form.find('input[name="filter"]').val(),
+                    'cohortid': form.find('input[name="cohortid"]').val(),
+                    'region': form.find('input[name="region"]').val()
+                }
             }).done(function(response) {
                 response = JSON.parse(response);
                 var pdf = new jsPDF('p', 'pt', 'a4');

@@ -195,23 +195,16 @@ class utility {
      */
     public static function get_courses($all = false) {
         global $DB;
-        $fields = "*";
-        $records = $DB->get_records('course', array(), '', $fields);
 
-        $courses = array();
-        foreach ($records as $course) {
-            if ($course->id == 1) {
-                continue;
+        // Get records for courses
+        $courses = $DB->get_records('course', array(), '', '*');
+        foreach (array_keys($courses) as $courseid) {
+            $enrolledstudents = self::get_enrolled_students($courseid);
+            if ($courseid == 1 || empty($enrolledstudents)) {
+                unset($courses[$courseid]);
             }
-            $coursecontext = context_course::instance($course->id);
-            // Get only students
-            $enrolledstudents = \report_elucidsitereport\courseprogressblock::rep_get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
-            if (!$all && count($enrolledstudents) == 0) {
-                continue;
-            }
-            $courses[] = $course;
         }
-        return $courses;
+        return array_values($courses);
     }
 
     /* Generate Learning Program Filter for course progress block
@@ -1174,5 +1167,16 @@ class utility {
         );
 
         return $reportblocks;
+    }
+
+    /**
+     * Get enrolled students in course
+     * @param  [int]   $courseid Course Id
+     * @return [array]           Array of users
+     */
+    public static function get_enrolled_students($courseid) {
+        // get only students from that course
+        $coursecontext = context_course::instance($courseid);
+        return get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
     }
 }
