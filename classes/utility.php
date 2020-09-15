@@ -1172,11 +1172,16 @@ class utility {
     /**
      * Get enrolled students in course
      * @param  [int]   $courseid Course Id
+     * @param  [bool | context]   $courseid Course Id
      * @return [array]           Array of users
      */
-    public static function get_enrolled_students($courseid) {
+    public static function get_enrolled_students($courseid, $context = false) {
+        if (!$context) {
+            // Get default course context
+            $context = context_course::instance($courseid);
+        }
+
         // get only students from that course
-        $coursecontext = context_course::instance($courseid);
-        return get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+        return get_enrolled_users($context, 'moodle/course:isincompletionreports');
     }
 }

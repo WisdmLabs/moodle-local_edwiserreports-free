@@ -116,7 +116,8 @@ class certificatesblock extends block_base {
             $modulecontext = context_module::instance($cm->id);
             // $enrolledusers = get_enrolled_users($coursecontext);
             // Get only enrolled students
-            $enrolledusers = course_progress_block::rep_get_enrolled_users($coursecontext);
+            // $enrolledusers = courseprogressblock::rep_get_enrolled_users($coursecontext);
+            $enrolledusers = \report_elucidsitereport\utility::get_enrolled_students($cm->id, $modulecontext);
             if (empty($enrolledusers) && $rpm->isrpm) {
                 continue;
             }

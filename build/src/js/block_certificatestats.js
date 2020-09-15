@@ -19,7 +19,7 @@ define(["jquery", "core/templates", "report_elucidsitereport/defaultconfig"], fu
             .then(function(html, js) {
                 $(panelBody).empty();
                 templates.appendNodeContents(panelBody, html, js);
-                createActiveCourseTable(response.data);
+                createCertificatesTable(response.data);
             }).fail(function(ex) {
                 console.log(ex);
             });
@@ -29,9 +29,9 @@ define(["jquery", "core/templates", "report_elucidsitereport/defaultconfig"], fu
         });
     }
 
-    function createActiveCourseTable() {
+    function createCertificatesTable() {
         certificatesTable = $(table).DataTable({
-            dom : '<"pull-left"f><t>',
+            // dom : '<"pull-left"f><t>',
             language: {
                 searchPlaceholder: "Search Certificates"
             },
@@ -41,14 +41,19 @@ define(["jquery", "core/templates", "report_elucidsitereport/defaultconfig"], fu
             initComplete: function() {
                 $(dropdownBody).show();
             },
-            scrollY : "200px",
-            scrollCollapse : true,
-            fixedHeader: {
-                header: true,
-                headerOffset: 45
+            drawCallback: function () {
+                $('.dataTables_paginate > .pagination').addClass('pagination-sm pull-right');
+                $('.dataTables_filter').addClass('pagination-sm pull-right');
             },
-            scrollX: true,
-            paging: false,
+            // scrollY : "200px",
+            // scrollCollapse : true,
+            // fixedHeader: {
+            //     header: true,
+            //     headerOffset: 45
+            // },
+            // scrollX: true,
+            // paging: false,
+            lengthChange: false,
             bInfo : false
         });
     }
