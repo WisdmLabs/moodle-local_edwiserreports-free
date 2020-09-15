@@ -1159,9 +1159,9 @@ class utility {
             'activecourses' => $activecoursesblock,
             'certificates' => $certificatesblock,
             'liveusers' => $liveusersblock,
-            'f2fsessions' => $f2fsessionsblock,
+            // 'f2fsessions' => $f2fsessionsblock,
             'siteaccess' => $siteaccessblock,
-            'lpstats' => $lpstatsblock,
+            // 'lpstats' => $lpstatsblock,
             'todaysactivity' => $todaysactivityblock,
             'inactiveusers' => $inactiveusersblock
         );
