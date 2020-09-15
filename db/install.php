@@ -29,6 +29,32 @@ defined('MOODLE_INTERNAL') || die();
  * Custom code to be run on installing the plugin.
  */
 function xmldb_report_elucidsitereport_install() {
+    global $CFG, $DB;
 
-    return true;
+    require_once($CFG->dirroot . "/report/elucidsitereport/classes/constants.php");
+
+    // All Default blocks
+    $defaultblocks = array(
+        'activeusers' => 'activeusersblock',
+        'courseprogress' => 'courseprogressblock',
+        'activecourses' => 'activecoursesblock',
+        'certificates' => 'certificatesblock',
+        'liveusers' => 'liveusersblock',
+        'siteaccess' => 'siteaccessblock',
+        'todaysactivity' => 'todaysactivityblock',
+        'inactiveusers' => 'inactiveusersblock'
+    );
+
+    // Create each block
+    $blocks = array();
+    foreach ($defaultblocks as $key => $block) {
+        $blockdata = new stdClass();
+        $blockdata->blockname = $key;
+        $blockdata->classname = $block;
+        $blockdata->blocktype = BLOCK_TYPE_DEFAULT;
+        $blockdata->timecreated = time();
+        $blocks[] = $blockdata;
+    }
+
+    return $DB->insert_records('sitereport_blocks', $blocks);
 }

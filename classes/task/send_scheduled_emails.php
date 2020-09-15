@@ -56,7 +56,7 @@ class send_scheduled_emails extends \core\task\scheduled_task {
         $timenow = time();
 
         // Get data from table
-        $table = "elucidsitereport_schedemails";
+        $table = "sitereport_schedemails";
         $records = $DB->get_records($table);
         foreach($records as $key => $record) {
             // If it dosent have email data

@@ -313,8 +313,8 @@ function get_schedule_emailform($id, $formaction, $blockname, $region) {
     $esrnextrun = '';
 
     // Get data from table
-    $table = "elucidsitereport_schedemails";
-    $sql = "SELECT * FROM {elucidsitereport_schedemails}
+    $table = "sitereport_schedemails";
+    $sql = "SELECT * FROM {sitereport_schedemails}
         WHERE blockname = :blockname
         AND component = :component";
     $params = array(
@@ -694,7 +694,7 @@ function get_schedule_emaillist() {
     global $DB;
 
     $emails = array();
-    $rec = $DB->get_records('elucidsitereport_schedemails');
+    $rec = $DB->get_records('sitereport_schedemails');
     foreach($rec as $key => $val) {
         // If it dosent have email data
         if (!$emaildata = json_decode($val->emaildata)) {

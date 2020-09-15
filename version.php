@@ -26,6 +26,6 @@ defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'report_elucidsitereport';
 $plugin->release = '1.1.1';
-$plugin->version = 2020031100;
+$plugin->version = 2020031101;
 $plugin->requires = 2018120300;
 $plugin->maturity = MATURITY_ALPHA;

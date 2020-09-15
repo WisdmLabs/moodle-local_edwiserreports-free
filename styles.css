@@ -627,11 +627,11 @@ div[id^="wdm-"][id*="-individual"] table.table,
 	min-height: 60px;
 }
 
-/* #wdm-elucidsitereport .panel-body {
+#wdm-elucidsitereport .panel-body {
 	height: 400px;
 	min-height: 400px;
 	min-height: 400px;
-} */
+}
 
 #wdm-elucidsitereport input.dropdown-item {
     background-color: transparent;
@@ -654,4 +654,9 @@ div[id^="wdm-"][id*="-individual"] table.table,
 
 #todaysactivityblock .card {
     padding: 20px 30px;
+}
+#wdm-elucidsitereport .dataTables_wrapper .row
+#wdm-elucidsitereport .dataTables_wrapper div[class^="col-"] {
+    margin: 0!important;
+    padding: 0!important;
 }

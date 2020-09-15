@@ -255,6 +255,9 @@ define([
                 modal.show();
             });
         });
+
+        // Show reports page when document is ready
+        $('#wdm-elucidsitereport').removeClass('d-none');
     });
 
     /**

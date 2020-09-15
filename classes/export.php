@@ -329,8 +329,8 @@ class export {
         $data->blockname = $this->blockname;
         $data->component = $this->region;
 
-        $table = "elucidsitereport_schedemails";
-        $sql = "SELECT id, emaildata FROM {elucidsitereport_schedemails}
+        $table = "sitereport_schedemails";
+        $sql = "SELECT id, emaildata FROM {sitereport_schedemails}
             WHERE blockname = :blockname
             AND component = :component";
         if ($rec = $DB->get_record_sql($sql, (array)$data)) {

@@ -592,7 +592,7 @@ class utility {
         global $DB;
 
         $emails = array();
-        $rec = $DB->get_records('elucidsitereport_schedemails');
+        $rec = $DB->get_records('sitereport_schedemails');
         foreach($rec as $key => $val) {
             // If it dosent have email data
             if (!$emaildata = json_decode($val->emaildata)) {
@@ -637,8 +637,8 @@ class utility {
         global $DB;
 
         // Get data from table
-        $table = "elucidsitereport_schedemails";
-        $sql = "SELECT * FROM {elucidsitereport_schedemails}
+        $table = "sitereport_schedemails";
+        $sql = "SELECT * FROM {sitereport_schedemails}
             WHERE blockname = :blockname
             AND component = :component";
         $params = array(
@@ -687,8 +687,8 @@ class utility {
         global $DB;
 
         // Get data from table
-        $table = "elucidsitereport_schedemails";
-        $sql = "SELECT * FROM {elucidsitereport_schedemails}
+        $table = "sitereport_schedemails";
+        $sql = "SELECT * FROM {sitereport_schedemails}
             WHERE blockname = :blockname
             AND component = :component";
         $params = array(
@@ -741,8 +741,8 @@ class utility {
         global $DB;
 
         // Get data from table
-        $table = "elucidsitereport_schedemails";
-        $sql = "SELECT * FROM {elucidsitereport_schedemails}
+        $table = "sitereport_schedemails";
+        $sql = "SELECT * FROM {sitereport_schedemails}
             WHERE blockname = :blockname
             AND component = :component";
         $params = array(
@@ -1132,41 +1132,9 @@ class utility {
      * @return array Modules array
      */
     public static function get_reports_block() {
-        // TODO: Temp preparation of block remove after done
-        $activeusersblock = new stdClass();
-        $activeusersblock->classname = 'activeusersblock';
-        $courseprogressblock = new stdClass();
-        $courseprogressblock->classname = 'courseprogressblock';
-        $activecoursesblock = new stdClass();
-        $activecoursesblock->classname = 'activecoursesblock';
-        $certificatesblock = new stdClass();
-        $certificatesblock->classname = 'certificatesblock';
-        $liveusersblock = new stdClass();
-        $liveusersblock->classname = 'liveusersblock';
-        $f2fsessionsblock = new stdClass();
-        $f2fsessionsblock->classname = 'f2fsessionsblock';
-        $siteaccessblock = new stdClass();
-        $siteaccessblock->classname = 'siteaccessblock';
-        $lpstatsblock = new stdClass();
-        $lpstatsblock->classname = 'lpstatsblock';
-        $todaysactivityblock = new stdClass();
-        $todaysactivityblock->classname = 'todaysactivityblock';
-        $inactiveusersblock = new stdClass();
-        $inactiveusersblock->classname = 'inactiveusersblock';
-        $reportblocks = array(
-            'activeusers' => $activeusersblock,
-            'courseprogress' => $courseprogressblock,
-            'activecourses' => $activecoursesblock,
-            'certificates' => $certificatesblock,
-            'liveusers' => $liveusersblock,
-            // 'f2fsessions' => $f2fsessionsblock,
-            'siteaccess' => $siteaccessblock,
-            // 'lpstats' => $lpstatsblock,
-            'todaysactivity' => $todaysactivityblock,
-            'inactiveusers' => $inactiveusersblock
-        );
-
-        return $reportblocks;
+        global $DB;
+        
+        return $DB->get_records('sitereport_blocks');
     }
 
     /**
