@@ -59,7 +59,7 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
             activeCourseTable = $(table).DataTable({
                 responsive: true,
                 data : data,
-                dom : '<"pull-left"f><t>',
+                // dom : '<"pull-left"f><t>',
                 aaSorting: [[2, 'desc']],
                 aoColumns: [
                     null,
@@ -75,8 +75,12 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
                     /* Remove laoder and display table after table is created */
                     $(loader).hide();
                     $(table).fadeIn("slow");
-                    $(dropdownBody).fadeIn();
-                    $(window).resize();
+                    // $(dropdownBody).fadeIn();
+                    // $(window).resize();
+                },
+                drawCallback: function () {
+                    $('.dataTables_paginate > .pagination').addClass('pagination-sm pull-right');
+                    $('.dataTables_filter').addClass('pagination-sm pull-right');
                 },
                 columnDefs: [
                     {
@@ -94,9 +98,10 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
                         "className": "text-center",
                     }
                 ],
-                scrollY : "300px",
-                scrollX : true,
-                paging: false,
+                // scrollY : "300px",
+                // scrollX : true,
+                //paging: false,
+                lengthChange: false,
                 bInfo : false
             });
         }
