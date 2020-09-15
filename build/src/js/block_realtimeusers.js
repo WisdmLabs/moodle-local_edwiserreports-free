@@ -45,7 +45,7 @@ define(["jquery", "report_elucidsitereport/defaultconfig", "report_elucidsiterep
 
         liveUsersTable = table.DataTable({
             data: data,
-            dom : '<"row rtblock-filter"<"pull-left"f>><t>',
+            // dom : '<"row rtblock-filter"<"pull-left"f>><t>',
             language: {
                 searchPlaceholder: "Search Users"
             },
@@ -65,15 +65,16 @@ define(["jquery", "report_elucidsitereport/defaultconfig", "report_elucidsiterep
                     "orderable": false
                 }
             ],
-            scrollY : "200px",
-            scrollCollapse : true,
-            fixedHeader: {
-                header: true,
-                headerOffset: 45
-            },
-            scrollX: true,
-            paging: false,
+            // scrollY : "200px",
+            // scrollCollapse : true,
+            // fixedHeader: {
+            //     header: true,
+            //     headerOffset: 45
+            // },
+            // scrollX: true,
+            // paging: false,
             bInfo : false,
+            lengthChange: false,
             initComplete : function() {
                 var usersCount = '<small class="ml-auto my-auto font-weight-bold">LoggedIn Users : ' + data.length + '</small>';
                 $(document).find(".rtblock-filter").append(usersCount);
