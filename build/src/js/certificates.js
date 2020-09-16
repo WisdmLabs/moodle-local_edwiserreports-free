@@ -43,7 +43,7 @@ define([
 
             dataTable = CertTable.DataTable({
                 ajax : V.generateUrl(V.requestUrl, params),
-                dom : "<'pull-left'f><t><p>",
+                // dom : "<'pull-left'f><t><p>",
                 columnDefs: [
                     {
                         "targets": 0,
@@ -74,21 +74,25 @@ define([
                     $('.pie-progress').asPieProgress();
                     CertTable.show();
                 },
+                drawCallback: function () {
+                    $('.dataTables_paginate > .pagination').addClass('pagination-sm pull-right');
+                    $('.dataTables_filter').addClass('pagination-sm pull-right');
+                },
                 bInfo : false,
-                lengthChange : false,
+                // lengthChange : false,
                 paginate : false,
                 responsive : true,
-                scrollY : "350px",
-                scrollX : true,
-                sScrollX : "100%",
-                bScrollCollapse : true
+                // scrollY : "350px",
+                // scrollX : true,
+                // sScrollX : "100%",
+                // bScrollCollapse : true
             });
         }
 
         $(document).ready(function() {
-            filterSection.html(CertDropdown.html());
-            CertDropdown.remove();
-            $(document).find(CertSelect).show();
+            // filterSection.html(CertDropdown.html());
+            // CertDropdown.remove();
+            // $(document).find(CertSelect).show();
             $(document).find(CertSelect).select2();
 
             certificateid = $(CertSelect).val();

@@ -1,7 +1,7 @@
 <div id="wdm-certificates-individual" class="table-responsive" data-sesskey="{{sesskey}}">
     {{#hascertificates}}
-        <div id="wdm-certificates-dropdown" class="px-0 py-20 pull-left d-none">
-            <select id="wdm-certificates-select" class="form-control singleselect w-250" name="state" style="display: none;">
+        <div id="wdm-certificates-dropdown" class="">
+            <select id="wdm-certificates-select" class="form-control singleselect" name="state" style="width: 250px;">
                 {{#certificates}}
                 <option value="{{id}}">{{coursename}}: {{name}}</option>
                 {{/certificates}}
@@ -10,12 +10,12 @@
     {{/hascertificates}}
     <table class="table">
         <thead>
-            <th class="bg-image-none no-sorting-arrow no-wrap">{{#str}} username, report_elucidsitereport {{/str}}</th>
-            <th class="bg-image-none no-sorting-arrow no-wrap">{{#str}} useremail, report_elucidsitereport {{/str}}</th>
-            <th class="bg-image-none no-sorting-arrow no-wrap">{{#str}} dateofissue, report_elucidsitereport {{/str}}</th>
-            <th class="bg-image-none no-sorting-arrow no-wrap">{{#str}} dateofenrol, report_elucidsitereport {{/str}}</th>
-            <th class="bg-image-none no-sorting-arrow no-wrap">{{#str}} grade, report_elucidsitereport {{/str}}</th>
-            <th class="bg-image-none no-sorting-arrow no-wrap">{{#str}} courseprogress, report_elucidsitereport {{/str}}</th>
+            <th class="">{{#str}} username, report_elucidsitereport {{/str}}</th>
+            <th class="">{{#str}} useremail, report_elucidsitereport {{/str}}</th>
+            <th class="">{{#str}} dateofissue, report_elucidsitereport {{/str}}</th>
+            <th class="">{{#str}} dateofenrol, report_elucidsitereport {{/str}}</th>
+            <th class="">{{#str}} grade, report_elucidsitereport {{/str}}</th>
+            <th class="">{{#str}} courseprogress, report_elucidsitereport {{/str}}</th>
         </thead>
         <tbody></tbody>
     </table>

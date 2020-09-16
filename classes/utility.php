@@ -118,7 +118,7 @@ class utility {
 
         $certificatesblock = new \report_elucidsitereport\certificatesblock();
         if (isset($data->certificateid)) {
-            return \report_elucidsitereport\certificates_block::get_issued_users($data->certificateid, $data->cohortid);
+            return \report_elucidsitereport\certificatesblock::get_issued_users($data->certificateid, $data->cohortid);
         }
         return $certificatesblock->get_data();
     }

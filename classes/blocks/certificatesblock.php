@@ -227,7 +227,7 @@ class certificatesblock extends block_base {
 
         $params = array('courseid'=>$course->id, 'userid' => $issue->userid);
         $gradeval = 0;
-        $grade = self::get_grades($course->id, $issue->userid);
+        $grade = \report_elucidsitereport\utility::get_grades($course->id, $issue->userid);
         if ($grade) {
             $gradeval = $grade->finalgrade;
         }
@@ -237,7 +237,7 @@ class certificatesblock extends block_base {
         $progressper = 0;
         if ($enrolment) {
             $enrolmentdate = date("d M y", $enrolment->timemodified);
-            $completion = self::get_course_completion_info($course, $user->id);
+            $completion = \report_elucidsitereport\utility::get_course_completion_info($course, $user->id);
 
             if (isset($completion["progresspercentage"])) {
                 $progressper = $completion["progresspercentage"];
@@ -250,7 +250,7 @@ class certificatesblock extends block_base {
                 $progressper . "%",
                 "pie-progress-number font-size-14"
             ),
-            "pie-progress pie-progress-xs",
+            "pie-progress pie-progress-sm",
             array(
                 "data-plugin" => "pieProgress",
                 "role" => "progressbar",

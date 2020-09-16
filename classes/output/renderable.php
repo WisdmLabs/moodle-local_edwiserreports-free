@@ -326,14 +326,8 @@ class certificates_renderable implements renderable, templatable {
 
         $output = new stdClass();
         $output->sesskey = sesskey();
-        $params = array();
-		// $customcerts = $DB->get_records("customcert", array());
-        // Create reporting manager instance
-        $rpm = \report_elucidsitereport\reporting_manager::get_instance();
-        $sql = "SELECT DISTINCT(c.id), c.name, c.course FROM {customcert} c
-                JOIN {customcert_issues} ci ON ci.customcertid = c.id WHERE ci.userid ".$rpm->insql;
-        $params = array_merge($params, $rpm->inparams);
-        $customcerts = $DB->get_records_sql($sql, $params);
+        $customcerts = $DB->get_records("customcert", array());
+
 		if (!empty($customcerts)) {
 			$output->hascertificates = true;
             $firstcertid = 0;
