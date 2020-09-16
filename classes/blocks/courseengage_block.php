@@ -164,16 +164,11 @@ class courseengage_block extends utility {
     public static function get_engagement($course, $cohortid, $values) {
         global $CFG, $DB;
 
-        // Get course context
-        $coursecontext = context_course::instance($course->id);
-
         // Create engagement object
         $engagement = new stdClass();
+
         // Get only enrolled students
-        $enrolledstudents = course_progress_block::rep_get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
-        if (empty($enrolledstudents)) {
-            return false;
-        }
+        $enrolledstudents = \report_elucidsitereport\utility::get_enrolled_students($course->id);
         /* If cohort filter is there then select only cohort users */
         if($cohortid) {
             foreach($enrolledstudents as $key => $user) {
@@ -183,7 +178,6 @@ class courseengage_block extends utility {
                 }
             }
         }
-
 
         // Generate course url
         $courseurl = new moodle_url($CFG->wwwroot . "/course/view.php", array("id" => $course->id));

@@ -135,9 +135,9 @@ define([
                                 searchPlaceholder: "Search users",
                                 emptyTable: "There are no users"
                             },
-                            scrollY : "350px",
-                            scrollX : true,
-                            paging: false,
+                            // scrollY : "350px",
+                            // scrollX : true,
+                            // paging: false,
                             bInfo : false
                         });
                     });
@@ -228,7 +228,7 @@ define([
                 }).always(function() {
                     DataTable = $(ActiveUsersTable).DataTable({
                         responsive: true,
-                        dom : '<"pull-left"f><t><p>',
+                        // dom : '<"pull-left"f><t><p>',
                         order : [[0, 'desc']],
                         columnDefs: [
                             {
@@ -242,9 +242,13 @@ define([
                         ],
                         info : false,
                         bLengthChange : false,
-                        scrollY : 350,
-                        scrollX : true,
-                        paginate : false
+                        drawCallback: function () {
+                            $('.dataTables_paginate > .pagination').addClass('pagination-sm pull-right');
+                            $('.dataTables_filter').addClass('pagination-sm pull-right');
+                        }
+                        // scrollY : 350,
+                        // scrollX : true,
+                        // paginate : false
                     });
                     $(ActiveUsersTable).show();
                     $(loader).hide();

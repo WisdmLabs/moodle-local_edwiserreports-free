@@ -493,8 +493,8 @@ class activeusersblock extends block_base {
             "action" => "viewed"
         );
         // Create reporting manager instance
-        $rpm = reporting_manager::get_instance();
-        $params = array_merge($params, $rpm->inparams);
+        // $rpm = reporting_manager::get_instance();
+        // $params = array_merge($params, $rpm->inparams);
         // Query to get activeusers from logs
         if ($cohortid) {
             $cachekey = "activeusers-activeusers-" . $filter . "-" . $cohortid .''.$rpm->rpmcache;
@@ -513,7 +513,6 @@ class activeusersblock extends block_base {
                AND l.action = :action
                AND l.timecreated >= :starttime
                AND l.timecreated < :endtime
-               AND l.userid ".$rpm->insql."
                GROUP BY YEAR(FROM_UNIXTIME(l.timecreated)),
                MONTH(FROM_UNIXTIME(l.timecreated)),
                DAY(FROM_UNIXTIME(l.timecreated)), USERDATE";
@@ -530,7 +529,6 @@ class activeusersblock extends block_base {
                WHERE action = :action
                AND timecreated >= :starttime
                AND timecreated < :endtime
-               AND userid ".$rpm->insql."
                GROUP BY YEAR(FROM_UNIXTIME(timecreated)),
                MONTH(FROM_UNIXTIME(timecreated)),
                DAY(FROM_UNIXTIME(timecreated)), USERDATE";

@@ -77,8 +77,9 @@ $PAGE->set_url($pageurl);
 $renderable = new \report_elucidsitereport\output\activeusers_renderable();
 $output = $PAGE->get_renderer($component)->render($renderable);
 
+$PAGE->set_heading(get_string("activeusersheader", "report_elucidsitereport"));
+
 // Print output in the page
 echo $OUTPUT->header();
-echo $OUTPUT->heading(create_page_header("activeusers"), "1", "page-title p-5");
 echo $output;
 echo $OUTPUT->footer();

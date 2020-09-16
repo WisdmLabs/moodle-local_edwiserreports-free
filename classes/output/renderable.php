@@ -61,6 +61,7 @@ class elucidreport_renderable implements renderable, templatable {
         $reportblocks = new \report_elucidsitereport\report_blocks($reportblocks);
         $export->blocks = $reportblocks->get_report_blocks();
 
+        // Todo: Remove below code
         $export->downloadurl = $CFG->wwwroot."/report/elucidsitereport/download.php";
 
         $export->sesskey = sesskey();
