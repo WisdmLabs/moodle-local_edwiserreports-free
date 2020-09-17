@@ -46,6 +46,8 @@ $PAGE->requires->strings_for_js([
 $context = context_system::instance();
 $component = "report_elucidsitereport";
 
+require_login();
+
 // The requested section isn't in the admin tree
 // It could be because the user has inadequate capapbilities or because the section doesn't exist
 if (!has_capability('report/report_elucidsitereport:view', $context)) {
