@@ -296,12 +296,89 @@ function report_elucidsitereport_pluginfile($course, $cm, $context, $filearea, $
     }
     send_stored_file($file, 0, 0, $forcedownload, $options);
 }
+
+// /**
+//  * Save setting for reporting manager block options
+//  * @param  [array] $form_data [form submission data]
+//  */
+// function save_settings_form_data($form_data) {
+//     $blocks = $form_data->rpmblocks;
+//     // save the data in config
+//     set_config("ed_reporting_manager_blocks", serialize($blocks));
+// }
+
 /**
- * Save setting for reporting manager block options
- * @param  [array] $form_data [form submission data]
+ * Get for for blocks setting
  */
-function save_settings_form_data($form_data) {
-    $blocks = $form_data->rpmblocks;
-    // save the data in config
-    set_config("ed_reporting_manager_blocks", serialize($blocks));
+function report_elucidsitereport_output_fragment_get_blocksetting_form($params) {
+    global $PAGE;
+    $blockname = isset($params['blockname']) ? $params['blockname'] : false;
+    $component = 'report_elucidsitereport';
+
+    if (!$blockname) {
+        throw new moodle_exception('blocknameinvalid', 'error');
+    }
+
+    // Check if block is exist or not
+    $block = \report_elucidsitereport\utility::get_reportsblock_by_name($blockname);
+
+    if (!$block) {
+        throw new moodle_exception('noblockfound', 'error');
+    }
+
+    // Get block preferences
+    $preferences = \report_elucidsitereport\utility::get_reportsblock_preferences($block);
+
+    // Prepare form for block editing
+    $o = html_writer::start_tag('form', array('class' => 'form'));
+
+    // Prepare view string
+    $views = array(
+        BLOCK_DESKTOP_VIEW => array(
+            'key' => 'desktopview',
+            'name' => get_string('desktopview', $component),
+        ),
+        BLOCK_TABLET_VIEW => array(
+            'key' => 'tabletview',
+            'name' => get_string('tabletview', $component),
+        ),
+        BLOCK_MOBILEVIEW => array(
+            'key' => 'mobileview',
+            'name' => get_string('mobileview', $component),
+        ),
+    );
+    foreach($views as $key => $view) {
+        $o .= html_writer::start_tag('div', array('class' => 'form-group row fitem'));
+        $o .= html_writer::start_tag('div', array('class' => 'col-md-6'));
+        $o .= html_writer::tag('label', $view['name'], array('class' => 'col-form-label d-inline', 'for' => 'id_' . $view['key'] . 'view'));
+        $o .= html_writer::end_tag('label');
+        $o .= html_writer::end_tag('div');
+        $o .= html_writer::start_tag('div', array('class' => 'col-md-6'));
+        $o .= html_writer::select(array(
+            BLOCK_LARGE => get_string('large', $component),
+            BLOCK_MEDIUM => get_string('medium', $component),
+            BLOCK_SMALL => get_string('small', $component)
+        ), $view['key'] . 'view', $preferences[$key], null);
+        $o .= html_writer::end_tag('label');
+        $o .= html_writer::end_tag('div');
+        $o .= html_writer::end_tag('div');
+    }
+
+    $positions = array('1','2','3');
+    $selectedpos = 0;
+    $o .= html_writer::start_tag('div', array('class' => 'form-group row fitem'));
+    $o .= html_writer::start_tag('div', array('class' => 'col-md-6'));
+    $o .= html_writer::tag('label', get_string('position', $component),
+            array('class' => 'col-form-label d-inline', 'for' => 'id_position'));
+    $o .= html_writer::end_tag('label');
+    $o .= html_writer::end_tag('div');
+    $o .= html_writer::start_tag('div', array('class' => 'col-md-6'));
+    $o .= html_writer::select($positions, 'position', $selectedpos, null);
+    $o .= html_writer::end_tag('label');
+    $o .= html_writer::end_tag('div');
+    $o .= html_writer::end_tag('div');
+
+    $o .= html_writer::end_tag('form');
+
+    return $o;
 }

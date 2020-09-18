@@ -1152,4 +1152,36 @@ class utility {
         // get only students from that course
         return get_enrolled_users($context, 'moodle/course:isincompletionreports');
     }
+
+    /**
+     * Get reports blocks detailed by it name
+     * @param [string] $blockname Block Name
+     */
+    public static function get_reportsblock_by_name($blockname) {
+        global $DB;
+
+        return $DB->get_record('sitereport_blocks', array('classname' => $blockname));
+    }
+
+    /**
+     * Get reports blocks detailed by it name
+     * @param [string] $blockname Block Name
+     */
+    public static function get_reportsblock_preferences($block) {
+        global $DB;
+        $blockdata = json_decode($block->blockdata, true);
+
+        // Set default preference
+        $preferences = array();
+        
+        // update preferences from blockdata
+        if ($blockdata) {
+            $preferences[BLOCK_DESKTOP_VIEW] = $blockdata[BLOCK_DESKTOP_VIEW];
+            $preferences[BLOCK_TABLET_VIEW] = $blockdata[BLOCK_TABLET_VIEW];
+            $preferences[BLOCK_MOBILEVIEW] = $blockdata[BLOCK_MOBILEVIEW];
+            $preferences['position'] = $blockdata['position'];
+        }
+
+        return $preferences;
+    }
 }

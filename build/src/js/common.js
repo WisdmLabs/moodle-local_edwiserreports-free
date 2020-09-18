@@ -261,33 +261,46 @@ define([
 
         // Show reports page when document is ready
         $('#wdm-elucidsitereport').removeClass('d-none');
+
+        setupBlockEditing();
     });
 
     /**
      * Setup block setting button
      */
-    $(document).on('click', selector.blockSettingsBtn, function(e) {
-        e.preventDefault();
+    function setupBlockEditing() {
+        $(document).on('click', selector.blockSettingsBtn, function(e) {
+            e.preventDefault();
 
-        console.log(e.currentTarget);
-        console.log($(e.currentTarget).data('context'));
+            var contextid = $(e.currentTarget).data('contextid');
+            var blockname = $(e.currentTarget).data('blockname');
 
-        ModalFactory.create({
-            title: 'Edit Block Setting',
-            body: Templates.render(tempSelector.blockEditSettings, {})
-        }).done(function(modal) {
-            var root = modal.getRoot();
+            ModalFactory.create({
+                title: 'Edit Block Setting',
+                // body: Templates.render(tempSelector.blockEditSettings, {})
+                body: fragment.loadFragment(
+                    'report_elucidsitereport',
+                    'get_blocksetting_form',
+                    contextid,
+                    {
+                        blockname : blockname
+                    }
+                )
+            }).done(function(modal) {
+                var root = modal.getRoot();
+                modal.modal.addClass('modal-dialog-centered');
 
-            root.on(ModalEvents.bodyRendered, function() {
-                console.log("Done!")
+                root.on(ModalEvents.bodyRendered, function() {
+                    console.log("Done!")
+                });
+
+                root.on(ModalEvents.hidden, function() {
+                    modal.destroy();
+                });
+                modal.show();
             });
-
-            root.on(ModalEvents.hidden, function() {
-                modal.destroy();
-            });
-            modal.show();
         });
-    });
+    }
 
     /**
      * Render all emails in modal

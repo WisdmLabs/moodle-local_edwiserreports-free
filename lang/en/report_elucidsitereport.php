@@ -406,3 +406,11 @@ $string['attemptfinish'] = 'Attempt Finish';
 $string['editblockview'] = 'Edit Block View';
 $string['hide'] = 'Hide Block';
 $string['editcapability'] = 'Change Capability';
+
+$string['desktopview'] = 'Desktop View';
+$string['tabletview'] = 'Tablet View';
+$string['mobileview'] = 'Mobile View';
+$string['large'] = 'Large';
+$string['medium'] = 'Medium';
+$string['small'] = 'Small';
+$string['position'] = 'Position';
