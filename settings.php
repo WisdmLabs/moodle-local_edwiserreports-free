@@ -25,5 +25,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$ADMIN->add('modules', new admin_category('report_elucidsitereport_settings', new lang_string('pluginname', 'report_elucidsitereport')));
-$ADMIN->add('report_elucidsitereport_settings', new admin_externalpage('elucidsitereport_settings', new lang_string('elucidsitereport_settings', 'report_elucidsitereport'), "$CFG->wwwroot/report/elucidsitereport/reports_settings.php"));
+$ADMIN->add('reports', new admin_category('report_elucidsitereport_settings', new lang_string('pluginname', 'report_elucidsitereport')));
+$ADMIN->add('report_elucidsitereport_settings', new admin_externalpage('elucidsitereport_dashboard', new lang_string('myhome'), "/report/elucidsitereport/index.php"));
+$ADMIN->add('report_elucidsitereport_settings', new admin_externalpage('elucidsitereport_settings', new lang_string('settings'), "$CFG->wwwroot/report/elucidsitereport/reports_settings.php"));

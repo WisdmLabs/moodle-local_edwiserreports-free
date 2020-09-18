@@ -628,8 +628,6 @@ div[id^="wdm-"][id*="-individual"] table.table,
 }
 
 #wdm-elucidsitereport .panel-body {
-	height: 400px;
-	min-height: 400px;
 	min-height: 400px;
 }
 
@@ -659,4 +657,40 @@ div[id^="wdm-"][id*="-individual"] table.table,
 #wdm-elucidsitereport .dataTables_wrapper div[class^="col-"] {
     margin: 0!important;
     padding: 0!important;
+}
+
+#wdm-elucidsitereport .elucidsitereport-block > div {
+    height: 100%;
+    padding: 1rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+
+#wdm-elucidsitereport .elucidsitereport-block > div:hover {
+    box-shadow: 0 8px 10px rgba(0,0,0,0.25), 0 3px 4px rgba(0,0,0,0.22);
+}
+
+#wdm-elucidsitereport .elucidsitereport-block > div .panel {
+    height: 100%;
+}
+
+#wdm-elucidsitereport .elucidsitereport-block > div .panel .panel-body {
+    overflow: auto;
+}
+
+#wdm-elucidsitereport .elucidsitereport-block > div .panel .panel-footer {
+    padding: 1rem 0 0 0 !important;
+}
+
+#wdm-elucidsitereport .elucidsitereport-block > div#activeusersblock .panel .panel-body {
+    overflow: hidden;
+}
+#wdm-elucidsitereport .elucidsitereport-block > div#courseprogressblock .panel .panel-body {
+    overflow: hidden;
+}
+#wdm-elucidsitereport .elucidsitereport-block .dataTables_wrapper {
+    padding: 0;
+}
+#wdm-elucidsitereport .elucidsitereport-block .dataTables_wrapper > .row {
+    margin: 0;
 }

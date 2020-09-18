@@ -7,6 +7,8 @@ define([
     'core/templates',
     'core/str',
     'report_elucidsitereport/variables',
+    'report_elucidsitereport/selectors',
+    'report_elucidsitereport/templateselector',
     'report_elucidsitereport/jspdf',
     'report_elucidsitereport/select2',
     'report_elucidsitereport/jquery.dataTables',
@@ -20,6 +22,8 @@ define([
         Templates,
         str,
         v,
+        selector,
+        tempSelector,
         jsPDF
     ) {
     var emailListTable = null;
@@ -86,7 +90,6 @@ define([
         // Export Selectors
         var exportLinks = '.download-links';
         var exportLink = '.download-links a[data-typr="pdf"], .download-links a[data-typr="csv"]';
-
 
         rearrangeBlocks(pageWidth, isNavlink);
 
@@ -258,6 +261,32 @@ define([
 
         // Show reports page when document is ready
         $('#wdm-elucidsitereport').removeClass('d-none');
+    });
+
+    /**
+     * Setup block setting button
+     */
+    $(document).on('click', selector.blockSettingsBtn, function(e) {
+        e.preventDefault();
+
+        console.log(e.currentTarget);
+        console.log($(e.currentTarget).data('context'));
+
+        ModalFactory.create({
+            title: 'Edit Block Setting',
+            body: Templates.render(tempSelector.blockEditSettings, {})
+        }).done(function(modal) {
+            var root = modal.getRoot();
+
+            root.on(ModalEvents.bodyRendered, function() {
+                console.log("Done!")
+            });
+
+            root.on(ModalEvents.hidden, function() {
+                modal.destroy();
+            });
+            modal.show();
+        });
     });
 
     /**
