@@ -47,7 +47,8 @@ gulp.task('uglify', function (done) {
 });
 
 gulp.task('watch', function(done) {
-  gulp.watch('src/js/**/*.js', gulp.series('clean', 'uglify'));
+  gulp.watch('src/js/**/*.js', gulp.series('clean', 'uglify', 'purge'));
+  gulp.watch(['../lang/**/*', '../styles/*', '../styles.css'], gulp.series('purge'));
   done();
 });
 

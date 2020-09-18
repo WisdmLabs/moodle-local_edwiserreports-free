@@ -25,6 +25,7 @@
 namespace report_elucidsitereport;
 
 use stdClass;
+use context_system;
 
 /**
  * Abstract class for reports_block
@@ -40,9 +41,12 @@ class block_base {
      * Constructor to prepate data
      */
     public function __construct() {
+        $context = context_system::instance();
+
         $this->layout = new stdClass();
         $this->layout->sesskey = sesskey();
         $this->layout->class = 'col-12';
+        $this->layout->contextid = $context->id;
 
         $this->block = new stdClass();
     }
