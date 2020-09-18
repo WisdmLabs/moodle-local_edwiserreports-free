@@ -45,7 +45,7 @@ class block_base {
 
         $this->layout = new stdClass();
         $this->layout->sesskey = sesskey();
-        $this->layout->class = 'col-12';
+        $this->layout->class = '';
         $this->layout->contextid = $context->id;
 
         $this->block = new stdClass();
@@ -80,5 +80,37 @@ class block_base {
      */
     public function generate_cache_key($blockname, $id, $cohortid = 0) {
         return $blockname . "-" . $id . "-" . $cohortid;
+    }
+
+    /**
+     * Set block size
+     */
+    public function set_block_size($params) {
+        $sizes = array();
+        $sizes[BLOCK_DESKTOP_VIEW] = $params[BLOCK_DESKTOP_VIEW];
+        $sizes[BLOCK_TABLET_VIEW] = $params[BLOCK_TABLET_VIEW];
+        $sizes[BLOCK_MOBILE_VIEW] = $params[BLOCK_MOBILE_VIEW];
+
+        $devicecolclass = array(
+            BLOCK_DESKTOP_VIEW => 'col-lg-',
+            BLOCK_TABLET_VIEW => 'col-md-',
+            BLOCK_MOBILE_VIEW => 'col-sm-'
+        );
+
+        foreach ($sizes as $media => $size) {
+            switch($size) {
+                case BLOCK_LARGE:
+                    $this->layout->class .= $devicecolclass[$media] . '12 ';
+                    break;
+                case BLOCK_MEDIUM:
+                    $this->layout->class .= $devicecolclass[$media] . '6 ';
+                    break;
+                case BLOCK_SMALL:
+                    $this->layout->class .= $devicecolclass[$media] . '4 ';
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }

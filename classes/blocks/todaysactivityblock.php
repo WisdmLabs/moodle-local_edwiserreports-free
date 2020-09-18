@@ -43,7 +43,6 @@ class todaysactivityblock extends block_base {
 
         // Layout related data
         $this->layout->id = 'todaysactivityblock';
-        $this->layout->class = 'col-6';
         $this->layout->name = get_string('todaysactivityheader', 'report_elucidsitereport');
         $this->layout->info = get_string('todaysactivityblockhelp', 'report_elucidsitereport');
         $this->layout->filters = '<input class="btn btn-sm dropdown-toggle input-group-addon" id="flatpickrCalender" placeholder="' . get_string('selectdate', 'report_elucidsitereport') . '" data-input/>';

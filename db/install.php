@@ -40,56 +40,56 @@ function xmldb_report_elucidsitereport_install() {
             'position' => 0,
             BLOCK_DESKTOP_VIEW => BLOCK_LARGE,
             BLOCK_TABLET_VIEW => BLOCK_LARGE,
-            BLOCK_MOBILEVIEW => BLOCK_LARGE
+            BLOCK_MOBILE_VIEW => BLOCK_LARGE
         ),
         'courseprogress' => array(
             'classname' => 'courseprogressblock',
             'position' => 1,
             BLOCK_DESKTOP_VIEW => BLOCK_MEDIUM,
             BLOCK_TABLET_VIEW => BLOCK_LARGE,
-            BLOCK_MOBILEVIEW => BLOCK_LARGE
+            BLOCK_MOBILE_VIEW => BLOCK_LARGE
         ),
         'activecourses' => array(
             'classname' => 'activecoursesblock',
             'position' => 2,
             BLOCK_DESKTOP_VIEW => BLOCK_MEDIUM,
             BLOCK_TABLET_VIEW => BLOCK_LARGE,
-            BLOCK_MOBILEVIEW => BLOCK_LARGE
+            BLOCK_MOBILE_VIEW => BLOCK_LARGE
         ),
         'certificates' => array(
             'classname' => 'certificatesblock',
             'position' => 3,
             BLOCK_DESKTOP_VIEW => BLOCK_MEDIUM,
             BLOCK_TABLET_VIEW => BLOCK_LARGE,
-            BLOCK_MOBILEVIEW => BLOCK_LARGE
+            BLOCK_MOBILE_VIEW => BLOCK_LARGE
         ),
         'liveusers' => array(
             'classname' => 'liveusersblock',
             'position' => 4,
             BLOCK_DESKTOP_VIEW => BLOCK_MEDIUM,
             BLOCK_TABLET_VIEW => BLOCK_LARGE,
-            BLOCK_MOBILEVIEW => BLOCK_LARGE
+            BLOCK_MOBILE_VIEW => BLOCK_LARGE
         ),
         'siteaccess' => array(
             'classname' => 'siteaccessblock',
             'position' => 5,
             BLOCK_DESKTOP_VIEW => BLOCK_MEDIUM,
             BLOCK_TABLET_VIEW => BLOCK_LARGE,
-            BLOCK_MOBILEVIEW => BLOCK_LARGE
+            BLOCK_MOBILE_VIEW => BLOCK_LARGE
         ),
         'todaysactivity' => array(
             'classname' => 'todaysactivityblock',
             'position' => 6,
             BLOCK_DESKTOP_VIEW => BLOCK_MEDIUM,
             BLOCK_TABLET_VIEW => BLOCK_LARGE,
-            BLOCK_MOBILEVIEW => BLOCK_LARGE
+            BLOCK_MOBILE_VIEW => BLOCK_LARGE
         ),
         'inactiveusers' => array(
             'classname' => 'inactiveusersblock',
             'position' => 7,
             BLOCK_DESKTOP_VIEW => BLOCK_MEDIUM,
             BLOCK_TABLET_VIEW => BLOCK_LARGE,
-            BLOCK_MOBILEVIEW => BLOCK_LARGE
+            BLOCK_MOBILE_VIEW => BLOCK_LARGE
         )
     );
 
@@ -103,7 +103,7 @@ function xmldb_report_elucidsitereport_install() {
         $blockdata->blockdata = json_encode((object) array(
             BLOCK_DESKTOP_VIEW => $block[BLOCK_DESKTOP_VIEW],
             BLOCK_TABLET_VIEW => $block[BLOCK_TABLET_VIEW],
-            BLOCK_MOBILEVIEW => $block[BLOCK_MOBILEVIEW],
+            BLOCK_MOBILE_VIEW => $block[BLOCK_MOBILE_VIEW],
             'position' => $block['position']
         ));
         $blockdata->timecreated = time();

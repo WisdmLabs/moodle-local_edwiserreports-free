@@ -48,6 +48,9 @@ $component = "report_elucidsitereport";
 
 require_login();
 
+// Allow users preferences set remotly
+\report_elucidsitereport\utility::allow_update_userpreferences_remotly();
+
 // The requested section isn't in the admin tree
 // It could be because the user has inadequate capapbilities or because the section doesn't exist
 if (!has_capability('report/report_elucidsitereport:view', $context)) {
@@ -63,10 +66,6 @@ $pageurl = new moodle_url($CFG->wwwroot."/report/elucidsitereport/index.php");
 $PAGE->requires->js_call_amd('report_elucidsitereport/main', 'init');
 
 // Require CSS for index page
-// $PAGE->requires->css('/report/elucidsitereport/styles/datatable.css');
-// $PAGE->requires->css('/report/elucidsitereport/styles/flatpickr.min.css');
-// $PAGE->requires->css('/report/elucidsitereport/styles/select2.min.css');
-// $PAGE->requires->css('/report/elucidsitereport/styles/file-icons.css');
 $PAGE->requires->css('/report/elucidsitereport/styles/loader.css');
 
 // Set page context

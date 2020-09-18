@@ -74,7 +74,7 @@ define('BLOCK_TYPE_CUSTOM', 1);
 // Block View
 define('BLOCK_DESKTOP_VIEW', 'desktopview');
 define('BLOCK_TABLET_VIEW', 'tabletview');
-define('BLOCK_MOBILEVIEW', 'mobileview');
+define('BLOCK_MOBILE_VIEW', 'mobileview');
 define('BLOCK_LARGE', 2);
 define('BLOCK_MEDIUM', 1);
 define('BLOCK_SMALL', 0);

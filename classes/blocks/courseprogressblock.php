@@ -74,7 +74,6 @@ class courseprogressblock extends block_base {
 
         // Layout related data
         $this->layout->id = 'courseprogressblock';
-        $this->layout->class = 'col-6';
         $this->layout->name = get_string('courseprogress', 'report_elucidsitereport');
         $this->layout->info = get_string('courseprogressblockhelp', 'report_elucidsitereport');
         $this->layout->morelink = new moodle_url($CFG->wwwroot . "/report/elucidsitereport/coursereport.php");

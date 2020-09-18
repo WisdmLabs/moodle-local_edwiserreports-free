@@ -48,7 +48,6 @@ class liveusersblock extends block_base {
 
         // Layout related data
         $this->layout->id = 'liveusersblock';
-        $this->layout->class = 'col-6';
         $this->layout->name = get_string('realtimeusers', 'report_elucidsitereport');
         $this->layout->info = get_string('realtimeusersblockhelp', 'report_elucidsitereport');
 

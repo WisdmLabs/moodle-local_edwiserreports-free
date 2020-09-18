@@ -330,27 +330,27 @@ function report_elucidsitereport_output_fragment_get_blocksetting_form($params) 
     $preferences = \report_elucidsitereport\utility::get_reportsblock_preferences($block);
 
     // Prepare form for block editing
-    $o = html_writer::start_tag('form', array('class' => 'form'));
+    $o = html_writer::start_tag('form', array('class' => 'form block-settings-form'));
 
     // Prepare view string
     $views = array(
         BLOCK_DESKTOP_VIEW => array(
             'key' => 'desktopview',
-            'name' => get_string('desktopview', $component),
+            'name' => get_string('desktopview', $component)
         ),
         BLOCK_TABLET_VIEW => array(
             'key' => 'tabletview',
-            'name' => get_string('tabletview', $component),
+            'name' => get_string('tabletview', $component)
         ),
-        BLOCK_MOBILEVIEW => array(
+        BLOCK_MOBILE_VIEW => array(
             'key' => 'mobileview',
-            'name' => get_string('mobileview', $component),
+            'name' => get_string('mobileview', $component)
         ),
     );
     foreach($views as $key => $view) {
         $o .= html_writer::start_tag('div', array('class' => 'form-group row fitem'));
         $o .= html_writer::start_tag('div', array('class' => 'col-md-6'));
-        $o .= html_writer::tag('label', $view['name'], array('class' => 'col-form-label d-inline', 'for' => 'id_' . $view['key'] . 'view'));
+        $o .= html_writer::tag('label', $view['name'], array('class' => 'col-form-label d-inline', 'for' => 'id_' . $view['key']));
         $o .= html_writer::end_tag('label');
         $o .= html_writer::end_tag('div');
         $o .= html_writer::start_tag('div', array('class' => 'col-md-6'));
@@ -358,7 +358,7 @@ function report_elucidsitereport_output_fragment_get_blocksetting_form($params) 
             BLOCK_LARGE => get_string('large', $component),
             BLOCK_MEDIUM => get_string('medium', $component),
             BLOCK_SMALL => get_string('small', $component)
-        ), $view['key'] . 'view', $preferences[$key], null);
+        ), $view['key'], $preferences[$key], null);
         $o .= html_writer::end_tag('label');
         $o .= html_writer::end_tag('div');
         $o .= html_writer::end_tag('div');
@@ -377,6 +377,7 @@ function report_elucidsitereport_output_fragment_get_blocksetting_form($params) 
     $o .= html_writer::end_tag('label');
     $o .= html_writer::end_tag('div');
     $o .= html_writer::end_tag('div');
+    $o .= html_writer::tag('button', 'Save', array('type' => 'submit', 'class' => 'btn btn-primary pull-right save-block-settings'));
 
     $o .= html_writer::end_tag('form');
 

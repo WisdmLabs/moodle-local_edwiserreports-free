@@ -291,7 +291,18 @@ define([
                 modal.modal.addClass('modal-dialog-centered');
 
                 root.on(ModalEvents.bodyRendered, function() {
-                    console.log("Done!")
+                    var form = modal.modal.find('.block-settings-form');
+                    modal.modal.find('.save-block-settings').on('click', function(event) {
+                        event.preventDefault();
+                        var formData = form.serializeArray();
+                        var data = {};
+                        $(formData).each(function($k, $d) {
+                            data[$d.name] = $d.value;
+                        });
+                        
+                        M.util.set_user_preference('pref_' + blockname, JSON.stringify(data));
+                        location.reload();
+                    });
                 });
 
                 root.on(ModalEvents.hidden, function() {

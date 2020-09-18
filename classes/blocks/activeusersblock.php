@@ -55,7 +55,6 @@ class activeusersblock extends block_base {
 
         // Layout related data
         $this->layout->id = 'activeusersblock';
-        $this->layout->class = 'col-12';
         $this->layout->name = get_string('activeusersheader', 'report_elucidsitereport');
         $this->layout->info = get_string('activeusersblocktitlehelp', 'report_elucidsitereport');
         $this->layout->morelink = new moodle_url($CFG->wwwroot . "/report/elucidsitereport/activeusers.php");

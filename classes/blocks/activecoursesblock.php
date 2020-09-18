@@ -42,7 +42,6 @@ class activecoursesblock extends block_base {
 
         // Layout related data
         $this->layout->id = 'activecoursesblock';
-        $this->layout->class = 'col-6';
         $this->layout->name = get_string('activecoursesheader', 'report_elucidsitereport');
         $this->layout->info = get_string('activecoursesblockhelp', 'report_elucidsitereport');
 

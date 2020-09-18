@@ -51,6 +51,12 @@ class report_blocks {
 
             $classname = '\\report_elucidsitereport\\' . $classname;
             $blockbase = new $classname();
+            $layout = $blockbase->get_layout();
+
+            // Get block preferences
+            $pref = \report_elucidsitereport\utility::get_reportsblock_preferences($block);
+            $blockbase->set_block_size($pref);
+
             $this->reports_block[] = $blockbase->get_layout();
         }
     }

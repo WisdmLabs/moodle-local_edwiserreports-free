@@ -50,7 +50,6 @@ class inactiveusersblock extends block_base {
 
         // Layout related data
         $this->layout->id = 'inactiveusersblock';
-        $this->layout->class = 'col-6';
         $this->layout->name = get_string('inactiveusers', 'report_elucidsitereport');
         $this->layout->info = get_string('inactiveusersblockhelp', 'report_elucidsitereport');
         $this->layout->hasdownloadlink = true;

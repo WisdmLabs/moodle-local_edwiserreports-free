@@ -48,7 +48,6 @@ class f2fsessionsblock extends block_base {
 
         // Layout related data
         $this->layout->id = 'f2fsessionsblock';
-        $this->layout->class = 'col-6';
         $this->layout->name = get_string('f2fsessionsheader', 'report_elucidsitereport');
         $this->layout->info = get_string('f2fsessionsblockhelp', 'report_elucidsitereport');
         $this->layout->morelink = new moodle_url($CFG->wwwroot . "/report/elucidsitereport/f2fsessions.php");

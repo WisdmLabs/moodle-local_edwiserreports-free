@@ -42,7 +42,6 @@ class lpstatsblock extends block_base {
 
         // Layout related data
         $this->layout->id = 'lpstatsblock';
-        $this->layout->class = 'col-6';
         $this->layout->name = get_string('lpstatsheader', 'report_elucidsitereport');
         $this->layout->info = get_string('lpstatsblockhelp', 'report_elucidsitereport');
         $this->layout->morelink = new moodle_url($CFG->wwwroot . "/report/elucidsitereport/lpstats.php");

@@ -50,7 +50,6 @@ class certificatesblock extends block_base {
 
         // Layout related data
         $this->layout->id = 'certificatesblock';
-        $this->layout->class = 'col-6';
         $this->layout->name = get_string('certificatestatsheader', 'report_elucidsitereport');
         $this->layout->info = get_string('certificatestatsblockhelp', 'report_elucidsitereport');
         $this->layout->morelink = new moodle_url($CFG->wwwroot . "/report/elucidsitereport/certificates.php");

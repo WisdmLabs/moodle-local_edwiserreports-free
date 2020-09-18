@@ -1168,8 +1168,11 @@ class utility {
      * @param [string] $blockname Block Name
      */
     public static function get_reportsblock_preferences($block) {
-        global $DB;
-        $blockdata = json_decode($block->blockdata, true);
+        if ($prefrences = get_user_preferences('pref_' . $block->classname)) {
+            $blockdata = json_decode($prefrences, true);
+        } else {
+            $blockdata = json_decode($block->blockdata, true);
+        }
 
         // Set default preference
         $preferences = array();
@@ -1178,10 +1181,23 @@ class utility {
         if ($blockdata) {
             $preferences[BLOCK_DESKTOP_VIEW] = $blockdata[BLOCK_DESKTOP_VIEW];
             $preferences[BLOCK_TABLET_VIEW] = $blockdata[BLOCK_TABLET_VIEW];
-            $preferences[BLOCK_MOBILEVIEW] = $blockdata[BLOCK_MOBILEVIEW];
+            $preferences[BLOCK_MOBILE_VIEW] = $blockdata[BLOCK_MOBILE_VIEW];
             $preferences['position'] = $blockdata['position'];
         }
 
         return $preferences;
+    }
+
+    /**
+     * Allow users preferences to save remotly
+     * @param [string] $blockname Block Name
+     */
+    public static function allow_update_userpreferences_remotly() {
+        global $DB, $USER;
+
+        $blocks = self::get_reports_block();
+        foreach($blocks as $key => $block) {
+            $USER->ajax_updatable_user_prefs['pref_' . $block->classname] = true;
+        }
     }
 }
