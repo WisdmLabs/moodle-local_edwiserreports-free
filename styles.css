@@ -4,30 +4,30 @@
 
 
 /* DataTables Custom CSS Start */
-#wdm-elucidsitereport table thead tr th {
+/* #wdm-elucidsitereport table thead tr th {
     font-weight: 700 !important;
     color: unset !important
-}
-#wdm-elucidsitereport .dataTables_wrapper.no-footer .dataTables_scrollBody {
+} */
+/* #wdm-elucidsitereport .dataTables_wrapper.no-footer .dataTables_scrollBody {
     border-bottom: 0 !important;
-}
-#wdm-elucidsitereport .table th::before, #wdm-elucidsitereport .table th::after {
+} */
+/* #wdm-elucidsitereport .table th::before, #wdm-elucidsitereport .table th::after {
     display: none;
-}
+} */
 
 /* Hide backgroud image in datatable sorting */
-[class*="sorting"] {
+/* [class*="sorting"] {
     background: none;
-}
+} */
 
-#wdm-elucidsitereport .dataTables_scrollHead {
+/* #wdm-elucidsitereport .dataTables_scrollHead {
     margin-bottom: 0 !important;
 }
 
 #wdm-elucidsitereport .dataTables_scrollBody table.dataTable thead td,
 #wdm-elucidsitereport .dataTables_scrollHeadInner table.dataTable thead th {
     padding: 10px 18px !important;
-}
+} */
 
 #wdm-activeusers-individual .table-responsive>div.dataTables_wrapper>div.row:nth-child(2),
 #wdm-courseprogress-individual.table-responsive>div.dataTables_wrapper>div:nth-child(2),
@@ -619,8 +619,11 @@ div[id^="wdm-"][id*="-individual"] table.table,
 
 #wdm-elucidsitereport a[id^="blocksetting-"],
 #wdm-elucidsitereport a[id^="blocksetting-"] .icon {
-	font-size: 26px;
+	font-size: 20px;
 	text-decoration: none !important;
+}
+#wdm-elucidsitereport a[id^="blocksetting-"]:after {
+    margin: 0 !Important;
 }
 
 #wdm-elucidsitereport .panel-title {
@@ -692,5 +695,6 @@ div[id^="wdm-"][id*="-individual"] table.table,
     padding: 0;
 }
 #wdm-elucidsitereport .elucidsitereport-block .dataTables_wrapper > .row {
-    margin: 0;
+    overflow: auto;
+    margin: 0 0 1rem 0;
 }

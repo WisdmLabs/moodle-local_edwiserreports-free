@@ -85,7 +85,7 @@ define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'repo
                 columnDefs: [
                     {
                         "targets": 0,
-                        "className": "text-center bg-secondary font-weight-bold",
+                        "className": "text-center",
                         "orderable": false
                     },
                     {
