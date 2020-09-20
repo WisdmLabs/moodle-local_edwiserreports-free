@@ -113,4 +113,12 @@ class block_base {
             }
         }
     }
+
+    /**
+     * Get block position
+     */
+    public function get_block_position($pref) {
+        $position = $pref['position'];
+
+    }
 }

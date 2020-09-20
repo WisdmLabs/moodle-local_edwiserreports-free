@@ -182,4 +182,15 @@ class elucidsitereportController extends controllerAbstract
         // Response for ajax action
         echo json_encode(\report_elucidsitereport\utility::get_cohort_users($data->cohortids, $data->rpmids));
     }
+
+    /**
+     * Get custom query cohort users
+     */
+    public function set_block_preferences_ajax_action() {
+        // Get data
+        $data = json_decode(required_param('data', PARAM_RAW));
+
+        // Response for ajax action
+        echo json_encode(\report_elucidsitereport\utility::set_block_preferences($data));
+    }
 }

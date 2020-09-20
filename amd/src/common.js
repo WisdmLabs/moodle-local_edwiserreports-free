@@ -300,8 +300,10 @@ define([
                             data[$d.name] = $d.value;
                         });
                         
-                        M.util.set_user_preference('pref_' + blockname, JSON.stringify(data));
-                        location.reload();
+                        // Set users preferences
+                        set_block_preference(blockname, data, function() {
+
+                        });
                     });
                 });
 
@@ -310,6 +312,48 @@ define([
                 });
                 modal.show();
             });
+        });
+    }
+
+    /**
+     * Set users preferences
+     * @param {string} blockname 
+     * @param {string} data 
+     * @param {function} callback 
+     */
+    function set_block_preference(blockname, data, callback) {
+        data['blockname'] = blockname; 
+        data = JSON.stringify(data);
+        var prefname = 'pref_' + blockname
+        var sesskey = $('#' + blockname).data('sesskey');
+
+
+        // Set users preferences
+        $.ajax({
+            url: v.requestUrl,
+            type: 'GET',
+            data: {
+                action: 'set_block_preferences_ajax',
+                sesskey: sesskey,
+                data : data
+            }
+        }).done(function(response) {
+            if (response.success) {
+                location.reload();
+            } else {
+                notif.addNotification({
+                    message: "Error",
+                    type: "error"
+                });
+            }
+        }).fail(function(error) {
+            console.log(error);
+            notif.addNotification({
+                message: error,
+                type: "error"
+            });
+        }).always(function() {
+            location.reload();
         });
     }
 

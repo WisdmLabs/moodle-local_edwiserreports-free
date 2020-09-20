@@ -39,6 +39,9 @@ class report_blocks {
     public function __construct($blocks) {
         global $CFG;
 
+        // Rearrange blocks based on the saved preferences
+        \report_elucidsitereport\utility::rearrange_block_with_preferences($blocks);
+
         // Prepare layout for each block
         foreach ($blocks as $key => $block) {
             // Check if class file exist

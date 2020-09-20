@@ -1138,6 +1138,56 @@ class utility {
     }
 
     /**
+     * Set block preferences
+     * @param [object] $data Data
+     */
+    public static function set_block_preferences($data) {
+        // Get all blocks
+        $blocks = self::get_reports_block();
+
+        // Get preference of current block
+        $currentblock = self::get_reportsblock_by_name($data->blockname);
+        $currentpref = self::get_reportsblock_preferences($currentblock);
+
+        // For each blocks change preferences
+        foreach($blocks as $key => $block) {
+            $pref = self::get_reportsblock_preferences($block);
+            if ($block->classname == $data->blockname) {
+                $pref = $data;
+            } else {
+                if ($pref['position'] >= $data->position && $pref['position'] < $currentpref['position']) {
+                    $pref['position']++;
+                } else if ($pref['position'] <= $data->position && $pref['position'] > $currentpref['position']) {
+                    $pref['position']--;
+                }
+            }
+
+            // Set block Preference
+            set_user_preference('pref_' . $block->classname, json_encode($pref));
+        }
+
+        return array(
+            "success" => true
+        );
+    }
+
+    /**
+     * @param array $block Blocks
+     */
+    public static function rearrange_block_with_preferences(&$blocks) {
+        $newblocks = array();
+        
+        foreach($blocks as $key => $block) {
+            $pref = \report_elucidsitereport\utility::get_reportsblock_preferences($block);
+
+            $newblocks[$pref['position']] = $block;
+        }
+
+        ksort($newblocks);
+        $blocks = $newblocks;
+    }
+
+    /**
      * Get enrolled students in course
      * @param  [int]   $courseid Course Id
      * @param  [bool | context]   $courseid Course Id

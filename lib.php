@@ -364,8 +364,8 @@ function report_elucidsitereport_output_fragment_get_blocksetting_form($params) 
         $o .= html_writer::end_tag('div');
     }
 
-    $positions = array('1','2','3');
-    $selectedpos = 0;
+    $blocks = \report_elucidsitereport\utility::get_reports_block();
+    $positions = range(1, count($blocks));
     $o .= html_writer::start_tag('div', array('class' => 'form-group row fitem'));
     $o .= html_writer::start_tag('div', array('class' => 'col-md-6'));
     $o .= html_writer::tag('label', get_string('position', $component),
@@ -373,7 +373,7 @@ function report_elucidsitereport_output_fragment_get_blocksetting_form($params) 
     $o .= html_writer::end_tag('label');
     $o .= html_writer::end_tag('div');
     $o .= html_writer::start_tag('div', array('class' => 'col-md-6'));
-    $o .= html_writer::select($positions, 'position', $selectedpos, null);
+    $o .= html_writer::select($positions, 'position', $preferences['position'], null);
     $o .= html_writer::end_tag('label');
     $o .= html_writer::end_tag('div');
     $o .= html_writer::end_tag('div');
