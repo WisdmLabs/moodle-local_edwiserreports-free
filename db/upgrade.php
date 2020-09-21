@@ -13,7 +13,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
  * Code to be executed after the plugin's database scheme has been installed is defined here.
  *
@@ -31,20 +30,20 @@ defined('MOODLE_INTERNAL') || die();
 function xmldb_report_elucidsitereport_upgrade($oldversion) {
     global $DB;
 
-    // Check the old version
+    // Check the old version.
     if (2020030400 <= $oldversion) {
-        // Table name to be removed
+        // Table name to be removed.
         $tablename = 'elucidsitereport_completion';
 
-        // Get all tables
+        // Get all tables.
         $tables = $DB->get_tables();
 
-        // If table exist
+        // If table exist.
         if (isset($tables[$tablename])) {
             $DB->execute('DROP table {' . $tablename . '}');
         }
     }
 
-    // Return true
+    // Return true.
     return true;
 }

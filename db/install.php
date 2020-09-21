@@ -13,7 +13,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
  * Code to be executed after the plugin's database scheme has been installed is defined here.
  *
@@ -33,7 +32,7 @@ function xmldb_report_elucidsitereport_install() {
 
     require_once($CFG->dirroot . "/report/elucidsitereport/classes/constants.php");
 
-    // All Default blocks
+    // All Default blocks.
     $defaultblocks = array(
         'activeusers' => array(
             'classname' => 'activeusersblock',
@@ -93,7 +92,7 @@ function xmldb_report_elucidsitereport_install() {
         )
     );
 
-    // Create each block
+    // Create each block.
     $blocks = array();
     foreach ($defaultblocks as $key => $block) {
         $blockdata = new stdClass();
