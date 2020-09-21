@@ -13,7 +13,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
  * Plugin administration pages are defined here.
  *
@@ -27,6 +26,8 @@ namespace report_elucidsitereport;
 
 use context_course;
 use moodle_url;
+use context_system;
+use \report_elucidsitereport\output\courseaccess;
 
 require_once(__DIR__ . '/../../config.php');
 require_once('classes/output/renderable.php');
@@ -35,10 +36,10 @@ require_login();
 
 $context = context_system::instance();
 // The requested section isn't in the admin tree
-// It could be because the user has inadequate capapbilities or because the section doesn't exist
+// It could be because the user has inadequate capapbilities or because the section doesn't exist.
 if (!has_capability('report/report_elucidsitereport:view', $context)) {
     // The requested section could depend on a different capability
-    // but most likely the user has inadequate capabilities
+    // but most likely the user has inadequate capabilities.
     print_error('accessdenied', 'admin');
 }
 
@@ -54,7 +55,7 @@ $PAGE->set_context($coursecontext);
 $PAGE->set_url($pageurl);
 $PAGE->requires->js_call_amd('report_elucidsitereport/courseaccess', 'init', array($coursecontext->id));
 
-$courseaccess = new \report_elucidsitereport\output\courseaccess();
+$courseaccess = new report_elucidsitereport\output\courseaccess();
 $courseaccessrenderable = new \report_elucidsitereport\output\courseaccess_renderable();
 $output = $courseaccess->get_renderer()->render($courseaccessrenderable);
 

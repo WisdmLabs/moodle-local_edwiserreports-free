@@ -13,7 +13,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
  * Plugin administration pages are defined here.
  *
@@ -31,41 +30,41 @@ use moodle_url;
 require_once(__DIR__ . '/../../config.php');
 require_once('classes/output/renderable.php');
 
-// Required login
+// Required login.
 require_login();
 
-// System Context
+// System Context.
 $context = context_system::instance();
 $component = "report_elucidsitereport";
 
 // The requested section isn't in the admin tree
-// It could be because the user has inadequate capapbilities or because the section doesn't exist
+// It could be because the user has inadequate capapbilities or because the section doesn't exist.
 if (!has_capability('report/report_elucidsitereport:view', $context)) {
     // The requested section could depend on a different capability
-    // but most likely the user has inadequate capabilities
+    // but most likely the user has inadequate capabilities.
     print_error('accessdenied', 'admin');
 }
 
-// Include JS for course report page
+// Include JS for course report page.
 $PAGE->requires->js_call_amd('report_elucidsitereport/courseprogress', 'init', array($context->id));
 $PAGE->requires->js_call_amd('report_elucidsitereport/courseengage', 'init', array($context->id));
 
-// Get page URL
+// Get page URL.
 $pageurl = new moodle_url($CFG->wwwroot . "/report/elucidsitereport/coursereport.php");
 
-// Set page context
+// Set page context.
 $PAGE->set_context($context);
 
-// Set page url
+// Set page url.
 $PAGE->set_url($pageurl);
 
-// Get renderable
+// Get renderable.
 $renderable = new \report_elucidsitereport\output\coursereport_renderable();
 $output = $PAGE->get_renderer($component)->render($renderable);
 
 $PAGE->set_heading(get_string("coursereportsheader", "report_elucidsitereport"));
 
-// Print output in page
+// Print output in page.
 echo $OUTPUT->header();
 echo $output;
 echo $OUTPUT->footer();

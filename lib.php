@@ -13,7 +13,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
  * Plugin administration pages are defined here.
  *
@@ -30,6 +29,10 @@
  * @param  [string] $puginname Plugin Name
  * @return boolean Return boolean
  */
+
+defined('MOODLE_INTERNAL') || die();
+
+use \report_elucidsitereport;
 
 require_once($CFG->dirroot."/report/elucidsitereport/locallib.php");
 
@@ -114,20 +117,29 @@ class email_dialog_form extends moodleform {
      * @param bool $editable
      * @param array $ajaxformdata Forms submitted via ajax, must pass their data here, instead of relying on _GET and _POST.
      */
-    public function __construct($action=null, $customdata=null, $method='post', $target='', $attributes=null, $editable=true,
-                                $ajaxformdata=null) {
+    //@codingStandardsIgnoreStart
+    public function __construct(
+        $action=null,
+        $customdata=null,
+        $method='post',
+        $target='',
+        $attributes=null,
+        $editable=true,
+        $ajaxformdata=null
+    ) {
         parent::__construct($action, $customdata, $method, $target, $attributes, $editable, $ajaxformdata);
     }
+    //@codingStandardsIgnoreEnd
 
-    //Add elements to form
+    // Add elements to form.
     public function definition() {
         global $CFG;
- 
+
         $mform = $this->_form;
         $customdata = $this->_customdata;
         $blockname = $customdata["blockname"];
 
-        // Email Text area
+        // Email Text area.
         $mform->addElement('text', 'email',
             get_string('email', 'report_elucidsitereport'),
             array(
@@ -137,17 +149,17 @@ class email_dialog_form extends moodleform {
         );
         $mform->setType('email', PARAM_NOTAGS);
 
-        // Subject Text area
+        // Subject Text area.
         $mform->addElement('text', 'subject',
             get_string("subject", "report_elucidsitereport"),
             array(
-                'size'=>'30',
+                'size' => '30',
                 'placeholder' => get_string($blockname . "exportheader", "report_elucidsitereport")
             )
         );
         $mform->setType('subject', PARAM_NOTAGS);
 
-        // Content Text area
+        // Content Text area.
         $mform->addElement('editor', 'content',
             get_string("content", "report_elucidsitereport"),
             array(
@@ -175,7 +187,7 @@ function report_elucidsitereport_output_fragment_email_dialog($args) {
 }
 
 /**
- * Create schedule email dialoge box 
+ * Create schedule email dialoge box
  * @param  [type] $args [description]
  * @return [type]       [description]
  */
@@ -184,7 +196,7 @@ function report_elucidsitereport_output_fragment_schedule_email_dialog($args) {
     $blockname = clean_param($args["blockname"], PARAM_TEXT);
     $region = clean_param($args["region"], PARAM_TEXT);
 
-    // Get existing email id
+    // Get existing email id.
     $id = $args["id"];
 
     $out = html_writer::start_div("nav-tabs-horizontal", array(
@@ -196,7 +208,7 @@ function report_elucidsitereport_output_fragment_schedule_email_dialog($args) {
         "role" => "tablist"
     ));
 
-    // Tab 1
+    // Tab 1.
     $out .= html_writer::start_tag("li", array(
         "class" => "nav-item",
         "role" => "presentation"
@@ -213,7 +225,7 @@ function report_elucidsitereport_output_fragment_schedule_email_dialog($args) {
     );
     $out .= html_writer::end_tag("li");
 
-    // Tab 2
+    // Tab 2.
     $out .= html_writer::start_tag("li", array(
         "class" => "nav-item",
         "role" => "presentation"
@@ -232,10 +244,10 @@ function report_elucidsitereport_output_fragment_schedule_email_dialog($args) {
 
     $out .= html_writer::end_tag("ul");
 
-    // Tab Content
+    // Tab Content.
     $out .= html_writer::start_div("tab-content pt-20");
 
-    // Tab Content 1
+    // Tab Content 1.
     $out .= html_writer::div(get_schedule_emailform($id, $formaction, $blockname, $region), "tab-pane active", array(
         "id" => "scheduletab",
         "role" => "tabpanel"
@@ -245,7 +257,7 @@ function report_elucidsitereport_output_fragment_schedule_email_dialog($args) {
         "role" => "tabpanel"
     ));
 
-    // Tab Content 2
+    // Tab Content 2.
     $out .= html_writer::div(get_schedule_emaillist(), "tab-pane", array(
         "id" => "listemailstab",
         "role" => "tabpanel"
@@ -271,8 +283,7 @@ function report_elucidsitereport_output_fragment_schedule_email_dialog($args) {
  * @param array $options
  * @return bool
  */
-function report_elucidsitereport_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options = array())
-{
+function report_elucidsitereport_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options = array()) {
     static $report;
     $course = $course;
     $cm = $cm;
@@ -296,16 +307,6 @@ function report_elucidsitereport_pluginfile($course, $cm, $context, $filearea, $
     }
     send_stored_file($file, 0, 0, $forcedownload, $options);
 }
-
-// /**
-//  * Save setting for reporting manager block options
-//  * @param  [array] $form_data [form submission data]
-//  */
-// function save_settings_form_data($form_data) {
-//     $blocks = $form_data->rpmblocks;
-//     // save the data in config
-//     set_config("ed_reporting_manager_blocks", serialize($blocks));
-// }
 
 /**
  * Get for for blocks setting

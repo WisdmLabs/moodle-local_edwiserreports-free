@@ -13,7 +13,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
  * Plugin administration pages are defined here.
  *
@@ -22,6 +21,8 @@
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . "/cohort/lib.php");
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/constants.php");
@@ -148,13 +149,7 @@ function get_exportlink_array($url, $blockname, $params, $region) {
             "region" => $region,
             "contextid" => $context->id,
             "sesskey" => sesskey()
-        )/*,
-        array(
-            "name" => get_string("copy", "report_elucidsitereport"),
-            "icon" => "copy",
-            "link" => new moodle_url($url, array_merge(array("format" => "copy"), $params)),
-            "action" => 'copy'
-        )*/
+        )
     );
 }
 
@@ -190,7 +185,7 @@ function get_cohort_filter() {
     $cohorts = cohort_get_cohorts($syscontext->id)["cohorts"];
     $categories = $DB->get_records_select('course_categories', 'id');
 
-    foreach($categories as $category) {
+    foreach ($categories as $category) {
         $catcontext = context_coursecat::instance($category->id);
         $cohorts = array_merge($cohorts, cohort_get_cohorts($catcontext->id)["cohorts"]);
     }
@@ -198,7 +193,7 @@ function get_cohort_filter() {
     if (empty($cohorts)) {
         return false;
     }
-    
+
     $cohortfilter = new stdClass();
     $cohortfilter->text = "Cohort";
     $cohortfilter->values = $cohorts;
@@ -213,14 +208,14 @@ function get_cohort_filter() {
 function create_page_header($blockname, $coursename = false) {
     global $CFG;
 
-    // Create backurl
+    // Create backurl.
     $backurl = $CFG->wwwroot . "/report/elucidsitereport/";
     $component = "report_elucidsitereport";
 
-    // Start page header
+    // Start page header.
     $out = html_writer::start_div("d-md-flex mb-10", array("id" => "esr-page-header"));
 
-    // Back button link
+    // Back button link.
     $out .= html_writer::start_div("");
     $out .= html_writer::link($backurl,
         '<i class="icon fa fa-arrow-left"></i>',
@@ -233,19 +228,19 @@ function create_page_header($blockname, $coursename = false) {
     );
     $out .= html_writer::end_div();
 
-    // If coursename then send as param in getstring
+    // If coursename then send as param in getstring.
     $params = array();
     if ($coursename) {
         $params["coursename"] = $coursename;
     }
 
-    // Create header
+    // Create header.
     $out .= html_writer::span(get_string($blockname . "header", $component, $params), "px-md-10");
 
-    // End pageheader
+    // End pageheader.
     $out .= html_writer::end_div();
 
-    // Return output
+    // Return output.
     return $out;
 }
 
@@ -300,7 +295,7 @@ function has_plugin($plugintype, $puginname) {
 function get_schedule_emailform($id, $formaction, $blockname, $region) {
     global $DB;
 
-    // Default values for form
+    // Default values for form.
     $esrid = null;
     $esrname = '';
     $esremailenable = true;
@@ -312,7 +307,7 @@ function get_schedule_emailform($id, $formaction, $blockname, $region) {
     $esrlastrun = '';
     $esrnextrun = '';
 
-    // Get data from table
+    // Get data from table.
     $table = "sitereport_schedemails";
     $sql = "SELECT * FROM {sitereport_schedemails}
         WHERE blockname = :blockname
@@ -322,17 +317,17 @@ function get_schedule_emailform($id, $formaction, $blockname, $region) {
         "component" => $region
     );
 
-    // If data exist then replace the data
+    // If data exist then replace the data.
     $rec = $DB->get_record_sql($sql, $params);
     if ($rec && $emaildata = json_decode($rec->emaildata)) {
         if (is_array($emaildata) && isset($emaildata[$id])) {
             $esrid = $id;
             $esrname = $emaildata[$id]->esrname;
             $esremailenable = $emaildata[$id]->esremailenable;
-            $esrrecepient = $emaildata[$id]->esrrecepient; 
+            $esrrecepient = $emaildata[$id]->esrrecepient;
             $esrsubject = $emaildata[$id]->esrsubject;
             $esrmessage = $emaildata[$id]->esrmessage;
-            $esrduration = $emaildata[$id]->esrduration; 
+            $esrduration = $emaildata[$id]->esrduration;
             $esrtime = $emaildata[$id]->esrtime;
             $esrlastrun = $emaildata[$id]->esrlastrun;
             $esrnextrun = $emaildata[$id]->esrnextrun;
@@ -340,20 +335,18 @@ function get_schedule_emailform($id, $formaction, $blockname, $region) {
         }
     }
 
-    /*
-     * Generate Modal for email schedule
-     */
-    // Form Start
+    // Generate Modal for email schedule
+    // Form Start.
     $out = html_writer::start_tag("form", array(
         "action" => $formaction
     ));
 
     $out .= get_email_schedule_header($esremailenable, $esrduration, $esrtime);
 
-    // Start Body Div
+    // Start Body Div.
     $out .= html_writer::start_div("w-full my-10");
 
-    // Name of scheduled email
+    // Name of scheduled email.
     $out .= html_writer::start_div("mb-5");
     $out .= html_writer::tag("i", "", array(
         "class" => "icon fa fa-calendar-o my-auto",
@@ -365,10 +358,10 @@ function get_schedule_emailform($id, $formaction, $blockname, $region) {
         "type" => "text",
         "value" => $esrname,
         "name" => "esr-name",
-        "class" =>"w-full mb-10"
+        "class" => "w-full mb-10"
     ));
 
-    // Recepient Input Text
+    // Recepient Input Text.
     $out .= html_writer::start_div("mb-5");
     $out .= html_writer::tag("i", "", array(
         "class" => "icon fa fa-user my-auto",
@@ -380,10 +373,10 @@ function get_schedule_emailform($id, $formaction, $blockname, $region) {
         "type" => "text",
         "value" => $esrrecepient,
         "name" => "esr-recepient",
-        "class" =>"w-full mb-10"
+        "class" => "w-full mb-10"
     ));
 
-    // Subject Input Text
+    // Subject Input Text.
     $out .= html_writer::start_div("mb-5");
     $out .= html_writer::span("Subject");
     $out .= html_writer::end_div();
@@ -391,30 +384,30 @@ function get_schedule_emailform($id, $formaction, $blockname, $region) {
         "type" => "text",
         "value" => $esrsubject,
         "name" => "esr-subject",
-        "class" =>"w-full mb-10"
+        "class" => "w-full mb-10"
     ));
 
-    // Message box for emails
+    // Message box for emails.
     $out .= html_writer::start_div("mb-5");
     $out .= html_writer::span("Message");
     $out .= html_writer::end_div();
     $out .= html_writer::tag("textarea", $esrmessage, array(
         "value" => $esrmessage,
         "name" => "esr-message",
-        "class" =>"form-control w-full mb-10",
+        "class" => "form-control w-full mb-10",
         "rows" => "4"
     ));
 
-    // Error message box
+    // Error message box.
     $out .= html_writer::div("", "esr-form-error");
-    
-    // Hidden inputs
+
+    // Hidden inputs.
     $out .= html_writer::tag("input", "", array(
         "value" => $esrduration,
         "type" => "text",
         "id" => "esr-sendduration",
         "name" => "esr-duration",
-        "class" =>"d-none"
+        "class" => "d-none"
     ));
 
     $out .= html_writer::tag("input", "", array(
@@ -422,7 +415,7 @@ function get_schedule_emailform($id, $formaction, $blockname, $region) {
         "type" => "text",
         "id" => "esr-sendtime",
         "name" => "esr-time",
-        "class" =>"d-none"
+        "class" => "d-none"
     ));
 
     $out .= html_writer::tag("input", "", array(
@@ -430,13 +423,13 @@ function get_schedule_emailform($id, $formaction, $blockname, $region) {
         "type" => "text",
         "id" => "esr-id",
         "name" => "esr-id",
-        "class" =>"d-none"
+        "class" => "d-none"
     ));
 
-    // End Body Div
+    // End Body Div.
     $out .= html_writer::end_div();
 
-    // End Main Div
+    // End Main Div.
     $out .= html_writer::end_div();
 
     $out .= html_writer::start_div("modal-footer px-0 py-5", array(
@@ -461,7 +454,7 @@ function get_schedule_emailform($id, $formaction, $blockname, $region) {
     );
     $out .= html_writer::end_div();
 
-    // End of Form
+    // End of Form.
     $out .= html_writer::end_tag("form");
 
     return $out;
@@ -475,11 +468,11 @@ function get_schedule_emailform($id, $formaction, $blockname, $region) {
  * @return [type]              [description]
  */
 function get_email_schedule_header($emailenable, $duration, $time) {
-    // Select which sropdown has to be select
+    // Select which sropdown has to be select.
     $daily = $weekly = $monthly = false;
     $dayofweek = $timeofday = $dayofmonth = 0;
 
-   // Set the time value for weeks day
+    // Set the time value for weeks day.
     switch($duration) {
         case ESR_DAILY_EMAIL:
             if ($time <= 3) {
@@ -501,38 +494,37 @@ function get_email_schedule_header($emailenable, $duration, $time) {
             break;
         default:
             $daily = true;
-            $duration = 0; // Set Default value
+            $duration = 0; // Set Default value.
     }
 
-    // Start Main Div
+    // Start Main Div.
     $out = html_writer::start_div();
 
-    // Start Header Div
+    // Start Header Div.
     $out .= html_writer::start_div("d-flex");
 
-    // Duration Count Dropdown Start
+    // Duration Count Dropdown Start.
     $out .= html_writer::tag("i", "", array(
         "class" => "icon fa fa-calendar my-auto",
         "aria-hidden" => "true"
     ));
-    // Header Duration Count
+    // Header Duration Count.
     $out .= html_writer::span(get_string("emailthisreport", "report_elucidsitereport"), "my-auto mx-5");
 
-    // Email Shcedule Duration
+    // Email Shcedule Duration.
     $out .= html_writer::span(get_duration_dropdown($duration), "duration-dropdown dropdown");
-
 
     $out .= html_writer::span(get_string("onevery", "report_elucidsitereport"), "my-auto mx-5");
 
-    // Weeks Dropdown
+    // Weeks Dropdown.
     $out .= html_writer::span(get_weeks_dropdown($dayofweek, $weekly), "weekly-dropdown dropdown");
-    // Times Dropdown
+    // Times Dropdown.
     $out .= html_writer::span(get_times_dropdown($timeofday, $daily), "daily-dropdown dropdown");
-    // Monthly Dropdown
+    // Monthly Dropdown.
     $out .= html_writer::span(get_monthly_dropdown($dayofmonth, $monthly), "monthly-dropdown dropdown");
-    
+
     $out .= create_toggle_switch_for_emails("", $emailenable, "", "", "ml-auto");
-    // End Header Div 
+    // End Header Div.
     $out .= html_writer::end_div();
 
     return $out;
@@ -565,7 +557,7 @@ function get_times_dropdown($time = 0, $active = false) {
         "role" => "menu"
     ));
 
-    // Get all 7 weeks
+    // Get all 7 weeks.
     for ($i = 0; $i <= 3; $i++) {
         $str = get_string("times_". $i, "report_elucidsitereport");
         $timesdropdown .= '<a class="dropdown-item" href="javascript:void(0)"
@@ -604,7 +596,7 @@ function get_weeks_dropdown($time = 0, $active = false) {
         "role" => "menu"
     ));
 
-    // Get all 7 weeks
+    // Get all 7 weeks.
     for ($i = 0; $i <= 6; $i++) {
         $str = get_string("week_". $i, "report_elucidsitereport");
         $weeksdropdown .= '<a class="dropdown-item" href="javascript:void(0)"
@@ -643,7 +635,7 @@ function get_monthly_dropdown($time = 0, $active = false) {
         "role" => "menu"
     ));
 
-    // Get all 7 weeks
+    // Get all 7 weeks.
     for ($i = 0; $i <= 2; $i++) {
         $str = get_string("monthly_". $i, "report_elucidsitereport");
         $monthlydropdown .= '<a class="dropdown-item" href="javascript:void(0)"
@@ -661,7 +653,7 @@ function get_monthly_dropdown($time = 0, $active = false) {
  * @return [type]            [description]
  */
 function get_duration_dropdown($duration = 0) {
-    // Create count dropdown 
+    // Create count dropdown.
     $durationdropdown = html_writer::tag("button", get_string("duration_" .$duration, "report_elucidsitereport"), array(
         "data-value" => $duration,
         "type" => "button",
@@ -695,21 +687,26 @@ function get_schedule_emaillist() {
 
     $emails = array();
     $rec = $DB->get_records('sitereport_schedemails');
-    foreach($rec as $key => $val) {
-        // If it dosent have email data
+    foreach ($rec as $key => $val) {
+        // If it dosent have email data.
         if (!$emaildata = json_decode($val->emaildata)) {
             continue;
         }
 
-        // If dta is not an array
+        // If dta is not an array.
         if (!is_array($emaildata)) {
             continue;
         }
 
-        // If everythings is ok then
-        foreach($emaildata as $key => $emailinfo) {
+        // If everythings is ok then.
+        foreach ($emaildata as $key => $emailinfo) {
             $data = array();
-            $data["esrselect"] = create_toggle_switch_for_emails($key, $emailinfo->esremailenable, $val->blockname, $val->component);
+            $data["esrselect"] = create_toggle_switch_for_emails(
+                $key,
+                $emailinfo->esremailenable,
+                $val->blockname,
+                $val->component
+            );
             $data["esrname"] = $emailinfo->esrname;
             $data["esrnextrun"] = date("d M y", $emailinfo->esrnextrun);
             $data["esrfrequency"] = $emailinfo->esrfrequency;
@@ -773,7 +770,7 @@ function create_manage_icons_for_emaillist($id, $blockname, $region) {
             "data-sesskey" => sesskey()
         )
     );
-    
+
     return $manage;
 }
 
@@ -798,7 +795,7 @@ function create_toggle_switch_for_emails($id, $emailenable, $blockname, $region,
         $switchparams["checked"] = "checked";
     }
 
-    // Toggle Switch For Enable and Disable Start
+    // Toggle Switch For Enable and Disable Start.
     $out = html_writer::start_div("my-auto px-5 ". $customclass);
     $out .= html_writer::label(
         html_writer::tag("input", "", $switchparams).
@@ -813,8 +810,7 @@ function create_toggle_switch_for_emails($id, $emailenable, $blockname, $region,
         )
     );
     $out .= html_writer::end_div();
-    // Toggle Switch For Enable and Disable End
-    
+    // Toggle Switch For Enable and Disable End.
     return $out;
 }
 
@@ -827,43 +823,43 @@ function create_toggle_switch_for_emails($id, $emailenable, $blockname, $region,
 function get_email_schedule_next_run($duration, $time) {
     $timenow = time();
     $frequency = '';
-    // According to duation and time calculate the next scheduled time
+    // According to duation and time calculate the next scheduled time.
     switch($duration) {
         case ESR_WEEKLY_EMAIL:
             $day = get_string("week_" . $time, "report_elucidsitereport");
             $weekstr = 'next ' . $day;
 
-            // Calculate time
+            // Calculate time.
             $schedtime = strtotime($weekstr);
             $frequency = get_string("everyweeks", "report_elucidsitereport", array("day" => $day));
             break;
         case ESR_MONTHLY_EMAIL:
-            // Get last date of the month
+            // Get last date of the month.
             $lastdate = date("d", strtotime('last day of this month'));
             $day = $time;
 
-            // If it is greater then then assign as time
+            // If it is greater then then assign as time.
             if ($time > (int) $lastdate) {
                 $time = (int) $lastdate;
             }
 
-            // Get month string
+            // Get month string.
             $monthstr = date($time . ' M Y', $timenow);
 
-            // Calculate time
+            // Calculate time.
             $schedtime = strtotime($monthstr);
-            $frequency = get_string("everymonths", "report_elucidsitereport",array("time" => $day));
+            $frequency = get_string("everymonths", "report_elucidsitereport", array("time" => $day));
 
-            // If time has passed the add one month
+            // If time has passed the add one month.
             if ($timenow > $schedtime) {
                 $schedtime = $schedtime + ONEMONTH;
             }
             break;
 
-        default: // Default daily emails
+        default: // Default daily emails.
             $dailystr = date("d M Y", $timenow);
 
-            // Calculate time
+            // Calculate time.
             $schedtime = strtotime($dailystr) + $time * 60 * 60;
 
             if ($time < 10) {
@@ -872,16 +868,16 @@ function get_email_schedule_next_run($duration, $time) {
                 $day = get_string("time".$time, "report_elucidsitereport");
             }
 
-            // Get frequency string
-            $frequency = get_string("everydays", "report_elucidsitereport",array("time" => $day));
+            // Get frequency string.
+            $frequency = get_string("everydays", "report_elucidsitereport", array("time" => $day));
 
-            // If scheduledtime has been passed then add one day
+            // If scheduledtime has been passed then add one day.
             if ($timenow > $schedtime) {
                 $schedtime = $schedtime + ONEDAY;
             }
     }
 
-    // Return scheduled time
+    // Return scheduled time.
     return array($frequency, $schedtime);
 }
 

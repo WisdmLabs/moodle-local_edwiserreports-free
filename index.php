@@ -13,7 +13,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
  * Plugin administration pages are defined here.
  *
@@ -23,12 +22,12 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once __DIR__ .'/../../config.php';
-require_once $CFG->libdir.'/adminlib.php';
-require_once 'classes/output/renderable.php';
-require_once 'classes/export.php';
+require_once(__DIR__ .'/../../config.php');
+require_once($CFG->libdir.'/adminlib.php');
+require_once('classes/output/renderable.php');
+require_once('classes/export.php');
 
-// Strings for js
+// Strings for js.
 $PAGE->requires->strings_for_js([
     'cpblocktooltip1',
     'cpblocktooltip2',
@@ -41,8 +40,7 @@ $PAGE->requires->strings_for_js([
     'per100'
 ], 'report_elucidsitereport');
 
-// Set external page admin
-// admin_externalpage_setup('elucidsitereport');
+// Set external page admin.
 $context = context_system::instance();
 $component = "report_elucidsitereport";
 
@@ -52,36 +50,36 @@ require_login();
 \report_elucidsitereport\utility::allow_update_userpreferences_remotly();
 
 // The requested section isn't in the admin tree
-// It could be because the user has inadequate capapbilities or because the section doesn't exist
+// It could be because the user has inadequate capapbilities or because the section doesn't exist.
 if (!has_capability('report/report_elucidsitereport:view', $context)) {
     // The requested section could depend on a different capability
-    // but most likely the user has inadequate capabilities
+    // But most likely the user has inadequate capabilities.
     print_error('accessdenied', 'admin');
 }
 
-// Page URL
+// Page URL.
 $pageurl = new moodle_url($CFG->wwwroot."/report/elucidsitereport/index.php");
 
-// Require JS for index page
+// Require JS for index page.
 $PAGE->requires->js_call_amd('report_elucidsitereport/main', 'init');
 
-// Require CSS for index page
+// Require CSS for index page.
 $PAGE->requires->css('/report/elucidsitereport/styles/loader.css');
 
-// Set page context
+// Set page context.
 $PAGE->set_context($context);
 
-// Set page URL
+// Set page URL.
 $PAGE->set_url($pageurl);
 
-// Get renderable
+// Get renderable.
 $renderable = new \report_elucidsitereport\output\elucidreport_renderable();
 $output = $PAGE->get_renderer($component)->render($renderable);
 
-// Set page heading
+// Set page heading.
 $PAGE->set_heading(get_string("pluginname", "report_elucidsitereport"));
 
-// Print output in page
+// Print output in page.
 echo $OUTPUT->header();
 echo $output;
 echo $OUTPUT->footer();

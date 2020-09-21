@@ -13,7 +13,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
  * Plugin administration pages are defined here.
  *
@@ -31,43 +30,43 @@ use moodle_url;
 require_once(__DIR__ . '/../../config.php');
 require_once('classes/output/renderable.php');
 
-// Require login
+// Require login.
 require_login();
 
-// System Context
+// System Context.
 $context = context_system::instance();
 $component = "report_elucidsitereport";
 
 // The requested section isn't in the admin tree
-// It could be because the user has inadequate capapbilities or because the section doesn't exist
+// It could be because the user has inadequate capapbilities or because the section doesn't exist.
 if (!has_capability('report/report_elucidsitereport:view', $context)) {
     // The requested section could depend on a different capability
-    // but most likely the user has inadequate capabilities
+    // but most likely the user has inadequate capabilities.
     print_error('accessdenied', 'admin');
 }
 
-// Require JS for certificates page
+// Require JS for certificates page.
 $PAGE->requires->js_call_amd('report_elucidsitereport/certificates', 'init', array($context->id));
 
-// Require CSS for certificates page
+// Require CSS for certificates page.
 $PAGE->requires->css('/report/elucidsitereport/styles/select2.min.css');
 
-// Page URL
+// Page URL.
 $pageurl = new moodle_url($CFG->wwwroot . "/report/elucidsitereport/certificates.php");
 
-// Set page context
+// Set page context.
 $PAGE->set_context($context);
 
-// Set page URL
+// Set page URL.
 $PAGE->set_url($pageurl);
 
-// Get renderable for certificates page
+// Get renderable for certificates page.
 $renderable = new \report_elucidsitereport\output\certificates_renderable();
 $output = $PAGE->get_renderer($component)->render($renderable);
 
 $PAGE->set_heading(get_string("certificatestats", "report_elucidsitereport"));
 
-// Print output in page
+// Print output in page.
 echo $OUTPUT->header();
 echo $output;
 echo $OUTPUT->footer();

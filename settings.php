@@ -13,7 +13,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
  * Plugin administration pages are defined here.
  *
@@ -25,6 +24,15 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$ADMIN->add('reports', new admin_category('report_elucidsitereport_settings', new lang_string('pluginname', 'report_elucidsitereport')));
-$ADMIN->add('report_elucidsitereport_settings', new admin_externalpage('elucidsitereport_dashboard', new lang_string('myhome'), "/report/elucidsitereport/index.php"));
-$ADMIN->add('report_elucidsitereport_settings', new admin_externalpage('elucidsitereport_settings', new lang_string('settings'), "$CFG->wwwroot/report/elucidsitereport/reports_settings.php"));
+$ADMIN->add('reports', new admin_category(
+    'report_elucidsitereport_settings',
+    new lang_string('pluginname', 'report_elucidsitereport'
+)));
+$ADMIN->add('report_elucidsitereport_settings', new admin_externalpage(
+    'elucidsitereport_dashboard',
+    new lang_string('myhome'), "/report/elucidsitereport/index.php"
+));
+$ADMIN->add('report_elucidsitereport_settings', new admin_externalpage(
+    'elucidsitereport_settings',
+    new lang_string('settings'), "$CFG->wwwroot/report/elucidsitereport/reports_settings.php"
+));

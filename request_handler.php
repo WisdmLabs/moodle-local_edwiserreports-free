@@ -13,7 +13,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
  * eLucid report AJAX handler
  * @package    report_elucidsitereport
@@ -21,25 +20,27 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+defined('MOODLE_INTERNAL') || die();
+
 use report_elucidsitereport\controller\elucidsitereportKernel;
 use report_elucidsitereport\controller\elucidsitereportRouter;
 
-// define ajax script based on action value
+// Define ajax script based on action value.
 $action = filter_input(INPUT_GET, 'action', FILTER_SANITIZE_STRIPPED);
 if (!isset($action) || empty($action)) {
     return;
 }
 
-// only make ajax true if action has ajax in name
+// Only make ajax true if action has ajax in name.
 $actionpattern = '/_ajax$/i';
 if (preg_match($actionpattern, $action)) {
     define('AJAX_SCRIPT', true);
     define('NO_DEBUG_DISPLAY', true);
 }
 
-// include Moodle config
+// Include Moodle config
 // This code is to run or include file at developer end
-// It is because we use symlink for theme from local_gitrepo
+// It is because we use symlink for theme from local_gitrepo.
 if (!@include_once(__DIR__.'/../../config.php')) {
     include_once('/var/www/html/elucid/v37/config.php');
 }
@@ -62,7 +63,6 @@ if (!in_array($action, $nologinactions)) {
     }
 }
 
-// @var $PAGE moodle_page
 $PAGE->set_context($context);
 if ($course !== null) {
     $PAGE->set_course($course);
@@ -80,7 +80,7 @@ $controllerdir = __DIR__.'/classes/controller';
 $contfiles = scandir($controllerdir);
 
 foreach ($contfiles as $contfile) {
-    // include controllers
+    // Include controllers.
     $pattern = '/Controller.php$/i';
     if (preg_match($pattern, $contfile)) {
         $classname = '\\report_elucidsitereport\\controller\\'.str_ireplace('.php', '', $contfile);

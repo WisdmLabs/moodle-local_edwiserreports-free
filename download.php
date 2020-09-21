@@ -13,7 +13,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
  * Plugin administration pages are defined here.
  *
@@ -30,31 +29,31 @@ require_once($CFG->dirroot."/report/elucidsitereport/locallib.php");
 require_once($CFG->dirroot."/report/elucidsitereport/classes/export.php");
 require_once($CFG->dirroot."/report/elucidsitereport/classes/utility.php");
 
-// Check if users is logged in
+// Check if users is logged in.
 require_login();
 
-// Get system context
+// Get system context.
 $context = context_system::instance();
 
 // The requested section isn't in the admin tree
-// It could be because the user has inadequate capapbilities or because the section doesn't exist
+// It could be because the user has inadequate capapbilities or because the section doesn't exist.
 if (!has_capability('report/report_elucidsitereport:view', $context)) {
     // The requested section could depend on a different capability
-    // but most likely the user has inadequate capabilities
+    // but most likely the user has inadequate capabilities.
     print_error('accessdenied', 'admin');
 }
 
-// Set page context
+// Set page context.
 $PAGE->set_context($context);
 
-// If type is there then go ahead to export
+// If type is there then go ahead to export.
 if ($type = optional_param("type", false, PARAM_TEXT)) {
-    // Get parameters to export reports
+    // Get parameters to export reports.
     $region = required_param("region", PARAM_TEXT);
     $blockname = required_param("block", PARAM_TEXT);
     $filter = optional_param("filter", false, PARAM_TEXT);
 
-    // Prepare export filname
+    // Prepare export filname.
     $filename = prepare_export_filename(array(
         "region" => $region,
         "blockname" => $blockname,
@@ -62,31 +61,31 @@ if ($type = optional_param("type", false, PARAM_TEXT)) {
         "filter" => $filter ? $filter : ""
     ));
 
-    // Get export object 
+    // Get export object.
     $export = new export($type, $region, $blockname);
 
-    // If format is scheduled email then dont prepare data
+    // If format is scheduled email then dont prepare data.
     if ($type == "emailscheduled") {
         $export->data_export($filename, false);
     } else {
-        // Prepare exportable data
+        // Prepare exportable data.
         $data = $export->get_exportable_data($filter);
 
-        // If data is there then download data with files
+        // If data is there then download data with files.
         if ($data) {
             $export->data_export($filename, $data);
         }
     }
 } else if ($reporttype = required_param('reporttype', PARAM_TEXT)) {
-    // Get Url parameter
+    // Get Url parameter.
     $filters = required_param('filters', PARAM_TEXT);
     $enrolstartdate = optional_param('enrolstartdate', null, PARAM_TEXT);
     $enrolenddate = optional_param('enrolenddate', null, PARAM_TEXT);
-    // Get export object
+    // Get export object.
     $export = new export(null, null, null);
-    // check report type is query report
+    // Check report type is query report.
     if ($reporttype == 'lpdetailed') {
-        // Render csv data in csv file
+        // Render csv data in csv file.
         $export->export_lpdetailed_report_data($reporttype, $filters, $enrolstartdate, $enrolenddate);
     } else if ($reporttype == 'queryReport') {
         $data = array (
@@ -104,10 +103,10 @@ if ($type = optional_param("type", false, PARAM_TEXT)) {
             'activitytype' => optional_param('activitytype', '', PARAM_TEXT)
         );
 
-        // Render csv data in csv file
+        // Render csv data in csv file.
         $export->export_csv_customquery_report_data((object) $data);
     } else {
-        // Render csv data in csv file
+        // Render csv data in csv file.
         $export->export_csv_customreport_data($reporttype, $filters, $enrolstartdate, $enrolenddate);
     }
 }

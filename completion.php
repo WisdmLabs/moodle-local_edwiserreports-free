@@ -13,7 +13,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
  * Plugin administration pages are defined here.
  *
@@ -33,45 +32,45 @@ use context_helper;
 require_once(__DIR__ . '/../../config.php');
 require_once('classes/output/renderable.php');
 
-// Context system
+// Context system.
 $context = context_system::instance();
 $component = "report_elucidsitereport";
 
 // The requested section isn't in the admin tree
-// It could be because the user has inadequate capapbilities or because the section doesn't exist
+// It could be because the user has inadequate capapbilities or because the section doesn't exist.
 if (!has_capability('report/report_elucidsitereport:view', $context)) {
     // The requested section could depend on a different capability
-    // but most likely the user has inadequate capabilities
+    // but most likely the user has inadequate capabilities.
     print_error('accessdenied', 'admin');
 }
 
-// Get require param course id
+// Get require param course id.
 $courseid = required_param("courseid", PARAM_INT);
 
-// Require login for course
+// Require login for course.
 $course = get_course($courseid);
 require_login(get_course($courseid));
 
-// Get course context
+// Get course context.
 $coursecontext = context_course::instance($courseid);
 
-// Page URL
+// Page URL.
 $pageurl = new moodle_url($CFG->wwwroot . "/report/elucidsitereport/completion.php", array("courseid" => $courseid));
 
-// Set page context
+// Set page context.
 $PAGE->set_context($coursecontext);
 
-// Set page URL
+// Set page URL.
 $PAGE->set_url($pageurl);
 
-// Require JS for course completion page
+// Require JS for course completion page.
 $PAGE->requires->js_call_amd('report_elucidsitereport/completion', 'init', array($coursecontext->id));
 
-// Get renderable for coourse completion page
+// Get renderable for coourse completion page.
 $renderable = new \report_elucidsitereport\output\completion_renderable();
 $output = $PAGE->get_renderer($component)->render($renderable);
 
-// Print output for course completion page
+// Print output for course completion page.
 echo $OUTPUT->header();
 echo $OUTPUT->heading(create_page_header("completion", $course->fullname), "1", "page-title p-5");
 echo $output;
