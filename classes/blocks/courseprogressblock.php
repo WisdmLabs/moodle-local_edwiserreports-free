@@ -13,7 +13,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
  * Reports abstract block will define here to which will extend for each repoers blocks
  *
@@ -23,6 +22,8 @@
  */
 
 namespace report_elucidsitereport;
+
+defined('MOODLE_INTERNAL') || die;
 
 use stdClass;
 use moodle_url;
@@ -35,34 +36,32 @@ class courseprogressblock extends block_base {
     /**
      * Get reports data for Course Progress block
      */
-    public function get_data($params = false) {        
+    public function get_data($params = false) {
         $courseid = isset($params->courseid) ? $params->courseid : false;
         $cohortid = isset($params->cohortid) ? $params->cohortid : false;
 
-        // Make cache for courseprogress block
+        // Make cache for courseprogress block.
         $cache = cache::make("report_elucidsitereport", "courseprogress");
-        // Create reporting manager instance
-        // $rpm = reporting_manager::get_instance();
         $cachekey = $this->generate_cache_key('courseprogress', $courseid, $cohortid);
 
-        // If cache not set for course progress
+        // If cache not set for course progress.
         if (!$response = $cache->get($cachekey)) {
-            // Get all courses for dropdown
+            // Get all courses for dropdown.
             $course = get_course($courseid);
             $coursecontext = context_course::instance($courseid);
 
-            // Get only students
+            // Get only students.
             $enrolledstudents = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
 
-            // Get response
+            // Get response.
             $response = new stdClass();
             $response->data = self::get_completion_with_percentage($course, $enrolledstudents, $cohortid);
 
-            // Set cache to get data for course progress
+            // Set cache to get data for course progress.
             $cache->set($cachekey, $response);
         }
 
-        // Return response
+        // Return response.
         return $response;
     }
 
@@ -72,7 +71,7 @@ class courseprogressblock extends block_base {
     public function get_layout() {
         global $CFG;
 
-        // Layout related data
+        // Layout related data.
         $this->layout->id = 'courseprogressblock';
         $this->layout->name = get_string('courseprogress', 'report_elucidsitereport');
         $this->layout->info = get_string('courseprogressblockhelp', 'report_elucidsitereport');
@@ -80,17 +79,17 @@ class courseprogressblock extends block_base {
         $this->layout->hasdownloadlink = true;
         $this->layout->filters = '';
 
-        // Block related data
+        // Block related data.
         $this->block->courses = \report_elucidsitereport\utility::get_courses();
         if (!empty($this->block->courses)) {
             $this->block->hascourses = true;
             $this->block->firstcourseid = $this->block->courses[0]->id;
         }
 
-        // Add block view in layout
+        // Add block view in layout.
         $this->layout->blockview = $this->render_block('courseprogressblock', $this->block);
 
-        // Return blocks layout
+        // Return blocks layout.
         return $this->layout;
     }
 
@@ -121,34 +120,34 @@ class courseprogressblock extends block_base {
                     continue;
                 }
             }
-            // If not set the completion then this user is not completed
+            // If not set the completion then this user is not completed.
             if (!isset($completions[$user->id])) {
                 $completedusers[PERCENTAGE_00]++;
             } else {
                 $progress = $completions[$user->id]->completion / 100;
                 switch (true) {
                     case $progress == COURSE_COMPLETE_100PER:
-                        // Completed 100% of course
+                        // Completed 100% of course.
                         $completedusers[PERCENTAGE_100]++;
                         break;
                     case $progress >= COURSE_COMPLETE_80PER && $progress < COURSE_COMPLETE_100PER:
-                        // Completed 80% of course
+                        // Completed 80% of course.
                         $completedusers[PERCENTAGE_80]++;
                         break;
                     case $progress >= COURSE_COMPLETE_60PER && $progress < COURSE_COMPLETE_80PER:
-                        // Completed 60% of course
+                        // Completed 60% of course.
                         $completedusers[PERCENTAGE_60]++;
                         break;
                     case $progress >= COURSE_COMPLETE_40PER && $progress < COURSE_COMPLETE_60PER:
-                        // Completed 40% of course
+                        // Completed 40% of course.
                         $completedusers[PERCENTAGE_40]++;
                         break;
                     case $progress >= COURSE_COMPLETE_20PER && $progress < COURSE_COMPLETE_40PER:
-                        // Completed 20% of course
+                        // Completed 20% of course.
                         $completedusers[PERCENTAGE_20]++;
                         break;
                     default:
-                        // Completed 0% of course
+                        // Completed 0% of course.
                         $completedusers[PERCENTAGE_00]++;
                 }
             }
@@ -199,7 +198,7 @@ class courseprogressblock extends block_base {
 
         $response = array();
         foreach ($courses as $course) {
-            // Generate response object for a course
+            // Generate response object for a course.
             $res = (object) array(
                 "completed100" => 0,
                 "completed80" => 0,
@@ -210,30 +209,30 @@ class courseprogressblock extends block_base {
                 "enrolments" => 0
             );
 
-            // Assign response data
+            // Assign response data.
             $res->id = $course->id;
             $res->fullname = $course->fullname;
 
-            // Create course url
+            // Create course url.
             $res->courseurl = (new moodle_url($CFG->wwwroot . "/course/view.php", array("id" => $course->id)))->out();
 
-            // Get course context
+            // Get course context.
             $coursecontext = context_course::instance($course->id);
 
-            // Get only enrolled student
+            // Get only enrolled student.
             $enrolledstudents = self::rep_get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
             if (!count($enrolledstudents) && !is_siteadmin()) {
                 continue;
             }
-            // Get completions
+            // Get completions.
             $compobj = new \report_elucidsitereport\completions();
             $completions = $compobj->get_course_completions($course->id);
 
-            // For each enrolled student get completions
+            // For each enrolled student get completions.
             foreach ($enrolledstudents as $user) {
                 // If cohort filter in there then remove the users
-                // who is not belongs to the cohort
-                if($cohortid) {
+                // who is not belongs to the cohort.
+                if ($cohortid) {
                     $cohorts = cohort_get_user_cohorts($user->id);
                     if (!array_key_exists($cohortid, $cohorts)) {
                         unset($enrolledstudents[$key]);
@@ -241,50 +240,50 @@ class courseprogressblock extends block_base {
                     }
                 }
 
-                // Generate $key to save completion in an array
+                // Generate $key to save completion in an array.
                 if (!isset($completions[$user->id])) {
-                    // Completed 0% of course
+                    // Completed 0% of course.
                     $res->completed00++;
                 } else {
-                    // Calculated progress percantage
+                    // Calculated progress percantage.
                     $progress = $completions[$user->id]->completion;
 
-                    // Create array based on the completion
+                    // Create array based on the completion.
                     switch (true) {
                         case $progress == 100:
-                            // Completed 100% of course
+                            // Completed 100% of course.
                             $res->completed100++;
                             break;
                         case $progress >= 80 && $progress < 100:
-                            // Completed 80% of course
+                            // Completed 80% of course.
                             $res->completed80++;
                             break;
                         case $progress >= 60 && $progress < 80:
-                            // Completed 60% of course
+                            // Completed 60% of course.
                             $res->completed60++;
                             break;
                         case $progress >= 40 && $progress < 60:
-                            // Completed 40% of course
+                            // Completed 40% of course.
                             $res->completed40++;
                             break;
                         case $progress >= 20 && $progress < 40:
-                            // Completed 20% of course
+                            // Completed 20% of course.
                             $res->completed20++;
                             break;
                         default:
-                            // Completed 0% of course
+                            // Completed 0% of course.
                             $res->completed00++;
                     }
                 }
 
-                // increament enrolment count
+                // Increament enrolment count.
                 $res->enrolments++;
             }
 
-            // Added response object in response array
+            // Added response object in response array.
             $response[] = $res;
         }
-        // Return response
+        // Return response.
         return $response;
     }
 
@@ -335,14 +334,14 @@ class courseprogressblock extends block_base {
             }
 
             // If Completion table dont have entries then
-            // set progress as zero
+            // set progress as zero.
             if (!isset($completions[$enrolleduser->id])) {
                 $progress = 0;
             } else {
                 $progress = $completions[$enrolleduser->id]->completion;
             }
 
-            // If progress between the min and max value
+            // If progress between the min and max value.
             if ($progress > $minval && $progress <= $maxval) {
                 $user = core_user::get_user($enrolleduser->id);
                 $usersdata[] = array(
@@ -361,12 +360,11 @@ class courseprogressblock extends block_base {
      */
     public function get_exportable_data_block($filter) {
         $export = array();
-        $export[] = courseprogressblock::get_header();
+        $export[] = self::get_header();
         $coursecontext = context_course::instance($filter);
         $course = get_course($filter);
-        // $enrolledstudents = self::rep_get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
         $enrolledstudents = get_enrolled_students($filter);
-        foreach($enrolledstudents as $key => $student) {
+        foreach ($enrolledstudents as $key => $student) {
             $completion = \report_elucidsitereport\utility::get_course_completion_info($course, $student->id);
             $completed = $completion["completedactivities"] . "/" . $completion["totalactivities"];
             $export[] = array(
@@ -395,8 +393,8 @@ class courseprogressblock extends block_base {
             $courseprogress = course_progress_block::get_data($course->id, $cohortid);
             $coursecontext = context_course::instance($course->id);
             $enrolledstudents = self::rep_get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
-            if($cohortid) {
-                foreach($enrolledstudents as $key => $user) {
+            if ($cohortid) {
+                foreach ($enrolledstudents as $key => $user) {
                     $cohorts = cohort_get_user_cohorts($user->id);
                     if (!array_key_exists($cohortid, $cohorts)) {
                         unset($enrolledstudents[$key]);
@@ -420,7 +418,8 @@ class courseprogressblock extends block_base {
      *
      * @param context $context
      * @param string $withcapability
-     * @param int $groupid 0 means ignore groups, USERSWITHOUTGROUP without any group and any other value limits the result by group id
+     * @param int $groupid 0 means ignore groups, USERSWITHOUTGROUP without any group and any other value limits
+     * the result by group id
      * @param string $userfields requested user record fields
      * @param string $orderby
      * @param int $limitfrom return a subset of records, starting at this point (optional, required if $limitnum is set).
@@ -428,10 +427,18 @@ class courseprogressblock extends block_base {
      * @param bool $onlyactive consider only active enrolments in enabled plugins and time restrictions
      * @return array of user records
      */
-    public static function rep_get_enrolled_users(\context $context, $withcapability = '', $groupid = 0, $userfields = 'u.*', $orderby = null,
-            $limitfrom = 0, $limitnum = 0, $onlyactive = false) {
+    public static function rep_get_enrolled_users(
+        \context $context,
+        $withcapability = '',
+        $groupid = 0,
+        $userfields = 'u.*',
+        $orderby = null,
+        $limitfrom = 0,
+        $limitnum = 0,
+        $onlyactive = false
+    ) {
         global $DB;
-        // Create reporting manager instance
+        // Create reporting manager instance.
         $rpm = reporting_manager::get_instance();
         list($esql, $params) = get_enrolled_sql($context, $withcapability, $groupid, $onlyactive);
         $sql = "SELECT $userfields

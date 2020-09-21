@@ -13,7 +13,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
  * Plugin administration pages are defined here.
  *
@@ -48,7 +47,7 @@ class certificatesblock extends block_base {
     public function get_layout() {
         global $CFG;
 
-        // Layout related data
+        // Layout related data.
         $this->layout->id = 'certificatesblock';
         $this->layout->name = get_string('certificatestatsheader', 'report_elucidsitereport');
         $this->layout->info = get_string('certificatestatsblockhelp', 'report_elucidsitereport');
@@ -56,14 +55,14 @@ class certificatesblock extends block_base {
         $this->layout->hasdownloadlink = true;
         $this->layout->filters = '';
 
-        // Block related data
+        // Block related data.
         $this->block = new stdClass();
         $this->block->displaytype = 'line-chart';
 
-        // Add block view in layout
+        // Add block view in layout.
         $this->layout->blockview = $this->render_block('certificatestatsblock', $this->block);
 
-        // Return blocks layout
+        // Return blocks layout.
         return $this->layout;
     }
 
@@ -74,14 +73,14 @@ class certificatesblock extends block_base {
     public function get_data($params = false) {
         $response = new stdClass();
         $response->data = new stdClass();
-        // Create reporting manager instance
+        // Create reporting manager instance.
         $rpm = reporting_manager::get_instance();
-        // Get response from cache
+        // Get response from cache.
         $cache = cache::make('report_elucidsitereport', 'certificates');
         if (!$response = $cache->get('response'.$rpm->rpmcache)) {
             $response->data->customcerts = self::get_certificate_list();
 
-            // Set cache for certificate response
+            // Set cache for certificate response.
             $cache->set('response'.$rpm->rpmcache, $response);
         }
 
@@ -98,7 +97,8 @@ class certificatesblock extends block_base {
 
         $certificates = array();
         $customcert = $DB->get_records("customcert", array());
-        // Create reporting manager instance
+        // Can be optimized
+        // Create reporting manager instance.
         $rpm = reporting_manager::get_instance();
         $sqlcm = "SELECT cm.id FROM {course_modules} cm
             JOIN {modules} m ON m.id = cm.module
@@ -113,28 +113,25 @@ class certificatesblock extends block_base {
             ));
 
             $modulecontext = context_module::instance($cm->id);
-            // $enrolledusers = get_enrolled_users($coursecontext);
-            // Get only enrolled students
-            // $enrolledusers = courseprogressblock::rep_get_enrolled_users($coursecontext);
+            // Get only enrolled students.
             $enrolledusers = \report_elucidsitereport\utility::get_enrolled_students($cm->id, $modulecontext);
             if (empty($enrolledusers) && $rpm->isrpm) {
                 continue;
             }
-            // $issued = $DB->get_records('customcert_issues', array('customcertid' => $certificate->id));
             $sql = "SELECT * FROM {customcert_issues}
                 WHERE customcertid = :customcertid AND userid ".$rpm->insql;
             $params['customcertid'] = $certificate->id;
             $params = array_merge($params, $rpm->inparams);
             $issued = $DB->get_records_sql($sql, $params);
-            // Number of perople who can view certificates
+            // Number of perople who can view certificates.
             $notawareded = 0;
-            foreach($enrolledusers as $user) {
+            foreach ($enrolledusers as $user) {
                 $canmanage = has_capability('mod/customcert:manage', $modulecontext, $user);
-                // These people can manage the certificates
+                // These people can manage the certificates.
                 if ($canmanage) {
                     continue;
                 }
-                // These people can only view the certificates
+                // These people can only view the certificates.
                 $awarded = false;
                 foreach ($issued as $issue) {
                     if ($issue->userid === $user->id) {
@@ -167,7 +164,7 @@ class certificatesblock extends block_base {
         global $DB;
 
         $cache = cache::make('report_elucidsitereport', 'certificates');
-        // Create reporting manager instance
+        // Create reporting manager instance.
         $rpm = reporting_manager::get_instance();
         $cachekey = "certificates-userslist-" . $certid . "-";
         if ($cohortid) {
@@ -177,11 +174,10 @@ class certificatesblock extends block_base {
         }
         $cachekey .= $rpm->rpmcache;
         $response = new stdClass();
-        // Get certificates details from cache
+        // Get certificates details from cache.
         if (!$issuedcert = $cache->get($cachekey)) {
             $certificate = $DB->get_record("customcert", array("id" => $certid));
             $course = get_course($certificate->course);
-            // $issued = $DB->get_records('customcert_issues', array('customcertid' => $certid));
             $sql = "SELECT * FROM {customcert_issues} WHERE customcertid= :customcertid AND userid ".$rpm->insql;
             $params['customcertid'] = $certid;
             $params = array_merge($params, $rpm->inparams);
@@ -198,7 +194,7 @@ class certificatesblock extends block_base {
                 $issuedcert[] = self::get_certinfo($course, $issue);
             }
 
-            // Set cache for issued certificates
+            // Set cache for issued certificates.
             $cache->set($cachekey, $issuedcert);
         }
         $response->data = $issuedcert;
@@ -224,7 +220,7 @@ class certificatesblock extends block_base {
         $certinfo = array();
         $user = core_user::get_user($issue->userid);
 
-        $params = array('courseid'=>$course->id, 'userid' => $issue->userid);
+        $params = array('courseid' => $course->id, 'userid' => $issue->userid);
         $gradeval = 0;
         $grade = \report_elucidsitereport\utility::get_grades($course->id, $issue->userid);
         if ($grade) {
@@ -310,7 +306,7 @@ class certificatesblock extends block_base {
      */
     public static function get_exportable_data_block() {
         $certificates = self::get_certificate_list();
-        foreach($certificates as $key => $certificate) {
+        foreach ($certificates as $key => $certificate) {
             unset($certificate["id"]);
             $certificates[$key] = array_values($certificate);
         }
@@ -330,7 +326,7 @@ class certificatesblock extends block_base {
         $cohortid = optional_param("cohortid", 0, PARAM_INT);
         $record = self::get_issued_users($certid, $cohortid);
 
-        foreach($record->data as $key => $user) {
+        foreach ($record->data as $key => $user) {
             $user->courseprogress = strip_tags($user->courseprogress);
             $users[$key] = array_values((array) $user);
         }

@@ -13,7 +13,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
  * Plugin administration pages are defined here.
  *
@@ -40,7 +39,7 @@ class lpstatsblock extends block_base {
     public function get_layout() {
         global $CFG;
 
-        // Layout related data
+        // Layout related data.
         $this->layout->id = 'lpstatsblock';
         $this->layout->name = get_string('lpstatsheader', 'report_elucidsitereport');
         $this->layout->info = get_string('lpstatsblockhelp', 'report_elucidsitereport');
@@ -48,7 +47,7 @@ class lpstatsblock extends block_base {
         $this->layout->hasdownloadlink = true;
         $this->layout->filters = '';
 
-        // Block related data
+        // Block related data.
         $this->block = new stdClass();
         $lps = \report_elucidsitereport\utility::get_lps();
         if (!empty($export->lps)) {
@@ -56,10 +55,10 @@ class lpstatsblock extends block_base {
             $this->block->firstlpid = $this->block->lps[0]["id"];
         }
 
-        // Add block view in layout
+        // Add block view in layout.
         $this->layout->blockview = $this->render_block('lpstatsblock', $this->block);
 
-        // Return blocks layout
+        // Return blocks layout.
         return $this->layout;
     }
 
@@ -68,10 +67,10 @@ class lpstatsblock extends block_base {
      */
     public function get_data($params = false) {
         $lpid = isset($params->lpid) ? $params->lpid : false;
-    	$response = new stdClass();
-    	$response->data = self::get_lpstats($lpid);
+        $response = new stdClass();
+        $response->data = self::get_lpstats($lpid);
 
-    	return $response;
+        return $response;
     }
 
     /**
@@ -80,9 +79,9 @@ class lpstatsblock extends block_base {
      * @return [object] Learning Program stats
      */
     public static function get_lpstats($lpid) {
-    	global $DB;
-    	$lp = $DB->get_record("wdm_learning_program", array("id" => $lpid), "courses");
-        // Create reporting manager instance
+        global $DB;
+        $lp = $DB->get_record("wdm_learning_program", array("id" => $lpid), "courses");
+        // Create reporting manager instance.
         $rpm = reporting_manager::get_instance();
         $sql = "SELECT *
                 FROM {wdm_learning_program_enrol} lpen
@@ -91,40 +90,39 @@ class lpstatsblock extends block_base {
         $params['learningprogramid'] = $lpid;
         $params = array_merge($params, $rpm->inparams);
         $lpenrolment = $DB->get_records_sql($sql, $params);
-    	// $lpenrolment = $DB->get_records("wdm_learning_program_enrol", array("learningprogramid" => $lpid), "userid");
-    	$courses = json_decode($lp->courses);
+        $courses = json_decode($lp->courses);
 
-    	$lpstats = new stdClass();
+        $lpstats = new stdClass();
 
-    	$completedusers = array();
-    	foreach ($courses as $courseid) {
-    		$course = $DB->get_record('course', array('id' => $courseid));
-            // If course not present then continue
+        $completedusers = array();
+        foreach ($courses as $courseid) {
+            $course = $DB->get_record('course', array('id' => $courseid));
+            // If course not present then continue.
             if (!$course) {
                 continue;
             }
 
-    		$lpstats->labels[] = $course->shortname;
+            $lpstats->labels[] = $course->shortname;
 
-    		$completed = 0;
-    		foreach ($lpenrolment as $enrol) {
-    			$completion = self::get_course_completion_info($course, $enrol->userid);
+            $completed = 0;
+            foreach ($lpenrolment as $enrol) {
+                $completion = self::get_course_completion_info($course, $enrol->userid);
 
-    			if (isset($completion["progresspercentage"]) && $completion["progresspercentage"] == 100) {
-    				if (!in_array($enrol->userid, $completedusers)) {
-    					array_push($completedusers, $enrol->userid);
-    				}
-    				$completed++;
-    			}
-    		}
-    		$lpstats->data[] = $completed;
-    	}
+                if (isset($completion["progresspercentage"]) && $completion["progresspercentage"] == 100) {
+                    if (!in_array($enrol->userid, $completedusers)) {
+                        array_push($completedusers, $enrol->userid);
+                    }
+                    $completed++;
+                }
+            }
+            $lpstats->data[] = $completed;
+        }
 
-    	// No users are completd any courses
-    	$lpstats->labels[] = get_string("none", "report_elucidsitereport");
-    	$lpstats->data[] = count($lpenrolment) - count($completedusers);
+        // No users are completd any courses.
+        $lpstats->labels[] = get_string("none", "report_elucidsitereport");
+        $lpstats->data[] = count($lpenrolment) - count($completedusers);
 
-    	return $lpstats;
+        return $lpstats;
     }
 
     /**
@@ -137,7 +135,7 @@ class lpstatsblock extends block_base {
         global $DB;
 
         $lp = $DB->get_record("wdm_learning_program", array("id" => $lpid), "courses");
-        // Create reporting manager instance
+        // Create reporting manager instance.
         $rpm = reporting_manager::get_instance();
         $sql = "SELECT *
                 FROM {wdm_learning_program_enrol} lpen
@@ -172,14 +170,16 @@ class lpstatsblock extends block_base {
             $userinfo->name = fullname($user);
             $userinfo->email = $user->email;
             $userinfo->enrolled = date("d M y", $enrol->timeenroled);
-            $userinfo->lastaccess = $enrol->lastaccess ? date("d M y", $enrol->lastaccess) : get_string("notyet", "report_elucidsitereport");
+            $userinfo->lastaccess = $enrol->lastaccess ?
+            date("d M y", $enrol->lastaccess) :
+            get_string("notyet", "report_elucidsitereport");
 
             $userinfo->grade = 0;
             $userinfo->progress = array();
 
             foreach ($courses as $courseid) {
                 $course = $DB->get_record('course', array('id' => $courseid));
-                // If course not present then continue
+                // If course not present then continue.
                 if (!$course) {
                     continue;
                 }
@@ -217,7 +217,7 @@ class lpstatsblock extends block_base {
                 $userinfo->avgprogress = number_format(0, 2);
             }
 
-            // Add completed activities in lp completions information
+            // Add completed activities in lp completions information.
             $userinfo->completedactivities = '(' . $completedactivities . '/' . $totalactivities . ')';
 
             $userinfo->grade = number_format($userinfo->grade, 2);
@@ -271,7 +271,7 @@ class lpstatsblock extends block_base {
 
         $export = array();
         $export[] = self::get_header_block();
-        foreach($lpstats->labels as $key => $label) {
+        foreach ($lpstats->labels as $key => $label) {
             $export[] = array(
                 $label,
                 $lp->name,
@@ -297,7 +297,7 @@ class lpstatsblock extends block_base {
 
         $export = array();
         $export[] = $header;
-        foreach($lpstats->users as $user) {
+        foreach ($lpstats->users as $user) {
             $data = array();
             $data[] = $user->name;
             $data[] = $user->email;

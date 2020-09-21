@@ -13,7 +13,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
  * Plugin administration pages are defined here.
  *
@@ -46,20 +45,20 @@ class f2fsessionsblock extends block_base {
     public function get_layout() {
         global $CFG;
 
-        // Layout related data
+        // Layout related data.
         $this->layout->id = 'f2fsessionsblock';
         $this->layout->name = get_string('f2fsessionsheader', 'report_elucidsitereport');
         $this->layout->info = get_string('f2fsessionsblockhelp', 'report_elucidsitereport');
         $this->layout->morelink = new moodle_url($CFG->wwwroot . "/report/elucidsitereport/f2fsessions.php");
         $this->layout->hasdownloadlink = true;
 
-        // Block related data
+        // Block related data.
         $this->block = new stdClass();
 
-        // Add block view in layout
+        // Add block view in layout.
         $this->layout->blockview = $this->render_block('f2fsessionsblock', $this->block);
 
-        // Return blocks layout
+        // Return blocks layout.
         return $this->layout;
     }
 
@@ -114,9 +113,8 @@ class f2fsessionsblock extends block_base {
         global $CFG, $DB, $USER;
 
         require_once($CFG->dirroot . '/mod/facetoface/lib.php');
-        // $locations = get_locations($facetoface->id);
 
-        // TODO: This needs to check the location
+        // TODO: This needs to check the location.
         $location = '';
         $sessionid = false;
         $sessionwaitlisted = false;
@@ -135,7 +133,7 @@ class f2fsessionsblock extends block_base {
         $previousarray = array();
         $inprogressarray = array();
         $upcomingtbdarray = array();
-        // Create reporting manager instance
+        // Create reporting manager instance.
         $rpm = reporting_manager::get_instance();
         if ($sessions = facetoface_get_sessions($facetoface->id, $location)) {
             foreach ($sessions as $session) {
@@ -143,7 +141,12 @@ class f2fsessionsblock extends block_base {
                 foreach ($session->sessiondates as $sessiondate) {
                     $sessiondata = self::get_session_data($session, $sessiondate, $cohortid);
                     // Add custom fields to sessiondata.
-                    $customdata = $DB->get_records('facetoface_session_data', array('sessionid' => $session->id), '', 'fieldid, data');
+                    $customdata = $DB->get_records(
+                        'facetoface_session_data',
+                        array('sessionid' => $session->id),
+                        '',
+                        'fieldid, data'
+                        );
 
                     // Is session waitlisted.
                     if (!$session->datetimeknown) {
@@ -171,7 +174,7 @@ class f2fsessionsblock extends block_base {
                         $previousarray[] = $sessiondata;
                     } else if ($sessionstarted) {
                         $inprogressarray[] = $sessiondata;
-                    } else if ($sessionwaitlisted) { // Waitlist Not scheduled
+                    } else if ($sessionwaitlisted) { // Waitlist Not scheduled.
                         $upcomingtbdarray[] = $sessiondata;
                     } else { // Normal scheduled session.
                         $upcomingarray[] = $sessiondata;
@@ -187,14 +190,9 @@ class f2fsessionsblock extends block_base {
             }
         }
         if (!empty($sessions)) {
-            // $f2fsessions->upcoming = $upcomingarray;
             $f2fsessions->previous = array_merge($previousarray, $upcomingarray);
             $f2fsessions->overallattendend = $overallattendend;
             $f2fsessions->overallsignups = $overallsignups;
-            // $f2fsessions->notscheduled = $upcomingtbdarray;
-            // $f2fsessions->bookedsession = $bookedarray;
-            // $f2fsessions->sessionid = $sessionid;
-            // $f2fsessions->bookedsession = $bookedsession;
         } else {
             $f2fsessions->previous = array();
             $f2fsessions->overallattendend = array();
@@ -207,7 +205,7 @@ class f2fsessionsblock extends block_base {
      * Get the required data from F2F Sessions
      * @param [object] $facetoface Face to face detail
      * @param [object] $f2fsession Face to face session detail
-     * @return [object] Face to Face data 
+     * @return [object] Face to Face data
      */
     public static function get_facetoface_data($facetoface, $f2fsession) {
         $f2fmodule = new stdClass();
@@ -220,16 +218,16 @@ class f2fsessionsblock extends block_base {
         return $f2fmodule;
     }
 
-    /** 
+    /**
      * Get the F2F Session data
      * @param [object] $session Session data
      * @param [string] $sessiondate Session Date
-     * @return [object] Face to Face data 
+     * @return [object] Face to Face data
      */
     public static function get_session_data($session, $sessiondate, $cohortid) {
         global $CFG;
         require_once($CFG->dirroot . '/mod/facetoface/lib.php');
-        // Create reporting manager instance
+        // Create reporting manager instance.
         $rpm = reporting_manager::get_instance();
         $attendees = facetoface_get_attendees($session->id);
         $attended = 0;
@@ -321,7 +319,7 @@ class f2fsessionsblock extends block_base {
      */
     public static function get_canceled_sessionsdata($sessionid, $cohortid) {
         global $DB;
-        // Create reporting manager instance
+        // Create reporting manager instance.
         $rpm = reporting_manager::get_instance();
         $sql = "SELECT ss.* FROM {facetoface_signups_status} ss
                 JOIN {facetoface_signups} fs
@@ -397,12 +395,12 @@ class f2fsessionsblock extends block_base {
         $export[] = self::get_headers_report();
 
         $modules = self::get_f2fmodules();
-        foreach($modules as $module) {
+        foreach ($modules as $module) {
             $data = new stdClass();
 
             $data->name = $module->name;
             $data->coursename = $module->coursename;
-            foreach($module->sessions as $session) {
+            foreach ($module->sessions as $session) {
                 $data->date = $session->date;
                 $data->time = $session->time;
                 $data->signups = $session->signups;
@@ -426,7 +424,7 @@ class f2fsessionsblock extends block_base {
         $export = array();
         $modules = self::get_f2fmodules($cohortid);
         $export[] = self::get_headers_report($filter);
-        foreach($modules as $module) {
+        foreach ($modules as $module) {
             if ($filter) {
                 $data = self::get_exportable_data_report_users($module, $filter);
             } else {
@@ -445,11 +443,11 @@ class f2fsessionsblock extends block_base {
      */
     public static function get_exportable_data_report_users($module, $filter) {
         $dataarray = array();
-        foreach($module->sessions as $session) {
+        foreach ($module->sessions as $session) {
             if ($session->sessionid !== $filter) {
                 continue;
             }
-            foreach($session->users as $user) {
+            foreach ($session->users as $user) {
                 $data = new stdClass();
                 $data->fullname = $user->firstname . " " . $user->lastname;
                 $data->status = strip_tags($user->status);
@@ -473,7 +471,7 @@ class f2fsessionsblock extends block_base {
         $data = new stdClass();
         $data->name = $module->name;
         $data->coursename = $module->coursename;
-        foreach($module->sessions as $session) {
+        foreach ($module->sessions as $session) {
             $data->date = $session->date;
             $data->time = $session->time;
             $data->signups = $session->signups;

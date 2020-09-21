@@ -13,7 +13,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
  * Plugin administration pages are defined here.
  *
@@ -41,19 +40,22 @@ class todaysactivityblock extends block_base {
     public function get_layout() {
         global $CFG;
 
-        // Layout related data
+        // Layout related data.
         $this->layout->id = 'todaysactivityblock';
         $this->layout->name = get_string('todaysactivityheader', 'report_elucidsitereport');
         $this->layout->info = get_string('todaysactivityblockhelp', 'report_elucidsitereport');
-        $this->layout->filters = '<input class="btn btn-sm dropdown-toggle input-group-addon" id="flatpickrCalender" placeholder="' . get_string('selectdate', 'report_elucidsitereport') . '" data-input/>';
+        $this->layout->filters =
+        '<input class="btn btn-sm dropdown-toggle input-group-addon" id="flatpickrCalender" placeholder="' .
+        get_string('selectdate', 'report_elucidsitereport') .
+        '" data-input/>';
 
-        // Block related data
+        // Block related data.
         $this->block = new stdClass();
 
-        // Add block view in layout
+        // Add block view in layout.
         $this->layout->blockview = $this->render_block('todaysactivityblock', $this->block);
 
-        // Return blocks layout
+        // Return blocks layout.
         return $this->layout;
     }
 
@@ -75,7 +77,7 @@ class todaysactivityblock extends block_base {
     public static function get_todaysactivity($date) {
         global $DB;
 
-        // Set time according to the filter
+        // Set time according to the filter.
         if ($date) {
             $starttime = strtotime($date);
             $endtime = $starttime + 24 * 60 * 60;
@@ -87,9 +89,9 @@ class todaysactivityblock extends block_base {
         $todaysactivity = array();
         $total = 0;
         $context = context_system::instance();
-        // Create reporting manager instance
+        // Create reporting manager instance.
         $rpm = reporting_manager::get_instance();
-        // Enrolments
+        // Enrolments.
         $enrollmentsql = "SELECT * FROM {user_enrolments}
             WHERE timecreated >= :starttime
             AND timecreated < :endtime
@@ -101,7 +103,7 @@ class todaysactivityblock extends block_base {
         $todaysactivity["enrollments"] = count($enrollments);
         $total += count($enrollments);
 
-        // Activity Completion
+        // Activity Completion.
         $activitycompletionsql = "SELECT * FROM {course_modules_completion}
             WHERE timemodified >= :starttime
             AND timemodified < :endtime
@@ -110,7 +112,7 @@ class todaysactivityblock extends block_base {
         $todaysactivity["activitycompletions"] = count($activitycompletions);
         $total += count($activitycompletions);
 
-        // Course Completion
+        // Course Completion.
         $coursecompletionsql = "SELECT * FROM {course_completions}
             WHERE timecompleted >= :starttime
             AND timecompleted < :endtime
@@ -119,7 +121,7 @@ class todaysactivityblock extends block_base {
         $todaysactivity["coursecompletions"] = count($coursecompletions);
         $total += count($coursecompletions);
 
-        // Registration
+        // Registration.
         $registrationssql = "SELECT * FROM {user}
             WHERE timecreated >= :starttime
             AND timecreated < :endtime
@@ -128,12 +130,12 @@ class todaysactivityblock extends block_base {
         $todaysactivity["registrations"] = count($registrations);
         $total += count($registrations);
 
-        // Visits
+        // Visits.
         $visitsssql = "SELECT DISTINCT userid
             FROM {logstore_standard_log}
             WHERE timecreated >= :starttime
             AND timecreated < :endtime
-            AND userid ".$rpm->insql.""; // Remove guest users
+            AND userid ".$rpm->insql.""; // Remove guest users.
         $visits = $DB->get_records_sql($visitsssql, $params);
         $todaysactivity["visits"] = count($visits);
         $total += count($visits);
@@ -156,14 +158,12 @@ class todaysactivityblock extends block_base {
             $params = array_merge($params, $rpm->inparams);
         } while ($starttimehour < $endtime);
 
-        /*$fetcher = new fetcher(null, $endtime, $starttime, $context);
-        $activeusers = $fetcher->get_users(0);*/
         $todaysactivity["onlinelearners"] = $todaysactivity["onlineteachers"] = 0;
 
-        // 'moodle/course:ignoreavailabilityrestrictions' - this capability is allowed to only teachers
+        // Capability 'moodle/course:ignoreavailabilityrestrictions' - is allowed to only teachers.
         $teacherscap = "moodle/course:ignoreavailabilityrestrictions";
 
-        // 'moodle/course:isincompletionreports' - this capability is allowed to only students
+        // Capability 'moodle/course:isincompletionreports' - is allowed to only students.
         $learnerscap = "moodle/course:isincompletionreports";
         foreach ($visits as $user) {
             $isteacher = $islearner = false;

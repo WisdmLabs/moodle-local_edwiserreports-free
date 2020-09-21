@@ -13,7 +13,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
  * Plugin administration pages are defined here.
  *
@@ -49,12 +48,12 @@ class completion_block extends utility {
      * Get Course Completion data
      * @param [int] $courseid Course Id
      * @param [int] $cohortid Cohort Id
-     * @return [array] Array of users with course Completion 
+     * @return [array] Array of users with course Completion
      */
     public static function get_completions($courseid, $cohortid) {
         global $DB;
         $timenow = time();
-        // Create reporting manager instance
+        // Create reporting manager instance.
         $rpm = reporting_manager::get_instance();
         $enrolsql = "SELECT *
             FROM {user_enrolments} ue
@@ -63,9 +62,8 @@ class completion_block extends utility {
             WHERE ue.userid = :userid AND u.deleted = 0";
 
         $coursecontext = context_course::instance($courseid);
-        // Get only enrolled students
+        // Get only enrolled students.
         $enrolledstudents = course_progress_block::rep_get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
-        // $enrolledstudents = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
         $course = get_course($courseid);
 
         $userscompletion = array();
@@ -77,7 +75,7 @@ class completion_block extends utility {
                 }
             }
 
-            $params = array('courseid'=>$courseid, 'userid' => $user->id);
+            $params = array('courseid' => $courseid, 'userid' => $user->id);
             $enrolinfo = $DB->get_record_sql($enrolsql, $params);
 
             $completion = self::get_course_completion_info($course, $user->id);
@@ -172,7 +170,7 @@ class completion_block extends utility {
 
         $export = array();
         $export[] = self::get_header();
-        foreach($completions as $completion) {
+        foreach ($completions as $completion) {
             $completion->username = strip_tags($completion->username);
             $export[] = array_values((array)$completion);
         }

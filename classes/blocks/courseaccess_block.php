@@ -13,7 +13,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
  * Plugin administration pages are defined here.
  *
@@ -44,7 +43,7 @@ class courseaccess_block extends utility {
 
     /**
      * Get Course Access data
-     * @return [array] Array of users with course Access 
+     * @return [array] Array of users with course Access
      */
     public static function get_courseaccess_data($courseid) {
         global $DB;
@@ -55,6 +54,7 @@ class courseaccess_block extends utility {
         $timenow = time();
 
         $userscompletion = array();
+        // Can be optimized.
         foreach ($enrolledstudents as $user) {
             $enrolsql = "SELECT *
             FROM {user_enrolments} ue
@@ -62,7 +62,7 @@ class courseaccess_block extends utility {
             JOIN {user} u ON u.id = ue.userid
             WHERE ue.userid = :userid AND u.deleted = 0";
 
-            $params = array('courseid'=>$courseid, 'userid' => $user->id);
+            $params = array('courseid' => $courseid, 'userid' => $user->id);
             $enrolinfo = $DB->get_record_sql($enrolsql, $params);
 
             $completion = self::get_course_completion_info($course, $user->id);

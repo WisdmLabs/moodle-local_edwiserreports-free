@@ -13,7 +13,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
  * Plugin administration pages are defined here.
  *
@@ -62,9 +61,10 @@ class courseengage_block extends utility {
         $engagedata = array();
         $courses = self::get_courses(true);
         $params = array();
-        // Create reporting manager instance
+        // Create reporting manager instance.
         $rpm = reporting_manager::get_instance();
         $sqlcohort = "";
+        // Can be optimized.
         if ($cohortid) {
             $completionsql = "SELECT c.courseid, COUNT(c.userid) AS usercount, c.progress as completion
                 FROM {edw_course_progress} c
@@ -78,7 +78,7 @@ class courseengage_block extends utility {
                 AND u.id ".$rpm->insql."
                 GROUP BY c.courseid";
 
-            // Calculate atleast completed one modules 
+            // Calculate atleast completed one modules.
             $completionmodulesql = "SELECT c.courseid, COUNT(c.userid) AS usercount
                 FROM {edw_course_progress} c
                 JOIN {user} u ON u.id = c.userid
@@ -102,7 +102,7 @@ class courseengage_block extends utility {
                 AND u.deleted = 0
                 AND u.id ".$rpm->insql."
                 GROUP BY c.courseid";
-            // Calculate atleast completed one modules
+            // Calculate atleast completed one modules.
             $completionmodulesql = "SELECT c.courseid, COUNT(c.userid) AS usercount
                 FROM {edw_course_progress} c
                 JOIN {user} u ON u.id = c.userid
@@ -114,14 +114,13 @@ class courseengage_block extends utility {
                 GROUP BY c.courseid";
         }
 
-
-        // Calculate 50% Completion Count for Courses 
+        // Calculate 50% Completion Count for Courses.
         $params["completionstart"] = 50.00;
         $params["completionend"] = 99.99;
         $params = array_merge($params, $rpm->inparams);
         $completion50 = $DB->get_records_sql($completionsql, $params);
 
-        // Calculate 100% Completion Count for Courses 
+        // Calculate 100% Completion Count for Courses.
         $params["completionstart"] = 100.00;
         $params["completionend"] = 100.00;
         $params = array_merge($params, $rpm->inparams);
@@ -130,7 +129,7 @@ class courseengage_block extends utility {
         $params ["completedactivities"] = 1;
         $params = array_merge($params, $rpm->inparams);
         $completiononemodule = $DB->get_records_sql($completionmodulesql, $params);
-        foreach($courses as $course) {
+        foreach ($courses as $course) {
             $values = array(
                 "completed50" => 0,
                 "completed100" => 0,
@@ -164,14 +163,14 @@ class courseengage_block extends utility {
     public static function get_engagement($course, $cohortid, $values) {
         global $CFG, $DB;
 
-        // Create engagement object
+        // Create engagement object.
         $engagement = new stdClass();
 
-        // Get only enrolled students
+        // Get only enrolled students.
         $enrolledstudents = \report_elucidsitereport\utility::get_enrolled_students($course->id);
         /* If cohort filter is there then select only cohort users */
-        if($cohortid) {
-            foreach($enrolledstudents as $key => $user) {
+        if ($cohortid) {
+            foreach ($enrolledstudents as $key => $user) {
                 $cohorts = cohort_get_user_cohorts($user->id);
                 if (!array_key_exists($cohortid, $cohorts)) {
                     unset($enrolledstudents[$key]);
@@ -179,10 +178,10 @@ class courseengage_block extends utility {
             }
         }
 
-        // Generate course url
+        // Generate course url.
         $courseurl = new moodle_url($CFG->wwwroot . "/course/view.php", array("id" => $course->id));
 
-        // Get course name with course url
+        // Get course name with course url.
         $engagement->coursename = html_writer::link(
             $courseurl,
             $course->fullname,
@@ -191,49 +190,49 @@ class courseengage_block extends utility {
             )
         );
 
-        // Generate enrolments link
+        // Generate enrolments link.
         $engagement->enrolment = self::get_course_engagement_link(
             "enrolment",
             $course,
             count($enrolledstudents)
         );
 
-        // Generate visits link
+        // Generate visits link.
         $engagement->visited = self::get_course_engagement_link(
             "visited",
             $course,
             count(self::get_course_visites($course->id, $cohortid))
         );
 
-        // Generate activity started link
+        // Generate activity started link.
         $engagement->activitystart = self::get_course_engagement_link(
             "activitystart",
             $course,
             $values["completiononemodule"]
         );
 
-        // Generate completed 50% of course link
+        // Generate completed 50% of course link.
         $engagement->completedhalf = self::get_course_engagement_link(
             "completedhalf",
             $course,
             $values["completed50"]
         );
 
-        // Generate course completion link
+        // Generate course completion link.
         $engagement->coursecompleted = self::get_course_engagement_link(
             "coursecompleted",
             $course,
             $values["completed100"]
         );
 
-        // Return engagement object
+        // Return engagement object.
         return $engagement;
     }
 
     /**
      * Get Engagement Attributes
      * @param [object] $course Course Object
-     * @param [object] $user Users List 
+     * @param [object] $user Users List
      */
     public static function get_course_engagement_link($attrname, $course, $val) {
         return html_writer::link("javascript:void(0)", $val,
@@ -259,7 +258,7 @@ class courseengage_block extends utility {
             "style" => "min-width: 100%;",
         );
 
-        // Get userslist to display
+        // Get userslist to display.
         $data = self::get_userslist($courseid, $action, $cohortid);
 
         $table->head = $data->head;
@@ -316,7 +315,7 @@ class courseengage_block extends utility {
         );
 
         $userdata->data = array();
-        foreach($users as $user) {
+        foreach ($users as $user) {
             /* If cohort filter is there then get only users from cohort */
             if ($cohortid) {
                 $cohorts = cohort_get_user_cohorts($user->id);
@@ -348,7 +347,7 @@ class courseengage_block extends utility {
         );
 
         $userdata->data = array();
-        foreach($users as $user) {
+        foreach ($users as $user) {
             /* If cohort filter is there then get only users from cohort */
             if ($cohortid) {
                 $cohorts = cohort_get_user_cohorts($user->id);
@@ -382,7 +381,7 @@ class courseengage_block extends utility {
         );
 
         $userdata->data = array();
-        foreach($users as $user) {
+        foreach ($users as $user) {
             /* If cohort filter is there then get only users from cohort */
             if ($cohortid) {
                 $cohorts = cohort_get_user_cohorts($user->id);
@@ -416,7 +415,7 @@ class courseengage_block extends utility {
         );
 
         $userdata->data = array();
-        foreach($users as $user) {
+        foreach ($users as $user) {
             /* If cohort filter is there then get only users from cohort */
             if ($cohortid) {
                 $cohorts = cohort_get_user_cohorts($user->id);
@@ -450,7 +449,7 @@ class courseengage_block extends utility {
         );
 
         $userdata->data = array();
-        foreach($users as $user) {
+        foreach ($users as $user) {
             /* If cohort filter is there then get only users from cohort */
             if ($cohortid) {
                 $cohorts = cohort_get_user_cohorts($user->id);
@@ -495,7 +494,7 @@ class courseengage_block extends utility {
         $export[] = self::get_header_report();
 
         $data = self::get_courseengage($cohortid);
-        foreach($data as $key => $val) {
+        foreach ($data as $key => $val) {
             $row = array();
             foreach ($val as $k => $v) {
                 $row[] = strip_tags($v);

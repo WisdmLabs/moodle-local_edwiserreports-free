@@ -13,7 +13,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
  * Reports abstract block will define here to which will extend for each repoers blocks
  *
@@ -24,6 +23,7 @@
 
 namespace report_elucidsitereport;
 
+defined('MOODLE_INTERNAL') or die;
 use stdClass;
 use moodle_url;
 use cache;
@@ -32,19 +32,19 @@ use html_writer;
 require_once($CFG->dirroot . '/report/elucidsitereport/classes/block_base.php');
 
 class activeusersblock extends block_base {
-    // Get the first site access data
+    // Get the first site access data.
     public $firstaccess;
 
-    // Current time
+    // Current time.
     public $timenow;
 
-    // active users block labels
+    // Active users block labels.
     public $labels;
 
-    // No. of labels for active users
+    // No. of labels for active users.
     public $xlabelcount;
 
-    // Cache
+    // Cache.
     public $cache;
 
     /**
@@ -53,7 +53,7 @@ class activeusersblock extends block_base {
     public function get_layout() {
         global $CFG;
 
-        // Layout related data
+        // Layout related data.
         $this->layout->id = 'activeusersblock';
         $this->layout->name = get_string('activeusersheader', 'report_elucidsitereport');
         $this->layout->info = get_string('activeusersblocktitlehelp', 'report_elucidsitereport');
@@ -61,18 +61,18 @@ class activeusersblock extends block_base {
         $this->layout->hasdownloadlink = true;
         $this->layout->filters = $this->get_activeusers_filter();
 
-        // Selected default filters
+        // Selected default filters.
         $this->layout->filter = 'weekly';
         $this->layout->cohortid = '0';
 
-        // Block related data
+        // Block related data.
         $this->block = new stdClass();
         $this->block->displaytype = 'line-chart';
 
-        // Add block view in layout
+        // Add block view in layout.
         $this->layout->blockview = $this->render_block('activeusersblock', $this->block);
 
-        // Return blocks layout
+        // Return blocks layout.
         return $this->layout;
     }
 
@@ -80,7 +80,7 @@ class activeusersblock extends block_base {
      * Prepare active users block filters
      */
     public function get_activeusers_filter() {
-        // Add last updated text in header
+        // Add last updated text in header.
         $lastupdatetext = html_writer::start_tag('small', array(
             'id' => 'update-time',
             'class' => 'font-size-12'
@@ -93,7 +93,7 @@ class activeusersblock extends block_base {
         ));
         $lastupdatetext .= html_writer::end_tag('small');
 
-        // Prepare filter HTML for active users block
+        // Prepare filter HTML for active users block.
         $filterhtml = html_writer::start_tag('form', array("action" => "javascript:void(0)"));
         $filterhtml .= html_writer::start_tag('div', array('class' => 'd-flex mt-1'));
         $filterhtml .= html_writer::tag('button', get_string('lastweek', 'report_elucidsitereport'), array(
@@ -114,9 +114,9 @@ class activeusersblock extends block_base {
         ));
         $filterhtml .= html_writer::start_tag('div', array('class' => 'dropdown-body'));
 
-        // Prepare filter link
+        // Prepare filter link.
         $datefilter = html_writer::empty_tag('input', array(
-            'class'=> 'dropdown-item border-0 custom p-0',
+            'class' => 'dropdown-item border-0 custom p-0',
             'id' => 'flatpickrCalender',
             'placeholder' => get_string('custom', 'report_elucidsitereport'),
             'data-input'
@@ -144,7 +144,7 @@ class activeusersblock extends block_base {
             )
         );
 
-        // Prepare dropdown items for active users filter
+        // Prepare dropdown items for active users filter.
         foreach ($filteropt as $key => $value) {
             $filterhtml .= html_writer::link('javascript:void(0)', $value['name'], array(
                 'class' => 'dropdown-item',
@@ -153,13 +153,13 @@ class activeusersblock extends block_base {
             ));
         }
 
-        // End tags
+        // End tags.
         $filterhtml .= html_writer::end_tag('div');
         $filterhtml .= html_writer::end_tag('div');
         $filterhtml .= html_writer::end_tag('div');
         $filterhtml .= html_writer::end_tag('form');
 
-        // Create filter for active users block
+        // Create filter for active users block.
         $filters = html_writer::start_tag('div');
         $filters .= html_writer::tag('div', $lastupdatetext);
         $filters .= html_writer::start_tag('div');
@@ -177,85 +177,84 @@ class activeusersblock extends block_base {
     public function generate_labels($filter) {
         global $DB;
 
-        // Set current time
+        // Set current time.
         $this->timenow = time();
-        // Set cache for active users block
+        // Set cache for active users block.
         $this->cache = cache::make('report_elucidsitereport', 'activeusers');
-        // Create reporting manager instance
+        // Create reporting manager instance.
         $rpm = reporting_manager::get_instance();
-        // Get logs from cache
+        // Get logs from cache.
         if (!$record = $this->cache->get("activeusers-first-log")) {
             $sql = "SELECT id, userid, timecreated
                 FROM {logstore_standard_log}
                 ORDER BY timecreated ASC LIMIT 1";
             $record = $DB->get_record_sql($sql);
 
-            // Set cache if log is not available
+            // Set cache if log is not available.
             $this->cache->set("activeusers-first-log", $record);
         }
 
         $cachekey = "activeusers-labels-" . $filter.''.$rpm->rpmcache;
         if ($record) {
-            // Getting first access of the site
+            // Getting first access of the site.
             $this->firstaccess = $record->timecreated;
             switch ($filter) {
                 case ALL:
-                    // Calculate the days for all active users data
-                    $days = ceil(($this->timenow-$this->firstaccess)/ONEDAY);
+                    // Calculate the days for all active users data.
+                    $days = ceil(($this->timenow - $this->firstaccess) / ONEDAY);
                     $this->xlabelcount = $days;
                     break;
                 case MONTHLY:
-                    // Monthly days
+                    // Monthly days.
                     $this->xlabelcount = MONTHLY_DAYS;
                     break;
                 case YEARLY:
-                    // Yearly days
+                    // Yearly days.
                     $this->xlabelcount = YEARLY_DAYS;
                     break;
                 case WEEKLY:
-                    // Weekly days
+                    // Weekly days.
                     $this->xlabelcount = WEEKLY_DAYS;
                     break;
                 default:
-                    // Explode dates from custom date filter
+                    // Explode dates from custom date filter.
                     $dates = explode(" to ", $filter);
                     if (count($dates) == 2) {
                         $startdate = strtotime($dates[0]." 00:00:00");
                         $enddate = strtotime($dates[1]." 23:59:59");
                     }
 
-                    // If it has correct startdat and end date then count xlabel
+                    // If it has correct startdat and end date then count xlabel.
                     if (isset($startdate) && isset($enddate)) {
                         $days = ceil($enddate - $startdate) / ONEDAY;
                         $this->xlabelcount = $days;
                         $this->timenow = $enddate;
                     } else {
-                        $this->xlabelcount = WEEKLY_DAYS; // Default one week
+                        $this->xlabelcount = WEEKLY_DAYS; // Default one week.
                     }
             }
         } else {
-            // If no record fonud then current time is first access time
+            // If no record fonud then current time is first access time.
             $this->firstaccess = $this->timenow;
         }
 
-
-        // Get labels from cache if exist
+        // Get labels from cache if exist.
         if ($this->cache->get($cachekey)) {
             $this->labels = $this->cache->get($cachekey);
         } else {
-            // Get all lables
+            // Get all lables.
             for ($i = 0; $i < $this->xlabelcount; $i++) {
                 $time = $this->timenow - $i * ONEDAY;
                 $this->labels[] = date("d M y", $time);
             }
 
-            // If cache is not set then set cache for labels
+            // If cache is not set then set cache for labels.
             if (isset($cachekey)) {
                 $this->cache->set($cachekey, $this->labels);
             }
         }
 
-        // Reverse the labels to show in graph from right to left
+        // Reverse the labels to show in graph from right to left.
         $this->labels = array_reverse($this->labels);
     }
 
@@ -264,15 +263,15 @@ class activeusersblock extends block_base {
      * @param  string $filter date filter to get data
      * @return stdClass active users graph data
      */
-    public function get_data($params = false) { 
-        // Get data from params
+    public function get_data($params = false) {
+        // Get data from params.
         $filter = isset($params->filter) ? $params->filter : false;
         $cohortid = isset($params->cohortid) ? $params->cohortid : false;
 
-        // Generate active users data label
+        // Generate active users data label.
         $this->generate_labels($filter);
 
-        // Get cache key
+        // Get cache key.
         $cachekey = "activeusers-response" . $filter . "-";
 
         if ($cohortid) {
@@ -281,7 +280,7 @@ class activeusersblock extends block_base {
             $cachekey .= "all";
         }
 
-        // If response is in cache then return from cache
+        // If response is in cache then return from cache.
         if (!$response = $this->cache->get($cachekey)) {
             $response = new stdClass();
             $response->data = new stdClass();
@@ -291,7 +290,7 @@ class activeusersblock extends block_base {
             $response->data->completionRate = $this->get_course_completionrate($filter, $cohortid);
             $response->labels = $this->labels;
 
-            // Set response in cache
+            // Set response in cache.
             $this->cache->set($cachekey, $response);
         }
 
@@ -337,25 +336,25 @@ class activeusersblock extends block_base {
     public static function get_modal_table_header($action) {
         switch($action) {
             case 'completions':
-                // Return table header
+                // Return table header.
                 return array(
                     get_string("fullname", "report_elucidsitereport"),
                     get_string("email", "report_elucidsitereport"),
                     get_string("coursename", "report_elucidsitereport")
-                ); 
+                );
             case 'enrolments':
-                // Return table header
+                // Return table header.
                 return array(
                     get_string("fullname", "report_elucidsitereport"),
                     get_string("email", "report_elucidsitereport"),
                     get_string("coursename", "report_elucidsitereport")
-                ); 
+                );
             default:
-                // Return table header
+                // Return table header.
                 return array(
                     get_string("fullname", "report_elucidsitereport"),
                     get_string("email", "report_elucidsitereport")
-                ); 
+                );
         }
     }
 
@@ -367,33 +366,33 @@ class activeusersblock extends block_base {
      * @return [array] Array of users data fields (Full Name, Email)
      */
     public static function get_userslist_table($filter, $action, $cohortid) {
-        // Make cache
+        // Make cache.
         $cache = cache::make('report_elucidsitereport', 'activeusers');
-        // Create reporting manager instance
+        // Create reporting manager instance.
         $rpm = reporting_manager::get_instance();
-        // Get values from cache if it is set
+        // Get values from cache if it is set.
         $cachekey = "userslist-" . $filter . "-" . $action . "-" . "-" . $cohortid.''.$rpm->rpmcache;
         if (!$table = $cache->get($cachekey)) {
             $table = new html_table();
 
-            // Get table header
+            // Get table header.
             $table->head = self::get_modal_table_header($action);
 
-            // Set table attributes
+            // Set table attributes.
             $table->attributes = array (
                 "class" => "modal-table",
                 "style" => "min-width: 100%;"
             );
 
-            // Get Users data
+            // Get Users data.
             $data = self::get_userslist($filter, $action, $cohortid);
 
-            // Set table cell
+            // Set table cell.
             if (!empty($data)) {
                 $table->data = $data;
             }
 
-            // Set cache for users list
+            // Set cache for users list.
             $cache->set($cachekey, $table);
         }
 
@@ -401,79 +400,79 @@ class activeusersblock extends block_base {
     }
 
     /**
-    * Get users list data for active users block
-    * @param [string] $filter Time filter to get users for this day
-    * @param [string] $action Get users list for this action
-    * @param [int] $cohortid Cohort Id
-    * @return [string] HTML table string of users list
-    * Columns are (Full Name, Email)
-    */
+     * Get users list data for active users block
+     * @param [string] $filter Time filter to get users for this day
+     * @param [string] $action Get users list for this action
+     * @param [int] $cohortid Cohort Id
+     * @return [string] HTML table string of users list
+     * Columns are (Full Name, Email)
+     */
     public static function get_userslist($filter, $action, $cohortid = false) {
-       global $DB;
-       // If cohort ID is there then add cohort filter in sqlquery
-       $sqlcohort = "";
-       if ($cohortid) {
-           $sqlcohort .= " JOIN {cohort_members} cm
+        global $DB;
+        // If cohort ID is there then add cohort filter in sqlquery.
+        $sqlcohort = "";
+        if ($cohortid) {
+            $sqlcohort .= " JOIN {cohort_members} cm
                    ON cm.userid = l.relateduserid";
-           $params["cohortid"] = $cohortid;
-       }
-       // Create reporting manager instance
-       $rpm = reporting_manager::get_instance();
-       // Based on action prepare query
-       switch($action) {
-           case "activeusers":
-               $sql = "SELECT DISTINCT l.userid as relateduserid
+            $params["cohortid"] = $cohortid;
+        }
+        // Create reporting manager instance.
+        $rpm = reporting_manager::get_instance();
+        // Based on action prepare query.
+        switch($action) {
+            case "activeusers":
+                $sql = "SELECT DISTINCT l.userid as relateduserid
                    FROM {logstore_standard_log} l $sqlcohort
                    WHERE l.userid ".$rpm->insql."
                    AND l.timecreated >= :starttime
                    AND l.timecreated < :endtime
                    AND l.action = :action";
-               $params["action"] = 'viewed';
-               break;
-           case "enrolments":
-               $sql = "SELECT l.id, l.userid, l.relateduserid, l.courseid
+                $params["action"] = 'viewed';
+                break;
+            case "enrolments":
+                $sql = "SELECT l.id, l.userid, l.relateduserid, l.courseid
                    FROM {logstore_standard_log} l $sqlcohort
                    WHERE l.relateduserid ".$rpm->insql."
                    AND l.timecreated >= :starttime
                    AND l.timecreated < :endtime
                    AND l.eventname = :eventname";
-               $params["eventname"] = '\core\event\user_enrolment_created';
-               break;
-           case "completions";
-                   $sqlcohort = "";
-               if ($cohortid) {
-                   $sqlcohort .= " JOIN {cohort_members} cm
+                $params["eventname"] = '\core\event\user_enrolment_created';
+                break;
+            case "completions";
+                $sqlcohort = "";
+                if ($cohortid) {
+                    $sqlcohort .= " JOIN {cohort_members} cm
                            ON cm.userid = l.userid";
-                   $params["cohortid"] = $cohortid;
-               }
-               $sql = "SELECT DISTINCT l.userid as relateduserid, l.course as courseid
+                    $params["cohortid"] = $cohortid;
+                }
+                $sql = "SELECT DISTINCT l.userid as relateduserid, l.course as courseid
                    FROM {course_completions} l $sqlcohort
                    WHERE l.timecompleted IS NOT NULL
                    AND l.timecompleted >= :starttime
                    AND l.timecompleted < :endtime
                    AND l.userid ".$rpm->insql."";
-       }
+        }
 
-       $params["starttime"] = $filter;
-       $params["endtime"] = $filter + ONEDAY;
-       $params = array_merge($params, $rpm->inparams);
-       $data = array();
-       $records = $DB->get_records_sql($sql, $params);
-       if (!empty($records)) {
-           foreach ($records as $record) {
-               $user = core_user::get_user($record->relateduserid);
-               $userdata = new stdClass();
-               $userdata->username = fullname($user);
-               $userdata->useremail = $user->email;
-               if ($action == "completions" || $action == "enrolments") {
-                   $course = get_course($record->courseid);
-                   $userdata->coursename = $course->fullname;
-               }
-               $data[] = array_values((array)$userdata);
-           }
-       }
+        $params["starttime"] = $filter;
+        $params["endtime"] = $filter + ONEDAY;
+        $params = array_merge($params, $rpm->inparams);
+        $data = array();
+        $records = $DB->get_records_sql($sql, $params);
+        if (!empty($records)) {
+            foreach ($records as $record) {
+                $user = core_user::get_user($record->relateduserid);
+                $userdata = new stdClass();
+                $userdata->username = fullname($user);
+                $userdata->useremail = $user->email;
+                if ($action == "completions" || $action == "enrolments") {
+                    $course = get_course($record->courseid);
+                    $userdata->coursename = $course->fullname;
+                }
+                $data[] = array_values((array)$userdata);
+            }
+        }
 
-       return $data;
+        return $data;
     }
 
     /**
@@ -491,10 +490,9 @@ class activeusersblock extends block_base {
             "endtime" => $this->timenow,
             "action" => "viewed"
         );
+        // Can be optimized
         // Create reporting manager instance
-        // $rpm = reporting_manager::get_instance();
-        // $params = array_merge($params, $rpm->inparams);
-        // Query to get activeusers from logs
+        // Query to get activeusers from logs.
         if ($cohortid) {
             $cachekey = "activeusers-activeusers-" . $filter . "-" . $cohortid .''.$rpm->rpmcache;
             $params["cohortid"] = $cohortid;
@@ -515,7 +513,7 @@ class activeusersblock extends block_base {
                GROUP BY YEAR(FROM_UNIXTIME(l.timecreated)),
                MONTH(FROM_UNIXTIME(l.timecreated)),
                DAY(FROM_UNIXTIME(l.timecreated)), USERDATE";
-       } else {
+        } else {
             $cachekey = "activeusers-activeusers-" . $filter . "-all".''.$rpm->rpmcache;
             $sql = "SELECT
                CONCAT(
@@ -532,13 +530,13 @@ class activeusersblock extends block_base {
                MONTH(FROM_UNIXTIME(timecreated)),
                DAY(FROM_UNIXTIME(timecreated)), USERDATE";
         };
-        // Get active users data from cache
+        // Get active users data from cache.
         if (!$activeusers = $this->cache->get($cachekey)) {
-            // Get Logs to generate active users data
+            // Get Logs to generate active users data.
             $activeusers = array();
             $logs = $DB->get_records_sql($sql, $params);
 
-            // Get active users for every day
+            // Get active users for every day.
             for ($i = 0; $i < $this->xlabelcount; $i++) {
                 $time = $this->timenow - $i * ONEDAY;
                 $logkey = date("j-n-Y", $time);
@@ -549,7 +547,7 @@ class activeusersblock extends block_base {
                 }
             }
 
-            // If not set the set cache
+            // If not set the set cache.
             $this->cache->set($cachekey, $activeusers);
         }
 
@@ -574,7 +572,8 @@ class activeusersblock extends block_base {
             "eventname" => '\core\event\user_enrolment_created',
             "action" => "created"
         );
-        // Create reporting manager instance
+        // Can be optimized
+        // Create reporting manager instance.
         $rpm = reporting_manager::get_instance();
         $params = array_merge($params, $rpm->inparams);
         if ($cohortid) {
@@ -618,13 +617,13 @@ class activeusersblock extends block_base {
                 MONTH(FROM_UNIXTIME(timecreated)),
                 DAY(FROM_UNIXTIME(timecreated)), USERDATE";
         }
-        // Get data from cache if exist
+        // Get data from cache if exist.
         if (!$enrolments = $this->cache->get($cachekey)) {
-            // Get enrolments log
+            // Get enrolments log.
             $logs = $DB->get_records_sql($sql, $params);
             $enrolments = array();
 
-            // Get enrolments from every day
+            // Get enrolments from every day.
             for ($i = 0; $i < $this->xlabelcount; $i++) {
                 $time = $this->timenow - $i * ONEDAY;
                 $logkey = date("j-n-Y", $time);
@@ -636,7 +635,7 @@ class activeusersblock extends block_base {
                 }
             }
 
-            // Set cache ifnot exist
+            // Set cache ifnot exist.
             $this->cache->set($cachekey, $enrolments);
         }
         /* Reverse the array because the graph take
@@ -654,7 +653,8 @@ class activeusersblock extends block_base {
         global $DB;
 
         $params = array();
-        // Create reporting manager instance
+        // Can be optimized
+        // Create reporting manager instance.
         $rpm = reporting_manager::get_instance();
 
         if ($cohortid) {
@@ -695,11 +695,11 @@ class activeusersblock extends block_base {
                 DAY(FROM_UNIXTIME(timecompleted)), course, USERDATE";
         }
         $params = array_merge($params, $rpm->inparams);
-        // Get data from cache if exist
+        // Get data from cache if exist.
         if (!$completionrate = $this->cache->get($cachekey)) {
             $completionrate = array();
             $completions = $DB->get_records_sql($sql, $params);
-            // Get completion for each day
+            // Get completion for each day.
             for ($i = 0; $i < $this->xlabelcount; $i++) {
                 $time = $this->timenow - $i * ONEDAY;
                 $logkey = date("j-n-Y", $time);
@@ -711,7 +711,7 @@ class activeusersblock extends block_base {
                 }
             }
 
-            // Set cache if data not exist
+            // Set cache if data not exist.
             $this->cache->set($cachekey, $completionrate);
         }
 
@@ -728,20 +728,20 @@ class activeusersblock extends block_base {
      */
     public function get_exportable_data_block($filter) {
         $cohortid = optional_param("cohortid", 0, PARAM_INT);
-        // Make cache
+        // Make cache.
         $cache = cache::make('report_elucidsitereport', 'activeusers');
         $cachekey = "exportabledatablock-" . $filter;
-        // Create reporting manager instance
+        // Create reporting manager instance.
         $rpm = reporting_manager::get_instance();
         $cachekey .= $rpm->rpmcache;
-        // If exportable data is set in cache then get it from there
+        // If exportable data is set in cache then get it from there.
         if (!$export = $cache->get($cachekey)) {
-            // Get exportable data for active users block
+            // Get exportable data for active users block.
             $export = array();
             $export[] = self::get_header();
             $activeusersdata = self::get_data($filter);
 
-            // Generate active users data
+            // Generate active users data.
             foreach ($activeusersdata->labels as $key => $lable) {
                 $export[] = array(
                     $lable,
@@ -751,7 +751,7 @@ class activeusersblock extends block_base {
                 );
             }
 
-            // Set cache for exportable data
+            // Set cache for exportable data.
             $cache->set($cachekey, $export);
         }
 
@@ -764,7 +764,7 @@ class activeusersblock extends block_base {
      * @return [array] Array of exportable data
      */
     public static function get_exportable_data_report($filter) {
-        // Make cache
+        // Make cache.
         $cache = cache::make('report_elucidsitereport', 'activeusers');
 
         if (!$export = $cache->get("exportabledatareport")) {
@@ -779,7 +779,7 @@ class activeusersblock extends block_base {
                 );
             }
 
-            // Set cache for exportable data
+            // Set cache for exportable data.
             $cache->set("exportabledatablock", $export);
         }
 
@@ -787,31 +787,30 @@ class activeusersblock extends block_base {
     }
 
     /**
-    * Get User Data for Active Users Block
-    * @param [string] $lable Date for lable
-    * @param [string] $action Action for getting data
-    */
+     * Get User Data for Active Users Block
+     * @param [string] $lable Date for lable
+     * @param [string] $action Action for getting data
+     */
     public static function get_usersdata($lable, $action) {
-       $usersdata = array();
-       $users = active_users_block::get_userslist(strtotime($lable), $action);
+        $usersdata = array();
+        $users = active_users_block::get_userslist(strtotime($lable), $action);
 
-       foreach ($users as $key => $user) {
-           $user = array_merge(
+        foreach ($users as $key => $user) {
+            $user = array_merge(
                array($lable),
                $user
-           );
+            );
 
-           // If course is not set then skip one block for course
-           // Add empty value in course header
-           if (!isset($user[3])) {
-               $user = array_merge($user, array(''));
-           }
+            // If course is not set then skip one block for course
+            // Add empty value in course header.
+            if (!isset($user[3])) {
+                $user = array_merge($user, array(''));
+            }
 
-           $user = array_merge($user, array(get_string($action . "_status", "report_elucidsitereport")));
-           $usersdata[] = $user;
-       }
+            $user = array_merge($user, array(get_string($action . "_status", "report_elucidsitereport")));
+            $usersdata[] = $user;
+        }
 
-       // print_r($usersdata);
-       return $usersdata;
+        return $usersdata;
     }
 }

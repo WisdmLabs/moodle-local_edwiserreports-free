@@ -13,7 +13,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
  * Plugin administration pages are defined here.
  *
@@ -40,19 +39,19 @@ class activecoursesblock extends block_base {
     public function get_layout() {
         global $CFG;
 
-        // Layout related data
+        // Layout related data.
         $this->layout->id = 'activecoursesblock';
         $this->layout->name = get_string('activecoursesheader', 'report_elucidsitereport');
         $this->layout->info = get_string('activecoursesblockhelp', 'report_elucidsitereport');
 
-        // Block related data
+        // Block related data.
         $this->block = new stdClass();
         $this->block->displaytype = 'line-chart';
 
-        // Add block view in layout
+        // Add block view in layout.
         $this->layout->blockview = $this->render_block('activecoursesblock', $this->block);
 
-        // Return blocks layout
+        // Return blocks layout.
         return $this->layout;
     }
 
@@ -67,9 +66,9 @@ class activecoursesblock extends block_base {
         $response = new stdClass();
 
         $cache = cache::make('report_elucidsitereport', 'activecourses');
-        // Create reporting manager instance
+        // Create reporting manager instance.
         $rpm = reporting_manager::get_instance();
-        if(!$data = $cache->get('activecoursesdata'.$rpm->rpmcache)) {
+        if (!$data = $cache->get('activecoursesdata' . $rpm->rpmcache)) {
             $data = self::get_course_data();
             $cache->set('activecoursesdata'.$rpm->rpmcache, $data);
         }
@@ -105,10 +104,9 @@ class activecoursesblock extends block_base {
 
         $count = 0;
         $response = array();
-        // $completions = parent::get_course_completions();
-        // Create reporting manager instance
+        // Create reporting manager instance.
         $rpm = reporting_manager::get_instance();
-        // Calculate Completion Count for All Course 
+        // Calculate Completion Count for All Course.
         $sql = "SELECT courseid, COUNT(userid) AS users
             FROM {edw_course_progress}
             WHERE progress = :progress
@@ -116,38 +114,36 @@ class activecoursesblock extends block_base {
             GROUP BY courseid";
         $params = array("progress" => 100);
         $params = array_merge($params, $rpm->inparams);
-        // Get records with 100% completions
+        // Get records with 100% completions.
         $coursecompletion = $DB->get_records_sql($sql, $params);
 
         foreach ($courses as $course) {
-            // If moodle course then return false
+            // If moodle course then return false.
             if ($course->id == 1) {
                 continue;
             }
 
-            // Create a record for responce
+            // Create a record for responce.
             $res = array(
                 $count++,
                 $course->fullname
             );
 
-
-            // Get Course Context
+            // Get Course Context.
             $coursecontext = context_course::instance($course->id);
 
             // Get Enrolled users
-            // 'moodle/course:isincompletionreports' - this capability is allowed to only students
+            // 'moodle/course:isincompletionreports' - this capability is allowed to only students.
             $enrolledstudents = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
-            // $enrolledstudents = courseprogressblock::rep_get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
             if (empty($enrolledstudents)) {
-               continue;
+                continue;
             }
             $res[] = count($enrolledstudents);
 
-            // Get Completion count
+            // Get Completion count.
             if (!isset($coursecompletion[$course->id])) {
                 $completedusers = 0;
-            } else{
+            } else {
                 $completedusers = $coursecompletion[$course->id]->users;
             }
 
@@ -166,7 +162,7 @@ class activecoursesblock extends block_base {
      */
     public static function get_courseview_count($courseid, $enrolledstudents) {
         global $DB;
-
+        // Can be optimized.
         $sqlcourseview = "SELECT COUNT(userid) as usercount FROM
             (SELECT DISTINCT userid
             FROM {logstore_standard_log}
@@ -201,5 +197,5 @@ class activecoursesblock extends block_base {
         return $export;
     }
 
-    
+
 }

@@ -13,7 +13,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
  * Plugin administration pages are defined here.
  *
@@ -46,15 +45,15 @@ class liveusersblock extends block_base {
     public function get_layout() {
         global $CFG;
 
-        // Layout related data
+        // Layout related data.
         $this->layout->id = 'liveusersblock';
         $this->layout->name = get_string('realtimeusers', 'report_elucidsitereport');
         $this->layout->info = get_string('realtimeusersblockhelp', 'report_elucidsitereport');
 
-        // Add block view in layout
+        // Add block view in layout.
         $this->layout->blockview = $this->render_block('liveusersblock', $this->block);
 
-        // Return blocks layout
+        // Return blocks layout.
         return $this->layout;
     }
 
@@ -85,13 +84,14 @@ class liveusersblock extends block_base {
         $activeusers = $activefetcher->get_users(0);
         $inactiveusers = $inactivefetcher->get_users(0);
 
-        // Get Reporting manager students
+        // Get Reporting manager students.
         $rpmusers = array();
         $rpm = reporting_manager::get_instance();
 
         $users = array();
+        // Can be optimized.
         foreach ($inactiveusers as $inactiveuser) {
-            // check if current user is reporting manager and if the inactive user is in reporting manager students array
+            // Check if current user is reporting manager and if the inactive user is in reporting manager students array.
             if ($rpm->isrpm && !in_array($inactiveuser->id, $rpm->rpmusers)) {
                 continue;
             }

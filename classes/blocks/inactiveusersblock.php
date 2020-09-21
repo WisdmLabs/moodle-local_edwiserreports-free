@@ -13,7 +13,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
  * Plugin administration pages are defined here.
  *
@@ -25,6 +24,8 @@
 
 namespace report_elucidsitereport;
 
+defined('MOODLE_INTERNAL') || die;
+
 use stdClass;
 use cache;
 
@@ -35,11 +36,11 @@ require_once($CFG->dirroot . "/report/elucidsitereport/classes/reporting_manager
  * To get the data related to inactive users block
  */
 class inactiveusersblock extends block_base {
-    // is user reporting manager
+    // Is user reporting manager.
     public static $isrpm = false;
-    // reporting manager class object
+    // Reporting manager class object.
     public static $rpm = null;
-    // reporting manager students
+    // Reporting manager students.
     public static $rpmusers = array();
 
     /**
@@ -48,21 +49,21 @@ class inactiveusersblock extends block_base {
     public function get_layout() {
         global $CFG;
 
-        // Layout related data
+        // Layout related data.
         $this->layout->id = 'inactiveusersblock';
         $this->layout->name = get_string('inactiveusers', 'report_elucidsitereport');
         $this->layout->info = get_string('inactiveusersblockhelp', 'report_elucidsitereport');
         $this->layout->hasdownloadlink = true;
         $this->layout->filters = '';
 
-        // Block related data
+        // Block related data.
         $this->block = new stdClass();
         $this->block->displaytype = 'line-chart';
 
-        // Add block view in layout
+        // Add block view in layout.
         $this->layout->blockview = $this->render_block('inactiveusersblock', $this->block);
 
-        // Return blocks layout
+        // Return blocks layout.
         return $this->layout;
     }
 
@@ -74,29 +75,29 @@ class inactiveusersblock extends block_base {
     public function get_data($params = false) {
         $filter = isset($params->filter) ? $params->filter : false;
 
-        // Make cache for inactive users block
+        // Make cache for inactive users block.
         $cache = cache::make("report_elucidsitereport", "courseprogress");
-        // Create reporting manager instance
+        // Create reporting manager instance.
         $rpm = reporting_manager::get_instance();
-        // if user is reporting manager then get his students
+        // If user is reporting manager then get his students.
         if ($rpm->isrpm) {
             $cachekey = "inactiveusers-" . $filter . "_".$rpm->userid;
         } else {
             $cachekey = "inactiveusers-" . $filter;
         }
 
-        // If cache not set for course progress
+        // If cache not set for course progress.
         if (!$response = $cache->get($cachekey)) {
             $response = new stdClass();
 
-            // Get response data
+            // Get response data.
             $response->data = self::get_inactiveusers($filter);
 
-            // Set cache to get data for course progress
+            // Set cache to get data for course progress.
             $cache->set($cachekey, $response);
         }
 
-        // Return response
+        // Return response.
         return $response;
     }
 
@@ -105,13 +106,13 @@ class inactiveusersblock extends block_base {
      * @param  [String] $filter Filter
      * @return [Array] Array of inactive users
      */
-    public static function get_inactiveusers($filter = 'all', $isCsv = false) {
+    public static function get_inactiveusers($filter = 'all', $iscsv = false) {
         global $DB;
 
-        // Get current time
+        // Get current time.
         $timenow = time();
 
-        // Get last login time using filter
+        // Get last login time using filter.
         switch ($filter) {
             case '1month':
                 $lastlogin = $timenow - 1 * ONEMONTH;
@@ -127,21 +128,22 @@ class inactiveusersblock extends block_base {
         }
         $inparams = array();
         $rpm = reporting_manager::get_instance();
+        // Can be optimized.
         if ($rpm->isrpm) {
-            // Query to get users who have not logged in from reporting manager students
+            // Query to get users who have not logged in from reporting manager students.
             $sql = "SELECT * FROM {user} WHERE lastlogin <= :lastlogin
                 AND deleted = 0 AND id ".$rpm->insql;
         } else {
-            // Query to get users who have not logged in
+            // Query to get users who have not logged in.
             $sql = "SELECT * FROM {user} WHERE lastlogin <= :lastlogin
                     AND deleted = 0 AND id > 1";
         }
         $inparams['lastlogin'] = $lastlogin;
         $inparams = array_merge($inparams, $rpm->inparams);
-        // Get all users who are inactive
+        // Get all users who are inactive.
         $users = $DB->get_records_sql($sql, $inparams);
 
-        // Geenerate Inactive users return array
+        // Geenerate Inactive users return array.
         $inactiveusers = array();
         foreach ($users as $user) {
             $inactiveuser = array(
@@ -149,25 +151,25 @@ class inactiveusersblock extends block_base {
                 "email" => $user->email
             );
 
-            // If downloading the reports
-            if (!$isCsv) {
+            // If downloading the reports.
+            if (!$iscsv) {
                 $inactiveuser["lastlogin"] = '<div class="d-none">'.$user->lastlogin.'</div>';
             } else {
                 $inactiveuser["lastlogin"] = '';
             }
 
-            // Get last login by users
+            // Get last login by users.
             if ($user->lastlogin) {
                 $inactiveuser["lastlogin"] .= format_time($timenow - $user->lastlogin);
             } else {
                 $inactiveuser["lastlogin"] .= get_string('never');
             }
 
-            // Put inactive users in inactive users table
+            // Put inactive users in inactive users table.
             $inactiveusers[] = array_values($inactiveuser);
         }
 
-        // Return inactive users array
+        // Return inactive users array.
         return $inactiveusers;
     }
 
@@ -188,12 +190,12 @@ class inactiveusersblock extends block_base {
      * @return [type] [description]
      */
     public static function get_exportable_data_block($filter) {
-        // Prepare inactive users data
+        // Prepare inactive users data.
         $inactiveusers = array();
         $inactiveusers[] = self::get_headers();
         $inactiveusers = array_merge($inactiveusers, self::get_inactiveusers($filter, true));
 
-        // Return all inactive users
+        // Return all inactive users.
         return $inactiveusers;
     }
 }

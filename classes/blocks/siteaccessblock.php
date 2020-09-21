@@ -13,7 +13,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
  * Plugin administration pages are defined here.
  *
@@ -24,6 +23,8 @@
  */
 
 namespace report_elucidsitereport;
+
+defined('MOODLE_INTERNAL') || die;
 
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/constants.php");
 
@@ -47,19 +48,19 @@ class siteaccessblock extends block_base {
     public function get_layout() {
         global $CFG;
 
-        // Layout related data
+        // Layout related data.
         $this->layout->id = 'siteaccesssblock';
         $this->layout->name = get_string('accessinfo', 'report_elucidsitereport');
         $this->layout->info = get_string('accessinfoblockhelp', 'report_elucidsitereport');
 
-        // Block related data
+        // Block related data.
         $this->block = new stdClass();
         $this->block->displaytype = 'line-chart';
 
-        // Add block view in layout
+        // Add block view in layout.
         $this->layout->blockview = $this->render_block('siteaccessblock', $this->block);
 
-        // Return blocks layout
+        // Return blocks layout.
         return $this->layout;
     }
 
@@ -67,19 +68,19 @@ class siteaccessblock extends block_base {
      * Constructoe
      */
     public function __construct() {
-        // Call parent constructor
+        // Call parent constructor.
         parent::__construct();
 
-        // Initialize the site access information response
+        // Initialize the site access information response.
         $value = array(
             "opacity" => 0,
             "value" => 0
         );
 
-        // Initialize access value for site access
+        // Initialize access value for site access.
         $access = array($value, $value, $value, $value, $value, $value, $value);
 
-        // Getting time strings for access inforamtion block
+        // Getting time strings for access inforamtion block.
         $times = array(
             get_string("time00", "report_elucidsitereport"),
             get_string("time01", "report_elucidsitereport"),
@@ -107,8 +108,8 @@ class siteaccessblock extends block_base {
             get_string("time23", "report_elucidsitereport")
         );
 
-        // Initialize access inforamtion object
-        foreach($times as $time) {
+        // Initialize access inforamtion object.
+        foreach ($times as $time) {
             $value = array(
                 "access" => $access,
                 "time" => $time
@@ -124,11 +125,11 @@ class siteaccessblock extends block_base {
     public function get_data($params = false) {
         $response = new stdClass();
 
-         // Create reporting manager instance
+         // Create reporting manager instance.
         $rpm = reporting_manager::get_instance();
         $cache = cache::make('report_elucidsitereport', 'siteaccess');
 
-        if(!$data = $cache->get('siteaccessinfodata'.$rpm->rpmcache)) {
+        if (!$data = $cache->get('siteaccessinfodata'.$rpm->rpmcache)) {
             $data = $this->get_siteaccess_info();
             $cache->set('siteaccessinfodata'.$rpm->rpmcache, $data);
         }
@@ -139,20 +140,20 @@ class siteaccessblock extends block_base {
 
     /**
      * Get site access information
-     * @return [object] Site access inforamtion 
+     * @return [object] Site access inforamtion
      */
     public function get_siteaccess_info() {
         global $DB;
-        // Create reporting manager instance
+        // Create reporting manager instance.
         $rpm = reporting_manager::get_instance();
-        // SQL to gey access info log
+        // SQL to gey access info log.
         $sql = "SELECT id, action, timecreated
             FROM {logstore_standard_log}
             WHERE action = :action
             AND timecreated > :timecreated
             AND userid ".$rpm->insql."";
 
-        // Getting access log
+        // Getting access log.
         $timenow = time();
         $params = array (
             "action" => "viewed",
@@ -161,7 +162,7 @@ class siteaccessblock extends block_base {
         $params = array_merge($params, $rpm->inparams);
         $accesslog = $DB->get_records_sql($sql, $params);
 
-        // Getting site access information object
+        // Getting site access information object.
         $response = new stdClass();
         $response->siteaccess = $this->get_accessinfo(array_values($accesslog));
         return $response;
@@ -174,31 +175,31 @@ class siteaccessblock extends block_base {
      */
     public function get_accessinfo($accesslog) {
         global $DB;
-        
-        // Getting number of weeks to get access log
+
+        // Getting number of weeks to get access log.
         $timeduration = end($accesslog)->timecreated - $accesslog[0]->timecreated;
-        $weeks = ceil($timeduration / ONEWEEK); // Weeks in time duaration
+        $weeks = ceil($timeduration / ONEWEEK); // Weeks in time duaration.
         $weekmax = 0;
-        // If weeks are there then 
+        // If weeks are there then.
         if ($weeks) {
-            // Parse access log to save in access inforamtion object
-            foreach($accesslog as $log) {
-                // Column for weeks
+            // Parse access log to save in access inforamtion object.
+            foreach ($accesslog as $log) {
+                // Column for weeks.
                 $col = number_format(date("w", $log->timecreated));
 
-                // Row for hours
+                // Row for hours.
                 $row = number_format(date("H", $log->timecreated));
 
-                // Calculate site access for row and colums
+                // Calculate site access for row and colums.
                 $this->siteaccess[$row]["access"][$col]["value"] += (1 / ($weeks * 10));
 
-                // Maximum value in week
+                // Maximum value in week.
                 if ($weekmax < $this->siteaccess[$row]["access"][$col]["value"]) {
                     $weekmax = $this->siteaccess[$row]["access"][$col]["value"];
                 }
             }
 
-            // Get Opacity value for siteaccess inforamtion
+            // Get Opacity value for siteaccess inforamtion.
             foreach ($this->siteaccess as $row => $value) {
                 if ($weekmax) {
                     foreach ($value["access"] as $col => $val) {

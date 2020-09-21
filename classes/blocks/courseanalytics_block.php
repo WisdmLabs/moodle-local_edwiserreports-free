@@ -13,7 +13,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
  * Plugin administration pages are defined here.
  *
@@ -46,15 +45,14 @@ class courseanalytics_block extends utility {
 
     /**
      * Get Course Access data
-     * @return [array] Array of users with course Access 
+     * @return [array] Array of users with course Access
      */
     public static function get_courseanalytics($courseid, $cohortid) {
         global $DB;
 
         $coursecontext = context_course::instance($courseid);
-        // Get only enrolled students
+        // Get only enrolled students.
         $enrolledstudents = course_progress_block::rep_get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
-        // $enrolledstudents = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
         $course = get_course($courseid);
 
         $courseanalytics = new stdClass();
@@ -75,7 +73,7 @@ class courseanalytics_block extends utility {
         $timenow = time();
 
         $visits = array();
-        foreach($users as $user) {
+        foreach ($users as $user) {
             if ($cohortid) {
                 $cohorts = cohort_get_user_cohorts($user->id);
                 if (!array_key_exists($cohortid, $cohorts)) {
@@ -114,7 +112,7 @@ class courseanalytics_block extends utility {
             WHERE ue.userid = :userid AND u.deleted = 0";
 
         $enrolments = array();
-        foreach($users as $user) {
+        foreach ($users as $user) {
             if ($cohortid) {
                 $cohorts = cohort_get_user_cohorts($user->id);
                 if (!array_key_exists($cohortid, $cohorts)) {
@@ -122,7 +120,7 @@ class courseanalytics_block extends utility {
                 }
             }
 
-            $params = array('courseid'=>$courseid, 'userid' => $user->id);
+            $params = array('courseid' => $courseid, 'userid' => $user->id);
             $enrolinfo = $DB->get_record_sql($enrolsql, $params);
 
             $userinfo = array();
@@ -144,7 +142,7 @@ class courseanalytics_block extends utility {
         $course = get_course($courseid);
 
         $recentcompletions = array();
-        foreach($users as $user) {
+        foreach ($users as $user) {
             if ($cohortid) {
                 $cohorts = cohort_get_user_cohorts($user->id);
                 if (!array_key_exists($cohortid, $cohorts)) {
@@ -204,7 +202,7 @@ class courseanalytics_block extends utility {
     /**
      * Get Exportable data Course Anaytics Report
      * @param  [int] $courseid Course ID
-     * @return [array] 
+     * @return [array]
      */
     public static function get_exportable_data_report($courseid) {
         $cohortid = optional_param("cohortid", 0, PARAM_INT);
@@ -230,12 +228,12 @@ class courseanalytics_block extends utility {
                 break;
         }
 
-        foreach($response as $r => $val) {
-            foreach($val as $c => $v) {
+        foreach ($response as $r => $val) {
+            foreach ($val as $c => $v) {
                 $response[$r][$c] = strip_tags($v);
             }
         }
         $export = array_merge(array($header), $response);
         return $export;
-    } 
+    }
 }
