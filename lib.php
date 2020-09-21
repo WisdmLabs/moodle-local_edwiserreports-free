@@ -320,20 +320,20 @@ function report_elucidsitereport_output_fragment_get_blocksetting_form($params) 
         throw new moodle_exception('blocknameinvalid', 'error');
     }
 
-    // Check if block is exist or not
+    // Check if block is exist or not.
     $block = \report_elucidsitereport\utility::get_reportsblock_by_name($blockname);
 
     if (!$block) {
         throw new moodle_exception('noblockfound', 'error');
     }
 
-    // Get block preferences
+    // Get block preferences.
     $preferences = \report_elucidsitereport\utility::get_reportsblock_preferences($block);
 
-    // Prepare form for block editing
+    // Prepare form for block editing.
     $o = html_writer::start_tag('form', array('class' => 'form block-settings-form'));
 
-    // Prepare view string
+    // Prepare view string.
     $views = array(
         BLOCK_DESKTOP_VIEW => array(
             'key' => 'desktopview',
@@ -348,7 +348,7 @@ function report_elucidsitereport_output_fragment_get_blocksetting_form($params) 
             'name' => get_string('mobileview', $component)
         ),
     );
-    foreach($views as $key => $view) {
+    foreach ($views as $key => $view) {
         $o .= html_writer::start_tag('div', array('class' => 'form-group row fitem'));
         $o .= html_writer::start_tag('div', array('class' => 'col-md-6'));
         $o .= html_writer::tag('label', $view['name'], array('class' => 'col-form-label d-inline', 'for' => 'id_' . $view['key']));
@@ -378,7 +378,11 @@ function report_elucidsitereport_output_fragment_get_blocksetting_form($params) 
     $o .= html_writer::end_tag('label');
     $o .= html_writer::end_tag('div');
     $o .= html_writer::end_tag('div');
-    $o .= html_writer::tag('button', 'Save', array('type' => 'submit', 'class' => 'btn btn-primary pull-right save-block-settings'));
+    $o .= html_writer::tag(
+        'button',
+        'Save',
+        array('type' => 'submit', 'class' => 'btn btn-primary pull-right save-block-settings')
+    );
 
     $o .= html_writer::end_tag('form');
 

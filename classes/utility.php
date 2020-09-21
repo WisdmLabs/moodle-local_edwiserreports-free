@@ -1142,15 +1142,15 @@ class utility {
      * @param [object] $data Data
      */
     public static function set_block_preferences($data) {
-        // Get all blocks
+        // Get all blocks.
         $blocks = self::get_reports_block();
 
-        // Get preference of current block
+        // Get preference of current block.
         $currentblock = self::get_reportsblock_by_name($data->blockname);
         $currentpref = self::get_reportsblock_preferences($currentblock);
 
-        // For each blocks change preferences
-        foreach($blocks as $key => $block) {
+        // For each blocks change preferences.
+        foreach ($blocks as $key => $block) {
             $pref = self::get_reportsblock_preferences($block);
             if ($block->classname == $data->blockname) {
                 $pref = $data;
@@ -1162,7 +1162,7 @@ class utility {
                 }
             }
 
-            // Set block Preference
+            // Set block Preference.
             set_user_preference('pref_' . $block->classname, json_encode($pref));
         }
 
@@ -1176,9 +1176,8 @@ class utility {
      */
     public static function rearrange_block_with_preferences(&$blocks) {
         $newblocks = array();
-        
-        foreach($blocks as $key => $block) {
-            $pref = \report_elucidsitereport\utility::get_reportsblock_preferences($block);
+        foreach ($blocks as $key => $block) {
+            $pref = self::get_reportsblock_preferences($block);
 
             $newblocks[$pref['position']] = $block;
         }
@@ -1224,10 +1223,10 @@ class utility {
             $blockdata = json_decode($block->blockdata, true);
         }
 
-        // Set default preference
+        // Set default preference.
         $preferences = array();
-        
-        // update preferences from blockdata
+
+        // Update preferences from blockdata.
         if ($blockdata) {
             $preferences[BLOCK_DESKTOP_VIEW] = $blockdata[BLOCK_DESKTOP_VIEW];
             $preferences[BLOCK_TABLET_VIEW] = $blockdata[BLOCK_TABLET_VIEW];
@@ -1246,7 +1245,7 @@ class utility {
         global $DB, $USER;
 
         $blocks = self::get_reports_block();
-        foreach($blocks as $key => $block) {
+        foreach ($blocks as $key => $block) {
             $USER->ajax_updatable_user_prefs['pref_' . $block->classname] = true;
         }
     }

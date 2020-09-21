@@ -46,7 +46,7 @@ $component = "report_elucidsitereport";
 
 require_login();
 
-// Allow users preferences set remotly
+// Allow users preferences set remotly.
 \report_elucidsitereport\utility::allow_update_userpreferences_remotly();
 
 // The requested section isn't in the admin tree

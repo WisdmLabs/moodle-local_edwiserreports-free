@@ -38,7 +38,7 @@ class report_blocks {
     public function __construct($blocks) {
         global $CFG;
 
-        // Rearrange blocks based on the saved preferences
+        // Rearrange blocks based on the saved preferences.
         \report_elucidsitereport\utility::rearrange_block_with_preferences($blocks);
 
         // Prepare layout for each block.
@@ -55,7 +55,7 @@ class report_blocks {
             $blockbase = new $classname();
             $layout = $blockbase->get_layout();
 
-            // Get block preferences
+            // Get block preferences.
             $pref = \report_elucidsitereport\utility::get_reportsblock_preferences($block);
             $blockbase->set_block_size($pref);
 
