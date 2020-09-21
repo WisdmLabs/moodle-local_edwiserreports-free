@@ -1,32 +1,31 @@
 <?php
-// // This file is part of Moodle - http://moodle.org/
-// //
-// // Moodle is free software: you can redistribute it and/or modify
-// // it under the terms of the GNU General Public License as published by
-// // the Free Software Foundation, either version 3 of the License, or
-// // (at your option) any later version.
-// //
-// // Moodle is distributed in the hope that it will be useful,
-// // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// // GNU General Public License for more details.
-// //
-// // You should have received a copy of the GNU General Public License
-// // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+/**
+ * Plugin administration pages are defined here.
+ *
+ * @package     report_elucidsitereport
+ * @category    admin
+ * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
-// /**
-//  * Plugin administration pages are defined here.
-//  *
-//  * @package     report_elucidsitereport
-//  * @category    admin
-//  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
-//  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
-//  */
+defined('MOODLE_INTERNAL') || die();
 
+//@codingStandardsIgnoreStart
 // namespace report_elucidsitereport\task;
-
-// defined('MOODLE_INTERNAL') || die();
-
 // require_once($CFG->libdir . "/enrollib.php");
 // require_once($CFG->dirroot . "/report/elucidsitereport/classes/completions.php");
 
@@ -37,7 +36,7 @@
 //  * Scheduled Task to Update Report Plugin Table.
 //  */
 // class update_reports_table extends \core\task\scheduled_task {
- 
+
 //     /**
 //      * Return the task's name as shown in admin screens.
 //      *
@@ -46,7 +45,7 @@
 //     public function get_name() {
 //         return get_string('updatetables', 'report_elucidsitereport');
 //     }
- 
+
 //     /**
 //      * Execute the task.
 //      */

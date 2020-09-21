@@ -13,7 +13,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
  * Plugin administration pages are defined here.
  *
@@ -25,6 +24,8 @@
 
 namespace report_elucidsitereport\task;
 
+defined('MOODLE_INTERNAL') || die;
+
 require_once($CFG->dirroot."/report/elucidsitereport/classes/export.php");
 
 use core_user;
@@ -32,12 +33,12 @@ use stdClass;
 use report_elucidsitereport\export;
 
 defined('MOODLE_INTERNAL') || die();
- 
+
 /**
  * Scheduled Task to Update Report Plugin Table.
  */
 class send_scheduled_emails extends \core\task\scheduled_task {
- 
+
     /**
      * Return the task's name as shown in admin screens.
      *
@@ -46,7 +47,7 @@ class send_scheduled_emails extends \core\task\scheduled_task {
     public function get_name() {
         return get_string('sendscheduledemails', 'report_elucidsitereport');
     }
- 
+
     /**
      * Execute the task.
      */
@@ -55,27 +56,27 @@ class send_scheduled_emails extends \core\task\scheduled_task {
 
         $timenow = time();
 
-        // Get data from table
+        // Get data from table.
         $table = "sitereport_schedemails";
         $records = $DB->get_records($table);
-        foreach($records as $key => $record) {
-            // If it dosent have email data
+        foreach ($records as $key => $record) {
+            // If it dosent have email data.
             if (!$emaildata = json_decode($record->emaildata)) {
                 continue;
             }
 
-            // If dta is not an array
+            // If dta is not an array.
             if (!is_array($emaildata)) {
                 continue;
             }
 
-            // If empty then continue
+            // If empty then continue.
             if (empty($emaildata)) {
                 continue;
             }
 
             foreach ($emaildata as $k => $email) {
-                // Not scheduled for this time
+                // Not scheduled for this time.
                 if ($timenow < $email->esrnextrun) {
                     echo "Not scheduled yet";
                     continue;
@@ -98,12 +99,12 @@ class send_scheduled_emails extends \core\task\scheduled_task {
                 $export = new export("email", $region, $blockname);
                 $data = $export->get_exportable_data($filter);
 
-                // If data exist then send emails
+                // If data exist then send emails.
                 if ($data) {
                     mtrace(get_string('sendingscheduledemails', 'report_elucidsitereport'));
                     ob_start();
 
-                    // If email successfully sent
+                    // If email successfully sent.
                     $this->send_sceduled_email($export, $data, $email);
                     $email->esrlastrun = time();
                     list($frequency, $schedtime) = get_email_schedule_next_run($email->esrduration, $email->esrtime);
@@ -131,36 +132,36 @@ class send_scheduled_emails extends \core\task\scheduled_task {
         $recuser = $USER;
         $senduser = core_user::get_noreply_user();
 
-        // Generate file to send emails
+        // Generate file to send emails.
         $filename = $region . '_' . $blockname . '.csv';
         $filepath = $export->generate_csv_file($filename, $data, "F");
 
-        // Get email data from submited form
+        // Get email data from submited form.
         $emailids = trim($emailinfo->esrrecepient);
         $subject = trim($emailinfo->esrsubject);
 
-        // Optional parameter causing issue because this is an array
+        // Optional parameter causing issue because this is an array.
         $content = trim($emailinfo->esrmessage);
 
-        // If subject is not set the get default subject
+        // If subject is not set the get default subject.
         if (!$subject && $subject == '') {
             $subject = get_string($blockname . "exportheader", "report_elucidsitereport");
         }
 
-        // Get content text to send emails
+        // Get content text to send emails.
         if ($content == '') {
             $content = get_string($blockname . "exporthelp", "report_elucidsitereport");
         }
 
-        // Send emails foreach email ids
+        // Send emails foreach email ids.
         if ($emailids && $emailids !== '') {
-            // process in background and dont show message in console
+            // Process in background and dont show message in console.
             ob_start();
-            foreach(explode(";", $emailids) as $emailid) {
-                // trim email id if white spaces are added
+            foreach (explode(";", $emailids) as $emailid) {
+                // Trim email id if white spaces are added.
                 $recuser->email = trim($emailid);
 
-                // Send email to user
+                // Send email to user.
                 email_to_user(
                     $recuser,
                     $senduser,
@@ -174,7 +175,7 @@ class send_scheduled_emails extends \core\task\scheduled_task {
             ob_end_clean();
         }
 
-        // Remove file after email sending process
+        // Remove file after email sending process.
         unlink($filepath);
     }
 }
