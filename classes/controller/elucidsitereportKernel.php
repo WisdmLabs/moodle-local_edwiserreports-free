@@ -13,7 +13,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
  * Edwiser RemUI
  * @package    report_elucidsitereport
@@ -71,7 +70,6 @@ class elucidsitereportKernel {
      * @return array
      */
     public function resolve_controller_callback($action) {
-        // @var $controller controllerAbstract
         list($controller, $method) = $this->router->route_action($action);
 
         $controller->init($action);

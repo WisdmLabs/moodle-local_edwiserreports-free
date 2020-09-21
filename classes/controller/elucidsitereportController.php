@@ -13,7 +13,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
  * eLucid Report
  * @package    report_elucidsitereport
@@ -26,7 +25,6 @@ namespace report_elucidsitereport\controller;
 use moodle_url;
 use context_course;
 
-// use report_elucidsitereport\utility;
 defined('MOODLE_INTERNAL') || die();
 
 /**
@@ -36,8 +34,7 @@ defined('MOODLE_INTERNAL') || die();
  * @copyright Copyright (c) 2015 Moodlerooms Inc. (http://www.moodlerooms.com)
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class elucidsitereportController extends controllerAbstract
-{
+class elucidsitereportController extends controllerAbstract {
     /**
      * Do any security checks needed for the passed action
      *
@@ -143,32 +140,32 @@ class elucidsitereportController extends controllerAbstract
      * @return string selectors data
      */
     public function get_customreport_selectors_ajax_action() {
-        // Get filters
+        // Get filters.
         $filter = json_decode(required_param('filter', PARAM_RAW));
 
-        // Response for ajax action
+        // Response for ajax action.
         echo json_encode(\report_elucidsitereport\utility::get_customreport_selectors($filter));
     }
 
     public function get_customreport_data_ajax_action() {
-        // Get data
+        // Get data.
         $data = json_decode(required_param('data', PARAM_RAW));
 
-        // Response for ajax action
+        // Response for ajax action.
         echo json_encode(\report_elucidsitereport\utility::get_customreport_data($data));
     }
     public function get_customqueryreport_data_ajax_action() {
-        // Get data
+        // Get data.
         $data = json_decode(required_param('data', PARAM_RAW));
 
-        // Response for ajax action
+        // Response for ajax action.
         echo json_encode(\report_elucidsitereport\utility::get_lp_courses($data->lpids));
     }
     public function get_customqueryreport_rpm_data_ajax_action() {
-        // Get data
+        // Get data.
         $data = json_decode(required_param('data', PARAM_RAW));
 
-        // Response for ajax action
+        // Response for ajax action.
         echo json_encode(\report_elucidsitereport\utility::get_rpm_data($data));
     }
 
@@ -176,10 +173,10 @@ class elucidsitereportController extends controllerAbstract
      * Get custom query cohort users
      */
     public function get_customqueryreport_cohort_users_ajax_action() {
-        // Get data
+        // Get data.
         $data = json_decode(required_param('data', PARAM_RAW));
 
-        // Response for ajax action
+        // Response for ajax action.
         echo json_encode(\report_elucidsitereport\utility::get_cohort_users($data->cohortids, $data->rpmids));
     }
 
