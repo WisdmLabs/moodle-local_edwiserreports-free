@@ -13,7 +13,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
  * Reportng manager operations are defined here.
  *
@@ -56,6 +55,7 @@ class reporting_manager
             $this->get_reporting_manager_cachekey();
         }
 
+        //@codingStandardsIgnoreStart
         // Get system context
         // $context = context_system::instance();
         // if (!has_capability('moodle/site:configview', $context)) {
@@ -97,6 +97,7 @@ class reporting_manager
         // if (empty(array_filter($this->rpmindentusers))) {
         //     $this->rpmindentusers = false;
         // }
+        // @codingStandardsIgnoreEnd
     }
 
     /**
@@ -107,32 +108,32 @@ class reporting_manager
     public function get_rpm_hierarchy2(&$rpmindentusers, $prefix, $userid, $level) {
         global $DB;
 
-        // Restrict levels of reporting managers
+        // Restrict levels of reporting managers.
         if ($level > 2) {
             return false;
         }
 
-        // Get curent users reporting persons
-        $sql = "SELECT uid.* 
+        // Get curent users reporting persons.
+        $sql = "SELECT uid.*
                 FROM {user_info_data} uid,
                      {user_info_field} uif
                 WHERE uif.shortname = :rolename
                 AND uid.data = :data
                 AND uid.fieldid = uif.id
                 AND uid.data > 0";
-        $params = array('rolename' =>  'reportingmanager', 'data' => $userid);
+        $params = array('rolename' => 'reportingmanager', 'data' => $userid);
         $data = $DB->get_records_sql($sql, $params);
 
-        // If data is empty then return false
+        // If data is empty then return false.
         if (empty($data)) {
             return false;
         }
 
-        // Get all rpm users data
-        foreach($data as $key => $d) {
+        // Get all rpm users data.
+        foreach ($data as $key => $d) {
             $this->prepare_rpm_uers_data($rpmindentusers, $d, $prefix, $level);
         }
-        // Return RPM indent data
+        // Return RPM indent data.
         return $rpmindentusers;
     }
 
@@ -147,15 +148,12 @@ class reporting_manager
     public function prepare_rpm_uers_data(&$rpmindentusers, $d, &$prefix, $level) {
         $user = \core_user::get_user($d->userid);
         $uname = fullname($user);
-        // if ($prefix !== '') {
-        //     $uname = $prefix . '  / ' . $uname; 
-        // }
-        
-        // If already get all child reporting manager then ingnore
+
+        // If already get all child reporting manager then ingnore.
         if (isset($rpmindentusers[$d->userid]) && $rpmindentusers[$d->userid]) {
             if (strlen($rpmindentusers[$d->userid]->uname) > strlen($uname)) {
                 return false;
-            } 
+            }
         }
 
         $rpmindentusers[$d->userid] = new \stdClass();
@@ -165,17 +163,10 @@ class reporting_manager
         $rpmindentusers[$d->userid]->uname = $uname;
         $child = $this->get_rpm_hierarchy2($rpmindentusers, $uname, $d->userid, $level + 1);
 
-        // If there is no children then remove this from reporting managers
+        // If there is no children then remove this from reporting managers.
         if (!$child || empty(array_filter($child))) {
             $rpmindentusers[$d->userid] = false;
         }
-
-        // If it is an array then add in the reporting managers list
-        // if (is_array($child) && !empty($child)) {
-        //     $rpmindentusers = array_replace($rpmindentusers, $child);
-        //     // Update the prefix
-        //     $prefix = $uname;
-        // }
 
         return $rpmindentusers;
     }
@@ -188,26 +179,26 @@ class reporting_manager
     public function get_rpm_hierarchy($indentlvl, $userid) {
         global $DB;
 
-        // If indent level exceeded
+        // If indent level exceeded.
         if ($indentlvl > 5) {
             return false;
         }
 
-        // Get curent users reporting persons
+        // Get curent users reporting persons.
         $sql = "SELECT * FROM {user_info_data} WHERE data = :data";
         $data = $DB->get_records_sql($sql, array('data' => $userid));
 
-        // If data is empty then return false
+        // If data is empty then return false.
         if (empty($data)) {
             return false;
         }
 
-        // Get reporting managers hierarchy
+        // Get reporting managers hierarchy.
         $rpmindentusers = array();
 
-        // Get all rpm users data
+        // Get all rpm users data.
         $count = 0;
-        foreach($data as $key => $d) {
+        foreach ($data as $key => $d) {
             $user = \core_user::get_user($d->userid);
             $rpmindentusers[$count] = new \stdClass();
             $rpmindentusers[$count]->id = $d->userid;
@@ -219,15 +210,14 @@ class reporting_manager
             $count++;
         }
 
-        // Return RPM indent data
+        // Return RPM indent data.
         return $rpmindentusers;
     }
 
     /**
      * Function to instantiate our class and make it a singleton
      */
-    public static function get_instance()
-    {
+    public static function get_instance() {
         if (!self::$instance) {
             self::$instance = new self;
         }
@@ -255,10 +245,10 @@ class reporting_manager
      */
     public function get_repoting_manager_students() {
         global $DB;
-        // Query to get users of reporting manager
+        // Query to get users of reporting manager.
         $sql = "SELECT userid FROM {user_info_data} WHERE data = ? OR data IN (SELECT userid FROM {user_info_data} WHERE data = ?)";
 
-        // Get all users who are inactive
+        // Get all users who are inactive.
         $users = $DB->get_records_sql($sql, array($this->userid, $this->userid));
         $this->rpmusers = array_keys($users);
     }
@@ -271,7 +261,7 @@ class reporting_manager
             $this->insql = 'IN(1.2)';
             $this->inparams = array();
         } else {
-            // get reporeting manager studets in "In" query.
+            // Get reporeting manager studets in "In" query.
             list($this->insql, $this->inparams) = $DB->get_in_or_equal($this->rpmusers, SQL_PARAMS_NAMED, 'param', true);
         }
     }
@@ -279,7 +269,7 @@ class reporting_manager
      * Function to get reportingmanager cachekey
      */
     public function get_reporting_manager_cachekey() {
-        // set cache for reporting manager
+        // Set cache for reporting manager.
         $this->rpmcache = "_".$this->userid;
     }
     /**
@@ -293,14 +283,14 @@ class reporting_manager
         JOIN {role} r ON r.id = ra.roleid
         WHERE r.shortname = :shortname';
         $params['shortname'] = 'reportingmanager';
-        $rpms =  $DB->get_records_sql($sql, $params);
+        $rpms = $DB->get_records_sql($sql, $params);
         return array_values($rpms);
     }
     /**
      * Get students of all reporting managers
      * @param  [array] $reportingmanagers
      */
-    public function get_all_reporting_managers_students($reportingmanagers = NULL) {
+    public function get_all_reporting_managers_students($reportingmanagers = null) {
         global $DB;
         $insql = '> 1';
         $inparams = array();

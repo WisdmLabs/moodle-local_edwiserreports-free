@@ -13,7 +13,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
  * Plugin administration pages are defined here.
  *
@@ -24,6 +23,8 @@
  */
 
 namespace report_elucidsitereport;
+
+defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir."/csvlib.class.php");
 require_once($CFG->libdir."/excellib.class.php");
@@ -117,13 +118,13 @@ class export {
     /**
      * Prepare output for export data
      */
-    function prepare_output($data, $message, $status) {
+    public function prepare_output($data, $message, $status) {
         $res = new stdClass();
         $res->status = $status;
         $res->message = $message;
         $res->data = $data;
 
-        // Print Output
+        // Print Output.
         echo json_encode($res);
     }
 
@@ -134,10 +135,10 @@ class export {
      * @return Return status after export the data
      */
     public function data_export_excel($filename, $data) {
-        // Creating a workbook
+        // Creating a workbook.
         $workbook = new MoodleExcelWorkbook("-");
 
-        // Adding the worksheet
+        // Adding the worksheet.
         $myxls = $workbook->add_worksheet($this->region . "_" . $this->blockname);
 
         foreach ($data as $rownum => $row) {
@@ -146,9 +147,9 @@ class export {
             }
         }
 
-        // Sending HTTP headers
+        // Sending HTTP headers.
         $workbook->send($filename);
-        // Close the workbook
+        // Close the workbook.
         $workbook->close();
     }
 
@@ -183,35 +184,35 @@ class export {
 
         $context = context_user::instance($USER->id);
         $fs = get_file_storage();
- 
-        // Prepare file record object
+
+        // Prepare file record object.
         $fileinfo = array(
             'contextid' => $context->id, // ID of context
             'component' => 'report_elucidsitereport',     // usually = table name
             'filearea' => 'downloadreport',     // usually = table name
             'itemid' => 0,               // usually = ID of row in table
             'filepath' => '/',           // any path beginning and ending in /
-            'filename' => $filename); // any filename
-        
-        // Create csv data
+            'filename' => $filename); // any filename.
+
+        // Create csv data.
         $csvdata = csv_export_writer::print_array($data, 'comma', '"', true);
 
-        // Get file if already exist
+        // Get file if already exist.
         $file = $fs->get_file(
             $fileinfo['contextid'],
             $fileinfo['component'],
-            $fileinfo['filearea'], 
+            $fileinfo['filearea'],
             $fileinfo['itemid'],
             $fileinfo['filepath'],
             $fileinfo['filename']
         );
 
-        // Delete it if it exists
+        // Delete it if it exists.
         if ($file) {
             $file->delete();
         }
 
-        // Create file containing text 'hello world'
+        // Create file containing text 'hello world'.
         $fs->create_file_from_string($fileinfo, $csvdata);
         $fileurl = moodle_url::make_pluginfile_url(
             $fileinfo['contextid'],
@@ -223,11 +224,11 @@ class export {
             false
         );
 
-        // Copy content to temporary file
+        // Copy content to temporary file.
         $filepath = $CFG->tempdir . '/' . $filename;
         $file->copy_content_to($filepath);
 
-        // Delete file when content has been copied
+        // Delete file when content has been copied.
         if ($file) {
             $file->delete();
         }
@@ -246,13 +247,15 @@ class export {
         $recuser = $USER;
         $senduser = core_user::get_noreply_user();
 
-        // Generate csv file
+        // Generate csv file.
         $filename .= ".csv";
         $filepath = $this->generate_csv_file($filename, $data);
 
+        //@codingStandardsIgnoreStart
         // Generate PDF file
         // $filename .= '.pdf';
         // $filepath = $this->generate_pdf_file($filename, $data, "F");
+        //@codeingStandardsIgnoreEnd
 
         // Get email data from submited form
         $emailids = trim(optional_param("email", false, PARAM_TEXT));
@@ -363,10 +366,10 @@ class export {
         $emailinfo = array(
             'esrname' => required_param("esrname", PARAM_TEXT),
             'esremailenable' => optional_param("esremailenable", false, PARAM_TEXT),
-            'esrrecepient' => required_param("esrrecepient", PARAM_TEXT), 
+            'esrrecepient' => required_param("esrrecepient", PARAM_TEXT),
             'esrsubject' => optional_param("esrsubject", '', PARAM_TEXT),
             'esrmessage' => optional_param("esrmessage", '', PARAM_TEXT),
-            'esrduration' => optional_param("esrduration", 0, PARAM_TEXT), 
+            'esrduration' => optional_param("esrduration", 0, PARAM_TEXT),
             'esrtime' => optional_param("esrtime", 0, PARAM_TEXT),
             'esrlastrun' => false,
             'esrnextrun' => false,
@@ -442,11 +445,12 @@ class export {
             "style" => "width: 100%; font-size:10px;"
         );
 
-        // Generate HTML to export
-        $html .= html_writer::tag("h1",
+        // Generate HTML to export.
+        $html = html_writer::tag(
+            "h1",
             get_string($this->blockname . "exportheader", "report_elucidsitereport"),
             array(
-                "style" => "width:100%;text-align:center" 
+                "style" => "width:100%;text-align:center"
             )
         );
 
@@ -477,10 +481,10 @@ class export {
      */
     public function get_html_for_pdf2($data) {
         // Generate HTML to export
-        $html .= html_writer::tag("h1",
+        $html = html_writer::tag("h1",
             get_string($this->blockname . "exportheader", "report_elucidsitereport"),
             array(
-                "style" => "width:100%;text-align:center" 
+                "style" => "width:100%;text-align:center"
             )
         );
 
@@ -701,7 +705,7 @@ class export {
 
         // Creating a workbook
         $workbook = new MoodleExcelWorkbook($filename);
-        
+
         // For each pages create worksheet
         $filters = explode(',', $filters);
         foreach($filters as $filter) {
@@ -1133,7 +1137,7 @@ class export {
             $field = $DB->get_record('user_info_field', array(
                 'shortname' => $key
             ));
-            
+
             if ($field->datatype == 'dynamicmenu') {
                 $dynamicdata = $DB->get_records_sql($field->param1);
                 if ($customdata == 0) {
@@ -1183,7 +1187,7 @@ class export {
                     continue;
                 }
 
-                // If end date is set then 
+                // If end date is set then
                 if ($enrolinfo->timeend && $enrolinfo->timeend > $enrolenddate) {
                     continue;
                 }
@@ -1201,7 +1205,7 @@ class export {
                 $data->enrolledon = date('d-M-y', $enrolinfo->timecreated);
                 $data->coursename = $course->fullname;
                 $data->category = $category->get_formatted_name();
-                
+
                 // Get completions data
                 $completion = (object) \report_elucidsitereport\utility::get_course_completion_info($course, $user->id);
                 if ($completion && !empty($completion)) {

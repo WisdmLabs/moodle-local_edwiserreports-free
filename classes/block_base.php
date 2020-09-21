@@ -13,7 +13,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
  * Reports abstract block will define here to which will extend for each repoers blocks
  *
@@ -62,16 +61,18 @@ class block_base {
      * Preapre layout for each block
      */
     public function get_layout() {
-        debugging('extend the reports_block class and add get_layout function');   
+        debugging('extend the reports_block class and add get_layout function');
     }
 
     /**
      * Create blocks data
      */
     public function render_block($templatename, $context = array()) {
+        // @codingStandardsIgnoreStart
         global $PAGE;
 
         $base = new \plugin_renderer_base($PAGE, RENDERER_TARGET_GENERAL);
+        // @codingStandardsIgnoreEnd
         return $base->render_from_template('report_elucidsitereport/' . $templatename, $context);
     }
 

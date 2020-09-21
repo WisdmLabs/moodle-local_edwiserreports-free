@@ -13,7 +13,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
  * Plugin administration pages are defined here.
  *
@@ -67,11 +66,11 @@ define('ESR_1000AM', 1);
 define('ESR_0430PM', 2);
 define('ESR_1030PM', 3);
 
-// Define block type
+// Define block type.
 define('BLOCK_TYPE_DEFAULT', 0);
 define('BLOCK_TYPE_CUSTOM', 1);
 
-// Block View
+// Block View.
 define('BLOCK_DESKTOP_VIEW', 'desktopview');
 define('BLOCK_TABLET_VIEW', 'tabletview');
 define('BLOCK_MOBILE_VIEW', 'mobileview');

@@ -13,7 +13,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
  * Get Reports blocks to render in the dashboard
  *
@@ -31,7 +30,7 @@ class report_blocks {
     /**
      * Reports block
      */
-    protected $reports_block;
+    protected $reportsblock;
 
     /**
      * Constructor to prepare all reports blocks
@@ -42,9 +41,9 @@ class report_blocks {
         // Rearrange blocks based on the saved preferences
         \report_elucidsitereport\utility::rearrange_block_with_preferences($blocks);
 
-        // Prepare layout for each block
+        // Prepare layout for each block.
         foreach ($blocks as $key => $block) {
-            // Check if class file exist
+            // Check if class file exist.
             $classname = $block->classname;
             $filepath = $CFG->dirroot . '/report/elucidsitereport/classes/blocks/' . $classname . '.php';
             if (!file_exists($filepath)) {
@@ -60,7 +59,7 @@ class report_blocks {
             $pref = \report_elucidsitereport\utility::get_reportsblock_preferences($block);
             $blockbase->set_block_size($pref);
 
-            $this->reports_block[] = $blockbase->get_layout();
+            $this->reportsblock[] = $blockbase->get_layout();
         }
     }
 
@@ -68,6 +67,6 @@ class report_blocks {
      * Functions to get report blocks
      */
     public function get_report_blocks() {
-        return $this->reports_block;
+        return $this->reportsblock;
     }
 }

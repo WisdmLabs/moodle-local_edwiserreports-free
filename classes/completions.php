@@ -13,7 +13,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
  * Plugin administration pages are defined here.
  *
@@ -57,53 +56,53 @@ class completions {
     public function update_local_completion_table() {
         global $DB;
 
-        // Get all courses
+        // Get all courses.
         $courses = get_courses();
 
         // Get completion for each course
-        // and update in our completion tables
+        // and update in our completion tables.
         $dataobjects = array();
         foreach ($courses as $course) {
-            // Return for system course
+            // Return for system course.
             if ($course->id == 1) {
                 continue;
             }
 
-            // Get completion info object to get course completion
+            // Get completion info object to get course completion.
             $completioninfo = new completion_info($course);
 
-            // If completion is not enable then continue
+            // If completion is not enable then continue.
             if (!$completioninfo->is_enabled()) {
                 $DB->delete_records($this->tablename, array('courseid' => $course->id));
                 continue;
             }
 
-            // Get course context
+            // Get course context.
             $coursecontext = context_course::instance($course->id);
 
             // Get all enrolled students
-            // 'moodle/course:isincompletionreports' - this capability is allowed to only students
+            // 'moodle/course:isincompletionreports' - this capability is allowed to only students.
             $enrolledlearners = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
 
-            // For each learners get completions
+            // For each learners get completions.
             foreach ($enrolledlearners as $user) {
-                // Get progress percentage from a course
+                // Get progress percentage from a course.
                 $percentage = progress::get_course_progress_percentage($course, $user->id);
 
-                // Prepare completions object
+                // Prepare completions object.
                 $completionobj = new stdClass();
                 $completionobj->courseid = $course->id;
                 $completionobj->userid = $user->id;
                 $completionobj->completion = 0;
-                $completionobj->timecompleted = NULL;
+                $completionobj->timecompleted = null;
                 $completionobj->grade = 0;
                 $completionobj->completedactivities = 0;
 
-                // If percentage is not null then
+                // If percentage is not null then.
                 if (!is_null($percentage)) {
                     $completionobj->completion = $percentage;
 
-                    // Get modules
+                    // Get modules.
                     $modules = $completioninfo->get_activities();
                     if (!empty($modules)) {
                         $completed = 0;
@@ -119,40 +118,40 @@ class completions {
                         $completionobj->completedactivities = $completed;
                     }
 
-                    // If all activities are not completed then set timecompleted to null
+                    // If all activities are not completed then set timecompleted to null.
                     if ($completionobj->completion != 100) {
-                        $completionobj->timecompleted = NUll;
+                        $completionobj->timecompleted = null;
                     }
 
-                    // Get Course Grades
+                    // Get Course Grades.
                     $completionobj->grade = 0;
                     $grades = \report_elucidsitereport\utility::get_grades($course->id, $user->id);
-                    // If course grade is set then update course grade
+                    // If course grade is set then update course grade.
                     if ($grades && $grades->finalgrade) {
                         $coursegrade = $grades->finalgrade;
                     }
                 }
 
-                // If record exist then
+                // If record exist then.
                 $params = array('courseid' => $course->id, 'userid' => $user->id);
                 if ($prevrecord = $DB->get_record($this->tablename, $params, "id")) {
-                    // If same record then dont update
+                    // If same record then dont update.
                     if ($DB->record_exists($this->tablename, (array)$completionobj)) {
                         continue;
                     }
-                    // If exist then Update records
+                    // If exist then Update records.
                     $completionobj->id = $prevrecord->id;
                     $DB->update_record($this->tablename, $completionobj);
                 } else {
-                    // Save data to insert ar the end
+                    // Save data to insert ar the end.
                     $dataobjects[] = $completionobj;
                 }
             }
         }
 
-        // If dataobject is not empty then insert records
+        // If dataobject is not empty then insert records.
         if (!empty($dataobjects)) {
-            // Insert records in database for completions
+            // Insert records in database for completions.
             $DB->insert_records($this->tablename, $dataobjects);
         }
     }

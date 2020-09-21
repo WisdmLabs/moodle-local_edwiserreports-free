@@ -13,7 +13,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
  * Plugin administration pages are defined here.
  *
@@ -64,16 +63,16 @@ class utility {
     public static function get_active_users_data($data) {
         global $CFG;
 
-        // Require block file
+        // Require block file.
         require_once($CFG->dirroot . '/report/elucidsitereport/classes/blocks/activeusersblock.php');
 
-        $activeusersblock =  new \report_elucidsitereport\activeusersblock($data);
+        $activeusersblock = new \report_elucidsitereport\activeusersblock($data);
         return $activeusersblock->get_data($data);
     }
 
     /**
      * Get Course Progress data for Course Progress Page
-     * @param  [object] Consist of filters 
+     * @param  [object] Consist of filters
      * @return [array] Course Progress array
      */
     public static function get_course_progress_data($data) {
@@ -167,7 +166,7 @@ class utility {
         return $inactiveusers->get_data($data);
     }
 
-    /** 
+    /**
      * Get Course Completion Data
      * @param [string] $data Data to get Course Completion detail
      */
@@ -196,7 +195,7 @@ class utility {
     public static function get_courses($all = false) {
         global $DB;
 
-        // Get records for courses
+        // Get records for courses.
         $courses = $DB->get_records('course', array(), '', '*');
         foreach (array_keys($courses) as $courseid) {
             $enrolledstudents = self::get_enrolled_students($courseid);
@@ -212,11 +211,13 @@ class utility {
      */
     public static function get_lps() {
         global $DB;
-        $fields = "DISTINCT(lp.id) as id, lp.name as fullname, lp.shortname, lp.programid, lp.visible, lp.selfenrolment, lp.description, lp.featureimage, lp.courses, lp.duration, lp.durationtime, lp.coursesequenceenable, lp.timecreated, lp.timemodified, lp.timestart, lp.timeend";
+        $fields = "DISTINCT(lp.id) as id, lp.name as fullname, lp.shortname,
+                lp.programid, lp.visible, lp.selfenrolment, lp.description,
+                lp.featureimage, lp.courses, lp.duration, lp.durationtime,
+                lp.coursesequenceenable, lp.timecreated, lp.timemodified,
+                lp.timestart, lp.timeend";
 
-        // $fields = "id, name, shortname, courses";
-        //$form = new MoodleQuickForm('learningprogram', 'post', '#');
-        // Create reporting manager instance
+        // Create reporting manager instance.
         $rpm = reporting_manager::get_instance();
         $sql = "SELECT ".$fields."
                 FROM {wdm_learning_program} lp
@@ -224,10 +225,9 @@ class utility {
                 ON lp.id = lpen.learningprogramid
                 WHERE lpen.userid ".$rpm->insql."";
         $records = $DB->get_records_sql($sql, $rpm->inparams);
-        // Create reporting manager instance
+        // Create reporting manager instance.
         $rpm = \report_elucidsitereport\reporting_manager::get_instance();
         $lps = array();
-        // $records = $DB->get_records('wdm_learning_program', array(), '', $fields);
 
         $lps = array();
         $rpms = array();
@@ -289,7 +289,7 @@ class utility {
     public static function get_course_completion($courseid) {
         global $DB;
 
-        // Return course completion from report completion table
+        // Return course completion from report completion table.
         $table = "edw_course_progress";
         return $DB->get_records($table, array("courseid" => $courseid), "", "userid, progress as completion");
     }
@@ -310,7 +310,7 @@ class utility {
             $userid = $USER->id;
         }
 
-        // Default completions is 0
+        // Default completions is 0.
         $completioninfo = array(
             'totalactivities' => 0,
             'completedactivities' => 0,
@@ -373,13 +373,13 @@ class utility {
         );
         $completion = $DB->get_record("course_completions", $params);
 
-        // If completion then return time completed
+        // If completion then return time completed.
         if ($completion && $completion->timecompleted) {
             return $completion->timecompleted;
         }
 
-        // If not completed then return false
-        return NULL;
+        // If not completed then return false.
+        return null;
     }
 
     /**
@@ -399,7 +399,7 @@ class utility {
             $coueseid = $COURSE->id;
         }
 
-        // please note that we must fetch all grade_grades fields if we want to construct grade_grade object from it!
+        // Please note that we must fetch all grade_grades fields if we want to construct grade_grade object from it!
         $gradesql = "SELECT g.id, g.finalgrade
             FROM {grade_items} gi, {grade_grades} g
             WHERE g.itemid = gi.id
@@ -407,7 +407,7 @@ class utility {
             AND g.userid = :userid
             AND gi.itemtype = 'course'";
 
-        $params = array('courseid'=>$courseid, 'userid' => $userid);
+        $params = array('courseid' => $courseid, 'userid' => $userid);
         $gradereport = $DB->get_record_sql($gradesql, $params);
 
         return $gradereport;
@@ -425,7 +425,7 @@ class utility {
             "courseid" => $courseid,
             "action" => "viewed"
         );
-        // Create reporting manager instance
+        // Create reporting manager instance.
         $rpm = reporting_manager::get_instance();
         if ($cohortid) {
             $params["cohortid"] = $cohortid;
@@ -459,12 +459,12 @@ class utility {
      * Get Users Who have complted atleast one activity in a course
      * @param [object] $courseid Course ID
      * @param [array] $users Enrolled Users
-     * @return [array] Array of Users ID who have completed a activity 
+     * @return [array] Array of Users ID who have completed a activity
      */
     public static function users_completed_a_module($course, $users, $cohortid) {
         $records = array();
 
-        foreach($users as $user) {
+        foreach ($users as $user) {
             /* If cohort filter is there then get only users from cohort */
             if ($cohortid) {
                 $cohorts = cohort_get_user_cohorts($user->id);
@@ -486,13 +486,13 @@ class utility {
      * Get Users Who have complted half activities in a course
      * @param [object] $courseid Course ID
      * @param [array] $users Enrolled Users
-     * @return [array] Array of Users ID who have completed half activities 
+     * @return [array] Array of Users ID who have completed half activities
      */
     public static function users_completed_half_modules($course, $users, $cohortid) {
         global $DB;
 
         $records = array();
-        foreach($users as $user) {
+        foreach ($users as $user) {
             /* If cohort filter is there then get only users from cohort */
             if ($cohortid) {
                 $cohorts = cohort_get_user_cohorts($user->id);
@@ -509,16 +509,15 @@ class utility {
                 BETWEEN :completionstart
                 AND :completionend";
 
-            // Calculate 50% Completion Count for Courses 
+            // Calculate 50% Completion Count for Courses.
             $params = array(
                 "completionstart" => 50.00,
                 "completionend" => 99.99,
                 "courseid" => $course->id,
-                "userid" => $user->id 
+                "userid" => $user->id
             );
             $completion = $DB->get_record_sql($completionsql, $params);
 
-            // $completion = self::get_course_completion_info($course, $user->id);
             if ($completion && $completion->completion >= 50 && $completion->completion < 100) {
                 $records[] = $user;
             }
@@ -531,11 +530,11 @@ class utility {
      * Get Users Who have complted all activities in a course
      * @param [object] $courseid Course ID
      * @param [array] $users Enrolled Users
-     * @return [array] Array of Users ID who have completed all activities 
+     * @return [array] Array of Users ID who have completed all activities
      */
     public static function users_completed_all_module($course, $users, $cohortid) {
         $records = array();
-        foreach($users as $user) {
+        foreach ($users as $user) {
             /* If cohort filter is there then get only users from cohort */
             if ($cohortid) {
                 $cohorts = cohort_get_user_cohorts($user->id);
@@ -561,7 +560,7 @@ class utility {
      */
     public static function get_visits_by_users($courseid, $userid) {
         global $DB;
-        
+
         $table = "logstore_standard_log";
         $records = $DB->get_records($table,
             array(
@@ -593,19 +592,19 @@ class utility {
 
         $emails = array();
         $rec = $DB->get_records('sitereport_schedemails');
-        foreach($rec as $key => $val) {
-            // If it dosent have email data
+        foreach ($rec as $key => $val) {
+            // If it dosent have email data.
             if (!$emaildata = json_decode($val->emaildata)) {
                 continue;
             }
 
-            // If dta is not an array
+            // If dta is not an array.
             if (!is_array($emaildata)) {
                 continue;
             }
 
-            // If everythings is ok then
-            foreach($emaildata as $key => $emailinfo) {
+            // If everythings is ok then.
+            foreach ($emaildata as $key => $emailinfo) {
                 $data = array();
                 $data["esrtoggle"] = create_toggle_switch_for_emails(
                     $key,
@@ -636,7 +635,7 @@ class utility {
     public static function get_scheduled_email_details($data) {
         global $DB;
 
-        // Get data from table
+        // Get data from table.
         $table = "sitereport_schedemails";
         $sql = "SELECT * FROM {sitereport_schedemails}
             WHERE blockname = :blockname
@@ -653,14 +652,14 @@ class utility {
             return $response;
         }
 
-        // If it dosent have email data
+        // If it dosent have email data.
         if (!$emaildata = json_decode($rec->emaildata)) {
             $response->error = true;
             $response->errormsg = "Json decode failed";
             return $response;
         }
 
-        // If dta is not an array
+        // If dta is not an array.
         if (!is_array($emaildata)) {
             $response->error = true;
             $response->errormsg = "Email data is not an array";
@@ -686,7 +685,7 @@ class utility {
     public static function delete_scheduled_email($data) {
         global $DB;
 
-        // Get data from table
+        // Get data from table.
         $table = "sitereport_schedemails";
         $sql = "SELECT * FROM {sitereport_schedemails}
             WHERE blockname = :blockname
@@ -703,14 +702,14 @@ class utility {
             return $response;
         }
 
-        // If it dosent have email data
+        // If it dosent have email data.
         if (!$emaildata = json_decode($rec->emaildata)) {
             $response->error = true;
             $response->errormsg = "Json decode failed";
             return $response;
         }
 
-        // If dta is not an array
+        // If dta is not an array.
         if (!is_array($emaildata)) {
             $response->error = true;
             $response->errormsg = "Email data is not an array";
@@ -728,7 +727,7 @@ class utility {
 
         $rec->emaildata = json_encode(array_values($emaildata));
 
-        // Updating the record
+        // Updating the record.
         $DB->update_record($table, $rec);
         return $response;
     }
@@ -740,7 +739,7 @@ class utility {
     public static function change_scheduled_email_status($data) {
         global $DB;
 
-        // Get data from table
+        // Get data from table.
         $table = "sitereport_schedemails";
         $sql = "SELECT * FROM {sitereport_schedemails}
             WHERE blockname = :blockname
@@ -757,14 +756,14 @@ class utility {
             return $response;
         }
 
-        // If it dosent have email data
+        // If it dosent have email data.
         if (!$emaildata = json_decode($rec->emaildata)) {
             $response->error = true;
             $response->errormsg = "Json decode failed";
             return $response;
         }
 
-        // If dta is not an array
+        // If dta is not an array.
         if (!is_array($emaildata)) {
             $response->error = true;
             $response->errormsg = "Email data is not an array";
@@ -786,7 +785,7 @@ class utility {
 
         $rec->emaildata = json_encode(array_values($emaildata));
 
-        // Updating the record
+        // Updating the record.
         $DB->update_record($table, $rec);
         return $response;
     }
@@ -808,7 +807,7 @@ class utility {
                 $selectors = self::get_customreport_course_selectors();
         }
 
-        // Return courses
+        // Return courses.
         $response = new stdClass();
         $response->data = array_values($selectors);
         return $response;
@@ -821,17 +820,17 @@ class utility {
     private static function get_customreport_lp_selectors() {
         global $DB;
 
-        // Get all learning programs
+        // Get all learning programs.
         $lps = self::get_lps();
 
-        // Prepare lp related data
+        // Prepare lp related data.
         $response = array();
         foreach ($lps as $key => $lp) {
             $res = new stdClass();
             $res->fullname = $lp['name'];
             $res->shortname = $lp['shortname'];
 
-            // Prepare selector checkbox to select courses
+            // Prepare selector checkbox to select courses.
             $res->select = html_writer::start_tag('span',
                 array("class" => "checkbox-custom"));
             $res->select .= html_writer::tag('input', '',
@@ -849,33 +848,33 @@ class utility {
             );
             $res->select .= html_writer::end_tag('span');
 
-            // If duration is set in learning program
+            // If duration is set in learning program.
             if ($lp->duration) {
-                // Get duration time
+                // Get duration time.
                 $res->duration = format_time($lp['durationtime']);
 
-                // Set starttime and endtime not applicable
+                // Set starttime and endtime not applicable.
                 $res->startdate = get_string('na', 'report_elucidsitereport');
                 $res->enddate = get_string('na', 'report_elucidsitereport');
             } else {
-                // Get learning programs startdate in redable format
+                // Get learning programs startdate in redable format.
                 $res->startdate = date('d-M-Y', $lp['timestart']);
 
-                // Get learning programs end date in readable format
+                // Get learning programs end date in readable format.
                 if ($lp['timeend']) {
                     $res->enddate = date('d-M-Y', $lp['timeend']);
                 } else {
                     $res->enddate = get_string('never');
                 }
 
-                // Set duration not applicable
+                // Set duration not applicable.
                 $res->duration = get_string('na', 'report_elucidsitereport');
             }
 
             $response[] = $res;
         }
 
-        // Return response
+        // Return response.
         return $response;
     }
 
@@ -884,23 +883,23 @@ class utility {
      * @return array Courses Array
      */
     private static function get_customreport_course_selectors() {
-        // Get all courses
-        $courses = \report_elucidsitereport\utility::get_courses();
+        // Get all courses.
+        $courses = self::get_courses();
 
-        // Prepare course related data
+        // Prepare course related data.
         $response = array();
-        foreach($courses as $key => $course) {
-            // Skip system course
+        foreach ($courses as $key => $course) {
+            // Skip system course.
             if ($course->id == 1) {
                 continue;
             }
 
-            // Prepare response object
+            // Prepare response object.
             $res = new stdClass();
             $res->fullname = $course->fullname;
             $res->shortname = $course->shortname;
 
-            // Prepare selector checkbox to select courses
+            // Prepare selector checkbox to select courses.
             $res->select = html_writer::start_tag('span',
                 array("class" => "checkbox-custom"));
             $res->select .= html_writer::tag('input', '',
@@ -918,24 +917,24 @@ class utility {
             );
             $res->select .= html_writer::end_tag('span');
 
-            // Get course startdate in redable format
+            // Get course startdate in redable format.
             $res->startdate = date('d-M-Y', $course->startdate);
 
-            // Get course end date in readable format
+            // Get course end date in readable format.
             if ($course->enddate) {
                 $res->enddate = date('d-M-Y', $course->enddate);
             } else {
                 $res->enddate = get_string('never');
             }
 
-            // Get category
+            // Get category.
             $category = core_course_category::get($course->category);
             $res->category = $category->get_formatted_name();
 
             $response[] = $res;
         }
 
-        // Return courses
+        // Return courses.
         return $response;
     }
 
@@ -960,16 +959,18 @@ class utility {
     public static function get_lp_courses($lpids) {
         global $DB;
         if (in_array(0, $lpids) || empty($lpids)) {
-            return \report_elucidsitereport\utility::get_courses();
+            return self::get_courses();
         }
         list($insql, $inparams) = $DB->get_in_or_equal($lpids, SQL_PARAMS_NAMED, 'param', true);
         $sql = 'SELECT courses FROM {wdm_learning_program} WHERE id '.$insql;
         $lpcourses = array_values($DB->get_records_sql($sql, $inparams));
-        $catIds = array_map(create_function('$o', 'return $o->courses;'), $lpcourses);
+        $catids = array_map(function($o) {
+            return $o->courses;
+        }, $lpcourses);
         $coursesarr = array();
-        if (!empty($catIds)) {
-            foreach ($catIds as $catId) {
-                foreach (json_decode($catId) as $cid) {
+        if (!empty($catids)) {
+            foreach ($catids as $catid) {
+                foreach (json_decode($catid) as $cid) {
                     if ($course = $DB->get_record('course', array('id' => $cid))) {
                         $courseinfo = new \stdClass();
                         $courseinfo->id = $course->id;
@@ -990,22 +991,22 @@ class utility {
      */
     public static function get_rpm_data($data) {
         global $DB;
-        
-        // Get all users
+
+        // Get all users.
         $cohorts = self::get_cohort_users($data->cohortids, $data->rpmids);
         $userinfo = $cohorts['users'];
 
         if (in_array(0, $data->rpmids) || empty($data->rpmids)) {
-            $courses = \report_elucidsitereport\utility::get_courses();
-            $lps = \report_elucidsitereport\utility::get_lps();
+            $courses = self::get_courses();
+            $lps = self::get_lps();
             return array('courses' => $courses, 'lps' => $lps, 'users' => $userinfo);
         }
         list($insql, $inparams) = $DB->get_in_or_equal($data->rpmids, SQL_PARAMS_NAMED, 'param', true);
-        // Query to get users of reporting manager
+        // Query to get users of reporting manager.
         $sql = "SELECT userid FROM {user_info_data} WHERE data ".$insql;
         $users = $DB->get_records_sql($sql, $inparams);
 
-        // If there is no users for this reporting managers
+        // If there is no users for this reporting managers.
         if (empty($users)) {
             return array('courses' => array(), 'lps' => array(), 'users' => array());
         }
@@ -1017,16 +1018,15 @@ class utility {
         $sql = "SELECT DISTINCT(lp.id) as id, lp.name as fullname FROM {wdm_learning_program} lp
         JOIN {wdm_learning_program_enrol} lpe ON lpe.learningprogramid = lp.id
         WHERE lpe.userid ".$insql;
-        
+
         $records = $DB->get_records_sql($sql, $inparams);
-        $lpIds = array_keys($records);
+        $lpids = array_keys($records);
         $lps = array_values($records);
-        // $lpIds = array_map(create_function('$o', 'return $o->id;'), $lps);
-        if (!empty($lpIds)) {
-            $courses = \report_elucidsitereport\utility::get_lp_courses($lpIds);
+        if (!empty($lpids)) {
+            $courses = self::get_lp_courses($lpids);
         }
 
-        return array('courses' => $courses, 'lps' =>$lps, 'users' => $userinfo);
+        return array('courses' => $courses, 'lps' => $lps, 'users' => $userinfo);
     }
 
     /**
@@ -1037,25 +1037,25 @@ class utility {
     public static function get_lp_students($lpid) {
         global $DB;
 
-        // Reporting manager object
+        // Reporting manager object.
         $rpm = reporting_manager::get_instance();
 
-        // Prepare parameters
+        // Prepare parameters.
         $params = array(
             'lpid' => $lpid,
             'roleid' => 0
         );
 
-        // SQL to get leraning program records
+        // SQL to get leraning program records.
         $sql = "SELECT * FROM {wdm_learning_program_enrol}
                 WHERE learningprogramid = :lpid
                 AND roleid = :roleid
                 AND userid " . $rpm->insql;
 
-        // Merge params for reporting manager
+        // Merge params for reporting manager.
         $params = array_merge($params, $rpm->inparams);
 
-        // Return all erolments
+        // Return all erolments.
         return $DB->get_records_sql($sql, $params);
     }
 
@@ -1078,7 +1078,7 @@ class utility {
         $params = array();
         $rpmparams = array();
         if (!empty($rpmids)) {
-            // Create reporting manager instance
+            // Create reporting manager instance.
             $rpm = \report_elucidsitereport\reporting_manager::get_instance();
             $students = $rpm->get_all_reporting_managers_students($rpmids);
             if (!empty($students)) {
@@ -1095,7 +1095,7 @@ class utility {
             $params = array_merge($rpmparams, $inparams);
         }
 
-        // Get all users
+        // Get all users.
         $sql = "SELECT DISTINCT(u.id), CONCAT(u.firstname, ' ', u.lastname) as fullname
                 FROM {user} u
                 $cohortjoinsql
@@ -1133,7 +1133,7 @@ class utility {
      */
     public static function get_reports_block() {
         global $DB;
-        
+
         return $DB->get_records('sitereport_blocks');
     }
 
@@ -1195,11 +1195,11 @@ class utility {
      */
     public static function get_enrolled_students($courseid, $context = false) {
         if (!$context) {
-            // Get default course context
+            // Get default course context.
             $context = context_course::instance($courseid);
         }
 
-        // get only students from that course
+        // Get only students from that course.
         return get_enrolled_users($context, 'moodle/course:isincompletionreports');
     }
 
