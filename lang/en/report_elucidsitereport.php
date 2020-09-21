@@ -13,7 +13,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
  * Plugin strings are defined here.
  *
@@ -64,7 +63,7 @@ $string['unselectall'] = 'Unselect All';
 $string['selectall'] = 'Select All';
 $string['activity'] = 'Activity';
 
-// Breakdown the tooltip string to display in 2 lines
+// Breakdown the tooltip string to display in 2 lines.
 $string['cpblocktooltip1'] = '{$a->per} course completed';
 $string['cpblocktooltip2'] = 'by {$a->val} users';
 
@@ -357,7 +356,7 @@ $string['duration'] = 'Duration';
 $string['na'] = 'NA';
 $string['activityname'] = 'Activity Name';
 
-// Setting
+// Setting.
 $string['elucidsitereport_settings'] = 'Reports & Analytics Dashboard Settings';
 $string['selectblocks'] = 'Select blocks to show for Reporting Managers: ';
 $string['rpmblocks'] = 'Reporting Manager Blocks';
@@ -365,7 +364,7 @@ $string['addblocks'] = 'Add Blocks';
 $string['notselected'] = 'Not Selected';
 
 
-// Custom Query Report
+// Custom Query Report.
 $string['customqueryreport'] = 'Custom Query Report';
 $string['completionrangeselector'] = 'Course Completion Date Range Selector';
 $string['selectatleastonecvourse'] = 'Please, Select at least one course';
