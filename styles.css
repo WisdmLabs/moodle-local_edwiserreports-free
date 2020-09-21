@@ -698,3 +698,7 @@ div[id^="wdm-"][id*="-individual"] table.table,
     overflow: auto;
     margin: 0 0 1rem 0;
 }
+
+.modal-open .select2-container {
+    z-index: unset !important;
+}

@@ -67,7 +67,7 @@ define([
                     { "data": "courseprogress" }
                 ],
                 language : {
-                    searchPlaceholder: "Search users",
+                    searchPlaceholder: "Search Users",
                     emptyTable : "No certificates are awarded"
                 },
                 initComplete: function(settings, json) {
