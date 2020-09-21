@@ -13,7 +13,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
  * Plugin administration pages are defined here.
  *
@@ -34,10 +33,10 @@ use stdClass;
 use templatable;
 use context_system;
 
-require_once $CFG->dirroot."/report/elucidsitereport/lib.php";
-require_once $CFG->dirroot."/report/elucidsitereport/classes/report_blocks.php";
-require_once $CFG->dirroot."/report/elucidsitereport/classes/reporting_manager.php";
-require_once $CFG->dirroot."/report/elucidsitereport/locallib.php";
+require_once($CFG->dirroot."/report/elucidsitereport/lib.php");
+require_once($CFG->dirroot."/report/elucidsitereport/classes/report_blocks.php");
+require_once($CFG->dirroot."/report/elucidsitereport/classes/reporting_manager.php");
+require_once($CFG->dirroot."/report/elucidsitereport/locallib.php");
 
 class elucidreport_renderable implements renderable, templatable {
     /**
@@ -50,32 +49,32 @@ class elucidreport_renderable implements renderable, templatable {
     public function export_for_template(renderer_base $output) {
         global $CFG, $DB, $PAGE;
 
-        // Get system context
+        // Get system context.
         $context = context_system::instance();
 
         $output = null;
         $export = new stdClass();
 
-        // Prepare reports blocks
+        // Prepare reports blocks.
         $reportblocks = \report_elucidsitereport\utility::get_reports_block();
         $reportblocks = new \report_elucidsitereport\report_blocks($reportblocks);
         $export->blocks = $reportblocks->get_report_blocks();
 
-        // Todo: Remove below code
+        // Todo: Remove below code.
         $export->downloadurl = $CFG->wwwroot."/report/elucidsitereport/download.php";
 
         $export->sesskey = sesskey();
         $export->timenow = date("Y-m-d", time());
         $export->courses = \report_elucidsitereport\utility::get_courses();
         $export->isreportingmanager = false;
-        // Create reporting manager instance
+        // Create reporting manager instance.
         $rpm = \report_elucidsitereport\reporting_manager::get_instance();
 
-        // Check capability also because if user is admin or manager then show all reporting managers
+        // Check capability also because if user is admin or manager then show all reporting managers.
         if ($rpm->isrpm && !has_capability('moodle/site:configview', $context)) {
             $export->isreportingmanager = true;
         }
-        // Blocks
+        // Blocks.
         $blocks = array(
             'activeusers' => get_string('activeusersheader', 'report_elucidsitereport'),
             'courseprogress' => get_string('courseprogress', 'report_elucidsitereport'),
@@ -88,11 +87,11 @@ class elucidreport_renderable implements renderable, templatable {
             'todaysactivity' => get_string('todaysactivityheader', 'report_elucidsitereport'),
             'inactiveusers' => get_string('inactiveusers', 'report_elucidsitereport'),
         );
-        // Get Reporting Manager hidden blocks
-        $added_blocks = isset($CFG->ed_reporting_manager_blocks) ? unserialize($CFG->ed_reporting_manager_blocks) : array();
-        // If block is hidden then add true because we have added a not condition in mustache file
+        // Get Reporting Manager hidden blocks.
+        $addedblocks = isset($CFG->ed_reporting_manager_blocks) ? unserialize($CFG->ed_reporting_manager_blocks) : array();
+        // If block is hidden then add true because we have added a not condition in mustache file.
         foreach ($blocks as $key => $value) {
-            if (in_array($key, $added_blocks)) {
+            if (in_array($key, $addedblocks)) {
                 $export->$key = true;
             } else {
                 $export->$key = false;
@@ -131,22 +130,18 @@ class elucidreport_renderable implements renderable, templatable {
             }
             $export->lpstatslink = new moodle_url($CFG->wwwroot."/report/elucidsitereport/lpstats.php");
         }
-        // Custom Query Report
+        // Custom Query Report.
         $export->rpmgrs = $rpm->get_all_reporting_managers();
 
-        // Get reporting manager
+        // Get reporting manager.
         if (!empty($export->rpmgrs)) {
             $export->hasrpmanagers = true;
             usort($export->rpmgrs, function($first, $second) {
                 return strtolower($first->uname) > strtolower($second->uname);
             });
-            // $export->rpmgrs = array_values($rpm->rpmindentusers);
-        } /*else if (has_capability('moodle/site:configview', $context)) {
-            $export->hasrpmanagers = true;
-            $export->rpmgrs = $rpm->get_all_reporting_managers();
-        }*/
+        }
 
-        // Get all cohort filters
+        // Get all cohort filters.
         $cohorts = get_cohort_filter();
         $export->hascohorts = false;
         if (isset($cohorts->values) && !empty($cohorts->values)) {
@@ -159,21 +154,21 @@ class elucidreport_renderable implements renderable, templatable {
             $cohortjoinsql = 'JOIN {cohort_members} co ON co.userid = u.id';
         }
 
-        // Create reporting manager instance
+        // Create reporting manager instance.
         $rpm = \report_elucidsitereport\reporting_manager::get_instance();
         $students = $rpm->get_all_reporting_managers_students();
         list($rpmdb, $inparams) = $DB->get_in_or_equal($students, SQL_PARAMS_NAMED, 'students', true, true);
 
-        // Get all users
+        // Get all users.
         $sql = "SELECT DISTINCT(u.id), CONCAT(u.firstname, ' ', u.lastname) as fullname
                 FROM {user} u
                 $cohortjoinsql
-                WHERE u.id $rpmdb 
+                WHERE u.id $rpmdb
                 AND u.deleted = :deleted
                 AND u.confirmed = :confirmed
                 AND u.id > 1
                 ORDER BY fullname ASC";
-        $params =  array(
+        $params = array(
             'deleted' => false,
             'confirmed' => true
         );
@@ -187,7 +182,7 @@ class elucidreport_renderable implements renderable, templatable {
         $export->modules = \report_elucidsitereport\utility::get_available_reports_modules();
 
         $export->exportlinks = get_block_exportlinks($downloadurl, $data);
-        $export->reportfields = elucidreport_renderable::get_report_fields();
+        $export->reportfields = self::get_report_fields();
         $export->downloadurl = $downloadurl;
 
         return $export;
@@ -199,48 +194,140 @@ class elucidreport_renderable implements renderable, templatable {
      */
     public static function get_report_fields() {
         $userfields = array(
-            array('key' => 'username', 'value'=>get_string('username', 'report_elucidsitereport'), 'dbkey' => 'u.username', 'disbaled' => true),
-            array('key' => 'email', 'value'=>get_string('useremail', 'report_elucidsitereport'), 'dbkey' => 'u.email'),
-            array('key' => 'firstname', 'value'=>get_string('firstname', 'report_elucidsitereport'), 'dbkey' => 'u.firstname'),
-            array('key' => 'lastname', 'value'=>get_string('lastname', 'report_elucidsitereport'), 'dbkey' => 'u.lastname')
+            array(
+                'key' => 'username',
+                'value' => get_string('username', 'report_elucidsitereport'),
+                'dbkey' => 'u.username',
+                'disbaled' => true
+            ),
+            array('key' => 'email', 'value' => get_string('useremail', 'report_elucidsitereport'), 'dbkey' => 'u.email'),
+            array('key' => 'firstname', 'value' => get_string('firstname', 'report_elucidsitereport'), 'dbkey' => 'u.firstname'),
+            array('key' => 'lastname', 'value' => get_string('lastname', 'report_elucidsitereport'), 'dbkey' => 'u.lastname')
         );
         $coursefields = array(
-            array('key' => 'coursename', 'value'=>get_string('course', 'report_elucidsitereport'), 'dbkey' => 'CONCAT(\'"\', c.fullname, \'"\')', 'disbaled' => true),
-            array('key' => 'coursecategory', 'value'=>get_string('coursecategory', 'report_elucidsitereport'), 'dbkey' => 'ctg.name'),
-            array('key' => 'courseenroldate', 'value'=>get_string('courseenroldate', 'report_elucidsitereport'), 'dbkey' => 'FROM_UNIXTIME(ra.timemodified, "%D %M %Y")'),
-            array('key' => 'courseprogress', 'value'=>get_string('courseprogress', 'report_elucidsitereport'), 'dbkey' => 'ec.progress'),
-            array('key' => 'completionstatus', 'value'=>get_string('course_completion_status', 'report_elucidsitereport'), 'dbkey' => '(CASE ec.progress WHEN 100 THEN "Completed" ELSE "In Progress" END)'),
-            array('key' => 'activitiescompleted', 'value'=>get_string('activitiescompleted', 'report_elucidsitereport'), 'dbkey' => 'LENGTH(ec.completedmodules) - LENGTH(REPLACE(ec.completedmodules, ",", "")) + 1'),
-            array('key' => 'incompletedactivities', 'value'=>get_string('incompletedactivities', 'report_elucidsitereport'), 'dbkey' => 'ec.totalmodules - (LENGTH(ec.completedmodules) - LENGTH(REPLACE(ec.completedmodules, ",", "")) + 1)'),
-            array('key' => 'totalactivities', 'value'=>get_string('totalactivities', 'report_elucidsitereport'), 'dbkey' => 'ec.totalmodules'),
-            array('key' => 'completiontime', 'value'=>get_string('completiontime', 'report_elucidsitereport'), 'dbkey' => 'FROM_UNIXTIME(ec.completiontime, "%D %M %Y")'),
-            array('key' => 'coursestartdate', 'value'=>get_string('coursestartdate', 'report_elucidsitereport'), 'dbkey' => 'FROM_UNIXTIME(c.startdate, "%D %M %Y")'),
-            array('key' => 'courseenddate', 'value'=>get_string('courseenddate', 'report_elucidsitereport'), 'dbkey' => '(CASE c.enddate WHEN 0 THEN "Never" ELSE FROM_UNIXTIME(c.enddate, "%D %M %Y") END)'),
+            array(
+                'key' => 'coursename',
+                'value' => get_string('course', 'report_elucidsitereport'),
+                'dbkey' => 'CONCAT(\'"\', c.fullname, \'"\')',
+                'disbaled' => true
+            ),
+            array(
+                'key' => 'coursecategory',
+                'value' => get_string('coursecategory', 'report_elucidsitereport'),
+                'dbkey' => 'ctg.name'
+            ),
+            array(
+                'key' => 'courseenroldate',
+                'value' => get_string('courseenroldate', 'report_elucidsitereport'),
+                'dbkey' => 'FROM_UNIXTIME(ra.timemodified, "%D %M %Y")'
+            ),
+            array(
+                'key' => 'courseprogress',
+                'value' => get_string('courseprogress', 'report_elucidsitereport'),
+                'dbkey' => 'ec.progress'
+            ),
+            array(
+                'key' => 'completionstatus',
+                'value' => get_string('course_completion_status', 'report_elucidsitereport'),
+                'dbkey' => '(CASE ec.progress WHEN 100 THEN "Completed" ELSE "In Progress" END)'
+            ),
+            array(
+                'key' => 'activitiescompleted',
+                'value' => get_string('activitiescompleted', 'report_elucidsitereport'),
+                'dbkey' => 'LENGTH(ec.completedmodules) - LENGTH(REPLACE(ec.completedmodules, ",", "")) + 1'
+            ),
+            array(
+                'key' => 'incompletedactivities',
+                'value' => get_string('incompletedactivities', 'report_elucidsitereport'),
+                'dbkey' => 'ec.totalmodules - (LENGTH(ec.completedmodules) - LENGTH(REPLACE(ec.completedmodules, ",", "")) + 1)'
+            ),
+            array(
+                'key' => 'totalactivities',
+                'value' => get_string('totalactivities', 'report_elucidsitereport'),
+                'dbkey' => 'ec.totalmodules'
+            ),
+            array(
+                'key' => 'completiontime',
+                'value' => get_string('completiontime', 'report_elucidsitereport'),
+                'dbkey' => 'FROM_UNIXTIME(ec.completiontime, "%D %M %Y")'
+            ),
+            array(
+                'key' => 'coursestartdate',
+                'value' => get_string('coursestartdate', 'report_elucidsitereport'),
+                'dbkey' => 'FROM_UNIXTIME(c.startdate, "%D %M %Y")'
+            ),
+            array(
+                'key' => 'courseenddate',
+                'value' => get_string('courseenddate', 'report_elucidsitereport'),
+                'dbkey' => '(CASE c.enddate WHEN 0 THEN "Never" ELSE FROM_UNIXTIME(c.enddate, "%D %M %Y") END)'
+            ),
         );
         $lpfields = array(
-            array('key' => 'lpname', 'value'=>get_string('lpname', 'report_elucidsitereport'), 'dbkey' => 'lp.name', 'disbaled' => true),
-            array('key' => 'lpenroldate', 'value'=>get_string('lpenroldate', 'report_elucidsitereport'), 'dbkey' => 'FROM_UNIXTIME(lpe.timeenroled, "%D %M %Y")'),
-            array('key' => 'lpstartdate', 'value'=>get_string('lpstartdate', 'report_elucidsitereport'), 'dbkey' => 'FROM_UNIXTIME(lp.timestart, "%D %M %Y")'),
-            array('key' => 'lpenddate', 'value'=>get_string('lpenddate', 'report_elucidsitereport'), 'dbkey' => '(CASE lp.timeend WHEN 0 THEN "Never" ELSE FROM_UNIXTIME(lp.timeend, "%D %M %Y") END)'),
-            array('key' => 'lpduration', 'value'=>get_string('lpduration', 'report_elucidsitereport'), 'dbkey' => 'lp.durationtime'),
-            array('key' => 'lpcompletion', 'value'=>get_string('lpcompletion', 'report_elucidsitereport'), 'dbkey' => 'FROM_UNIXTIME(lpe.completed, "%D %M %Y")'),
+            array(
+                'key' => 'lpname',
+                'value' => get_string('lpname', 'report_elucidsitereport'),
+                'dbkey' => 'lp.name',
+                'disbaled' => true
+            ),
+            array(
+                'key' => 'lpenroldate',
+                'value' => get_string('lpenroldate', 'report_elucidsitereport'),
+                'dbkey' => 'FROM_UNIXTIME(lpe.timeenroled, "%D %M %Y")'
+            ),
+            array(
+                'key' => 'lpstartdate',
+                'value' => get_string('lpstartdate', 'report_elucidsitereport'),
+                'dbkey' => 'FROM_UNIXTIME(lp.timestart, "%D %M %Y")'
+            ),
+            array(
+                'key' => 'lpenddate',
+                'value' => get_string('lpenddate', 'report_elucidsitereport'),
+                'dbkey' => '(CASE lp.timeend WHEN 0 THEN "Never" ELSE FROM_UNIXTIME(lp.timeend, "%D %M %Y") END)'
+            ),
+            array(
+                'key' => 'lpduration',
+                'value' => get_string('lpduration', 'report_elucidsitereport'),
+                'dbkey' => 'lp.durationtime'
+            ),
+            array(
+                'key' => 'lpcompletion',
+                'value' => get_string('lpcompletion', 'report_elucidsitereport'),
+                'dbkey' => 'FROM_UNIXTIME(lpe.completed, "%D %M %Y")'
+            ),
         );
 
         $activityfields = array(
-            array('key' => 'activityname', 'value'=>get_string('activityname', 'report_elucidsitereport'), 'dbkey' => 'q.name', 'disbaled' => true),
-            array('key' => 'grade', 'value'=>get_string('grade', 'report_elucidsitereport'), 'dbkey' => 'ROUND(qg.grade, 2)'),
-            array('key' => 'totalgrade', 'value'=>get_string('totalgrade', 'report_elucidsitereport'), 'dbkey' => 'ROUND(q.grade, 2)'),
-            array('key' => 'status', 'value'=>get_string('status', 'report_elucidsitereport'), 'dbkey' => 'qa.state'),
-            array('key' => 'attempt', 'value'=>get_string('attempt', 'report_elucidsitereport'), 'dbkey' => 'qa.attempt'),
-            array('key' => 'attemptstart', 'value'=>get_string('attemptstart', 'report_elucidsitereport'), 'dbkey' => 'FROM_UNIXTIME(qa.timestart, "%D %M %Y %h:%i:%m")'),
-            array('key' => 'attemptfinish', 'value'=>get_string('attemptfinish', 'report_elucidsitereport'), 'dbkey' => 'FROM_UNIXTIME(qa.timefinish, "%D %M %Y %h:%i:%m")'),
+            array(
+                'key' => 'activityname',
+                'value' => get_string('activityname', 'report_elucidsitereport'),
+                'dbkey' => 'q.name',
+                'disbaled' => true
+            ),
+            array('key' => 'grade', 'value' => get_string('grade', 'report_elucidsitereport'), 'dbkey' => 'ROUND(qg.grade, 2)'),
+            array(
+                'key' => 'totalgrade',
+                'value' => get_string('totalgrade', 'report_elucidsitereport'),
+                'dbkey' => 'ROUND(q.grade, 2)'
+            ),
+            array('key' => 'status', 'value' => get_string('status', 'report_elucidsitereport'), 'dbkey' => 'qa.state'),
+            array('key' => 'attempt', 'value' => get_string('attempt', 'report_elucidsitereport'), 'dbkey' => 'qa.attempt'),
+            array(
+                'key' => 'attemptstart',
+                'value' => get_string('attemptstart', 'report_elucidsitereport'),
+                'dbkey' => 'FROM_UNIXTIME(qa.timestart, "%D %M %Y %h:%i:%m")'
+            ),
+            array(
+                'key' => 'attemptfinish',
+                'value' => get_string('attemptfinish', 'report_elucidsitereport'),
+                'dbkey' => 'FROM_UNIXTIME(qa.timefinish, "%D %M %Y %h:%i:%m")'
+            ),
         );
 
-        // Check if leraning hours plugin is present
+        // Check if leraning hours plugin is present.
         if (has_plugin('report', 'learning_hours')) {
             $coursefields[] = array(
                 'key' => 'learninghours',
-                'value'=>get_string('learninghours', 'report_elucidsitereport'),
+                'value' => get_string('learninghours', 'report_elucidsitereport'),
                 'dbkey' => '(CASE WHEN ulh.totalhours THEN
                              CONCAT(
                                 FLOOR(ulh.totalhours/60), "h ",
@@ -252,11 +339,15 @@ class elucidreport_renderable implements renderable, templatable {
         }
 
         $rpmfields = array();
-        // Create reporting manager instance
+        // Create reporting manager instance.
         $rpm = \report_elucidsitereport\reporting_manager::get_instance();
         if (!$rpm->isrpm) {
             $rpmfields = array(
-                array('key' => 'rpmname', 'value'=>get_string('rpmname', 'report_elucidsitereport'), 'dbkey' => 'CONCAT(rpm.firstname, " ", rpm.lastname)'),
+                array(
+                    'key' => 'rpmname',
+                    'value' => get_string('rpmname', 'report_elucidsitereport'),
+                    'dbkey' => 'CONCAT(rpm.firstname, " ", rpm.lastname)'
+                ),
             );
         }
         $fields['userfields']   = $userfields;
@@ -328,20 +419,20 @@ class certificates_renderable implements renderable, templatable {
         $output->sesskey = sesskey();
         $customcerts = $DB->get_records("customcert", array());
 
-		if (!empty($customcerts)) {
-			$output->hascertificates = true;
+        if (!empty($customcerts)) {
+            $output->hascertificates = true;
             $firstcertid = 0;
-			foreach ($customcerts as $customcert) {
+            foreach ($customcerts as $customcert) {
                 if (!$firstcertid) {
                     $firstcertid = $customcert->id;
                 }
-				$course = get_course($customcert->course);
-				$customcert->coursename = $course->shortname;
-			}
-			$output->certificates = array_values($customcerts);
+                $course = get_course($customcert->course);
+                $customcert->coursename = $course->shortname;
+            }
+            $output->certificates = array_values($customcerts);
             $downloadurl = $CFG->wwwroot."/report/elucidsitereport/download.php";
             $output->exportlink = get_exportlinks($downloadurl, "report", "certificates", $firstcertid, 0);
-		}
+        }
         $output->userfilters = get_userfilters(false, true, false);
         $output->backurl = new moodle_url($CFG->wwwroot."/report/elucidsitereport/index.php");
         return $output;
