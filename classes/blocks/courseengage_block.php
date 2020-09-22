@@ -64,55 +64,35 @@ class courseengage_block extends utility {
         // Create reporting manager instance.
         $rpm = reporting_manager::get_instance();
         $sqlcohort = "";
-        // Can be optimized.
+        $cohortjoin = '';
+        $cohortcondition = '';
         if ($cohortid) {
-            $completionsql = "SELECT c.courseid, COUNT(c.userid) AS usercount, c.progress as completion
-                FROM {edw_course_progress} c
-                JOIN {user} u ON u.id = c.userid
-                JOIN {cohort_members} cm ON cm.userid = u.id
-                WHERE c.progress
-                BETWEEN :completionstart
-                AND :completionend
-                AND u.deleted = 0
-                AND cm.cohortid = :cohortid
-                AND u.id ".$rpm->insql."
-                GROUP BY c.courseid";
-
-            // Calculate atleast completed one modules.
-            $completionmodulesql = "SELECT c.courseid, COUNT(c.userid) AS usercount
-                FROM {edw_course_progress} c
-                JOIN {user} u ON u.id = c.userid
-                JOIN {cohort_members} cm ON cm.userid = u.id
-                WHERE ( LENGTH(completedmodules) -
-                        LENGTH(REPLACE(completedmodules, ',', '')) + 1
-                      ) >= :completedactivities
-                AND u.deleted = 0
-                AND cm.cohortid = :cohortid
-                AND u.id ".$rpm->insql."
-                GROUP BY c.courseid";
+            $cohortjoin = 'JOIN {cohort_members} cm ON cm.userid = u.id';
+            $cohortcondition = 'AND cm.cohortid = :cohortid';
             $params["cohortid"] = $cohortid;
-        } else {
-            $completionsql = "SELECT c.courseid, COUNT(c.userid) AS usercount,
-                c.progress as completion
-                FROM {edw_course_progress} c
-                JOIN {user} u ON u.id = c.userid
-                WHERE c.progress
-                BETWEEN :completionstart
-                AND :completionend
-                AND u.deleted = 0
-                AND u.id ".$rpm->insql."
-                GROUP BY c.courseid";
-            // Calculate atleast completed one modules.
-            $completionmodulesql = "SELECT c.courseid, COUNT(c.userid) AS usercount
-                FROM {edw_course_progress} c
-                JOIN {user} u ON u.id = c.userid
-                WHERE ( LENGTH(completedmodules) -
-                        LENGTH(REPLACE(completedmodules, ',', '')) + 1
-                      ) >= :completedactivities
-                AND u.deleted = 0
-                AND u.id ".$rpm->insql."
-                GROUP BY c.courseid";
         }
+        $completionsql = "SELECT c.courseid, COUNT(c.userid) AS usercount,
+            c.progress as completion
+            FROM {edw_course_progress} c
+            JOIN {user} u ON u.id = c.userid "
+            . $cohortjoin .
+            " WHERE c.progress
+            BETWEEN :completionstart
+            AND :completionend
+            AND u.deleted = 0 "
+            . $cohortcondition .
+            " GROUP BY c.courseid";
+        // Calculate atleast completed one modules.
+        $completionmodulesql = "SELECT c.courseid, COUNT(c.userid) AS usercount
+            FROM {edw_course_progress} c
+            JOIN {user} u ON u.id = c.userid "
+            . $cohortjoin .
+            " WHERE (LENGTH(completedmodules) -
+                    LENGTH(REPLACE(completedmodules, ',', '')) + 1
+                    ) >= :completedactivities
+            AND u.deleted = 0 "
+            . $cohortcondition .
+            " GROUP BY c.courseid";
 
         // Calculate 50% Completion Count for Courses.
         $params["completionstart"] = 50.00;

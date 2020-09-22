@@ -493,46 +493,33 @@ class activeusersblock extends block_base {
             "endtime" => $this->timenow,
             "action" => "viewed"
         );
-        // Can be optimized
-        // Create reporting manager instance
         // Query to get activeusers from logs.
+        $cachekey = "activeusers-activeusers-" . $filter . "-all";
+        $cohortjoin = "";
+        $cohortcondition = "";
         if ($cohortid) {
-            $cachekey = "activeusers-activeusers-" . $filter . "-" . $cohortid .''.$rpm->rpmcache;
+            $cachekey = "activeusers-activeusers-" . $filter . "-" . $cohortid;
+            $cohortjoin = "JOIN {cohort_members} cm ON l.userid = cm.userid";
+            $cohortcondition = "AND cm.cohortid = :cohortid";
             $params["cohortid"] = $cohortid;
-            $sql = "SELECT
-               CONCAT(
-                   DAY(FROM_UNIXTIME(l.timecreated)), '-',
-                   MONTH(FROM_UNIXTIME(l.timecreated)), '-',
-                   YEAR(FROM_UNIXTIME(l.timecreated))
-               ) USERDATE,
-               COUNT( DISTINCT l.userid ) as usercount
-               FROM {logstore_standard_log} l
-               JOIN {cohort_members} cm
-               ON l.userid = cm.userid
-               WHERE cm.cohortid = :cohortid
-               AND l.action = :action
-               AND l.timecreated >= :starttime
-               AND l.timecreated < :endtime
-               GROUP BY YEAR(FROM_UNIXTIME(l.timecreated)),
-               MONTH(FROM_UNIXTIME(l.timecreated)),
-               DAY(FROM_UNIXTIME(l.timecreated)), USERDATE";
-        } else {
-            $cachekey = "activeusers-activeusers-" . $filter . "-all".''.$rpm->rpmcache;
-            $sql = "SELECT
-               CONCAT(
-                   DAY(FROM_UNIXTIME(timecreated)), '-',
-                   MONTH(FROM_UNIXTIME(timecreated)), '-',
-                   YEAR(FROM_UNIXTIME(timecreated))
-               ) USERDATE,
-               COUNT( DISTINCT userid ) as usercount
-               FROM {logstore_standard_log}
-               WHERE action = :action
-               AND timecreated >= :starttime
-               AND timecreated < :endtime
-               GROUP BY YEAR(FROM_UNIXTIME(timecreated)),
-               MONTH(FROM_UNIXTIME(timecreated)),
-               DAY(FROM_UNIXTIME(timecreated)), USERDATE";
-        };
+        }
+        $sql = "SELECT
+            CONCAT(
+                DAY(FROM_UNIXTIME(l.timecreated)), '-',
+                MONTH(FROM_UNIXTIME(l.timecreated)), '-',
+                YEAR(FROM_UNIXTIME(l.timecreated))
+            ) USERDATE,
+            COUNT( DISTINCT l.userid ) as usercount
+            FROM {logstore_standard_log} l "
+            . $cohortjoin .
+            " WHERE l.action = :action "
+            . $cohortcondition .
+            " AND l.timecreated >= :starttime
+            AND l.timecreated < :endtime
+            GROUP BY YEAR(FROM_UNIXTIME(l.timecreated)),
+            MONTH(FROM_UNIXTIME(l.timecreated)),
+            DAY(FROM_UNIXTIME(l.timecreated)), USERDATE";
+
         // Get active users data from cache.
         if (!$activeusers = $this->cache->get($cachekey)) {
             // Get Logs to generate active users data.
@@ -575,51 +562,33 @@ class activeusersblock extends block_base {
             "eventname" => '\core\event\user_enrolment_created',
             "action" => "created"
         );
-        // Can be optimized
-        // Create reporting manager instance.
-        $rpm = reporting_manager::get_instance();
-        $params = array_merge($params, $rpm->inparams);
+
+        $cachekey = "activeusers-enrolments-". $filter . "-all";
+        $cohortjoin = "";
+        $cohortcondition = "";
         if ($cohortid) {
-            $cachekey = "activeusers-enrolments-" . $filter . "-" . $cohortid.''.$rpm->rpmcache;
-            $sql = "SELECT
-                CONCAT(
-                    DAY(FROM_UNIXTIME(l.timecreated)), '-',
-                    MONTH(FROM_UNIXTIME(l.timecreated)), '-',
-                    YEAR(FROM_UNIXTIME(l.timecreated))
-                ) USERDATE,
-                COUNT( l.relateduserid ) as usercount
-                FROM {logstore_standard_log} l
-                JOIN {cohort_members} cm
-                ON l.relateduserid = cm.userid
-                WHERE cm.cohortid = :cohortid
-                AND l.eventname = :eventname
-                AND l.action = :action
-                AND l.timecreated >= :starttime
-                AND l.timecreated < :endtime
-                AND l.relateduserid ".$rpm->insql."
-                GROUP BY YEAR(FROM_UNIXTIME(l.timecreated)),
-                MONTH(FROM_UNIXTIME(l.timecreated)),
-                DAY(FROM_UNIXTIME(l.timecreated)), USERDATE";
+            $cachekey = "activeusers-enrolments-" . $filter . "-" . $cohortid;
+            $cohortjoin = "JOIN {cohort_members} cm ON l.relateduserid = cm.userid";
+            $cohortcondition = "AND cm.cohortid = :cohortid";
             $params["cohortid"] = $cohortid;
-        } else {
-            $cachekey = "activeusers-enrolments-". $filter . "-all".''.$rpm->rpmcache;
-            $sql = "SELECT
-                CONCAT(
-                    DAY(FROM_UNIXTIME(timecreated)), '-',
-                    MONTH(FROM_UNIXTIME(timecreated)), '-',
-                    YEAR(FROM_UNIXTIME(timecreated))
-                ) USERDATE,
-                COUNT( relateduserid ) as usercount
-                FROM {logstore_standard_log}
-                WHERE eventname = :eventname
-                AND action = :action
-                AND timecreated >= :starttime
-                AND timecreated < :endtime
-                AND relateduserid ".$rpm->insql."
-                GROUP BY YEAR(FROM_UNIXTIME(timecreated)),
-                MONTH(FROM_UNIXTIME(timecreated)),
-                DAY(FROM_UNIXTIME(timecreated)), USERDATE";
         }
+        $sql = "SELECT
+            CONCAT(
+                DAY(FROM_UNIXTIME(l.timecreated)), '-',
+                MONTH(FROM_UNIXTIME(l.timecreated)), '-',
+                YEAR(FROM_UNIXTIME(l.timecreated))
+            ) USERDATE,
+            COUNT( l.relateduserid ) as usercount
+            FROM {logstore_standard_log} l "
+            . $cohortjoin .
+            " WHERE l.eventname = :eventname "
+            . $cohortcondition .
+            " AND l.action = :action
+            AND l.timecreated >= :starttime
+            AND l.timecreated < :endtime
+            GROUP BY YEAR(FROM_UNIXTIME(l.timecreated)),
+            MONTH(FROM_UNIXTIME(l.timecreated)),
+            DAY(FROM_UNIXTIME(l.timecreated)), USERDATE";
         // Get data from cache if exist.
         if (!$enrolments = $this->cache->get($cachekey)) {
             // Get enrolments log.
@@ -656,48 +625,30 @@ class activeusersblock extends block_base {
         global $DB;
 
         $params = array();
-        // Can be optimized
-        // Create reporting manager instance.
-        $rpm = reporting_manager::get_instance();
-
+        $cachekey = "activeusers-completionrate-" . $filter . "-all";
+        $cohortjoin = "";
+        $cohortcondition = "";
         if ($cohortid) {
-            $cachekey = "activeusers-completionrate-" . $filter . "-" . $cohortid.''.$rpm->rpmcache;
+            $cachekey = "activeusers-completionrate-" . $filter . "-" . $cohortid;
+            $cohortjoin = "JOIN {cohort_members} cm ON cc.userid = cm.userid";
+            $cohortcondition = "AND cm.cohortid = :cohortid";
             $params["cohortid"] = $cohortid;
-            $sql = "SELECT
-                CONCAT(
-                DAY(FROM_UNIXTIME(cc.timecompleted)), '-',
-                MONTH(FROM_UNIXTIME(cc.timecompleted)), '-',
-                YEAR(FROM_UNIXTIME(cc.timecompleted))
-                ) USERDATE,
-                course,
-                COUNT( DISTINCT cc.userid ) as usercount
-                FROM {course_completions} cc
-                JOIN {cohort_members} cm
-                ON cc.userid = cm.userid
-                WHERE cc.timecompleted IS NOT NULL
-                AND cm.cohortid = :cohortid
-                AND cm.userid ".$rpm->insql."
-                GROUP BY YEAR(FROM_UNIXTIME(cc.timecompleted)),
-                MONTH(FROM_UNIXTIME(cc.timecompleted)),
-                DAY(FROM_UNIXTIME(cc.timecompleted)), cc.course, USERDATE";
-        } else {
-            $cachekey = "activeusers-completionrate-" . $filter . "-all".''.$rpm->rpmcache;
-            $sql = "SELECT
-                CONCAT(
-                    DAY(FROM_UNIXTIME(timecompleted)), '-',
-                    MONTH(FROM_UNIXTIME(timecompleted)), '-',
-                    YEAR(FROM_UNIXTIME(timecompleted))
-                ) USERDATE,
-                course,
-                COUNT( DISTINCT userid ) as usercount
-                FROM {course_completions}
-                WHERE timecompleted IS NOT NULL
-                AND userid ".$rpm->insql."
-                GROUP BY YEAR(FROM_UNIXTIME(timecompleted)),
-                MONTH(FROM_UNIXTIME(timecompleted)),
-                DAY(FROM_UNIXTIME(timecompleted)), course, USERDATE";
         }
-        $params = array_merge($params, $rpm->inparams);
+        $sql = "SELECT
+            CONCAT(
+            DAY(FROM_UNIXTIME(cc.timecompleted)), '-',
+            MONTH(FROM_UNIXTIME(cc.timecompleted)), '-',
+            YEAR(FROM_UNIXTIME(cc.timecompleted))
+            ) USERDATE,
+            course,
+            COUNT( DISTINCT cc.userid ) as usercount
+            FROM {course_completions} cc "
+            . $cohortjoin .
+            " WHERE cc.timecompleted IS NOT NULL "
+            . $cohortcondition .
+            " GROUP BY YEAR(FROM_UNIXTIME(cc.timecompleted)),
+            MONTH(FROM_UNIXTIME(cc.timecompleted)),
+            DAY(FROM_UNIXTIME(cc.timecompleted)), cc.course, USERDATE";
         // Get data from cache if exist.
         if (!$completionrate = $this->cache->get($cachekey)) {
             $completionrate = array();

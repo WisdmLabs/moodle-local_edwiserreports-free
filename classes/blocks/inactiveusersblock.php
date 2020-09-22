@@ -129,20 +129,12 @@ class inactiveusersblock extends block_base {
             default:
                 $lastlogin = 0;
         }
-        $inparams = array();
-        $rpm = reporting_manager::get_instance();
-        // Can be optimized.
-        if ($rpm->isrpm) {
-            // Query to get users who have not logged in from reporting manager students.
-            $sql = "SELECT * FROM {user} WHERE lastlogin <= :lastlogin
-                AND deleted = 0 AND id ".$rpm->insql;
-        } else {
-            // Query to get users who have not logged in.
-            $sql = "SELECT * FROM {user} WHERE lastlogin <= :lastlogin
-                    AND deleted = 0 AND id > 1";
-        }
+
+        // Query to get users who have not logged in.
+        $sql = "SELECT * FROM {user} WHERE lastlogin <= :lastlogin
+                AND deleted = 0 AND id > 1";
         $inparams['lastlogin'] = $lastlogin;
-        $inparams = array_merge($inparams, $rpm->inparams);
+
         // Get all users who are inactive.
         $users = $DB->get_records_sql($sql, $inparams);
 

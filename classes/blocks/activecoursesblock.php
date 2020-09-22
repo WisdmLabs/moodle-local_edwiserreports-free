@@ -166,9 +166,7 @@ class activecoursesblock extends block_base {
      */
     public static function get_courseview_count($courseid, $enrolledstudents) {
         global $DB;
-        // Can be optimized.
-        $sqlcourseview = "SELECT COUNT(userid) as usercount FROM
-            (SELECT DISTINCT userid
+        $sqlcourseview = "SELECT COUNT(DISTINCT userid) as usercount
             FROM {logstore_standard_log}
             WHERE action = ? AND courseid = ?";
 
@@ -177,7 +175,6 @@ class activecoursesblock extends block_base {
             $sqlcourseview .= $extsql;
         }
 
-        $sqlcourseview .= ") as users";
         $views = $DB->get_record_sql($sqlcourseview, array(
             'viewed',
             $courseid
