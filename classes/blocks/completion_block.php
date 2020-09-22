@@ -27,6 +27,8 @@ use stdClass;
 use context_course;
 use html_writer;
 
+require_once($CFG->dirroot . '/report/elucidsitereport/classes/blocks/courseprogressblock.php');
+
 /**
  * Class Course Completion Block
  * To get the data related to active users block
@@ -61,7 +63,7 @@ class completion_block extends utility {
 
         $coursecontext = context_course::instance($courseid);
         // Get only enrolled students.
-        $enrolledstudents = course_progress_block::rep_get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+        $enrolledstudents = courseprogressblock::rep_get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
         $course = get_course($courseid);
 
         $userscompletion = array();

@@ -51,7 +51,7 @@ define([
             CompletionTable.show();
             Table = CompletionTable.DataTable({
                 ajax : url,
-                dom : "<'pull-left'f><t><p>",
+                // dom : "<'pull-left'f><t><p>",
                 oLanguage : {
                     sEmptyTable : "No users are enrolled as student"
                 },
@@ -65,6 +65,10 @@ define([
                     { "data": "grade" },
                     { "data": "lastaccess" }
                 ],
+                drawCallback: function () {
+                    $('.dataTables_paginate > .pagination').addClass('pagination-sm pull-right');
+                    $('.dataTables_filter').addClass('pagination-sm pull-right');
+                },
                 columnDefs: [
                     { className: "text-left", targets: 0 },
                     { className: "text-left", targets: 1 },
@@ -73,9 +77,10 @@ define([
                 initComplete: function() {
                     $(loader).hide();
                 },
-                scrollY : 350,
-                scrollX : true,
-                paginate : false
+                // scrollY : 350,
+                // scrollX : true,
+                // paginate : false,
+                bInfo : false
             });
         }
     }
