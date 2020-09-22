@@ -274,44 +274,94 @@ define([
 
             var contextid = $(e.currentTarget).data('contextid');
             var blockname = $(e.currentTarget).data('blockname');
+            var action = $(e.currentTarget).data('action');
 
-            ModalFactory.create({
-                title: 'Edit Block Setting',
-                // body: Templates.render(tempSelector.blockEditSettings, {})
-                body: fragment.loadFragment(
-                    'report_elucidsitereport',
-                    'get_blocksetting_form',
-                    contextid,
-                    {
-                        blockname : blockname
-                    }
-                )
-            }).done(function(modal) {
-                var root = modal.getRoot();
-                modal.modal.addClass('modal-dialog-centered');
+            console.log(blockname);
 
-                root.on(ModalEvents.bodyRendered, function() {
-                    var form = modal.modal.find('.block-settings-form');
-                    modal.modal.find('.save-block-settings').on('click', function(event) {
-                        event.preventDefault();
-                        var formData = form.serializeArray();
-                        var data = {};
-                        $(formData).each(function($k, $d) {
-                            data[$d.name] = $d.value;
-                        });
-                        
-                        // Set users preferences
-                        set_block_preference(blockname, data, function() {
+            if (action == 'edit') {
+                ModalFactory.create({
+                    title: 'Edit Block Setting',
+                    // body: Templates.render(tempSelector.blockEditSettings, {})
+                    body: fragment.loadFragment(
+                        'report_elucidsitereport',
+                        'get_blocksetting_form',
+                        contextid,
+                        {
+                            blockname : blockname
+                        }
+                    )
+                }).done(function(modal) {
+                    var root = modal.getRoot();
+                    modal.modal.addClass('modal-dialog-centered');
 
+                    root.on(ModalEvents.bodyRendered, function() {
+                        var form = modal.modal.find('.block-settings-form');
+                        modal.modal.find('.save-block-settings').on('click', function(event) {
+                            event.preventDefault();
+                            var formData = form.serializeArray();
+                            var data = {};
+                            $(formData).each(function($k, $d) {
+                                data[$d.name] = $d.value;
+                            });
+                            
+                            // Set users preferences
+                            set_block_preference(blockname, data, function() {
+
+                            });
                         });
                     });
-                });
 
-                root.on(ModalEvents.hidden, function() {
-                    modal.destroy();
+                    root.on(ModalEvents.hidden, function() {
+                        modal.destroy();
+                    });
+                    modal.show();
                 });
-                modal.show();
-            });
+            } else if (action == "hide") {
+                // Todo: add functionality to hide the blocks
+            } else if (action == "editcap") {
+                ModalFactory.create({
+                    title: 'Edit Block Capabilities',
+                    body: fragment.loadFragment(
+                        'report_elucidsitereport',
+                        'get_blockscap_form',
+                        contextid,
+                        {
+                            blockname : blockname
+                        }
+                    )
+                }).done(function(modal) {
+                    var root = modal.getRoot();
+                    modal.modal.addClass('modal-dialog-centered modal-lg');
+
+                    root.on(ModalEvents.bodyRendered, function() {
+                        var form = modal.modal.find('.block-cap-form');
+                        modal.modal.find('#menucapabilities').on('change', function(event) {
+                            event.preventDefault();
+                            var formData = form.serializeArray();
+                            var data = {};
+                            $(formData).each(function($k, $d) {
+                                data[$d.name] = $d.value;
+                            });
+
+                            fragment.loadFragment(
+                                'report_elucidsitereport',
+                                'block_overview_display',
+                                contextid,
+                                {
+                                    capvalue : data.capabilities
+                                }
+                            ).done(function(html, js, css) {
+                                modal.modal.find('.cap-overview').html(html);
+                            });
+                        });
+                    });
+
+                    root.on(ModalEvents.hidden, function() {
+                        modal.destroy();
+                    });
+                    modal.show();
+                });
+            }
         });
     }
 

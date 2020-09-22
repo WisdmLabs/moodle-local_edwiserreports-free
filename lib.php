@@ -32,8 +32,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-use \report_elucidsitereport;
-
 require_once($CFG->dirroot."/report/elucidsitereport/locallib.php");
 
 /**
@@ -387,4 +385,67 @@ function report_elucidsitereport_output_fragment_get_blocksetting_form($params) 
     $o .= html_writer::end_tag('form');
 
     return $o;
+}
+
+/**
+ * Get for for blocks capabilty from
+ */
+function report_elucidsitereport_output_fragment_get_blockscap_form($block) {
+    global $CFG, $PAGE;
+
+    $blockname = isset($block['blockname']) ? $block['blockname'] : false;
+    $component = 'report_elucidsitereport';
+
+    if (!$blockname) {
+        throw new moodle_exception('blocknameinvalid', 'error');
+    }
+
+    // Check if block is exist or not
+    $block = \report_elucidsitereport\utility::get_reportsblock_by_name($blockname);
+
+    if (!$block) {
+        throw new moodle_exception('noblockfound', 'error');
+    }
+
+    // Get block capabilities
+    $capabilities = \report_elucidsitereport\utility::get_blocks_capability($block);
+    $capvalues = array_values($capabilities);
+
+    // Prepare form for block editing
+    $o = html_writer::start_tag('form', array('class' => 'form block-cap-form'));
+
+    $o .= html_writer::start_tag('div', array('class' => 'form-group row fitem'));
+    $o .= html_writer::start_tag('div', array('class' => 'col-md-3'));
+    $o .= html_writer::tag('label', get_string('capabilties', $component), array('class' => 'col-form-label d-inline', 'for' => 'id_capabilities'));
+    $o .= html_writer::end_tag('label');
+    $o .= html_writer::end_tag('div');
+    $o .= html_writer::start_tag('div', array('class' => 'col-md-9'));
+    $o .= html_writer::select($capabilities, 'capabilities', $capvalues[0], null);
+    $o .= html_writer::end_tag('label');
+    $o .= html_writer::end_tag('div');
+    $o .= html_writer::end_tag('div');
+
+    $o .= html_writer::end_tag('form');
+
+    $o .= html_writer::start_div('clearfix path-admin-tool-capability overflow-scroll col-12 cap-overview');
+
+    $data = array();
+    $data['capvalue'] = $capvalues[0];
+    $o .= report_elucidsitereport_output_fragment_block_overview_display($data);
+    $o .= html_writer::end_div();
+    $o .= html_writer::tag('button', 'Save', array('type' => 'submit', 'class' => 'btn btn-primary pull-right save-block-caps'));
+
+    return $o;
+}
+
+/**
+ * Render blocks capability view
+ */
+function report_elucidsitereport_output_fragment_block_overview_display($data) {
+    global $CFG, $PAGE;
+    require_once($CFG->dirroot.'/'.$CFG->admin.'/tool/capability/locallib.php');
+
+    $context = context_system::instance();
+    $renderer = $PAGE->get_renderer('tool_capability');
+    return $renderer->capability_comparison_table(array($data['capvalue']), $context->id, role_fix_names(get_all_roles($context)));
 }

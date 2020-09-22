@@ -23,6 +23,8 @@
 
 namespace report_elucidsitereport;
 
+use context_system;
+
 /**
  * Class to serve the report blocks
  */
@@ -40,9 +42,15 @@ class report_blocks {
 
         // Rearrange blocks based on the saved preferences.
         \report_elucidsitereport\utility::rearrange_block_with_preferences($blocks);
+        $context = context_system::instance();
 
         // Prepare layout for each block.
         foreach ($blocks as $key => $block) {
+            // If user dont have capability to see the block
+            if (!has_capability('report/sitereport_' . $block->classname . ':view', $context)) {
+                continue;
+            }
+
             // Check if class file exist.
             $classname = $block->classname;
             $filepath = $CFG->dirroot . '/report/elucidsitereport/classes/blocks/' . $classname . '.php';

@@ -49,7 +49,7 @@ class siteaccessblock extends block_base {
         global $CFG;
 
         // Layout related data.
-        $this->layout->id = 'siteaccesssblock';
+        $this->layout->id = 'siteaccessblock';
         $this->layout->name = get_string('accessinfo', 'report_elucidsitereport');
         $this->layout->info = get_string('accessinfoblockhelp', 'report_elucidsitereport');
 
@@ -59,6 +59,9 @@ class siteaccessblock extends block_base {
 
         // Add block view in layout.
         $this->layout->blockview = $this->render_block('siteaccessblock', $this->block);
+        
+        // Set block edit capabilities
+        $this->set_block_edit_capabilities($this->layout->id);
 
         // Return blocks layout.
         return $this->layout;

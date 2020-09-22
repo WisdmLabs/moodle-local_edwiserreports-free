@@ -88,6 +88,9 @@ class courseprogressblock extends block_base {
 
         // Add block view in layout.
         $this->layout->blockview = $this->render_block('courseprogressblock', $this->block);
+        
+        // Set block edit capabilities
+        $this->set_block_edit_capabilities($this->layout->id);
 
         // Return blocks layout.
         return $this->layout;

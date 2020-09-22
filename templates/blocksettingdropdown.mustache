@@ -3,20 +3,24 @@
         <i class="icon fa fa-cog fa-fw " title="Actions menu" aria-label="Actions menu"></i>
     </a>
     <div class="dropdown-menu dropdown-menu-right menu align-tr-br" aria-labelledby="blocksetting-{{id}}">
+        {{# canedit }}
         <div class="dropdown-item">
-            <a href="#" class="" data-contextid="{{contextid}}" data-blockname="{{id}}">
+            <a href="#" class="" data-contextid="{{contextid}}" data-blockname="{{id}}" data-action="edit">
                 {{#str}} editblockview, report_elucidsitereport {{/str}}
             </a>
         </div>
         <div class="dropdown-item">
-            <a href="#" class="" data-contextid="{{contextid}}" data-blockname="{{id}}">
+            <a href="#" class="" data-contextid="{{contextid}}" data-blockname="{{id}}" data-action="hide">
                 {{#str}} hide, report_elucidsitereport {{/str}}
             </a>
         </div>
+        {{/ canedit }} 
+        {{# caneditadv }}
         <div class="dropdown-item">
-            <a href="#" class="" data-contextid="{{contextid}}" data-blockname="{{id}}">
+            <a href="#" class="" data-contextid="{{contextid}}" data-blockname="{{id}}" data-action="editcap">
                 {{#str}} editcapability, report_elucidsitereport {{/str}}
             </a>
         </div>
+        {{/ caneditadv }}
     </div>
 </div>

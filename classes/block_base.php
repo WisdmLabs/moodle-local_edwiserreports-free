@@ -46,6 +46,8 @@ class block_base {
         $this->layout->sesskey = sesskey();
         $this->layout->class = '';
         $this->layout->contextid = $context->id;
+        $this->layout->canedit = true;
+        $this->layout->caneditadv = false;
 
         $this->block = new stdClass();
     }
@@ -121,5 +123,20 @@ class block_base {
     public function get_block_position($pref) {
         $position = $pref['position'];
 
+    }
+
+    /**
+     * Set block edit capabilities for each block
+     */
+    public function set_block_edit_capabilities($blockname) {
+        $context = context_system::instance();
+
+        // Based on capability show the edit button
+        // If user dont have capability to see the block
+        $this->layout->canedit = has_capability('report/sitereport_' . $blockname . ':edit', $context);
+        $this->layout->caneditadv = has_capability('report/sitereport_' . $blockname . ':editadvance', $context);
+
+        // If have capability to edit
+        $this->layout->editopt = $this->layout->canedit || $this->layout->caneditadv;
     }
 }

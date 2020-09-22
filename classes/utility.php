@@ -50,6 +50,7 @@ use html_writer;
 use csv_export_writer;
 use core_user;
 use core_course_category;
+use context_system;
 
 /**
  * Utilty class to add all utility function
@@ -1248,5 +1249,27 @@ class utility {
         foreach ($blocks as $key => $block) {
             $USER->ajax_updatable_user_prefs['pref_' . $block->classname] = true;
         }
+    }
+
+    /**
+     * Get blocks capabilities
+     * @param  [object] $block Block Data
+     * @return []
+     */
+    public static function get_blocks_capability($block) {
+        $context = context_system::instance();
+
+        // Prepare the list of capabilities to choose from.
+        $capabilitychoices = array();
+        foreach ($context->get_capabilities() as $cap) {
+            if (strpos($cap->name, 'report/sitereport_' . $block->classname) !== false) {
+                // $search = array('report/sitereport_', ':');
+                // $replace = array('', '');
+                // $keystr = str_replace($search, $replace, $cap->name);
+                $capabilitychoices[$cap->name] = $cap->name;
+            }
+        }
+
+        return $capabilitychoices;
     }
 }
