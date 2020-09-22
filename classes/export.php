@@ -33,7 +33,6 @@ require_once($CFG->dirroot."/report/elucidsitereport/classes/utility.php");
 require_once($CFG->dirroot."/report/elucidsitereport/lib.php");
 require_once($CFG->dirroot."/report/elucidsitereport/locallib.php");
 require_once($CFG->dirroot."/report/elucidsitereport/classes/output/renderable.php");
-require_once($CFG->dirroot."/report/elucidsitereport/classes/reporting_manager.php");
 
 use csv_export_writer;
 use moodle_exception;
@@ -721,7 +720,6 @@ class export {
     /**
      * Export CSV for custom query report
      * @param  [strinf] $fields              [Selected Fields]
-     * @param  [string] $reportingmanagers   [Selected reporting managers]
      * @param  [string] $lps                 [Selected learning programs]
      * @param  [string] $courses             [Selected courses]
      * @param  [string] $enrolstartdate      [Selected course enroll start date]
@@ -733,7 +731,6 @@ class export {
         global $DB;
 
         $fields = $data->fields;
-        $reportingmanagers = $data->reportingmanagers;
         $lps = $data->lps;
         $courses = $data->courses;
         $enrolstartdate = $data->enrolstartdate;
@@ -746,7 +743,8 @@ class export {
         $activitytype = $data->activitytype;
 
         $fields = explode(',', $fields);
-        $fields = $this->get_filter_based_fields($lps, $reportingmanagers, $fields);
+        $fields = $this->get_filter_based_fields($lps, $fields);
+        $params = [];
 
         //if enroldate not selected
         if ($enrolenddate == "") {
@@ -789,28 +787,6 @@ class export {
                 JOIN {wdm_learning_program} lp ON lp.id = lpe.learningprogramid
                 JOIN {lp_course_data} lcd ON lcd.courseid = c.id AND lcd.lpid = lp.id';
         }
-        // check for reporting manager
-        // Create reporting manager instance
-        $rpm = \report_elucidsitereport\reporting_manager::get_instance();
-        $rpmdb = '> 1';
-        $rpmnamedb = '';
-        if ($reportingmanagers !== "") {
-            $reportingmanagers = explode(',', $reportingmanagers);
-            // check if All selected in reporting managers
-            if (in_array(0, $reportingmanagers)) {
-                $students = $rpm->get_all_reporting_managers_students();
-            } else {
-                $students = $rpm->get_all_reporting_managers_students($reportingmanagers);
-            }
-            list($rpmdb, $inparams) = $DB->get_in_or_equal($students, SQL_PARAMS_NAMED, 'students', true, true);
-            $params = array_merge($params, $inparams);
-            $rpmnamedb = "JOIN {user_info_data} uifd ON uifd.userid = u.id
-                JOIN {user} rpm ON uifd.data = rpm.id";
-        }
-        if ($rpm->isrpm) {
-            $rpmdb = $rpm->insql;
-            $params = array_merge($params, $rpm->inparams);
-        }
 
         // Check if learning hour plugin is available
         $lhdb = '';
@@ -822,12 +798,12 @@ class export {
         // Check Cohorts
         $allusers = false;
         if ($cohortids === "0") {
-            $cohorts = \report_elucidsitereport\utility::get_cohort_users(array(0), $reportingmanagers);
+            $cohorts = \report_elucidsitereport\utility::get_cohort_users(array(0));
             $userids = array_column($cohorts['users'], 'id');
         } else if ($cohortids !== "") {
             if ($userids === "0") {
                 $cohortids = explode(",", $cohortids);
-                $cohorts = \report_elucidsitereport\utility::get_cohort_users($cohortids, $reportingmanagers);
+                $cohorts = \report_elucidsitereport\utility::get_cohort_users($cohortids);
                 $userids = array_column($cohorts['users'], 'id');
             } else {
                 $userids = explode(",", $userids);
@@ -872,10 +848,9 @@ class export {
                 JOIN {role} r ON r.id = ra.roleid
                 JOIN {context} ct ON ct.id = ra.contextid
                 JOIN {course} c ON c.id = ct.instanceid '.$lpjoinquery.' ' . $activitytypejoin . '
-                JOIN {edw_course_progress} ec ON ec.courseid = c.id AND ec.userid = u.id AND c.id '.$coursedb.' '.$rpmnamedb.'
+                JOIN {edw_course_progress} ec ON ec.courseid = c.id AND ec.userid = u.id AND c.id '.$coursedb.'
                 JOIN {course_categories} ctg ON ctg.id = c.category ' . $lhdb . '
-                WHERE u.id '.$rpmdb.'
-                AND u.id '.$userdb.'
+                WHERE u.id '.$userdb.'
                 AND ct.contextlevel = '.CONTEXT_COURSE.'
                 AND r.archetype = "student"
                 AND u.deleted = false
@@ -905,20 +880,13 @@ class export {
     /**
      * Get filter based results
      * @param  [string] $lps               Learnig Programs
-     * @param  [string] $reportingmanagers Reporting Managers
      * @param  [array] $fields            Checkboxes fields
      */
-    public function get_filter_based_fields($lps, $reportingmanagers, $fields) {
+    public function get_filter_based_fields($lps, $fields) {
         // remove the lp fields if lp is not selected
         if ($lps == "") {
             $fields = array_filter($fields, function ($string) {
                 return strpos($string, 'lp') === false;
-            });
-        }
-        // remove the lp fields if lp is not selected
-        if ($reportingmanagers == "") {
-            $fields = array_filter($fields, function ($string) {
-                return strpos($string, 'rpm') === false;
             });
         }
         return $fields;

@@ -70,11 +70,9 @@ class activecoursesblock extends block_base {
         $response = new stdClass();
 
         $cache = cache::make('report_elucidsitereport', 'activecourses');
-        // Create reporting manager instance.
-        $rpm = reporting_manager::get_instance();
-        if (!$data = $cache->get('activecoursesdata' . $rpm->rpmcache)) {
+        if (!$data = $cache->get('activecoursesdata')) {
             $data = self::get_course_data();
-            $cache->set('activecoursesdata'.$rpm->rpmcache, $data);
+            $cache->set('activecoursesdata', $data);
         }
 
         $response->data = $data;
@@ -108,16 +106,12 @@ class activecoursesblock extends block_base {
 
         $count = 0;
         $response = array();
-        // Create reporting manager instance.
-        $rpm = reporting_manager::get_instance();
         // Calculate Completion Count for All Course.
         $sql = "SELECT courseid, COUNT(userid) AS users
             FROM {edw_course_progress}
             WHERE progress = :progress
-            AND userid ".$rpm->insql."
             GROUP BY courseid";
         $params = array("progress" => 100);
-        $params = array_merge($params, $rpm->inparams);
         // Get records with 100% completions.
         $coursecompletion = $DB->get_records_sql($sql, $params);
 

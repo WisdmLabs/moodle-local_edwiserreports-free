@@ -133,8 +133,6 @@ class f2fsessionsblock extends block_base {
         $previousarray = array();
         $inprogressarray = array();
         $upcomingtbdarray = array();
-        // Create reporting manager instance.
-        $rpm = reporting_manager::get_instance();
         if ($sessions = facetoface_get_sessions($facetoface->id, $location)) {
             foreach ($sessions as $session) {
                 $sessiondata = array();
@@ -184,9 +182,6 @@ class f2fsessionsblock extends block_base {
                     $overallattendend += $sessiondata->attendend;
                     $overallsignups += $sessiondata->signups;
                 }
-                if ($rpm->isrpm && empty($sessiondata->users)) {
-                    unset($sessions[$sessiondata->id]);
-                }
             }
         }
         if (!empty($sessions)) {
@@ -227,8 +222,6 @@ class f2fsessionsblock extends block_base {
     public static function get_session_data($session, $sessiondate, $cohortid) {
         global $CFG;
         require_once($CFG->dirroot . '/mod/facetoface/lib.php');
-        // Create reporting manager instance.
-        $rpm = reporting_manager::get_instance();
         $attendees = facetoface_get_attendees($session->id);
         $attended = 0;
         $waitlisted = 0;
@@ -236,10 +229,6 @@ class f2fsessionsblock extends block_base {
         $confirmed = 0;
         $status = "";
         foreach ($attendees as $key => $attendee) {
-            if ($rpm->isrpm && !in_array($attendee->id, $rpm->rpmusers)) {
-                unset($attendees[$key]);
-                continue;
-            }
             if ($cohortid) {
                 $cohorts = cohort_get_user_cohorts($attendee->id);
                 if (!array_key_exists($cohortid, $cohorts)) {
@@ -319,21 +308,17 @@ class f2fsessionsblock extends block_base {
      */
     public static function get_canceled_sessionsdata($sessionid, $cohortid) {
         global $DB;
-        // Create reporting manager instance.
-        $rpm = reporting_manager::get_instance();
         $sql = "SELECT ss.* FROM {facetoface_signups_status} ss
                 JOIN {facetoface_signups} fs
                 ON fs.id = ss.signupid
                 JOIN {facetoface_sessions_dates} sd
                 ON sd.sessionid = fs.sessionid
                 WHERE ss.statuscode = :statuscode
-                AND sd.sessionid = :sessionid
-                AND fs.userid ".$rpm->insql."";
+                AND sd.sessionid = :sessionid";
         $params = array(
             "statuscode" => MDL_F2F_STATUS_USER_CANCELLED,
             "sessionid" => $sessionid
         );
-        $params = array_merge($params, $rpm->inparams);
         $records = $DB->get_records_sql($sql, $params);
 
         $canceled = array();

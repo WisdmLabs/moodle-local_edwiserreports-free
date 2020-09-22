@@ -30,18 +30,11 @@ use stdClass;
 use cache;
 
 require_once($CFG->dirroot . "/report/elucidsitereport/classes/constants.php");
-require_once($CFG->dirroot . "/report/elucidsitereport/classes/reporting_manager.php");
 /**
  * Class Inacive Users Block
  * To get the data related to inactive users block
  */
 class inactiveusersblock extends block_base {
-    // Is user reporting manager.
-    public static $isrpm = false;
-    // Reporting manager class object.
-    public static $rpm = null;
-    // Reporting manager students.
-    public static $rpmusers = array();
 
     /**
      * Preapre layout for each block
@@ -80,14 +73,8 @@ class inactiveusersblock extends block_base {
 
         // Make cache for inactive users block.
         $cache = cache::make("report_elucidsitereport", "courseprogress");
-        // Create reporting manager instance.
-        $rpm = reporting_manager::get_instance();
-        // If user is reporting manager then get his students.
-        if ($rpm->isrpm) {
-            $cachekey = "inactiveusers-" . $filter . "_".$rpm->userid;
-        } else {
-            $cachekey = "inactiveusers-" . $filter;
-        }
+
+        $cachekey = "inactiveusers-" . $filter;
 
         // If cache not set for course progress.
         if (!$response = $cache->get($cachekey)) {

@@ -81,14 +81,10 @@ class lpstatsblock extends block_base {
     public static function get_lpstats($lpid) {
         global $DB;
         $lp = $DB->get_record("wdm_learning_program", array("id" => $lpid), "courses");
-        // Create reporting manager instance.
-        $rpm = reporting_manager::get_instance();
         $sql = "SELECT *
                 FROM {wdm_learning_program_enrol} lpen
-                WHERE lpen.learningprogramid = :learningprogramid
-                AND lpen.userid ".$rpm->insql."";
+                WHERE lpen.learningprogramid = :learningprogramid";
         $params['learningprogramid'] = $lpid;
-        $params = array_merge($params, $rpm->inparams);
         $lpenrolment = $DB->get_records_sql($sql, $params);
         $courses = json_decode($lp->courses);
 
@@ -135,14 +131,10 @@ class lpstatsblock extends block_base {
         global $DB;
 
         $lp = $DB->get_record("wdm_learning_program", array("id" => $lpid), "courses");
-        // Create reporting manager instance.
-        $rpm = reporting_manager::get_instance();
         $sql = "SELECT *
                 FROM {wdm_learning_program_enrol} lpen
-                WHERE lpen.learningprogramid = :learningprogramid
-                AND lpen.userid ".$rpm->insql."";
+                WHERE lpen.learningprogramid = :learningprogramid";
         $params['learningprogramid'] = $lpid;
-        $params = array_merge($params, $rpm->inparams);
         $lpenrolment = $DB->get_records_sql($sql, $params);
         $courses = json_decode($lp->courses);
 

@@ -53,8 +53,6 @@ class completion_block extends utility {
     public static function get_completions($courseid, $cohortid) {
         global $DB;
         $timenow = time();
-        // Create reporting manager instance.
-        $rpm = reporting_manager::get_instance();
         $enrolsql = "SELECT *
             FROM {user_enrolments} ue
             JOIN {enrol} e ON (e.id = ue.enrolid AND e.courseid = :courseid)

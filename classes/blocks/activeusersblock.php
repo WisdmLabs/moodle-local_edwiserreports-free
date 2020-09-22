@@ -184,8 +184,6 @@ class activeusersblock extends block_base {
         $this->timenow = time();
         // Set cache for active users block.
         $this->cache = cache::make('report_elucidsitereport', 'activeusers');
-        // Create reporting manager instance.
-        $rpm = reporting_manager::get_instance();
         // Get logs from cache.
         if (!$record = $this->cache->get("activeusers-first-log")) {
             $sql = "SELECT id, userid, timecreated
@@ -197,7 +195,7 @@ class activeusersblock extends block_base {
             $this->cache->set("activeusers-first-log", $record);
         }
 
-        $cachekey = "activeusers-labels-" . $filter.''.$rpm->rpmcache;
+        $cachekey = "activeusers-labels-" . $filter;
         if ($record) {
             // Getting first access of the site.
             $this->firstaccess = $record->timecreated;
@@ -371,10 +369,8 @@ class activeusersblock extends block_base {
     public static function get_userslist_table($filter, $action, $cohortid) {
         // Make cache.
         $cache = cache::make('report_elucidsitereport', 'activeusers');
-        // Create reporting manager instance.
-        $rpm = reporting_manager::get_instance();
         // Get values from cache if it is set.
-        $cachekey = "userslist-" . $filter . "-" . $action . "-" . "-" . $cohortid.''.$rpm->rpmcache;
+        $cachekey = "userslist-" . $filter . "-" . $action . "-" . "-" . $cohortid;
         if (!$table = $cache->get($cachekey)) {
             $table = new html_table();
 
@@ -419,15 +415,12 @@ class activeusersblock extends block_base {
                    ON cm.userid = l.relateduserid";
             $params["cohortid"] = $cohortid;
         }
-        // Create reporting manager instance.
-        $rpm = reporting_manager::get_instance();
         // Based on action prepare query.
         switch($action) {
             case "activeusers":
                 $sql = "SELECT DISTINCT l.userid as relateduserid
                    FROM {logstore_standard_log} l $sqlcohort
-                   WHERE l.userid ".$rpm->insql."
-                   AND l.timecreated >= :starttime
+                   WHERE l.timecreated >= :starttime
                    AND l.timecreated < :endtime
                    AND l.action = :action";
                 $params["action"] = 'viewed';
@@ -435,8 +428,7 @@ class activeusersblock extends block_base {
             case "enrolments":
                 $sql = "SELECT l.id, l.userid, l.relateduserid, l.courseid
                    FROM {logstore_standard_log} l $sqlcohort
-                   WHERE l.relateduserid ".$rpm->insql."
-                   AND l.timecreated >= :starttime
+                   WHERE l.timecreated >= :starttime
                    AND l.timecreated < :endtime
                    AND l.eventname = :eventname";
                 $params["eventname"] = '\core\event\user_enrolment_created';
@@ -452,13 +444,11 @@ class activeusersblock extends block_base {
                    FROM {course_completions} l $sqlcohort
                    WHERE l.timecompleted IS NOT NULL
                    AND l.timecompleted >= :starttime
-                   AND l.timecompleted < :endtime
-                   AND l.userid ".$rpm->insql."";
+                   AND l.timecompleted < :endtime";
         }
 
         $params["starttime"] = $filter;
         $params["endtime"] = $filter + ONEDAY;
-        $params = array_merge($params, $rpm->inparams);
         $data = array();
         $records = $DB->get_records_sql($sql, $params);
         if (!empty($records)) {
@@ -685,9 +675,6 @@ class activeusersblock extends block_base {
         // Make cache.
         $cache = cache::make('report_elucidsitereport', 'activeusers');
         $cachekey = "exportabledatablock-" . $filter;
-        // Create reporting manager instance.
-        $rpm = reporting_manager::get_instance();
-        $cachekey .= $rpm->rpmcache;
         // If exportable data is set in cache then get it from there.
         if (!$export = $cache->get($cachekey)) {
             // Get exportable data for active users block.

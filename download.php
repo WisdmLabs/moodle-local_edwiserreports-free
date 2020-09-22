@@ -90,7 +90,6 @@ if ($type = optional_param("type", false, PARAM_TEXT)) {
     } else if ($reporttype == 'queryReport') {
         $data = array (
             'fields' => optional_param('checkedFields', null, PARAM_TEXT),
-            'reportingmanagers' => optional_param('reportingmanagers', null, PARAM_TEXT),
             'lps' => optional_param('lps', null, PARAM_TEXT),
             'courses' => optional_param('courses', null, PARAM_TEXT),
             'enrolstartdate' => optional_param('enrolstartdate', null, PARAM_TEXT),

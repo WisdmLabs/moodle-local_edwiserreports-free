@@ -218,20 +218,14 @@ class utility {
                 lp.coursesequenceenable, lp.timecreated, lp.timemodified,
                 lp.timestart, lp.timeend";
 
-        // Create reporting manager instance.
-        $rpm = reporting_manager::get_instance();
         $sql = "SELECT ".$fields."
                 FROM {wdm_learning_program} lp
                 JOIN {wdm_learning_program_enrol} lpen
-                ON lp.id = lpen.learningprogramid
-                WHERE lpen.userid ".$rpm->insql."";
-        $records = $DB->get_records_sql($sql, $rpm->inparams);
-        // Create reporting manager instance.
-        $rpm = \report_elucidsitereport\reporting_manager::get_instance();
+                ON lp.id = lpen.learningprogramid";
+        $records = $DB->get_records_sql($sql);
         $lps = array();
 
         $lps = array();
-        $rpms = array();
         foreach ($records as $lp) {
             /* If there in no courses available */
             if (empty(json_decode($lp->courses))) {
@@ -240,16 +234,6 @@ class utility {
 
             /* If there in no userss available */
             $lpenrolment = $DB->get_records("wdm_learning_program_enrol", array("learningprogramid" => $lp->id), "userid");
-            if ($rpm->isrpm) {
-                $lpusers = array();
-                array_map(function($value) use (&$lpusers){
-                    $lpusers[] = $value->userid;
-                }, $lpenrolment);
-                $rpms = array_intersect($lpusers, $rpm->rpmusers);
-            }
-            if (empty($lpenrolment) || ($rpm->isrpm && empty($rpms))) {
-                continue;
-            }
 
             $lps[] = (array) $lp;
         }
@@ -426,8 +410,6 @@ class utility {
             "courseid" => $courseid,
             "action" => "viewed"
         );
-        // Create reporting manager instance.
-        $rpm = reporting_manager::get_instance();
         if ($cohortid) {
             $params["cohortid"] = $cohortid;
             $sql = "SELECT DISTINCT l.userid
@@ -439,8 +421,7 @@ class utility {
                 WHERE cm.cohortid = :cohortid
                 AND l.action = :action
                 AND l.courseid = :courseid
-                AND u.deleted = 0
-                AND u.id ".$rpm->insql."";
+                AND u.deleted = 0";
         } else {
             $sql = "SELECT DISTINCT l.userid
                 FROM {logstore_standard_log} l
@@ -448,10 +429,8 @@ class utility {
                 ON u.id = l.userid
                 WHERE l.action = :action
                 AND l.courseid = :courseid
-                AND u.deleted = 0
-                AND u.id ".$rpm->insql."";
+                AND u.deleted = 0";
         }
-        $params = array_merge($params, $rpm->inparams);
         $records = $DB->get_records_sql($sql, $params);
         return $records;
     }
@@ -985,61 +964,12 @@ class utility {
     }
 
     /**
-     * Get reporting managers related data for
-     * courses and leraning programs
-     * @param  [object] $data Data object
-     * @return [array]        Courses and Leraning Programs
-     */
-    public static function get_rpm_data($data) {
-        global $DB;
-
-        // Get all users.
-        $cohorts = self::get_cohort_users($data->cohortids, $data->rpmids);
-        $userinfo = $cohorts['users'];
-
-        if (in_array(0, $data->rpmids) || empty($data->rpmids)) {
-            $courses = self::get_courses();
-            $lps = self::get_lps();
-            return array('courses' => $courses, 'lps' => $lps, 'users' => $userinfo);
-        }
-        list($insql, $inparams) = $DB->get_in_or_equal($data->rpmids, SQL_PARAMS_NAMED, 'param', true);
-        // Query to get users of reporting manager.
-        $sql = "SELECT userid FROM {user_info_data} WHERE data ".$insql;
-        $users = $DB->get_records_sql($sql, $inparams);
-
-        // If there is no users for this reporting managers.
-        if (empty($users)) {
-            return array('courses' => array(), 'lps' => array(), 'users' => array());
-        }
-
-        $rpmusers = array_keys($users);
-        $lps = array();
-        $courses = array();
-        list($insql, $inparams) = $DB->get_in_or_equal($rpmusers, SQL_PARAMS_NAMED, 'param', true);
-        $sql = "SELECT DISTINCT(lp.id) as id, lp.name as fullname FROM {wdm_learning_program} lp
-        JOIN {wdm_learning_program_enrol} lpe ON lpe.learningprogramid = lp.id
-        WHERE lpe.userid ".$insql;
-
-        $records = $DB->get_records_sql($sql, $inparams);
-        $lpids = array_keys($records);
-        $lps = array_values($records);
-        if (!empty($lpids)) {
-            $courses = self::get_lp_courses($lpids);
-        }
-
-        return array('courses' => $courses, 'lps' => $lps, 'users' => $userinfo);
-    }
-
-    /**
      * Get learning program students
      * @param  $lpid   Lp Id
      * @return [array] Array of users
      */
     public static function get_lp_students($lpid) {
         global $DB;
-
-        // Reporting manager object.
-        $rpm = reporting_manager::get_instance();
 
         // Prepare parameters.
         $params = array(
@@ -1050,11 +980,7 @@ class utility {
         // SQL to get leraning program records.
         $sql = "SELECT * FROM {wdm_learning_program_enrol}
                 WHERE learningprogramid = :lpid
-                AND roleid = :roleid
-                AND userid " . $rpm->insql;
-
-        // Merge params for reporting manager.
-        $params = array_merge($params, $rpm->inparams);
+                AND roleid = :roleid";
 
         // Return all erolments.
         return $DB->get_records_sql($sql, $params);
@@ -1065,7 +991,7 @@ class utility {
      * @param  array    $cohortids  Cohort Ids
      * @return array                Users array
      */
-    public static function get_cohort_users($cohortids, $rpmids) {
+    public static function get_cohort_users($cohortids) {
         global $DB;
 
         if (in_array(0, $cohortids)) {
@@ -1075,17 +1001,7 @@ class utility {
             }
         }
 
-        $rpmdb = '';
         $params = array();
-        $rpmparams = array();
-        if (!empty($rpmids)) {
-            // Create reporting manager instance.
-            $rpm = \report_elucidsitereport\reporting_manager::get_instance();
-            $students = $rpm->get_all_reporting_managers_students($rpmids);
-            if (!empty($students)) {
-                list($rpmdb, $rpmparams) = $DB->get_in_or_equal($students);
-            }
-        }
 
         $cohortjoinsql = '';
         $insql = '';
@@ -1093,15 +1009,14 @@ class utility {
             list($insql, $inparams) = $DB->get_in_or_equal($cohortids);
             $cohortjoinsql = "JOIN {cohort_members} co ON co.userid = u.id";
             $insql = " AND co.cohortid $insql ";
-            $params = array_merge($rpmparams, $inparams);
+            $params = $inparams;
         }
 
         // Get all users.
         $sql = "SELECT DISTINCT(u.id), CONCAT(u.firstname, ' ', u.lastname) as fullname
                 FROM {user} u
                 $cohortjoinsql
-                WHERE u.id $rpmdb
-                AND u.deleted = false
+                WHERE u.deleted = false
                 AND u.confirmed = true
                 AND u.id > 1 $insql
                 ORDER BY fullname ASC";

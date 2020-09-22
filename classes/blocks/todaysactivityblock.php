@@ -92,16 +92,12 @@ class todaysactivityblock extends block_base {
         $todaysactivity = array();
         $total = 0;
         $context = context_system::instance();
-        // Create reporting manager instance.
-        $rpm = reporting_manager::get_instance();
         // Enrolments.
         $enrollmentsql = "SELECT * FROM {user_enrolments}
             WHERE timecreated >= :starttime
-            AND timecreated < :endtime
-            AND userid ".$rpm->insql."";
+            AND timecreated < :endtime";
         $params['starttime'] = $starttime;
         $params['endtime'] = $endtime;
-        $params = array_merge($params, $rpm->inparams);
         $enrollments = $DB->get_records_sql($enrollmentsql, $params);
         $todaysactivity["enrollments"] = count($enrollments);
         $total += count($enrollments);
@@ -109,8 +105,7 @@ class todaysactivityblock extends block_base {
         // Activity Completion.
         $activitycompletionsql = "SELECT * FROM {course_modules_completion}
             WHERE timemodified >= :starttime
-            AND timemodified < :endtime
-            AND userid ".$rpm->insql."";
+            AND timemodified < :endtime";
         $activitycompletions = $DB->get_records_sql($activitycompletionsql, $params);
         $todaysactivity["activitycompletions"] = count($activitycompletions);
         $total += count($activitycompletions);
@@ -118,8 +113,7 @@ class todaysactivityblock extends block_base {
         // Course Completion.
         $coursecompletionsql = "SELECT * FROM {course_completions}
             WHERE timecompleted >= :starttime
-            AND timecompleted < :endtime
-            AND userid ".$rpm->insql."";
+            AND timecompleted < :endtime";
         $coursecompletions = $DB->get_records_sql($coursecompletionsql, $params);
         $todaysactivity["coursecompletions"] = count($coursecompletions);
         $total += count($coursecompletions);
@@ -127,8 +121,7 @@ class todaysactivityblock extends block_base {
         // Registration.
         $registrationssql = "SELECT * FROM {user}
             WHERE timecreated >= :starttime
-            AND timecreated < :endtime
-            AND id ".$rpm->insql."";
+            AND timecreated < :endtime";
         $registrations = $DB->get_records_sql($registrationssql, $params);
         $todaysactivity["registrations"] = count($registrations);
         $total += count($registrations);
@@ -137,8 +130,7 @@ class todaysactivityblock extends block_base {
         $visitsssql = "SELECT DISTINCT userid
             FROM {logstore_standard_log}
             WHERE timecreated >= :starttime
-            AND timecreated < :endtime
-            AND userid ".$rpm->insql.""; // Remove guest users.
+            AND timecreated < :endtime"; // Remove guest users.
         $visits = $DB->get_records_sql($visitsssql, $params);
         $todaysactivity["visits"] = count($visits);
         $total += count($visits);
@@ -149,7 +141,6 @@ class todaysactivityblock extends block_base {
         $params = array();
         $params['starttime'] = $starttimehour;
         $params['endtime'] = $endtimehour;
-        $params = array_merge($params, $rpm->inparams);
         do {
             $visitshour = $DB->get_records_sql($visitsssql, $params);
             $todaysactivity["visitshour"][] = count($visitshour);
@@ -158,7 +149,6 @@ class todaysactivityblock extends block_base {
             $params = array();
             $params['starttime'] = $starttimehour;
             $params['endtime'] = $endtimehour;
-            $params = array_merge($params, $rpm->inparams);
         } while ($starttimehour < $endtime);
 
         $todaysactivity["onlinelearners"] = $todaysactivity["onlineteachers"] = 0;

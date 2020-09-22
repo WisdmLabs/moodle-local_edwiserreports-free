@@ -76,15 +76,15 @@ class certificatesblock extends block_base {
     public function get_data($params = false) {
         $response = new stdClass();
         $response->data = new stdClass();
-        // Create reporting manager instance.
-        $rpm = reporting_manager::get_instance();
         // Get response from cache.
         $cache = cache::make('report_elucidsitereport', 'certificates');
-        if (!$response = $cache->get('response'.$rpm->rpmcache)) {
+        if (!$response = $cache->get('response')) {
+            $response = new stdClass();
+            $response->data = new stdClass();
             $response->data->customcerts = self::get_certificate_list();
 
             // Set cache for certificate response.
-            $cache->set('response'.$rpm->rpmcache, $response);
+            $cache->set('response', $response);
         }
 
         return $response;
@@ -100,9 +100,6 @@ class certificatesblock extends block_base {
 
         $certificates = array();
         $customcert = $DB->get_records("customcert", array());
-        // Can be optimized
-        // Create reporting manager instance.
-        $rpm = reporting_manager::get_instance();
         $sqlcm = "SELECT cm.id FROM {course_modules} cm
             JOIN {modules} m ON m.id = cm.module
             WHERE cm.course = ? AND cm.instance = ? AND m.name = ?";
@@ -118,13 +115,10 @@ class certificatesblock extends block_base {
             $modulecontext = context_module::instance($cm->id);
             // Get only enrolled students.
             $enrolledusers = \report_elucidsitereport\utility::get_enrolled_students($cm->id, $modulecontext);
-            if (empty($enrolledusers) && $rpm->isrpm) {
-                continue;
-            }
+
             $sql = "SELECT * FROM {customcert_issues}
-                WHERE customcertid = :customcertid AND userid ".$rpm->insql;
+                WHERE customcertid = :customcertid";
             $params['customcertid'] = $certificate->id;
-            $params = array_merge($params, $rpm->inparams);
             $issued = $DB->get_records_sql($sql, $params);
             // Number of perople who can view certificates.
             $notawareded = 0;
@@ -167,23 +161,19 @@ class certificatesblock extends block_base {
         global $DB;
 
         $cache = cache::make('report_elucidsitereport', 'certificates');
-        // Create reporting manager instance.
-        $rpm = reporting_manager::get_instance();
         $cachekey = "certificates-userslist-" . $certid . "-";
         if ($cohortid) {
             $cachekey .= $cohortid;
         } else {
             $cachekey .= "all";
         }
-        $cachekey .= $rpm->rpmcache;
         $response = new stdClass();
         // Get certificates details from cache.
         if (!$issuedcert = $cache->get($cachekey)) {
             $certificate = $DB->get_record("customcert", array("id" => $certid));
             $course = get_course($certificate->course);
-            $sql = "SELECT * FROM {customcert_issues} WHERE customcertid= :customcertid AND userid ".$rpm->insql;
+            $sql = "SELECT * FROM {customcert_issues} WHERE customcertid= :customcertid";
             $params['customcertid'] = $certid;
-            $params = array_merge($params, $rpm->inparams);
             $issued = $DB->get_recordset_sql($sql, $params);
             $issuedcert = array();
             foreach ($issued as $issue) {

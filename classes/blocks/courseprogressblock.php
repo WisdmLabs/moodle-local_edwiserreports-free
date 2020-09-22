@@ -197,6 +197,7 @@ class courseprogressblock extends block_base {
      * @return [object] Object of course list
      */
     public function get_courselist($cohortid) {
+        global $CFG;
         $courses = \report_elucidsitereport\utility::get_courses(true);
 
         $response = array();
@@ -441,14 +442,11 @@ class courseprogressblock extends block_base {
         $onlyactive = false
     ) {
         global $DB;
-        // Create reporting manager instance.
-        $rpm = reporting_manager::get_instance();
         list($esql, $params) = get_enrolled_sql($context, $withcapability, $groupid, $onlyactive);
         $sql = "SELECT $userfields
                   FROM {user} u
                   JOIN ($esql) je ON je.id = u.id
-                 WHERE u.deleted = 0
-                 AND u.id ".$rpm->insql."";
+                 WHERE u.deleted = 0";
         if ($orderby) {
             $sql = "$sql ORDER BY $orderby";
         } else {
@@ -456,7 +454,6 @@ class courseprogressblock extends block_base {
             $sql = "$sql ORDER BY $sort";
             $params = array_merge($params, $sortparams);
         }
-        $params = array_merge($params, $rpm->inparams);
         return $DB->get_records_sql($sql, $params, $limitfrom, $limitnum);
     }
 }

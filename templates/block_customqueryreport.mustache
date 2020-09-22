@@ -21,19 +21,6 @@
               </div>
           </div>
         	<div class="row">
-                {{#hasrpmanagers}}
-        		<div class="col-md-4">
-		        	<label>Reporting Managers</label>
-		          	<select id="ed_rpm" class="js-states form-control select25">
-		          		<option value="0">All</option>
-		          		{{#rpmgrs}}
-			            <option value="{{id}}">
-                    {{{uname}}}
-                  </option>
-			            {{/rpmgrs}}
-		          	</select>
-		        </div>
-                {{/hasrpmanagers}}
 		        <div class="col-md-4">
 		          	<label>Learning Programs</label>
 		          	<select id="ed_lps" class="js-states form-control select25">
@@ -170,34 +157,10 @@
               </div>
             </div>
 
-            {{^isreportingmanager}}
-            <div class="rpmreportfields example-wrap reportfields">
-              <h5 class="example-title">
-                <strong> {{#str}} rpfields, report_elucidsitereport {{/str}} </strong>
-                <a class="unselect-rpmreportfields pull-right text-sm" href="javascript:void(0)">
-                  <small>{{#str}} unselectall, report_elucidsitereport {{/str}}</small>
-                </a>
-                <a class="select-rpmreportfields pull-right text-sm hidden" href="javascript:void(0)">
-                    <small>{{#str}} selectall, report_elucidsitereport {{/str}}</small>
-                </a>
-              </h5>
-              <div class="rpmfields row">
-                  {{#reportfields.rpmfields}}
-                  <div class="{{key}} col-md-3">
-                    <div class="checkbox-custom checkbox-primary">
-                        <input type="checkbox" id="{{key}}" {{#disbaled}}disabled{{/disbaled}} checked>
-                        <label for="{{key}}">{{value}}</label>
-                      </div>
-                  </div>
-                  {{/reportfields.rpmfields}}
-              </div>
-            </div>
-          {{/isreportingmanager}}
           	<div class="row">
               <div class="col-md-3">
             		<div class="text-right mt-30">
                       <form action="{{downloadurl}}" target="_blank" method="post" id="customQueryReportsForm">
-                          <input type="hidden" name="reportingmanagers">
                           <input type="hidden" name="lps">
                           <input type="hidden" name="courses">
                           <input type="hidden" name="enrolstartdate"/>

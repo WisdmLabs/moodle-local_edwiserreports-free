@@ -35,7 +35,6 @@ use context_system;
 
 require_once($CFG->dirroot."/report/elucidsitereport/lib.php");
 require_once($CFG->dirroot."/report/elucidsitereport/classes/report_blocks.php");
-require_once($CFG->dirroot."/report/elucidsitereport/classes/reporting_manager.php");
 require_once($CFG->dirroot."/report/elucidsitereport/locallib.php");
 
 class elucidreport_renderable implements renderable, templatable {
@@ -66,14 +65,7 @@ class elucidreport_renderable implements renderable, templatable {
         $export->sesskey = sesskey();
         $export->timenow = date("Y-m-d", time());
         $export->courses = \report_elucidsitereport\utility::get_courses();
-        $export->isreportingmanager = false;
-        // Create reporting manager instance.
-        $rpm = \report_elucidsitereport\reporting_manager::get_instance();
 
-        // Check capability also because if user is admin or manager then show all reporting managers.
-        if ($rpm->isrpm && !has_capability('moodle/site:configview', $context)) {
-            $export->isreportingmanager = true;
-        }
         // Blocks.
         $blocks = array(
             'activeusers' => get_string('activeusersheader', 'report_elucidsitereport'),
@@ -130,16 +122,6 @@ class elucidreport_renderable implements renderable, templatable {
             }
             $export->lpstatslink = new moodle_url($CFG->wwwroot."/report/elucidsitereport/lpstats.php");
         }
-        // Custom Query Report.
-        $export->rpmgrs = $rpm->get_all_reporting_managers();
-
-        // Get reporting manager.
-        if (!empty($export->rpmgrs)) {
-            $export->hasrpmanagers = true;
-            usort($export->rpmgrs, function($first, $second) {
-                return strtolower($first->uname) > strtolower($second->uname);
-            });
-        }
 
         // Get all cohort filters.
         $cohorts = get_cohort_filter();
@@ -154,17 +136,11 @@ class elucidreport_renderable implements renderable, templatable {
             $cohortjoinsql = 'JOIN {cohort_members} co ON co.userid = u.id';
         }
 
-        // Create reporting manager instance.
-        $rpm = \report_elucidsitereport\reporting_manager::get_instance();
-        $students = $rpm->get_all_reporting_managers_students();
-        list($rpmdb, $inparams) = $DB->get_in_or_equal($students, SQL_PARAMS_NAMED, 'students', true, true);
-
         // Get all users.
         $sql = "SELECT DISTINCT(u.id), CONCAT(u.firstname, ' ', u.lastname) as fullname
                 FROM {user} u
                 $cohortjoinsql
-                WHERE u.id $rpmdb
-                AND u.deleted = :deleted
+                WHERE u.deleted = :deleted
                 AND u.confirmed = :confirmed
                 AND u.id > 1
                 ORDER BY fullname ASC";
@@ -172,10 +148,10 @@ class elucidreport_renderable implements renderable, templatable {
             'deleted' => false,
             'confirmed' => true
         );
-        $params = array_merge(array(
+        $params = array(
             'deleted' => false,
             'confirmed' => true
-        ), $inparams);
+        );
 
         $export->users = array_values($DB->get_records_sql($sql, $params));
 
@@ -338,22 +314,9 @@ class elucidreport_renderable implements renderable, templatable {
             );
         }
 
-        $rpmfields = array();
-        // Create reporting manager instance.
-        $rpm = \report_elucidsitereport\reporting_manager::get_instance();
-        if (!$rpm->isrpm) {
-            $rpmfields = array(
-                array(
-                    'key' => 'rpmname',
-                    'value' => get_string('rpmname', 'report_elucidsitereport'),
-                    'dbkey' => 'CONCAT(rpm.firstname, " ", rpm.lastname)'
-                ),
-            );
-        }
         $fields['userfields']   = $userfields;
         $fields['coursefields'] = $coursefields;
         $fields['lpfields']     = $lpfields;
-        $fields['rpmfields']    = $rpmfields;
         $fields['activityfields'] = $activityfields;
         return $fields;
     }

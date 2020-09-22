@@ -61,8 +61,6 @@ class courseengage_block extends utility {
         $engagedata = array();
         $courses = self::get_courses(true);
         $params = array();
-        // Create reporting manager instance.
-        $rpm = reporting_manager::get_instance();
         $sqlcohort = "";
         $cohortjoin = '';
         $cohortcondition = '';
@@ -97,17 +95,14 @@ class courseengage_block extends utility {
         // Calculate 50% Completion Count for Courses.
         $params["completionstart"] = 50.00;
         $params["completionend"] = 99.99;
-        $params = array_merge($params, $rpm->inparams);
         $completion50 = $DB->get_records_sql($completionsql, $params);
 
         // Calculate 100% Completion Count for Courses.
         $params["completionstart"] = 100.00;
         $params["completionend"] = 100.00;
-        $params = array_merge($params, $rpm->inparams);
         $completion100 = $DB->get_records_sql($completionsql, $params);
 
         $params ["completedactivities"] = 1;
-        $params = array_merge($params, $rpm->inparams);
         $completiononemodule = $DB->get_records_sql($completionmodulesql, $params);
         foreach ($courses as $course) {
             $values = array(
