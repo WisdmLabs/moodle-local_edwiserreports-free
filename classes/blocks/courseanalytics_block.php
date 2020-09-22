@@ -52,7 +52,7 @@ class courseanalytics_block extends utility {
 
         $coursecontext = context_course::instance($courseid);
         // Get only enrolled students.
-        $enrolledstudents = course_progress_block::rep_get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+        $enrolledstudents = \report_elucidsitereport\utility::get_enrolled_students($courseid, $coursecontext);
         $course = get_course($courseid);
 
         $courseanalytics = new stdClass();

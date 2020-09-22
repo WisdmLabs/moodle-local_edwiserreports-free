@@ -69,8 +69,10 @@ $PAGE->requires->js_call_amd('report_elucidsitereport/courseanalytics', 'init', 
 $renderable = new \report_elucidsitereport\output\courseanalytics_renderable();
 $output = $PAGE->get_renderer($component)->render($renderable);
 
+$PAGE->set_heading(get_string("courseanalyticsheader", "report_elucidsitereport", array('coursename' => $course->fullname)));
+
 // Print output in page.
 echo $OUTPUT->header();
-echo $OUTPUT->heading(create_page_header("courseanalytics", $course->fullname), "1", "page-title p-5");
+// echo $OUTPUT->heading(create_page_header("courseanalytics", $course->fullname), "1", "page-title p-5");
 echo $output;
 echo $OUTPUT->footer();
