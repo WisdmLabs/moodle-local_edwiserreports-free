@@ -425,15 +425,14 @@ function report_elucidsitereport_output_fragment_get_blockscap_form($block) {
     $o .= html_writer::end_tag('div');
     $o .= html_writer::end_tag('div');
 
-    $o .= html_writer::end_tag('form');
-
     $o .= html_writer::start_div('clearfix path-admin-tool-capability overflow-scroll col-12 cap-overview');
-
     $data = array();
     $data['capvalue'] = $capvalues[0];
     $o .= report_elucidsitereport_output_fragment_block_overview_display($data);
     $o .= html_writer::end_div();
     $o .= html_writer::tag('button', 'Save', array('type' => 'submit', 'class' => 'btn btn-primary pull-right save-block-caps'));
+
+    $o .= html_writer::end_tag('form');
 
     return $o;
 }
@@ -443,9 +442,48 @@ function report_elucidsitereport_output_fragment_get_blockscap_form($block) {
  */
 function report_elucidsitereport_output_fragment_block_overview_display($data) {
     global $CFG, $PAGE;
-    require_once($CFG->dirroot.'/'.$CFG->admin.'/tool/capability/locallib.php');
+
+    require_once($CFG->dirroot . '\admin\tool\capability\locallib.php');
 
     $context = context_system::instance();
-    $renderer = $PAGE->get_renderer('tool_capability');
-    return $renderer->capability_comparison_table(array($data['capvalue']), $context->id, role_fix_names(get_all_roles($context)));
+    $strpermissions = array(
+        CAP_INHERIT => new lang_string('inherit', 'role'),
+        CAP_ALLOW => new lang_string('allow', 'role'),
+        CAP_PREVENT => new lang_string('prevent', 'role'),
+        CAP_PROHIBIT => new lang_string('prohibit', 'role')
+    );
+    $permissionclasses = array(
+        CAP_INHERIT => 'inherit',
+        CAP_ALLOW => 'allow',
+        CAP_PREVENT => 'prevent',
+        CAP_PROHIBIT => 'prohibit',
+    );
+
+    $o = html_writer::start_tag('table', array('class' => 'comparisontable w-full'));
+    $o .= html_writer::start_tag('thead');
+    $o .= html_writer::start_tag('tr');
+    
+    // Prepare data in same loop.
+    $d = html_writer::start_tag('tbody');
+    $d .= html_writer::start_tag('tr');
+
+    $roles = role_fix_names(get_all_roles($context));
+    // Get capability context
+    $capabilitycontext = tool_capability_calculate_role_data($data['capvalue'], $roles);
+    foreach ($roles as $roleid => $role) {
+        $o .= '<th><div><a href="javascript:void(0)">' . $role->localname . '</a></div></th>';
+        $rolecap = $capabilitycontext[$context->id]->rolecapabilities[$role->id];
+        $permission = isset($rolecap) ? $rolecap : CAP_INHERIT;
+        $d .= '<td class="switch-capability ' . $permissionclasses[$permission] . '">' . $strpermissions[$permission] . '</td>';
+    }
+
+    $d .= html_writer::end_tag('tr');
+    $d .= html_writer::end_tag('tbody');
+
+    $o .= html_writer::end_tag('tr');
+    $o .= html_writer::end_tag('thead');
+    $o .= $d;
+    $o .= html_writer::end_tag('table');
+    
+    return $o;
 }
