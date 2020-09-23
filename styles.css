@@ -37,7 +37,7 @@
 #wdm-completion-individual.table-responsive>div.dataTables_wrapper>div:nth-child(2),
 #wdm-courseanalytics-individual.table-responsive>div.dataTables_wrapper>div:nth-child(2) {
     clear: both;
-    overflow-x: scroll;
+    /* overflow-x: scroll; */
 }
 
 .dataTables_filter .form-control[type="search"] {

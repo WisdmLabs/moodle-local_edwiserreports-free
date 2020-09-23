@@ -375,7 +375,10 @@ class courseengageblock extends utility {
     public static function get_users_completed_half_courses($course, $cohortid) {
         $coursecontext = context_course::instance($course->id);
         $enrolledusers = \local_sitereport\utility::get_enrolled_students($course->id);
-        $users = self::users_completed_half_modules($course, $enrolledusers, $cohortid);
+
+        // Get completions.
+        $compobj = new \local_sitereport\completions();
+        $completions = $compobj->get_course_completions($course->id);
 
         $usersdata = new stdClass();
         $userdata->head = array(
@@ -393,10 +396,13 @@ class courseengageblock extends utility {
                 }
             }
 
-            $userdata->data[] = array(
-                fullname($user),
-                $user->email,
-            );
+            $progress = isset($completions[$user->id]->completion) ? $completions[$user->id]->completion : 0;
+            if ($progress >= 50 && $progress < 100) {
+                $userdata->data[] = array(
+                    fullname($user),
+                    $user->email,
+                );
+            }
         }
         return $userdata;
     }
@@ -409,7 +415,10 @@ class courseengageblock extends utility {
     public static function get_users_completed_courses($course, $cohortid) {
         $coursecontext = context_course::instance($course->id);
         $enrolledusers = \local_sitereport\utility::get_enrolled_students($course->id);
-        $users = self::users_completed_all_module($course, $enrolledusers, $cohortid);
+
+        // Get completions.
+        $compobj = new \local_sitereport\completions();
+        $completions = $compobj->get_course_completions($course->id);
 
         $usersdata = new stdClass();
         $userdata->head = array(
@@ -418,7 +427,7 @@ class courseengageblock extends utility {
         );
 
         $userdata->data = array();
-        foreach ($users as $user) {
+        foreach ($enrolledusers as $user) {
             /* If cohort filter is there then get only users from cohort */
             if ($cohortid) {
                 $cohorts = cohort_get_user_cohorts($user->id);
@@ -427,10 +436,13 @@ class courseengageblock extends utility {
                 }
             }
 
-            $userdata->data[] = array(
-                fullname($user),
-                $user->email,
-            );
+            $progress = isset($completions[$user->id]->completion) ? $completions[$user->id]->completion : 0;
+            if ($progress == 100) {
+                $userdata->data[] = array(
+                    fullname($user),
+                    $user->email,
+                );
+            }
         }
         return $userdata;
     }

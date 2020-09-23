@@ -287,13 +287,13 @@ class courseprogressblock extends block_base {
             }
 
             $courseid = $course->id;
-            $coursename = $course->shortname;
-            $res->completed100 = self::get_userlist_popup_link($courseid, $coursename, $completed100, 'completed', '99', '100');
-            $res->completed80 = self::get_userlist_popup_link($courseid, $coursename, $completed80, 'completed80', '80', '99');
-            $res->completed60 = self::get_userlist_popup_link($courseid, $coursename, $completed60, 'completed60', '60', '79');
-            $res->completed40 = self::get_userlist_popup_link($courseid, $coursename, $completed40, 'completed40', '40', '59');
-            $res->completed20 = self::get_userlist_popup_link($courseid, $coursename, $completed20, 'completed20', '20', '39');
-            $res->completed00 = self::get_userlist_popup_link($courseid, $coursename, $completed00, 'incompleted', '0', '19');
+            $coursename = $course->fullname;
+            $res->completed100 = self::get_userlist_popup_link($courseid, $coursename, $completed100, 'completed', '100', '100');
+            $res->completed80 = self::get_userlist_popup_link($courseid, $coursename, $completed80, 'completed80', '80', '100');
+            $res->completed60 = self::get_userlist_popup_link($courseid, $coursename, $completed60, 'completed60', '60', '80');
+            $res->completed40 = self::get_userlist_popup_link($courseid, $coursename, $completed40, 'completed40', '40', '60');
+            $res->completed20 = self::get_userlist_popup_link($courseid, $coursename, $completed20, 'completed20', '20', '40');
+            $res->completed00 = self::get_userlist_popup_link($courseid, $coursename, $completed00, 'incompleted', '0', '20');
             $res->enrolments = self::get_userlist_popup_link($courseid, $coursename, $enrolments, 'enrolments', '-1', '100');
 
             // Added response object in response array.
@@ -356,7 +356,10 @@ class courseprogressblock extends block_base {
         $course = get_course($courseid);
         $coursecontext = context_course::instance($courseid);
         $enrolledstudents = \local_sitereport\utility::get_enrolled_students($course->id);
-        $completions = \local_sitereport\utility::get_course_completion($courseid);
+
+        // Get completions.
+        $compobj = new \local_sitereport\completions();
+        $completions = $compobj->get_course_completions($course->id);
 
         $usersdata = array();
         foreach ($enrolledstudents as $enrolleduser) {
@@ -377,7 +380,9 @@ class courseprogressblock extends block_base {
             }
 
             // If progress between the min and max value.
-            if ($progress > $minval && $progress <= $maxval) {
+            if (($progress >= $minval && $progress < $maxval) ||
+                ($progress == 100 && $maxval == 100 && $minval == 100) ||
+                ($maxval == 100 && $minval == -1)) {
                 $user = core_user::get_user($enrolleduser->id);
                 $usersdata[] = array(
                     fullname($user),
@@ -385,6 +390,7 @@ class courseprogressblock extends block_base {
                 );
             }
         }
+
         return $usersdata;
     }
 
