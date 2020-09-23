@@ -27,10 +27,6 @@ if (!isset($action) || empty($action)) {
 
 // Only make ajax true if action has ajax in name.
 $actionpattern = '/_ajax$/i';
-if (preg_match($actionpattern, $action)) {
-    define('AJAX_SCRIPT', true);
-    define('NO_DEBUG_DISPLAY', true);
-}
 
 // Include Moodle config
 // This code is to run or include file at developer end

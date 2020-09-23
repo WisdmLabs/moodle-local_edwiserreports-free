@@ -136,6 +136,7 @@ define([
                     })
                 },
             }).done(function(response) {
+                response = JSON.parse(response);
                 cfg.graph.data = response.data;
                 cfg.graph.labels = response.labels;
             }).fail(function(error) {

@@ -66,101 +66,12 @@ class elucidreport_renderable implements renderable, templatable {
         $export->timenow = date("Y-m-d", time());
         $export->courses = \local_sitereport\utility::get_courses();
 
-        // Blocks.
-        $blocks = array(
-            'activeusers' => get_string('activeusersheader', 'local_sitereport'),
-            'courseprogress' => get_string('courseprogress', 'local_sitereport'),
-            'activecourses' => get_string('activecoursesheader', 'local_sitereport'),
-            'certificatestats' => get_string('certificatestats', 'local_sitereport'),
-            'realtimeusers' => get_string('realtimeusers', 'local_sitereport'),
-            'f2fsessions' => get_string('f2fsessionsheader', 'local_sitereport'),
-            'accessinfo' => get_string('accessinfo', 'local_sitereport'),
-            'lpstats' => get_string('lpstatsheader', 'local_sitereport'),
-            'todaysactivity' => get_string('todaysactivityheader', 'local_sitereport'),
-            'inactiveusers' => get_string('inactiveusers', 'local_sitereport'),
-        );
-        // Get Reporting Manager hidden blocks.
-        $addedblocks = isset($CFG->ed_reporting_manager_blocks) ? unserialize($CFG->ed_reporting_manager_blocks) : array();
-        // If block is hidden then add true because we have added a not condition in mustache file.
-        foreach ($blocks as $key => $value) {
-            if (in_array($key, $addedblocks)) {
-                $export->$key = true;
-            } else {
-                $export->$key = false;
-            }
-        }
-
-        $downloadurl = $CFG->wwwroot."/local/sitereport/download.php";
-        $data = new stdClass();
-        if (!empty($export->courses)) {
-            $export->hascourses = true;
-            $data->firstcourseid = $export->courses[0]->id;
-        }
-
-        $export->hasf2fpluign = local_sitereport_has_plugin("mod", "facetoface");
-        $export->activeuserslink = new moodle_url($CFG->wwwroot."/local/sitereport/activeusers.php");
-        $export->courseprogresslink = new moodle_url($CFG->wwwroot."/local/sitereport/coursereport.php");
-
-        if ($export->hasf2fpluign) {
-            $PAGE->requires->js_call_amd('local_sitereport/block_f2fsessions', 'init');
-            $export->f2fsessionlink = new moodle_url($CFG->wwwroot."/local/sitereport/f2fsessions.php");
-        }
         $export->hascustomcertpluign = local_sitereport_has_plugin("mod", "customcert");
 
         if ($export->hascustomcertpluign) {
             $PAGE->requires->js_call_amd('local_sitereport/block_certificatestats', 'init');
             $export->certificateslink = new moodle_url($CFG->wwwroot."/local/sitereport/certificates.php");
         }
-
-        $export->haslppluign = local_sitereport_has_plugin("local", "learning_program");
-
-        if ($export->haslppluign) {
-            $export->lps = \local_sitereport\utility::get_lps();
-            if (!empty($export->lps)) {
-                $export->haslps = true;
-                $data->firstlpid = $export->lps[0]["id"];
-            }
-            $export->lpstatslink = new moodle_url($CFG->wwwroot."/local/sitereport/lpstats.php");
-        }
-
-        // Get all cohort filters.
-        $cohorts = local_sitereport_get_cohort_filter();
-        $export->hascohorts = false;
-        if (isset($cohorts->values) && !empty($cohorts->values)) {
-            $export->cohorts = $cohorts->values;
-            $export->hascohorts = true;
-        }
-
-        $cohortjoinsql = '';
-        if ($export->hascohorts) {
-            $cohortjoinsql = 'JOIN {cohort_members} co ON co.userid = u.id';
-        }
-
-        // Get all users.
-        $sql = "SELECT DISTINCT(u.id), CONCAT(u.firstname, ' ', u.lastname) as fullname
-                FROM {user} u
-                $cohortjoinsql
-                WHERE u.deleted = :deleted
-                AND u.confirmed = :confirmed
-                AND u.id > 1
-                ORDER BY fullname ASC";
-        $params = array(
-            'deleted' => false,
-            'confirmed' => true
-        );
-        $params = array(
-            'deleted' => false,
-            'confirmed' => true
-        );
-
-        $export->users = array_values($DB->get_records_sql($sql, $params));
-
-        $export->modules = \local_sitereport\utility::get_available_reports_modules();
-
-        $export->exportlinks = local_sitereport_get_block_exportlinks($downloadurl, $data);
-        $export->reportfields = self::get_report_fields();
-        $export->downloadurl = $downloadurl;
-
         return $export;
     }
 
@@ -301,16 +212,12 @@ class elucidreport_renderable implements renderable, templatable {
 
         // Check if leraning hours plugin is present.
         if (local_sitereport_has_plugin('report', 'learning_hours')) {
+            $dbkey = '(CASE WHEN ulh.totalhours THEN CONCAT(FLOOR(ulh.totalhours/60), "h ", ';
+            $dbkey .= 'RPAD(MOD(ROUND(ulh.totalhours), 60), 2, "00"), "m")ELSE"00h 00m"END)';
             $coursefields[] = array(
                 'key' => 'learninghours',
                 'value' => get_string('learninghours', 'local_sitereport'),
-                'dbkey' => '(CASE WHEN ulh.totalhours THEN
-                             CONCAT(
-                                FLOOR(ulh.totalhours/60), "h ",
-                                      RPAD(MOD(ROUND(ulh.totalhours), 60), 2, "00"), "m")
-                             ELSE
-                                "00h 00m"
-                             END)'
+                'dbkey' => $dbkey
             );
         }
 
