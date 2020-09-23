@@ -85,7 +85,7 @@ class utility {
 
         $courseprogress = new \local_sitereport\courseprogressblock();
         if ($data->courseid == "all") {
-            return $courseprogress->get_courselist($data->cohortid);
+            return array("data" => $courseprogress->get_courselist($data->cohortid));
         }
         return $courseprogress->get_data($data);
     }

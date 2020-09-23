@@ -106,7 +106,7 @@ define([
 
             datatable = $(CourseEngageTable).DataTable( {
                 ajax : url + "&cohortid=" + cohortId,
-                dom : '<"pull-left"f><t><p>',
+                // dom : '<"pull-left"f><t><p>',
                 columns : [
                     { "data": "coursename" },
                     { "data": "enrolment" },
@@ -123,11 +123,16 @@ define([
                     searchPlaceholder: "Search courses",
                     emptyTable: "There are no courses"
                 },
-                scrollY : 350,
-                scrollX : true,
-                paginate : false,
-                sScrollX : "100%",
-                bScrollCollapse : true
+                drawCallback: function () {
+                    $('.dataTables_paginate > .pagination').addClass('pagination-sm pull-right');
+                    $('.dataTables_filter').addClass('pagination-sm pull-right');
+                },
+                // scrollY : 350,
+                // scrollX : true,
+                // paginate : false,
+                // sScrollX : "100%",
+                // bScrollCollapse : true
+                bInfo: false
             });
         }
     }

@@ -29,6 +29,7 @@ use stdClass;
 use moodle_url;
 use cache;
 use context_course;
+use html_writer;
 
 require_once($CFG->dirroot . '/local/sitereport/classes/block_base.php');
 
@@ -215,10 +216,13 @@ class courseprogressblock extends block_base {
 
             // Assign response data.
             $res->id = $course->id;
-            $res->fullname = $course->fullname;
+            $res->coursename = html_writer::link(
+                new moodle_url($CFG->wwwroot . "/course/view.php", array("id" => $course->id)),
+                $course->fullname
+            );
 
             // Create course url.
-            $res->courseurl = (new moodle_url($CFG->wwwroot . "/course/view.php", array("id" => $course->id)))->out();
+            // $res->courseurl = (new moodle_url($CFG->wwwroot . "/course/view.php", array("id" => $course->id)))->out();
 
             // Get course context.
             $coursecontext = context_course::instance($course->id);
