@@ -44,7 +44,8 @@ $capabilities = array(
             'editingteacher' => CAP_ALLOW,
             'coursecreator' => CAP_ALLOW,
             'manager' => CAP_ALLOW,
-            'student' => CAP_ALLOW
+            'student' => CAP_ALLOW,
+            'user' => CAP_ALLOW
         ),
     ),
     'report/sitereport_activeusersblock:edit' => array(
@@ -56,7 +57,8 @@ $capabilities = array(
             'editingteacher' => CAP_ALLOW,
             'coursecreator' => CAP_ALLOW,
             'manager' => CAP_ALLOW,
-            'student' => CAP_ALLOW
+            'student' => CAP_ALLOW,
+            'user' => CAP_ALLOW
         ),
     ),
     'report/sitereport_activeusersblock:editadvance' => array(
@@ -77,7 +79,8 @@ $capabilities = array(
             'editingteacher' => CAP_ALLOW,
             'coursecreator' => CAP_ALLOW,
             'manager' => CAP_ALLOW,
-            'student' => CAP_ALLOW
+            'student' => CAP_ALLOW,
+            'user' => CAP_ALLOW
         ),
     ),
     'report/sitereport_activecoursesblock:edit' => array(
@@ -89,7 +92,8 @@ $capabilities = array(
             'editingteacher' => CAP_ALLOW,
             'coursecreator' => CAP_ALLOW,
             'manager' => CAP_ALLOW,
-            'student' => CAP_ALLOW
+            'student' => CAP_ALLOW,
+            'user' => CAP_ALLOW
         ),
     ),
     'report/sitereport_activecoursesblock:editadvance' => array(
@@ -110,7 +114,8 @@ $capabilities = array(
             'editingteacher' => CAP_ALLOW,
             'coursecreator' => CAP_ALLOW,
             'manager' => CAP_ALLOW,
-            'student' => CAP_ALLOW
+            'student' => CAP_ALLOW,
+            'user' => CAP_ALLOW
         ),
     ),
     'report/sitereport_courseprogressblock:edit' => array(
@@ -122,7 +127,8 @@ $capabilities = array(
             'editingteacher' => CAP_ALLOW,
             'coursecreator' => CAP_ALLOW,
             'manager' => CAP_ALLOW,
-            'student' => CAP_ALLOW
+            'student' => CAP_ALLOW,
+            'user' => CAP_ALLOW
         ),
     ),
     'report/sitereport_courseprogressblock:editadvance' => array(
@@ -143,7 +149,8 @@ $capabilities = array(
             'editingteacher' => CAP_ALLOW,
             'coursecreator' => CAP_ALLOW,
             'manager' => CAP_ALLOW,
-            'student' => CAP_ALLOW
+            'student' => CAP_ALLOW,
+            'user' => CAP_ALLOW
         ),
     ),
     'report/sitereport_certificatesblock:edit' => array(
@@ -155,7 +162,8 @@ $capabilities = array(
             'editingteacher' => CAP_ALLOW,
             'coursecreator' => CAP_ALLOW,
             'manager' => CAP_ALLOW,
-            'student' => CAP_ALLOW
+            'student' => CAP_ALLOW,
+            'user' => CAP_ALLOW
         ),
     ),
     'report/sitereport_certificatesblock:editadvance' => array(
@@ -176,7 +184,8 @@ $capabilities = array(
             'editingteacher' => CAP_ALLOW,
             'coursecreator' => CAP_ALLOW,
             'manager' => CAP_ALLOW,
-            'student' => CAP_ALLOW
+            'student' => CAP_ALLOW,
+            'user' => CAP_ALLOW
         ),
     ),
     'report/sitereport_liveusersblock:edit' => array(
@@ -188,7 +197,8 @@ $capabilities = array(
             'editingteacher' => CAP_ALLOW,
             'coursecreator' => CAP_ALLOW,
             'manager' => CAP_ALLOW,
-            'student' => CAP_ALLOW
+            'student' => CAP_ALLOW,
+            'user' => CAP_ALLOW
         ),
     ),
     'report/sitereport_liveusersblock:editadvance' => array(
@@ -209,7 +219,8 @@ $capabilities = array(
             'editingteacher' => CAP_ALLOW,
             'coursecreator' => CAP_ALLOW,
             'manager' => CAP_ALLOW,
-            'student' => CAP_ALLOW
+            'student' => CAP_ALLOW,
+            'user' => CAP_ALLOW
         ),
     ),
     'report/sitereport_siteaccessblock:edit' => array(
@@ -221,7 +232,8 @@ $capabilities = array(
             'editingteacher' => CAP_ALLOW,
             'coursecreator' => CAP_ALLOW,
             'manager' => CAP_ALLOW,
-            'student' => CAP_ALLOW
+            'student' => CAP_ALLOW,
+            'user' => CAP_ALLOW
         ),
     ),
     'report/sitereport_siteaccessblock:editadvance' => array(
@@ -242,7 +254,8 @@ $capabilities = array(
             'editingteacher' => CAP_ALLOW,
             'coursecreator' => CAP_ALLOW,
             'manager' => CAP_ALLOW,
-            'student' => CAP_ALLOW
+            'student' => CAP_ALLOW,
+            'user' => CAP_ALLOW
         ),
     ),
     'report/sitereport_todaysactivityblock:edit' => array(
@@ -254,7 +267,8 @@ $capabilities = array(
             'editingteacher' => CAP_ALLOW,
             'coursecreator' => CAP_ALLOW,
             'manager' => CAP_ALLOW,
-            'student' => CAP_ALLOW
+            'student' => CAP_ALLOW,
+            'user' => CAP_ALLOW
         ),
     ),
     'report/sitereport_todaysactivityblock:editadvance' => array(
@@ -275,7 +289,8 @@ $capabilities = array(
             'editingteacher' => CAP_ALLOW,
             'coursecreator' => CAP_ALLOW,
             'manager' => CAP_ALLOW,
-            'student' => CAP_ALLOW
+            'student' => CAP_ALLOW,
+            'user' => CAP_ALLOW
         ),
     ),
     'report/sitereport_inactiveusersblock:edit' => array(
@@ -287,7 +302,8 @@ $capabilities = array(
             'editingteacher' => CAP_ALLOW,
             'coursecreator' => CAP_ALLOW,
             'manager' => CAP_ALLOW,
-            'student' => CAP_ALLOW
+            'student' => CAP_ALLOW,
+            'user' => CAP_ALLOW
         ),
     ),
     'report/sitereport_inactiveusersblock:editadvance' => array(
