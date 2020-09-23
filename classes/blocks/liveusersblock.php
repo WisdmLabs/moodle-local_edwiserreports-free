@@ -16,13 +16,13 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     report_elucidsitereport
+ * @package     local_sitereport
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace report_elucidsitereport;
+namespace local_sitereport;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -45,13 +45,12 @@ class liveusersblock extends block_base {
 
         // Layout related data.
         $this->layout->id = 'liveusersblock';
-        $this->layout->name = get_string('realtimeusers', 'report_elucidsitereport');
-        $this->layout->info = get_string('realtimeusersblockhelp', 'report_elucidsitereport');
+        $this->layout->name = get_string('realtimeusers', 'local_sitereport');
+        $this->layout->info = get_string('realtimeusersblockhelp', 'local_sitereport');
 
         // Add block view in layout.
         $this->layout->blockview = $this->render_block('liveusersblock', $this->block);
-        
-        // Set block edit capabilities
+        // Set block edit capabilities.
         $this->set_block_edit_capabilities($this->layout->id);
 
         // Return blocks layout.

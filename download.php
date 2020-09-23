@@ -16,32 +16,24 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     report_elucidsitereport
+ * @package     local_sitereport
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use report_elucidsitereport\export;
+use local_sitereport\export;
 
 require_once(__DIR__ .'/../../config.php');
-require_once($CFG->dirroot."/report/elucidsitereport/locallib.php");
-require_once($CFG->dirroot."/report/elucidsitereport/classes/export.php");
-require_once($CFG->dirroot."/report/elucidsitereport/classes/utility.php");
+require_once($CFG->dirroot."/local/sitereport/locallib.php");
+require_once($CFG->dirroot."/local/sitereport/classes/export.php");
+require_once($CFG->dirroot."/local/sitereport/classes/utility.php");
 
 // Check if users is logged in.
 require_login();
 
 // Get system context.
 $context = context_system::instance();
-
-// The requested section isn't in the admin tree
-// It could be because the user has inadequate capapbilities or because the section doesn't exist.
-if (!has_capability('report/report_elucidsitereport:view', $context)) {
-    // The requested section could depend on a different capability
-    // but most likely the user has inadequate capabilities.
-    print_error('accessdenied', 'admin');
-}
 
 // Set page context.
 $PAGE->set_context($context);
@@ -54,7 +46,7 @@ if ($type = optional_param("type", false, PARAM_TEXT)) {
     $filter = optional_param("filter", false, PARAM_TEXT);
 
     // Prepare export filname.
-    $filename = prepare_export_filename(array(
+    $filename = local_sitereport_prepare_export_filename(array(
         "region" => $region,
         "blockname" => $blockname,
         "date" => date("d_M_y", time()),

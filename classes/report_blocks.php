@@ -16,12 +16,12 @@
 /**
  * Get Reports blocks to render in the dashboard
  *
- * @package     report_elucidsitereport
+ * @package     local_sitereport
  * @copyright   2020 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace report_elucidsitereport;
+namespace local_sitereport;
 
 use context_system;
 
@@ -41,30 +41,30 @@ class report_blocks {
         global $CFG;
 
         // Rearrange blocks based on the saved preferences.
-        \report_elucidsitereport\utility::rearrange_block_with_preferences($blocks);
+        \local_sitereport\utility::rearrange_block_with_preferences($blocks);
         $context = context_system::instance();
 
         // Prepare layout for each block.
         foreach ($blocks as $key => $block) {
-            // If user dont have capability to see the block
+            // If user dont have capability to see the block.
             if (!has_capability('report/sitereport_' . $block->classname . ':view', $context)) {
                 continue;
             }
 
             // Check if class file exist.
             $classname = $block->classname;
-            $filepath = $CFG->dirroot . '/report/elucidsitereport/classes/blocks/' . $classname . '.php';
+            $filepath = $CFG->dirroot . '/local/sitereport/classes/blocks/' . $classname . '.php';
             if (!file_exists($filepath)) {
                 debugging('Class file dosn\'t exist ' . $classname);
             }
             require_once($filepath);
 
-            $classname = '\\report_elucidsitereport\\' . $classname;
+            $classname = '\\local_sitereport\\' . $classname;
             $blockbase = new $classname();
             $layout = $blockbase->get_layout();
 
             // Get block preferences.
-            $pref = \report_elucidsitereport\utility::get_reportsblock_preferences($block);
+            $pref = \local_sitereport\utility::get_reportsblock_preferences($block);
             $blockbase->set_block_size($pref);
 
             $this->reportsblock[] = $blockbase->get_layout();

@@ -16,7 +16,7 @@
 /**
  * Code to be executed after the plugin's database scheme has been installed is defined here.
  *
- * @package     report_elucidsitereport
+ * @package     local_sitereport
  * @category    upgrade
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -27,68 +27,68 @@ defined('MOODLE_INTERNAL') || die();
 /**
  * Custom code to be run on installing the plugin.
  */
-function xmldb_report_elucidsitereport_install() {
+function xmldb_local_sitereport_install() {
     global $CFG, $DB;
 
-    require_once($CFG->dirroot . "/report/elucidsitereport/classes/constants.php");
+    require_once($CFG->dirroot . "/local/sitereport/classes/constants.php");
 
     // All Default blocks.
     $defaultblocks = array(
         'activeusers' => array(
             'classname' => 'activeusersblock',
             'position' => 0,
-            BLOCK_DESKTOP_VIEW => BLOCK_LARGE,
-            BLOCK_TABLET_VIEW => BLOCK_LARGE,
-            BLOCK_MOBILE_VIEW => BLOCK_LARGE
+            LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW => LOCAL_SITEREPORT_BLOCK_LARGE,
+            LOCAL_SITEREPORT_BLOCK_TABLET_VIEW => LOCAL_SITEREPORT_BLOCK_LARGE,
+            LOCAL_SITEREPORT_BLOCK_MOBILE_VIEW => LOCAL_SITEREPORT_BLOCK_LARGE
         ),
         'courseprogress' => array(
             'classname' => 'courseprogressblock',
             'position' => 1,
-            BLOCK_DESKTOP_VIEW => BLOCK_MEDIUM,
-            BLOCK_TABLET_VIEW => BLOCK_LARGE,
-            BLOCK_MOBILE_VIEW => BLOCK_LARGE
+            LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW => LOCAL_SITEREPORT_BLOCK_MEDIUM,
+            LOCAL_SITEREPORT_BLOCK_TABLET_VIEW => LOCAL_SITEREPORT_BLOCK_LARGE,
+            LOCAL_SITEREPORT_BLOCK_MOBILE_VIEW => LOCAL_SITEREPORT_BLOCK_LARGE
         ),
         'activecourses' => array(
             'classname' => 'activecoursesblock',
             'position' => 2,
-            BLOCK_DESKTOP_VIEW => BLOCK_MEDIUM,
-            BLOCK_TABLET_VIEW => BLOCK_LARGE,
-            BLOCK_MOBILE_VIEW => BLOCK_LARGE
+            LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW => LOCAL_SITEREPORT_BLOCK_MEDIUM,
+            LOCAL_SITEREPORT_BLOCK_TABLET_VIEW => LOCAL_SITEREPORT_BLOCK_LARGE,
+            LOCAL_SITEREPORT_BLOCK_MOBILE_VIEW => LOCAL_SITEREPORT_BLOCK_LARGE
         ),
         'certificates' => array(
             'classname' => 'certificatesblock',
             'position' => 3,
-            BLOCK_DESKTOP_VIEW => BLOCK_MEDIUM,
-            BLOCK_TABLET_VIEW => BLOCK_LARGE,
-            BLOCK_MOBILE_VIEW => BLOCK_LARGE
+            LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW => LOCAL_SITEREPORT_BLOCK_MEDIUM,
+            LOCAL_SITEREPORT_BLOCK_TABLET_VIEW => LOCAL_SITEREPORT_BLOCK_LARGE,
+            LOCAL_SITEREPORT_BLOCK_MOBILE_VIEW => LOCAL_SITEREPORT_BLOCK_LARGE
         ),
         'liveusers' => array(
             'classname' => 'liveusersblock',
             'position' => 4,
-            BLOCK_DESKTOP_VIEW => BLOCK_MEDIUM,
-            BLOCK_TABLET_VIEW => BLOCK_LARGE,
-            BLOCK_MOBILE_VIEW => BLOCK_LARGE
+            LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW => LOCAL_SITEREPORT_BLOCK_MEDIUM,
+            LOCAL_SITEREPORT_BLOCK_TABLET_VIEW => LOCAL_SITEREPORT_BLOCK_LARGE,
+            LOCAL_SITEREPORT_BLOCK_MOBILE_VIEW => LOCAL_SITEREPORT_BLOCK_LARGE
         ),
         'siteaccess' => array(
             'classname' => 'siteaccessblock',
             'position' => 5,
-            BLOCK_DESKTOP_VIEW => BLOCK_MEDIUM,
-            BLOCK_TABLET_VIEW => BLOCK_LARGE,
-            BLOCK_MOBILE_VIEW => BLOCK_LARGE
+            LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW => LOCAL_SITEREPORT_BLOCK_MEDIUM,
+            LOCAL_SITEREPORT_BLOCK_TABLET_VIEW => LOCAL_SITEREPORT_BLOCK_LARGE,
+            LOCAL_SITEREPORT_BLOCK_MOBILE_VIEW => LOCAL_SITEREPORT_BLOCK_LARGE
         ),
         'todaysactivity' => array(
             'classname' => 'todaysactivityblock',
             'position' => 6,
-            BLOCK_DESKTOP_VIEW => BLOCK_MEDIUM,
-            BLOCK_TABLET_VIEW => BLOCK_LARGE,
-            BLOCK_MOBILE_VIEW => BLOCK_LARGE
+            LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW => LOCAL_SITEREPORT_BLOCK_MEDIUM,
+            LOCAL_SITEREPORT_BLOCK_TABLET_VIEW => LOCAL_SITEREPORT_BLOCK_LARGE,
+            LOCAL_SITEREPORT_BLOCK_MOBILE_VIEW => LOCAL_SITEREPORT_BLOCK_LARGE
         ),
         'inactiveusers' => array(
             'classname' => 'inactiveusersblock',
             'position' => 7,
-            BLOCK_DESKTOP_VIEW => BLOCK_MEDIUM,
-            BLOCK_TABLET_VIEW => BLOCK_LARGE,
-            BLOCK_MOBILE_VIEW => BLOCK_LARGE
+            LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW => LOCAL_SITEREPORT_BLOCK_MEDIUM,
+            LOCAL_SITEREPORT_BLOCK_TABLET_VIEW => LOCAL_SITEREPORT_BLOCK_LARGE,
+            LOCAL_SITEREPORT_BLOCK_MOBILE_VIEW => LOCAL_SITEREPORT_BLOCK_LARGE
         )
     );
 
@@ -98,11 +98,11 @@ function xmldb_report_elucidsitereport_install() {
         $blockdata = new stdClass();
         $blockdata->blockname = $key;
         $blockdata->classname = $block['classname'];
-        $blockdata->blocktype = BLOCK_TYPE_DEFAULT;
+        $blockdata->blocktype = LOCAL_SITEREPORT_BLOCK_TYPE_DEFAULT;
         $blockdata->blockdata = json_encode((object) array(
-            BLOCK_DESKTOP_VIEW => $block[BLOCK_DESKTOP_VIEW],
-            BLOCK_TABLET_VIEW => $block[BLOCK_TABLET_VIEW],
-            BLOCK_MOBILE_VIEW => $block[BLOCK_MOBILE_VIEW],
+            LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW => $block[LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW],
+            LOCAL_SITEREPORT_BLOCK_TABLET_VIEW => $block[LOCAL_SITEREPORT_BLOCK_TABLET_VIEW],
+            LOCAL_SITEREPORT_BLOCK_MOBILE_VIEW => $block[LOCAL_SITEREPORT_BLOCK_MOBILE_VIEW],
             'position' => $block['position']
         ));
         $blockdata->timecreated = time();

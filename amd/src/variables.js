@@ -1,7 +1,7 @@
-define(['report_elucidsitereport/variables'], function(V) {
+define(['local_sitereport/variables'], function(V) {
     return {
         pluginPage: $("#wdm-elucidsitereport"),
-        requestUrl : M.cfg.wwwroot + '/report/elucidsitereport/request_handler.php',
+        requestUrl : M.cfg.wwwroot + '/local/sitereport/request_handler.php',
         requestType : 'GET',
         requestDataType : 'json',
         whiteColor : "rgba(255, 255, 255, 0.8)",
@@ -56,7 +56,7 @@ define(['report_elucidsitereport/variables'], function(V) {
         filterReplaceFlag : "F",
 
         // Plugin component
-        component : 'report_elucidsitereport',
+        component : 'local_sitereport',
 
         // Get scheduled email context
         getScheduledEmailFormContext : function() {

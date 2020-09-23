@@ -16,13 +16,13 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     report_elucidsitereport
+ * @package     local_sitereport
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace report_elucidsitereport;
+namespace local_sitereport;
 
 use context_system;
 use context_course;
@@ -34,15 +34,7 @@ require_once('classes/output/renderable.php');
 
 // Context system.
 $context = context_system::instance();
-$component = "report_elucidsitereport";
-
-// The requested section isn't in the admin tree
-// It could be because the user has inadequate capapbilities or because the section doesn't exist.
-if (!has_capability('report/report_elucidsitereport:view', $context)) {
-    // The requested section could depend on a different capability
-    // but most likely the user has inadequate capabilities.
-    print_error('accessdenied', 'admin');
-}
+$component = "local_sitereport";
 
 // Get require param course id.
 $courseid = required_param("courseid", PARAM_INT);
@@ -55,7 +47,7 @@ require_login(get_course($courseid));
 $coursecontext = context_course::instance($courseid);
 
 // Page URL.
-$pageurl = new moodle_url($CFG->wwwroot . "/report/elucidsitereport/completion.php", array("courseid" => $courseid));
+$pageurl = new moodle_url($CFG->wwwroot . "/local/sitereport/completion.php", array("courseid" => $courseid));
 
 // Set page context.
 $PAGE->set_context($coursecontext);
@@ -64,16 +56,15 @@ $PAGE->set_context($coursecontext);
 $PAGE->set_url($pageurl);
 
 // Require JS for course completion page.
-$PAGE->requires->js_call_amd('report_elucidsitereport/completion', 'init', array($coursecontext->id));
+$PAGE->requires->js_call_amd('local_sitereport/completion', 'init', array($coursecontext->id));
 
 // Get renderable for coourse completion page.
-$renderable = new \report_elucidsitereport\output\completion_renderable();
+$renderable = new \local_sitereport\output\completion_renderable();
 $output = $PAGE->get_renderer($component)->render($renderable);
 
-$PAGE->set_heading(get_string("completionheader", "report_elucidsitereport", array('coursename' => $course->fullname)));
+$PAGE->set_heading(get_string("completionheader", "local_sitereport", array('coursename' => $course->fullname)));
 
 // Print output for course completion page.
 echo $OUTPUT->header();
-// echo $OUTPUT->heading(create_page_header("completion", $course->fullname), "1", "page-title p-5");
 echo $output;
 echo $OUTPUT->footer();

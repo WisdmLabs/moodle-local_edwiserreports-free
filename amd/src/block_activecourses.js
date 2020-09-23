@@ -1,4 +1,4 @@
-define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig', 'report_elucidsitereport/jquery.dataTables', 'report_elucidsitereport/dataTables.bootstrap4'], function ($, Chart, cfg) {
+define(['jquery', 'core/chartjs', 'local_sitereport/defaultconfig', 'local_sitereport/jquery.dataTables', 'local_sitereport/dataTables.bootstrap4'], function ($, Chart, cfg) {
     function init(notifyListner) {
         var activeCourseTable;
 

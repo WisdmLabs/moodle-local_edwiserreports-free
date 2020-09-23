@@ -16,21 +16,21 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     report_elucidsitereport
+ * @package     local_sitereport
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace report_elucidsitereport\task;
+namespace local_sitereport\task;
 
 defined('MOODLE_INTERNAL') || die;
 
-require_once($CFG->dirroot."/report/elucidsitereport/classes/export.php");
+require_once($CFG->dirroot."/local/sitereport/classes/export.php");
 
 use core_user;
 use stdClass;
-use report_elucidsitereport\export;
+use local_sitereport\export;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -45,7 +45,7 @@ class send_scheduled_emails extends \core\task\scheduled_task {
      * @return string
      */
     public function get_name() {
-        return get_string('sendscheduledemails', 'report_elucidsitereport');
+        return get_string('sendscheduledemails', 'local_sitereport');
     }
 
     /**
@@ -101,13 +101,16 @@ class send_scheduled_emails extends \core\task\scheduled_task {
 
                 // If data exist then send emails.
                 if ($data) {
-                    mtrace(get_string('sendingscheduledemails', 'report_elucidsitereport'));
+                    mtrace(get_string('sendingscheduledemails', 'local_sitereport'));
                     ob_start();
 
                     // If email successfully sent.
                     $this->send_sceduled_email($export, $data, $email);
                     $email->esrlastrun = time();
-                    list($frequency, $schedtime) = get_email_schedule_next_run($email->esrduration, $email->esrtime);
+
+                    $esrduration = $email->esrduration;
+                    $esrtime = $email->esrtime;
+                    list($frequency, $schedtime) = local_sitereport_get_email_schedule_next_run($esrduration, $esrtime);
                     $email->esrnextrun = $schedtime;
                     $emaildata[$k] = $email;
                     ob_clean();
@@ -145,12 +148,12 @@ class send_scheduled_emails extends \core\task\scheduled_task {
 
         // If subject is not set the get default subject.
         if (!$subject && $subject == '') {
-            $subject = get_string($blockname . "exportheader", "report_elucidsitereport");
+            $subject = get_string($blockname . "exportheader", "local_sitereport");
         }
 
         // Get content text to send emails.
         if ($content == '') {
-            $content = get_string($blockname . "exporthelp", "report_elucidsitereport");
+            $content = get_string($blockname . "exporthelp", "local_sitereport");
         }
 
         // Send emails foreach email ids.

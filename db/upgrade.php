@@ -16,7 +16,7 @@
 /**
  * Code to be executed after the plugin's database scheme has been installed is defined here.
  *
- * @package     report_elucidsitereport
+ * @package     local_sitereport
  * @category    upgrade
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 /**
  * Custom code to be run on upgrading the plugin.
  */
-function xmldb_report_elucidsitereport_upgrade($oldversion) {
+function xmldb_local_sitereport_upgrade($oldversion) {
     global $DB;
 
     // Check the old version.

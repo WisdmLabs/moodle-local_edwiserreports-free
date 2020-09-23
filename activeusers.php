@@ -16,13 +16,13 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     report_elucidsitereport
+ * @package     local_sitereport
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace report_elucidsitereport;
+namespace local_sitereport;
 
 use context_system;
 use moodle_url;
@@ -35,26 +35,18 @@ require_login();
 
 // System Context.
 $context = context_system::instance();
-$component = 'report_elucidsitereport';
-
-// The requested section isn't in the admin tree
-// It could be because the user has inadequate capapbilities or because the section doesn't exist.
-if (!has_capability('report/report_elucidsitereport:view', $context)) {
-    // The requested section could depend on a different capability
-    // but most likely the user has inadequate capabilities.
-    print_error('accessdenied', 'admin');
-}
+$component = 'local_sitereport';
 
 
 // Require JS for active users page.
 $PAGE->requires->js_call_amd(
-    'report_elucidsitereport/activeusers',
+    'local_sitereport/activeusers',
     'init',
     array($context->id)
 );
 
 // Set css for active usres page.
-$PAGE->requires->css('/report/elucidsitereport/styles/flatpickr.min.css');
+$PAGE->requires->css('/local/sitereport/styles/flatpickr.min.css');
 
 // Add js string for this page.
 $PAGE->requires->strings_for_js([
@@ -64,7 +56,7 @@ $PAGE->requires->strings_for_js([
 ], $component);
 
 // Page URL for active users page.
-$pageurl = new moodle_url($CFG->wwwroot . "/report/elucidsitereport/activeusers.php");
+$pageurl = new moodle_url($CFG->wwwroot . "/local/sitereport/activeusers.php");
 
 // Set page context.
 $PAGE->set_context($context);
@@ -73,10 +65,10 @@ $PAGE->set_context($context);
 $PAGE->set_url($pageurl);
 
 // Get active users renderable.
-$renderable = new \report_elucidsitereport\output\activeusers_renderable();
+$renderable = new \local_sitereport\output\activeusers_renderable();
 $output = $PAGE->get_renderer($component)->render($renderable);
 
-$PAGE->set_heading(get_string("activeusersheader", "report_elucidsitereport"));
+$PAGE->set_heading(get_string("activeusersheader", "local_sitereport"));
 
 // Print output in the page.
 echo $OUTPUT->header();

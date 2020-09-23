@@ -16,7 +16,7 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     report_elucidsitereport
+ * @package     local_sitereport
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -26,12 +26,12 @@
  * Define all constants for use
  */
 
-namespace report_elucidsitereport;
+namespace local_sitereport;
 
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir . '/completionlib.php');
-require_once($CFG->dirroot . '/report/elucidsitereport/classes/utility.php');
+require_once($CFG->dirroot . '/local/sitereport/classes/utility.php');
 
 use completion_info;
 use core_completion\progress;
@@ -125,7 +125,7 @@ class completions {
 
                     // Get Course Grades.
                     $completionobj->grade = 0;
-                    $grades = \report_elucidsitereport\utility::get_grades($course->id, $user->id);
+                    $grades = \local_sitereport\utility::get_grades($course->id, $user->id);
                     // If course grade is set then update course grade.
                     if ($grades && $grades->finalgrade) {
                         $coursegrade = $grades->finalgrade;

@@ -16,23 +16,23 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     report_elucidsitereport
+ * @package     local_sitereport
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace report_elucidsitereport;
+namespace local_sitereport;
 
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir."/csvlib.class.php");
 require_once($CFG->libdir."/excellib.class.php");
 require_once($CFG->libdir."/pdflib.php");
-require_once($CFG->dirroot."/report/elucidsitereport/classes/utility.php");
-require_once($CFG->dirroot."/report/elucidsitereport/lib.php");
-require_once($CFG->dirroot."/report/elucidsitereport/locallib.php");
-require_once($CFG->dirroot."/report/elucidsitereport/classes/output/renderable.php");
+require_once($CFG->dirroot."/local/sitereport/classes/utility.php");
+require_once($CFG->dirroot."/local/sitereport/lib.php");
+require_once($CFG->dirroot."/local/sitereport/locallib.php");
+require_once($CFG->dirroot."/local/sitereport/classes/output/renderable.php");
 
 use csv_export_writer;
 use moodle_exception;
@@ -187,7 +187,7 @@ class export {
         // Prepare file record object.
         $fileinfo = array(
             'contextid' => $context->id, // ID of context
-            'component' => 'report_elucidsitereport',     // usually = table name
+            'component' => 'local_sitereport',     // usually = table name
             'filearea' => 'downloadreport',     // usually = table name
             'itemid' => 0,               // usually = ID of row in table
             'filepath' => '/',           // any path beginning and ending in /
@@ -265,7 +265,7 @@ class export {
 
         // If subject is not set the get default subject
         if (!$subject && $subject == '') {
-            $subject = get_string($this->blockname . "exportheader", "report_elucidsitereport");
+            $subject = get_string($this->blockname . "exportheader", "local_sitereport");
         }
 
         // Get content text to send emails
@@ -273,7 +273,7 @@ class export {
         if ($content["format"] == 1) { // Text Foramt = 1
             // If content text is not set then set default value of content text
             if (!$content || !isset($content["text"]) || $content["text"] == '') {
-                $contenttext = get_string($this->blockname . "exporthelp", "report_elucidsitereport");
+                $contenttext = get_string($this->blockname . "exporthelp", "local_sitereport");
             } else {
                 $contenttext = $content["text"];
             }
@@ -303,13 +303,13 @@ class export {
             // If failed then return error
             $res = new stdClass();
             $res->error = false;
-            $res->errormsg = get_string('emailsent', 'report_elucidsitereport');
+            $res->errormsg = get_string('emailsent', 'local_sitereport');
             echo json_encode($res);
         } else {
             // If failed then return error
             $res = new stdClass();
             $res->error = true;
-            $res->errormsg = get_string('emailnotsent', 'report_elucidsitereport');
+            $res->errormsg = get_string('emailnotsent', 'local_sitereport');
             echo json_encode($res);
         }
 
@@ -380,7 +380,7 @@ class export {
         );
 
         // Calculate Next Run
-        list($fequency, $nextrun) = get_email_schedule_next_run($emailinfo["esrduration"], $emailinfo["esrtime"]);
+        list($fequency, $nextrun) = local_sitereport_get_email_schedule_next_run($emailinfo["esrduration"], $emailinfo["esrtime"]);
 
         $emailinfo["esrnextrun"] = $nextrun;
         $emailinfo["esrfrequency"] = $fequency;
@@ -447,14 +447,14 @@ class export {
         // Generate HTML to export.
         $html = html_writer::tag(
             "h1",
-            get_string($this->blockname . "exportheader", "report_elucidsitereport"),
+            get_string($this->blockname . "exportheader", "local_sitereport"),
             array(
                 "style" => "width:100%;text-align:center"
             )
         );
 
         $html .= html_writer::tag("p",
-            get_string($this->blockname . "exporthelp", "report_elucidsitereport"),
+            get_string($this->blockname . "exporthelp", "local_sitereport"),
             array(
                 "style" => "text-indent: 50px"
             )
@@ -481,14 +481,14 @@ class export {
     public function get_html_for_pdf2($data) {
         // Generate HTML to export
         $html = html_writer::tag("h1",
-            get_string($this->blockname . "exportheader", "report_elucidsitereport"),
+            get_string($this->blockname . "exportheader", "local_sitereport"),
             array(
                 "style" => "width:100%;text-align:center"
             )
         );
 
         $html .= html_writer::tag("p",
-            get_string($this->blockname . "exporthelp", "report_elucidsitereport"),
+            get_string($this->blockname . "exporthelp", "local_sitereport"),
             array(
                 "style" => "text-indent: 50px"
             )
@@ -550,13 +550,13 @@ class export {
 
         // Check if class file exist
         $classname = $blockname;
-        $filepath = $CFG->dirroot . '/report/elucidsitereport/classes/blocks/' . $classname . '.php';
+        $filepath = $CFG->dirroot . '/local/sitereport/classes/blocks/' . $classname . '.php';
         if (!file_exists($filepath)) {
             debugging('Class file dosn\'t exist ' . $classname);
         }
         require_once($filepath);
 
-        $classname = '\\report_elucidsitereport\\' . $classname;
+        $classname = '\\local_sitereport\\' . $classname;
         $blockbase = new $classname();
 
         return $blockbase->get_exportable_data_block($filter);
@@ -618,7 +618,7 @@ class export {
     public function get_lpdetailed_report_excel($lpid, &$workbook, $cohortid = false) {
         global $CFG, $DB;
 
-        require_once($CFG->dirroot."/report/elucidsitereport/classes/blocks/lpstats_block.php");
+        require_once($CFG->dirroot."/local/sitereport/classes/blocks/lpstats_block.php");
 
         // Get learning program
         $table = 'wdm_learning_program';
@@ -632,10 +632,10 @@ class export {
         $xls = $workbook->add_worksheet($lp->name);
 
         // Get Lp reports
-        $lpreports = \report_elucidsitereport\lpstats_block::get_lpstats_usersdata($lpid, $cohortid);
+        $lpreports = \local_sitereport\lpstats_block::get_lpstats_usersdata($lpid, $cohortid);
 
         // Prepare report header
-        $header = \report_elucidsitereport\lpstats_block::get_header_report();
+        $header = \local_sitereport\lpstats_block::get_header_report();
         $courseids = json_decode($lp->courses);
         foreach ($lpreports->courses as $course) {
             $header[] = $course->shortname;
@@ -643,8 +643,8 @@ class export {
 
         // Add additional headers
         $header = array_merge($header, array(
-            get_string('avgprogress', 'report_elucidsitereport'),
-            get_string('completedactivity', 'report_elucidsitereport'),
+            get_string('avgprogress', 'local_sitereport'),
+            get_string('completedactivity', 'local_sitereport'),
         ));
 
         // Add custom fields
@@ -790,7 +790,7 @@ class export {
 
         // Check if learning hour plugin is available
         $lhdb = '';
-        if (has_plugin('report', 'learning_hours')) {
+        if (local_sitereport_has_plugin('report', 'learning_hours')) {
             $lhdb = 'LEFT JOIN {edw_learning_hours} lh ON lh.courseid = c.id
                 LEFT JOIN {edw_users_learning_hours} ulh ON ulh.userid = u.id AND ulh.lhid = lh.id';
         }
@@ -798,12 +798,12 @@ class export {
         // Check Cohorts
         $allusers = false;
         if ($cohortids === "0") {
-            $cohorts = \report_elucidsitereport\utility::get_cohort_users(array(0));
+            $cohorts = \local_sitereport\utility::get_cohort_users(array(0));
             $userids = array_column($cohorts['users'], 'id');
         } else if ($cohortids !== "") {
             if ($userids === "0") {
                 $cohortids = explode(",", $cohortids);
-                $cohorts = \report_elucidsitereport\utility::get_cohort_users($cohortids);
+                $cohorts = \local_sitereport\utility::get_cohort_users($cohortids);
                 $userids = array_column($cohorts['users'], 'id');
             } else {
                 $userids = explode(",", $userids);
@@ -865,7 +865,7 @@ class export {
         if (isset($tablename)) {
             $this->drop_table($tablename);
         }
-        $filename = get_string('reportname', 'report_elucidsitereport', array(
+        $filename = get_string('reportname', 'local_sitereport', array(
             "date" => date('d_M_y_h-t-s', time())
         ));
         // Download csv based on query result.
@@ -952,7 +952,7 @@ class export {
      */
     public function create_query_fields($fields) {
         // Get all the fields
-        $allFields = \report_elucidsitereport\output\elucidreport_renderable::get_report_fields();
+        $allFields = \local_sitereport\output\elucidreport_renderable::get_report_fields();
         $allFields = array_values($allFields);
         $allFields = array_reduce($allFields, 'array_merge', array());
         // sort fields according to selected fields
@@ -1024,7 +1024,7 @@ class export {
      */
     private function render_course_report_exportable_header() {
         // Plugin component
-        $component = 'report_elucidsitereport';
+        $component = 'local_sitereport';
 
         // Header for reports
         $head = array();
@@ -1053,7 +1053,7 @@ class export {
      */
     private function render_lp_report_exportable_header() {
         // Plugin component
-        $component = 'report_elucidsitereport';
+        $component = 'local_sitereport';
 
         // Header for reports
         $head = array();
@@ -1148,7 +1148,7 @@ class export {
             // Prepare reports for each students
             foreach ($users as $user) {
                 // Get enrolment informations
-                $enrolinfo = \report_elucidsitereport\utility::get_course_enrolment_info($course->id, $user->id);
+                $enrolinfo = \local_sitereport\utility::get_course_enrolment_info($course->id, $user->id);
 
                 // If startdate is less then the selected start date
                 if ($enrolinfo->timecreated < $enrolstartdate) {
@@ -1175,13 +1175,13 @@ class export {
                 $data->category = $category->get_formatted_name();
 
                 // Get completions data
-                $completion = (object) \report_elucidsitereport\utility::get_course_completion_info($course, $user->id);
+                $completion = (object) \local_sitereport\utility::get_course_completion_info($course, $user->id);
                 if ($completion && !empty($completion)) {
                     $data->completedactivities = '(' . $completion->completedactivities . '/' . $completion->totalactivities . ')';
                     $data->completionsper = $completion->progresspercentage . "%";
                 } else {
-                    $data->completedactivities = get_string('na', 'report_elucidsitereport');
-                    $data->completionsper = get_string('na', 'report_elucidsitereport');
+                    $data->completedactivities = get_string('na', 'local_sitereport');
+                    $data->completionsper = get_string('na', 'local_sitereport');
                 }
 
                 $this->inseart_custom_filed_data($data, $user->id);
@@ -1210,7 +1210,7 @@ class export {
      */
     private function render_lps_report_exportable_data($lpids, $enrolstartdate, $enrolenddate) {
         global $DB;
-        $component = 'report_elucidsitereport';
+        $component = 'local_sitereport';
 
         // Render reports header
         $head = $this->render_lp_report_exportable_header();
@@ -1222,7 +1222,7 @@ class export {
             $lp = $DB->get_record($table, array("id" => $lpid, "visible" => true));
 
             // Get only enrolled students
-            $enrolments = \report_elucidsitereport\utility::get_lp_students($lpid);
+            $enrolments = \local_sitereport\utility::get_lp_students($lpid);
 
             // Prepare reports for each students
             foreach ($enrolments as $enrolment) {
@@ -1244,7 +1244,7 @@ class export {
                     }
 
                     // Get completions data
-                    $completion = \report_elucidsitereport\utility::get_course_completion_info($course, $enrolment->userid);
+                    $completion = \local_sitereport\utility::get_course_completion_info($course, $enrolment->userid);
 
                     if ($completion && !empty($completion)) {
                         $completionavg += $completion['progresspercentage'];

@@ -16,30 +16,30 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     report_elucidsitereport
+ * @package     local_sitereport
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace report_elucidsitereport;
+namespace local_sitereport;
 
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . "/completion/classes/progress.php");
 require_once($CFG->dirroot . "/cohort/lib.php");
 require_once($CFG->libdir."/csvlib.class.php");
-require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/activecoursesblock.php");
-require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/f2fsessionsblock.php");
-require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/certificatesblock.php");
-require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/liveusersblock.php");
-require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/siteaccessblock.php");
-require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/todaysactivityblock.php");
-require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/lpstatsblock.php");
-require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/inactiveusersblock.php");
-require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/courseengage_block.php");
-require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/completion_block.php");
-require_once($CFG->dirroot . "/report/elucidsitereport/classes/blocks/courseanalytics_block.php");
+require_once($CFG->dirroot . "/local/sitereport/classes/blocks/activecoursesblock.php");
+require_once($CFG->dirroot . "/local/sitereport/classes/blocks/f2fsessionsblock.php");
+require_once($CFG->dirroot . "/local/sitereport/classes/blocks/certificatesblock.php");
+require_once($CFG->dirroot . "/local/sitereport/classes/blocks/liveusersblock.php");
+require_once($CFG->dirroot . "/local/sitereport/classes/blocks/siteaccessblock.php");
+require_once($CFG->dirroot . "/local/sitereport/classes/blocks/todaysactivityblock.php");
+require_once($CFG->dirroot . "/local/sitereport/classes/blocks/lpstatsblock.php");
+require_once($CFG->dirroot . "/local/sitereport/classes/blocks/inactiveusersblock.php");
+require_once($CFG->dirroot . "/local/sitereport/classes/blocks/courseengage_block.php");
+require_once($CFG->dirroot . "/local/sitereport/classes/blocks/completion_block.php");
+require_once($CFG->dirroot . "/local/sitereport/classes/blocks/courseanalytics_block.php");
 
 use stdClass;
 use completion_info;
@@ -65,9 +65,9 @@ class utility {
         global $CFG;
 
         // Require block file.
-        require_once($CFG->dirroot . '/report/elucidsitereport/classes/blocks/activeusersblock.php');
+        require_once($CFG->dirroot . '/local/sitereport/classes/blocks/activeusersblock.php');
 
-        $activeusersblock = new \report_elucidsitereport\activeusersblock($data);
+        $activeusersblock = new \local_sitereport\activeusersblock($data);
         return $activeusersblock->get_data($data);
     }
 
@@ -79,11 +79,11 @@ class utility {
     public static function get_course_progress_data($data) {
         global $CFG;
 
-        require_once($CFG->dirroot . '/report/elucidsitereport/classes/blocks/courseprogressblock.php');
+        require_once($CFG->dirroot . '/local/sitereport/classes/blocks/courseprogressblock.php');
 
         $data = json_decode(required_param('data', PARAM_RAW));
 
-        $courseprogress = new \report_elucidsitereport\courseprogressblock();
+        $courseprogress = new \local_sitereport\courseprogressblock();
         if ($data->courseid == "all") {
             return $courseprogress->get_courselist($data->cohortid);
         }
@@ -93,9 +93,9 @@ class utility {
     public static function get_active_courses_data() {
         global $CFG;
 
-        require_once($CFG->dirroot . '/report/elucidsitereport/classes/blocks/activecoursesblock.php');
+        require_once($CFG->dirroot . '/local/sitereport/classes/blocks/activecoursesblock.php');
 
-        $activecourses = new \report_elucidsitereport\activecoursesblock();
+        $activecourses = new \local_sitereport\activecoursesblock();
         return $activecourses->get_data(false);
     }
 
@@ -106,64 +106,64 @@ class utility {
     public static function get_f2fsessiondata_data($data) {
         global $CFG;
 
-        require_once($CFG->dirroot . '/report/elucidsitereport/classes/blocks/f2fsessionsblock.php');
+        require_once($CFG->dirroot . '/local/sitereport/classes/blocks/f2fsessionsblock.php');
 
-        $f2fsession = new \report_elucidsitereport\f2fsessionsblock();
+        $f2fsession = new \local_sitereport\f2fsessionsblock();
         return $f2fsession->get_data($data);
     }
 
     public static function get_certificates_data($data) {
         global $CFG;
-        require_once($CFG->dirroot . '/report/elucidsitereport/classes/blocks/certificatesblock.php');
+        require_once($CFG->dirroot . '/local/sitereport/classes/blocks/certificatesblock.php');
 
-        $certificatesblock = new \report_elucidsitereport\certificatesblock();
+        $certificatesblock = new \local_sitereport\certificatesblock();
         if (isset($data->certificateid)) {
-            return \report_elucidsitereport\certificatesblock::get_issued_users($data->certificateid, $data->cohortid);
+            return \local_sitereport\certificatesblock::get_issued_users($data->certificateid, $data->cohortid);
         }
         return $certificatesblock->get_data();
     }
 
     public static function get_liveusers_data() {
         global $CFG;
-        require_once($CFG->dirroot . '/report/elucidsitereport/classes/blocks/liveusersblock.php');
+        require_once($CFG->dirroot . '/local/sitereport/classes/blocks/liveusersblock.php');
 
-        $liveusers = new \report_elucidsitereport\liveusersblock();
+        $liveusers = new \local_sitereport\liveusersblock();
         return $liveusers->get_data();
     }
 
     public static function get_siteaccess_data() {
         global $CFG;
-        require_once($CFG->dirroot . '/report/elucidsitereport/classes/blocks/liveusersblock.php');
+        require_once($CFG->dirroot . '/local/sitereport/classes/blocks/liveusersblock.php');
 
-        $siteaccess = new \report_elucidsitereport\siteaccessblock();
+        $siteaccess = new \local_sitereport\siteaccessblock();
         return $siteaccess->get_data();
     }
 
     public static function get_todaysactivity_data($data) {
         global $CFG;
-        require_once($CFG->dirroot . '/report/elucidsitereport/classes/blocks/todaysactivityblock.php');
+        require_once($CFG->dirroot . '/local/sitereport/classes/blocks/todaysactivityblock.php');
 
-        $todaysactivityblock = new \report_elucidsitereport\todaysactivityblock();
+        $todaysactivityblock = new \local_sitereport\todaysactivityblock();
         return $todaysactivityblock->get_data($data);
     }
 
     public static function get_lpstats_data($data) {
         global $CFG;
-        require_once($CFG->dirroot . '/report/elucidsitereport/classes/blocks/lpstatsblock.php');
+        require_once($CFG->dirroot . '/local/sitereport/classes/blocks/lpstatsblock.php');
 
-        $lpstatsblock = new \report_elucidsitereport\lpstatsblock();
+        $lpstatsblock = new \local_sitereport\lpstatsblock();
         return $lpstatsblock->get_data($data);
     }
 
     public static function get_courseengage_data($cohortid) {
-        return \report_elucidsitereport\courseengage_block::get_data($cohortid);
+        return \local_sitereport\courseengage_block::get_data($cohortid);
     }
 
     public static function get_inactiveusers_data($data) {
         global $CFG;
-        require_once($CFG->dirroot . '/report/elucidsitereport/classes/blocks/inactiveusersblock.php');
+        require_once($CFG->dirroot . '/local/sitereport/classes/blocks/inactiveusersblock.php');
 
-        $inactiveusers = new \report_elucidsitereport\inactiveusersblock();
+        $inactiveusers = new \local_sitereport\inactiveusersblock();
         return $inactiveusers->get_data($data);
     }
 
@@ -177,7 +177,7 @@ class utility {
         } else {
             $cohortid = 0;
         }
-        return \report_elucidsitereport\completion_block::get_data($data->courseid, $cohortid);
+        return \local_sitereport\completion_block::get_data($data->courseid, $cohortid);
     }
 
     public static function get_courseanalytics_data($data) {
@@ -186,7 +186,7 @@ class utility {
         } else {
             $cohortid = 0;
         }
-        return \report_elucidsitereport\courseanalytics_block::get_data($data->courseid, $cohortid);
+        return \local_sitereport\courseanalytics_block::get_data($data->courseid, $cohortid);
     }
 
     /** Generate Course Filter for course progress block
@@ -558,7 +558,7 @@ class utility {
         $response = new stdClass();
         $response->error = false;
         $response->data = array();
-        $response->data = self::get_schedule_emaillist();
+        $response->data = self::local_sitereport_get_schedule_emaillist();
         return $response;
     }
 
@@ -567,7 +567,7 @@ class utility {
      * Get Scheduled email list
      * @return [type] [description]
      */
-    public static function get_schedule_emaillist() {
+    public static function local_sitereport_get_schedule_emaillist() {
         global $DB;
 
         $emails = array();
@@ -586,7 +586,7 @@ class utility {
             // If everythings is ok then.
             foreach ($emaildata as $key => $emailinfo) {
                 $data = array();
-                $data["esrtoggle"] = create_toggle_switch_for_emails(
+                $data["esrtoggle"] = local_sitereport_create_toggle_switch_for_emails(
                     $key,
                     $emailinfo->esremailenable,
                     $val->blockname,
@@ -596,7 +596,7 @@ class utility {
                 $data["esrnextrun"] = date("d M y", $emailinfo->esrnextrun);
                 $data["esrfrequency"] = $emailinfo->esrfrequency;
                 $data["esrcomponent"] = $val->blockname;
-                $data["esrmanage"] = create_manage_icons_for_emaillist(
+                $data["esrmanage"] = local_sitereport_create_manage_icons_for_emaillist(
                     $key,
                     $val->blockname,
                     $val->component,
@@ -834,8 +834,8 @@ class utility {
                 $res->duration = format_time($lp['durationtime']);
 
                 // Set starttime and endtime not applicable.
-                $res->startdate = get_string('na', 'report_elucidsitereport');
-                $res->enddate = get_string('na', 'report_elucidsitereport');
+                $res->startdate = get_string('na', 'local_sitereport');
+                $res->enddate = get_string('na', 'local_sitereport');
             } else {
                 // Get learning programs startdate in redable format.
                 $res->startdate = date('d-M-Y', $lp['timestart']);
@@ -848,7 +848,7 @@ class utility {
                 }
 
                 // Set duration not applicable.
-                $res->duration = get_string('na', 'report_elucidsitereport');
+                $res->duration = get_string('na', 'local_sitereport');
             }
 
             $response[] = $res;
@@ -995,7 +995,7 @@ class utility {
         global $DB;
 
         if (in_array(0, $cohortids)) {
-            $cohorts = get_cohort_filter();
+            $cohorts = local_sitereport_get_cohort_filter();
             if (isset($cohorts->values) && !empty($cohorts->values)) {
                 $cohortids = array_column($cohorts->values, 'id');
             }
@@ -1144,9 +1144,9 @@ class utility {
 
         // Update preferences from blockdata.
         if ($blockdata) {
-            $preferences[BLOCK_DESKTOP_VIEW] = $blockdata[BLOCK_DESKTOP_VIEW];
-            $preferences[BLOCK_TABLET_VIEW] = $blockdata[BLOCK_TABLET_VIEW];
-            $preferences[BLOCK_MOBILE_VIEW] = $blockdata[BLOCK_MOBILE_VIEW];
+            $preferences[LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW] = $blockdata[LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW];
+            $preferences[LOCAL_SITEREPORT_BLOCK_TABLET_VIEW] = $blockdata[LOCAL_SITEREPORT_BLOCK_TABLET_VIEW];
+            $preferences[LOCAL_SITEREPORT_BLOCK_MOBILE_VIEW] = $blockdata[LOCAL_SITEREPORT_BLOCK_MOBILE_VIEW];
             $preferences['position'] = $blockdata['position'];
         }
 
@@ -1178,9 +1178,6 @@ class utility {
         $capabilitychoices = array();
         foreach ($context->get_capabilities() as $cap) {
             if (strpos($cap->name, 'report/sitereport_' . $block->classname) !== false) {
-                // $search = array('report/sitereport_', ':');
-                // $replace = array('', '');
-                // $keystr = str_replace($search, $replace, $cap->name);
                 $capabilitychoices[$cap->name] = $cap->name;
             }
         }
@@ -1204,7 +1201,7 @@ class utility {
 
         $permissionconst = array(
              'inherit' => CAP_INHERIT,
-             'allow' => CAP_ALLOW,
+             'allow' => CAP_LOCAL_SITEREPORT_ALLOW,
              'prevent' => CAP_PREVENT,
              'prohibit' => CAP_PROHIBIT
         );

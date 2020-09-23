@@ -16,20 +16,20 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     report_elucidsitereport
+ * @package     local_sitereport
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace report_elucidsitereport;
+namespace local_sitereport;
 
 defined('MOODLE_INTERNAL') || die;
 
 use stdClass;
 use cache;
 
-require_once($CFG->dirroot . "/report/elucidsitereport/classes/constants.php");
+require_once($CFG->dirroot . "/local/sitereport/classes/constants.php");
 /**
  * Class Inacive Users Block
  * To get the data related to inactive users block
@@ -44,8 +44,8 @@ class inactiveusersblock extends block_base {
 
         // Layout related data.
         $this->layout->id = 'inactiveusersblock';
-        $this->layout->name = get_string('inactiveusers', 'report_elucidsitereport');
-        $this->layout->info = get_string('inactiveusersblockhelp', 'report_elucidsitereport');
+        $this->layout->name = get_string('inactiveusers', 'local_sitereport');
+        $this->layout->info = get_string('inactiveusersblockhelp', 'local_sitereport');
         $this->layout->hasdownloadlink = true;
         $this->layout->filters = '';
 
@@ -55,8 +55,7 @@ class inactiveusersblock extends block_base {
 
         // Add block view in layout.
         $this->layout->blockview = $this->render_block('inactiveusersblock', $this->block);
-        
-        // Set block edit capabilities
+        // Set block edit capabilities.
         $this->set_block_edit_capabilities($this->layout->id);
 
         // Return blocks layout.
@@ -72,7 +71,7 @@ class inactiveusersblock extends block_base {
         $filter = isset($params->filter) ? $params->filter : false;
 
         // Make cache for inactive users block.
-        $cache = cache::make("report_elucidsitereport", "courseprogress");
+        $cache = cache::make("local_sitereport", "courseprogress");
 
         $cachekey = "inactiveusers-" . $filter;
 
@@ -105,13 +104,13 @@ class inactiveusersblock extends block_base {
         // Get last login time using filter.
         switch ($filter) {
             case '1month':
-                $lastlogin = $timenow - 1 * ONEMONTH;
+                $lastlogin = $timenow - 1 * LOCAL_SITEREPORT_ONEMONTH;
                 break;
             case '3month':
-                $lastlogin = $timenow - 3 * ONEMONTH;
+                $lastlogin = $timenow - 3 * LOCAL_SITEREPORT_ONEMONTH;
                 break;
             case '6month':
-                $lastlogin = $timenow - 6 * ONEMONTH;
+                $lastlogin = $timenow - 6 * LOCAL_SITEREPORT_ONEMONTH;
                 break;
             default:
                 $lastlogin = 0;
@@ -161,9 +160,9 @@ class inactiveusersblock extends block_base {
      */
     private static function get_headers() {
         return array(
-            get_string('fullname', 'report_elucidsitereport'),
-            get_string('email', 'report_elucidsitereport'),
-            get_string('lastaccess', 'report_elucidsitereport')
+            get_string('fullname', 'local_sitereport'),
+            get_string('email', 'local_sitereport'),
+            get_string('lastaccess', 'local_sitereport')
         );
     }
 

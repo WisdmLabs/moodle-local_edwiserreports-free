@@ -16,12 +16,12 @@
 /**
  * Reports abstract block will define here to which will extend for each repoers blocks
  *
- * @package     report_elucidsitereport
+ * @package     local_sitereport
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace report_elucidsitereport;
+namespace local_sitereport;
 
 use stdClass;
 use context_system;
@@ -75,7 +75,7 @@ class block_base {
 
         $base = new \plugin_renderer_base($PAGE, RENDERER_TARGET_GENERAL);
         // @codingStandardsIgnoreEnd
-        return $base->render_from_template('report_elucidsitereport/' . $templatename, $context);
+        return $base->render_from_template('local_sitereport/' . $templatename, $context);
     }
 
     /**
@@ -90,25 +90,25 @@ class block_base {
      */
     public function set_block_size($params) {
         $sizes = array();
-        $sizes[BLOCK_DESKTOP_VIEW] = $params[BLOCK_DESKTOP_VIEW];
-        $sizes[BLOCK_TABLET_VIEW] = $params[BLOCK_TABLET_VIEW];
-        $sizes[BLOCK_MOBILE_VIEW] = $params[BLOCK_MOBILE_VIEW];
+        $sizes[LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW] = $params[LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW];
+        $sizes[LOCAL_SITEREPORT_BLOCK_TABLET_VIEW] = $params[LOCAL_SITEREPORT_BLOCK_TABLET_VIEW];
+        $sizes[LOCAL_SITEREPORT_BLOCK_MOBILE_VIEW] = $params[LOCAL_SITEREPORT_BLOCK_MOBILE_VIEW];
 
         $devicecolclass = array(
-            BLOCK_DESKTOP_VIEW => 'col-lg-',
-            BLOCK_TABLET_VIEW => 'col-md-',
-            BLOCK_MOBILE_VIEW => 'col-sm-'
+            LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW => 'col-lg-',
+            LOCAL_SITEREPORT_BLOCK_TABLET_VIEW => 'col-md-',
+            LOCAL_SITEREPORT_BLOCK_MOBILE_VIEW => 'col-sm-'
         );
 
         foreach ($sizes as $media => $size) {
             switch($size) {
-                case BLOCK_LARGE:
+                case LOCAL_SITEREPORT_BLOCK_LARGE:
                     $this->layout->class .= $devicecolclass[$media] . '12 ';
                     break;
-                case BLOCK_MEDIUM:
+                case LOCAL_SITEREPORT_BLOCK_MEDIUM:
                     $this->layout->class .= $devicecolclass[$media] . '6 ';
                     break;
-                case BLOCK_SMALL:
+                case LOCAL_SITEREPORT_BLOCK_SMLOCAL_SITEREPORT_ALL:
                     $this->layout->class .= $devicecolclass[$media] . '4 ';
                     break;
                 default:
@@ -132,11 +132,11 @@ class block_base {
         $context = context_system::instance();
 
         // Based on capability show the edit button
-        // If user dont have capability to see the block
+        // If user dont have capability to see the block.
         $this->layout->canedit = has_capability('report/sitereport_' . $blockname . ':edit', $context);
         $this->layout->caneditadv = has_capability('report/sitereport_' . $blockname . ':editadvance', $context);
 
-        // If have capability to edit
+        // If have capability to edit.
         $this->layout->editopt = $this->layout->canedit || $this->layout->caneditadv;
     }
 }

@@ -16,13 +16,13 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     report_elucidsitereport
+ * @package     local_sitereport
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace report_elucidsitereport;
+namespace local_sitereport;
 
 use context_system;
 use moodle_url;
@@ -35,22 +35,14 @@ require_login();
 
 // System Context.
 $context = context_system::instance();
-$component = "report_elucidsitereport";
-
-// The requested section isn't in the admin tree
-// It could be because the user has inadequate capapbilities or because the section doesn't exist.
-if (!has_capability('report/report_elucidsitereport:view', $context)) {
-    // The requested section could depend on a different capability
-    // but most likely the user has inadequate capabilities.
-    print_error('accessdenied', 'admin');
-}
+$component = "local_sitereport";
 
 // Include JS for course report page.
-$PAGE->requires->js_call_amd('report_elucidsitereport/courseprogress', 'init', array($context->id));
-$PAGE->requires->js_call_amd('report_elucidsitereport/courseengage', 'init', array($context->id));
+$PAGE->requires->js_call_amd('local_sitereport/courseprogress', 'init', array($context->id));
+$PAGE->requires->js_call_amd('local_sitereport/courseengage', 'init', array($context->id));
 
 // Get page URL.
-$pageurl = new moodle_url($CFG->wwwroot . "/report/elucidsitereport/coursereport.php");
+$pageurl = new moodle_url($CFG->wwwroot . "/local/sitereport/coursereport.php");
 
 // Set page context.
 $PAGE->set_context($context);
@@ -59,10 +51,10 @@ $PAGE->set_context($context);
 $PAGE->set_url($pageurl);
 
 // Get renderable.
-$renderable = new \report_elucidsitereport\output\coursereport_renderable();
+$renderable = new \local_sitereport\output\coursereport_renderable();
 $output = $PAGE->get_renderer($component)->render($renderable);
 
-$PAGE->set_heading(get_string("coursereportsheader", "report_elucidsitereport"));
+$PAGE->set_heading(get_string("coursereportsheader", "local_sitereport"));
 
 // Print output in page.
 echo $OUTPUT->header();

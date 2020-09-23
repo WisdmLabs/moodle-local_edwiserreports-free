@@ -1,11 +1,11 @@
 define([
     'jquery',
     'core/str',
-    'report_elucidsitereport/defaultconfig',
-    'report_elucidsitereport/variables',
-    'report_elucidsitereport/flatpickr',
-    'report_elucidsitereport/jquery.dataTables',
-    'report_elucidsitereport/dataTables.bootstrap4'
+    'local_sitereport/defaultconfig',
+    'local_sitereport/variables',
+    'local_sitereport/flatpickr',
+    'local_sitereport/jquery.dataTables',
+    'local_sitereport/dataTables.bootstrap4'
 ], function ($, str, config, v) {
     /**
      * Selector datable variable
@@ -53,7 +53,7 @@ define([
      * Plugin component
      * @type {String}
      */
-    var component = 'report_elucidsitereport';
+    var component = 'local_sitereport';
 
     /**
      * Get translation to use strings

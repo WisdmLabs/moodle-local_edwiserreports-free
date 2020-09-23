@@ -5,8 +5,8 @@ define([
     'core/modal_factory',
     'core/modal_events',
     'core/str',
-    'report_elucidsitereport/variables',
-    'report_elucidsitereport/common'
+    'local_sitereport/variables',
+    'local_sitereport/common'
 ], function(
     $,
     Templates,
@@ -36,7 +36,7 @@ define([
          * Plugin Component
          * @type {String}
          */
-        var component = 'report_elucidsitereport';
+        var component = 'local_sitereport';
 
         /**
          * Get translation to use strings
@@ -108,9 +108,9 @@ define([
 
                         // Set Modal Body
                         modal.setBody(Templates.render(
-                            'report_elucidsitereport/lpdetailedreport', {
+                            'local_sitereport/lpdetailedreport', {
                                 sesskey : $(PageId).data('sesskey'),
-                                formaction : M.cfg.wwwroot + "/report/elucidsitereport/download.php" 
+                                formaction : M.cfg.wwwroot + "/local/sitereport/download.php" 
                             }
                         ));
 
@@ -134,7 +134,7 @@ define([
             }
 
             var fragment = Fragment.loadFragment(
-                'report_elucidsitereport',
+                'local_sitereport',
                 'lpstats',
                 CONTEXTID,
                 {
@@ -145,7 +145,7 @@ define([
 
             fragment.done(function(response) {
                 var context = JSON.parse(response);
-                Templates.render('report_elucidsitereport/lpstatsinfo', context)
+                Templates.render('local_sitereport/lpstatsinfo', context)
                 .then(function(html, js) {
                     Templates.replaceNode(LpTable, html, js);
                 }).fail(function(ex) {

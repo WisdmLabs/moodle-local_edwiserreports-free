@@ -16,12 +16,12 @@
 /**
  * Reports abstract block will define here to which will extend for each repoers blocks
  *
- * @package     report_elucidsitereport
+ * @package     local_sitereport
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace report_elucidsitereport;
+namespace local_sitereport;
 
 defined('MOODLE_INTERNAL') or die;
 use stdClass;
@@ -29,7 +29,7 @@ use moodle_url;
 use cache;
 use html_writer;
 
-require_once($CFG->dirroot . '/report/elucidsitereport/classes/block_base.php');
+require_once($CFG->dirroot . '/local/sitereport/classes/block_base.php');
 
 class activeusersblock extends block_base {
     // Get the first site access data.
@@ -55,9 +55,9 @@ class activeusersblock extends block_base {
 
         // Layout related data.
         $this->layout->id = 'activeusersblock';
-        $this->layout->name = get_string('activeusersheader', 'report_elucidsitereport');
-        $this->layout->info = get_string('activeusersblocktitlehelp', 'report_elucidsitereport');
-        $this->layout->morelink = new moodle_url($CFG->wwwroot . "/report/elucidsitereport/activeusers.php");
+        $this->layout->name = get_string('activeusersheader', 'local_sitereport');
+        $this->layout->info = get_string('activeusersblocktitlehelp', 'local_sitereport');
+        $this->layout->morelink = new moodle_url($CFG->wwwroot . "/local/sitereport/activeusers.php");
         $this->layout->hasdownloadlink = true;
         $this->layout->filters = $this->get_activeusers_filter();
 
@@ -72,7 +72,7 @@ class activeusersblock extends block_base {
         // Add block view in layout.
         $this->layout->blockview = $this->render_block('activeusersblock', $this->block);
 
-        // Set block edit capabilities
+        // Set block edit capabilities.
         $this->set_block_edit_capabilities($this->layout->id);
 
         // Return blocks layout.
@@ -88,18 +88,18 @@ class activeusersblock extends block_base {
             'id' => 'update-time',
             'class' => 'font-size-12'
         ));
-        $lastupdatetext .= get_string('lastupdate', 'report_elucidsitereport');
+        $lastupdatetext .= get_string('lastupdate', 'local_sitereport');
         $lastupdatetext .= html_writer::tag('i', '', array(
             'class' => 'refresh fa fa-refresh px-1',
             'data-toggle' => 'tooltip',
-            'title' => get_string('refresh', 'report_elucidsitereport')
+            'title' => get_string('refresh', 'local_sitereport')
         ));
         $lastupdatetext .= html_writer::end_tag('small');
 
         // Prepare filter HTML for active users block.
         $filterhtml = html_writer::start_tag('form', array("action" => "javascript:void(0)"));
         $filterhtml .= html_writer::start_tag('div', array('class' => 'd-flex mt-1'));
-        $filterhtml .= html_writer::tag('button', get_string('lastweek', 'report_elucidsitereport'), array(
+        $filterhtml .= html_writer::tag('button', get_string('lastweek', 'local_sitereport'), array(
             'type' => 'button',
             'class' => 'btn btn-sm dropdown-toggle',
             'data-toggle' => 'dropdown',
@@ -121,22 +121,22 @@ class activeusersblock extends block_base {
         $datefilter = html_writer::empty_tag('input', array(
             'class' => 'dropdown-item border-0 custom p-0',
             'id' => 'flatpickrCalender',
-            'placeholder' => get_string('custom', 'report_elucidsitereport'),
+            'placeholder' => get_string('custom', 'local_sitereport'),
             'data-input'
         ));
         $filteropt = array(
             'weekly' => array(
-                'name' => get_string('lastweek', 'report_elucidsitereport'),
+                'name' => get_string('lastweek', 'local_sitereport'),
                 'value' => 'weekly',
                 'classes' => ''
             ),
             'monthly' => array(
-                'name' => get_string('lastmonth', 'report_elucidsitereport'),
+                'name' => get_string('lastmonth', 'local_sitereport'),
                 'value' => 'monthly',
                 'classes' => ''
             ),
             'yearly' => array(
-                'name' => get_string('lastyear', 'report_elucidsitereport'),
+                'name' => get_string('lastyear', 'local_sitereport'),
                 'value' => 'yearly',
                 'classes' => ''
             ),
@@ -183,7 +183,7 @@ class activeusersblock extends block_base {
         // Set current time.
         $this->timenow = time();
         // Set cache for active users block.
-        $this->cache = cache::make('report_elucidsitereport', 'activeusers');
+        $this->cache = cache::make('local_sitereport', 'activeusers');
         // Get logs from cache.
         if (!$record = $this->cache->get("activeusers-first-log")) {
             $sql = "SELECT id, userid, timecreated
@@ -200,22 +200,22 @@ class activeusersblock extends block_base {
             // Getting first access of the site.
             $this->firstaccess = $record->timecreated;
             switch ($filter) {
-                case ALL:
+                case LOCAL_SITEREPORT_ALL:
                     // Calculate the days for all active users data.
-                    $days = ceil(($this->timenow - $this->firstaccess) / ONEDAY);
+                    $days = ceil(($this->timenow - $this->firstaccess) / LOCAL_SITEREPORT_ONEDAY);
                     $this->xlabelcount = $days;
                     break;
-                case MONTHLY:
+                case LOCAL_SITEREPORT_MONTHLY:
                     // Monthly days.
-                    $this->xlabelcount = MONTHLY_DAYS;
+                    $this->xlabelcount = LOCAL_SITEREPORT_MONTHLY_DAYS;
                     break;
-                case YEARLY:
+                case LOCAL_SITEREPORT_YEARLY:
                     // Yearly days.
-                    $this->xlabelcount = YEARLY_DAYS;
+                    $this->xlabelcount = LOCAL_SITEREPORT_YEARLY_DAYS;
                     break;
-                case WEEKLY:
+                case LOCAL_SITEREPORT_WEEKLY:
                     // Weekly days.
-                    $this->xlabelcount = WEEKLY_DAYS;
+                    $this->xlabelcount = LOCAL_SITEREPORT_WEEKLY_DAYS;
                     break;
                 default:
                     // Explode dates from custom date filter.
@@ -227,11 +227,11 @@ class activeusersblock extends block_base {
 
                     // If it has correct startdat and end date then count xlabel.
                     if (isset($startdate) && isset($enddate)) {
-                        $days = ceil($enddate - $startdate) / ONEDAY;
+                        $days = ceil($enddate - $startdate) / LOCAL_SITEREPORT_ONEDAY;
                         $this->xlabelcount = $days;
                         $this->timenow = $enddate;
                     } else {
-                        $this->xlabelcount = WEEKLY_DAYS; // Default one week.
+                        $this->xlabelcount = LOCAL_SITEREPORT_WEEKLY_DAYS; // Default one week.
                     }
             }
         } else {
@@ -245,7 +245,7 @@ class activeusersblock extends block_base {
         } else {
             // Get all lables.
             for ($i = 0; $i < $this->xlabelcount; $i++) {
-                $time = $this->timenow - $i * ONEDAY;
+                $time = $this->timenow - $i * LOCAL_SITEREPORT_ONEDAY;
                 $this->labels[] = date("d M y", $time);
             }
 
@@ -304,10 +304,10 @@ class activeusersblock extends block_base {
      */
     public static function get_header() {
         $header = array(
-            get_string("date", "report_elucidsitereport"),
-            get_string("noofactiveusers", "report_elucidsitereport"),
-            get_string("noofenrolledusers", "report_elucidsitereport"),
-            get_string("noofcompletedusers", "report_elucidsitereport"),
+            get_string("date", "local_sitereport"),
+            get_string("noofactiveusers", "local_sitereport"),
+            get_string("noofenrolledusers", "local_sitereport"),
+            get_string("noofcompletedusers", "local_sitereport"),
         );
 
         return $header;
@@ -319,11 +319,11 @@ class activeusersblock extends block_base {
      */
     public static function get_header_report() {
         $header = array(
-            get_string("date", "report_elucidsitereport"),
-            get_string("fullname", "report_elucidsitereport"),
-            get_string("email", "report_elucidsitereport"),
-            get_string("coursename", "report_elucidsitereport"),
-            get_string("status", "report_elucidsitereport"),
+            get_string("date", "local_sitereport"),
+            get_string("fullname", "local_sitereport"),
+            get_string("email", "local_sitereport"),
+            get_string("coursename", "local_sitereport"),
+            get_string("status", "local_sitereport"),
         );
 
         return $header;
@@ -338,25 +338,29 @@ class activeusersblock extends block_base {
         switch($action) {
             case 'completions':
                 // Return table header.
-                return array(
-                    get_string("fullname", "report_elucidsitereport"),
-                    get_string("email", "report_elucidsitereport"),
-                    get_string("coursename", "report_elucidsitereport")
+                $str = array(
+                    get_string("fullname", "local_sitereport"),
+                    get_string("email", "local_sitereport"),
+                    get_string("coursename", "local_sitereport")
                 );
+                break;
             case 'enrolments':
                 // Return table header.
-                return array(
-                    get_string("fullname", "report_elucidsitereport"),
-                    get_string("email", "report_elucidsitereport"),
-                    get_string("coursename", "report_elucidsitereport")
+                $str = array(
+                    get_string("fullname", "local_sitereport"),
+                    get_string("email", "local_sitereport"),
+                    get_string("coursename", "local_sitereport")
                 );
+                break;
             default:
                 // Return table header.
-                return array(
-                    get_string("fullname", "report_elucidsitereport"),
-                    get_string("email", "report_elucidsitereport")
+                $str = array(
+                    get_string("fullname", "local_sitereport"),
+                    get_string("email", "local_sitereport")
                 );
         }
+
+        return $str;
     }
 
     /**
@@ -368,7 +372,7 @@ class activeusersblock extends block_base {
      */
     public static function get_userslist_table($filter, $action, $cohortid) {
         // Make cache.
-        $cache = cache::make('report_elucidsitereport', 'activeusers');
+        $cache = cache::make('local_sitereport', 'activeusers');
         // Get values from cache if it is set.
         $cachekey = "userslist-" . $filter . "-" . $action . "-" . "-" . $cohortid;
         if (!$table = $cache->get($cachekey)) {
@@ -448,7 +452,7 @@ class activeusersblock extends block_base {
         }
 
         $params["starttime"] = $filter;
-        $params["endtime"] = $filter + ONEDAY;
+        $params["endtime"] = $filter + LOCAL_SITEREPORT_ONEDAY;
         $data = array();
         $records = $DB->get_records_sql($sql, $params);
         if (!empty($records)) {
@@ -477,7 +481,7 @@ class activeusersblock extends block_base {
     public function get_active_users($filter, $cohortid) {
         global $DB;
 
-        $starttime = $this->timenow - ($this->xlabelcount * ONEDAY);
+        $starttime = $this->timenow - ($this->xlabelcount * LOCAL_SITEREPORT_ONEDAY);
         $params = array(
             "starttime" => $starttime,
             "endtime" => $this->timenow,
@@ -518,7 +522,7 @@ class activeusersblock extends block_base {
 
             // Get active users for every day.
             for ($i = 0; $i < $this->xlabelcount; $i++) {
-                $time = $this->timenow - $i * ONEDAY;
+                $time = $this->timenow - $i * LOCAL_SITEREPORT_ONEDAY;
                 $logkey = date("j-n-Y", $time);
                 if (isset($logs[$logkey])) {
                     $activeusers[] = $logs[$logkey]->usercount;
@@ -545,7 +549,7 @@ class activeusersblock extends block_base {
     public function get_enrolments($filter, $cohortid) {
         global $DB;
 
-        $starttime = $this->timenow - ($this->xlabelcount * ONEDAY);
+        $starttime = $this->timenow - ($this->xlabelcount * LOCAL_SITEREPORT_ONEDAY);
         $params = array(
             "starttime" => $starttime,
             "endtime" => $this->timenow,
@@ -587,7 +591,7 @@ class activeusersblock extends block_base {
 
             // Get enrolments from every day.
             for ($i = 0; $i < $this->xlabelcount; $i++) {
-                $time = $this->timenow - $i * ONEDAY;
+                $time = $this->timenow - $i * LOCAL_SITEREPORT_ONEDAY;
                 $logkey = date("j-n-Y", $time);
 
                 if (isset($logs[$logkey])) {
@@ -645,7 +649,7 @@ class activeusersblock extends block_base {
             $completions = $DB->get_records_sql($sql, $params);
             // Get completion for each day.
             for ($i = 0; $i < $this->xlabelcount; $i++) {
-                $time = $this->timenow - $i * ONEDAY;
+                $time = $this->timenow - $i * LOCAL_SITEREPORT_ONEDAY;
                 $logkey = date("j-n-Y", $time);
 
                 if (isset($completions[$logkey])) {
@@ -673,7 +677,7 @@ class activeusersblock extends block_base {
     public function get_exportable_data_block($filter) {
         $cohortid = optional_param("cohortid", 0, PARAM_INT);
         // Make cache.
-        $cache = cache::make('report_elucidsitereport', 'activeusers');
+        $cache = cache::make('local_sitereport', 'activeusers');
         $cachekey = "exportabledatablock-" . $filter;
         // If exportable data is set in cache then get it from there.
         if (!$export = $cache->get($cachekey)) {
@@ -706,7 +710,7 @@ class activeusersblock extends block_base {
      */
     public static function get_exportable_data_report($filter) {
         // Make cache.
-        $cache = cache::make('report_elucidsitereport', 'activeusers');
+        $cache = cache::make('local_sitereport', 'activeusers');
 
         if (!$export = $cache->get("exportabledatareport")) {
             $export = array();
@@ -748,7 +752,7 @@ class activeusersblock extends block_base {
                 $user = array_merge($user, array(''));
             }
 
-            $user = array_merge($user, array(get_string($action . "_status", "report_elucidsitereport")));
+            $user = array_merge($user, array(get_string($action . "_status", "local_sitereport")));
             $usersdata[] = $user;
         }
 

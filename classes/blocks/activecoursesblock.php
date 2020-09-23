@@ -16,13 +16,13 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     report_elucidsitereport
+ * @package     local_sitereport
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace report_elucidsitereport;
+namespace local_sitereport;
 
 use stdClass;
 use context_course;
@@ -42,8 +42,8 @@ class activecoursesblock extends block_base {
 
         // Layout related data.
         $this->layout->id = 'activecoursesblock';
-        $this->layout->name = get_string('activecoursesheader', 'report_elucidsitereport');
-        $this->layout->info = get_string('activecoursesblockhelp', 'report_elucidsitereport');
+        $this->layout->name = get_string('activecoursesheader', 'local_sitereport');
+        $this->layout->info = get_string('activecoursesblockhelp', 'local_sitereport');
 
         // Block related data.
         $this->block = new stdClass();
@@ -51,8 +51,7 @@ class activecoursesblock extends block_base {
 
         // Add block view in layout.
         $this->layout->blockview = $this->render_block('activecoursesblock', $this->block);
-
-        // Set block edit capabilities
+        // Set block edit capabilities.
         $this->set_block_edit_capabilities($this->layout->id);
 
         // Return blocks layout.
@@ -69,7 +68,7 @@ class activecoursesblock extends block_base {
 
         $response = new stdClass();
 
-        $cache = cache::make('report_elucidsitereport', 'activecourses');
+        $cache = cache::make('local_sitereport', 'activecourses');
         if (!$data = $cache->get('activecoursesdata')) {
             $data = self::get_course_data();
             $cache->set('activecoursesdata', $data);
@@ -85,11 +84,11 @@ class activecoursesblock extends block_base {
      */
     public static function get_header() {
         $header = array(
-            get_string("rank", "report_elucidsitereport"),
-            get_string("coursename", "report_elucidsitereport"),
-            get_string("enrolments", "report_elucidsitereport"),
-            get_string("visits", "report_elucidsitereport"),
-            get_string("completions", "report_elucidsitereport"),
+            get_string("rank", "local_sitereport"),
+            get_string("coursename", "local_sitereport"),
+            get_string("enrolments", "local_sitereport"),
+            get_string("visits", "local_sitereport"),
+            get_string("completions", "local_sitereport"),
         );
 
         return $header;

@@ -16,18 +16,18 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     report_elucidsitereport
+ * @package     local_sitereport
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace report_elucidsitereport;
+namespace local_sitereport;
 
 use context_course;
 use moodle_url;
 use context_system;
-use \report_elucidsitereport\output\courseaccess;
+use \local_sitereport\output\courseaccess;
 
 require_once(__DIR__ . '/../../config.php');
 require_once('classes/output/renderable.php');
@@ -35,13 +35,6 @@ require_once('classes/output/renderable.php');
 require_login();
 
 $context = context_system::instance();
-// The requested section isn't in the admin tree
-// It could be because the user has inadequate capapbilities or because the section doesn't exist.
-if (!has_capability('report/report_elucidsitereport:view', $context)) {
-    // The requested section could depend on a different capability
-    // but most likely the user has inadequate capabilities.
-    print_error('accessdenied', 'admin');
-}
 
 $courseid = required_param("courseid", PARAM_INT);
 $coursecontext = context_course::instance($courseid);
@@ -49,20 +42,19 @@ $params = array(
     "courseid" => $courseid
 );
 
-$pageurl = new moodle_url($CFG->wwwroot . "/report/elucidsitereport/courseaccess.php", $params);
+$pageurl = new moodle_url($CFG->wwwroot . "/local/sitereport/courseaccess.php", $params);
 
 $PAGE->set_context($coursecontext);
 $PAGE->set_url($pageurl);
-$PAGE->requires->js_call_amd('report_elucidsitereport/courseaccess', 'init', array($coursecontext->id));
+$PAGE->requires->js_call_amd('local_sitereport/courseaccess', 'init', array($coursecontext->id));
 
-$courseaccess = new report_elucidsitereport\output\courseaccess();
-$courseaccessrenderable = new \report_elucidsitereport\output\courseaccess_renderable();
+$courseaccess = new local_sitereport\output\courseaccess();
+$courseaccessrenderable = new \local_sitereport\output\courseaccess_renderable();
 $output = $courseaccess->get_renderer()->render($courseaccessrenderable);
 
 $course = get_course($courseid);
-$PAGE->set_heading($course->fullname . ": " . get_string("courseaccessheader", "report_elucidsitereport"));
+$PAGE->set_heading($course->fullname . ": " . get_string("courseaccessheader", "local_sitereport"));
 
 echo $OUTPUT->header();
-echo $OUTPUT->heading(get_string("courseaccessheader", "report_elucidsitereport"));
 echo $output;
 echo $OUTPUT->footer();

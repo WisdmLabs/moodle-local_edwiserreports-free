@@ -6,13 +6,13 @@ define([
     'core/modal_events', 
     'core/templates',
     'core/str',
-    'report_elucidsitereport/variables',
-    'report_elucidsitereport/selectors',
-    'report_elucidsitereport/templateselector',
-    'report_elucidsitereport/jspdf',
-    'report_elucidsitereport/select2',
-    'report_elucidsitereport/jquery.dataTables',
-    'report_elucidsitereport/dataTables.bootstrap4'
+    'local_sitereport/variables',
+    'local_sitereport/selectors',
+    'local_sitereport/templateselector',
+    'local_sitereport/jspdf',
+    'local_sitereport/select2',
+    'local_sitereport/jquery.dataTables',
+    'local_sitereport/dataTables.bootstrap4'
     ], function(
         $,
         notif,
@@ -207,7 +207,7 @@ define([
                 type: ModalFactory.types.SAVE_CANCEL,
                 title: v.getEmailModalHeader($(_this).data("blockname"), 0),
                 body: fragment.loadFragment(
-                    'report_elucidsitereport',
+                    'local_sitereport',
                     'email_dialog',
                     $(_this).data("contextid"),
                     {
@@ -238,7 +238,7 @@ define([
 
             ModalFactory.create({
                 title: v.getEmailModalHeader($(_this).data("blockname"), 1),
-                body: Templates.render('report_elucidsitereport/email_schedule_tabs', context)
+                body: Templates.render('local_sitereport/email_schedule_tabs', context)
             }, $(this))
             .done(function(modal) {
                 var root = modal.getRoot();
@@ -281,7 +281,7 @@ define([
                     title: 'Edit Block Setting',
                     // body: Templates.render(tempSelector.blockEditSettings, {})
                     body: fragment.loadFragment(
-                        'report_elucidsitereport',
+                        'local_sitereport',
                         'get_blocksetting_form',
                         contextid,
                         {
@@ -320,7 +320,7 @@ define([
                 ModalFactory.create({
                     title: 'Edit Block Capabilities',
                     body: fragment.loadFragment(
-                        'report_elucidsitereport',
+                        'local_sitereport',
                         'get_blockscap_form',
                         contextid,
                         {
@@ -342,7 +342,7 @@ define([
                             });
 
                             fragment.loadFragment(
-                                'report_elucidsitereport',
+                                'local_sitereport',
                                 'block_overview_display',
                                 contextid,
                                 {
@@ -594,7 +594,7 @@ define([
 
                 // Send ajax to save the scheduled email
                 $.ajax({
-                    url: M.cfg.wwwroot + "/report/elucidsitereport/download.php?format=emailscheduled&filter=" + filter + "&cohortid=" + cohortid,
+                    url: M.cfg.wwwroot + "/local/sitereport/download.php?format=emailscheduled&filter=" + filter + "&cohortid=" + cohortid,
                     type: "POST",
                     data: root.find("form").serialize()
                 }).done(function(response) {
@@ -877,11 +877,11 @@ define([
             str.get_strings([
                 {
                     key:        'confirmemailremovaltitle',
-                    component:  'report_elucidsitereport'
+                    component:  'local_sitereport'
                 },
                 {
                     key:        'confirmemailremovalquestion',
-                    component:  'report_elucidsitereport'
+                    component:  'local_sitereport'
                 },
                 {
                     key:        'yes',
@@ -957,7 +957,7 @@ define([
      * @param  {int} CONTEXTID Context Id
      */
     function emailDialogBox(url, CONTEXTID) {
-        fragment.loadFragment('report_elucidsitereport', 'email_dialog', CONTEXTID)
+        fragment.loadFragment('local_sitereport', 'email_dialog', CONTEXTID)
         .done(function(html, js) {
             ModalFactory.create({            
                 type: ModalFactory.types.SAVE_CANCEL,

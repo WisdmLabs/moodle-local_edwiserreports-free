@@ -1,4 +1,4 @@
-define(["jquery", "report_elucidsitereport/defaultconfig", "report_elucidsitereport/jquery.dataTables", "report_elucidsitereport/dataTables.bootstrap4"], function($, cfg) {
+define(["jquery", "local_sitereport/defaultconfig", "local_sitereport/jquery.dataTables", "local_sitereport/dataTables.bootstrap4"], function($, cfg) {
     var liveUsersTable = null;
     var panel = cfg.getPanel("#liveusersblock");
     var panelBody = cfg.getPanel("#liveusersblock", "body");

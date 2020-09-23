@@ -1,4 +1,4 @@
-define(['jquery', 'core/chartjs', 'report_elucidsitereport/defaultconfig'], function ($, Chart, cfg) {
+define(['jquery', 'core/chartjs', 'local_sitereport/defaultconfig'], function ($, Chart, cfg) {
     function init(notifyListner) {
         // Global data got todays activity block
         var todaysVisits;

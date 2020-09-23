@@ -1,5 +1,5 @@
 {{#userfilters}}
-    {{> report_elucidsitereport/userfilters }}
+    {{> local_sitereport/userfilters }}
 {{/userfilters}}
 
 <div id="wdm-lpstats-individual" class="table-responsive" data-sesskey="{{sesskey}}">
@@ -12,13 +12,13 @@
         </select>
     </div>
     <div class="loader w-full text-center py-100 my-50">
-        {{# pix }} loader, report_elucidsitereport{{/ pix }}
+        {{# pix }} loader, local_sitereport{{/ pix }}
     </div>
     <table class="table w-full" style="display: none;"></table>
     {{/haslps}}
     {{^haslps}}
         <div class="alert alert-danger w-full" role="alert">
-            {{#str}} nolearningprograms, report_elucidsitereport {{/str}}
+            {{#str}} nolearningprograms, local_sitereport {{/str}}
         </div>
     {{/haslps}}
 </div>

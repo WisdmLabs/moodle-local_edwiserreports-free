@@ -16,13 +16,13 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     report_elucidsitereport
+ * @package     local_sitereport
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace report_elucidsitereport;
+namespace local_sitereport;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -49,9 +49,9 @@ class certificatesblock extends block_base {
 
         // Layout related data.
         $this->layout->id = 'certificatesblock';
-        $this->layout->name = get_string('certificatestatsheader', 'report_elucidsitereport');
-        $this->layout->info = get_string('certificatestatsblockhelp', 'report_elucidsitereport');
-        $this->layout->morelink = new moodle_url($CFG->wwwroot . "/report/elucidsitereport/certificates.php");
+        $this->layout->name = get_string('certificatestatsheader', 'local_sitereport');
+        $this->layout->info = get_string('certificatestatsblockhelp', 'local_sitereport');
+        $this->layout->morelink = new moodle_url($CFG->wwwroot . "/local/sitereport/certificates.php");
         $this->layout->hasdownloadlink = true;
         $this->layout->filters = '';
 
@@ -61,8 +61,8 @@ class certificatesblock extends block_base {
 
         // Add block view in layout.
         $this->layout->blockview = $this->render_block('certificatestatsblock', $this->block);
-        
-        // Set block edit capabilities
+
+        // Set block edit capabilities.
         $this->set_block_edit_capabilities($this->layout->id);
 
         // Return blocks layout.
@@ -77,7 +77,7 @@ class certificatesblock extends block_base {
         $response = new stdClass();
         $response->data = new stdClass();
         // Get response from cache.
-        $cache = cache::make('report_elucidsitereport', 'certificates');
+        $cache = cache::make('local_sitereport', 'certificates');
         if (!$response = $cache->get('response')) {
             $response = new stdClass();
             $response->data = new stdClass();
@@ -114,7 +114,7 @@ class certificatesblock extends block_base {
 
             $modulecontext = context_module::instance($cm->id);
             // Get only enrolled students.
-            $enrolledusers = \report_elucidsitereport\utility::get_enrolled_students($cm->id, $modulecontext);
+            $enrolledusers = \local_sitereport\utility::get_enrolled_students($cm->id, $modulecontext);
 
             $sql = "SELECT * FROM {customcert_issues}
                 WHERE customcertid = :customcertid";
@@ -160,7 +160,7 @@ class certificatesblock extends block_base {
     public static function get_issued_users($certid, $cohortid = false) {
         global $DB;
 
-        $cache = cache::make('report_elucidsitereport', 'certificates');
+        $cache = cache::make('local_sitereport', 'certificates');
         $cachekey = "certificates-userslist-" . $certid . "-";
         if ($cohortid) {
             $cachekey .= $cohortid;
@@ -215,17 +215,17 @@ class certificatesblock extends block_base {
 
         $params = array('courseid' => $course->id, 'userid' => $issue->userid);
         $gradeval = 0;
-        $grade = \report_elucidsitereport\utility::get_grades($course->id, $issue->userid);
+        $grade = \local_sitereport\utility::get_grades($course->id, $issue->userid);
         if ($grade) {
             $gradeval = $grade->finalgrade;
         }
 
         $enrolment = $DB->get_record_sql($enrolsql, $params);
-        $enrolmentdate = get_string("notenrolled", "report_elucidsitereport");
+        $enrolmentdate = get_string("notenrolled", "local_sitereport");
         $progressper = 0;
         if ($enrolment) {
             $enrolmentdate = date("d M y", $enrolment->timemodified);
-            $completion = \report_elucidsitereport\utility::get_course_completion_info($course, $user->id);
+            $completion = \local_sitereport\utility::get_course_completion_info($course, $user->id);
 
             if (isset($completion["progresspercentage"])) {
                 $progressper = $completion["progresspercentage"];
@@ -269,10 +269,10 @@ class certificatesblock extends block_base {
      */
     public static function get_headers() {
         $headers = array(
-            get_string("name", "report_elucidsitereport"),
-            get_string("coursename", "report_elucidsitereport"),
-            get_string("issued", "report_elucidsitereport"),
-            get_string("notissued", "report_elucidsitereport")
+            get_string("name", "local_sitereport"),
+            get_string("coursename", "local_sitereport"),
+            get_string("issued", "local_sitereport"),
+            get_string("notissued", "local_sitereport")
         );
         return $headers;
     }
@@ -283,12 +283,12 @@ class certificatesblock extends block_base {
      */
     public static function get_headers_report() {
         $headers = array(
-            get_string("username", "report_elucidsitereport"),
-            get_string("useremail", "report_elucidsitereport"),
-            get_string("dateofissue", "report_elucidsitereport"),
-            get_string("dateofenrol", "report_elucidsitereport"),
-            get_string("grade", "report_elucidsitereport"),
-            get_string("courseprogress", "report_elucidsitereport")
+            get_string("username", "local_sitereport"),
+            get_string("useremail", "local_sitereport"),
+            get_string("dateofissue", "local_sitereport"),
+            get_string("dateofenrol", "local_sitereport"),
+            get_string("grade", "local_sitereport"),
+            get_string("courseprogress", "local_sitereport")
         );
         return $headers;
     }

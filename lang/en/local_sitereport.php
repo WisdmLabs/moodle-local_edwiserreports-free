@@ -16,7 +16,7 @@
 /**
  * Plugin strings are defined here.
  *
- * @package     report_elucidsitereport
+ * @package     local_sitereport
  * @category    string
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later

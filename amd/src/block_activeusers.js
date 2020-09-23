@@ -1,9 +1,9 @@
 define([
     'jquery',
     'core/chartjs',
-    'report_elucidsitereport/defaultconfig',
-    'report_elucidsitereport/variables',
-    'report_elucidsitereport/flatpickr'
+    'local_sitereport/defaultconfig',
+    'local_sitereport/variables',
+    'local_sitereport/flatpickr'
 ], function ($, Chart, defaultConfig, V) {
     /* Varible for active users block */
     var cfg               = null;

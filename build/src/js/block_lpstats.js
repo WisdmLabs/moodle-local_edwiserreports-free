@@ -1,9 +1,9 @@
 define([
     'jquery',
     'core/chartjs',
-    'report_elucidsitereport/defaultconfig',
-    'report_elucidsitereport/variables',
-    'report_elucidsitereport/select2'
+    'local_sitereport/defaultconfig',
+    'local_sitereport/variables',
+    'local_sitereport/select2'
 ], function ($, Chart, cfg, V) {
     function init(notifyListner) {
         var lpChart = null;

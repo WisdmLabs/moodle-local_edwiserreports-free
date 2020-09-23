@@ -16,13 +16,13 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     report_elucidsitereport
+ * @package     local_sitereport
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace report_elucidsitereport;
+namespace local_sitereport;
 use stdClass;
 use context_course;
 
@@ -73,7 +73,7 @@ class courseaccess_block extends utility {
             } else {
                 $activitycompletion = get_string(
                     'activitycompleted',
-                    'report_elucidsitereport',
+                    'local_sitereport',
                     array(
                         "completed" => $completion["completedactivities"],
                         "total" => $completion["totalactivities"]

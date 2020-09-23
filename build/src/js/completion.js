@@ -1,7 +1,7 @@
 define([
     'jquery',
-    'report_elucidsitereport/variables',
-    'report_elucidsitereport/common'
+    'local_sitereport/variables',
+    'local_sitereport/common'
 ], function($, V) {
     function init(CONTEXTID) {
         var PageId = $("#wdm-completion-individual");

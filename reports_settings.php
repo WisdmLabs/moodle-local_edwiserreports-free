@@ -33,8 +33,8 @@ require_login();
 $context = context_system::instance();
 $PAGE->set_pagelayout('admin');
 $PAGE->set_context($context);
-$PAGE->set_url('/report/elucidsitereport/reports_settings.php');
-$PAGE->set_title(get_string('pluginname', 'report_elucidsitereport'));
+$PAGE->set_url('/local/sitereport/reports_settings.php');
+$PAGE->set_title(get_string('pluginname', 'local_sitereport'));
 
 class report_blocks_form extends moodleform {
 
@@ -42,27 +42,27 @@ class report_blocks_form extends moodleform {
 
         $mform = $this->_form;
 
-        $mform->addElement('header', 'addfunction', get_string('rpmblocks', 'report_elucidsitereport'));
+        $mform->addElement('header', 'addfunction', get_string('rpmblocks', 'local_sitereport'));
         $blocks = array(
-            'activeusers' => get_string('activeusersheader', 'report_elucidsitereport'),
-            'courseprogress' => get_string('courseprogress', 'report_elucidsitereport'),
-            'activecourses' => get_string('activecoursesheader', 'report_elucidsitereport'),
-            'certificatestats' => get_string('certificatestats', 'report_elucidsitereport'),
-            'realtimeusers' => get_string('realtimeusers', 'report_elucidsitereport'),
-            'f2fsessions' => get_string('f2fsessionsheader', 'report_elucidsitereport'),
-            'accessinfo' => get_string('accessinfo', 'report_elucidsitereport'),
-            'lpstats' => get_string('lpstatsheader', 'report_elucidsitereport'),
-            'todaysactivity' => get_string('todaysactivityheader', 'report_elucidsitereport'),
-            'inactiveusers' => get_string('inactiveusers', 'report_elucidsitereport'),
+            'activeusers' => get_string('activeusersheader', 'local_sitereport'),
+            'courseprogress' => get_string('courseprogress', 'local_sitereport'),
+            'activecourses' => get_string('activecoursesheader', 'local_sitereport'),
+            'certificatestats' => get_string('certificatestats', 'local_sitereport'),
+            'realtimeusers' => get_string('realtimeusers', 'local_sitereport'),
+            'f2fsessions' => get_string('f2fsessionsheader', 'local_sitereport'),
+            'accessinfo' => get_string('accessinfo', 'local_sitereport'),
+            'lpstats' => get_string('lpstatsheader', 'local_sitereport'),
+            'todaysactivity' => get_string('todaysactivityheader', 'local_sitereport'),
+            'inactiveusers' => get_string('inactiveusers', 'local_sitereport'),
         );
         // Get previously added blocks.
         $options = array(
-           'noselectionstring' => get_string('notselected', 'report_elucidsitereport'),
+           'noselectionstring' => get_string('notselected', 'local_sitereport'),
            'multiple' => true,
         );
-        $mform->addElement('autocomplete', 'rpmblocks', get_string('selectblocks', 'report_elucidsitereport'), $blocks, $options);
+        $mform->addElement('autocomplete', 'rpmblocks', get_string('selectblocks', 'local_sitereport'), $blocks, $options);
         // Set previously added blocks as default.
-        $this->add_action_buttons(true, get_string('addblocks', 'report_elucidsitereport'));
+        $this->add_action_buttons(true, get_string('addblocks', 'local_sitereport'));
     }
 }
 
@@ -71,7 +71,7 @@ $mform = new report_blocks_form();
 // Form processing and displaying is done here.
 if ($mform->is_cancelled()) {
     // Handle form cancel operation, if cancel button is present on form.
-    redirect(new moodle_url('/report/elucidsitereport/reports_settings.php'));
+    redirect(new moodle_url('/local/sitereport/reports_settings.php'));
 } else if ($formdata = $mform->get_data()) {
     // In this case you process validated data. $mform->get_data() returns data posted in form.
     save_settings_form_data($formdata);

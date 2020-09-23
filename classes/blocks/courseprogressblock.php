@@ -16,12 +16,12 @@
 /**
  * Reports abstract block will define here to which will extend for each repoers blocks
  *
- * @package     report_elucidsitereport
+ * @package     local_sitereport
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace report_elucidsitereport;
+namespace local_sitereport;
 
 defined('MOODLE_INTERNAL') || die;
 
@@ -30,7 +30,7 @@ use moodle_url;
 use cache;
 use context_course;
 
-require_once($CFG->dirroot . '/report/elucidsitereport/classes/block_base.php');
+require_once($CFG->dirroot . '/local/sitereport/classes/block_base.php');
 
 class courseprogressblock extends block_base {
     /**
@@ -41,7 +41,7 @@ class courseprogressblock extends block_base {
         $cohortid = isset($params->cohortid) ? $params->cohortid : false;
 
         // Make cache for courseprogress block.
-        $cache = cache::make("report_elucidsitereport", "courseprogress");
+        $cache = cache::make("local_sitereport", "courseprogress");
         $cachekey = $this->generate_cache_key('courseprogress', $courseid, $cohortid);
 
         // If cache not set for course progress.
@@ -73,14 +73,14 @@ class courseprogressblock extends block_base {
 
         // Layout related data.
         $this->layout->id = 'courseprogressblock';
-        $this->layout->name = get_string('courseprogress', 'report_elucidsitereport');
-        $this->layout->info = get_string('courseprogressblockhelp', 'report_elucidsitereport');
-        $this->layout->morelink = new moodle_url($CFG->wwwroot . "/report/elucidsitereport/coursereport.php");
+        $this->layout->name = get_string('courseprogress', 'local_sitereport');
+        $this->layout->info = get_string('courseprogressblockhelp', 'local_sitereport');
+        $this->layout->morelink = new moodle_url($CFG->wwwroot . "/local/sitereport/coursereport.php");
         $this->layout->hasdownloadlink = true;
         $this->layout->filters = '';
 
         // Block related data.
-        $this->block->courses = \report_elucidsitereport\utility::get_courses();
+        $this->block->courses = \local_sitereport\utility::get_courses();
         if (!empty($this->block->courses)) {
             $this->block->hascourses = true;
             $this->block->firstcourseid = $this->block->courses[0]->id;
@@ -88,8 +88,8 @@ class courseprogressblock extends block_base {
 
         // Add block view in layout.
         $this->layout->blockview = $this->render_block('courseprogressblock', $this->block);
-        
-        // Set block edit capabilities
+
+        // Set block edit capabilities.
         $this->set_block_edit_capabilities($this->layout->id);
 
         // Return blocks layout.
@@ -104,14 +104,14 @@ class courseprogressblock extends block_base {
      * @return [array] Array of completion with percentage
      */
     public static function get_completion_with_percentage($course, $users, $cohortid) {
-        $completions = \report_elucidsitereport\utility::get_course_completion($course->id);
+        $completions = \local_sitereport\utility::get_course_completion($course->id);
         $completedusers = array(
-            PERCENTAGE_00 => 0,
-            PERCENTAGE_20 => 0,
-            PERCENTAGE_40 => 0,
-            PERCENTAGE_60 => 0,
-            PERCENTAGE_80 => 0,
-            PERCENTAGE_100 => 0
+            LOCAL_SITEREPORT_PERCENTAGE_00 => 0,
+            LOCAL_SITEREPORT_PERCENTAGE_20 => 0,
+            LOCAL_SITEREPORT_PERCENTAGE_40 => 0,
+            LOCAL_SITEREPORT_PERCENTAGE_60 => 0,
+            LOCAL_SITEREPORT_PERCENTAGE_80 => 0,
+            LOCAL_SITEREPORT_PERCENTAGE_100 => 0
         );
         $count = 0;
         foreach ($users as $user) {
@@ -125,33 +125,33 @@ class courseprogressblock extends block_base {
             }
             // If not set the completion then this user is not completed.
             if (!isset($completions[$user->id])) {
-                $completedusers[PERCENTAGE_00]++;
+                $completedusers[LOCAL_SITEREPORT_PERCENTAGE_00]++;
             } else {
                 $progress = $completions[$user->id]->completion / 100;
                 switch (true) {
-                    case $progress == COURSE_COMPLETE_100PER:
+                    case $progress == LOCAL_SITEREPORT_COURSE_COMPLETE_100PER:
                         // Completed 100% of course.
-                        $completedusers[PERCENTAGE_100]++;
+                        $completedusers[LOCAL_SITEREPORT_PERCENTAGE_100]++;
                         break;
-                    case $progress >= COURSE_COMPLETE_80PER && $progress < COURSE_COMPLETE_100PER:
+                    case $progress >= LOCAL_SITEREPORT_COURSE_COMPLETE_80PER && $progress < LOCAL_SITEREPORT_COURSE_COMPLETE_100PER:
                         // Completed 80% of course.
-                        $completedusers[PERCENTAGE_80]++;
+                        $completedusers[LOCAL_SITEREPORT_PERCENTAGE_80]++;
                         break;
-                    case $progress >= COURSE_COMPLETE_60PER && $progress < COURSE_COMPLETE_80PER:
+                    case $progress >= LOCAL_SITEREPORT_COURSE_COMPLETE_60PER && $progress < LOCAL_SITEREPORT_COURSE_COMPLETE_80PER:
                         // Completed 60% of course.
-                        $completedusers[PERCENTAGE_60]++;
+                        $completedusers[LOCAL_SITEREPORT_PERCENTAGE_60]++;
                         break;
-                    case $progress >= COURSE_COMPLETE_40PER && $progress < COURSE_COMPLETE_60PER:
+                    case $progress >= LOCAL_SITEREPORT_COURSE_COMPLETE_40PER && $progress < LOCAL_SITEREPORT_COURSE_COMPLETE_60PER:
                         // Completed 40% of course.
-                        $completedusers[PERCENTAGE_40]++;
+                        $completedusers[LOCAL_SITEREPORT_PERCENTAGE_40]++;
                         break;
-                    case $progress >= COURSE_COMPLETE_20PER && $progress < COURSE_COMPLETE_40PER:
+                    case $progress >= LOCAL_SITEREPORT_COURSE_COMPLETE_20PER && $progress < LOCAL_SITEREPORT_COURSE_COMPLETE_40PER:
                         // Completed 20% of course.
-                        $completedusers[PERCENTAGE_20]++;
+                        $completedusers[LOCAL_SITEREPORT_PERCENTAGE_20]++;
                         break;
                     default:
                         // Completed 0% of course.
-                        $completedusers[PERCENTAGE_00]++;
+                        $completedusers[LOCAL_SITEREPORT_PERCENTAGE_00]++;
                 }
             }
         }
@@ -164,11 +164,11 @@ class courseprogressblock extends block_base {
      */
     public static function get_header() {
         $header = array(
-            get_string("name", "report_elucidsitereport"),
-            get_string("email", "report_elucidsitereport"),
-            get_string("coursename", "report_elucidsitereport"),
-            get_string("completedactivity", "report_elucidsitereport"),
-            get_string("completions", "report_elucidsitereport")
+            get_string("name", "local_sitereport"),
+            get_string("email", "local_sitereport"),
+            get_string("coursename", "local_sitereport"),
+            get_string("completedactivity", "local_sitereport"),
+            get_string("completions", "local_sitereport")
         );
         return $header;
     }
@@ -179,14 +179,14 @@ class courseprogressblock extends block_base {
      */
     public static function get_header_report() {
         $header = array(
-            get_string("coursename", "report_elucidsitereport"),
-            get_string("enrolled", "report_elucidsitereport"),
-            get_string("completed", "report_elucidsitereport"),
-            get_string("per100-80", "report_elucidsitereport"),
-            get_string("per80-60", "report_elucidsitereport"),
-            get_string("per60-40", "report_elucidsitereport"),
-            get_string("per40-20", "report_elucidsitereport"),
-            get_string("per20-0", "report_elucidsitereport"),
+            get_string("coursename", "local_sitereport"),
+            get_string("enrolled", "local_sitereport"),
+            get_string("completed", "local_sitereport"),
+            get_string("per100-80", "local_sitereport"),
+            get_string("per80-60", "local_sitereport"),
+            get_string("per60-40", "local_sitereport"),
+            get_string("per40-20", "local_sitereport"),
+            get_string("per20-0", "local_sitereport"),
         );
         return $header;
     }
@@ -198,7 +198,7 @@ class courseprogressblock extends block_base {
      */
     public function get_courselist($cohortid) {
         global $CFG;
-        $courses = \report_elucidsitereport\utility::get_courses(true);
+        $courses = \local_sitereport\utility::get_courses(true);
 
         $response = array();
         foreach ($courses as $course) {
@@ -229,7 +229,7 @@ class courseprogressblock extends block_base {
                 continue;
             }
             // Get completions.
-            $compobj = new \report_elucidsitereport\completions();
+            $compobj = new \local_sitereport\completions();
             $completions = $compobj->get_course_completions($course->id);
 
             // For each enrolled student get completions.
@@ -301,8 +301,8 @@ class courseprogressblock extends block_base {
 
         $table = new html_table();
         $table->head = array(
-            get_string("fullname", "report_elucidsitereport"),
-            get_string("email", "report_elucidsitereport")
+            get_string("fullname", "local_sitereport"),
+            get_string("email", "local_sitereport")
         );
         $table->attributes["class"] = "modal-table";
         $table->attributes["style"] = "min-width: 100%;";
@@ -325,7 +325,7 @@ class courseprogressblock extends block_base {
         $course = get_course($courseid);
         $coursecontext = context_course::instance($courseid);
         $enrolledstudents = self::rep_get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
-        $completions = \report_elucidsitereport\utility::get_course_completion($courseid);
+        $completions = \local_sitereport\utility::get_course_completion($courseid);
 
         $usersdata = array();
         foreach ($enrolledstudents as $enrolleduser) {
@@ -369,7 +369,7 @@ class courseprogressblock extends block_base {
         $course = get_course($filter);
         $enrolledstudents = get_enrolled_students($filter);
         foreach ($enrolledstudents as $key => $student) {
-            $completion = \report_elucidsitereport\utility::get_course_completion_info($course, $student->id);
+            $completion = \local_sitereport\utility::get_course_completion_info($course, $student->id);
             $completed = $completion["completedactivities"] . "/" . $completion["totalactivities"];
             $export[] = array(
                 fullname($student),
@@ -392,7 +392,7 @@ class courseprogressblock extends block_base {
         $cohortid = optional_param("cohortid", 0, PARAM_INT);
         $export = array();
         $export[] = course_progress_block::get_header_report();
-        $courses = \report_elucidsitereport\utility::get_courses();
+        $courses = \local_sitereport\utility::get_courses();
         foreach ($courses as $key => $course) {
             $courseprogress = course_progress_block::get_data($course->id, $cohortid);
             $coursecontext = context_course::instance($course->id);

@@ -5,16 +5,16 @@
             {{/lps}}
         </select>
     <div class="loader w-full text-center my-50 py-100">
-        {{# pix }} loader, report_elucidsitereport{{/ pix }}
+        {{# pix }} loader, local_sitereport{{/ pix }}
     </div>
     <canvas class="ct-chart d-none"></canvas>
 {{/haslps}}
 {{^haslps}}
     <div class="pie-placeholder position-relative mt-30">
-        {{# pix }} pie-placeholder, report_elucidsitereport{{/ pix }}
+        {{# pix }} pie-placeholder, local_sitereport{{/ pix }}
         <div class="position-absolute w-full" style="top: 45%;">
             <div class="alert alert-secondary text-center w-full" role="alert">
-                {{#str}} nolearningprograms, report_elucidsitereport {{/str}}
+                {{#str}} nolearningprograms, local_sitereport {{/str}}
             </div>
         </div>
     </div>

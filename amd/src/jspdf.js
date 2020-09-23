@@ -1,4 +1,4 @@
-define('report_elucidsitereport/jspdf', [], function() {
+define('local_sitereport/jspdf', [], function() {
     
     "use strict";
     var t = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(t) {
@@ -1464,7 +1464,7 @@ define('report_elucidsitereport/jspdf', [], function() {
                     for (var r in e) n("/I" + (t = e[r]).i, t.n, "0", "R")
                 },
                 a = function(t) {
-                    return t && "string" == typeof t && (t = t.toUpperCase()), t in e.image_compression ? t : e.image_compression.NONE
+                    return t && "string" == typeof t && (t = t.toUpperCase()), t in e.image_compression ? t : e.image_compression.NLOCAL_SITEREPORT_ONE
                 },
                 s = function() {
                     var t = this.internal.collections.addImage_images;
@@ -1553,7 +1553,7 @@ define('report_elucidsitereport/jspdf', [], function() {
                 RUN_LENGTH_DECODE: "RunLengthDecode",
                 CCITT_FAX_DECODE: "CCITTFaxDecode"
             }, e.image_compression = {
-                NONE: "NONE",
+                NLOCAL_SITEREPORT_ONE: "NLOCAL_SITEREPORT_ONE",
                 FAST: "FAST",
                 MEDIUM: "MEDIUM",
                 SLOW: "SLOW"
@@ -3215,7 +3215,7 @@ define('report_elucidsitereport/jspdf', [], function() {
                     return "function" != typeof PNG || "function" != typeof s
                 },
                 n = function(e) {
-                    return e !== t.image_compression.NONE && r()
+                    return e !== t.image_compression.NLOCAL_SITEREPORT_ONE && r()
                 },
                 r = function() {
                     var t = "function" == typeof o;
@@ -3786,7 +3786,7 @@ define('report_elucidsitereport/jspdf', [], function() {
                     s = function(t) {
                         this.code = this[this.name = t]
                     },
-                    c = "NOT_FOUND_ERR SECURITY_ERR ABORT_ERR NOT_READABLE_ERR ENCODING_ERR NO_MODIFICATION_ALLOWED_ERR INVALID_STATE_ERR SYNTAX_ERR".split(" "),
+                    c = "NOT_FOUND_ERR SECURITY_ERR ABORT_ERR NOT_READABLE_ERR ENCODING_ERR NO_MODIFICATION_LOCAL_SITEREPORT_ALLOWED_ERR INVALID_STATE_ERR SYNTAX_ERR".split(" "),
                     l = c.length,
                     u = t.URL || t.webkitURL || t,
                     h = u.createObjectURL,
@@ -3888,23 +3888,23 @@ define('report_elucidsitereport/jspdf', [], function() {
                             l(p, "writestart progress write writeend".split(" "))
                         };
                     if (p.readyState = p.INIT, r) return d = e().createObjectURL(s), void setTimeout(function() {
-                        n.href = d, n.download = h, i(n), g(), c(d), p.readyState = p.DONE
+                        n.href = d, n.download = h, i(n), g(), c(d), p.readyState = p.DLOCAL_SITEREPORT_ONE
                     });
                     ! function() {
                         if ((a || m && o) && t.FileReader) {
                             var n = new FileReader;
                             return n.onloadend = function() {
                                 var e = a ? n.result : n.result.replace(/^data:[^;]*;/, "data:attachment/file;");
-                                t.open(e, "_blank") || (t.location.href = e), e = void 0, p.readyState = p.DONE, g()
+                                t.open(e, "_blank") || (t.location.href = e), e = void 0, p.readyState = p.DLOCAL_SITEREPORT_ONE, g()
                             }, n.readAsDataURL(s), void(p.readyState = p.INIT)
                         }
-                        d || (d = e().createObjectURL(s)), m ? t.location.href = d : t.open(d, "_blank") || (t.location.href = d), p.readyState = p.DONE, g(), c(d)
+                        d || (d = e().createObjectURL(s)), m ? t.location.href = d : t.open(d, "_blank") || (t.location.href = d), p.readyState = p.DLOCAL_SITEREPORT_ONE, g(), c(d)
                     }()
                 },
                 f = h.prototype;
             return "undefined" != typeof navigator && navigator.msSaveOrOpenBlob ? function(t, e, n) {
                 return e = e || t.name || "download", n || (t = u(t)), navigator.msSaveOrOpenBlob(t, e)
-            } : (f.abort = function() {}, f.readyState = f.INIT = 0, f.WRITING = 1, f.DONE = 2, f.error = f.onwritestart = f.onprogress = f.onwrite = f.onabort = f.onerror = f.onwriteend = null, function(t, e, n) {
+            } : (f.abort = function() {}, f.readyState = f.INIT = 0, f.WRITING = 1, f.DLOCAL_SITEREPORT_ONE = 2, f.error = f.onwritestart = f.onprogress = f.onwrite = f.onabort = f.onerror = f.onwriteend = null, function(t, e, n) {
                 return new h(t, e || t.name || "download", n)
             })
         }
@@ -4169,7 +4169,7 @@ define('report_elucidsitereport/jspdf', [], function() {
 
      THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES,
      INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
-     FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL JCRAFT,
+     FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHLOCAL_SITEREPORT_ALL JCRAFT,
      INC. OR ANY CONTRIBUTORS TO THIS SOFTWARE BE LIABLE FOR ANY DIRECT, INDIRECT,
      INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
      LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,

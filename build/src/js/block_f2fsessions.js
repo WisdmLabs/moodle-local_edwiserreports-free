@@ -1,4 +1,4 @@
-define(['jquery', 'core/templates', 'report_elucidsitereport/defaultconfig', 'report_elucidsitereport/jquery.dataTables', 'report_elucidsitereport/dataTables.bootstrap4'], function ($, templates, cfg) {
+define(['jquery', 'core/templates', 'local_sitereport/defaultconfig', 'local_sitereport/jquery.dataTables', 'local_sitereport/dataTables.bootstrap4'], function ($, templates, cfg) {
     var panel = cfg.getPanel("#f2fsessionsblock");
     var panelBody = cfg.getPanel("#f2fsessionsblock", "body");
     var table = panelBody + " #f2fsessionstable";

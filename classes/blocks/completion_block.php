@@ -16,18 +16,21 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     report_elucidsitereport
+ * @package     local_sitereport
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace report_elucidsitereport;
+namespace local_sitereport;
+
+defined('MOODLE_INTERNAL') || die();
+
 use stdClass;
 use context_course;
 use html_writer;
 
-require_once($CFG->dirroot . '/report/elucidsitereport/classes/blocks/courseprogressblock.php');
+require_once($CFG->dirroot . '/local/sitereport/classes/blocks/courseprogressblock.php');
 
 /**
  * Class Course Completion Block
@@ -138,7 +141,7 @@ class completion_block extends utility {
         if (isset($coursecompletion) && $coursecompletion->timecompleted) {
             return date("d M y", $coursecompletion->timecompleted);
         } else {
-            return get_string("notyet", "report_elucidsitereport");
+            return get_string("notyet", "local_sitereport");
         }
     }
 
@@ -148,14 +151,14 @@ class completion_block extends utility {
      */
     public static function get_header() {
         return array(
-            get_string("fullname", "report_elucidsitereport"),
-            get_string("enrolledon", "report_elucidsitereport"),
-            get_string("enrolltype", "report_elucidsitereport"),
-            get_string("noofvisits", "report_elucidsitereport"),
-            get_string("coursecompletion", "report_elucidsitereport"),
-            get_string("completiontime", "report_elucidsitereport"),
-            get_string("grade", "report_elucidsitereport"),
-            get_string("lastaccess", "report_elucidsitereport")
+            get_string("fullname", "local_sitereport"),
+            get_string("enrolledon", "local_sitereport"),
+            get_string("enrolltype", "local_sitereport"),
+            get_string("noofvisits", "local_sitereport"),
+            get_string("coursecompletion", "local_sitereport"),
+            get_string("completiontime", "local_sitereport"),
+            get_string("grade", "local_sitereport"),
+            get_string("lastaccess", "local_sitereport")
         );
     }
 

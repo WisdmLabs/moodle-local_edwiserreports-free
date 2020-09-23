@@ -16,17 +16,17 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     report_elucidsitereport
+ * @package     local_sitereport
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace report_elucidsitereport;
+namespace local_sitereport;
 
 defined('MOODLE_INTERNAL') || die;
 
-require_once($CFG->dirroot . "/report/elucidsitereport/classes/constants.php");
+require_once($CFG->dirroot . "/local/sitereport/classes/constants.php");
 
 use stdClass;
 use cache;
@@ -50,8 +50,8 @@ class siteaccessblock extends block_base {
 
         // Layout related data.
         $this->layout->id = 'siteaccessblock';
-        $this->layout->name = get_string('accessinfo', 'report_elucidsitereport');
-        $this->layout->info = get_string('accessinfoblockhelp', 'report_elucidsitereport');
+        $this->layout->name = get_string('accessinfo', 'local_sitereport');
+        $this->layout->info = get_string('accessinfoblockhelp', 'local_sitereport');
 
         // Block related data.
         $this->block = new stdClass();
@@ -59,8 +59,7 @@ class siteaccessblock extends block_base {
 
         // Add block view in layout.
         $this->layout->blockview = $this->render_block('siteaccessblock', $this->block);
-        
-        // Set block edit capabilities
+        // Set block edit capabilities.
         $this->set_block_edit_capabilities($this->layout->id);
 
         // Return blocks layout.
@@ -85,30 +84,30 @@ class siteaccessblock extends block_base {
 
         // Getting time strings for access inforamtion block.
         $times = array(
-            get_string("time00", "report_elucidsitereport"),
-            get_string("time01", "report_elucidsitereport"),
-            get_string("time02", "report_elucidsitereport"),
-            get_string("time03", "report_elucidsitereport"),
-            get_string("time04", "report_elucidsitereport"),
-            get_string("time05", "report_elucidsitereport"),
-            get_string("time06", "report_elucidsitereport"),
-            get_string("time07", "report_elucidsitereport"),
-            get_string("time08", "report_elucidsitereport"),
-            get_string("time09", "report_elucidsitereport"),
-            get_string("time10", "report_elucidsitereport"),
-            get_string("time11", "report_elucidsitereport"),
-            get_string("time12", "report_elucidsitereport"),
-            get_string("time13", "report_elucidsitereport"),
-            get_string("time14", "report_elucidsitereport"),
-            get_string("time15", "report_elucidsitereport"),
-            get_string("time16", "report_elucidsitereport"),
-            get_string("time17", "report_elucidsitereport"),
-            get_string("time18", "report_elucidsitereport"),
-            get_string("time19", "report_elucidsitereport"),
-            get_string("time20", "report_elucidsitereport"),
-            get_string("time21", "report_elucidsitereport"),
-            get_string("time22", "report_elucidsitereport"),
-            get_string("time23", "report_elucidsitereport")
+            get_string("time00", "local_sitereport"),
+            get_string("time01", "local_sitereport"),
+            get_string("time02", "local_sitereport"),
+            get_string("time03", "local_sitereport"),
+            get_string("time04", "local_sitereport"),
+            get_string("time05", "local_sitereport"),
+            get_string("time06", "local_sitereport"),
+            get_string("time07", "local_sitereport"),
+            get_string("time08", "local_sitereport"),
+            get_string("time09", "local_sitereport"),
+            get_string("time10", "local_sitereport"),
+            get_string("time11", "local_sitereport"),
+            get_string("time12", "local_sitereport"),
+            get_string("time13", "local_sitereport"),
+            get_string("time14", "local_sitereport"),
+            get_string("time15", "local_sitereport"),
+            get_string("time16", "local_sitereport"),
+            get_string("time17", "local_sitereport"),
+            get_string("time18", "local_sitereport"),
+            get_string("time19", "local_sitereport"),
+            get_string("time20", "local_sitereport"),
+            get_string("time21", "local_sitereport"),
+            get_string("time22", "local_sitereport"),
+            get_string("time23", "local_sitereport")
         );
 
         // Initialize access inforamtion object.
@@ -128,7 +127,7 @@ class siteaccessblock extends block_base {
     public function get_data($params = false) {
         $response = new stdClass();
 
-        $cache = cache::make('report_elucidsitereport', 'siteaccess');
+        $cache = cache::make('local_sitereport', 'siteaccess');
 
         if (!$data = $cache->get('siteaccessinfodata')) {
             $data = $this->get_siteaccess_info();
@@ -155,7 +154,7 @@ class siteaccessblock extends block_base {
         $timenow = time();
         $params = array (
             "action" => "viewed",
-            "timecreated" => $timenow - ONEYEAR
+            "timecreated" => $timenow - LOCAL_SITEREPORT_ONEYEAR
         );
         $accesslog = $DB->get_records_sql($sql, $params);
 
@@ -175,7 +174,7 @@ class siteaccessblock extends block_base {
 
         // Getting number of weeks to get access log.
         $timeduration = end($accesslog)->timecreated - $accesslog[0]->timecreated;
-        $weeks = ceil($timeduration / ONEWEEK); // Weeks in time duaration.
+        $weeks = ceil($timeduration / LOCAL_SITEREPORT_ONEWEEK); // Weeks in time duaration.
         $weekmax = 0;
         // If weeks are there then.
         if ($weeks) {

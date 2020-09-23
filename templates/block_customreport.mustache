@@ -3,7 +3,7 @@
         <div class="panel-header clearfix">
             <div class="panel-title px-0">
                 <strong>
-                    {{#str}} downloadcustomtreport, report_elucidsitereport {{/str}}
+                    {{#str}} downloadcustomtreport, local_sitereport {{/str}}
                 </strong>
             </div>
         </div>
@@ -11,7 +11,7 @@
             <table class="wdmCustomReportsFilters">
                 <tr>
                     <td>
-                        <b>{{#str}} selectreporttype, report_elucidsitereport {{/str}} :</b>
+                        <b>{{#str}} selectreporttype, local_sitereport {{/str}} :</b>
                     </td>
                     {{! Dropdown to get reports type }}
                     <td class="dropdown">
@@ -21,18 +21,18 @@
                                 data-toggle="dropdown"
                                 aria-expanded="true"
                                 data-val="course">
-                                {{#str}} selectreporttype, report_elucidsitereport {{/str}}
+                                {{#str}} selectreporttype, local_sitereport {{/str}}
                         </button>
                         <div class="dropdown-menu"
                              aria-labelledby="customReportDrodown"
                              role="menu"
                              x-placement="top-start">
                             <a class="dropdown-item" href="javascript:void(0)" role="menuitem" data-val="courses">
-                                {{#str}} courses, report_elucidsitereport {{/str}}
+                                {{#str}} courses, local_sitereport {{/str}}
                             </a>
                             {{#haslppluign}}
                             <a class="dropdown-item" href="javascript:void(0)" role="menuitem" data-val="lps">
-                                {{#str}} learningprograms, report_elucidsitereport {{/str}}
+                                {{#str}} learningprograms, local_sitereport {{/str}}
                             </a>
                             {{/haslppluign}}
                         </div>
@@ -40,13 +40,13 @@
                 </tr>
                 <tr class="enrol-selector" style="display: none;">
                     <td>
-                        <b>{{#str}} enrolmentstartdate, report_elucidsitereport {{/str}} :</b>
+                        <b>{{#str}} enrolmentstartdate, local_sitereport {{/str}} :</b>
                     </td>
                     <td>
                         {{! Flatpicker to start date }}
                         <div class="form-group mb-0">
                             <div class="input-search input-search-dark">
-                                <input type="text" id="wdmCustomReportEnrolStart" placeholder="{{#str}} enrolmentstartdate, report_elucidsitereport{{/str}}" class="custom-flatpicker form-control rounded w-200" data-input/>
+                                <input type="text" id="wdmCustomReportEnrolStart" placeholder="{{#str}} enrolmentstartdate, local_sitereport{{/str}}" class="custom-flatpicker form-control rounded w-200" data-input/>
                                 <button type="button" class="input-search-close icon wb-close" aria-label="Close"></button>
                             </div>
                         </div>
@@ -54,13 +54,13 @@
                 </tr>
                 <tr class="enrol-selector" style="display: none;">
                     <td>
-                        <b>{{#str}} enrolmentenddate, report_elucidsitereport {{/str}} :</b>
+                        <b>{{#str}} enrolmentenddate, local_sitereport {{/str}} :</b>
                     </td>
                     <td>
                         {{! Flatpicker to end date }}
                         <div class="form-group mb-0">
                             <div class="input-search input-search-dark">
-                                <input type="text" id="wdmCustomReportEnrolEnd" placeholder="{{#str}} enrolmentenddate, report_elucidsitereport{{/str}}" class="custom-flatpicker form-control rounded w-200" data-input/>
+                                <input type="text" id="wdmCustomReportEnrolEnd" placeholder="{{#str}} enrolmentenddate, local_sitereport{{/str}}" class="custom-flatpicker form-control rounded w-200" data-input/>
                                 <button type="button" class="input-search-close icon wb-close" aria-label="Close"></button>
                             </div>
                         </div>
@@ -78,19 +78,19 @@
                                 <span class="checkbox-custom"><input type="checkbox" name="selectAllCustom"><label class="selectAllCustomReports" for="selectAllCustom"></label></span>
                             </th>
                             <th class="bg-secondary">
-                                {{#str}} name , report_elucidsitereport {{/str}}
+                                {{#str}} name , local_sitereport {{/str}}
                             </th>
                             <th class="bg-secondary">
-                                {{#str}} shortname , report_elucidsitereport {{/str}}
+                                {{#str}} shortname , local_sitereport {{/str}}
                             </th>
                             <th class="bg-secondary">
-                                {{#str}} category , report_elucidsitereport {{/str}}
+                                {{#str}} category , local_sitereport {{/str}}
                             </th>
                             <th class="bg-secondary">
-                                {{#str}} startdate , report_elucidsitereport {{/str}}
+                                {{#str}} startdate , local_sitereport {{/str}}
                             </th>
                             <th class="bg-secondary">
-                                {{#str}} enddate , report_elucidsitereport {{/str}}
+                                {{#str}} enddate , local_sitereport {{/str}}
                             </th>
                         </thead>
                         <tbody></tbody>
@@ -103,19 +103,19 @@
                                 <span class="checkbox-custom"><input type="checkbox" name="selectAllCustom"><label class="selectAllCustomReports" for="selectAllCustom"></label></span>
                             </th>
                             <th class="bg-secondary">
-                                {{#str}} name , report_elucidsitereport {{/str}}
+                                {{#str}} name , local_sitereport {{/str}}
                             </th>
                             <th class="bg-secondary">
-                                {{#str}} shortname , report_elucidsitereport {{/str}}
+                                {{#str}} shortname , local_sitereport {{/str}}
                             </th>
                             <th class="bg-secondary">
-                                {{#str}} startdate , report_elucidsitereport {{/str}}
+                                {{#str}} startdate , local_sitereport {{/str}}
                             </th>
                             <th class="bg-secondary">
-                                {{#str}} enddate , report_elucidsitereport {{/str}}
+                                {{#str}} enddate , local_sitereport {{/str}}
                             </th>
                             <th class="bg-secondary">
-                                {{#str}} duration , report_elucidsitereport {{/str}}
+                                {{#str}} duration , local_sitereport {{/str}}
                             </th>
                         </thead>
                         <tbody></tbody>
@@ -128,20 +128,20 @@
                         <input type="hidden" name="reporttype"/>
                         <input type="hidden" name="filters"/>
                         <button type="submit" id="customReportDownload" class="btn btn-secondary">
-                            {{#str}} downloadreportincsv , report_elucidsitereport {{/str}}
+                            {{#str}} downloadreportincsv , local_sitereport {{/str}}
                         </button>
                     </form>
                 </div>
             </div>
             <div id="errorMsg" class="alert alert-danger fade hide mt-10" role="alert">
-                {{#str}} customreportselectfailed, report_elucidsitereport {{/str}}
+                {{#str}} customreportselectfailed, local_sitereport {{/str}}
             </div>
         </div>
     </div>
 </div>
 
 {{#js}}
-require(['report_elucidsitereport/block_customreports'], function () {
+require(['local_sitereport/block_customreports'], function () {
     // Breakpoints();
 });
 {{/js}}

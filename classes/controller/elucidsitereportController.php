@@ -15,12 +15,12 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 /**
  * eLucid Report
- * @package    report_elucidsitereport
+ * @package    local_sitereport
  * @copyright  (c) 2018 WisdmLabs (https://wisdmlabs.com/)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace report_elucidsitereport\controller;
+namespace local_sitereport\controller;
 
 use moodle_url;
 use context_course;
@@ -30,7 +30,7 @@ defined('MOODLE_INTERNAL') || die();
 /**
  * Handles requests regarding all ajax operations.
  *
- * @package   report_elucidsitereport
+ * @package   local_sitereport
  * @copyright Copyright (c) 2015 Moodlerooms Inc. (http://www.moodlerooms.com)
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -46,16 +46,16 @@ class elucidsitereportController extends controllerAbstract {
 
     public function get_activeusers_graph_data_ajax_action() {
         $data = json_decode(required_param('data', PARAM_RAW));
-        echo json_encode(\report_elucidsitereport\utility::get_active_users_data($data));
+        echo json_encode(\local_sitereport\utility::get_active_users_data($data));
     }
 
     public function get_activecourses_data_ajax_action() {
-        echo json_encode(\report_elucidsitereport\utility::get_active_courses_data());
+        echo json_encode(\local_sitereport\utility::get_active_courses_data());
     }
 
     public function get_courseprogress_graph_data_ajax_action() {
         $data = json_decode(required_param('data', PARAM_RAW));
-        echo json_encode(\report_elucidsitereport\utility::get_course_progress_data($data));
+        echo json_encode(\local_sitereport\utility::get_course_progress_data($data));
     }
 
     /**
@@ -64,75 +64,75 @@ class elucidsitereportController extends controllerAbstract {
      */
     public function get_f2fsession_data_ajax_action() {
         $data = json_decode(required_param('data', PARAM_RAW));
-        echo json_encode(\report_elucidsitereport\utility::get_f2fsessiondata_data($data));
+        echo json_encode(\local_sitereport\utility::get_f2fsessiondata_data($data));
     }
 
     public function get_certificates_data_ajax_action() {
         $data = json_decode(optional_param('data', false, PARAM_RAW));
-        echo json_encode(\report_elucidsitereport\utility::get_certificates_data($data));
+        echo json_encode(\local_sitereport\utility::get_certificates_data($data));
     }
 
     public function get_liveusers_data_ajax_action() {
-        echo json_encode(\report_elucidsitereport\utility::get_liveusers_data());
+        echo json_encode(\local_sitereport\utility::get_liveusers_data());
     }
 
     public function get_siteaccess_data_ajax_action() {
-        echo json_encode(\report_elucidsitereport\utility::get_siteaccess_data());
+        echo json_encode(\local_sitereport\utility::get_siteaccess_data());
     }
 
     public function get_todaysactivity_data_ajax_action() {
         $data = json_decode(required_param('data', PARAM_RAW));
-        echo json_encode(\report_elucidsitereport\utility::get_todaysactivity_data($data));
+        echo json_encode(\local_sitereport\utility::get_todaysactivity_data($data));
     }
 
     public function get_lpstats_data_ajax_action() {
         $data = json_decode(required_param('data', PARAM_RAW));
-        echo json_encode(\report_elucidsitereport\utility::get_lpstats_data($data));
+        echo json_encode(\local_sitereport\utility::get_lpstats_data($data));
     }
 
     public function get_inactiveusers_data_ajax_action() {
         $data = json_decode(required_param('data', PARAM_RAW));
-        echo json_encode(\report_elucidsitereport\utility::get_inactiveusers_data($data));
+        echo json_encode(\local_sitereport\utility::get_inactiveusers_data($data));
     }
 
     public function get_userslist_ajax_action() {
         $data = json_decode(required_param('data', PARAM_RAW));
-        echo json_encode(\report_elucidsitereport\utility::get_userslist_data($data));
+        echo json_encode(\local_sitereport\utility::get_userslist_data($data));
     }
 
     public function get_courseengage_data_ajax_action() {
         $cohortid = json_decode(optional_param('cohortid', 0, PARAM_RAW));
-        echo json_encode(\report_elucidsitereport\utility::get_courseengage_data($cohortid));
+        echo json_encode(\local_sitereport\utility::get_courseengage_data($cohortid));
     }
 
     public function get_completion_data_ajax_action() {
         $data = json_decode(required_param('data', PARAM_RAW));
-        echo json_encode(\report_elucidsitereport\utility::get_completion_data($data));
+        echo json_encode(\local_sitereport\utility::get_completion_data($data));
     }
 
     public function get_courseanalytics_data_ajax_action() {
         $data = json_decode(required_param('data', PARAM_RAW));
-        echo json_encode(\report_elucidsitereport\utility::get_courseanalytics_data($data));
+        echo json_encode(\local_sitereport\utility::get_courseanalytics_data($data));
     }
 
     public function get_scheduled_emails_ajax_action() {
         $data = json_decode(required_param('data', PARAM_RAW));
-        echo json_encode(\report_elucidsitereport\utility::get_scheduled_emails($data));
+        echo json_encode(\local_sitereport\utility::get_scheduled_emails($data));
     }
 
     public function get_scheduled_email_detail_ajax_action() {
         $data = json_decode(required_param('data', PARAM_RAW));
-        echo json_encode(\report_elucidsitereport\utility::get_scheduled_email_details($data));
+        echo json_encode(\local_sitereport\utility::get_scheduled_email_details($data));
     }
 
     public function delete_scheduled_email_ajax_action() {
         $data = json_decode(required_param('data', PARAM_RAW));
-        echo json_encode(\report_elucidsitereport\utility::delete_scheduled_email($data));
+        echo json_encode(\local_sitereport\utility::delete_scheduled_email($data));
     }
 
     public function change_scheduled_email_status_ajax_action() {
         $data = json_decode(required_param('data', PARAM_RAW));
-        echo json_encode(\report_elucidsitereport\utility::change_scheduled_email_status($data));
+        echo json_encode(\local_sitereport\utility::change_scheduled_email_status($data));
     }
 
     /**
@@ -144,7 +144,7 @@ class elucidsitereportController extends controllerAbstract {
         $filter = json_decode(required_param('filter', PARAM_RAW));
 
         // Response for ajax action.
-        echo json_encode(\report_elucidsitereport\utility::get_customreport_selectors($filter));
+        echo json_encode(\local_sitereport\utility::get_customreport_selectors($filter));
     }
 
     public function get_customreport_data_ajax_action() {
@@ -152,14 +152,14 @@ class elucidsitereportController extends controllerAbstract {
         $data = json_decode(required_param('data', PARAM_RAW));
 
         // Response for ajax action.
-        echo json_encode(\report_elucidsitereport\utility::get_customreport_data($data));
+        echo json_encode(\local_sitereport\utility::get_customreport_data($data));
     }
     public function get_customqueryreport_data_ajax_action() {
         // Get data.
         $data = json_decode(required_param('data', PARAM_RAW));
 
         // Response for ajax action.
-        echo json_encode(\report_elucidsitereport\utility::get_lp_courses($data->lpids));
+        echo json_encode(\local_sitereport\utility::get_lp_courses($data->lpids));
     }
 
     /**
@@ -170,7 +170,7 @@ class elucidsitereportController extends controllerAbstract {
         $data = json_decode(required_param('data', PARAM_RAW));
 
         // Response for ajax action.
-        echo json_encode(\report_elucidsitereport\utility::get_cohort_users($data->cohortids));
+        echo json_encode(\local_sitereport\utility::get_cohort_users($data->cohortids));
     }
 
     /**
@@ -181,7 +181,7 @@ class elucidsitereportController extends controllerAbstract {
         $data = json_decode(required_param('data', PARAM_RAW));
 
         // Response for ajax action.
-        echo json_encode(\report_elucidsitereport\utility::set_block_preferences($data));
+        echo json_encode(\local_sitereport\utility::set_block_preferences($data));
     }
 
     /**
@@ -192,6 +192,6 @@ class elucidsitereportController extends controllerAbstract {
         $data = json_decode(required_param('data', PARAM_RAW));
 
         // Response for ajax action.
-        echo json_encode(\report_elucidsitereport\utility::set_block_capability($data));
+        echo json_encode(\local_sitereport\utility::set_block_capability($data));
     }
 }

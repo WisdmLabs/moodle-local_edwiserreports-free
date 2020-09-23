@@ -16,7 +16,7 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     report_elucidsitereport
+ * @package     local_sitereport
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -32,14 +32,14 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot."/report/elucidsitereport/locallib.php");
+require_once($CFG->dirroot."/local/sitereport/locallib.php");
 
 /**
  * Get Users List Fragments for diffrent pages
  * @param [array] $args Array of arguments
  * @return [string] HTML table
  */
-function report_elucidsitereport_output_fragment_userslist($args) {
+function local_sitereport_output_fragment_userslist($args) {
     $response = null;
     $page = clean_param($args["page"], PARAM_TEXT);
     $cohortid = clean_param($args["cohortid"], PARAM_TEXT);
@@ -49,7 +49,7 @@ function report_elucidsitereport_output_fragment_userslist($args) {
             $filter = clean_param($args['filter'], PARAM_TEXT);
             $action = clean_param($args['action'], PARAM_TEXT);
 
-            $response = \report_elucidsitereport\active_users_block::get_userslist_table($filter, $action, $cohortid);
+            $response = \local_sitereport\active_users_block::get_userslist_table($filter, $action, $cohortid);
             break;
 
         case "courseprogress":
@@ -57,13 +57,13 @@ function report_elucidsitereport_output_fragment_userslist($args) {
             $minval = clean_param($args['minval'], PARAM_TEXT);
             $maxval = clean_param($args['maxval'], PARAM_TEXT);
 
-            $response = \report_elucidsitereport\course_progress_block::get_userslist_table($courseid, $minval, $maxval, $cohortid);
+            $response = \local_sitereport\course_progress_block::get_userslist_table($courseid, $minval, $maxval, $cohortid);
             break;
         case "courseengage":
             $courseid = clean_param($args['courseid'], PARAM_TEXT);
             $action   = clean_param($args['action'], PARAM_TEXT);
 
-            $response = \report_elucidsitereport\courseengage_block::get_userslist_table($courseid, $action, $cohortid);
+            $response = \local_sitereport\courseengage_block::get_userslist_table($courseid, $action, $cohortid);
             break;
     }
 
@@ -75,12 +75,12 @@ function report_elucidsitereport_output_fragment_userslist($args) {
  * @param [array] $args Array of arguments
  * @return [string] HTML table
  */
-function report_elucidsitereport_output_fragment_lpstats($args) {
+function local_sitereport_output_fragment_lpstats($args) {
     global $DB;
     $lpid = clean_param($args["lpid"], PARAM_TEXT);
     $cohortid = clean_param($args["cohortid"], PARAM_TEXT);
 
-    return json_encode(\report_elucidsitereport\lpstats_block::get_lpstats_usersdata($lpid, $cohortid));
+    return json_encode(\local_sitereport\lpstats_block::get_lpstats_usersdata($lpid, $cohortid));
 }
 
 require_once("$CFG->libdir/formslib.php");
@@ -88,7 +88,7 @@ require_once("$CFG->libdir/formslib.php");
 /**
  * Email Dialog form to send report via email
  */
-class email_dialog_form extends moodleform {
+class local_sitereport_email_dialog_form extends moodleform {
     /**
      * The constructor function calls the abstract function definition() and it will then
      * process and clean and attempt to validate incoming data.
@@ -139,27 +139,27 @@ class email_dialog_form extends moodleform {
 
         // Email Text area.
         $mform->addElement('text', 'email',
-            get_string('email', 'report_elucidsitereport'),
+            get_string('email', 'local_sitereport'),
             array(
                 'size' => '30',
-                'placeholder' => get_string("emailexample", "report_elucidsitereport")
+                'placeholder' => get_string("emailexample", "local_sitereport")
             )
         );
         $mform->setType('email', PARAM_NOTAGS);
 
         // Subject Text area.
         $mform->addElement('text', 'subject',
-            get_string("subject", "report_elucidsitereport"),
+            get_string("subject", "local_sitereport"),
             array(
                 'size' => '30',
-                'placeholder' => get_string($blockname . "exportheader", "report_elucidsitereport")
+                'placeholder' => get_string($blockname . "exportheader", "local_sitereport")
             )
         );
         $mform->setType('subject', PARAM_NOTAGS);
 
         // Content Text area.
         $mform->addElement('editor', 'content',
-            get_string("content", "report_elucidsitereport"),
+            get_string("content", "local_sitereport"),
             array(
                 'rows' => '5',
                 'cols' => '40',
@@ -167,7 +167,7 @@ class email_dialog_form extends moodleform {
             )
         );
         $mform->setType('content', PARAM_RAW);
-        $this->content["text"] = get_string($blockname . "exporthelp", "report_elucidsitereport");
+        $this->content["text"] = get_string($blockname . "exporthelp", "local_sitereport");
     }
 }
 
@@ -176,9 +176,9 @@ class email_dialog_form extends moodleform {
  * @param  [array] $args Arguments
  * @return [string] HTML String
  */
-function report_elucidsitereport_output_fragment_email_dialog($args) {
+function local_sitereport_output_fragment_email_dialog($args) {
     $blockname = clean_param($args["blockname"], PARAM_TEXT);
-    $form = new email_dialog_form(null, array("blockname" => $blockname));
+    $form = new local_sitereport_email_dialog_form(null, array("blockname" => $blockname));
     ob_start();
     $form->display();
     return ob_get_clean();
@@ -189,7 +189,7 @@ function report_elucidsitereport_output_fragment_email_dialog($args) {
  * @param  [type] $args [description]
  * @return [type]       [description]
  */
-function report_elucidsitereport_output_fragment_schedule_email_dialog($args) {
+function local_sitereport_output_fragment_schedule_email_dialog($args) {
     $formaction = clean_param($args["href"], PARAM_TEXT);
     $blockname = clean_param($args["blockname"], PARAM_TEXT);
     $region = clean_param($args["region"], PARAM_TEXT);
@@ -212,7 +212,7 @@ function report_elucidsitereport_output_fragment_schedule_email_dialog($args) {
         "role" => "presentation"
     ));
     $out .= html_writer::link("#scheduletab",
-        get_string("schedule", "report_elucidsitereport"),
+        get_string("schedule", "local_sitereport"),
         array(
             "class" => "nav-link active",
             "data-toggle" => "tab",
@@ -229,7 +229,7 @@ function report_elucidsitereport_output_fragment_schedule_email_dialog($args) {
         "role" => "presentation"
     ));
     $out .= html_writer::link("#listemailstab",
-        get_string("scheduledlist", "report_elucidsitereport"),
+        get_string("scheduledlist", "local_sitereport"),
         array(
             "class" => "nav-link",
             "data-toggle" => "tab",
@@ -246,17 +246,20 @@ function report_elucidsitereport_output_fragment_schedule_email_dialog($args) {
     $out .= html_writer::start_div("tab-content pt-20");
 
     // Tab Content 1.
-    $out .= html_writer::div(get_schedule_emailform($id, $formaction, $blockname, $region), "tab-pane active", array(
-        "id" => "scheduletab",
-        "role" => "tabpanel"
-    ));
+    $out .= html_writer::div(local_sitereport_get_schedule_emailform($id, $formaction, $blockname, $region),
+        "tab-pane active",
+        array(
+            "id" => "scheduletab",
+            "role" => "tabpanel"
+        )
+    );
     $out .= html_writer::div("", "tab-pane", array(
         "id" => "schedule",
         "role" => "tabpanel"
     ));
 
     // Tab Content 2.
-    $out .= html_writer::div(get_schedule_emaillist(), "tab-pane", array(
+    $out .= html_writer::div(local_sitereport_get_schedule_emaillist(), "tab-pane", array(
         "id" => "listemailstab",
         "role" => "tabpanel"
     ));
@@ -281,7 +284,7 @@ function report_elucidsitereport_output_fragment_schedule_email_dialog($args) {
  * @param array $options
  * @return bool
  */
-function report_elucidsitereport_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options = array()) {
+function local_sitereport_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options = array()) {
     static $report;
     $course = $course;
     $cm = $cm;
@@ -297,7 +300,7 @@ function report_elucidsitereport_pluginfile($course, $cm, $context, $filearea, $
 
     $relativepath = implode('/', $args);
 
-    $fullpath = "/{$context->id}/report_elucidsitereport/$filearea/$itemid/$relativepath";
+    $fullpath = "/{$context->id}/local_sitereport/$filearea/$itemid/$relativepath";
 
     $fs = get_file_storage();
     if (!$file = $fs->get_file_by_hash(sha1($fullpath)) or $file->is_directory()) {
@@ -309,39 +312,39 @@ function report_elucidsitereport_pluginfile($course, $cm, $context, $filearea, $
 /**
  * Get for for blocks setting
  */
-function report_elucidsitereport_output_fragment_get_blocksetting_form($params) {
+function local_sitereport_output_fragment_get_blocksetting_form($params) {
     global $PAGE;
     $blockname = isset($params['blockname']) ? $params['blockname'] : false;
-    $component = 'report_elucidsitereport';
+    $component = 'local_sitereport';
 
     if (!$blockname) {
         throw new moodle_exception('blocknameinvalid', 'error');
     }
 
     // Check if block is exist or not.
-    $block = \report_elucidsitereport\utility::get_reportsblock_by_name($blockname);
+    $block = \local_sitereport\utility::get_reportsblock_by_name($blockname);
 
     if (!$block) {
         throw new moodle_exception('noblockfound', 'error');
     }
 
     // Get block preferences.
-    $preferences = \report_elucidsitereport\utility::get_reportsblock_preferences($block);
+    $preferences = \local_sitereport\utility::get_reportsblock_preferences($block);
 
     // Prepare form for block editing.
     $o = html_writer::start_tag('form', array('class' => 'form block-settings-form'));
 
     // Prepare view string.
     $views = array(
-        BLOCK_DESKTOP_VIEW => array(
+        LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW => array(
             'key' => 'desktopview',
             'name' => get_string('desktopview', $component)
         ),
-        BLOCK_TABLET_VIEW => array(
+        LOCAL_SITEREPORT_BLOCK_TABLET_VIEW => array(
             'key' => 'tabletview',
             'name' => get_string('tabletview', $component)
         ),
-        BLOCK_MOBILE_VIEW => array(
+        LOCAL_SITEREPORT_BLOCK_MOBILE_VIEW => array(
             'key' => 'mobileview',
             'name' => get_string('mobileview', $component)
         ),
@@ -354,16 +357,16 @@ function report_elucidsitereport_output_fragment_get_blocksetting_form($params) 
         $o .= html_writer::end_tag('div');
         $o .= html_writer::start_tag('div', array('class' => 'col-md-6'));
         $o .= html_writer::select(array(
-            BLOCK_LARGE => get_string('large', $component),
-            BLOCK_MEDIUM => get_string('medium', $component),
-            BLOCK_SMALL => get_string('small', $component)
+            LOCAL_SITEREPORT_BLOCK_LARGE => get_string('large', $component),
+            LOCAL_SITEREPORT_BLOCK_MEDIUM => get_string('medium', $component),
+            LOCAL_SITEREPORT_BLOCK_SMLOCAL_SITEREPORT_ALL => get_string('small', $component)
         ), $view['key'], $preferences[$key], null);
         $o .= html_writer::end_tag('label');
         $o .= html_writer::end_tag('div');
         $o .= html_writer::end_tag('div');
     }
 
-    $blocks = \report_elucidsitereport\utility::get_reports_block();
+    $blocks = \local_sitereport\utility::get_reports_block();
     $positions = range(1, count($blocks));
     $o .= html_writer::start_tag('div', array('class' => 'form-group row fitem'));
     $o .= html_writer::start_tag('div', array('class' => 'col-md-6'));
@@ -390,33 +393,36 @@ function report_elucidsitereport_output_fragment_get_blocksetting_form($params) 
 /**
  * Get for for blocks capabilty from
  */
-function report_elucidsitereport_output_fragment_get_blockscap_form($block) {
+function local_sitereport_output_fragment_get_blockscap_form($block) {
     global $CFG, $PAGE;
 
     $blockname = isset($block['blockname']) ? $block['blockname'] : false;
-    $component = 'report_elucidsitereport';
+    $component = 'local_sitereport';
 
     if (!$blockname) {
         throw new moodle_exception('blocknameinvalid', 'error');
     }
 
-    // Check if block is exist or not
-    $block = \report_elucidsitereport\utility::get_reportsblock_by_name($blockname);
+    // Check if block is exist or not.
+    $block = \local_sitereport\utility::get_reportsblock_by_name($blockname);
 
     if (!$block) {
         throw new moodle_exception('noblockfound', 'error');
     }
 
-    // Get block capabilities
-    $capabilities = \report_elucidsitereport\utility::get_blocks_capability($block);
+    // Get block capabilities.
+    $capabilities = \local_sitereport\utility::get_blocks_capability($block);
     $capvalues = array_values($capabilities);
 
-    // Prepare form for block editing
+    // Prepare form for block editing.
     $o = html_writer::start_tag('form', array('class' => 'form block-cap-form'));
 
     $o .= html_writer::start_tag('div', array('class' => 'form-group row fitem'));
     $o .= html_writer::start_tag('div', array('class' => 'col-md-3'));
-    $o .= html_writer::tag('label', get_string('capabilties', $component), array('class' => 'col-form-label d-inline', 'for' => 'id_capabilities'));
+    $o .= html_writer::tag('label',
+        get_string('capabilties', $component),
+        array('class' => 'col-form-label d-inline', 'for' => 'id_capabilities')
+    );
     $o .= html_writer::end_tag('label');
     $o .= html_writer::end_tag('div');
     $o .= html_writer::start_tag('div', array('class' => 'col-md-9'));
@@ -428,7 +434,7 @@ function report_elucidsitereport_output_fragment_get_blockscap_form($block) {
     $o .= html_writer::start_div('clearfix path-admin-tool-capability overflow-scroll col-12 cap-overview');
     $data = array();
     $data['capvalue'] = $capvalues[0];
-    $o .= report_elucidsitereport_output_fragment_block_overview_display($data);
+    $o .= local_sitereport_output_fragment_block_overview_display($data);
     $o .= html_writer::end_div();
     $o .= html_writer::tag('button', 'Save', array('type' => 'submit', 'class' => 'btn btn-primary pull-right save-block-caps'));
 
@@ -440,7 +446,7 @@ function report_elucidsitereport_output_fragment_get_blockscap_form($block) {
 /**
  * Render blocks capability view
  */
-function report_elucidsitereport_output_fragment_block_overview_display($data) {
+function local_sitereport_output_fragment_block_overview_display($data) {
     global $CFG, $PAGE;
 
     require_once($CFG->dirroot . '\admin\tool\capability\locallib.php');
@@ -448,13 +454,13 @@ function report_elucidsitereport_output_fragment_block_overview_display($data) {
     $context = context_system::instance();
     $strpermissions = array(
         CAP_INHERIT => new lang_string('inherit', 'role'),
-        CAP_ALLOW => new lang_string('allow', 'role'),
+        CAP_LOCAL_SITEREPORT_ALLOW => new lang_string('allow', 'role'),
         CAP_PREVENT => new lang_string('prevent', 'role'),
         CAP_PROHIBIT => new lang_string('prohibit', 'role')
     );
     $permissionclasses = array(
         CAP_INHERIT => 'inherit',
-        CAP_ALLOW => 'allow',
+        CAP_LOCAL_SITEREPORT_ALLOW => 'allow',
         CAP_PREVENT => 'prevent',
         CAP_PROHIBIT => 'prohibit',
     );
@@ -462,7 +468,6 @@ function report_elucidsitereport_output_fragment_block_overview_display($data) {
     $o = html_writer::start_tag('table', array('class' => 'comparisontable w-full'));
     $o .= html_writer::start_tag('thead');
     $o .= html_writer::start_tag('tr');
-    
     // Prepare data in same loop.
     $d = html_writer::start_tag('tbody');
     $d .= html_writer::start_tag('tr');
@@ -474,14 +479,17 @@ function report_elucidsitereport_output_fragment_block_overview_display($data) {
         $o .= '<th><div><a href="javascript:void(0)">' . $role->localname . '</a></div></th>';
         $rolecap = $capabilitycontext[$context->id]->rolecapabilities[$role->id];
         $permission = isset($rolecap) ? $rolecap : CAP_INHERIT;
-        $d .= '<td class="switch-capability ' . $permissionclasses[$permission] . '" data-permission="' . $permission . '"><label>' . $strpermissions[$permission] . '</label>';
+        $d .= '<td class="switch-capability ' . $permissionclasses[$permission] . '" data-permission="' . $permission . '">';
+        $d .= '<label>' . $strpermissions[$permission] . '</label>';
 
         foreach ($permissionclasses as $key => $class) {
             $checked = '';
             if ($key == $permission) {
                 $checked = 'checked';
             }
-            $d .= '<input class="d-none" type="radio" name="' . $role->shortname .'" value="' . $class . '" data-strpermission="' . $strpermissions[$key] . '" data-permissionclass="' . $class . '"' . $checked . '>';
+            $d .= '<input class="d-none" type="radio" name="' . $role->shortname .'" ';
+            $d .= 'value="' . $class . '" data-strpermission="' . $strpermissions[$key] . '"';
+            $d .= 'data-permissionclass="' . $class . '"' . $checked . '>';
         }
 
         $d .= '</td>';
@@ -494,6 +502,6 @@ function report_elucidsitereport_output_fragment_block_overview_display($data) {
     $o .= html_writer::end_tag('thead');
     $o .= $d;
     $o .= html_writer::end_tag('table');
-    
+
     return $o;
 }

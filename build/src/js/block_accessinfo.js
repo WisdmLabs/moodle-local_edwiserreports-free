@@ -1,7 +1,7 @@
 define([
     'jquery',
     'core/templates',
-    'report_elucidsitereport/defaultconfig'
+    'local_sitereport/defaultconfig'
 ], function ($, templates, cfg) {
     var panel = cfg.getPanel("#siteaccessblock");
     var panelBody = cfg.getPanel("#siteaccessblock", "body");

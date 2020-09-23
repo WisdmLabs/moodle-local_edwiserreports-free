@@ -1,9 +1,9 @@
 define([
     'jquery',
-    'report_elucidsitereport/variables',
-    'report_elucidsitereport/jquery.dataTables',
-    'report_elucidsitereport/dataTables.bootstrap4',
-    'report_elucidsitereport/common'
+    'local_sitereport/variables',
+    'local_sitereport/jquery.dataTables',
+    'local_sitereport/dataTables.bootstrap4',
+    'local_sitereport/common'
 ], function($, V) {
     function init(CONTEXTID) {
         var PageId = $("#wdm-courseanalytics-individual");

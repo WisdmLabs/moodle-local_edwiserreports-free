@@ -16,7 +16,7 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     report_elucidsitereport
+ * @package     local_sitereport
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -25,9 +25,9 @@
 defined('MOODLE_INTERNAL') || die();
 
 //@codingStandardsIgnoreStart
-// namespace report_elucidsitereport\task;
+// namespace local_sitereport\task;
 // require_once($CFG->libdir . "/enrollib.php");
-// require_once($CFG->dirroot . "/report/elucidsitereport/classes/completions.php");
+// require_once($CFG->dirroot . "/local/sitereport/classes/completions.php");
 
 // use stdClass;
 // use context_course;
@@ -43,7 +43,7 @@ defined('MOODLE_INTERNAL') || die();
 //      * @return string
 //      */
 //     public function get_name() {
-//         return get_string('updatetables', 'report_elucidsitereport');
+//         return get_string('updatetables', 'local_sitereport');
 //     }
 
 //     /**
@@ -53,10 +53,10 @@ defined('MOODLE_INTERNAL') || die();
 //         global $DB;
 
 //         // Update completions table in report plugin
-//         $completions = new \report_elucidsitereport\completions();
+//         $completions = new \local_sitereport\completions();
 
 //         // Updating reports table
-//         mtrace(get_string('updatingreportstable', 'report_elucidsitereport'));
+//         mtrace(get_string('updatingreportstable', 'local_sitereport'));
 //         $completions->update_local_completion_table();
 //     }
 // }

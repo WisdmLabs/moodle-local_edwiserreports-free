@@ -16,7 +16,7 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     report_elucidsitereport
+ * @package     local_sitereport
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -29,51 +29,51 @@
 defined('MOODLE_INTERNAL') || die();
 
 /* Course completion constant */
-define('COURSE_COMPLETE_00PER', 0);
-define('COURSE_COMPLETE_20PER', 0.2);
-define('COURSE_COMPLETE_40PER', 0.4);
-define('COURSE_COMPLETE_60PER', 0.6);
-define('COURSE_COMPLETE_80PER', 0.8);
-define('COURSE_COMPLETE_100PER', 1);
+define('LOCAL_SITEREPORT_COURSE_COMPLETE_00PER', 0);
+define('LOCAL_SITEREPORT_COURSE_COMPLETE_20PER', 0.2);
+define('LOCAL_SITEREPORT_COURSE_COMPLETE_40PER', 0.4);
+define('LOCAL_SITEREPORT_COURSE_COMPLETE_60PER', 0.6);
+define('LOCAL_SITEREPORT_COURSE_COMPLETE_80PER', 0.8);
+define('LOCAL_SITEREPORT_COURSE_COMPLETE_100PER', 1);
 
 /* Percentage constant */
-define('PERCENTAGE_00', "0%");
-define('PERCENTAGE_20', "20%");
-define('PERCENTAGE_40', "40%");
-define('PERCENTAGE_60', "60%");
-define('PERCENTAGE_80', "80%");
-define('PERCENTAGE_100', "100%");
+define('LOCAL_SITEREPORT_PERCENTAGE_00', "0%");
+define('LOCAL_SITEREPORT_PERCENTAGE_20', "20%");
+define('LOCAL_SITEREPORT_PERCENTAGE_40', "40%");
+define('LOCAL_SITEREPORT_PERCENTAGE_60', "60%");
+define('LOCAL_SITEREPORT_PERCENTAGE_80', "80%");
+define('LOCAL_SITEREPORT_PERCENTAGE_100', "100%");
 
 /* Time constant */
-define('ONEDAY', 24 * 60 * 60);
-define('ONEWEEK', 7 * 24 * 60 * 60);
-define('ONEMONTH', 30 * 24 * 60 * 60);
-define('ONEYEAR', 365 * 24 * 60 * 60);
-define('ALL', "all");
-define('WEEKLY', "weekly");
-define('MONTHLY', "monthly");
-define('YEARLY', "yearly");
-define('WEEKLY_DAYS', 7);
-define('MONTHLY_DAYS', 30);
-define('YEARLY_DAYS', 365);
+define('LOCAL_SITEREPORT_ONEDAY', 24 * 60 * 60);
+define('LOCAL_SITEREPORT_ONEWEEK', 7 * 24 * 60 * 60);
+define('LOCAL_SITEREPORT_ONEMONTH', 30 * 24 * 60 * 60);
+define('LOCAL_SITEREPORT_ONEYEAR', 365 * 24 * 60 * 60);
+define('LOCAL_SITEREPORT_ALL', "all");
+define('LOCAL_SITEREPORT_WEEKLY', "weekly");
+define('LOCAL_SITEREPORT_MONTHLY', "monthly");
+define('LOCAL_SITEREPORT_YEARLY', "yearly");
+define('LOCAL_SITEREPORT_WEEKLY_DAYS', 7);
+define('LOCAL_SITEREPORT_MONTHLY_DAYS', 30);
+define('LOCAL_SITEREPORT_YEARLY_DAYS', 365);
 
-define('ESR_DAILY_EMAIL', 0);
-define('ESR_WEEKLY_EMAIL', 1);
-define('ESR_MONTHLY_EMAIL', 2);
+define('LOCAL_SITEREPORT_ESR_DAILY_EMAIL', 0);
+define('LOCAL_SITEREPORT_ESR_LOCAL_SITEREPORT_WEEKLY_EMAIL', 1);
+define('LOCAL_SITEREPORT_ESR_LOCAL_SITEREPORT_MONTHLY_EMAIL', 2);
 
-define('ESR_0630AM', 0);
-define('ESR_1000AM', 1);
-define('ESR_0430PM', 2);
-define('ESR_1030PM', 3);
+define('LOCAL_SITEREPORT_ESR_0630AM', 0);
+define('LOCAL_SITEREPORT_ESR_1000AM', 1);
+define('LOCAL_SITEREPORT_ESR_0430PM', 2);
+define('LOCAL_SITEREPORT_ESR_1030PM', 3);
 
 // Define block type.
-define('BLOCK_TYPE_DEFAULT', 0);
-define('BLOCK_TYPE_CUSTOM', 1);
+define('LOCAL_SITEREPORT_BLOCK_TYPE_DEFAULT', 0);
+define('LOCAL_SITEREPORT_BLOCK_TYPE_CUSTOM', 1);
 
 // Block View.
-define('BLOCK_DESKTOP_VIEW', 'desktopview');
-define('BLOCK_TABLET_VIEW', 'tabletview');
-define('BLOCK_MOBILE_VIEW', 'mobileview');
-define('BLOCK_LARGE', 2);
-define('BLOCK_MEDIUM', 1);
-define('BLOCK_SMALL', 0);
+define('LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW', 'desktopview');
+define('LOCAL_SITEREPORT_BLOCK_TABLET_VIEW', 'tabletview');
+define('LOCAL_SITEREPORT_BLOCK_MOBILE_VIEW', 'mobileview');
+define('LOCAL_SITEREPORT_BLOCK_LARGE', 2);
+define('LOCAL_SITEREPORT_BLOCK_MEDIUM', 1);
+define('LOCAL_SITEREPORT_BLOCK_SMLOCAL_SITEREPORT_ALL', 0);

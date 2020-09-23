@@ -13,17 +13,11 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-/**
- * eLucid report AJAX handler
- * @package    report_elucidsitereport
- * @copyright  (c) 2019 WisdmLabs (https://wisdmlabs.com/)
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
 
-// defined('MOODLE_INTERNAL') || die();
+require('../../config.php');
 
-use report_elucidsitereport\controller\elucidsitereportKernel;
-use report_elucidsitereport\controller\elucidsitereportRouter;
+use local_sitereport\controller\elucidsitereportKernel;
+use local_sitereport\controller\elucidsitereportRouter;
 
 // Define ajax script based on action value.
 $action = filter_input(INPUT_GET, 'action', FILTER_SANITIZE_STRIPPED);
@@ -67,7 +61,7 @@ $PAGE->set_context($context);
 if ($course !== null) {
     $PAGE->set_course($course);
 }
-$PAGE->set_url('/report/elucidsitereport/request_handler.php', array('action' => $action, 'contextid' => $context->id));
+$PAGE->set_url('/local/sitereport/request_handler.php', array('action' => $action, 'contextid' => $context->id));
 
 if ($cm !== null) {
     $PAGE->set_cm($cm);
@@ -83,10 +77,10 @@ foreach ($contfiles as $contfile) {
     // Include controllers.
     $pattern = '/Controller.php$/i';
     if (preg_match($pattern, $contfile)) {
-        $classname = '\\report_elucidsitereport\\controller\\'.str_ireplace('.php', '', $contfile);
+        $classname = '\\local_sitereport\\controller\\'.str_ireplace('.php', '', $contfile);
         if (class_exists($classname)) {
             $rc = new ReflectionClass($classname);
-            if ($rc->isSubclassOf('\\report_elucidsitereport\\controller\\controllerAbstract')) {
+            if ($rc->isSubclassOf('\\local_sitereport\\controller\\controllerAbstract')) {
                 $router->add_controller(new $classname());
             }
         }

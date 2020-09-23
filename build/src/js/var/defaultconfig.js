@@ -1,4 +1,4 @@
-define(["jquery", "report_elucidsitereport/variables", "report_elucidsitereport/select2"], function($, v) {
+define(["jquery", "local_sitereport/variables", "local_sitereport/select2"], function($, v) {
     return defaultConfig = {
         // Default Config
         requestUrl : v.requestUrl,
@@ -242,7 +242,7 @@ define(["jquery", "report_elucidsitereport/variables", "report_elucidsitereport/
 
         // function to get Template
         getTemplate: function(template) {
-            return "report_elucidsitereport/" + template;
+            return "local_sitereport/" + template;
         },
 
         // Get URL Params

@@ -16,13 +16,13 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     report_elucidsitereport
+ * @package     local_sitereport
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace report_elucidsitereport;
+namespace local_sitereport;
 use stdClass;
 use context_course;
 use html_writer;
@@ -52,7 +52,7 @@ class courseanalytics_block extends utility {
 
         $coursecontext = context_course::instance($courseid);
         // Get only enrolled students.
-        $enrolledstudents = \report_elucidsitereport\utility::get_enrolled_students($courseid, $coursecontext);
+        $enrolledstudents = \local_sitereport\utility::get_enrolled_students($courseid, $coursecontext);
         $course = get_course($courseid);
 
         $courseanalytics = new stdClass();
@@ -160,7 +160,7 @@ class courseanalytics_block extends utility {
             if (!empty($completion) && $completion->timecompleted) {
                 $userinfo[] = html_writer::span("", $completion->timecompleted) . date("d M Y", $completion->timecompleted);
             } else {
-                $userinfo[] = get_string("notyet", "report_elucidsitereport");
+                $userinfo[] = get_string("notyet", "local_sitereport");
             }
             $recentcompletions[] = $userinfo;
         }
@@ -176,20 +176,20 @@ class courseanalytics_block extends utility {
         switch($action) {
             case "visits" :
                 $header = array(
-                    get_string("name", "report_elucidsitereport"),
-                    get_string("lastvisit", "report_elucidsitereport")
+                    get_string("name", "local_sitereport"),
+                    get_string("lastvisit", "local_sitereport")
                 );
                 break;
             case "enrolment" :
                 $header = array(
-                    get_string("name", "report_elucidsitereport"),
-                    get_string("enrolledon", "report_elucidsitereport")
+                    get_string("name", "local_sitereport"),
+                    get_string("enrolledon", "local_sitereport")
                 );
                 break;
             case "completion" :
                 $header = array(
-                    get_string("name", "report_elucidsitereport"),
-                    get_string("completedon", "report_elucidsitereport")
+                    get_string("name", "local_sitereport"),
+                    get_string("completedon", "local_sitereport")
                 );
                 break;
             default :

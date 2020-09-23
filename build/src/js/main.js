@@ -1,13 +1,13 @@
 define([
-    'report_elucidsitereport/block_accessinfo',
-    'report_elucidsitereport/block_activecourses',
-    'report_elucidsitereport/block_activeusers',
-    'report_elucidsitereport/block_courseprogress',
-    'report_elucidsitereport/block_inactiveusers',
-    'report_elucidsitereport/block_lpstats',
-    'report_elucidsitereport/block_realtimeusers',
-    'report_elucidsitereport/block_todaysactivity',
-    'report_elucidsitereport/common'
+    'local_sitereport/block_accessinfo',
+    'local_sitereport/block_activecourses',
+    'local_sitereport/block_activeusers',
+    'local_sitereport/block_courseprogress',
+    'local_sitereport/block_inactiveusers',
+    'local_sitereport/block_lpstats',
+    'local_sitereport/block_realtimeusers',
+    'local_sitereport/block_todaysactivity',
+    'local_sitereport/common'
 ], function (
     accessInfo,
     activeCourses,

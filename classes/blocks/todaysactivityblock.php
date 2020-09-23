@@ -16,13 +16,13 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     report_elucidsitereport
+ * @package     local_sitereport
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace report_elucidsitereport;
+namespace local_sitereport;
 use stdClass;
 use context_system;
 use context_course;
@@ -42,11 +42,11 @@ class todaysactivityblock extends block_base {
 
         // Layout related data.
         $this->layout->id = 'todaysactivityblock';
-        $this->layout->name = get_string('todaysactivityheader', 'report_elucidsitereport');
-        $this->layout->info = get_string('todaysactivityblockhelp', 'report_elucidsitereport');
-        $this->layout->filters =
-        '<input class="btn btn-sm dropdown-toggle input-group-addon" id="flatpickrCalender" placeholder="' .
-        get_string('selectdate', 'report_elucidsitereport') .
+        $this->layout->name = get_string('todaysactivityheader', 'local_sitereport');
+        $this->layout->info = get_string('todaysactivityblockhelp', 'local_sitereport');
+        $this->layout->filters = '<input class="btn btn-sm dropdown-toggle input-group-addon"';
+        $this->layout->filters .= 'id="flatpickrCalender" placeholder="' .
+        get_string('selectdate', 'local_sitereport') .
         '" data-input/>';
 
         // Block related data.
@@ -54,8 +54,8 @@ class todaysactivityblock extends block_base {
 
         // Add block view in layout.
         $this->layout->blockview = $this->render_block('todaysactivityblock', $this->block);
-        
-        // Set block edit capabilities
+
+        // Set block edit capabilities.
         $this->set_block_edit_capabilities($this->layout->id);
 
         // Return blocks layout.

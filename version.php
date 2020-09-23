@@ -16,14 +16,14 @@
 /**
  * Plugin version and other meta-data are defined here.
  *
- * @package     report_elucidsitereport
+ * @package     local_sitereport
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component = 'report_elucidsitereport';
+$plugin->component = 'local_sitereport';
 $plugin->release = '1.1.1';
 $plugin->version = 2020031105;
 $plugin->requires = 2018120300;

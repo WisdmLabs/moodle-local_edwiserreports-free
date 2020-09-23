@@ -2,21 +2,21 @@
     <ul class="nav nav-tabs nav-tabs-line w-full" role="tablist">
         <li class="nav-item" role="presentation">
             <a class="nav-link active" data-toggle="tab" href="#progress" aria-controls="progress" role="tab" aria-selected="true">
-                {{#str}} courseprogress, report_elucidsitereport {{/str}}
+                {{#str}} courseprogress, local_sitereport {{/str}}
             </a>
         </li>
         <li class="nav-item" role="presentation">
             <a class="nav-link" data-toggle="tab" href="#engagement" aria-controls="engagement" role="tab" aria-selected="false">
-                {{#str}} courseengagement, report_elucidsitereport {{/str}}
+                {{#str}} courseengagement, local_sitereport {{/str}}
             </a>
         </li>
     </ul>
     <div class="tab-content pt-20">
         <div class="tab-pane active" id="progress" role="tabpanel">
-            {{> report_elucidsitereport/courseprogress }}
+            {{> local_sitereport/courseprogress }}
         </div>
         <div class="tab-pane" id="engagement" role="tabpanel">
-            {{> report_elucidsitereport/courseengage }}
+            {{> local_sitereport/courseengage }}
         </div>
     </div>
 </div>

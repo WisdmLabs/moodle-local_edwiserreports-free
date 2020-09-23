@@ -16,13 +16,13 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     report_elucidsitereport
+ * @package     local_sitereport
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace report_elucidsitereport;
+namespace local_sitereport;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -142,7 +142,7 @@ class courseengage_block extends utility {
         $engagement = new stdClass();
 
         // Get only enrolled students.
-        $enrolledstudents = \report_elucidsitereport\utility::get_enrolled_students($course->id);
+        $enrolledstudents = \local_sitereport\utility::get_enrolled_students($course->id);
         /* If cohort filter is there then select only cohort users */
         if ($cohortid) {
             foreach ($enrolledstudents as $key => $user) {
@@ -285,8 +285,8 @@ class courseengage_block extends utility {
 
         $usersdata = new stdClass();
         $usresdata->head = array(
-            get_string("name", "report_elucidsitereport"),
-            get_string("email", "report_elucidsitereport")
+            get_string("name", "local_sitereport"),
+            get_string("email", "local_sitereport")
         );
 
         $userdata->data = array();
@@ -317,8 +317,8 @@ class courseengage_block extends utility {
         $users = self::get_course_visites($course->id, $cohortid);
         $usersdata = new stdClass();
         $userdata->head = array(
-            get_string("name", "report_elucidsitereport"),
-            get_string("email", "report_elucidsitereport")
+            get_string("name", "local_sitereport"),
+            get_string("email", "local_sitereport")
         );
 
         $userdata->data = array();
@@ -351,8 +351,8 @@ class courseengage_block extends utility {
         $users = self::users_completed_a_module($course, $enrolledusers, $cohortid);
         $usersdata = new stdClass();
         $userdata->head = array(
-            get_string("name", "report_elucidsitereport"),
-            get_string("email", "report_elucidsitereport")
+            get_string("name", "local_sitereport"),
+            get_string("email", "local_sitereport")
         );
 
         $userdata->data = array();
@@ -385,8 +385,8 @@ class courseengage_block extends utility {
 
         $usersdata = new stdClass();
         $userdata->head = array(
-            get_string("name", "report_elucidsitereport"),
-            get_string("email", "report_elucidsitereport")
+            get_string("name", "local_sitereport"),
+            get_string("email", "local_sitereport")
         );
 
         $userdata->data = array();
@@ -419,8 +419,8 @@ class courseengage_block extends utility {
 
         $usersdata = new stdClass();
         $userdata->head = array(
-            get_string("name", "report_elucidsitereport"),
-            get_string("email", "report_elucidsitereport")
+            get_string("name", "local_sitereport"),
+            get_string("email", "local_sitereport")
         );
 
         $userdata->data = array();
@@ -449,12 +449,12 @@ class courseengage_block extends utility {
      */
     public static function get_header_report() {
         $header = array(
-            get_string("coursename", "report_elucidsitereport"),
-            get_string("enrolments", "report_elucidsitereport"),
-            get_string("visits", "report_elucidsitereport"),
-            get_string("activitystart", "report_elucidsitereport"),
-            get_string("completedhalf", "report_elucidsitereport"),
-            get_string("coursecompleted", "report_elucidsitereport")
+            get_string("coursename", "local_sitereport"),
+            get_string("enrolments", "local_sitereport"),
+            get_string("visits", "local_sitereport"),
+            get_string("activitystart", "local_sitereport"),
+            get_string("completedhalf", "local_sitereport"),
+            get_string("coursecompleted", "local_sitereport")
         );
         return $header;
     }

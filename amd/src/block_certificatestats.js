@@ -1,4 +1,4 @@
-define(["jquery", "core/templates", "report_elucidsitereport/defaultconfig"], function($, templates, cfg) {
+define(["jquery", "core/templates", "local_sitereport/defaultconfig"], function($, templates, cfg) {
     var panel = cfg.getPanel("#certificatesblock");
     var panelBody = cfg.getPanel("#certificatesblock", "body");
     var table = panel + " .table";
@@ -15,7 +15,7 @@ define(["jquery", "core/templates", "report_elucidsitereport/defaultconfig"], fu
             },
         })
         .done(function(response) {
-            templates.render('report_elucidsitereport/certificatestable', response.data)
+            templates.render('local_sitereport/certificatestable', response.data)
             .then(function(html, js) {
                 $(panelBody).empty();
                 templates.appendNodeContents(panelBody, html, js);

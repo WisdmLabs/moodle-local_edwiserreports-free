@@ -16,7 +16,7 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     report_elucidsitereport
+ * @package     local_sitereport
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -25,14 +25,14 @@
 defined('MOODLE_INTERNAL') || die();
 
 $ADMIN->add('reports', new admin_category(
-    'report_elucidsitereport_settings',
-    new lang_string('pluginname', 'report_elucidsitereport'
-)));
-$ADMIN->add('report_elucidsitereport_settings', new admin_externalpage(
-    'elucidsitereport_dashboard',
-    new lang_string('myhome'), "/report/elucidsitereport/index.php"
+    'local_sitereport_settings',
+    new lang_string('pluginname', 'local_sitereport')
 ));
-$ADMIN->add('report_elucidsitereport_settings', new admin_externalpage(
+$ADMIN->add('local_sitereport_settings', new admin_externalpage(
+    'elucidsitereport_dashboard',
+    new lang_string('myhome'), "/local/sitereport/index.php"
+));
+$ADMIN->add('local_sitereport_settings', new admin_externalpage(
     'elucidsitereport_settings',
-    new lang_string('settings'), "$CFG->wwwroot/report/elucidsitereport/reports_settings.php"
+    new lang_string('settings'), "$CFG->wwwroot/local/sitereport/reports_settings.php"
 ));

@@ -16,13 +16,13 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     report_elucidsitereport
+ * @package     local_sitereport
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace report_elucidsitereport;
+namespace local_sitereport;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -32,7 +32,7 @@ use html_writer;
 use core_user;
 use moodle_url;
 
-require_once($CFG->dirroot . '/report/elucidsitereport/locallib.php');
+require_once($CFG->dirroot . '/local/sitereport/locallib.php');
 
 /**
  * Class f2fsession Block
@@ -47,9 +47,9 @@ class f2fsessionsblock extends block_base {
 
         // Layout related data.
         $this->layout->id = 'f2fsessionsblock';
-        $this->layout->name = get_string('f2fsessionsheader', 'report_elucidsitereport');
-        $this->layout->info = get_string('f2fsessionsblockhelp', 'report_elucidsitereport');
-        $this->layout->morelink = new moodle_url($CFG->wwwroot . "/report/elucidsitereport/f2fsessions.php");
+        $this->layout->name = get_string('f2fsessionsheader', 'local_sitereport');
+        $this->layout->info = get_string('f2fsessionsblockhelp', 'local_sitereport');
+        $this->layout->morelink = new moodle_url($CFG->wwwroot . "/local/sitereport/f2fsessions.php");
         $this->layout->hasdownloadlink = true;
 
         // Block related data.
@@ -239,10 +239,10 @@ class f2fsessionsblock extends block_base {
 
             switch ($attendee->statuscode) {
                 case MDL_F2F_STATUS_FULLY_ATTENDED:
-                case MDL_F2F_STATUS_PARTIALLY_ATTENDED:
+                case MDL_F2F_STATUS_PARTILOCAL_SITEREPORT_ALLY_ATTENDED:
                     $attended++;
                     $status = html_writer::span(
-                        get_string("attended", "report_elucidsitereport"),
+                        get_string("attended", "local_sitereport"),
                         "badge badge-round badge-success"
                     );
                     break;
@@ -250,7 +250,7 @@ class f2fsessionsblock extends block_base {
                 case MDL_F2F_STATUS_REQUESTED:
                     $waitlisted++;
                     $status = html_writer::span(
-                        get_string("requested", "report_elucidsitereport"),
+                        get_string("requested", "local_sitereport"),
                         "badge badge-round badge-warning"
                     );
                     break;
@@ -258,20 +258,20 @@ class f2fsessionsblock extends block_base {
                 case MDL_F2F_STATUS_SESSION_CANCELLED:
                     $declined++;
                     $status = html_writer::span(
-                        get_string("canceled", "report_elucidsitereport"),
+                        get_string("canceled", "local_sitereport"),
                         "badge badge-round badge-danger"
                     );
                     break;
                 case MDL_F2F_STATUS_APPROVED:
                     $confirmed++;
                     $status = html_writer::span(
-                        get_string("approved", "report_elucidsitereport"),
+                        get_string("approved", "local_sitereport"),
                         "badge badge-round badge-dark"
                     );
                     break;
                 default:
                     $status = html_writer::span(
-                        get_string("booked", "report_elucidsitereport"),
+                        get_string("booked", "local_sitereport"),
                         "badge badge-round badge-primary"
                     );
 
@@ -294,8 +294,7 @@ class f2fsessionsblock extends block_base {
         $sessiondata->confirmed = $confirmed;
         $sessiondata->canceled = count($canceledusers);
         $sessiondata->users = array_values($allsignups);
-        $downloadurl = $CFG->wwwroot."/report/elucidsitereport/download.php";
-        $sessiondata->exportlink = \get_exportlinks($downloadurl, "report", "f2fsession", $sessiondata->sessionid, $cohortid);
+        $downloadurl = $CFG->wwwroot."/local/sitereport/download.php";
         $sessiondata->exportlink->isindividual = true;
         return $sessiondata;
     }
@@ -332,7 +331,7 @@ class f2fsessionsblock extends block_base {
 
             $user = core_user::get_user($record->createdby, "id, firstname, lastname");
             $user->status = html_writer::span(
-                get_string("canceled", "report_elucidsitereport"),
+                get_string("canceled", "local_sitereport"),
                 "badge badge-round badge-danger"
             );
             $user->reason = $record->note;
@@ -349,21 +348,21 @@ class f2fsessionsblock extends block_base {
     public static function get_headers_report($filter = false) {
         if ($filter) {
             $header = array (
-                get_string("username", "report_elucidsitereport"),
-                get_string("status", "report_elucidsitereport"),
-                get_string("reason", "report_elucidsitereport")
+                get_string("username", "local_sitereport"),
+                get_string("status", "local_sitereport"),
+                get_string("reason", "local_sitereport")
             );
         } else {
             $header = array(
-                get_string("date", "report_elucidsitereport"),
-                get_string("time", "report_elucidsitereport"),
-                get_string("name", "report_elucidsitereport"),
-                get_string("coursename", "report_elucidsitereport"),
-                get_string("signups", "report_elucidsitereport"),
-                get_string("attendees", "report_elucidsitereport"),
-                get_string("waitlist", "report_elucidsitereport"),
-                get_string("declined", "report_elucidsitereport"),
-                get_string("confirmed", "report_elucidsitereport")
+                get_string("date", "local_sitereport"),
+                get_string("time", "local_sitereport"),
+                get_string("name", "local_sitereport"),
+                get_string("coursename", "local_sitereport"),
+                get_string("signups", "local_sitereport"),
+                get_string("attendees", "local_sitereport"),
+                get_string("waitlist", "local_sitereport"),
+                get_string("declined", "local_sitereport"),
+                get_string("confirmed", "local_sitereport")
             );
         }
 

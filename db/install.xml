@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="report/elucidsitereport/db" VERSION="2019091100" COMMENT="XMLDB file for eLucid Site Reports"
+<XMLDB PATH="local/sitereport/db" VERSION="2019091100" COMMENT="XMLDB file for eLucid Site Reports"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd">
     <TABLES>

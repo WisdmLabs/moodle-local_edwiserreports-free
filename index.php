@@ -16,7 +16,7 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     report_elucidsitereport
+ * @package     local_sitereport
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -30,33 +30,25 @@ require_once('classes/export.php');
 global $OUTPUT;
 
 // Strings for js.
-get_recquired_strings_for_js();
+local_sitereport_get_recquired_strings_for_js();
 
 // Set external page admin.
 $context = context_system::instance();
-$component = "report_elucidsitereport";
+$component = "local_sitereport";
 
 require_login();
 
 // Allow users preferences set remotly.
-\report_elucidsitereport\utility::allow_update_userpreferences_remotly();
-
-// The requested section isn't in the admin tree
-// It could be because the user has inadequate capapbilities or because the section doesn't exist.
-// if (!has_capability('report/report_elucidsitereport:view', $context)) {
-//     // The requested section could depend on a different capability
-//     // But most likely the user has inadequate capabilities.
-//     print_error('accessdenied', 'admin');
-// }
+\local_sitereport\utility::allow_update_userpreferences_remotly();
 
 // Page URL.
-$pageurl = new moodle_url($CFG->wwwroot."/report/elucidsitereport/index.php");
+$pageurl = new moodle_url($CFG->wwwroot."/local/sitereport/index.php");
 
 // Require JS for index page.
-$PAGE->requires->js_call_amd('report_elucidsitereport/main', 'init');
+$PAGE->requires->js_call_amd('local_sitereport/main', 'init');
 
 // Require CSS for index page.
-$PAGE->requires->css('/report/elucidsitereport/styles/loader.css');
+$PAGE->requires->css('/local/sitereport/styles/loader.css');
 
 // Set page context.
 $PAGE->set_context($context);
@@ -65,11 +57,11 @@ $PAGE->set_context($context);
 $PAGE->set_url($pageurl);
 
 // Get renderable.
-$renderable = new \report_elucidsitereport\output\elucidreport_renderable();
+$renderable = new \local_sitereport\output\elucidreport_renderable();
 $output = $PAGE->get_renderer($component)->render($renderable);
 
 // Set page heading.
-$PAGE->set_heading(get_string("pluginname", "report_elucidsitereport"));
+$PAGE->set_heading(get_string("pluginname", "local_sitereport"));
 
 // Print output in page.
 echo $OUTPUT->header();
