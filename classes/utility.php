@@ -119,7 +119,7 @@ class utility {
         $certificatesblock = new \local_sitereport\certificatesblock();
         if (isset($data->certificateid)) {
             $cohortid = isset($data->cohortid) ? $data->cohortid : false;
-            return \local_sitereport\certificatesblock::get_issued_users($data->certificateid, $data->cohortid);
+            return \local_sitereport\certificatesblock::get_issued_users($data->certificateid, $cohortid);
         }
         return $certificatesblock->get_data();
     }

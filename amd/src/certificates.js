@@ -109,8 +109,8 @@ define([
             $(document).on("change", CertSelect, function() {
                 certificateid = $(this).val()
                 getCertificateDetail(certificateid);
-                console.log(certificateid);
-                V.changeExportUrl(certificateid, exportUrlLink, V.filterReplaceFlag);
+                $('.download-links input[name="filter"]').val(certificateid);
+                // V.changeExportUrl(certificateid, exportUrlLink, V.filterReplaceFlag);
             });
         });
     }

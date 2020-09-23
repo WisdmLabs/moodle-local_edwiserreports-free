@@ -283,6 +283,9 @@ class coursereport_renderable implements renderable, templatable {
     }
 }
 
+/**
+ * Certificate renderable
+ */
 class certificates_renderable implements renderable, templatable {
     /**
      * Function to export the renderer data in a format that is suitable for a
@@ -309,11 +312,13 @@ class certificates_renderable implements renderable, templatable {
                 $customcert->coursename = $course->shortname;
             }
             $output->certificates = array_values($customcerts);
-            $downloadurl = $CFG->wwwroot."/local/sitereport/download.php";
-            $output->exportlink = local_sitereport_get_exportlinks($downloadurl, "report", "certificates", $firstcertid, 0);
+            $output->certexport = array(
+                "id" => "certificates",
+                "region" => "report",
+                "downloadurl" => $CFG->wwwroot . "/local/sitereport/download.php",
+                "filter" => $firstcertid
+            );
         }
-        $output->userfilters = local_sitereport_get_userfilters(false, true, false);
-        $output->backurl = new moodle_url($CFG->wwwroot."/local/sitereport/index.php");
         return $output;
     }
 }

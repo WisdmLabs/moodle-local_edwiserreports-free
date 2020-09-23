@@ -43,6 +43,9 @@ $PAGE->requires->js_call_amd('local_sitereport/certificates', 'init', array($con
 // Require CSS for certificates page.
 $PAGE->requires->css('/local/sitereport/styles/select2.min.css');
 
+// Require CSS.
+$PAGE->requires->css('/local/sitereport/styles/loader.css');
+
 // Page URL.
 $pageurl = new moodle_url($CFG->wwwroot . "/local/sitereport/certificates.php");
 

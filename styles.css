@@ -719,3 +719,8 @@ div[id^="wdm-"][id*="-individual"] table.table,
 .modal .comparisontable .switch-capability label {
 	cursor: pointer;
 }
+
+#wdm-certificates-individual .table .pie-progress {
+    width: 40px;
+    margin: auto;
+}

@@ -172,6 +172,7 @@ class certificatesblock extends block_base {
         if (!$issuedcert = $cache->get($cachekey)) {
             $certificate = $DB->get_record("customcert", array("id" => $certid));
             $course = get_course($certificate->course);
+
             $sql = "SELECT * FROM {customcert_issues} WHERE customcertid= :customcertid";
             $params['customcertid'] = $certid;
             $issued = $DB->get_recordset_sql($sql, $params);
@@ -317,6 +318,7 @@ class certificatesblock extends block_base {
      */
     public static function get_exportable_data_report($certid) {
         $cohortid = optional_param("cohortid", 0, PARAM_INT);
+
         $record = self::get_issued_users($certid, $cohortid);
 
         foreach ($record->data as $key => $user) {

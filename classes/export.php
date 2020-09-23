@@ -581,7 +581,7 @@ class export {
                 $export = courseengageblock::get_exportable_data_report();
                 break;
             case "certificates":
-                $export = certificates_block::get_exportable_data_report($filter);
+                $export = certificatesblock::get_exportable_data_report($filter);
                 break;
             case "f2fsession":
                 $export = f2fsession_block::get_exportable_data_report($filter);
