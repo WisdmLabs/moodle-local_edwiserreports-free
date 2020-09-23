@@ -366,7 +366,9 @@ define([
                             });
                             
                             // Set block capabilities
-                            setBlockCapabilities(blockname, data);
+                            setBlockCapabilities(blockname, data, function() {
+                                modal.destroy();
+                            });
                         });
                     });
 
@@ -405,7 +407,6 @@ define([
      * @param {function} callback 
      */
     function setBlockCapabilities(blockname, data, callback) {
-        console.log(data);
         data['blockname'] = blockname; 
         data = JSON.stringify(data);
         var sesskey = $('#' + blockname).data('sesskey');
@@ -421,6 +422,7 @@ define([
             }
         }).done(function(response) {
             if (response.success) {
+                callback();
                 location.reload();
             } else {
                 notif.addNotification({
@@ -435,6 +437,7 @@ define([
                 type: "error"
             });
         }).always(function() {
+            callback();
             location.reload();
         });
     }

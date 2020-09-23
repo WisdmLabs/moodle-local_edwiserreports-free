@@ -713,6 +713,7 @@ div[id^="wdm-"][id*="-individual"] table.table,
 .modal .menucapabilities {
 	max-width: 100%;
 }
-.modal .comparisontable .switch-capability {
+.modal .comparisontable .switch-capability,
+.modal .comparisontable .switch-capability label {
 	cursor: pointer;
 }
