@@ -27,18 +27,10 @@ require_once($CFG->libdir.'/adminlib.php');
 require_once('classes/output/renderable.php');
 require_once('classes/export.php');
 
+global $OUTPUT;
+
 // Strings for js.
-$PAGE->requires->strings_for_js([
-    'cpblocktooltip1',
-    'cpblocktooltip2',
-    'lpstatstooltip',
-    'per100-80',
-    'per80-60',
-    'per60-40',
-    'per40-20',
-    'per20-0',
-    'per100'
-], 'report_elucidsitereport');
+get_recquired_strings_for_js();
 
 // Set external page admin.
 $context = context_system::instance();
@@ -51,11 +43,11 @@ require_login();
 
 // The requested section isn't in the admin tree
 // It could be because the user has inadequate capapbilities or because the section doesn't exist.
-if (!has_capability('report/report_elucidsitereport:view', $context)) {
-    // The requested section could depend on a different capability
-    // But most likely the user has inadequate capabilities.
-    print_error('accessdenied', 'admin');
-}
+// if (!has_capability('report/report_elucidsitereport:view', $context)) {
+//     // The requested section could depend on a different capability
+//     // But most likely the user has inadequate capabilities.
+//     print_error('accessdenied', 'admin');
+// }
 
 // Page URL.
 $pageurl = new moodle_url($CFG->wwwroot."/report/elucidsitereport/index.php");

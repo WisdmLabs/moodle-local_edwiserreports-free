@@ -702,3 +702,17 @@ div[id^="wdm-"][id*="-individual"] table.table,
 .modal-open .select2-container {
     z-index: unset !important;
 }
+
+.modal .path-admin-tool-capability .comparisontable thead th div>a {
+    -webkit-transform: rotate(270deg);
+    -moz-transform: rotate(270deg);
+    -ms-transform: rotate(270deg);
+    -o-transform: rotate(270deg);
+}
+
+.modal .menucapabilities {
+	max-width: 100%;
+}
+.modal .comparisontable .switch-capability {
+	cursor: pointer;
+}

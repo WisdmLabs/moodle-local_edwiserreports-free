@@ -1187,4 +1187,38 @@ class utility {
 
         return $capabilitychoices;
     }
+
+    /**
+     * Get blocks capabilities
+     * @param  [object] $block Block Data
+     * @return []
+     */
+    public static function set_block_capability($data) {
+        global $DB;
+
+        $context = context_system::instance();
+        $blockname = $data->blockname;
+        $capability = $data->capabilities;
+        unset($data->blockname);
+        unset($data->capabilities);
+
+        $permissionconst = array(
+             'inherit' => CAP_INHERIT,
+             'allow' => CAP_ALLOW,
+             'prevent' => CAP_PREVENT,
+             'prohibit' => CAP_PROHIBIT
+        );
+
+        foreach ($data as $rolename => $permission) {
+            $role = $DB->get_record('role', array('shortname' => $rolename));
+            if (!$role) {
+                continue;
+            }
+            assign_capability($capability, $permissionconst[$permission], $role->id, $context->id, true);
+        }
+
+        return array(
+            "success" => true
+        );
+    }
 }

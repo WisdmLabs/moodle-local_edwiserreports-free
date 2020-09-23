@@ -888,3 +888,30 @@ function get_email_schedule_next_run($duration, $time) {
 function prepare_export_filename($params) {
     return "report_" . implode("_", $params);
 }
+
+function get_recquired_strings_for_js() {
+    global $PAGE;
+
+    // Require strings from report_elucidlearning component.
+    $str = array(
+        'cpblocktooltip1',
+        'cpblocktooltip2',
+        'lpstatstooltip',
+        'per100-80',
+        'per80-60',
+        'per60-40',
+        'per40-20',
+        'per20-0',
+        'per100',
+    );
+    $PAGE->requires->strings_for_js($str, 'report_elucidsitereport');
+
+    // Require string from role component
+    $str = array(
+        'inherit',
+        'allow',
+        'prevent',
+        'prohibit'
+    );
+    $PAGE->requires->strings_for_js($str, 'role');
+}

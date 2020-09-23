@@ -276,8 +276,6 @@ define([
             var blockname = $(e.currentTarget).data('blockname');
             var action = $(e.currentTarget).data('action');
 
-            console.log(blockname);
-
             if (action == 'edit') {
                 ModalFactory.create({
                     title: 'Edit Block Setting',
@@ -352,7 +350,23 @@ define([
                                 }
                             ).done(function(html, js, css) {
                                 modal.modal.find('.cap-overview').html(html);
+                                switchCapabilitiesBlock(modal);
                             });
+                        });
+
+                        switchCapabilitiesBlock(modal);
+
+                        var form = modal.modal.find('.block-cap-form');
+                        modal.modal.find('.save-block-caps').on('click', function(event) {
+                            event.preventDefault();
+                            var formData = form.serializeArray();
+                            var data = {};
+                            $(formData).each(function($k, $d) {
+                                data[$d.name] = $d.value;
+                            });
+                            
+                            // Set block capabilities
+                            setBlockCapabilities(blockname, data);
                         });
                     });
 
@@ -362,6 +376,66 @@ define([
                     modal.show();
                 });
             }
+        });
+    }
+
+    function switchCapabilitiesBlock (modal) {
+        modal.modal.find('.comparisontable .switch-capability').on('click', function(event) {
+            var permissions = $(event.currentTarget).find('input[type=radio]');
+            var current = permissions.filter(':checked');
+            var next = permissions.eq(permissions.index(current) + 1);
+            if (next.length === 0) {
+                next = permissions.eq(0);
+            }
+            next.prop('checked', true);
+
+            var perStr = next.data('strpermission');
+            var perClass = next.data('permissionclass');
+
+            $(event.currentTarget).removeClass('inherit allow prevent prohibit');
+            $(event.currentTarget).addClass(perClass);
+            $(event.currentTarget).find('label').html(perStr);
+        });
+    }
+
+    /**
+     * Set blocks capabilities
+     * @param {string} blockname 
+     * @param {string} data 
+     * @param {function} callback 
+     */
+    function setBlockCapabilities(blockname, data, callback) {
+        console.log(data);
+        data['blockname'] = blockname; 
+        data = JSON.stringify(data);
+        var sesskey = $('#' + blockname).data('sesskey');
+
+        // Update users capability
+        $.ajax({
+            url: v.requestUrl,
+            type: 'GET',
+            data: {
+                action: 'set_block_capability_ajax',
+                sesskey: sesskey,
+                data : data
+            }
+        }).done(function(response) {
+            if (response.success) {
+                location.reload();
+            } else {
+                notif.addNotification({
+                    message: "Error",
+                    type: "error"
+                });
+            }
+        }).fail(function(error) {
+            console.log(error);
+            notif.addNotification({
+                message: error,
+                type: "error"
+            });
+        }).always(function() {
+            location.reload();
         });
     }
 

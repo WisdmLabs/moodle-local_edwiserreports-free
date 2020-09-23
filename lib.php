@@ -467,14 +467,24 @@ function report_elucidsitereport_output_fragment_block_overview_display($data) {
     $d = html_writer::start_tag('tbody');
     $d .= html_writer::start_tag('tr');
 
+    // Get capability context.
     $roles = role_fix_names(get_all_roles($context));
-    // Get capability context
     $capabilitycontext = tool_capability_calculate_role_data($data['capvalue'], $roles);
     foreach ($roles as $roleid => $role) {
         $o .= '<th><div><a href="javascript:void(0)">' . $role->localname . '</a></div></th>';
         $rolecap = $capabilitycontext[$context->id]->rolecapabilities[$role->id];
         $permission = isset($rolecap) ? $rolecap : CAP_INHERIT;
-        $d .= '<td class="switch-capability ' . $permissionclasses[$permission] . '">' . $strpermissions[$permission] . '</td>';
+        $d .= '<td class="switch-capability ' . $permissionclasses[$permission] . '" data-permission="' . $permission . '"><label>' . $strpermissions[$permission] . '</label>';
+
+        foreach ($permissionclasses as $key => $class) {
+            $checked = '';
+            if ($key == $permission) {
+                $checked = 'checked';
+            }
+            $d .= '<input class="d-none" type="radio" name="' . $role->shortname .'" value="' . $class . '" data-strpermission="' . $strpermissions[$key] . '" data-permissionclass="' . $class . '"' . $checked . '>';
+        }
+
+        $d .= '</td>';
     }
 
     $d .= html_writer::end_tag('tr');
