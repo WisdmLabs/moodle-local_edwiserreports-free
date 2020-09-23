@@ -40,6 +40,8 @@ require_once($CFG->dirroot."/local/sitereport/locallib.php");
  * @return [string] HTML table
  */
 function local_sitereport_output_fragment_userslist($args) {
+    global $CFG;
+
     $response = null;
     $page = clean_param($args["page"], PARAM_TEXT);
     $cohortid = clean_param($args["cohortid"], PARAM_TEXT);
@@ -53,17 +55,19 @@ function local_sitereport_output_fragment_userslist($args) {
             break;
 
         case "courseprogress":
+            require_once($CFG->dirroot . '/local/sitereport/classes/blocks/courseprogressblock.php');
             $courseid = clean_param($args['courseid'], PARAM_TEXT);
             $minval = clean_param($args['minval'], PARAM_TEXT);
             $maxval = clean_param($args['maxval'], PARAM_TEXT);
 
-            $response = \local_sitereport\course_progress_block::get_userslist_table($courseid, $minval, $maxval, $cohortid);
+            $response = \local_sitereport\courseprogressblock::get_userslist_table($courseid, $minval, $maxval, $cohortid);
             break;
         case "courseengage":
+            require_once($CFG->dirroot . '/local/sitereport/classes/blocks/courseengageblock.php');
             $courseid = clean_param($args['courseid'], PARAM_TEXT);
             $action   = clean_param($args['action'], PARAM_TEXT);
 
-            $response = \local_sitereport\courseengage_block::get_userslist_table($courseid, $action, $cohortid);
+            $response = \local_sitereport\courseengageblock::get_userslist_table($courseid, $action, $cohortid);
             break;
     }
 

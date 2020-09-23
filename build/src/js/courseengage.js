@@ -86,9 +86,14 @@ define([
                                 searchPlaceholder: "Search users",
                                 emptyTable: "There are no users"
                             },
-                            scrollY : "350px",
-                            scrollX : true,
-                            paging: false,
+                            drawCallback: function () {
+                                ModalRoot.find('.dataTables_paginate > .pagination').addClass('pagination-sm pull-right');
+                                ModalRoot.find('.dataTables_filter').addClass('pagination-sm pull-right');
+                            },
+                            // scrollY : "350px",
+                            // scrollX : true,
+                            // paging: false,
+                            lengthChange: false,
                             bInfo : false
                         });
                     });

@@ -39,7 +39,7 @@ use moodle_url;
  * Class Course Engagement Block
  * To get the data related to course engagement block
  */
-class courseengage_block extends utility {
+class courseengageblock extends utility {
     /** Get data for course engagement block
      * @return [object] Information about the course engage
      * block
@@ -223,7 +223,7 @@ class courseengage_block extends utility {
     public static function get_userslist_table($courseid, $action, $cohortid) {
         $table = new html_table();
         $table->attributes = array (
-            "class" => "modal-table",
+            "class" => "modal-table table",
             "style" => "min-width: 100%;",
         );
 
@@ -275,7 +275,7 @@ class courseengage_block extends utility {
      */
     public static function get_enrolled_users($course, $cohortid) {
         $coursecontext = context_course::instance($course->id);
-        $users = course_progress_block::rep_get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+        $users = \local_sitereport\utility::get_enrolled_students($course->id);
 
         $usersdata = new stdClass();
         $usresdata->head = array(
@@ -341,7 +341,7 @@ class courseengage_block extends utility {
      */
     public static function get_users_started_an_activity($course, $cohortid) {
         $coursecontext = context_course::instance($course->id);
-        $enrolledusers = course_progress_block::rep_get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+        $enrolledusers = \local_sitereport\utility::get_enrolled_students($course->id);
         $users = self::users_completed_a_module($course, $enrolledusers, $cohortid);
         $usersdata = new stdClass();
         $userdata->head = array(
@@ -374,7 +374,7 @@ class courseengage_block extends utility {
      */
     public static function get_users_completed_half_courses($course, $cohortid) {
         $coursecontext = context_course::instance($course->id);
-        $enrolledusers = course_progress_block::rep_get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+        $enrolledusers = \local_sitereport\utility::get_enrolled_students($course->id);
         $users = self::users_completed_half_modules($course, $enrolledusers, $cohortid);
 
         $usersdata = new stdClass();
@@ -408,7 +408,7 @@ class courseengage_block extends utility {
      */
     public static function get_users_completed_courses($course, $cohortid) {
         $coursecontext = context_course::instance($course->id);
-        $enrolledusers = course_progress_block::rep_get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+        $enrolledusers = \local_sitereport\utility::get_enrolled_students($course->id);
         $users = self::users_completed_all_module($course, $enrolledusers, $cohortid);
 
         $usersdata = new stdClass();

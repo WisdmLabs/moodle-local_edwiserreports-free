@@ -37,7 +37,7 @@ require_once($CFG->dirroot . "/local/sitereport/classes/blocks/siteaccessblock.p
 require_once($CFG->dirroot . "/local/sitereport/classes/blocks/todaysactivityblock.php");
 require_once($CFG->dirroot . "/local/sitereport/classes/blocks/lpstatsblock.php");
 require_once($CFG->dirroot . "/local/sitereport/classes/blocks/inactiveusersblock.php");
-require_once($CFG->dirroot . "/local/sitereport/classes/blocks/courseengage_block.php");
+require_once($CFG->dirroot . "/local/sitereport/classes/blocks/courseengageblock.php");
 require_once($CFG->dirroot . "/local/sitereport/classes/blocks/completion_block.php");
 require_once($CFG->dirroot . "/local/sitereport/classes/blocks/courseanalytics_block.php");
 
@@ -157,7 +157,7 @@ class utility {
     }
 
     public static function get_courseengage_data($cohortid) {
-        return \local_sitereport\courseengage_block::get_data($cohortid);
+        return \local_sitereport\courseengageblock::get_data($cohortid);
     }
 
     public static function get_inactiveusers_data($data) {

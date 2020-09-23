@@ -30,6 +30,8 @@ use moodle_url;
 use cache;
 use context_course;
 use html_writer;
+use html_table;
+use core_user;
 
 require_once($CFG->dirroot . '/local/sitereport/classes/block_base.php');
 
@@ -204,15 +206,15 @@ class courseprogressblock extends block_base {
         $response = array();
         foreach ($courses as $course) {
             // Generate response object for a course.
-            $res = (object) array(
-                "completed100" => 0,
-                "completed80" => 0,
-                "completed60" => 0,
-                "completed40" => 0,
-                "completed20" => 0,
-                "completed00" => 0,
-                "enrolments" => 0
-            );
+            $completed100 = 0;
+            $completed80 = 0;
+            $completed60 = 0;
+            $completed40 = 0;
+            $completed20 = 0;
+            $completed00 = 0;
+            $enrolments = 0;
+
+            $res = new stdClass();
 
             // Assign response data.
             $res->id = $course->id;
@@ -220,15 +222,11 @@ class courseprogressblock extends block_base {
                 new moodle_url($CFG->wwwroot . "/course/view.php", array("id" => $course->id)),
                 $course->fullname
             );
-
-            // Create course url.
-            // $res->courseurl = (new moodle_url($CFG->wwwroot . "/course/view.php", array("id" => $course->id)))->out();
-
             // Get course context.
             $coursecontext = context_course::instance($course->id);
 
             // Get only enrolled student.
-            $enrolledstudents = self::rep_get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+            $enrolledstudents = \local_sitereport\utility::get_enrolled_students($course->id);
             if (!count($enrolledstudents) && !is_siteadmin()) {
                 continue;
             }
@@ -251,7 +249,7 @@ class courseprogressblock extends block_base {
                 // Generate $key to save completion in an array.
                 if (!isset($completions[$user->id])) {
                     // Completed 0% of course.
-                    $res->completed00++;
+                    $completed00++;
                 } else {
                     // Calculated progress percantage.
                     $progress = $completions[$user->id]->completion;
@@ -260,33 +258,43 @@ class courseprogressblock extends block_base {
                     switch (true) {
                         case $progress == 100:
                             // Completed 100% of course.
-                            $res->completed100++;
+                            $completed100++;
                             break;
                         case $progress >= 80 && $progress < 100:
                             // Completed 80% of course.
-                            $res->completed80++;
+                            $completed80++;
                             break;
                         case $progress >= 60 && $progress < 80:
                             // Completed 60% of course.
-                            $res->completed60++;
+                            $completed60++;
                             break;
                         case $progress >= 40 && $progress < 60:
                             // Completed 40% of course.
-                            $res->completed40++;
+                            $completed40++;
                             break;
                         case $progress >= 20 && $progress < 40:
                             // Completed 20% of course.
-                            $res->completed20++;
+                            $completed20++;
                             break;
                         default:
                             // Completed 0% of course.
-                            $res->completed00++;
+                            $completed00++;
                     }
                 }
 
                 // Increament enrolment count.
-                $res->enrolments++;
+                $enrolments++;
             }
+
+            $courseid = $course->id;
+            $coursename = $course->shortname;
+            $res->completed100 = self::get_userlist_popup_link($courseid, $coursename, $completed100, 'completed', '99', '100');
+            $res->completed80 = self::get_userlist_popup_link($courseid, $coursename, $completed80, 'completed80', '80', '99');
+            $res->completed60 = self::get_userlist_popup_link($courseid, $coursename, $completed60, 'completed60', '60', '79');
+            $res->completed40 = self::get_userlist_popup_link($courseid, $coursename, $completed40, 'completed40', '40', '59');
+            $res->completed20 = self::get_userlist_popup_link($courseid, $coursename, $completed20, 'completed20', '20', '39');
+            $res->completed00 = self::get_userlist_popup_link($courseid, $coursename, $completed00, 'incompleted', '0', '19');
+            $res->enrolments = self::get_userlist_popup_link($courseid, $coursename, $enrolments, 'enrolments', '-1', '100');
 
             // Added response object in response array.
             $response[] = $res;
@@ -296,19 +304,38 @@ class courseprogressblock extends block_base {
     }
 
     /**
+     * Prepare userslistpopup link
+     */
+    public static function get_userlist_popup_link($courseid, $coursename, $value, $action, $minval, $maxval) {
+        $url = new moodle_url('javascript:void(0)');
+        $class = 'modal-trigger text-dark text-decoration-none';
+        return html_writer::link(
+            $url,
+            $value,
+            array(
+                'class' => $class,
+                'data-action' => 'enrolments',
+                'data-minvalue' => $minval,
+                'data-maxvalue' => $maxval,
+                'data-courseid' => $courseid,
+                'data-coursename' => $coursename
+            )
+        );
+    }
+
+    /**
      * Get Users List Table
      * @param [int] $courseid Course ID
      * @param [int] $minval Minimum Progress Value
      * @param [int] $maxval Maximum Progress Value
      */
     public static function get_userslist_table($courseid, $minval, $maxval, $cohortid) {
-
         $table = new html_table();
         $table->head = array(
             get_string("fullname", "local_sitereport"),
             get_string("email", "local_sitereport")
         );
-        $table->attributes["class"] = "modal-table";
+        $table->attributes["class"] = "modal-table table";
         $table->attributes["style"] = "min-width: 100%;";
 
         $data = self::get_userslist($courseid, $minval, $maxval, $cohortid);
@@ -328,7 +355,7 @@ class courseprogressblock extends block_base {
     public static function get_userslist($courseid, $minval, $maxval, $cohortid) {
         $course = get_course($courseid);
         $coursecontext = context_course::instance($courseid);
-        $enrolledstudents = self::rep_get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+        $enrolledstudents = \local_sitereport\utility::get_enrolled_students($course->id);
         $completions = \local_sitereport\utility::get_course_completion($courseid);
 
         $usersdata = array();
@@ -400,7 +427,7 @@ class courseprogressblock extends block_base {
         foreach ($courses as $key => $course) {
             $courseprogress = course_progress_block::get_data($course->id, $cohortid);
             $coursecontext = context_course::instance($course->id);
-            $enrolledstudents = self::rep_get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+            $enrolledstudents = \local_sitereport\utility::get_enrolled_students($course->id);
             if ($cohortid) {
                 foreach ($enrolledstudents as $key => $user) {
                     $cohorts = cohort_get_user_cohorts($user->id);
