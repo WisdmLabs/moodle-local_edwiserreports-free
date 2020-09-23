@@ -22,9 +22,11 @@
         </div>
         <div class="tab-pane" id="engagement" role="tabpanel">
             {{> local_sitereport/courseengage }}
+            {{# courseengageexport }}
             <div class="pull-right px-5">
                 {{> local_sitereport/exportreports }}
             </div>
+            {{/ courseengageexport }}
         </div>
     </div>
 </div>

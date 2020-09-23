@@ -272,10 +272,13 @@ class coursereport_renderable implements renderable, templatable {
             "region" => "report",
             "downloadurl" => $CFG->wwwroot . "/local/sitereport/download.php"
         );
-        // local_sitereport_get_exportlinks($downloadurl, "report", "courseprogress", false, 0);
-        // $output->export->courseengage = local_sitereport_get_exportlinks($downloadurl, "report", "courseengage", false, 0);
-        $output->userfilters = local_sitereport_get_userfilters(false, true, false);
-        $output->backurl = new moodle_url($CFG->wwwroot."/local/sitereport/index.php");
+
+        $output->courseengageexport = array(
+            "id" => "courseengage",
+            "region" => "report",
+            "downloadurl" => $CFG->wwwroot . "/local/sitereport/download.php"
+        );
+
         return $output;
     }
 }
