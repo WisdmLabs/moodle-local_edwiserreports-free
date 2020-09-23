@@ -428,10 +428,17 @@ class courseprogressblock extends block_base {
     public static function get_exportable_data_report($filter) {
         $cohortid = optional_param("cohortid", 0, PARAM_INT);
         $export = array();
-        $export[] = course_progress_block::get_header_report();
+        $export[] = self::get_header_report();
         $courses = \local_sitereport\utility::get_courses();
+
         foreach ($courses as $key => $course) {
-            $courseprogress = course_progress_block::get_data($course->id, $cohortid);
+            $blockobj = new self();
+
+            $params = (object) array(
+                'courseid' => $course->id,
+                'cohortid' => $cohortid
+            );
+            $courseprogress = $blockobj->get_data($params);
             $coursecontext = context_course::instance($course->id);
             $enrolledstudents = \local_sitereport\utility::get_enrolled_students($course->id);
             if ($cohortid) {

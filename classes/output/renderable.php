@@ -251,6 +251,9 @@ class activeusers_renderable implements renderable, templatable {
     }
 }
 
+/**
+ * Course report renderables
+ */
 class coursereport_renderable implements renderable, templatable {
     /**
      * Function to export the renderer data in a format that is suitable for a
@@ -264,10 +267,13 @@ class coursereport_renderable implements renderable, templatable {
         $output = new stdClass();
         $output->sesskey = sesskey();
 
-        $downloadurl = $CFG->wwwroot."/local/sitereport/download.php";
-        $output->exportlink = new stdClass();
-        $output->exportlink->courseprogress = local_sitereport_get_exportlinks($downloadurl, "report", "courseprogress", false, 0);
-        $output->exportlink->courseengage = local_sitereport_get_exportlinks($downloadurl, "report", "courseengage", false, 0);
+        $output->courseprogressexport = array(
+            "id" => "courseprogress",
+            "region" => "report",
+            "downloadurl" => $CFG->wwwroot . "/local/sitereport/download.php"
+        );
+        // local_sitereport_get_exportlinks($downloadurl, "report", "courseprogress", false, 0);
+        // $output->export->courseengage = local_sitereport_get_exportlinks($downloadurl, "report", "courseengage", false, 0);
         $output->userfilters = local_sitereport_get_userfilters(false, true, false);
         $output->backurl = new moodle_url($CFG->wwwroot."/local/sitereport/index.php");
         return $output;

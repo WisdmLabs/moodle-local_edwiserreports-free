@@ -575,7 +575,7 @@ class export {
                 $export = active_users_block::get_exportable_data_report($filter);
                 break;
             case "courseprogress":
-                $export = course_progress_block::get_exportable_data_report($filter);
+                $export = courseprogressblock::get_exportable_data_report($filter);
                 break;
             case "courseengage":
                 $export = courseengage_block::get_exportable_data_report();

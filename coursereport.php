@@ -44,6 +44,9 @@ $PAGE->requires->js_call_amd('local_sitereport/courseengage', 'init', array($con
 // Get page URL.
 $pageurl = new moodle_url($CFG->wwwroot . "/local/sitereport/coursereport.php");
 
+// Require CSS.
+$PAGE->requires->css('/local/sitereport/styles/loader.css');
+
 // Set page context.
 $PAGE->set_context($context);
 

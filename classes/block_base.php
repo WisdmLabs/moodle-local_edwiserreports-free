@@ -48,6 +48,7 @@ class block_base {
         $this->layout->contextid = $context->id;
         $this->layout->canedit = true;
         $this->layout->caneditadv = false;
+        $this->layout->region = 'block';
 
         $this->block = new stdClass();
     }
