@@ -97,6 +97,12 @@ $string['visits'] = "Visits";
 $string['completions'] = "Completions";
 $string['selectdate'] = "Select Date";
 $string['never'] = "Never";
+$string['recipient'] = "Recipient";
+$string['subject'] = "Subject";
+$string['message'] = "Message";
+$string['reset'] = "Reset";
+$string['send'] = "Send";
+
 
 /* Block help tooltips */
 $string['activeusersblocktitlehelp'] = "Active Users Block";

@@ -82,8 +82,8 @@ define([
         var pageContent = $("#page-admin-report-elucidsitereport-index .page-content");
         var pageWidth = pageContent.width();
         var exportPdf = '.download-links button[value="pdf"]';
-        var exportEmailDropdown = '.download-links button[value="email"]';
-        var scheduledEmailDropdown = '.download-links button[value="emailscheduled"]';
+        // var exportEmailDropdown = '.download-links button[value="emailscheduled"]';
+        var scheduledEmailDropdown = '.download-links button[value="email"]';
         var durationDropdown = '#scheduletab .dropdown.duration-dropdown a.dropdown-item';
         var weeksDropdown = '#scheduletab .dropdown.weeks-dropdown a.dropdown-item';
 
@@ -200,33 +200,33 @@ define([
         });
 
         // Send email the report
-        $(document).on("click", exportEmailDropdown, function(e) {
-            e.preventDefault();
-            var _this = this;
-            ModalFactory.create({
-                type: ModalFactory.types.SAVE_CANCEL,
-                title: v.getEmailModalHeader($(_this).data("blockname"), 0),
-                body: fragment.loadFragment(
-                    'local_sitereport',
-                    'email_dialog',
-                    $(_this).data("contextid"),
-                    {
-                        blockname : $(_this).data("blockname")
-                    }
-                ),
-            }, $(this))
-            .done(function(modal) {
-                var root = modal.getRoot();
-                root.on(ModalEvents.hidden, function() {
-                    modal.destroy();
-                });
-                root.on(ModalEvents.save, function() {
-                    sendMailToUser(_this, root);
-                });
-                modal.setSaveButtonText('Send');
-                modal.show();
-            });
-        });
+        // $(document).on("click", exportEmailDropdown, function(e) {
+        //     e.preventDefault();
+        //     var _this = this;
+        //     ModalFactory.create({
+        //         type: ModalFactory.types.SAVE_CANCEL,
+        //         title: v.getEmailModalHeader($(_this).data("blockname"), 0),
+        //         body: fragment.loadFragment(
+        //             'local_sitereport',
+        //             'email_dialog',
+        //             $(_this).data("contextid"),
+        //             {
+        //                 blockname : $(_this).data("blockname")
+        //             }
+        //         ),
+        //     }, $(this))
+        //     .done(function(modal) {
+        //         var root = modal.getRoot();
+        //         root.on(ModalEvents.hidden, function() {
+        //             modal.destroy();
+        //         });
+        //         root.on(ModalEvents.save, function() {
+        //             sendMailToUser(_this, root);
+        //         });
+        //         modal.setSaveButtonText('Send');
+        //         modal.show();
+        //     });
+        // });
 
         /**
          * Schedule emails to send reports                                    e.preventDefault();            var _this [description]

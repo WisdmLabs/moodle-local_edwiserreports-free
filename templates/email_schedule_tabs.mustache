@@ -2,7 +2,7 @@
     <ul class="nav nav-tabs nav-tabs-line" role="tablist">
         <li class="nav-item" role="presentation">
             <a class="nav-link active show" data-toggle="tab" aria-controls="scheduletab" role="tab" aria-selected="false" href="#scheduletab">
-                {{#str}} schedule, local_sitereport {{/str}}
+                {{#str}} email, local_sitereport {{/str}}
             </a>
         </li>
         <li class="nav-item" role="presentation">
@@ -11,13 +11,13 @@
             </a>
         </li>
     </ul>
-    <div class="tab-content pt-20">
+    <div class="tab-content">
         <div class="tab-pane active show" id="scheduletab" role="tabpanel">
             <form action="">
-                <div>
+                <div id="region-main" class="col-12 border-0">
                     <div class="d-flex">
-                        <i class="icon fa fa-calendar my-auto" aria-hidden="true"></i>
-                        <span class="my-auto mx-5">
+                        <i class="fa fa-calendar my-auto" aria-hidden="true"></i>
+                        <span class="my-auto mx-1">
                             {{#str}} emailthisreport, local_sitereport {{/str}}
                         </span>
                         <span class="duration-dropdown dropdown">
@@ -50,13 +50,13 @@
                                 </a>
                             </div>
                         </span>
-                        <span class="my-auto mx-5">
+                        <span class="my-auto mx-1">
                             on every
                         </span>
                         <span class="weekly-dropdown dropdown">
                             <button data-value="0"
                                 type="button"
-                                class="btn btn-default btn-sm dropdown-toggle mx-5"
+                                class="btn btn-default btn-sm dropdown-toggle mx-1"
                                 id="weeksdropdown"
                                 data-toggle="dropdown"
                                 data-managedby="1"
@@ -114,7 +114,7 @@
                         <span class="daily-dropdown dropdown">
                             <button data-value="0"
                                 type="button"
-                                class="btn btn-default btn-sm dropdown-toggle mx-5"
+                                class="btn btn-default btn-sm dropdown-toggle mx-1"
                                 id="timesdropdown"
                                 data-toggle="dropdown"
                                 data-managedby="0"
@@ -138,7 +138,7 @@
                         <span class="monthly-dropdown dropdown">
                             <button data-value="1"
                                 type="button"
-                                class="btn btn-default btn-sm dropdown-toggle mx-5"
+                                class="btn btn-default btn-sm dropdown-toggle mx-1"
                                 id="monthlydropdown"
                                 data-toggle="dropdown"
                                 data-managedby="2"
@@ -159,7 +159,7 @@
                         </span>
 
                         {{! Toggle switch }}
-                        <div class="my-auto px-5 ml-auto">
+                        <div class="my-auto ml-auto">
                             <label class="esr-switch" title="Enable/Disable email" for="esr-toggle-">
                                 <input id="esr-toggle-" type="checkbox" name="esremailenable" checked="checked">
                                 <div class="switch-container esr-enable-disable-form">
@@ -169,32 +169,56 @@
                             </label>
                         </div>
                     </div>
-                    <div class="w-full my-10">
+                    <div class="py-2 w-full">
                         {{! Name field }}
-                        <div class="mb-5">
-                            <i class="icon fa fa-calendar-o my-auto" aria-hidden="true"></i>
-                            <span>Name</span>
+                        <div class="form-group row fitem">
+                            <div class="col-12">
+                                <label class="col-form-label d-inline" for="id_desktopview">
+                                    <i class="fa fa-calendar-o my-auto" aria-hidden="true"></i>
+                                    {{# str }} name, local_sitereport {{/ str }}
+                                </label>
+                            </div>
+                            <div class="col-12">
+                                <input type="text" value="" name="esrname" class="form-control">
+                            </div>
                         </div>
-                        <input type="text" value="" name="esrname" class="w-full mb-10">
 
                         {{! Recepient field }}
-                        <div class="mb-5">
-                            <i class="icon fa fa-user my-auto" aria-hidden="true"></i>
-                            <span>Recepient</span>
+                        <div class="form-group row fitem">
+                            <div class="col-12">
+                                <label class="col-form-label d-inline" for="id_desktopview">
+                                    <i class="fa fa-user my-auto" aria-hidden="true"></i>
+                                    {{# str }} recipient, local_sitereport {{/ str }}
+                                </label>
+                            </div>
+                            <div class="col-12">
+                                <input type="text" value="" name="esrrecepient" class="form-control">
+                            </div>
                         </div>
-                        <input type="text" value="" name="esrrecepient" class="w-full mb-10">
                         
                         {{! Subject fields }}
-                        <div class="mb-5">
-                            <span>Subject</span>
+                        <div class="form-group row fitem">
+                            <div class="col-12">
+                                <label class="col-form-label d-inline" for="id_desktopview">
+                                    {{# str }} subject, local_sitereport {{/ str }}
+                                </label>
+                            </div>
+                            <div class="col-12">
+                                <input type="text" value="" name="esrsubject" class="form-control">
+                            </div>
                         </div>
-                        <input type="text" value="" name="esrsubject" class="w-full mb-10">
 
                         {{! Message Fields }}
-                        <div class="mb-5">
-                            <span>Message</span>
+                        <div class="form-group row fitem">
+                            <div class="col-12">
+                                <label class="col-form-label d-inline" for="id_desktopview">
+                                    {{# str }} message, local_sitereport {{/ str }}
+                                </label>
+                            </div>
+                            <div class="col-12">
+                                <textarea value="" name="esrmessage" class="form-control w-full mb-10" rows="4"></textarea>
+                            </div>
                         </div>
-                        <textarea value="" name="esrmessage" class="form-control w-full mb-10" rows="4"></textarea>
 
                         {{! Error Box }}
                         <div class="esr-form-error" style="display: none;"></div>
@@ -207,11 +231,16 @@
                         <input type="text" id="esr-region" name="region" class="d-none">
                     </div>
                 </div>
-                <div class="modal-footer px-0 py-5" data-region="footer">
+                <div class="modal-footer" data-region="footer">
+                    <button class="btn btn-primary" type="button" data-action="send">
+                        {{#str}} send, local_sitereport {{/str}}
+                    </button>
                     <button class="btn btn-primary" type="button" data-action="save">
                         {{#str}} schedule, local_sitereport {{/str}}
                     </button>
-                    <button class="btn btn-secondary" type="button" data-action="cancel">Reset</button>
+                    <button class="btn btn-secondary" type="button" data-action="cancel">
+                        {{#str}} reset, local_sitereport {{/str}}
+                    </button>
                 </div>
             </form>
         </div>
