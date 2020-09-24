@@ -48,10 +48,11 @@ function local_sitereport_output_fragment_userslist($args) {
 
     switch ($page) {
         case "activeusers":
+            require_once($CFG->dirroot . '/local/sitereport/classes/blocks/activeusersblock.php');
             $filter = clean_param($args['filter'], PARAM_TEXT);
             $action = clean_param($args['action'], PARAM_TEXT);
 
-            $response = \local_sitereport\active_users_block::get_userslist_table($filter, $action, $cohortid);
+            $response = \local_sitereport\activeusersblock::get_userslist_table($filter, $action, $cohortid);
             break;
 
         case "courseprogress":

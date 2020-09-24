@@ -135,6 +135,10 @@ define([
                                 searchPlaceholder: "Search users",
                                 emptyTable: "There are no users"
                             },
+                            drawCallback: function () {
+                                $('.dataTables_paginate > .pagination').addClass('pagination-sm pull-right');
+                                $('.dataTables_filter').addClass('pagination-sm pull-right');
+                            },
                             // scrollY : "350px",
                             // scrollX : true,
                             // paging: false,
@@ -204,6 +208,7 @@ define([
                 },
             }).done(function(response) {
                 var ActiveUsers = [];
+                response = JSON.parse(response);
 
                 $.each(response.labels, function(idx, val) {
                     ActiveUsers[idx] = {
@@ -222,6 +227,7 @@ define([
 
                 Templates.render('local_sitereport/activeusers', context)
                 .then(function(html, js) {
+                    console.log(html);
                     Templates.replaceNode(PageId, html, js);
                 }).fail(function(ex) {
                     console.log(ex);

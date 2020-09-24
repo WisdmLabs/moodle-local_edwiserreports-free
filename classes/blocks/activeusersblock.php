@@ -28,6 +28,8 @@ use stdClass;
 use moodle_url;
 use cache;
 use html_writer;
+use html_table;
+use core_user;
 
 require_once($CFG->dirroot . '/local/sitereport/classes/block_base.php');
 
@@ -383,7 +385,7 @@ class activeusersblock extends block_base {
 
             // Set table attributes.
             $table->attributes = array (
-                "class" => "modal-table",
+                "class" => "modal-table table",
                 "style" => "min-width: 100%;"
             );
 
@@ -426,7 +428,8 @@ class activeusersblock extends block_base {
                    FROM {logstore_standard_log} l $sqlcohort
                    WHERE l.timecreated >= :starttime
                    AND l.timecreated < :endtime
-                   AND l.action = :action";
+                   AND l.action = :action
+                   AND l.userid > 1";
                 $params["action"] = 'viewed';
                 break;
             case "enrolments":
@@ -510,6 +513,7 @@ class activeusersblock extends block_base {
             . $cohortcondition .
             " AND l.timecreated >= :starttime
             AND l.timecreated < :endtime
+            AND l.userid > 1
             GROUP BY YEAR(FROM_UNIXTIME(l.timecreated)),
             MONTH(FROM_UNIXTIME(l.timecreated)),
             DAY(FROM_UNIXTIME(l.timecreated)), USERDATE";
