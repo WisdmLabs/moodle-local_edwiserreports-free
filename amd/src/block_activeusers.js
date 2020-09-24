@@ -143,7 +143,8 @@ define([
                 console.log(error);
             }).always(function() {
                 activeUsersGraph = generateActiveUsersGraph();
-                V.changeExportUrl(filter, exportUrlLink, V.filterReplaceFlag);
+                // V.changeExportUrl(filter, exportUrlLink, V.filterReplaceFlag);
+                $(panelFooter).find('.download-links input[name="filter"]').val(filter)
 
                 // Change graph variables
                 resetUpdateTime();

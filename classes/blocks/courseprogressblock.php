@@ -404,7 +404,7 @@ class courseprogressblock extends block_base {
         $export[] = self::get_header();
         $coursecontext = context_course::instance($filter);
         $course = get_course($filter);
-        $enrolledstudents = get_enrolled_students($filter);
+        $enrolledstudents = \local_sitereport\utility::get_enrolled_students($filter);
         foreach ($enrolledstudents as $key => $student) {
             $completion = \local_sitereport\utility::get_course_completion_info($course, $student->id);
             $completed = $completion["completedactivities"] . "/" . $completion["totalactivities"];
