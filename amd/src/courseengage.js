@@ -36,7 +36,7 @@ define([
                 }
 
                 cohortId = $(this).data('cohortid');
-
+                $("#engagement").find('.download-links input[name="cohortid"]').val(cohortId);
                 V.changeExportUrl(cohortId, exportUrlLink, V.cohortReplaceFlag);
                 $(cohortFilterBtn).html($(this).text());
                 createCourseEngageTable(cohortId);

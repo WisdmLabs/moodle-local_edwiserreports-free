@@ -235,7 +235,7 @@ class courseprogressblock extends block_base {
             $completions = $compobj->get_course_completions($course->id);
 
             // For each enrolled student get completions.
-            foreach ($enrolledstudents as $user) {
+            foreach ($enrolledstudents as $key => $user) {
                 // If cohort filter in there then remove the users
                 // who is not belongs to the cohort.
                 if ($cohortid) {

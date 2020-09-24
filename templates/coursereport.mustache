@@ -1,4 +1,29 @@
 <div class="nav-tabs-horizontal" data-plugin="tabs">
+    <div id="wdm-userfilter" class="h-auto my-10">
+        <div class="row">
+            <div class="">
+                <div class="filters col-12 d-flex mb-1">
+                    {{# cohortfilters }}
+                    <div class="dropdown mr-1">
+                        <button type="button" class="btn dropdown-toggle" id="cohortfilter" data-toggle="dropdown" aria-expanded="false">
+                            {{ text }}
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="cohortfilter" role="menu" x-placement="bottom-start">
+                            <a class="dropdown-item" href="javascript:void(0)" data-cohortid="0" role="menuitem">
+                                {{# str }} all, local_sitereport {{/ str }}
+                            </a>
+                            {{# values }}
+                            <a class="dropdown-item" href="javascript:void(0)" data-cohortid="{{ id }}" role="menuitem">
+                                {{ name }}
+                            </a>
+                            {{/ values }}
+                        </div>
+                    </div>
+                    {{/ cohortfilters }}
+                </div>
+            </div>
+        </div>
+    </div>
     <ul class="nav nav-tabs nav-tabs-line w-full" role="tablist">
         <li class="nav-item" role="presentation">
             <a class="nav-link active" data-toggle="tab" href="#progress" aria-controls="progress" role="tab" aria-selected="true">

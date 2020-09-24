@@ -290,6 +290,10 @@ class coursereport_renderable implements renderable, templatable {
             "downloadurl" => $CFG->wwwroot . "/local/sitereport/download.php"
         );
 
+        if ($cohortfilter = local_sitereport_get_cohort_filter()) {
+            $output->cohortfilters = $cohortfilter;
+        }
+
         return $output;
     }
 }

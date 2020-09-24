@@ -36,6 +36,7 @@ define([
                     $(loader).show();   
                 }
                 cohortId = $(this).data('cohortid');
+                $("#progress").find('.download-links input[name="cohortid"]').val(cohortId);
                 $(cohortFilterBtn).html($(this).text());
                 generateCourseProgressTable(cohortId);
             });
