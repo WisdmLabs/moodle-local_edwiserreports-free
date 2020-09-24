@@ -133,13 +133,12 @@ class completion_block extends utility {
     public static function get_timecompleted($courseid, $userid) {
         global $DB;
 
-        $coursecompletion = $DB->get_record("course_completions", array(
-            "userid" => $userid,
-            "course" => $courseid
-        ));
+        // Get completions.
+        $compobj = new \local_sitereport\completions();
+        $completions = $compobj->get_course_completions($courseid);
 
-        if (isset($coursecompletion) && $coursecompletion->timecompleted) {
-            return date("d M y", $coursecompletion->timecompleted);
+        if (isset($completions[$userid]) && $completions[$userid]->completiontime) {
+            return date("d M Y", $completions[$userid]->completiontime);
         } else {
             return get_string("notyet", "local_sitereport");
         }

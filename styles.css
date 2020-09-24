@@ -701,7 +701,8 @@ div[id^="wdm-"][id*="-individual"] table.table,
 #wdm-elucidsitereport .elucidsitereport-block .dataTables_wrapper > .row,
 #wdm-courseprogress-individual .dataTables_wrapper > .row,
 #wdm-courseengage-individual .dataTables_wrapper > .row,
-wdm-activeusers-individual .dataTables_wrapper > .row {
+#wdm-activeusers-individual .dataTables_wrapper > .row,
+#wdm-completion-individual .dataTables_wrapper > .row {
     overflow: auto;
     margin: 0 0 1rem 0;
 }

@@ -165,7 +165,7 @@ class completions {
         global $DB;
         $completions = $DB->get_records($this->tablename, array(
             'courseid' => $courseid
-        ), '', "userid, progress as completion");
+        ), '', "userid, progress as completion, completiontime");
         return $completions;
     }
 }
