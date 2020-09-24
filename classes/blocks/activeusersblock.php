@@ -718,8 +718,10 @@ class activeusersblock extends block_base {
 
         if (!$export = $cache->get("exportabledatareport")) {
             $export = array();
-            $export[] = active_users_block::get_header_report();
-            $activeusersdata = active_users_block::get_data($filter);
+
+            $blockobj = new self();
+            $export[] = self::get_header_report();
+            $activeusersdata = $blockobj->get_data(array("filter" => $filter));
             foreach ($activeusersdata->labels as $key => $lable) {
                 $export = array_merge($export,
                     self::get_usersdata($lable, "activeusers"),
@@ -742,7 +744,7 @@ class activeusersblock extends block_base {
      */
     public static function get_usersdata($lable, $action) {
         $usersdata = array();
-        $users = active_users_block::get_userslist(strtotime($lable), $action);
+        $users = self::get_userslist(strtotime($lable), $action);
 
         foreach ($users as $key => $user) {
             $user = array_merge(

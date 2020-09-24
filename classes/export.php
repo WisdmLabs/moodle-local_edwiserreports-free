@@ -569,10 +569,13 @@ class export {
      * @return [array] Array of exportable data
      */
     private function exportable_data_report($blockname, $filter) {
+        global $CFG;
         $export = null;
+
         switch ($blockname) {
             case "activeusers":
-                $export = active_users_block::get_exportable_data_report($filter);
+                require_once($CFG->dirroot . '/local/sitereport/classes/blocks/activeusersblock.php');
+                $export = activeusersblock::get_exportable_data_report($filter);
                 break;
             case "courseprogress":
                 $export = courseprogressblock::get_exportable_data_report($filter);

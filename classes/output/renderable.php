@@ -249,16 +249,15 @@ class activeusers_renderable implements renderable, templatable {
 
         $downloadurl = $CFG->wwwroot."/local/sitereport/download.php";
 
-        $blockobj = new \local_sitereport\activeusersblock();
-        // $output->filters = $blockobj->get_activeusers_filter();
-
         if ($cohortfilter = local_sitereport_get_cohort_filter()) {
             $output->cohortfilters = $cohortfilter;
         }
 
-        // $output->exportlink = local_sitereport_get_exportlinks($downloadurl, "report", "activeusers", "weekly", 0);
-        // $output->userfilters = local_sitereport_get_userfilters(false, true, true);
-        // $output->backurl = new moodle_url($CFG->wwwroot."/local/sitereport/index.php");
+        $output->export = array(
+            "id" => "activeusers",
+            "region" => "report",
+            "downloadurl" => $CFG->wwwroot . "/local/sitereport/download.php"
+        );
         return $output;
     }
 }

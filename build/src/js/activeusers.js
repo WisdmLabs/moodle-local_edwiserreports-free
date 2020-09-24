@@ -56,14 +56,16 @@ define([
             $(cohortFilterItem).on('click', function() {
                 cohortId = $(this).data('cohortid');
                 $(cohortFilterBtn).html($(this).text());
-                V.changeExportUrl(cohortId, exportUrlLink, V.cohortReplaceFlag);
+                // V.changeExportUrl(cohortId, exportUrlLink, V.cohortReplaceFlag);
+                $(PageId).find('.download-links input[name="cohortid"]').val(cohortId);
                 createActiveUsersTable(filter, cohortId);
             });
 
             /* Select filter for active users block */
             $(dropdownItem + ":not(.custom)").on('click', function() {
                 filter = $(this).attr('value');
-                V.changeExportUrl(filter, exportUrlLink, V.filterReplaceFlag);
+                // V.changeExportUrl(filter, exportUrlLink, V.filterReplaceFlag);
+                $(PageId).find('.download-links input[name="filter"]').val(filter);
                 $(dropdownMenu).removeClass('show');
                 $(dropdownButton).html($(this).text());
                 createActiveUsersTable(filter, cohortId);
@@ -181,7 +183,8 @@ define([
 
             $(dropdownButton).html(date);
             $(flatpickrCalender).val("");
-            V.changeExportUrl(filter, exportUrlLink, V.filterReplaceFlag);
+            // V.changeExportUrl(filter, exportUrlLink, V.filterReplaceFlag);
+            $(PageId).find('.download-links input[name="filter"]').val(filter)
             createActiveUsersTable(filter, cohortId);
         }
 
