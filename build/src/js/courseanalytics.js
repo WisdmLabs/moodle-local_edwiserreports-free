@@ -105,14 +105,18 @@ define([
                     { className: "text-left", targets: 0 },
                     { className: "text-center", targets: "_all" }
                 ],
+                drawCallback: function () {
+                    $('.dataTables_paginate > .pagination').addClass('pagination-sm pull-right');
+                    $('.dataTables_filter').addClass('pagination-sm pull-right');
+                },
                 order: [[ 1, 'desc' ]],
-                scrollY: 350,
-                scrollX:true,
-                paging: true,
+                // scrollY: 350,
+                // scrollX:true,
+                // paging: true,
                 bInfo : false,
-                searching : false,
+                // searching : false,
                 lengthChange: false,
-                paging:false
+                // paging:false
             });
 
             // Return table
