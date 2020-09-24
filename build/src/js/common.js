@@ -137,11 +137,11 @@ define([
         $(document).on("click", exportPdf, function(e) {
             e.preventDefault();
 
-            if ($(document).find('#cover-spin')) {
-                $("body").append(windowLoader);
-            }
+            // if ($(document).find('#cover-spin')) {
+            //     $("body").append(windowLoader);
+            // }
 
-            $(document).find('#cover-spin').show(0);
+            // $(document).find('#cover-spin').show(0);
 
             var _this = this;
             var form = $(_this).closest("form");
@@ -157,7 +157,7 @@ define([
                 }
             }).done(function(response) {
                 response = JSON.parse(response);
-                var pdf = new jsPDF('p', 'pt', 'a4');
+                var pdf = jsPDF('p', 'pt', 'a4');
                 var margins = {
                     top: 40,
                     bottom: 30,
@@ -178,7 +178,6 @@ define([
                         return true
                     }
                 };
-
                 // all coords and widths are in jsPDF instance's declared units
                 // 'inches' in this case
                 pdf.fromHTML(
