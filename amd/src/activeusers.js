@@ -225,10 +225,9 @@ define([
                     sesskey : sesskey
                 }
 
-                Templates.render('local_sitereport/activeusers', context)
+                Templates.render('local_sitereport/activeuserstable', context)
                 .then(function(html, js) {
-                    console.log(html);
-                    Templates.replaceNode(PageId, html, js);
+                    Templates.replaceNode(ActiveUsersTable, html, js);
                 }).fail(function(ex) {
                     console.log(ex);
                 }).always(function() {
@@ -247,7 +246,6 @@ define([
                             }
                         ],
                         info : false,
-                        bLengthChange : false,
                         drawCallback: function () {
                             $('.dataTables_paginate > .pagination').addClass('pagination-sm pull-right');
                             $('.dataTables_filter').addClass('pagination-sm pull-right');

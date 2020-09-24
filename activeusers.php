@@ -48,6 +48,9 @@ $PAGE->requires->js_call_amd(
 // Set css for active usres page.
 $PAGE->requires->css('/local/sitereport/styles/flatpickr.min.css');
 
+// Require CSS.
+$PAGE->requires->css('/local/sitereport/styles/loader.css');
+
 // Add js string for this page.
 $PAGE->requires->strings_for_js([
     'activeusersmodaltitle',

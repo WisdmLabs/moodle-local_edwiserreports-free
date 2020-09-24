@@ -1,0 +1,41 @@
+<table class="table admintable">
+    <thead>
+        <th class="">
+            {{#str}} date, local_sitereport {{/str}}
+        </th>
+        <th class="">
+            {{#str}} noofactiveusers, local_sitereport {{/str}}
+        </th>
+        <th class="">
+            {{#str}} noofenrolledusers, local_sitereport {{/str}}
+        </th>
+        <th class="">
+            {{#str}} noofcompletedusers, local_sitereport {{/str}}
+        </th>
+    </thead>
+    <tbody>
+        {{#activeusers}}
+        <tr>
+            <td>
+                <span class="d-none">{{filter}}</span>
+                {{{date}}}
+            </td>
+            <td>
+                <a href="javascript:void(0)" class="w-full text-dark" data-action="activeusers" data-filter="{{filter}}">
+                    {{activeusers}}
+                </a>
+            </td>
+            <td>
+                <a href="javascript:void(0)" class="w-full text-dark" data-action="enrolments" data-filter="{{filter}}">
+                    {{courseenrolment}}
+                </a>
+            </td>
+            <td>
+                <a href="javascript:void(0)" class="w-full text-dark" data-action="completions" data-filter="{{filter}}">
+                    {{coursecompletion}}
+                </a>
+            </td>
+        </tr>
+        {{/activeusers}}
+    </tbody>
+</table>

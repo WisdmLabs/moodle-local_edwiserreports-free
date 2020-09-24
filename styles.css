@@ -47,11 +47,11 @@
 
 /* Accordion transition on click event Start */
 .path-admin-report-elucidsitereport .accordion-arrow.icon,
-.path-report-elucidsitereport .accordion-arrow.icon {
+.path-local-sitereport .accordion-arrow.icon {
     transition: all 350ms ease-in-out;
 }
 .path-admin-report-elucidsitereport tr[aria-expanded="true"] .accordion-arrow.icon,
-.path-report-elucidsitereport tr[aria-expanded="true"] .accordion-arrow.icon {
+.path-local-sitereport tr[aria-expanded="true"] .accordion-arrow.icon {
     transform: rotate(90deg);
 }
 /* Accordion transition on click event End */
@@ -78,8 +78,11 @@
 }
 
 /* Custom Date Range Selector End*/
+.path-local-sitereport .filters .dropdown-menu.withcalendar {
+    display: flex;
+}
 #wdm-elucidsitereport #activeusersblock .dropdown-menu.withcalendar .dropdown-calendar,
-.path-report-elucidsitereport .dropdown-menu.withcalendar .dropdown-calendar {
+.page-local-sitereport-activeusers .dropdown-menu.withcalendar .dropdown-calendar {
     height: 300px;
     width: 308px;
     float: left;
@@ -87,28 +90,29 @@
 }
 
 #wdm-elucidsitereport #activeusersblock .dropdown-menu.withcalendar .dropdown-calendar .flatpickr-calendar,
-.path-report-elucidsitereport .dropdown-menu.withcalendar .dropdown-calendar .flatpickr-calendar {
+.path-local-sitereport .dropdown-menu.withcalendar .dropdown-calendar .flatpickr-calendar {
     top: 0 !important;
     left: 0 !important;
     right: auto !important;
     box-shadow: none !important;
     border: 0 !important;
+    position: unset;
 }
 
 #wdm-elucidsitereport #activeusersblock .dropdown-menu .dropdown-body,
-.path-report-elucidsitereport .dropdown-menu .dropdown-body {
+.path-local-sitereport .dropdown-menu .dropdown-body {
     width: 215px;
     float: left;
 }
 
 /* #wdm-elucidsitereport #activeusersblock .dropdown-body .dropdown-item,
-.path-report-elucidsitereport .dropdown-body .dropdown-item {
+.path-local-sitereport .dropdown-body .dropdown-item {
     cursor: pointer;
     width: calc(100% - 10px);
 } */
 
 #wdm-elucidsitereport .dropdown-menu.dropdown-menu-right,
-.path-report-elucidsitereport .dropdown-menu.dropdown-menu-right {
+.path-local-sitereport .dropdown-menu.dropdown-menu-right {
     right: 0;
     left: auto;
 }
@@ -117,11 +121,11 @@
 /* Media query for dashboard page */
 @media only screen and (min-width: 600px) {
     #wdm-elucidsitereport #activeusersblock .dropdown-menu.withcalendar,
-    .path-report-elucidsitereport .dropdown-menu.withcalendar{
+    .path-local-sitereport .dropdown-menu.withcalendar{
         width: 530px !important;
     }
     #wdm-elucidsitereport #activeusersblock .dropdown-menu .dropdown-body,
-    .path-report-elucidsitereport .dropdown-menu .dropdown-body {
+    .path-local-sitereport .dropdown-menu .dropdown-body {
         float: right !important;
     }
     /* #wdm-elucidsitereport #activeusersblock .panel-header {
@@ -133,7 +137,7 @@
     #wdm-elucidsitereport #certificatestatsblock .panel-header .dropdown,
     #wdm-elucidsitereport #f2fsessionsblock .panel-header .dropdown,
     #wdm-elucidsitereport #lpstatsblock .panel-header .dropdown,
-    .path-report-elucidsitereport .export-dropdown.dropdown {
+    .path-local-sitereport .export-dropdown.dropdown {
         position: absolute;
         top: 0;
         right: 0;
@@ -143,7 +147,7 @@
     #wdm-elucidsitereport #certificatestatsblock .panel-header,
     #wdm-elucidsitereport #f2fsessionsblock .panel-header,
     #wdm-elucidsitereport #lpstatsblock .panel-header,
-    .path-report-elucidsitereport .page-title {
+    .path-local-sitereport .page-title {
         margin-right: 50px;
     } */
     /* #wdm-elucidsitereport #courseprogressblock .panel-header .dropdown,
@@ -164,27 +168,27 @@
 }
 
 /* Datatable css */
-.path-report-elucidsitereport table.dataTable tr,
+.path-local-sitereport table.dataTable tr,
 .path-admin-report-elucidsitereport table.dataTable tr,
-.path-report-elucidsitereport table.dataTable tr td,
+.path-local-sitereport table.dataTable tr td,
 .path-admin-report-elucidsitereport table.dataTable tr td,
 .path-admin-report-elucidsitereport table.dataTable tr td.sorting_1,
-.path-report-elucidsitereport table.dataTable tr td.sorting_1 {
+.path-local-sitereport table.dataTable tr td.sorting_1 {
     background-color: unset;
 }
 
-.path-report-elucidsitereport .table thead th,
+.path-local-sitereport .table thead th,
 .path-admin-report-elucidsitereport .table thead th {
     vertical-align: middle !important;
 }
 
 .path-admin-report-elucidsitereport .dataTables_scrollHeadInner,
-.path-report-elucidsitereport .dataTables_scrollHeadInner {
+.path-local-sitereport .dataTables_scrollHeadInner {
     min-width: 100% !important;
 }
 
 .path-admin-report-elucidsitereport .collapse-td,
-.path-report-elucidsitereport .collapse-td {
+.path-local-sitereport .collapse-td {
     height: auto !important;
     padding-left: 50px !important;
 }
@@ -196,7 +200,7 @@
 
 /* Custom Scrollbar Design Start */
 /* width */
-.path-report-elucidsitereport ::-webkit-scrollbar,
+.path-local-sitereport ::-webkit-scrollbar,
 .path-admin-report-elucidsitereport ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
@@ -204,21 +208,21 @@
 }
 
 /* Track */
-.path-report-elucidsitereport ::-webkit-scrollbar-track,
+.path-local-sitereport ::-webkit-scrollbar-track,
 .path-admin-report-elucidsitereport ::-webkit-scrollbar-track {
    border-radius: 0;
    background: #fff;
 }
 
 /* Handle */
-.path-report-elucidsitereport ::-webkit-scrollbar-thumb,
+.path-local-sitereport ::-webkit-scrollbar-thumb,
 .path-admin-report-elucidsitereport ::-webkit-scrollbar-thumb {
    border-radius: 0;
    background: #888;
 }
 
 /* Handle on hover */
-.path-report-elucidsitereport ::-webkit-scrollbar-thumb:hover,
+.path-local-sitereport ::-webkit-scrollbar-thumb:hover,
 .path-admin-report-elucidsitereport ::-webkit-scrollbar {
    background: #555;
 }
@@ -400,7 +404,7 @@
     text-align: center;
 }
 
-.path-report-elucidsitereport  [role="main"],
+.path-local-sitereport  [role="main"],
 .path-admin-report-elucidsitereport [role="main"] {
     position: relative;
 }
@@ -412,7 +416,7 @@
 }
 
 /* Remove Breadcrumb */
-.path-report-elucidsitereport .breadcrumb,
+.path-local-sitereport .breadcrumb,
 .path-admin-report-elucidsitereport .breadcrumb {
     display: none;
 }
@@ -580,13 +584,13 @@ div[id^="wdm-"][id*="-individual"] table.table,
     margin-left: 0 !important;
 }
 
-.path-report-elucidsitereport .filters .dropdown-menu {
-    max-height: 300px;
+.path-local-sitereport .filters .dropdown-menu {
+    /* max-height: 320px; */
     overflow: scroll;
 }
 
 /* Custom Report Block Table Style */
-.path-report-elucidsitereport #customReportBlock table td {
+.path-local-sitereport #customReportBlock table td {
     padding: 10px 18px!important;
 }
 /* Custom Query Report */

@@ -203,7 +203,7 @@ function local_sitereport_get_cohort_filter() {
     }
 
     $cohortfilter = new stdClass();
-    $cohortfilter->text = "Cohort";
+    $cohortfilter->text = get_string('cohorts', 'local_sitereport');
     $cohortfilter->values = $cohorts;
     return $cohortfilter;
 }

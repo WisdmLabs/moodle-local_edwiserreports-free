@@ -1,45 +1,50 @@
 <div id="wdm-activeusers-individual" data-sesskey="{{sesskey}}">
+    <div id="wdm-userfilter" class="h-auto my-10">
+        <div class="row">
+            <div class="">
+                <div class="filters col-12 d-flex mb-1">
+                    {{# cohortfilters }}
+                    <div class="dropdown mr-1">
+                        <button type="button" class="btn dropdown-toggle" id="cohortfilter" data-toggle="dropdown" aria-expanded="false">
+                            {{ text }}
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="cohortfilter" role="menu" x-placement="bottom-start">
+                            <a class="dropdown-item" href="javascript:void(0)" data-cohortid="0" role="menuitem">
+                                {{# str }} all, local_sitereport {{/ str }}
+                            </a>
+                            {{# values }}
+                            <a class="dropdown-item" href="javascript:void(0)" data-cohortid="{{ id }}" role="menuitem">
+                                {{ name }}
+                            </a>
+                            {{/ values }}
+                        </div>
+                    </div>
+                    {{/ cohortfilters }}
+                    <div class="dropdown">
+                        <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" id="filter-dropdown" aria-expanded="false">
+                            {{# str }} lastweek, local_sitereport {{/ str }}
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="filter-dropdown" role="menu">
+                            <div id="activeUser-calendar" class="dropdown-calendar"></div>
+                            <div class="dropdown-body">
+                                <a class="dropdown-item" href="javascript:void(0)" role="menuitem" value="weekly">
+                                    {{# str }} lastweek, local_sitereport {{/ str }}
+                                </a>
+                                <a class="dropdown-item" href="javascript:void(0)" role="menuitem" value="monthly">
+                                    {{# str }} lastmonth, local_sitereport {{/ str }}
+                                </a>
+                                <a class="dropdown-item" href="javascript:void(0)" role="menuitem" value="yearly">
+                                    {{# str }} lastyear, local_sitereport {{/ str }}
+                                </a>
+                                <input class="dropdown-item border-0 custom d-none d-md-block" id="flatpickrCalender" placeholder="{{# str }} custom, local_sitereport{{/ str }}"  data-input/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="table-responsive">
-        <table class="table admintable">
-            <thead>
-                <th class="bg-image-none no-sorting-arrow">
-                    {{#str}} date, local_sitereport {{/str}}
-                </th>
-                <th class="bg-image-none no-sorting-arrow">
-                    {{#str}} noofactiveusers, local_sitereport {{/str}}
-                </th>
-                <th class="bg-image-none no-sorting-arrow">
-                    {{#str}} noofenrolledusers, local_sitereport {{/str}}
-                </th>
-                <th class="bg-image-none no-sorting-arrow">
-                    {{#str}} noofcompletedusers, local_sitereport {{/str}}
-                </th>
-            </thead>
-            <tbody>
-                {{#activeusers}}
-                <tr>
-                    <td>
-                        <span class="d-none">{{filter}}</span>
-                        {{{date}}}
-                    </td>
-                    <td>
-                        <a href="javascript:void(0)" class="w-full text-dark" data-action="activeusers" data-filter="{{filter}}">
-                            {{activeusers}}
-                        </a>
-                    </td>
-                    <td>
-                    	<a href="javascript:void(0)" class="w-full text-dark" data-action="enrolments" data-filter="{{filter}}">
-                    		{{courseenrolment}}
-                    	</a>
-                    </td>
-                    <td>
-                    	<a href="javascript:void(0)" class="w-full text-dark" data-action="completions" data-filter="{{filter}}">
-                    		{{coursecompletion}}
-                    	</a>
-                    </td>
-                </tr>
-                {{/activeusers}}
-            </tbody>
-        </table>
+        {{> local_sitereport/activeuserstable }}
     </div>
 </div>
