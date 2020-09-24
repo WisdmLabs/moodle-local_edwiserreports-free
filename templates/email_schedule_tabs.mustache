@@ -227,8 +227,9 @@
                         <input value="0" type="text" id="esr-sendduration" name="esrduration" class="d-none">
                         <input value="0" type="text" id="esr-sendtime" name="esrtime" class="d-none">
                         <input value="-1" type="text" id="esr-id" name="esrid" class="d-none">
-                        <input type="text" id="esr-blockname" name="blockname" class="d-none">
-                        <input type="text" id="esr-region" name="region" class="d-none">
+                        <input value="{{ block }}" type="text" id="esr-blockname" name="blockname" class="d-none">
+                        <input value="{{ region }}" type="text" id="esr-region" name="region" class="d-none">
+                        <input value="{{ sesskey }}" type="text" id="esr-sesskey" name="sesskey" class="d-none">
                     </div>
                 </div>
                 <div class="modal-footer" data-region="footer">
@@ -245,7 +246,7 @@
             </form>
         </div>
         <div class="tab-pane" id="listemailstab" role="tabpanel">
-            <div class="table-responsive">
+            <div class="table-responsive border-0" id="region-main">
                 <table id="esr-shceduled-emails" class="table" data-role="content" data-plugin="selectable" data-row-selectable="true">
                     <thead>
                         <tr>

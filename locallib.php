@@ -804,7 +804,7 @@ function local_sitereport_create_toggle_switch_for_emails($id, $emailenable, $bl
     }
 
     // Toggle Switch For Enable and Disable Start.
-    $out = html_writer::start_div("my-auto px-5 ". $customclass);
+    $out = html_writer::start_div("my-auto ". $customclass);
     $out .= html_writer::label(
         html_writer::tag("input", "", $switchparams).
         html_writer::div(

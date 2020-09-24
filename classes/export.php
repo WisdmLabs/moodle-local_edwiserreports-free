@@ -212,7 +212,7 @@ class export {
         }
 
         // Create file containing text 'hello world'.
-        $fs->create_file_from_string($fileinfo, $csvdata);
+        $file = $fs->create_file_from_string($fileinfo, $csvdata);
         $fileurl = moodle_url::make_pluginfile_url(
             $fileinfo['contextid'],
             $fileinfo['component'],
@@ -257,31 +257,20 @@ class export {
         //@codeingStandardsIgnoreEnd
 
         // Get email data from submited form
-        $emailids = trim(optional_param("email", false, PARAM_TEXT));
-        $subject = trim(optional_param("subject", false, PARAM_TEXT));
+        $emailids = trim(optional_param("esrrecepient", false, PARAM_TEXT));
+        $subject = trim(optional_param("esrsubject", false, PARAM_TEXT));
 
         // Optional parameter causing issue because this is an array
-        $content = $_POST["content"];
+        $content = optional_param('esrmessage', '', PARAM_TEXT);
 
         // If subject is not set the get default subject
         if (!$subject && $subject == '') {
             $subject = get_string($this->blockname . "exportheader", "local_sitereport");
         }
 
-        // Get content text to send emails
-        $contenttext = '';
-        if ($content["format"] == 1) { // Text Foramt = 1
-            // If content text is not set then set default value of content text
-            if (!$content || !isset($content["text"]) || $content["text"] == '') {
-                $contenttext = get_string($this->blockname . "exporthelp", "local_sitereport");
-            } else {
-                $contenttext = $content["text"];
-            }
-        }
-
-        // Send emails foreach email ids
+        // Send emails foreach email ids.
         if ($emailids && $emailids !== '') {
-            // process in background and dont show message in console
+            // process in background and dont show message in console.
             ob_start();
             foreach(explode(";", $emailids) as $emailid) {
                 // trim email id if white spaces are added

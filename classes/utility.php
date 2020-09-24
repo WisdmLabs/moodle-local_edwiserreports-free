@@ -555,7 +555,7 @@ class utility {
     }
 
     /* Get Scheduled emails Tabs */
-    public function get_scheduled_emails($data) {
+    public static function get_scheduled_emails($data) {
         $response = new stdClass();
         $response->error = false;
         $response->data = array();

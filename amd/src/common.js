@@ -234,27 +234,35 @@ define([
         $(document).on("click", scheduledEmailDropdown, function(e) {
             e.preventDefault();
             var _this = this;
-            var context = v.getScheduledEmailFormContext();
+            var data = v.getScheduledEmailFormContext();
+
+            var form = $(this).closest('form');
+            var formData = form.serializeArray();
+            $(formData).each(function($k, $d) {
+                data[$d.name] = $d.value;
+            });
 
             ModalFactory.create({
-                title: v.getEmailModalHeader($(_this).data("blockname"), 1),
-                body: Templates.render('local_sitereport/email_schedule_tabs', context)
+                title: v.getEmailModalHeader(data.blockname, 1),
+                body: Templates.render('local_sitereport/email_schedule_tabs', data)
             }, $(this))
             .done(function(modal) {
                 var root = modal.getRoot();
+
                 modal.modal.addClass("modal-lg");
 
                 root.on(ModalEvents.bodyRendered, function() {
-                    root.find("#esr-blockname").val($( _this).data("blockname"));
-                    root.find("#esr-region").val($(_this).data("region"));
-                    emailListTable = render_all_scheduled_emails(_this, modal);
+                    root.find("#esr-blockname").val(data.blockname);
+                    root.find("#esr-region").val(data.region);
+                    root.find("#esr-sesskey").val(data.sesskey);
+                    emailListTable = render_all_scheduled_emails(data, modal);
                 });
 
                 root.on(ModalEvents.hidden, function() {
                     modal.destroy();
                 });
 
-                email_schedule_form_init(_this, root, modal);
+                email_schedule_form_init(data, root, modal);
                 modal.show();
             });
         });
@@ -489,7 +497,7 @@ define([
      * @param {object} _this Anchor tag object
      * @param {Object} modal Modal object
      */
-    function render_all_scheduled_emails(_this, modal) {
+    function render_all_scheduled_emails(data, modal) {
         var table = modal.getRoot().find("#esr-shceduled-emails");
 
         // Resize event to adjust datatable when click on the all list tab
@@ -502,26 +510,29 @@ define([
         // Create datatable
         return table.DataTable({
             ajax : {
-                url: v.requestUrl,
+                url: v.requestUrl + '?sesskey=' + data.sesskey,
                 type: v.requestType,
                 data: {
                     action: 'get_scheduled_emails_ajax',
-                    sesskey: $(_this).data("sesskey"),
                     data : JSON.stringify({
-                        blockname : $(_this).attr("data-blockname"),
-                        href : $(_this).attr("href"),
-                        region : $(_this).attr("data-region")
+                        blockname : data.blockname,
+                        // href : $(_this).attr("href"),
+                        region : data.region
                     })
                 }
             },
-            scrollY : "300px",
-            scrollX: true,
-            scrollCollapse : true,
+            // scrollY : "300px",
+            // scrollX: true,
+            // scrollCollapse : true,
             language: {
                 searchPlaceholder: "Search shceduled email",
                 emptyTable: "There is no scheduled emails"
             },
-            order : [[ 1, "asc" ]],
+            drawCallback: function () {
+                $('.dataTables_paginate > .pagination').addClass('pagination-sm pull-right');
+                $('.dataTables_filter').addClass('pagination-sm pull-right');
+            },
+            order : [[ 2, "asc" ]],
             columns : [
                 {
                     "data" : "esrtoggle",
@@ -551,7 +562,7 @@ define([
             responsive : true,
             bInfo : false,
             lengthChange : false,
-            paging :   false
+            // paging :   false
         });
     }
 
@@ -582,19 +593,21 @@ define([
      * Save scheduled emails
      * @param  {object} root Modal root object
      */
-    function save_schedule_email_init(_this, root, modal) {
+    function save_schedule_email_init(data, root, modal) {
         // On save perform operation
         root.on('click', '[data-action="save"]', function() {
             var errorBox = root.find(".esr-form-error");
             errorBox.html(loader).show();
 
             if (validate_email_scheduled_form(root.find("form"), errorBox)) {
-                var filter = v.getUrlParams(_this.href, "filter");
-                var cohortid = v.getUrlParams(_this.href, "cohortid");
+                var filter = data.filter;
+                var cohortid = data.cohortid;
+                var block = data.block;
+                var url = M.cfg.wwwroot + "/local/sitereport/download.php?type=emailscheduled&filter=" + filter + "&cohortid=" + cohortid + "&block=" + block;
 
                 // Send ajax to save the scheduled email
                 $.ajax({
-                    url: M.cfg.wwwroot + "/local/sitereport/download.php?format=emailscheduled&filter=" + filter + "&cohortid=" + cohortid,
+                    url: url,
                     type: "POST",
                     data: root.find("form").serialize()
                 }).done(function(response) {
@@ -608,7 +621,7 @@ define([
                         if (emailListTable) {
                             emailListTable.destroy();
                         }
-                        emailListTable = render_all_scheduled_emails(_this, modal);
+                        emailListTable = render_all_scheduled_emails(data, modal);
                         errorBox.html(successmsg);
                     }
                 }).fail(function(error) {
@@ -697,6 +710,7 @@ define([
                 })
             }
         }).done(function(response) {
+            response = JSON.parse(response);
             if (!response.error) {
                 set_email_shedule_form_values(response, _this, root);
 
@@ -771,20 +785,21 @@ define([
      * @param  {[type]} modal  [description]
      * @return {[type]}       [description]
      */
-    function email_schedule_delete_init(_this, root, modal) {
-        var id = $(_this).data("id");
-        var blockname = $(_this).data("blockname");
-        var region = $(_this).data("region");
+    function email_schedule_delete_init(data, root, modal) {
+        var id = data.id;
+        var blockname = data.block;
+        var region = data.region;
         var errorBox = root.find(".esr-form-error");
         errorBox.html(loader).show();
+        console.log(data);
 
         $.ajax({
             url: v.requestUrl,
             type: v.requestType,
-            sesskey : $(_this).data("sesskey"),
+            sesskey : data.sesskey,
             data: {
                 action: 'delete_scheduled_email_ajax',
-                sesskey: $(_this).data("sesskey"),
+                sesskey: data.sesskey,
                 data : JSON.stringify({
                     id : id,
                     blockname : blockname,
@@ -796,7 +811,7 @@ define([
                 if (emailListTable) {
                     emailListTable.destroy();
                 }
-                emailListTable = render_all_scheduled_emails(_this, modal);
+                emailListTable = render_all_scheduled_emails(data, modal);
                 errorBox.html(deletesuccessmsg);
             } else {
                 errorBox.html(deleteerrormsg);
@@ -816,18 +831,20 @@ define([
      * @param  {[type]} modal  [description]
      * @return {[type]}       [description]
      */
-    function change_scheduled_email_status_init(_this, root, modal) {
-        var id = $(_this).data("id");
-        var blockname = $(_this).data("blockname");
-        var region = $(_this).data("region");
+    function change_scheduled_email_status_init(data, root, modal) {
+        var id = data.id;
+        var blockname = data.block;
+        var region = data.region;
+        var sesskey = data.sesskey;
+
+        var errorBox = root.find(".esr-form-error");
 
         $.ajax({
             url: v.requestUrl,
             type: v.requestType,
-            sesskey : $(_this).data("sesskey"),
             data: {
                 action: 'change_scheduled_email_status_ajax',
-                sesskey: $(_this).data("sesskey"),
+                sesskey: sesskey,
                 data : JSON.stringify({
                     id : id,
                     blockname : blockname,
@@ -836,11 +853,13 @@ define([
             }
         }).done(function(response) {
             if (!response.error) {
-                if (emailListTable) {
-                    emailListTable.destroy();
-                }
-                emailListTable = render_all_scheduled_emails(_this, modal);
+                // if (emailListTable) {
+                //     emailListTable.destroy();
+                // }
+                // emailListTable = render_all_scheduled_emails(data, modal);
                 errorBox.html(successmsg);
+                errorBox.show();
+                errorBox.delay(3000).fadeOut('slow');
             }
         });
     }
@@ -849,7 +868,7 @@ define([
      * Manage schedule emails form initialization
      * @param  {object} root Modal root object
      */
-    function email_schedule_form_init(_this, root, modal) {
+    function email_schedule_form_init(data, root, modal) {
         // If dropdown selected then update the button text
         root.on('click', dropdowns, function() {
             update_dropdown_btn_text(this);
@@ -872,7 +891,7 @@ define([
 
         // When delete button clicked then
         root.on('click', deleteBtn, function(e) {
-            var _this = this;
+            data.id = $(this).data("id");
 
             str.get_strings([
                 {
@@ -893,18 +912,24 @@ define([
                 }
             ]).done(function(s) {
                 notif.confirm(s[0], s[1], s[2], s[3], $.proxy(function() {
-                    email_schedule_delete_init(_this, root, modal);
+                    email_schedule_delete_init(data, root, modal);
                 }, e.currentTarget));
             });
         });
 
         // When toggle switch clicked then
         root.on('change', emailListToggleSwitch, function() {
-            change_scheduled_email_status_init(this, root, modal);
+            data.id = $(this).data("id");
+            change_scheduled_email_status_init(data, root, modal);
+        });
+
+        // Send the notification immidiatly
+        root.on('click', '[data-action="send"]', function() {
+            sendMailToUser(data, this, root)
         });
 
         // On save perform operation
-        save_schedule_email_init(_this, root, modal);
+        save_schedule_email_init(data, root, modal);
     }
 
     /**
@@ -912,29 +937,36 @@ define([
      * @param  {object} _this anchor tag
      * @param  {object} root Modal root object
      */
-    function sendMailToUser(_this, root) {
+    function sendMailToUser(data, _this, root) {
+        var filter = data.filter;
+        var cohortid = data.filter;
+        var block = data.block;
+        var errorBox = root.find(".esr-form-error");
+        errorBox.html(loader).show();
+
         $.ajax({
-            url: _this.href,
+            url: M.cfg.wwwroot + "/local/sitereport/download.php?type=email&filter=" + filter + "&cohortid=" + cohortid + "&block=" + block,
             type: "POST",
             data: root.find('form').serialize()
         }).done(function(response) {
             response = $.parseJSON(response);
             if (response.error) {
-                notif.addNotification({
-                    message: response.errormsg,
-                    type: "error"
-                });
+                errorBox.html('<div class="alert alert-danger"><b>ERROR:</b>' + response.errormsg + '</div>');
+                // notif.addNotification({
+                //     message: response.errormsg,
+                //     type: "error"
+                // });
             } else {
-                notif.addNotification({
-                    message: "Email has been sent",
-                    type: "info"
-                });
+                errorBox.html('<div class="alert alert-success"><b>Success:</b>' + response.errormsg + '</div>');
+                // notif.addNotification({
+                //     message: "Email has been sent",
+                //     type: "info"
+                // });
             }
         }).fail(function() {
-            notif.addNotification({
-                message: "Failed to send the email",
-                type: "error"
-            });
+            errorBox.html('<div class="alert alert-danger"><b>ERROR:</b>' + response.errormsg + '</div>');
+        }).always(function() {
+            errorBox.delay(3000).fadeOut('slow');
         });
     }
 
