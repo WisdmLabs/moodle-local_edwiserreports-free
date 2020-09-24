@@ -13,14 +13,17 @@ define([
         var cohortId = 0;
 
         $(document).ready(function() {
-            var courseId = V.getUrlParameter("courseid");
+            // Get course id
+            var courseId = $(PageId).find('.download-links input[name="filter"]').val();
+
             getCourseCompletion(courseId, cohortId);
 
             /* Select cohort filter for active users block */
             $(V.cohortFilterItem).on('click', function() {
                 cohortId = $(this).data('cohortid');
                 $(V.cohortFilterBtn).html($(this).text());
-                V.changeExportUrl(cohortId, V.exportUrlLink, V.cohortReplaceFlag);
+                // V.changeExportUrl(cohortId, V.exportUrlLink, V.cohortReplaceFlag);
+                $(PageId).find('.download-links input[name="cohortid"]').val(cohortId);
                 getCourseCompletion(courseId, cohortId);
             });
         });

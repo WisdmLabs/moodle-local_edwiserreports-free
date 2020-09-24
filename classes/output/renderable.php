@@ -386,6 +386,9 @@ class lpstats_renderable implements renderable, templatable {
     }
 }
 
+/**
+ * Completion renderables
+ */
 class completion_renderable implements renderable, templatable {
     /**
      * Function to export the renderer data in a format that is suitable for a
@@ -400,10 +403,22 @@ class completion_renderable implements renderable, templatable {
         $courseid = required_param("courseid", PARAM_INT);
         $output = new stdClass();
         $output->sesskey = sesskey();
-        $downloadurl = $CFG->wwwroot."/local/sitereport/download.php";
-        $output->exportlink = local_sitereport_get_exportlinks($downloadurl, "report", "completion", $courseid, 0);
-        $output->userfilters = local_sitereport_get_userfilters(false, true, false);
-        $output->backurl = new moodle_url($CFG->wwwroot."/local/sitereport/index.php");
+
+        if ($cohortfilter = local_sitereport_get_cohort_filter()) {
+            $output->cohortfilters = $cohortfilter;
+        }
+
+        $output->completionexport = array(
+            "id" => "completion",
+            "region" => "report",
+            "downloadurl" => $CFG->wwwroot . "/local/sitereport/download.php",
+            "filter" => $courseid
+        );
+
+        // $downloadurl = $CFG->wwwroot."/local/sitereport/download.php";
+        // $output->exportlink = local_sitereport_get_exportlinks($downloadurl, "report", "completion", $courseid, 0);
+        // $output->userfilters = local_sitereport_get_userfilters(false, true, false);
+        // $output->backurl = new moodle_url($CFG->wwwroot."/local/sitereport/index.php");
         return $output;
     }
 }

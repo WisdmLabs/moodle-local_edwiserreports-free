@@ -46,6 +46,9 @@ require_login(get_course($courseid));
 // Get course context.
 $coursecontext = context_course::instance($courseid);
 
+// Require CSS.
+$PAGE->requires->css('/local/sitereport/styles/loader.css');
+
 // Page URL.
 $pageurl = new moodle_url($CFG->wwwroot . "/local/sitereport/completion.php", array("courseid" => $courseid));
 
