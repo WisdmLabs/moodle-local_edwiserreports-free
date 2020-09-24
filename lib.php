@@ -510,3 +510,26 @@ function local_sitereport_output_fragment_block_overview_display($data) {
 
     return $o;
 }
+
+/**
+ * Adding learning program link in sidebar
+ * @param navigation_node $nav navigation node
+ */
+function local_sitereport_extend_navigation(navigation_node $nav) {
+    global $CFG, $PAGE;
+    if ($PAGE->theme->resolve_image_location('icon', 'local_sitereport', null)) {
+        $icon = new pix_icon('icon', '', 'local_sitereport', array('class' => 'icon pluginicon'));
+    } else {
+        $icon = new pix_icon('i/stats', '');
+    }
+
+    $node = $nav->add(
+        get_string('reportsandanalytics', 'local_sitereport'),
+        new moodle_url($CFG->wwwroot . '/local/sitereport/index.php'),
+        navigation_node::TYPE_CUSTOM,
+        'reportsandanalytics',
+        'reportsandanalytics',
+        $icon
+    );
+    $node->showinflatnavigation = true;
+}
