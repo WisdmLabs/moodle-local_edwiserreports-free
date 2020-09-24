@@ -52,7 +52,7 @@
 }
 
 .fi:hover {
-    transform: translate(0, -3px);
+    transform: scale(1.1);
 }
 
 .fi-content strong {
@@ -119,4 +119,3 @@
 .fi-pdf.fi .fi-content strong {
     background-color: #fb6d62;
 }
-
