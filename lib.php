@@ -516,7 +516,7 @@ function local_sitereport_output_fragment_block_overview_display($data) {
  * @param navigation_node $nav navigation node
  */
 function local_sitereport_extend_navigation(navigation_node $nav) {
-    global $CFG, $PAGE;
+    global $CFG, $PAGE, $COURSE;
     if ($PAGE->theme->resolve_image_location('icon', 'local_sitereport', null)) {
         $icon = new pix_icon('icon', '', 'local_sitereport', array('class' => 'icon pluginicon'));
     } else {
@@ -532,22 +532,39 @@ function local_sitereport_extend_navigation(navigation_node $nav) {
         $icon
     );
     $node->showinflatnavigation = true;
-}
 
-function local_sitereport_extend_navigation_course(navigation_node $nav, $course, $context) {
-    global $CFG, $PAGE;
+    if ($PAGE->pagelayout !== 'course') {
+        return true;
+    }
+
     if ($PAGE->theme->resolve_image_location('icon', 'local_sitereport', null)) {
         $icon = new pix_icon('icon', '', 'local_sitereport', array('class' => 'icon pluginicon'));
     } else {
-        $icon = new pix_icon('i/stats', '');
+        $icon = new pix_icon('i/report', '');
     }
 
     $node = $nav->add(
-        get_string('reportsandanalytics', 'local_sitereport'),
-        new moodle_url($CFG->wwwroot . '/local/sitereport/index.php'),
+        get_string('completionreports', 'local_sitereport'),
+        new moodle_url($CFG->wwwroot . '/local/sitereport/completion.php', array('courseid' => $COURSE->id)),
         navigation_node::TYPE_CUSTOM,
-        'reportsandanalytics1',
-        'reportsandanalytics1',
+        'completionreports',
+        'completionreports',
+        $icon
+    );
+    $node->showinflatnavigation = true;
+
+    if ($PAGE->theme->resolve_image_location('icon', 'local_sitereport', null)) {
+        $icon = new pix_icon('icon', '', 'local_sitereport', array('class' => 'icon pluginicon'));
+    } else {
+        $icon = new pix_icon('i/report', '');
+    }
+
+    $node = $nav->add(
+        get_string('courseanalytics', 'local_sitereport'),
+        new moodle_url($CFG->wwwroot . '/local/sitereport/completion.php', array('courseid' => $COURSE->id)),
+        navigation_node::TYPE_CUSTOM,
+        'courseanalytics',
+        'courseanalytics',
         $icon
     );
     $node->showinflatnavigation = true;
