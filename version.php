@@ -28,3 +28,6 @@ $plugin->release = '1.1.1';
 $plugin->version = 2020031105;
 $plugin->requires = 2018120300;
 $plugin->maturity = MATURITY_ALPHA;
+$plugin->dependencies = array(
+    'local_course_progress_manager' => 2020020500
+);
