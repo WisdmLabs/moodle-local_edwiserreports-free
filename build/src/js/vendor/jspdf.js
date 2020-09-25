@@ -5204,13 +5204,13 @@ define(['jquery'], function($) {
     // while `this` is nsIContentFrameMessageManager
     // with an attribute `content` that corresponds to the window
   
-    if (typeof module !== "undefined" && module.exports) {
-      module.exports.saveAs = saveAs;
-    } else if ((typeof define !== "undefined" && define !== null) && (define.amd != null)) {
-      define([], function() {
-        return saveAs;
-      });
-    }
+    // if (typeof module !== "undefined" && module.exports) {
+    //   module.exports.saveAs = saveAs;
+    // } else if ((typeof define !== "undefined" && define !== null) && (define.amd != null)) {
+    //   define([], function() {
+    //     return saveAs;
+    //   });
+    // }
   
     /*
      * Copyright (c) 2012 chick307 <chick307@gmail.com>
