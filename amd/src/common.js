@@ -345,7 +345,23 @@ define([
                     modal.show();
                 });
             } else if (action == "hide") {
-                // Todo: add functionality to hide the blocks
+                $.ajax({
+                    url: v.requestUrl,
+                    type: 'GET',
+                    data: {
+                        action: 'toggle_hide_block_ajax',
+                        sesskey: M.cfg.sesskey,
+                        data : JSON.stringify({
+                            'blockname' : blockname,
+                            'hidden' : $(this).data("hide")
+                        })
+                    }
+                }).done(function(response) {
+                    console.log(response);
+                }).fail(function(error) {
+                }).always(function() {
+                    console.log("Done");
+                });
             } else if (action == "editcap") {
                 ModalFactory.create({
                     title: 'Edit Block Capabilities',

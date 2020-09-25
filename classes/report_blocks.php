@@ -38,7 +38,7 @@ class report_blocks {
      * Constructor to prepare all reports blocks
      */
     public function __construct($blocks) {
-        global $CFG;
+        global $CFG, $USER;
 
         // Rearrange blocks based on the saved preferences.
         \local_sitereport\utility::rearrange_block_with_preferences($blocks);
@@ -65,9 +65,16 @@ class report_blocks {
 
             // Get block preferences.
             $pref = \local_sitereport\utility::get_reportsblock_preferences($block);
+
+            if ($pref["hidden"] && !$USER->editing) {
+                continue;
+            } else if ($pref["hidden"]) {
+                $layout->hiddenblock = true;
+            }
+
             $blockbase->set_block_size($pref);
 
-            $this->reportsblock[] = $blockbase->get_layout();
+            $this->reportsblock[] = $layout;
         }
     }
 

@@ -746,3 +746,7 @@ div[id^="wdm-"][id*="-individual"] table.table,
         position: absolute;   
     }
 }
+
+.block-hidden {
+    opacity: 0.4;
+}

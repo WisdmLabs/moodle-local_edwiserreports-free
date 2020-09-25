@@ -1069,8 +1069,11 @@ class utility {
         // For each blocks change preferences.
         foreach ($blocks as $key => $block) {
             $pref = self::get_reportsblock_preferences($block);
+
             if ($block->classname == $data->blockname) {
                 $pref = $data;
+            } else if ($currentpref['position'] == $data->position) {
+                continue;
             } else {
                 if ($pref['position'] >= $data->position && $pref['position'] < $currentpref['position']) {
                     $pref['position']++;
@@ -1149,6 +1152,7 @@ class utility {
             $preferences[LOCAL_SITEREPORT_BLOCK_TABLET_VIEW] = $blockdata[LOCAL_SITEREPORT_BLOCK_TABLET_VIEW];
             $preferences[LOCAL_SITEREPORT_BLOCK_MOBILE_VIEW] = $blockdata[LOCAL_SITEREPORT_BLOCK_MOBILE_VIEW];
             $preferences['position'] = $blockdata['position'];
+            $preferences['hidden'] = isset($pref["hide"]) ? $pref["hide"] : 0;
         }
 
         return $preferences;
@@ -1187,7 +1191,7 @@ class utility {
     }
 
     /**
-     * Get blocks capabilities
+     * Set blocks capabilities
      * @param  [object] $block Block Data
      * @return []
      */
@@ -1214,6 +1218,35 @@ class utility {
             }
             assign_capability($capability, $permissionconst[$permission], $role->id, $context->id, true);
         }
+
+        return array(
+            "success" => true
+        );
+    }
+
+    /**
+     * Set blocks capabilities
+     * @param  [object] $block Block Data
+     * @return []
+     */
+    public static function toggle_hide_block($data) {
+        $blockname = $data->blockname;
+        $hidden = $data->hidden;
+
+        $block = self::get_reportsblock_by_name($blockname);
+        if (!$block) {
+            return array(
+                error => true,
+                errormsg => "blocknotfound"
+            );
+        }
+
+        $hide = isset($hidden) ? !$hidden : true;
+        $pref = self::get_reportsblock_preferences($block);
+        $pref['hidden'] = $hide;
+        $pref['blockname'] = $blockname;
+
+        self::set_block_preferences((object) $pref);
 
         return array(
             "success" => true

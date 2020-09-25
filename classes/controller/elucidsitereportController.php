@@ -185,7 +185,7 @@ class elucidsitereportController extends controllerAbstract {
     }
 
     /**
-     * Get custom query cohort users
+     * Set custom query cohort users
      */
     public function set_block_capability_ajax_action() {
         // Get data.
@@ -193,5 +193,16 @@ class elucidsitereportController extends controllerAbstract {
 
         // Response for ajax action.
         echo json_encode(\local_sitereport\utility::set_block_capability($data));
+    }
+
+    /**
+     * Hide block
+     */
+    public function toggle_hide_block_ajax_action() {
+        // Get data.
+        $data = json_decode(required_param('data', PARAM_RAW));
+
+        // Response for ajax action.
+        echo json_encode(\local_sitereport\utility::toggle_hide_block($data));
     }
 }

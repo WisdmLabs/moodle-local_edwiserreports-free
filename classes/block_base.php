@@ -123,19 +123,27 @@ class block_base {
      */
     public function get_block_position($pref) {
         $position = $pref['position'];
-
     }
 
     /**
      * Set block edit capabilities for each block
      */
     public function set_block_edit_capabilities($blockname) {
-        global $USER;
+        global $DB, $USER;
 
         // If user is not editing.
         if (!$USER->editing) {
             return false;
         }
+
+        $block = \local_sitereport\utility::get_reportsblock_by_name($blockname);
+        if (!$block) {
+            return false;
+        }
+
+        $pref = \local_sitereport\utility::get_reportsblock_preferences($block);
+
+        $this->layout->hide = isset($pref["hidden"]) ? $pref["hidden"] : 0;
 
         $context = context_system::instance();
 
