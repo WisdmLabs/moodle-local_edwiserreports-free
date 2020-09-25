@@ -47,6 +47,10 @@ class certificatesblock extends block_base {
     public function get_layout() {
         global $CFG;
 
+        if (!local_sitereport_has_plugin("mod", "customcert")) {
+            return false;
+        }
+
         // Layout related data.
         $this->layout->id = 'certificatesblock';
         $this->layout->name = get_string('certificatestatsheader', 'local_sitereport');

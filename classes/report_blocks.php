@@ -63,6 +63,10 @@ class report_blocks {
             $blockbase = new $classname();
             $layout = $blockbase->get_layout();
 
+            if ($layout === false) {
+                continue;
+            }
+
             // Get block preferences.
             $pref = \local_sitereport\utility::get_reportsblock_preferences($block);
 
