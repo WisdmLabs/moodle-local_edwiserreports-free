@@ -143,7 +143,7 @@ class block_base {
 
         $pref = \local_sitereport\utility::get_reportsblock_preferences($block);
 
-        $this->layout->hide = isset($pref["hidden"]) ? $pref["hidden"] : 0;
+        $this->layout->hidden = isset($pref["hidden"]) ? $pref["hidden"] : 0;
 
         $context = context_system::instance();
 

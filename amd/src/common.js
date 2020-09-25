@@ -345,6 +345,8 @@ define([
                     modal.show();
                 });
             } else if (action == "hide") {
+                var hidden = $(this).data("hidden");
+                var _this = $(this);
                 $.ajax({
                     url: v.requestUrl,
                     type: 'GET',
@@ -353,14 +355,23 @@ define([
                         sesskey: M.cfg.sesskey,
                         data : JSON.stringify({
                             'blockname' : blockname,
-                            'hidden' : $(this).data("hide")
+                            'hidden' : hidden
                         })
                     }
                 }).done(function(response) {
-                    console.log(response);
+                    response = JSON.parse(response);
+                    if (response.success) {
+                        if (hidden) {
+                            _this.closest('.elucidsitereport-block').removeClass('block-hidden');
+                            _this.data("hidden", 0);
+                            _this.html("Hide Block");
+                        } else {
+                            _this.closest('.elucidsitereport-block').addClass('block-hidden');
+                            _this.data("Unhide Block");
+                        }
+                    }
                 }).fail(function(error) {
                 }).always(function() {
-                    console.log("Done");
                 });
             } else if (action == "editcap") {
                 ModalFactory.create({

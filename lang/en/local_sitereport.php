@@ -411,6 +411,7 @@ $string['attemptfinish'] = 'Attempt Finish';
 
 $string['editblockview'] = 'Edit Block View';
 $string['hide'] = 'Hide Block';
+$string['unhide'] = 'Unhide Block';
 $string['editcapability'] = 'Change Capability';
 
 $string['desktopview'] = 'Desktop View';

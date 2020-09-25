@@ -533,3 +533,22 @@ function local_sitereport_extend_navigation(navigation_node $nav) {
     );
     $node->showinflatnavigation = true;
 }
+
+function local_sitereport_extend_navigation_course(navigation_node $nav, $course, $context) {
+    global $CFG, $PAGE;
+    if ($PAGE->theme->resolve_image_location('icon', 'local_sitereport', null)) {
+        $icon = new pix_icon('icon', '', 'local_sitereport', array('class' => 'icon pluginicon'));
+    } else {
+        $icon = new pix_icon('i/stats', '');
+    }
+
+    $node = $nav->add(
+        get_string('reportsandanalytics', 'local_sitereport'),
+        new moodle_url($CFG->wwwroot . '/local/sitereport/index.php'),
+        navigation_node::TYPE_CUSTOM,
+        'reportsandanalytics1',
+        'reportsandanalytics1',
+        $icon
+    );
+    $node->showinflatnavigation = true;
+}

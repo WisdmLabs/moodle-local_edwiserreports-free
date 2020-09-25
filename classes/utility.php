@@ -1145,14 +1145,13 @@ class utility {
 
         // Set default preference.
         $preferences = array();
-
         // Update preferences from blockdata.
         if ($blockdata) {
             $preferences[LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW] = $blockdata[LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW];
             $preferences[LOCAL_SITEREPORT_BLOCK_TABLET_VIEW] = $blockdata[LOCAL_SITEREPORT_BLOCK_TABLET_VIEW];
             $preferences[LOCAL_SITEREPORT_BLOCK_MOBILE_VIEW] = $blockdata[LOCAL_SITEREPORT_BLOCK_MOBILE_VIEW];
             $preferences['position'] = $blockdata['position'];
-            $preferences['hidden'] = isset($pref["hide"]) ? $pref["hide"] : 0;
+            $preferences['hidden'] = isset($blockdata["hidden"]) ? $blockdata["hidden"] : 0;
         }
 
         return $preferences;
@@ -1241,12 +1240,12 @@ class utility {
             );
         }
 
-        $hide = isset($hidden) ? !$hidden : true;
+        $hide = $hidden ? 0 : 1;
         $pref = self::get_reportsblock_preferences($block);
         $pref['hidden'] = $hide;
-        $pref['blockname'] = $blockname;
 
-        self::set_block_preferences((object) $pref);
+        // Set block Preference.
+        set_user_preference('pref_' . $blockname, json_encode($pref));
 
         return array(
             "success" => true

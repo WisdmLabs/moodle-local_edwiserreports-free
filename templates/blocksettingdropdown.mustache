@@ -10,8 +10,13 @@
             </a>
         </div>
         <div class="dropdown-item">
-            <a href="#" class="" data-contextid="{{contextid}}" data-blockname="{{id}}" data-action="hide" data-hide="{{hide}}">
-                {{#str}} hide, local_sitereport {{/str}}
+            <a href="#" class="" data-contextid="{{contextid}}" data-blockname="{{id}}" data-action="hide" data-hidden="{{hidden}}">
+                {{# hiddenblock }}
+                    {{#str}} unhide, local_sitereport {{/str}}
+                {{/ hiddenblock }}
+                {{^ hiddenblock }}
+                    {{#str}} hide, local_sitereport {{/str}}
+                {{/ hiddenblock }}
             </a>
         </div>
         {{/ canedit }} 
