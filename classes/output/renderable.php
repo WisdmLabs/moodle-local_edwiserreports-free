@@ -46,7 +46,7 @@ class elucidreport_renderable implements renderable, templatable {
      * @return stdClass|array
      */
     public function export_for_template(renderer_base $output) {
-        global $CFG, $DB, $PAGE;
+        global $CFG, $PAGE, $USER;
 
         // Get system context.
         $context = context_system::instance();
@@ -72,6 +72,9 @@ class elucidreport_renderable implements renderable, templatable {
             $PAGE->requires->js_call_amd('local_sitereport/block_certificatestats', 'init');
             $export->certificateslink = new moodle_url($CFG->wwwroot."/local/sitereport/certificates.php");
         }
+
+        $export->editing = $USER->editing;
+
         return $export;
     }
 

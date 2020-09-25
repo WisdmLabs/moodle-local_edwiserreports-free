@@ -130,6 +130,13 @@ class block_base {
      * Set block edit capabilities for each block
      */
     public function set_block_edit_capabilities($blockname) {
+        global $USER;
+
+        // If user is not editing.
+        if (!$USER->editing) {
+            return false;
+        }
+
         $context = context_system::instance();
 
         // Based on capability show the edit button

@@ -270,7 +270,30 @@ define([
         $('#wdm-elucidsitereport').removeClass('d-none');
 
         setupBlockEditing();
+
+        setupBlockHiding($('#wdm-elucidsitereport').data("editing"));
     });
+
+    function setupBlockHiding(editing) {
+        // Change editing option
+        if (editing) {
+            editing = 0;
+            editingtxt = "Stop Customising this page";
+        } else {
+            editing = 1;
+            editingtxt = "Customise this page";
+        }
+        var editForm = '<div id="editing-btn" class="d-flex flex-wrap">';
+            editForm += '<div class="ml-auto d-flex">';
+            editForm += '<div class="singlebutton">';
+            editForm += '<form method="post" action="' + M.cfg.wwwroot + '/local/sitereport/index.php">';
+            editForm += '<input type="hidden" name="edit" value="' + editing + '">';
+            editForm += '<input type="hidden" name="sesskey" value="' + M.cfg.sesskey + '">';
+            editForm += '<button type="submit" class="btn btn-secondary" title="">' + editingtxt + '</button>';
+            editForm += '</form></div></div>';
+
+        $("#page-local-sitereport-index #page-header .card-body").append(editForm);
+    }
 
     /**
      * Setup block setting button

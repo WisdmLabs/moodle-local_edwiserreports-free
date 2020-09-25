@@ -38,6 +38,14 @@ $component = "local_sitereport";
 
 require_login();
 
+// If use want to edit page.
+$edit = optional_param('edit', null, PARAM_BOOL);
+if ($edit) {
+    $USER->editing = $edit;
+} else {
+    $USER->editing = 0;
+}
+
 // Allow users preferences set remotly.
 \local_sitereport\utility::allow_update_userpreferences_remotly();
 

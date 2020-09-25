@@ -730,3 +730,19 @@ div[id^="wdm-"][id*="-individual"] table.table,
     width: 40px;
     margin: auto;
 }
+
+#page-local-sitereport-index #page-header #editing-btn {
+    vertical-align: middle;
+    right: 1.25rem;
+    text-align: center;
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 1.2rem;
+    top: 28px;
+}
+
+@media (min-width: 768px) {
+    #page-local-sitereport-index #page-header #editing-btn {
+        position: absolute;   
+    }
+}
