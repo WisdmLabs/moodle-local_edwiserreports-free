@@ -104,10 +104,8 @@ define([
                 // dom : '<"pull-left"f><t>',
                 aaSorting: [[2, 'desc']],
                 oLanguage: {
-                    sEmptyTable: "No inactive users are available."
-                },
-                language: {
-                    searchPlaceholder: "Search Users"
+                    sEmptyTable: "No inactive users are available.",
+                    sSearchPlaceholder: "Search Users"
                 },
                 columnDefs: [
                     {
