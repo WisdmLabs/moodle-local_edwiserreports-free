@@ -459,13 +459,13 @@ function local_sitereport_output_fragment_block_overview_display($data) {
     $context = context_system::instance();
     $strpermissions = array(
         CAP_INHERIT => new lang_string('inherit', 'role'),
-        CAP_LOCAL_SITEREPORT_ALLOW => new lang_string('allow', 'role'),
+        CAP_ALLOW => new lang_string('allow', 'role'),
         CAP_PREVENT => new lang_string('prevent', 'role'),
         CAP_PROHIBIT => new lang_string('prohibit', 'role')
     );
     $permissionclasses = array(
         CAP_INHERIT => 'inherit',
-        CAP_LOCAL_SITEREPORT_ALLOW => 'allow',
+        CAP_ALLOW => 'allow',
         CAP_PREVENT => 'prevent',
         CAP_PROHIBIT => 'prohibit',
     );
@@ -482,6 +482,7 @@ function local_sitereport_output_fragment_block_overview_display($data) {
     $capabilitycontext = tool_capability_calculate_role_data($data['capvalue'], $roles);
     foreach ($roles as $roleid => $role) {
         $o .= '<th><div><a href="javascript:void(0)">' . $role->localname . '</a></div></th>';
+
         $rolecap = $capabilitycontext[$context->id]->rolecapabilities[$role->id];
         $permission = isset($rolecap) ? $rolecap : CAP_INHERIT;
         $d .= '<td class="switch-capability ' . $permissionclasses[$permission] . '" data-permission="' . $permission . '">';
