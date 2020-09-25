@@ -32,11 +32,9 @@ define(["jquery", "core/templates", "local_sitereport/defaultconfig"], function(
     function createCertificatesTable() {
         certificatesTable = $(table).DataTable({
             // dom : '<"pull-left"f><t>',
-            language: {
-                searchPlaceholder: "Search Certificates"
-            },
             oLanguage : {
-                sEmptyTable : "There is no certificate created"
+                sEmptyTable : "There is no certificate created",
+                sSearchPlaceholder: "Search Certificates"
             },
             initComplete: function() {
                 $(dropdownBody).show();
