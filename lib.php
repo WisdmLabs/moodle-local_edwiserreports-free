@@ -454,7 +454,7 @@ function local_sitereport_output_fragment_get_blockscap_form($block) {
 function local_sitereport_output_fragment_block_overview_display($data) {
     global $CFG, $PAGE;
 
-    require_once($CFG->dirroot . '\admin\tool\capability\locallib.php');
+    require_once($CFG->dirroot . '/admin/tool/capability/locallib.php');
 
     $context = context_system::instance();
     $strpermissions = array(
