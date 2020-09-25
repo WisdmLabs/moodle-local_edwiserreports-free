@@ -522,14 +522,6 @@ define([
                 data : data
             }
         }).done(function(response) {
-            if (response.success) {
-                location.reload();
-            } else {
-                notif.addNotification({
-                    message: "Error",
-                    type: "error"
-                });
-            }
         }).fail(function(error) {
             console.log(error);
             notif.addNotification({
