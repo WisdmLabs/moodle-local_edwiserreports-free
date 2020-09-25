@@ -531,6 +531,7 @@ function local_sitereport_extend_navigation(navigation_node $nav) {
         'reportsandanalytics',
         $icon
     );
+    $node->showinflatnavigation = true;
 
     if ($PAGE->pagelayout !== 'course') {
         return true;
