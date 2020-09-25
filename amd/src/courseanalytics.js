@@ -80,6 +80,7 @@ define([
          */
         function generateDataTable(tableId, table, data) {
             var emptyStr = "No users has Enrolled in this course";
+            var searchPlaceholder = "Search Analytics";
 
             if (tableId == RecentCompletion){
                 emptyStr = "No users has completed this course";
@@ -99,7 +100,8 @@ define([
                 data : data,
                 responsive: true,
                 oLanguage : {
-                    sEmptyTable : emptyStr
+                    sEmptyTable : emptyStr,
+                    sSearchPlaceholder : searchPlaceholder
                 },
                 columnDefs: [
                     { className: "text-left", targets: 0 },

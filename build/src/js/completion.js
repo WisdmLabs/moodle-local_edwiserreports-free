@@ -56,7 +56,8 @@ define([
                 ajax : url,
                 // dom : "<'pull-left'f><t><p>",
                 oLanguage : {
-                    sEmptyTable : "No users are enrolled as student"
+                    sEmptyTable : "No users are enrolled as student",
+                    sSearchPlaceholder : "Search Completion"
                 },
                 columns : [
                     { "data": "username" },

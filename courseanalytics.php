@@ -51,6 +51,8 @@ $pageurl = new moodle_url($CFG->wwwroot . "/local/sitereport/courseanalytics.php
 // Set page context.
 $PAGE->set_context($coursecontext);
 
+$PAGE->set_pagelayout('course');
+
 // Set page URL.
 $PAGE->set_url($pageurl);
 

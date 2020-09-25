@@ -531,7 +531,6 @@ function local_sitereport_extend_navigation(navigation_node $nav) {
         'reportsandanalytics',
         $icon
     );
-    $node->showinflatnavigation = true;
 
     if ($PAGE->pagelayout !== 'course') {
         return true;
@@ -561,7 +560,7 @@ function local_sitereport_extend_navigation(navigation_node $nav) {
 
     $node = $nav->add(
         get_string('courseanalytics', 'local_sitereport'),
-        new moodle_url($CFG->wwwroot . '/local/sitereport/completion.php', array('courseid' => $COURSE->id)),
+        new moodle_url($CFG->wwwroot . '/local/sitereport/courseanalytics.php', array('courseid' => $COURSE->id)),
         navigation_node::TYPE_CUSTOM,
         'courseanalytics',
         'courseanalytics',
