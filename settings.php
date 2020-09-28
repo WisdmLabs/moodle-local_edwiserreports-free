@@ -54,6 +54,45 @@ $roles = array_map(function ($role) {
 $settingspage = new admin_settingpage('managesitereports', new lang_string('managesitereports', 'local_sitereport'));
 
 foreach ($blocks as $blockid => $block) {
+    $settingspage->add(new admin_setting_heading(
+        'local_sitereport/' . $blockid,
+        new lang_string($blockid . 'header', 'local_sitereport'),
+        ''
+    ));
+
+    // Desktopview for blocks.
+    $availsize = array(
+        LOCAL_SITEREPORT_BLOCK_LARGE => get_string('large', 'local_sitereport'),
+        LOCAL_SITEREPORT_BLOCK_MEDIUM => get_string('medium', 'local_sitereport'),
+        LOCAL_SITEREPORT_BLOCK_SMALL => get_string('small', 'local_sitereport')
+    );
+    $settingspage->add(new admin_setting_configselect(
+        'local_sitereport/' . $blockid . 'desktopsize',
+        new lang_string($blockid . 'desktopsize', 'local_sitereport'),
+        new lang_string($blockid . 'desktopsizehelp', 'local_sitereport'),
+        LOCAL_SITEREPORT_BLOCK_MEDIUM,
+        $availsize
+    ));
+
+    // Tablet view for blocks.
+    $settingspage->add(new admin_setting_configselect(
+        'local_sitereport/' . $blockid . 'tabletsize',
+        new lang_string($blockid . 'tabletsize', 'local_sitereport'),
+        new lang_string($blockid . 'tabletsizehelp', 'local_sitereport'),
+        LOCAL_SITEREPORT_BLOCK_LARGE,
+        $availsize
+    ));
+
+    // Mobile view for blocks.
+    $settingspage->add(new admin_setting_configselect(
+        'local_sitereport/' . $blockid . 'mobilesize',
+        new lang_string($blockid . 'mobilesize', 'local_sitereport'),
+        new lang_string($blockid . 'mobilesizehelp', 'local_sitereport'),
+        LOCAL_SITEREPORT_BLOCK_LARGE,
+        $availsize
+    ));
+
+    // Roles setting for blocks.
     $allowedroles = get_roles_with_capability('report/sitereport_' . $blockid . 'block:view');
     $settingspage->add(new admin_setting_configmultiselect(
         'local_sitereport/' . $blockid . 'roleallow',
