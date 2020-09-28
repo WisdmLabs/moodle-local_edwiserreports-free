@@ -1205,7 +1205,7 @@ class utility {
 
         $permissionconst = array(
              'inherit' => CAP_INHERIT,
-             'allow' => CAP_LOCAL_SITEREPORT_ALLOW,
+             'allow' => CAP_ALLOW,
              'prevent' => CAP_PREVENT,
              'prohibit' => CAP_PROHIBIT
         );

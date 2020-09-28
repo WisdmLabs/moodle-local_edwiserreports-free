@@ -3,7 +3,6 @@
         <i class="icon fa fa-cog fa-fw " title="Actions menu" aria-label="Actions menu"></i>
     </a>
     <div class="dropdown-menu dropdown-menu-right menu align-tr-br" aria-labelledby="blocksetting-{{id}}">
-        {{# canedit }}
         <div class="dropdown-item">
             <a href="#" class="" data-contextid="{{contextid}}" data-blockname="{{id}}" data-action="edit">
                 {{#str}} editblockview, local_sitereport {{/str}}
@@ -19,7 +18,6 @@
                 {{/ hiddenblock }}
             </a>
         </div>
-        {{/ canedit }} 
         {{# caneditadv }}
         <div class="dropdown-item">
             <a href="#" class="" data-contextid="{{contextid}}" data-blockname="{{id}}" data-action="editcap">

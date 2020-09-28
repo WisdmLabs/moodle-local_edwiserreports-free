@@ -518,6 +518,10 @@ function local_sitereport_output_fragment_block_overview_display($data) {
  */
 function local_sitereport_extend_navigation(navigation_node $nav) {
     global $CFG, $PAGE, $COURSE;
+
+    // During the installation save the capability.
+    $PAGE->requires->js_call_amd('local_sitereport/install', 'init');
+
     if ($PAGE->theme->resolve_image_location('icon', 'local_sitereport', null)) {
         $icon = new pix_icon('icon', '', 'local_sitereport', array('class' => 'icon pluginicon'));
     } else {
@@ -569,4 +573,69 @@ function local_sitereport_extend_navigation(navigation_node $nav) {
         $icon
     );
     $node->showinflatnavigation = true;
+}
+
+/**
+ * Get default block settings
+ */
+function get_default_block_settings() {
+    // Return defautl block settings.
+    return array(
+        'activeusers' => array(
+            'classname' => 'activeusersblock',
+            'position' => 0,
+            LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW => LOCAL_SITEREPORT_BLOCK_LARGE,
+            LOCAL_SITEREPORT_BLOCK_TABLET_VIEW => LOCAL_SITEREPORT_BLOCK_LARGE,
+            LOCAL_SITEREPORT_BLOCK_MOBILE_VIEW => LOCAL_SITEREPORT_BLOCK_LARGE
+        ),
+        'courseprogress' => array(
+            'classname' => 'courseprogressblock',
+            'position' => 1,
+            LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW => LOCAL_SITEREPORT_BLOCK_MEDIUM,
+            LOCAL_SITEREPORT_BLOCK_TABLET_VIEW => LOCAL_SITEREPORT_BLOCK_LARGE,
+            LOCAL_SITEREPORT_BLOCK_MOBILE_VIEW => LOCAL_SITEREPORT_BLOCK_LARGE
+        ),
+        'activecourses' => array(
+            'classname' => 'activecoursesblock',
+            'position' => 2,
+            LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW => LOCAL_SITEREPORT_BLOCK_MEDIUM,
+            LOCAL_SITEREPORT_BLOCK_TABLET_VIEW => LOCAL_SITEREPORT_BLOCK_LARGE,
+            LOCAL_SITEREPORT_BLOCK_MOBILE_VIEW => LOCAL_SITEREPORT_BLOCK_LARGE
+        ),
+        'certificates' => array(
+            'classname' => 'certificatesblock',
+            'position' => 3,
+            LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW => LOCAL_SITEREPORT_BLOCK_MEDIUM,
+            LOCAL_SITEREPORT_BLOCK_TABLET_VIEW => LOCAL_SITEREPORT_BLOCK_LARGE,
+            LOCAL_SITEREPORT_BLOCK_MOBILE_VIEW => LOCAL_SITEREPORT_BLOCK_LARGE
+        ),
+        'liveusers' => array(
+            'classname' => 'liveusersblock',
+            'position' => 4,
+            LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW => LOCAL_SITEREPORT_BLOCK_MEDIUM,
+            LOCAL_SITEREPORT_BLOCK_TABLET_VIEW => LOCAL_SITEREPORT_BLOCK_LARGE,
+            LOCAL_SITEREPORT_BLOCK_MOBILE_VIEW => LOCAL_SITEREPORT_BLOCK_LARGE
+        ),
+        'siteaccess' => array(
+            'classname' => 'siteaccessblock',
+            'position' => 5,
+            LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW => LOCAL_SITEREPORT_BLOCK_MEDIUM,
+            LOCAL_SITEREPORT_BLOCK_TABLET_VIEW => LOCAL_SITEREPORT_BLOCK_LARGE,
+            LOCAL_SITEREPORT_BLOCK_MOBILE_VIEW => LOCAL_SITEREPORT_BLOCK_LARGE
+        ),
+        'todaysactivity' => array(
+            'classname' => 'todaysactivityblock',
+            'position' => 6,
+            LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW => LOCAL_SITEREPORT_BLOCK_MEDIUM,
+            LOCAL_SITEREPORT_BLOCK_TABLET_VIEW => LOCAL_SITEREPORT_BLOCK_LARGE,
+            LOCAL_SITEREPORT_BLOCK_MOBILE_VIEW => LOCAL_SITEREPORT_BLOCK_LARGE
+        ),
+        'inactiveusers' => array(
+            'classname' => 'inactiveusersblock',
+            'position' => 7,
+            LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW => LOCAL_SITEREPORT_BLOCK_MEDIUM,
+            LOCAL_SITEREPORT_BLOCK_TABLET_VIEW => LOCAL_SITEREPORT_BLOCK_LARGE,
+            LOCAL_SITEREPORT_BLOCK_MOBILE_VIEW => LOCAL_SITEREPORT_BLOCK_LARGE
+        )
+    );
 }

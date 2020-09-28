@@ -48,19 +48,6 @@ $capabilities = array(
             'user' => CAP_ALLOW
         ),
     ),
-    'report/sitereport_activeusersblock:edit' => array(
-        'riskbitmask' => RISK_SPAM,
-        'captype' => 'read',
-        'contextlevel' => CONTEXT_SYSTEM,
-        'archetypes' => array(
-            'teacher' => CAP_ALLOW,
-            'editingteacher' => CAP_ALLOW,
-            'coursecreator' => CAP_ALLOW,
-            'manager' => CAP_ALLOW,
-            'student' => CAP_ALLOW,
-            'user' => CAP_ALLOW
-        ),
-    ),
     'report/sitereport_activeusersblock:editadvance' => array(
         'riskbitmask' => RISK_SPAM,
         'captype' => 'read',
@@ -71,19 +58,6 @@ $capabilities = array(
         ),
     ),
     'report/sitereport_activecoursesblock:view' => array(
-        'riskbitmask' => RISK_SPAM,
-        'captype' => 'read',
-        'contextlevel' => CONTEXT_SYSTEM,
-        'archetypes' => array(
-            'teacher' => CAP_ALLOW,
-            'editingteacher' => CAP_ALLOW,
-            'coursecreator' => CAP_ALLOW,
-            'manager' => CAP_ALLOW,
-            'student' => CAP_ALLOW,
-            'user' => CAP_ALLOW
-        ),
-    ),
-    'report/sitereport_activecoursesblock:edit' => array(
         'riskbitmask' => RISK_SPAM,
         'captype' => 'read',
         'contextlevel' => CONTEXT_SYSTEM,
@@ -118,19 +92,6 @@ $capabilities = array(
             'user' => CAP_ALLOW
         ),
     ),
-    'report/sitereport_courseprogressblock:edit' => array(
-        'riskbitmask' => RISK_SPAM,
-        'captype' => 'read',
-        'contextlevel' => CONTEXT_SYSTEM,
-        'archetypes' => array(
-            'teacher' => CAP_ALLOW,
-            'editingteacher' => CAP_ALLOW,
-            'coursecreator' => CAP_ALLOW,
-            'manager' => CAP_ALLOW,
-            'student' => CAP_ALLOW,
-            'user' => CAP_ALLOW
-        ),
-    ),
     'report/sitereport_courseprogressblock:editadvance' => array(
         'riskbitmask' => RISK_SPAM,
         'captype' => 'read',
@@ -141,19 +102,6 @@ $capabilities = array(
         ),
     ),
     'report/sitereport_certificatesblock:view' => array(
-        'riskbitmask' => RISK_SPAM,
-        'captype' => 'read',
-        'contextlevel' => CONTEXT_SYSTEM,
-        'archetypes' => array(
-            'teacher' => CAP_ALLOW,
-            'editingteacher' => CAP_ALLOW,
-            'coursecreator' => CAP_ALLOW,
-            'manager' => CAP_ALLOW,
-            'student' => CAP_ALLOW,
-            'user' => CAP_ALLOW
-        ),
-    ),
-    'report/sitereport_certificatesblock:edit' => array(
         'riskbitmask' => RISK_SPAM,
         'captype' => 'read',
         'contextlevel' => CONTEXT_SYSTEM,
@@ -188,19 +136,6 @@ $capabilities = array(
             'user' => CAP_ALLOW
         ),
     ),
-    'report/sitereport_liveusersblock:edit' => array(
-        'riskbitmask' => RISK_SPAM,
-        'captype' => 'read',
-        'contextlevel' => CONTEXT_SYSTEM,
-        'archetypes' => array(
-            'teacher' => CAP_ALLOW,
-            'editingteacher' => CAP_ALLOW,
-            'coursecreator' => CAP_ALLOW,
-            'manager' => CAP_ALLOW,
-            'student' => CAP_ALLOW,
-            'user' => CAP_ALLOW
-        ),
-    ),
     'report/sitereport_liveusersblock:editadvance' => array(
         'riskbitmask' => RISK_SPAM,
         'captype' => 'read',
@@ -211,19 +146,6 @@ $capabilities = array(
         ),
     ),
     'report/sitereport_siteaccessblock:view' => array(
-        'riskbitmask' => RISK_SPAM,
-        'captype' => 'read',
-        'contextlevel' => CONTEXT_SYSTEM,
-        'archetypes' => array(
-            'teacher' => CAP_ALLOW,
-            'editingteacher' => CAP_ALLOW,
-            'coursecreator' => CAP_ALLOW,
-            'manager' => CAP_ALLOW,
-            'student' => CAP_ALLOW,
-            'user' => CAP_ALLOW
-        ),
-    ),
-    'report/sitereport_siteaccessblock:edit' => array(
         'riskbitmask' => RISK_SPAM,
         'captype' => 'read',
         'contextlevel' => CONTEXT_SYSTEM,
@@ -258,19 +180,6 @@ $capabilities = array(
             'user' => CAP_ALLOW
         ),
     ),
-    'report/sitereport_todaysactivityblock:edit' => array(
-        'riskbitmask' => RISK_SPAM,
-        'captype' => 'read',
-        'contextlevel' => CONTEXT_SYSTEM,
-        'archetypes' => array(
-            'teacher' => CAP_ALLOW,
-            'editingteacher' => CAP_ALLOW,
-            'coursecreator' => CAP_ALLOW,
-            'manager' => CAP_ALLOW,
-            'student' => CAP_ALLOW,
-            'user' => CAP_ALLOW
-        ),
-    ),
     'report/sitereport_todaysactivityblock:editadvance' => array(
         'riskbitmask' => RISK_SPAM,
         'captype' => 'read',
@@ -281,19 +190,6 @@ $capabilities = array(
         ),
     ),
     'report/sitereport_inactiveusersblock:view' => array(
-        'riskbitmask' => RISK_SPAM,
-        'captype' => 'read',
-        'contextlevel' => CONTEXT_SYSTEM,
-        'archetypes' => array(
-            'teacher' => CAP_ALLOW,
-            'editingteacher' => CAP_ALLOW,
-            'coursecreator' => CAP_ALLOW,
-            'manager' => CAP_ALLOW,
-            'student' => CAP_ALLOW,
-            'user' => CAP_ALLOW
-        ),
-    ),
-    'report/sitereport_inactiveusersblock:edit' => array(
         'riskbitmask' => RISK_SPAM,
         'captype' => 'read',
         'contextlevel' => CONTEXT_SYSTEM,

@@ -149,7 +149,7 @@ class block_base {
 
         // Based on capability show the edit button
         // If user dont have capability to see the block.
-        $this->layout->canedit = has_capability('report/sitereport_' . $blockname . ':edit', $context);
+        // $this->layout->canedit = has_capability('report/sitereport_' . $blockname . ':edit', $context);.
         $this->layout->caneditadv = has_capability('report/sitereport_' . $blockname . ':editadvance', $context);
 
         // If have capability to edit.
