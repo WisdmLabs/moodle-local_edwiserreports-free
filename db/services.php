@@ -39,5 +39,13 @@ $functions = array(
         'description' => 'Get plugin config',
         'type' => 'write',
         'ajax' => true,
+    ),
+    'local_sitereport_set_plugin_config' => array(
+        'classname' => 'local_sitereport\external\api',
+        'methodname' => 'set_plugin_config',
+        'classpath' => '',
+        'description' => 'Set plugin config',
+        'type' => 'write',
+        'ajax' => true,
     )
 );

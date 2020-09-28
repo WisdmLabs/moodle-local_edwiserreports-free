@@ -38,4 +38,5 @@ use external_api;
 class api extends external_api {
     use complete_sitereport_installation;
     use get_plugin_config;
+    use set_plugin_config;
 }

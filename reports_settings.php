@@ -61,6 +61,9 @@ class report_blocks_form extends moodleform {
            'multiple' => true,
         );
         $mform->addElement('autocomplete', 'rpmblocks', get_string('selectblocks', 'local_sitereport'), $blocks, $options);
+
+        $mform->addElement('autocomplete', 'rpmblocks1', get_string('selectblocks', 'local_sitereport'), $blocks, $options);
+
         // Set previously added blocks as default.
         $this->add_action_buttons(true, get_string('addblocks', 'local_sitereport'));
     }

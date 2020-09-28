@@ -26,6 +26,26 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                 });
             }
         });
+
+        $(document).ready(function() {
+            $('#page-admin-setting-managesitereports #adminsettings [type="submit"]').on ('click', function(event) {
+                event.preventDefault();
+                var setConfig = 'local_sitereport_set_plugin_config';
+                var setPluginConfig = ajax.call([
+                    {
+                        methodname: setConfig,
+                        args: {
+                            pluginname: 'local_sitereport',
+                            configname: 'sitereportinstallation'
+                        }
+                    }
+                ]); 
+                
+                setPluginConfig[0].done(function() {
+                    $('#adminsettings').submit();
+                });
+            })
+        })
     }
 
     return {

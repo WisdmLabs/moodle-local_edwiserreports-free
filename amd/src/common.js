@@ -478,6 +478,7 @@ define([
                 data : data
             }
         }).done(function(response) {
+            response = JSON.parse(response);
             if (response.success) {
                 callback();
                 location.reload();

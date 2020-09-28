@@ -1210,13 +1210,30 @@ class utility {
              'prohibit' => CAP_PROHIBIT
         );
 
+        if (!$config = get_config('local_sitereport', str_replace('block', 'roleallow', $blockname))) {
+            return array('success' => false);
+        }
+        $config = explode(',', $config);
         foreach ($data as $rolename => $permission) {
             $role = $DB->get_record('role', array('shortname' => $rolename));
             if (!$role) {
                 continue;
             }
             assign_capability($capability, $permissionconst[$permission], $role->id, $context->id, true);
+
+            if ($permissionconst[$permission] === CAP_ALLOW) {
+                if (!in_array($role->id, $config)) {
+                    $config[] = $role->id;
+                }
+            } else {
+                if (($key = array_search($role->id, $config)) !== false) {
+                    unset($config[$key]);
+                }
+            }
         }
+
+        $config = implode(',', $config);
+        set_config(str_replace('block', 'roleallow', $blockname), $config, 'local_sitereport');
 
         return array(
             "success" => true
