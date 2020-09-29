@@ -24,26 +24,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-// $ADMIN->add('reports', new admin_category(
-//     'local_sitereport_settings',
-//     new lang_string('pluginname', 'local_sitereport')
-// ));
-// $ADMIN->add('local_sitereport_settings', new admin_externalpage(
-//     'elucidsitereport_dashboard',
-//     new lang_string('myhome'), "/local/sitereport/index.php"
-// ));
-// $ADMIN->add('local_sitereport_settings', new admin_externalpage(
-//     'elucidsitereport_settings',
-//     new lang_string('settings'), "$CFG->wwwroot/local/sitereport/reports_settings.php"
-// ));
-
-// $ADMIN->add('localplugins',
-//     new admin_category(
-//         'local_sitereport_settings',
-//         new lang_string('pluginname', 'local_sitereport')
-//     )
-// );
-
 require_once($CFG->dirroot . '/local/sitereport/lib.php');
 
 $blocks = get_default_block_settings();

@@ -52,7 +52,7 @@ function xmldb_local_sitereport_install() {
         $blocks[] = $blockdata;
     }
 
-    // Database controller
+    // Database controller.
     $dbcontroller = new local_sitereport\db_controller();
 
     // Sync all users in installations process.

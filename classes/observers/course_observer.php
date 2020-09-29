@@ -32,9 +32,7 @@ defined('MOODLE_INTERNAL') || die();
 
 use stdClass;
 
-/**
- * Require files
- */
+// Require files.
 require_once($CFG->dirroot . '/local/sitereport/classes/db_controller.php');
 require_once($CFG->dirroot . '/local/sitereport/classes/constants.php');
 
@@ -44,14 +42,14 @@ trait course_observer {
      * @return [type] [description]
      */
     protected static function get_course_eventdata($event) {
-        // Get event related data
+        // Get event related data.
         $eventdata = (object) $event->get_data();
 
-        // Prepare course completion module data
+        // Prepare course completion module data.
         $data = new stdClass();
         $data->courseid = (int) $eventdata->objectid;
 
-        // Return event data which is required
+        // Return event data which is required.
         return $data;
     }
 
@@ -63,12 +61,12 @@ trait course_observer {
         global $DB;
 
         // If course module event data is present then
-        // update course progress records
+        // update course progress records.
         if ($data = self::get_course_eventdata($event)) {
-            // Get datatbase controller
+            // Get datatbase controller.
             $dbc = new \local_sitereport\db_controller();
 
-            // Delete all course module completion
+            // Delete all course module completion.
             $dbc->delete_course_completion(array('courseid' => $data->courseid));
         }
     }
@@ -81,14 +79,14 @@ trait course_observer {
         global $DB;
 
         // If course module event data is present then
-        // update course progress records
+        // update course progress records.
         if ($data = self::get_course_eventdata($event)) {
-            // Get datatbase controller
+            // Get datatbase controller.
             $dbc = new \local_sitereport\db_controller();
 
-            // If completion is updated in course
+            // If completion is updated in course.
             if ($dbc->is_completion_updated($data->courseid)) {
-                // If disable the course completion
+                // If disable the course completion.
                 $dbc->course_data_changed(array('courseid' => $data->courseid));
             }
         }

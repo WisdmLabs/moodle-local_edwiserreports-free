@@ -32,9 +32,7 @@ defined('MOODLE_INTERNAL') || die();
 
 use stdClass;
 
-/**
- * Require files
- */
+// Require files.
 require_once($CFG->dirroot . '/local/sitereport/classes/db_controller.php');
 require_once($CFG->dirroot . '/local/sitereport/classes/constants.php');
 
@@ -44,20 +42,20 @@ trait course_module_observer {
      * @return [type] [description]
      */
     protected static function get_course_module_eventdata($event) {
-        // Get event related data
+        // Get event related data.
         $eventdata = (object) $event->get_data();
 
-        // Prepare course completion module data
+        // Prepare course completion module data.
         $data = new stdClass();
         $data->courseid = (int) $eventdata->courseid;
         $data->moduleid = (int) $eventdata->objectid;
 
-        // If userid is set then get userid
+        // If userid is set then get userid.
         if (isset($eventdata->relateduserid)) {
             $data->userid = (int) $eventdata->relateduserid;
         }
 
-        // Return event data which is required
+        // Return event data which is required.
         return $data;
     }
 
@@ -67,15 +65,15 @@ trait course_module_observer {
      */
     public static function course_module_created(\core\event\course_module_created $event) {
         // If course module event data is present then
-        // update course progress records
+        // update course progress records.
         if ($data = self::get_course_module_eventdata($event)) {
-            // Get datatbase controller
+            // Get datatbase controller.
             $dbc = new \local_sitereport\db_controller();
 
-            // This is not deleting event
+            // This is not deleting event.
             $data->isdeleting = false;
 
-            // Create course module completion
+            // Create course module completion.
             $dbc->update_course_progress_table($data);
         }
     }
@@ -86,16 +84,16 @@ trait course_module_observer {
      */
     public static function course_module_deleted(\core\event\course_module_deleted $event) {
         // If course module event data is present then
-        // update course progress records
+        // update course progress records.
         if ($data = self::get_course_module_eventdata($event)) {
-            // Get datatbase controller
+            // Get datatbase controller.
             $dbc = new \local_sitereport\db_controller();
 
             // If deleting the module then remove data from
-            // completed module as well
+            // completed module as well.
             $data->isdeleting = true;
 
-            // Create course module completion
+            // Create course module completion.
             $dbc->update_course_progress_table($data);
         }
     }
@@ -106,12 +104,12 @@ trait course_module_observer {
      */
     public static function course_module_updated(\core\event\course_module_updated $event) {
         // If course module event data is present then
-        // update course progress records
+        // update course progress records.
         if ($data = self::get_course_module_eventdata($event)) {
-            // Get datatbase controller
+            // Get datatbase controller.
             $dbc = new \local_sitereport\db_controller();
 
-            // Create course module completion
+            // Create course module completion.
             $dbc->course_data_changed(array('courseid' => $data->courseid));
         }
     }
@@ -121,16 +119,15 @@ trait course_module_observer {
      * @param  \core\event\course_module_completion_updated $event Event Data
      */
     public static function course_module_completion_updated(\core\event\course_module_completion_updated $event) {
-        /*$completiondata = $event->get_record_snapshot($event->objecttable, $event->objectid);*/
 
-        // If course module event data is present
+        // If course module event data is present.
         if ($data = self::get_course_module_eventdata($event)) {
-            // If data contain userid
+            // If data contain userid.
             if (isset($data->userid)) {
-                // Get datatbase controller
+                // Get datatbase controller.
                 $dbc = new \local_sitereport\db_controller();
 
-                // Update course module completion
+                // Update course module completion.
                 $dbc->course_data_changed(array(
                     'courseid' => $data->courseid,
                     'userid' => $data->userid

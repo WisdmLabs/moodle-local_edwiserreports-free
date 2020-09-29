@@ -418,10 +418,6 @@ class completion_renderable implements renderable, templatable {
             "filter" => $courseid
         );
 
-        // $downloadurl = $CFG->wwwroot."/local/sitereport/download.php";
-        // $output->exportlink = local_sitereport_get_exportlinks($downloadurl, "report", "completion", $courseid, 0);
-        // $output->userfilters = local_sitereport_get_userfilters(false, true, false);
-        // $output->backurl = new moodle_url($CFG->wwwroot."/local/sitereport/index.php");
         return $output;
     }
 }

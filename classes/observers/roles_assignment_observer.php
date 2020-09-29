@@ -32,9 +32,7 @@ defined('MOODLE_INTERNAL') || die();
 
 use stdClass;
 
-/**
- * Require files
- */
+// Require files.
 require_once($CFG->dirroot . '/local/sitereport/classes/db_controller.php');
 require_once($CFG->dirroot . '/local/sitereport/classes/constants.php');
 
@@ -47,27 +45,27 @@ trait roles_assignment_observer {
      * @return [type] [description]
      */
     protected static function get_roles_assignment_eventdata($event) {
-        // Get event related data
+        // Get event related data.
         $eventdata = (object) $event->get_data();
 
-        // Get role assignment data
+        // Get role assignment data.
         $roledata = $event->get_record_snapshot(
             $eventdata->objecttable,
             $eventdata->objectid
         );
 
         // If role is not assigned as student then
-        // don't save the records in database
+        // don't save the records in database.
         if ($roledata->archetype !== CPM_STUDENTS_ARCHETYPE) {
             return false;
         }
 
-        // Prepare course completion module data
+        // Prepare course completion module data.
         $data = new stdClass();
         $data->userid = (int) $eventdata->relateduserid;
         $data->courseid = (int) $eventdata->courseid;
 
-        // Return event data which is required
+        // Return event data which is required.
         return $data;
     }
 
@@ -76,12 +74,12 @@ trait roles_assignment_observer {
      * @param  \core\event\role_assigned $event Event Data
      */
     public static function role_assigned(\core\event\role_assigned $event) {
-        // If event data is there then create progress data
+        // If event data is there then create progress data.
         if ($data = self::get_roles_assignment_eventdata($event)) {
-            // Get datatbase controller
+            // Get datatbase controller.
             $dbc = new \local_sitereport\db_controller();
 
-            // Create course module completion
+            // Create course module completion.
             $dbc->update_course_completion($data);
         }
     }
@@ -91,12 +89,12 @@ trait roles_assignment_observer {
      * @param  \core\event\role_assigned $event Event Data
      */
     public static function role_unassigned(\core\event\role_unassigned $event) {
-        // If event data is there then delet progress data
+        // If event data is there then delet progress data.
         if ($data = self::get_roles_assignment_eventdata($event)) {
-            // Get datatbase controller
+            // Get datatbase controller.
             $dbc = new \local_sitereport\db_controller();
 
-            // Create course module completion
+            // Create course module completion.
             $dbc->delete_course_completion($data);
         }
     }

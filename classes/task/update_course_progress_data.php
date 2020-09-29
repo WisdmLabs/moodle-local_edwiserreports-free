@@ -25,6 +25,8 @@
 
 namespace local_sitereport\task;
 
+defined('MOODLE_INTERNAL') || die;
+
 require_once($CFG->dirroot . '/local/sitereport/classes/db_controller.php');
 
 use context_course;
@@ -54,7 +56,7 @@ class update_course_progress_data extends \core\task\scheduled_task {
 
         // Parse all progress data.
         foreach ($progressdata as $data) {
-            // Get course
+            // Get course.
             $course = get_course($data->courseid);
 
             // Get course completion.
