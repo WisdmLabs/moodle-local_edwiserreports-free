@@ -121,7 +121,7 @@ class courseanalytics_block extends utility {
             }
 
             $params = array('courseid' => $courseid, 'userid' => $user->id);
-            $enrolinfo = $DB->get_record_sql($enrolsql, $params);
+            $enrolinfo = $DB->get_record_sql($enrolsql, $params, IGNORE_MULTIPLE);
 
             $userinfo = array();
             $userinfo[] = fullname($user);

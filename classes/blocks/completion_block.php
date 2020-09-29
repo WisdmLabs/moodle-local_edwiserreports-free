@@ -58,7 +58,7 @@ class completion_block extends utility {
     public static function get_completions($courseid, $cohortid) {
         global $DB;
         $timenow = time();
-        $enrolsql = "SELECT *
+        $enrolsql = "SELECT ue.*, e.enrol
             FROM {user_enrolments} ue
             JOIN {enrol} e ON (e.id = ue.enrolid AND e.courseid = :courseid)
             JOIN {user} u ON u.id = ue.userid
@@ -79,7 +79,7 @@ class completion_block extends utility {
             }
 
             $params = array('courseid' => $courseid, 'userid' => $user->id);
-            $enrolinfo = $DB->get_record_sql($enrolsql, $params);
+            $enrolinfo = $DB->get_record_sql($enrolsql, $params, IGNORE_MULTIPLE);
 
             $completion = self::get_course_completion_info($course, $user->id);
 
