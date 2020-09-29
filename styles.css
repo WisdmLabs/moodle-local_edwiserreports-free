@@ -375,6 +375,7 @@
     top: 0;
     right: 0;
     background-color: #e4eaec;
+    max-width: 250px;
 }
 
 #wdm-elucidsitereport #todaysactivityblock .ct-chart {
