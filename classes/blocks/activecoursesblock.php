@@ -44,6 +44,7 @@ class activecoursesblock extends block_base {
         $this->layout->id = 'activecoursesblock';
         $this->layout->name = get_string('activecoursesheader', 'local_sitereport');
         $this->layout->info = get_string('activecoursesblockhelp', 'local_sitereport');
+        $this->layout->hasdownloadlink = true;
 
         // Block related data.
         $this->block = new stdClass();
@@ -103,7 +104,7 @@ class activecoursesblock extends block_base {
 
         $courses = get_courses();
 
-        $count = 0;
+        $count = 1;
         $response = array();
         // Calculate Completion Count for All Course.
         $sql = "SELECT courseid, COUNT(userid) AS users
@@ -120,12 +121,6 @@ class activecoursesblock extends block_base {
                 continue;
             }
 
-            // Create a record for responce.
-            $res = array(
-                $count++,
-                $course->fullname
-            );
-
             // Get Course Context.
             $coursecontext = context_course::instance($course->id);
 
@@ -135,6 +130,13 @@ class activecoursesblock extends block_base {
             if (empty($enrolledstudents)) {
                 continue;
             }
+
+            // Create a record for responce.
+            $res = array(
+                $count++,
+                $course->fullname
+            );
+
             $res[] = count($enrolledstudents);
 
             // Get Completion count.
@@ -181,8 +183,10 @@ class activecoursesblock extends block_base {
      */
     public static function get_exportable_data_block() {
         $export = array();
-        $header = active_courses_block::get_header();
-        $activecoursesdata = active_courses_block::get_data();
+        $header = self::get_header();
+
+        $classobj = new self();
+        $activecoursesdata = $classobj->get_data();
         $export = array_merge(
             array($header),
             $activecoursesdata->data
