@@ -29,6 +29,14 @@ defined('MOODLE_INTERNAL') || die();
  * Custom uninstallation procedure.
  */
 function xmldb_local_sitereport_uninstall() {
+    global $DB, $CFG;
 
+    require_once($CFG->dirroot . '/local/sitereport/lib.php');
+
+    $blocks = get_default_block_settings();
+
+    foreach (array_keys($blocks) as $blockid) {
+        $DB->delete_records('user_preferences', array('name' => 'pref_' . $blockid . 'block'));
+    }
     return true;
 }
