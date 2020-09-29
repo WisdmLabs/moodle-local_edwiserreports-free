@@ -25,10 +25,26 @@ define(["jquery", "local_sitereport/variables", "local_sitereport/select2"], fun
                         aspectRatio: 1,
                         scales:{
                             xAxes: [{
-                                display: false
+                                display: true,
+                                gridLines: {
+                                    display: false,
+                                    zeroLineColor: "#FFF",
+                                    color: "#FFF"
+                                },
+                                ticks: {
+                                    fontColor: "#FFF"
+                                }
                             }],
                             yAxes: [{
                                 display: false,
+                                gridLines: {
+                                    display: false,
+                                    zeroLineColor: "#FFF",
+                                    color: "#FFF"
+                                },
+                                ticks: {
+                                    fontColor: "#FFF"
+                                }
                             }]
                         },
                         legend: {
