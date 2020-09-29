@@ -45,7 +45,45 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                     $('#adminsettings').submit();
                 });
             })
-        })
+        });
+
+        var positionSelector = 'select[id ^=id_s_local_sitereport][id $=position]';
+
+        var currentVal = [];
+        $(positionSelector).each(function(idx, val) {
+            currentVal.push($(val).val());
+        });
+
+        $(positionSelector).on('change', function() {
+            var _this = this;
+            var posChangedIdx = false;
+            $(positionSelector).each(function(idx, val) {
+                if (_this.name == val.name) {
+                    posChangedIdx = idx;
+                    return;
+                }
+            });
+
+            var prevSelectVal = currentVal[posChangedIdx];
+            var currSelectVal = $(this).val();
+
+            $(positionSelector).each(function(idx, val) {
+                var currVal = $(val).val();
+                if (_this.name !== val.name) {
+                    console.log(val.name);
+                    console.log(prevSelectVal);
+                    console.log(currSelectVal);
+                    console.log(currVal);
+                    if (prevSelectVal > currSelectVal && currSelectVal <= currVal) {
+                        console.log($(val).find('option:selected').next());
+                        $(val).find('option:selected').next().attr('selected', 'selected');
+                    } else if (prevSelectVal < currSelectVal && currSelectVal >= currVal) {
+                        console.log($(val).find('option:selected').prev());
+                        $(val).find('option:selected').prev().attr('selected', 'selected');
+                    }
+                }
+            });
+        });
     }
 
     return {
