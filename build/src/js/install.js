@@ -64,24 +64,23 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                 }
             });
 
-            var prevSelectVal = currentVal[posChangedIdx];
-            var currSelectVal = $(this).val();
+            var prevSelectVal = parseInt(currentVal[posChangedIdx]);
+            var currSelectVal = parseInt($(this).val());
 
             $(positionSelector).each(function(idx, val) {
-                var currVal = $(val).val();
+                var currVal = parseInt($(val).val());
                 if (_this.name !== val.name) {
-                    console.log(val.name);
-                    console.log(prevSelectVal);
-                    console.log(currSelectVal);
-                    console.log(currVal);
-                    if (prevSelectVal > currSelectVal && currSelectVal <= currVal) {
-                        console.log($(val).find('option:selected').next());
-                        $(val).find('option:selected').next().attr('selected', 'selected');
-                    } else if (prevSelectVal < currSelectVal && currSelectVal >= currVal) {
-                        console.log($(val).find('option:selected').prev());
-                        $(val).find('option:selected').prev().attr('selected', 'selected');
+                    if (prevSelectVal > currSelectVal && prevSelectVal > currVal && currSelectVal <= currVal) {
+                        $(val).val(parseInt(currVal) + 1);
+                    } else if (prevSelectVal < currSelectVal && prevSelectVal < currVal && currSelectVal >= currVal) {
+                        $(val).val(parseInt(currVal) - 1);
                     }
                 }
+            });
+
+            currentVal = [];
+            $(positionSelector).each(function(idx, val) {
+                currentVal.push($(val).val());
             });
         });
     }
