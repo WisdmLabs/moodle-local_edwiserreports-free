@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Plugin administration pages are defined here.
+ * Local Course Progress Manager Plugin Events.
  *
  * @package     local_sitereport
  * @category    admin
@@ -23,25 +23,34 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace local_sitereport\event;
+
 defined('MOODLE_INTERNAL') || die();
 
-$tasks = [
-    [
-        'classname' => 'local_sitereport\task\send_scheduled_emails',
-        'blocking' => 0,
-        'minute' => '*',
-        'hour' => '*',
-        'day' => '*',
-        'month' => '*',
-        'dayofweek' => '*',
-    ],
-    [
-        'classname' => '\local_sitereport\task\update_course_progress_data',
-        'blocking' => 0,
-        'minute' => '*/5',
-        'hour' => '*',
-        'day' => '*',
-        'month' => '*',
-        'dayofweek' => '*'
-    ]
-];
+require_once($CFG->libdir . '/classes/event/base.php');
+
+/**
+ * Course completion event for course progress manager
+ */
+class edw_course_completed extends \core\event\base {
+
+    /**
+     * Return localised event name.
+     *
+     * @return string
+     */
+    public static function get_name() {
+        return get_string('coursecompletionevent', 'local_sitereport');
+    }
+
+    /**
+     * Return localised event name.
+     *
+     * @return string
+     */
+    protected function init() {
+        $this->data['crud'] = 'u';
+        $this->data['edulevel'] = self::LEVEL_PARTICIPATING;
+        $this->data['objecttable'] = 'sitereport_course_progress';
+    }
+}

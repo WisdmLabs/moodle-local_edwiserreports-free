@@ -276,7 +276,7 @@ class utility {
         global $DB;
 
         // Return course completion from report completion table.
-        $table = "edw_course_progress";
+        $table = "sitereport_course_progress";
         return $DB->get_records($table, array("courseid" => $courseid), "", "userid, progress as completion");
     }
 
@@ -483,7 +483,7 @@ class utility {
             }
 
             $completionsql = "SELECT id, progress as completion
-                FROM {edw_course_progress}
+                FROM {sitereport_course_progress}
                 WHERE userid = :userid
                 AND courseid = :courseid
                 AND progress

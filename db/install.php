@@ -52,5 +52,12 @@ function xmldb_local_sitereport_install() {
         $blocks[] = $blockdata;
     }
 
-    return $DB->insert_records('sitereport_blocks', $blocks);
+    // Database controller
+    $dbcontroller = new local_sitereport\db_controller();
+
+    // Sync all users in installations process.
+    $completionupgrade = $dbcontroller->sync_old_users_with_course_progress();
+    $reportpluginupgrade = $DB->insert_records('sitereport_blocks', $blocks);
+
+    return $completionupgrade && $reportpluginupgrade;
 }

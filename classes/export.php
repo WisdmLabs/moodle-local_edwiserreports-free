@@ -840,7 +840,7 @@ class export {
                 JOIN {role} r ON r.id = ra.roleid
                 JOIN {context} ct ON ct.id = ra.contextid
                 JOIN {course} c ON c.id = ct.instanceid '.$lpjoinquery.' ' . $activitytypejoin . '
-                JOIN {edw_course_progress} ec ON ec.courseid = c.id AND ec.userid = u.id AND c.id '.$coursedb.'
+                JOIN {sitereport_course_progress} ec ON ec.courseid = c.id AND ec.userid = u.id AND c.id '.$coursedb.'
                 JOIN {course_categories} ctg ON ctg.id = c.category ' . $lhdb . '
                 WHERE u.id '.$userdb.'
                 AND ct.contextlevel = '.CONTEXT_COURSE.'

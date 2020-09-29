@@ -46,7 +46,7 @@ class completions {
      * Completions table name for plugin
      * @var string
      */
-    public $tablename = "edw_course_progress";
+    public $tablename = "sitereport_course_progress";
 
 
     /**

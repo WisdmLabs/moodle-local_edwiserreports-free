@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Plugin administration pages are defined here.
+ * Local Course Progress Manager Plugin Database Comtroller.
  *
  * @package     local_sitereport
  * @category    admin
@@ -23,25 +23,21 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+/* Local course progress manager namespace */
+namespace local_sitereport\observers;
+
 defined('MOODLE_INTERNAL') || die();
 
-$tasks = [
-    [
-        'classname' => 'local_sitereport\task\send_scheduled_emails',
-        'blocking' => 0,
-        'minute' => '*',
-        'hour' => '*',
-        'day' => '*',
-        'month' => '*',
-        'dayofweek' => '*',
-    ],
-    [
-        'classname' => '\local_sitereport\task\update_course_progress_data',
-        'blocking' => 0,
-        'minute' => '*/5',
-        'hour' => '*',
-        'day' => '*',
-        'month' => '*',
-        'dayofweek' => '*'
-    ]
-];
+/**
+ * Course progress event observer
+ */
+class event_observer {
+    // Role assignment observer.
+    use roles_assignment_observer;
+
+    // Course module creation observer.
+    use course_module_observer;
+
+    // Use course observer.
+    use course_observer;
+}

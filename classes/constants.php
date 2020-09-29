@@ -77,3 +77,6 @@ define('LOCAL_SITEREPORT_BLOCK_MOBILE_VIEW', 'mobileview');
 define('LOCAL_SITEREPORT_BLOCK_LARGE', 2);
 define('LOCAL_SITEREPORT_BLOCK_MEDIUM', 1);
 define('LOCAL_SITEREPORT_BLOCK_SMALL', 0);
+
+// Course Progres Manager
+define('CPM_STUDENTS_ARCHETYPE', 'student');

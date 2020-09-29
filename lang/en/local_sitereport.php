@@ -539,3 +539,14 @@ $string['todaysactivityposition'] = 'Todays Activity Block in Position';
 $string['todaysactivitypositionhelp'] = 'Position todays activity block';
 $string['inactiveusersposition'] = 'Inactive Users Block  in Position';
 $string['inactiveuserspositionhelp'] = 'Position inactive users block';
+
+/* Course progress manager strings */
+$string['update_course_progress_data'] = 'Update Course Progress Data';
+
+/* Course Completion Event */
+$string['coursecompletionevent'] = 'Course Completion Event';
+$string['courseprogessupdated'] = 'Course Progress Updated';
+
+/* Error Strings */
+$string['invalidparam'] = 'Invalid Parameter Found';
+$string['moduleidnotdefined'] = 'Module id is not defined';
