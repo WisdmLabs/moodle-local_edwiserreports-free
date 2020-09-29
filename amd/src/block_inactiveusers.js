@@ -33,6 +33,7 @@ define([
         $(dropdown).on("click", function() {
             // Get filter
             var filter = $(this).data("value");
+            $(panel).find('.download-links input[name="filter"]').val(filter)
 
             // If table is already created then destroy the tablw
             if (activeUsersTable) {

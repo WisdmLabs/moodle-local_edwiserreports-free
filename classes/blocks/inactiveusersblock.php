@@ -47,7 +47,7 @@ class inactiveusersblock extends block_base {
         $this->layout->name = get_string('inactiveusers', 'local_sitereport');
         $this->layout->info = get_string('inactiveusersblockhelp', 'local_sitereport');
         $this->layout->hasdownloadlink = true;
-        $this->layout->filters = '';
+        $this->layout->filters = $this->get_inactiveusers_filter();
 
         // Block related data.
         $this->block = new stdClass();
@@ -60,6 +60,30 @@ class inactiveusersblock extends block_base {
 
         // Return blocks layout.
         return $this->layout;
+    }
+
+    /**
+     * Prepare Inactive users filter
+     * @return [string] Filter HTML content
+     */
+    public function get_inactiveusers_filter() {
+        $html = '<button type="button" class="btn btn-sm dropdown-toggle mt-3" data-toggle="dropdown"
+                 aria-expanded="true">Never</button>
+                <div class="dropdown-menu dropdown-sm" role="menu" x-placement="top-start">
+                <a class="active dropdown-item" href="javascript:void(0)" data-value="never" role="menuitem">
+                    Never
+                </a>
+                <a class="dropdown-item" href="javascript:void(0)" data-value="1month" role="menuitem">
+                    Before 1 Month
+                </a>
+                <a class="dropdown-item" href="javascript:void(0)" data-value="3month" role="menuitem">
+                    Before 3 Month
+                </a>
+                <a class="dropdown-item" href="javascript:void(0)" data-value="6month" role="menuitem">
+                    Before 6 Month
+                </a>
+                </div>';
+        return $html;
     }
 
     /**
