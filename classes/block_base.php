@@ -46,7 +46,6 @@ class block_base {
         $this->layout->sesskey = sesskey();
         $this->layout->class = '';
         $this->layout->contextid = $context->id;
-        $this->layout->canedit = true;
         $this->layout->caneditadv = false;
         $this->layout->region = 'block';
 
@@ -89,11 +88,20 @@ class block_base {
     /**
      * Set block size
      */
-    public function set_block_size($params) {
+    public function set_block_size($blockname) {
         $sizes = array();
-        $sizes[LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW] = $params[LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW];
-        $sizes[LOCAL_SITEREPORT_BLOCK_TABLET_VIEW] = $params[LOCAL_SITEREPORT_BLOCK_TABLET_VIEW];
-        $sizes[LOCAL_SITEREPORT_BLOCK_MOBILE_VIEW] = $params[LOCAL_SITEREPORT_BLOCK_MOBILE_VIEW];
+        if ($prefrences = get_user_preferences('pref_' . $blockname . 'block')) {
+            $blockdata = json_decode($prefrences, true);
+            $position = $blockdata['position'];
+            $sizes[LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW] = $blockdata[LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW];
+            $sizes[LOCAL_SITEREPORT_BLOCK_TABLET_VIEW] = $blockdata[LOCAL_SITEREPORT_BLOCK_TABLET_VIEW];
+            $sizes[LOCAL_SITEREPORT_BLOCK_MOBILE_VIEW] = $blockdata[LOCAL_SITEREPORT_BLOCK_MOBILE_VIEW];
+        } else {
+            $position = get_config('local_sitereport', $blockname . 'position');
+            $sizes[LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW] = get_config('local_sitereport', $blockname . 'desktopsize');;
+            $sizes[LOCAL_SITEREPORT_BLOCK_TABLET_VIEW] = get_config('local_sitereport', $blockname . 'tabletsize');;
+            $sizes[LOCAL_SITEREPORT_BLOCK_MOBILE_VIEW] = get_config('local_sitereport', $blockname . 'mobilesize');;
+        }
 
         $devicecolclass = array(
             LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW => 'col-lg-',
@@ -109,7 +117,7 @@ class block_base {
                 case LOCAL_SITEREPORT_BLOCK_MEDIUM:
                     $this->layout->class .= $devicecolclass[$media] . '6 ';
                     break;
-                case LOCAL_SITEREPORT_BLOCK_SMLOCAL_SITEREPORT_ALL:
+                case LOCAL_SITEREPORT_BLOCK_SMALL:
                     $this->layout->class .= $devicecolclass[$media] . '4 ';
                     break;
                 default:
@@ -153,6 +161,6 @@ class block_base {
         $this->layout->caneditadv = has_capability('report/sitereport_' . $blockname . ':editadvance', $context);
 
         // If have capability to edit.
-        $this->layout->editopt = $this->layout->canedit || $this->layout->caneditadv;
+        $this->layout->editopt = $this->layout->caneditadv;
     }
 }

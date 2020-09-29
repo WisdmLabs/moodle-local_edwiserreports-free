@@ -53,6 +53,15 @@ $roles = array_map(function ($role) {
 
 $settingspage = new admin_settingpage('managesitereports', new lang_string('managesitereports', 'local_sitereport'));
 
+$availsize = array(
+    LOCAL_SITEREPORT_BLOCK_LARGE => get_string('large', 'local_sitereport'),
+    LOCAL_SITEREPORT_BLOCK_MEDIUM => get_string('medium', 'local_sitereport'),
+    LOCAL_SITEREPORT_BLOCK_SMALL => get_string('small', 'local_sitereport')
+);
+
+$positions = range(1, count($blocks), 1);
+
+$currentpos = 0;
 foreach ($blocks as $blockid => $block) {
     $settingspage->add(new admin_setting_heading(
         'local_sitereport/' . $blockid,
@@ -60,12 +69,15 @@ foreach ($blocks as $blockid => $block) {
         ''
     ));
 
+    $settingspage->add(new admin_setting_configselect(
+        'local_sitereport/' . $blockid . 'position',
+        new lang_string($blockid . 'position', 'local_sitereport'),
+        new lang_string($blockid . 'positionhelp', 'local_sitereport'),
+        $currentpos++,
+        $positions
+    ));
+
     // Desktopview for blocks.
-    $availsize = array(
-        LOCAL_SITEREPORT_BLOCK_LARGE => get_string('large', 'local_sitereport'),
-        LOCAL_SITEREPORT_BLOCK_MEDIUM => get_string('medium', 'local_sitereport'),
-        LOCAL_SITEREPORT_BLOCK_SMALL => get_string('small', 'local_sitereport')
-    );
     $settingspage->add(new admin_setting_configselect(
         'local_sitereport/' . $blockid . 'desktopsize',
         new lang_string($blockid . 'desktopsize', 'local_sitereport'),

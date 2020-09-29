@@ -1096,8 +1096,13 @@ class utility {
      */
     public static function rearrange_block_with_preferences(&$blocks) {
         $newblocks = array();
+        $addon = 0;
         foreach ($blocks as $key => $block) {
             $pref = self::get_reportsblock_preferences($block);
+
+            while (isset($newblocks[$pref['position']])) {
+                $pref['position']++;
+            }
 
             $newblocks[$pref['position']] = $block;
         }
@@ -1139,20 +1144,24 @@ class utility {
     public static function get_reportsblock_preferences($block) {
         if ($prefrences = get_user_preferences('pref_' . $block->classname)) {
             $blockdata = json_decode($prefrences, true);
+            $position = $blockdata['position'];
+            $desktopview = $blockdata[LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW];
+            $tabletview = $blockdata[LOCAL_SITEREPORT_BLOCK_TABLET_VIEW];
+            $mobileview = $blockdata[LOCAL_SITEREPORT_BLOCK_MOBILE_VIEW];
         } else {
-            $blockdata = json_decode($block->blockdata, true);
+            $position = get_config('local_sitereport', $block->blockname . 'position');
+            $desktopview = get_config('local_sitereport', $block->blockname . 'desktopsize');;
+            $tabletview = get_config('local_sitereport', $block->blockname . 'tabletsize');;
+            $mobileview = get_config('local_sitereport', $block->blockname . 'mobilesize');;
         }
 
         // Set default preference.
         $preferences = array();
-        // Update preferences from blockdata.
-        if ($blockdata) {
-            $preferences[LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW] = $blockdata[LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW];
-            $preferences[LOCAL_SITEREPORT_BLOCK_TABLET_VIEW] = $blockdata[LOCAL_SITEREPORT_BLOCK_TABLET_VIEW];
-            $preferences[LOCAL_SITEREPORT_BLOCK_MOBILE_VIEW] = $blockdata[LOCAL_SITEREPORT_BLOCK_MOBILE_VIEW];
-            $preferences['position'] = $blockdata['position'];
-            $preferences['hidden'] = isset($blockdata["hidden"]) ? $blockdata["hidden"] : 0;
-        }
+        $preferences[LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW] = $desktopview;
+        $preferences[LOCAL_SITEREPORT_BLOCK_TABLET_VIEW] = $tabletview;
+        $preferences[LOCAL_SITEREPORT_BLOCK_MOBILE_VIEW] = $mobileview;
+        $preferences['position'] = $position;
+        $preferences['hidden'] = isset($blockdata["hidden"]) ? $blockdata["hidden"] : 0;
 
         return $preferences;
     }

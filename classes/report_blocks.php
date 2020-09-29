@@ -76,7 +76,7 @@ class report_blocks {
                 $layout->hiddenblock = true;
             }
 
-            $blockbase->set_block_size($pref);
+            $blockbase->set_block_size($block->blockname);
 
             $this->reportsblock[] = $layout;
         }
