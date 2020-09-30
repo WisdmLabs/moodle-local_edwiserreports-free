@@ -985,6 +985,10 @@ define([
         var block = data.block;
         var errorBox = root.find(".esr-form-error");
         errorBox.html(loader).show();
+        if ($(document).find('#cover-spin')) {
+            $("body").append(windowLoader);
+        }
+        $(document).find('#cover-spin').show(0);
 
         $.ajax({
             url: M.cfg.wwwroot + "/local/sitereport/download.php?type=email&filter=" + filter + "&cohortid=" + cohortid + "&block=" + block,
@@ -1009,6 +1013,7 @@ define([
             errorBox.html('<div class="alert alert-danger"><b>ERROR:</b>' + response.errormsg + '</div>');
         }).always(function() {
             errorBox.delay(3000).fadeOut('slow');
+            $(document).find('#cover-spin').hide();
         });
     }
 

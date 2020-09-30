@@ -238,6 +238,10 @@ define([
                         responsive: true,
                         // dom : '<"pull-left"f><t><p>',
                         order : [[0, 'desc']],
+                        language: {
+                            searchPlaceholder: "Search Active Users",
+                            emptyTable: "There are no active users"
+                        },
                         columnDefs: [
                             {
                                 "targets": 0,
