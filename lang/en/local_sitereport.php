@@ -550,3 +550,5 @@ $string['courseprogessupdated'] = 'Course Progress Updated';
 /* Error Strings */
 $string['invalidparam'] = 'Invalid Parameter Found';
 $string['moduleidnotdefined'] = 'Module id is not defined';
+
+$string['clicktogetuserslist'] = 'Click in numbers in order to get the users list';

@@ -1,4 +1,8 @@
 <div id="wdm-certificates-individual" class="table-responsive" data-sesskey="{{sesskey}}">
+    <div class="alert alert-info alert-block fade in " role="alert" data-aria-autofocus="true">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        {{# str }} clicktogetuserslist, local_sitereport {{/ str}}
+    </div>
     {{#hascertificates}}
         <div id="wdm-certificates-dropdown" class="">
             <select id="wdm-certificates-select" class="form-control singleselect" name="state" style="width: 250px;">
