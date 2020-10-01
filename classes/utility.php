@@ -590,24 +590,16 @@ class utility {
         $cmpblocknamesql = $DB->sql_compare_text('blockname');
         $cmpcomponentsql = $DB->sql_compare_text('component');
 
-        // echo $cmpblocknamesql; var_dump($params); die;
         $sql = "SELECT * FROM {sitereport_schedemails}
             WHERE $cmpblocknamesql = :blockname
             AND $cmpcomponentsql = :component";
 
         $rec = $DB->get_record_sql($sql, $params);
-// echo "<pre>"; var_dump(json_decode($rec->emaildata)); die;
-         // If data is not an array.
+        // If data is not an array.
         if ($rec && ($emaildata = json_decode($rec->emaildata)) && is_array($emaildata)) {
             // If everythings is ok then.
             foreach ($emaildata as $key => $emailinfo) {
                 $data = array();
-                // $data["esrtoggle"] = local_sitereport_create_toggle_switch_for_emails(
-                //     $key,
-                //     $emailinfo->esremailenable,
-                //     $rec->blockname,
-                //     $rec->component
-                // );
                 $data["esrname"] = $emailinfo->esrname;
                 $data["esrnextrun"] = date("d M y", $emailinfo->esrnextrun);
                 $data["esrfrequency"] = $emailinfo->esrfrequency;
