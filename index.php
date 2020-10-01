@@ -42,8 +42,6 @@ require_login();
 $edit = optional_param('edit', null, PARAM_BOOL);
 if ($edit) {
     $USER->editing = $edit;
-} else {
-    $USER->editing = 0;
 }
 
 // Allow users preferences set remotly.

@@ -33,10 +33,15 @@ $roles = array_map(function ($role) {
 
 $settingspage = new admin_settingpage('managesitereports', new lang_string('managesitereports', 'local_sitereport'));
 
-$availsize = array(
+$availsizedesktop = array(
     LOCAL_SITEREPORT_BLOCK_LARGE => get_string('large', 'local_sitereport'),
     LOCAL_SITEREPORT_BLOCK_MEDIUM => get_string('medium', 'local_sitereport'),
     LOCAL_SITEREPORT_BLOCK_SMALL => get_string('small', 'local_sitereport')
+);
+
+$availsizetablet = array(
+    LOCAL_SITEREPORT_BLOCK_LARGE => get_string('large', 'local_sitereport'),
+    LOCAL_SITEREPORT_BLOCK_MEDIUM => get_string('medium', 'local_sitereport')
 );
 
 $positions = range(1, count($blocks), 1);
@@ -63,7 +68,7 @@ foreach ($blocks as $blockid => $block) {
         new lang_string($blockid . 'desktopsize', 'local_sitereport'),
         new lang_string($blockid . 'desktopsizehelp', 'local_sitereport'),
         LOCAL_SITEREPORT_BLOCK_MEDIUM,
-        $availsize
+        $availsizedesktop
     ));
 
     // Tablet view for blocks.
@@ -72,17 +77,17 @@ foreach ($blocks as $blockid => $block) {
         new lang_string($blockid . 'tabletsize', 'local_sitereport'),
         new lang_string($blockid . 'tabletsizehelp', 'local_sitereport'),
         LOCAL_SITEREPORT_BLOCK_LARGE,
-        $availsize
+        $availsizetablet
     ));
 
     // Mobile view for blocks.
-    $settingspage->add(new admin_setting_configselect(
-        'local_sitereport/' . $blockid . 'mobilesize',
-        new lang_string($blockid . 'mobilesize', 'local_sitereport'),
-        new lang_string($blockid . 'mobilesizehelp', 'local_sitereport'),
-        LOCAL_SITEREPORT_BLOCK_LARGE,
-        $availsize
-    ));
+    // $settingspage->add(new admin_setting_configselect(
+    //     'local_sitereport/' . $blockid . 'mobilesize',
+    //     new lang_string($blockid . 'mobilesize', 'local_sitereport'),
+    //     new lang_string($blockid . 'mobilesizehelp', 'local_sitereport'),
+    //     LOCAL_SITEREPORT_BLOCK_LARGE,
+    //     $availsize
+    // ));
 
     // Roles setting for blocks.
     $allowedroles = get_roles_with_capability('report/sitereport_' . $blockid . 'block:view');

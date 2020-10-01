@@ -348,24 +348,24 @@ function local_sitereport_output_fragment_get_blocksetting_form($params) {
         LOCAL_SITEREPORT_BLOCK_TABLET_VIEW => array(
             'key' => 'tabletview',
             'name' => get_string('tabletview', $component)
-        ),
-        LOCAL_SITEREPORT_BLOCK_MOBILE_VIEW => array(
-            'key' => 'mobileview',
-            'name' => get_string('mobileview', $component)
-        ),
+        )
     );
     foreach ($views as $key => $view) {
+        $voption = array(
+            LOCAL_SITEREPORT_BLOCK_LARGE => get_string('large', $component),
+            LOCAL_SITEREPORT_BLOCK_MEDIUM => get_string('medium', $component)
+        );
+
+        if (LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW == $key) {
+            $voption[LOCAL_SITEREPORT_BLOCK_SMALL] = get_string('small', $component);
+        }
         $o .= html_writer::start_tag('div', array('class' => 'form-group row fitem'));
         $o .= html_writer::start_tag('div', array('class' => 'col-md-6'));
         $o .= html_writer::tag('label', $view['name'], array('class' => 'col-form-label d-inline', 'for' => 'id_' . $view['key']));
         $o .= html_writer::end_tag('label');
         $o .= html_writer::end_tag('div');
         $o .= html_writer::start_tag('div', array('class' => 'col-md-6'));
-        $o .= html_writer::select(array(
-            LOCAL_SITEREPORT_BLOCK_LARGE => get_string('large', $component),
-            LOCAL_SITEREPORT_BLOCK_MEDIUM => get_string('medium', $component),
-            LOCAL_SITEREPORT_BLOCK_SMLOCAL_SITEREPORT_ALL => get_string('small', $component)
-        ), $view['key'], $preferences[$key], null);
+        $o .= html_writer::select($voption, $view['key'], $preferences[$key], null);
         $o .= html_writer::end_tag('label');
         $o .= html_writer::end_tag('div');
         $o .= html_writer::end_tag('div');
