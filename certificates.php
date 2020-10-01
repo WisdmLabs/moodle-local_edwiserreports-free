@@ -60,6 +60,7 @@ $renderable = new \local_sitereport\output\certificates_renderable();
 $output = $PAGE->get_renderer($component)->render($renderable);
 
 $PAGE->set_heading(get_string("certificatestats", "local_sitereport"));
+$PAGE->set_title(get_string("certificatestats", "local_sitereport"));
 
 // Print output in page.
 echo $OUTPUT->header();

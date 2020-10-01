@@ -68,6 +68,7 @@ $renderable = new \local_sitereport\output\completion_renderable();
 $output = $PAGE->get_renderer($component)->render($renderable);
 
 $PAGE->set_heading(get_string("completionheader", "local_sitereport", array('coursename' => $course->fullname)));
+$PAGE->set_title(get_string("completionheader", "local_sitereport", array('coursename' => $course->fullname)));
 
 // Print output for course completion page.
 echo $OUTPUT->header();

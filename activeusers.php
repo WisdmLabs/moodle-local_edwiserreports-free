@@ -72,6 +72,7 @@ $renderable = new \local_sitereport\output\activeusers_renderable();
 $output = $PAGE->get_renderer($component)->render($renderable);
 
 $PAGE->set_heading(get_string("activeusersheader", "local_sitereport"));
+$PAGE->set_title(get_string("activeusersheader", "local_sitereport"));
 
 // Print output in the page.
 echo $OUTPUT->header();

@@ -64,6 +64,7 @@ $renderable = new \local_sitereport\output\courseanalytics_renderable();
 $output = $PAGE->get_renderer($component)->render($renderable);
 
 $PAGE->set_heading(get_string("courseanalyticsheader", "local_sitereport", array('coursename' => $course->fullname)));
+$PAGE->set_title(get_string("courseanalyticsheader", "local_sitereport", array('coursename' => $course->fullname)));
 
 // Print output in page.
 echo $OUTPUT->header();
