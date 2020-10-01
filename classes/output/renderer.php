@@ -107,15 +107,3 @@ class report_completion_renderer extends plugin_renderer_base {
         return $this->render_from_template('local_sitereport/completion', $templatecontext);
     }
 }
-
-class report_courseanalytics_renderer extends plugin_renderer_base {
-    /**
-     * Renders the Completion report.
-     * @param  report_elucidreport $report  Object of completion renderable class
-     * @return string  Html Structure of the view page
-     */
-    public function render_report_courseanalytics(\local_sitereport\courseanalytics_renderable $f2fsessions) {
-        $templatecontext = $report->export_for_template($this);
-        return $this->render_from_template('local_sitereport/courseanalytics', $templatecontext);
-    }
-}

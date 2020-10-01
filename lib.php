@@ -563,16 +563,6 @@ function local_sitereport_extend_navigation(navigation_node $nav) {
     } else {
         $icon = new pix_icon('i/report', '');
     }
-
-    $node = $nav->add(
-        get_string('courseanalytics', 'local_sitereport'),
-        new moodle_url($CFG->wwwroot . '/local/sitereport/courseanalytics.php', array('courseid' => $COURSE->id)),
-        navigation_node::TYPE_CUSTOM,
-        'courseanalytics',
-        'courseanalytics',
-        $icon
-    );
-    $node->showinflatnavigation = true;
 }
 
 /**
