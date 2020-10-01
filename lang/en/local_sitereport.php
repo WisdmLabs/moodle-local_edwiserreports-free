@@ -569,3 +569,5 @@ $string['manage'] = 'Manage';
 $string['scheduleemailfor'] = 'Schedule Emails for';
 $string['edit'] = 'Edit';
 $string['delete'] = 'Delete';
+
+$string['report/sitereport_activeusersblock:editadvance'] = 'Edit Advance';

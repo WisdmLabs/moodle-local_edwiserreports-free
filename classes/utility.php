@@ -1208,7 +1208,8 @@ class utility {
         $capabilitychoices = array();
         foreach ($context->get_capabilities() as $cap) {
             if (strpos($cap->name, 'report/sitereport_' . $block->classname) !== false) {
-                $capabilitychoices[$cap->name] = $cap->name;
+                $strkey = str_replace(array('report/sitereport_', ':'), array('', ''), $cap->name);
+                $capabilitychoices[$cap->name] = get_string($strkey, 'local_sitereport');
             }
         }
 

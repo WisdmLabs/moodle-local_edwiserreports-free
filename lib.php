@@ -438,7 +438,7 @@ function local_sitereport_output_fragment_get_blockscap_form($block) {
 
     $o .= html_writer::start_div('clearfix path-admin-tool-capability overflow-scroll col-12 cap-overview');
     $data = array();
-    $data['capvalue'] = $capvalues[0];
+    $data['capvalue'] = array_search($capvalues[0], $capabilities);
     $o .= local_sitereport_output_fragment_block_overview_display($data);
     $o .= html_writer::end_div();
     $o .= html_writer::tag('button', 'Save', array('type' => 'submit', 'class' => 'btn btn-primary pull-right save-block-caps'));
