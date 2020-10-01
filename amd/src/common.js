@@ -71,6 +71,8 @@ define([
     var tabs = '[data-plugin="tabs"] .nav-link, [data-plugin="tabs"] .tab-pane';
     var formTab = '[aria-controls="scheduletab"], #scheduletab';
 
+    var windowLoader = '<div id="cover-spin"></div>';
+
     // Loader functions.
     var loader = {
         show: function(id) {
