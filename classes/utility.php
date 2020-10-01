@@ -38,7 +38,7 @@ require_once($CFG->dirroot . "/local/sitereport/classes/blocks/todaysactivityblo
 require_once($CFG->dirroot . "/local/sitereport/classes/blocks/lpstatsblock.php");
 require_once($CFG->dirroot . "/local/sitereport/classes/blocks/inactiveusersblock.php");
 require_once($CFG->dirroot . "/local/sitereport/classes/blocks/courseengageblock.php");
-require_once($CFG->dirroot . "/local/sitereport/classes/blocks/completion_block.php");
+require_once($CFG->dirroot . "/local/sitereport/classes/blocks/completionblock.php");
 require_once($CFG->dirroot . "/local/sitereport/classes/blocks/courseanalytics_block.php");
 
 use stdClass;
@@ -178,7 +178,7 @@ class utility {
         } else {
             $cohortid = 0;
         }
-        return \local_sitereport\completion_block::get_data($data->courseid, $cohortid);
+        return \local_sitereport\completionblock::get_data($data->courseid, $cohortid);
     }
 
     public static function get_courseanalytics_data($data) {

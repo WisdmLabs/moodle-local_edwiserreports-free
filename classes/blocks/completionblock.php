@@ -36,7 +36,7 @@ require_once($CFG->dirroot . '/local/sitereport/classes/blocks/courseprogressblo
  * Class Course Completion Block
  * To get the data related to active users block
  */
-class completion_block extends utility {
+class completionblock extends utility {
     /**
      * Get Data for Course Completion
      * @param [int] $courseid Course Id

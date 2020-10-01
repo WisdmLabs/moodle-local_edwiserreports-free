@@ -257,7 +257,7 @@ class activeusers_renderable implements renderable, templatable {
         }
 
         $output->export = array(
-            "id" => "activeusers",
+            "id" => "activeusersblock",
             "region" => "report",
             "downloadurl" => $CFG->wwwroot . "/local/sitereport/download.php"
         );
@@ -282,13 +282,13 @@ class coursereport_renderable implements renderable, templatable {
         $output->sesskey = sesskey();
 
         $output->courseprogressexport = array(
-            "id" => "courseprogress",
+            "id" => "courseprogressblock",
             "region" => "report",
             "downloadurl" => $CFG->wwwroot . "/local/sitereport/download.php"
         );
 
         $output->courseengageexport = array(
-            "id" => "courseengage",
+            "id" => "courseengageblock",
             "region" => "report",
             "downloadurl" => $CFG->wwwroot . "/local/sitereport/download.php"
         );
@@ -331,7 +331,7 @@ class certificates_renderable implements renderable, templatable {
             }
             $output->certificates = array_values($customcerts);
             $output->certexport = array(
-                "id" => "certificates",
+                "id" => "certificatesblock",
                 "region" => "report",
                 "downloadurl" => $CFG->wwwroot . "/local/sitereport/download.php",
                 "filter" => $firstcertid
@@ -412,7 +412,7 @@ class completion_renderable implements renderable, templatable {
         }
 
         $output->completionexport = array(
-            "id" => "completion",
+            "id" => "completionblock",
             "region" => "report",
             "downloadurl" => $CFG->wwwroot . "/local/sitereport/download.php",
             "filter" => $courseid

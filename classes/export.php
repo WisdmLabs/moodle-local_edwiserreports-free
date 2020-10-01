@@ -363,7 +363,7 @@ class export {
             'esrnextrun' => false,
             'reportparams' => array(
                 'filter' => optional_param("filter", false, PARAM_TEXT),
-                'blockname' => optional_param("blockname", false, PARAM_TEXT),
+                'blockname' => $this->blockname,
                 'region' => optional_param("region", false, PARAM_TEXT)
             )
         );
@@ -582,7 +582,7 @@ class export {
                 $export = lpstats_block::get_exportable_data_report($filter);
                 break;
             case "completion":
-                $export = completion_block::get_exportable_data_report($filter);
+                $export = completionblock::get_exportable_data_report($filter);
                 break;
             case "courseanalytics":
                 $export = courseanalytics_block::get_exportable_data_report($filter);
