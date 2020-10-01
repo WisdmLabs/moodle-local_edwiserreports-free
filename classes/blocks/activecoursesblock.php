@@ -85,7 +85,6 @@ class activecoursesblock extends block_base {
      */
     public static function get_header() {
         $header = array(
-            get_string("rank", "local_sitereport"),
             get_string("coursename", "local_sitereport"),
             get_string("enrolments", "local_sitereport"),
             get_string("visits", "local_sitereport"),
@@ -187,9 +186,13 @@ class activecoursesblock extends block_base {
 
         $classobj = new self();
         $activecoursesdata = $classobj->get_data();
+        $exportdata = array_map(function ($data) {
+            array_splice($data, 0, 1);
+            return $data;
+        }, $activecoursesdata->data);
         $export = array_merge(
             array($header),
-            $activecoursesdata->data
+            $exportdata
         );
 
         return $export;
