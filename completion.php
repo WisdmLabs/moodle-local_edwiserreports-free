@@ -43,6 +43,8 @@ $courseid = required_param("courseid", PARAM_INT);
 $course = get_course($courseid);
 require_login(get_course($courseid));
 
+local_sitereport_get_recquired_strings_for_js();
+
 // Get course context.
 $coursecontext = context_course::instance($courseid);
 

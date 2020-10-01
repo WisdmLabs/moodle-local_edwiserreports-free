@@ -33,6 +33,8 @@ require_once('classes/output/renderable.php');
 // Required login.
 require_login();
 
+local_sitereport_get_recquired_strings_for_js();
+
 // System Context.
 $context = context_system::instance();
 $component = 'local_sitereport';

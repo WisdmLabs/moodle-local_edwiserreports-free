@@ -34,6 +34,8 @@ require_once('classes/output/renderable.php');
 
 require_login();
 
+local_sitereport_get_recquired_strings_for_js();
+
 $context = context_system::instance();
 
 $courseid = required_param("courseid", PARAM_INT);

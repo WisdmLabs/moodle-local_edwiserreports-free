@@ -61,12 +61,12 @@ define([
 
     // Messaged for email schedule
     var loader = '<div class="w-full text-center"><i class="fa fa-spinner fa-spin" aria-hidden="true"></i></div>'
-    var errormsg = '<div class="alert alert-danger"><b>ERROR:</b> Error while scheduling email<div>';
-    var successmsg = '<div class="alert alert-success"><b>Success:</b> Email scheduled successfully<div>';
-    var deletesuccessmsg = '<div class="alert alert-success"><b>Success:</b> Email deleted successfully<div>';
-    var deleteerrormsg = '<div class="alert alert-danger"><b>ERROR:</b> Email deletion failed<div>';
-    var emptyerrormsg = '<div class="alert alert-danger"><b>ERROR:</b> Name and Recepient Fields can not be empty<div>';
-    var emailinvaliderrormsg = '<div class="alert alert-danger"><b>ERROR:</b> Invalid email adderesses space not allowed<div>';
+    var schedulerrormsg = M.util.get_string('scheduleerrormsg', 'local_sitereport');
+    var schedulesuccessmsg = M.util.get_string('schedulesuccessmsg', 'local_sitereport');
+    var deletesuccessmsg = M.util.get_string('deletesuccessmsg', 'local_sitereport');
+    var deleteerrormsg = M.util.get_string('deleteerrormsg', 'local_sitereport');
+    var emptyerrormsg = M.util.get_string('emptyerrormsg', 'local_sitereport');
+    var emailinvaliderrormsg = M.util.get_string('emailinvaliderrormsg', 'local_sitereport');
 
     var tabs = '[data-plugin="tabs"] .nav-link, [data-plugin="tabs"] .tab-pane';
     var formTab = '[aria-controls="scheduletab"], #scheduletab';
@@ -657,17 +657,17 @@ define([
 
                     // If error then log the error
                     if (response.error) {
-                        errorBox.html(errormsg);
+                        errorBox.html(schedulerrormsg);
                         console.log(response.error);
                     } else {
                         if (emailListTable) {
                             emailListTable.destroy();
                         }
                         emailListTable = render_all_scheduled_emails(data, modal);
-                        errorBox.html(successmsg);
+                        errorBox.html(schedulesuccessmsg);
                     }
                 }).fail(function(error) {
-                    errorBox.html(errormsg);
+                    errorBox.html(schedulerrormsg);
                     console.log(error);
                 }).always(function() {
                     errorBox.delay(3000).fadeOut('slow');
@@ -894,12 +894,18 @@ define([
                 })
             }
         }).done(function(response) {
+            response = JSON.parse(response);
+            console.log(response);
             if (!response.error) {
                 // if (emailListTable) {
                 //     emailListTable.destroy();
                 // }
                 // emailListTable = render_all_scheduled_emails(data, modal);
-                errorBox.html(successmsg);
+                errorBox.html(response.successmsg);
+                errorBox.show();
+                errorBox.delay(3000).fadeOut('slow');
+            } else {
+                errorBox.html(response.errormsg);
                 errorBox.show();
                 errorBox.delay(3000).fadeOut('slow');
             }

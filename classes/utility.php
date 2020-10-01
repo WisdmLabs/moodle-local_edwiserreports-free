@@ -760,8 +760,10 @@ class utility {
         $response->error = false;
         if ($status = $emaildata[$data->id]->esremailenable) {
             $emaildata[$data->id]->esremailenable = false;
+            $response->successmsg = get_string('scheduledemaildisbled', 'local_sitereport');
         } else {
             $emaildata[$data->id]->esremailenable = true;
+            $response->successmsg = get_string('scheduledemailenabled', 'local_sitereport');
         }
 
         $rec->emaildata = json_encode(array_values($emaildata));
