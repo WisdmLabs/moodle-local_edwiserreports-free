@@ -52,6 +52,7 @@ $string['liveusersheader'] = 'Live Users Block';
 $string['todaysactivityheader'] = 'Daily Activities';
 $string['overallengagementheader'] = 'Overall Engagement in Courses';
 $string['inactiveusersexportheader'] = 'Inactive Users Report';
+$string['inactiveusersblockexportheader'] = 'Inactive Users Report';
 $string['date'] = "Date";
 $string['time'] = "Time";
 $string['venue'] = "Venue";
