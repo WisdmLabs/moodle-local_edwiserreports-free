@@ -265,7 +265,7 @@ class export {
 
         // If subject is not set the get default subject
         if (!$subject && $subject == '') {
-            $subject = get_string($this->blockname . "exportheader", "local_sitereport");
+            $subject = get_string($this->blockname . "blockexportheader", "local_sitereport");
         }
 
         // Send emails foreach email ids.
