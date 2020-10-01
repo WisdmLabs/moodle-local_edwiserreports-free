@@ -57,7 +57,8 @@ $pageurl = new moodle_url($CFG->wwwroot . "/local/sitereport/completion.php", ar
 // Set page context.
 $PAGE->set_context($coursecontext);
 
-$PAGE->set_pagelayout('incourse');
+// Set page layout.
+$PAGE->set_pagelayout('standard');
 
 // Set page URL.
 $PAGE->set_url($pageurl);
