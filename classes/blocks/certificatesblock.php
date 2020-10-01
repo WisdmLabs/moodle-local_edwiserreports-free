@@ -171,6 +171,7 @@ class certificatesblock extends block_base {
         } else {
             $cachekey .= "all";
         }
+
         $response = new stdClass();
         // Get certificates details from cache.
         if (!$issuedcert = $cache->get($cachekey)) {
@@ -324,6 +325,8 @@ class certificatesblock extends block_base {
         $cohortid = optional_param("cohortid", 0, PARAM_INT);
 
         $record = self::get_issued_users($certid, $cohortid);
+
+        $users = array();
 
         foreach ($record->data as $key => $user) {
             $user->courseprogress = strip_tags($user->courseprogress);

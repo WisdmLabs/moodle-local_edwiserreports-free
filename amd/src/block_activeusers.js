@@ -56,7 +56,6 @@ define([
 
                 /* Select filter for active users block */
                 $(dropdownItem + ":not(.custom)").on('click', function() {
-                    console.log(this);
                     filter = $(this).attr('value');
                     $(dropdownMenu).removeClass('show');
                     $(dropdownButton).html($(this).text());

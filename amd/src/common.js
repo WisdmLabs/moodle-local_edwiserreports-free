@@ -989,10 +989,10 @@ define([
      */
     function sendMailToUser(data, _this, root) {
         var filter = data.filter;
-        var cohortid = data.filter;
+        var cohortid = data.cohortid;
         var block = data.block;
         var errorBox = root.find(".esr-form-error");
-        errorBox.html(loader).show();
+        errorBox.html('').show();
         if ($(document).find('#cover-spin')) {
             $("body").append(windowLoader);
         }
@@ -1003,6 +1003,7 @@ define([
             type: "POST",
             data: root.find('form').serialize()
         }).done(function(response) {
+            console.log(response);
             response = $.parseJSON(response);
             if (response.error) {
                 errorBox.html('<div class="alert alert-danger"><b>ERROR:</b>' + response.errormsg + '</div>');

@@ -261,7 +261,7 @@ class export {
         $subject = trim(optional_param("esrsubject", false, PARAM_TEXT));
 
         // Optional parameter causing issue because this is an array
-        $content = optional_param('esrmessage', '', PARAM_TEXT);
+        $contenttext = optional_param('esrmessage', '', PARAM_TEXT);
 
         // If subject is not set the get default subject
         if (!$subject && $subject == '') {
@@ -562,17 +562,17 @@ class export {
         $export = null;
 
         switch ($blockname) {
-            case "activeusers":
+            case "activeusersblock":
                 require_once($CFG->dirroot . '/local/sitereport/classes/blocks/activeusersblock.php');
                 $export = activeusersblock::get_exportable_data_report($filter);
                 break;
-            case "courseprogress":
+            case "courseprogressblock":
                 $export = courseprogressblock::get_exportable_data_report($filter);
                 break;
-            case "courseengage":
+            case "courseengageblock":
                 $export = courseengageblock::get_exportable_data_report();
                 break;
-            case "certificates":
+            case "certificatesblock":
                 $export = certificatesblock::get_exportable_data_report($filter);
                 break;
             case "f2fsession":
@@ -581,7 +581,7 @@ class export {
             case "lpstats":
                 $export = lpstats_block::get_exportable_data_report($filter);
                 break;
-            case "completion":
+            case "completionblock":
                 $export = completionblock::get_exportable_data_report($filter);
                 break;
             case "courseanalytics":
