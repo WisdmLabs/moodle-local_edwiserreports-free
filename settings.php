@@ -80,15 +80,6 @@ foreach ($blocks as $blockid => $block) {
         $availsizetablet
     ));
 
-    // Mobile view for blocks.
-    // $settingspage->add(new admin_setting_configselect(
-    //     'local_sitereport/' . $blockid . 'mobilesize',
-    //     new lang_string($blockid . 'mobilesize', 'local_sitereport'),
-    //     new lang_string($blockid . 'mobilesizehelp', 'local_sitereport'),
-    //     LOCAL_SITEREPORT_BLOCK_LARGE,
-    //     $availsize
-    // ));
-
     // Roles setting for blocks.
     $allowedroles = get_roles_with_capability('report/sitereport_' . $blockid . 'block:view');
     $settingspage->add(new admin_setting_configmultiselect(

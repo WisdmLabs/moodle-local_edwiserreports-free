@@ -117,6 +117,7 @@ define([
                     )
                 }).then(function(modal) {
                     ModalRoot = modal.getRoot();
+                    ModalRoot.find('.modal-dialog').addClass('modal-lg');
                     modal.setTitle(title);
                     modal.show();
                     ModalRoot.on(ModalEvents.hidden, function () {
@@ -134,7 +135,7 @@ define([
                         // Create dataTable for userslist
                         ModalRoot.find(".modal-table").DataTable({
                             language: {
-                                searchPlaceholder: "Search users",
+                                searchPlaceholder: "Search User",
                                 emptyTable: "There are no users"
                             },
                             drawCallback: function () {

@@ -69,7 +69,7 @@ define(['jquery', 'core/chartjs', 'local_sitereport/defaultconfig', 'local_siter
                     { "orderSequence": [ "desc" ] }
                 ],
                 language: {
-                    searchPlaceholder: "Search Courses"
+                    searchPlaceholder: "Search Course"
                 },
                 initComplete: function() {
                     /* Remove laoder and display table after table is created */

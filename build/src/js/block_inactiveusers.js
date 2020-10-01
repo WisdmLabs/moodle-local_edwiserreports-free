@@ -106,7 +106,7 @@ define([
                 aaSorting: [[2, 'desc']],
                 oLanguage: {
                     sEmptyTable: "No inactive users are available.",
-                    sSearchPlaceholder: "Search Users"
+                    sSearchPlaceholder: "Search User"
                 },
                 columnDefs: [
                     {

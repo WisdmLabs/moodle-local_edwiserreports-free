@@ -62,6 +62,7 @@ define([
                     )
                 }).then(function(modal) {
                     ModalRoot = modal.getRoot();
+                    ModalRoot.find('.modal-dialog').addClass('modal-lg');
                     modal.setTitle(coursename);
                     modal.show();
                     ModalRoot.on(ModalEvents.hidden, function () {
@@ -83,7 +84,7 @@ define([
                         // Create dataTable for userslist
                         ModalRoot.find(".modal-table").DataTable({
                             language: {
-                                searchPlaceholder: "Search users",
+                                searchPlaceholder: "Search User",
                                 emptyTable: "There are no users"
                             },
                             drawCallback: function () {
@@ -125,7 +126,7 @@ define([
                     { className: "text-center modal-trigger", targets: "_all" }
                 ],
                 language: {
-                    searchPlaceholder: "Search courses",
+                    searchPlaceholder: "Search Course",
                     emptyTable: "There are no courses"
                 },
                 drawCallback: function () {

@@ -136,7 +136,7 @@ define([
                     { "data": "enddate" },
                 ],
                 "language" : {
-                    "searchPlaceholder": "Search courses",
+                    "searchPlaceholder": "Search Course",
                     "emptyTable": "There are no courses"
                 }
             }

@@ -47,7 +47,7 @@ define(["jquery", "local_sitereport/defaultconfig", "local_sitereport/jquery.dat
             data: data,
             // dom : '<"row rtblock-filter"<"pull-left"f>><t>',
             language: {
-                searchPlaceholder: "Search Users"
+                searchPlaceholder: "Search User"
             },
             aaSorting: [[1, 'asc']],
             columnDefs: [
