@@ -114,7 +114,7 @@ class certificatesblock extends block_base {
                 $certificate->course,
                 $certificate->id,
                 "customcert"
-            ));
+            ), IGNORE_MULTIPLE);
 
             $modulecontext = context_module::instance($cm->id);
             // Get only enrolled students.
@@ -226,7 +226,7 @@ class certificatesblock extends block_base {
             $gradeval = $grade->finalgrade;
         }
 
-        $enrolment = $DB->get_record_sql($enrolsql, $params);
+        $enrolment = $DB->get_record_sql($enrolsql, $params, IGNORE_MULTIPLE);
         $enrolmentdate = get_string("notenrolled", "local_sitereport");
         $progressper = 0;
         if ($enrolment) {
