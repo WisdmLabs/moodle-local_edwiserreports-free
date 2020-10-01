@@ -66,6 +66,11 @@ $pageurl = new moodle_url($CFG->wwwroot . "/local/sitereport/activeusers.php");
 // Set page context.
 $PAGE->set_context($context);
 
+// Require fixes for boost.
+if ($PAGE->theme->name == 'boost') {
+    $PAGE->requires->css('/local/sitereport/styles/datatable-fix.css');
+}
+
 // Set page URL.
 $PAGE->set_url($pageurl);
 

@@ -57,6 +57,11 @@ $pageurl = new moodle_url($CFG->wwwroot . "/local/sitereport/completion.php", ar
 // Set page context.
 $PAGE->set_context($coursecontext);
 
+// Require fixes for boost.
+if ($PAGE->theme->name == 'boost') {
+    $PAGE->requires->css('/local/sitereport/styles/datatable-fix.css');
+}
+
 // Set page layout.
 $PAGE->set_pagelayout('standard');
 

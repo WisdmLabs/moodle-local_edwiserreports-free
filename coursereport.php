@@ -52,6 +52,11 @@ $PAGE->requires->css('/local/sitereport/styles/loader.css');
 // Set page context.
 $PAGE->set_context($context);
 
+// Require fixes for boost.
+if ($PAGE->theme->name == 'boost') {
+    $PAGE->requires->css('/local/sitereport/styles/datatable-fix.css');
+}
+
 // Set page url.
 $PAGE->set_url($pageurl);
 
