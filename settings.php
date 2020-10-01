@@ -92,3 +92,9 @@ foreach ($blocks as $blockid => $block) {
 }
 
 $ADMIN->add('localplugins', $settingspage);
+
+if (optional_param('section', '', PARAM_TEXT) == 'managesitereports') {
+    global $PAGE;
+    $PAGE->requires->js(new moodle_url('/local/sitereport/settings.js'));
+    $PAGE->requires->js_call_amd('local_sitereport/settings', 'init');
+}
