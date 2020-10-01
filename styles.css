@@ -783,3 +783,61 @@ table.dataTable td.dataTables_empty {
     top: 50%;
     transform: translate(-50%, -50%);
 }
+
+/* Daily activities styling fixes for small containers */
+@media (max-width: 480px) {
+    #wdm-elucidsitereport #todaysactivityblock .card-block .row > div {
+        width: 100%;
+        max-width: 100%;
+        flex: 0 0 100%;
+        text-align: center;
+    }
+    #wdm-elucidsitereport #todaysactivityblock .card-block .row > div .summary {
+    	margin: auto !important;
+    }
+    #wdm-elucidsitereport #todaysactivityblock .card-block .row > div .todays-block div {
+    	width: 100%;
+    }
+    #wdm-elucidsitereport #todaysactivityblock .card-block .visual {
+        margin-top: 1rem;
+        text-align: center;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 830px) {
+	#wdm-elucidsitereport .elucidsitereport-block.col-md-6 #todaysactivityblock .card-block .row > div {
+        width: 100%;
+        max-width: 100%;
+        flex: 0 0 100%;
+        text-align: center;
+    }
+    #wdm-elucidsitereport .elucidsitereport-block.col-md-6 #todaysactivityblock .card-block .row > div .summary {
+    	margin: auto !important;
+    }
+    #wdm-elucidsitereport .elucidsitereport-block.col-md-6 #todaysactivityblock .card-block .row > div .todays-block div {
+    	width: 100%;
+    }
+    #wdm-elucidsitereport .elucidsitereport-block.col-md-6 #todaysactivityblock .card-block .visual {
+    	margin-top: 1rem;
+    	text-align: center;
+    }
+}
+
+@media (min-width: 992px) and (max-width: 1200px) {
+	#wdm-elucidsitereport .elucidsitereport-block.col-lg-4 #todaysactivityblock .card-block .row > div {
+        width: 100%;
+        max-width: 100%;
+        flex: 0 0 100%;
+        text-align: center;
+    }
+    #wdm-elucidsitereport .elucidsitereport-block.col-lg-4 #todaysactivityblock .card-block .row > div .summary {
+    	margin: auto !important;
+    }
+    #wdm-elucidsitereport .elucidsitereport-block.col-lg-4 #todaysactivityblock .card-block .row > div .todays-block div {
+    	width: 100%;
+    }
+    #wdm-elucidsitereport .elucidsitereport-block.col-lg-4 #todaysactivityblock .card-block .visual {
+    	margin-top: 1rem;
+    	text-align: center;
+    }
+}

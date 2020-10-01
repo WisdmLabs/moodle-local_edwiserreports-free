@@ -114,6 +114,9 @@ class block_base {
                 case LOCAL_SITEREPORT_BLOCK_MEDIUM:
                     $this->layout->class .= $devicecolclass[$media] . '6 ';
                     break;
+                case LOCAL_SITEREPORT_BLOCK_SMALL:
+                    $this->layout->class .= $devicecolclass[$media] . '4 ';
+                    break;
                 default:
                     break;
             }
