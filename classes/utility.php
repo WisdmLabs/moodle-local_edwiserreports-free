@@ -1156,19 +1156,16 @@ class utility {
             $position = $blockdata['position'];
             $desktopview = $blockdata[LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW];
             $tabletview = $blockdata[LOCAL_SITEREPORT_BLOCK_TABLET_VIEW];
-            $mobileview = $blockdata[LOCAL_SITEREPORT_BLOCK_MOBILE_VIEW];
         } else {
             $position = get_config('local_sitereport', $block->blockname . 'position');
-            $desktopview = get_config('local_sitereport', $block->blockname . 'desktopsize');;
-            $tabletview = get_config('local_sitereport', $block->blockname . 'tabletsize');;
-            $mobileview = get_config('local_sitereport', $block->blockname . 'mobilesize');;
+            $desktopview = get_config('local_sitereport', $block->blockname . 'desktopsize');
+            $tabletview = get_config('local_sitereport', $block->blockname . 'tabletsize');
         }
 
         // Set default preference.
         $preferences = array();
         $preferences[LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW] = $desktopview;
         $preferences[LOCAL_SITEREPORT_BLOCK_TABLET_VIEW] = $tabletview;
-        $preferences[LOCAL_SITEREPORT_BLOCK_MOBILE_VIEW] = $mobileview;
         $preferences['position'] = $position;
         $preferences['hidden'] = isset($blockdata["hidden"]) ? $blockdata["hidden"] : 0;
 
@@ -1277,7 +1274,7 @@ class utility {
         }
 
         $hide = $hidden ? 0 : 1;
-        $pref = self::get_reportsblock_preferences($block);
+        $pref = self::SMALL($block);
         $pref['hidden'] = $hide;
 
         // Set block Preference.

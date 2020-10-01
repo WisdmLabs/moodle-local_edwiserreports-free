@@ -95,18 +95,15 @@ class block_base {
             $position = $blockdata['position'];
             $sizes[LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW] = $blockdata[LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW];
             $sizes[LOCAL_SITEREPORT_BLOCK_TABLET_VIEW] = $blockdata[LOCAL_SITEREPORT_BLOCK_TABLET_VIEW];
-            $sizes[LOCAL_SITEREPORT_BLOCK_MOBILE_VIEW] = $blockdata[LOCAL_SITEREPORT_BLOCK_MOBILE_VIEW];
         } else {
             $position = get_config('local_sitereport', $blockname . 'position');
-            $sizes[LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW] = get_config('local_sitereport', $blockname . 'desktopsize');;
-            $sizes[LOCAL_SITEREPORT_BLOCK_TABLET_VIEW] = get_config('local_sitereport', $blockname . 'tabletsize');;
-            $sizes[LOCAL_SITEREPORT_BLOCK_MOBILE_VIEW] = get_config('local_sitereport', $blockname . 'mobilesize');;
+            $sizes[LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW] = get_config('local_sitereport', $blockname . 'desktopsize');
+            $sizes[LOCAL_SITEREPORT_BLOCK_TABLET_VIEW] = get_config('local_sitereport', $blockname . 'tabletsize');
         }
 
         $devicecolclass = array(
             LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW => 'col-lg-',
-            LOCAL_SITEREPORT_BLOCK_TABLET_VIEW => 'col-md-',
-            LOCAL_SITEREPORT_BLOCK_MOBILE_VIEW => 'col-sm-'
+            LOCAL_SITEREPORT_BLOCK_TABLET_VIEW => 'col-md-'
         );
 
         foreach ($sizes as $media => $size) {
@@ -116,9 +113,6 @@ class block_base {
                     break;
                 case LOCAL_SITEREPORT_BLOCK_MEDIUM:
                     $this->layout->class .= $devicecolclass[$media] . '6 ';
-                    break;
-                case LOCAL_SITEREPORT_BLOCK_SMALL:
-                    $this->layout->class .= $devicecolclass[$media] . '4 ';
                     break;
                 default:
                     break;
