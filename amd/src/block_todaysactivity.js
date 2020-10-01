@@ -1,4 +1,9 @@
-define(['jquery', 'core/chartjs', 'local_sitereport/defaultconfig'], function ($, Chart, cfg) {
+define([
+    'jquery',
+    'core/chartjs',
+    'local_sitereport/defaultconfig',
+    './common'
+], function ($, Chart, cfg, common) {
     function init(notifyListner) {
         // Global data got todays activity block
         var todaysVisits;
@@ -40,6 +45,10 @@ define(['jquery', 'core/chartjs', 'local_sitereport/defaultconfig'], function ($
          * @param  {number} date Unix Date
          */
         function getTodaysActivity(date) {
+
+            // Show loader.
+            common.loader.show('#todaysactivityblock');
+
             // Get session key
             var sesskey = $(panel).data("sesskey");
 
@@ -57,7 +66,7 @@ define(['jquery', 'core/chartjs', 'local_sitereport/defaultconfig'], function ($
                 }
             })
             .done(function(response) {
-                /** 
+                /**
                  * After getting todays activity information
                  * update the value in todays activity block
                  */
@@ -74,6 +83,9 @@ define(['jquery', 'core/chartjs', 'local_sitereport/defaultconfig'], function ($
                 console.log(error);
             }).always(function() {
                 notifyListner("todaysActivity");
+
+                // Hide loader.
+                common.loader.hide('#todaysactivityblock');
             });
         }
 

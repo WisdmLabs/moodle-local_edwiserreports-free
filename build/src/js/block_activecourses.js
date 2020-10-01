@@ -1,4 +1,11 @@
-define(['jquery', 'core/chartjs', 'local_sitereport/defaultconfig', 'local_sitereport/jquery.dataTables', 'local_sitereport/dataTables.bootstrap4'], function ($, Chart, cfg) {
+define([
+    'jquery',
+    'core/chartjs',
+    'local_sitereport/defaultconfig',
+    './common',
+    'local_sitereport/jquery.dataTables',
+    'local_sitereport/dataTables.bootstrap4'
+], function ($, Chart, cfg, common) {
     function init(notifyListner) {
         var activeCourseTable;
 
@@ -10,6 +17,9 @@ define(['jquery', 'core/chartjs', 'local_sitereport/defaultconfig', 'local_siter
         var dropdownTable = panelBody + " .dataTables_wrapper .row:first-child > div:first-child";
         var loader = panelBody + " .loader";
         var table = panelBody + " .table";
+
+        // Show loader.
+        common.loader.show('#activecoursesblock');
 
         /* Ajax request to get data for active courses table */
         $.ajax({
@@ -47,6 +57,9 @@ define(['jquery', 'core/chartjs', 'local_sitereport/defaultconfig', 'local_siter
 
             /* Notify that this event is completed */
             notifyListner("activeCourses");
+
+            // Hide loader.
+            common.loader.hide('#activecoursesblock');
         });
 
         function createActiveCourseTable(data) {

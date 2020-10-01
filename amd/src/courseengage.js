@@ -32,7 +32,7 @@ define([
                 if (datatable) {
                     datatable.destroy();
                     $(CourseEngageTable).hide();
-                    $(loader).show();   
+                    $(loader).show();
                 }
 
                 cohortId = $(this).data('cohortid');
@@ -146,5 +146,4 @@ define([
     return {
         init : init
     };
-	
 });

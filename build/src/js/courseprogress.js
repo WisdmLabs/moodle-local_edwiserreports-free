@@ -33,7 +33,7 @@ define([
                 if (datatable) {
                     datatable.destroy();
                     $(CourseProgressTable).hide();
-                    $(loader).show();   
+                    $(loader).show();
                 }
                 cohortId = $(this).data('cohortid');
                 $("#progress").find('.download-links input[name="cohortid"]').val(cohortId);
@@ -99,7 +99,7 @@ define([
             });
         });
 
-        // Generate course progress table 
+        // Generate course progress table
         function generateCourseProgressTable(cohortId) {
             $(CourseProgressTable).show();
             $(loader).hide();
@@ -171,7 +171,7 @@ define([
             //             columnDefs : [
             //                 {
             //                     "targets": 0,
-            //                     "className": "text-left" 
+            //                     "className": "text-left"
             //                 },
             //                 {
             //                     "targets": "_all",
@@ -179,7 +179,7 @@ define([
             //                 }
             //             ],
             //             language: {
-            //                 searchPlaceholder: "Search Course",
+            //                 searchPlaceholder: "Search courses",
             //                 emptyTable: "There are no courses"
             //             },
             //             // scrollY : 350,
@@ -205,5 +205,5 @@ define([
     return {
         init : init
     };
-	
+
 });

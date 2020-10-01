@@ -5,11 +5,12 @@ define([
     'core/fragment',
     'core/templates',
     'local_sitereport/variables',
+    './common',
     'local_sitereport/jquery.dataTables',
     'local_sitereport/dataTables.bootstrap4',
     'local_sitereport/flatpickr',
     'local_sitereport/common'
-], function($, ModalFactory, ModalEvents, Fragment, Templates, V) {
+], function($, ModalFactory, ModalEvents, Fragment, Templates, V, common) {
     function init(CONTEXTID) {
         var PageId            = "#wdm-activeusers-individual";
         var ActiveUsersTable  = PageId + " .table";
@@ -46,7 +47,7 @@ define([
 
             /* Hide dropdown when click anywhere in the screen */
             $(document).click(function(e){
-                if (!($(e.target).hasClass("dropdown-menu") || 
+                if (!($(e.target).hasClass("dropdown-menu") ||
                     $(e.target).parents(".dropdown-menu").length)) {
                     $(dropdownMenu).removeClass('show');
                 }
@@ -200,6 +201,9 @@ define([
                 $(loader).show();
             }
 
+            // Show loader.
+            common.loader.show("#wdm-activeusers-individual");
+
             $.ajax({
                 url: V.requestUrl,
                 data: {
@@ -264,9 +268,14 @@ define([
                     });
                     $(ActiveUsersTable).show();
                     $(loader).hide();
+
+                    // Hide loader.
+                    common.loader.hide("#wdm-activeusers-individual");
                 });
             }).fail(function(error) {
                 console.log(error);
+                // Hide loader.
+                common.loader.hide("#wdm-activeusers-individual");
             });
         }
     }
@@ -274,5 +283,5 @@ define([
     return {
         init : init
     };
-	
+
 });

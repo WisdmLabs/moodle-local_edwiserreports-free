@@ -3,13 +3,15 @@ define([
     'core/chartjs',
     'local_sitereport/defaultconfig',
     'local_sitereport/variables',
+    './common',
     'local_sitereport/jquery.dataTables',
     'local_sitereport/dataTables.bootstrap4'
  ], function (
     $,
     Chart,
     cfg,
-    V
+    V,
+    common
 ) {
     function init(notifyListner) {
         var activeUsersTable;
@@ -50,7 +52,7 @@ define([
 
             // Change export data url
             cfg.changeExportUrl(filter, exportUrlLink, V.filterReplaceFlag);
-            
+
             // Get inactive users
             getInactiveUsersData($(this).data("value"));
         });
@@ -61,6 +63,10 @@ define([
          * @return {boolean}
          */
         function getInactiveUsersData(filter) {
+
+            // Show loader.
+            common.loader.show('#inactiveusersblock');
+
             $.ajax({
                 url: cfg.requestUrl,
                 type: 'GET',
@@ -80,6 +86,9 @@ define([
                 console.log(error);
             }).always(function() {
                 notifyListner("inActiveUsers");
+
+                // Hide loader.
+                common.loader.hide('#inactiveusersblock');
             });
         }
 
@@ -106,14 +115,14 @@ define([
                 aaSorting: [[2, 'desc']],
                 oLanguage: {
                     sEmptyTable: "No inactive users are available.",
-                    sSearchPlaceholder: "Search User"
+                    sSearchPlaceholder: "Search Users"
                 },
                 columnDefs: [
                     {
                         "targets": 2,
                         "className": "text-center"
                     }
-                ],    
+                ],
                 drawCallback: function () {
                     $('.dataTables_paginate > .pagination').addClass('pagination-sm pull-right');
                     $('.dataTables_filter').addClass('pagination-sm pull-right');

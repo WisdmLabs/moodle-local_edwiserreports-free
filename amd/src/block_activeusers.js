@@ -3,8 +3,9 @@ define([
     'core/chartjs',
     'local_sitereport/defaultconfig',
     'local_sitereport/variables',
+    './common',
     'local_sitereport/flatpickr'
-], function ($, Chart, defaultConfig, V) {
+], function ($, Chart, defaultConfig, V, common) {
     /* Varible for active users block */
     var cfg               = null;
     var activeUsersGraph  = null;
@@ -47,7 +48,7 @@ define([
 
                 /* Hide dropdown when click anywhere in the screen */
                 $(document).click(function(e){
-                    if (!($(e.target).hasClass("dropdown-menu") || 
+                    if (!($(e.target).hasClass("dropdown-menu") ||
                         $(e.target).parents(".dropdown-menu").length)) {
                         $(dropdownMenu).removeClass('show');
                     }
@@ -126,6 +127,9 @@ define([
                 filter = "weekly";
             }
 
+            // Show loader.
+            common.loader.show('#activeusersblock');
+
             $.ajax({
                 url: defaultConfig.requestUrl,
                 data: {
@@ -155,6 +159,9 @@ define([
 
                 /* Notify that this event is completed */
                 listner("activeUsers");
+
+                // Hide loader.
+                common.loader.hide('#activeusersblock');
             });
         }
 

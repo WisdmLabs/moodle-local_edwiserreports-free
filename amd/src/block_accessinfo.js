@@ -1,8 +1,9 @@
 define([
     'jquery',
     'core/templates',
-    'local_sitereport/defaultconfig'
-], function ($, templates, cfg) {
+    'local_sitereport/defaultconfig',
+    './common'
+], function ($, templates, cfg, common) {
     var panel = cfg.getPanel("#siteaccessblock");
     var panelBody = cfg.getPanel("#siteaccessblock", "body");
     var table = cfg.getPanel("#siteaccessblock", "table");
@@ -15,6 +16,9 @@ define([
         });
 
         function generateAccessInfoGraph() {
+
+            // Show loader.
+            common.loader.show('#siteaccessblock');
             $.ajax({
                 url: cfg.requestUrl,
                 type: cfg.requestType,
@@ -37,12 +41,18 @@ define([
                     $(loader).remove();
                     $(table).removeClass("d-none");
                     $(panel + ' [data-toggle="tooltip"]').tooltip();
+
+                    // Hide loader.
+                    common.loader.hide('#siteaccessblock');
                 });
             })
             .fail(function(error) {
                 console.log(error);
             }).always(function() {
                 notifyListner("accessInfo");
+
+                // Hide loader.
+                common.loader.hide('#siteaccessblock');
             });
         }
     }

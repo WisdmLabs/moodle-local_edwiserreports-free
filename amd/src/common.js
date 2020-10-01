@@ -3,7 +3,7 @@ define([
     'core/notification',
     'core/fragment',
     'core/modal_factory',
-    'core/modal_events', 
+    'core/modal_events',
     'core/templates',
     'core/str',
     'local_sitereport/variables',
@@ -49,7 +49,7 @@ define([
     var dailyDropdownBtn = formRoot + ' .dropdown.daily-dropdown button.dropdown-toggle';
     var weeklyDropdownBtn = formRoot + ' .dropdown.weekly-dropdown button.dropdown-toggle';
     var monthlyDropdownBtn = formRoot + ' .dropdown.monthly-dropdown button.dropdown-toggle';
-    
+
     var daySelector = formRoot + ' .dropdown.weeks-dropdown a.dropdown-item';
     var dayBtn = formRoot + ' button#weeksdropdown';
     var timeInput = formRoot + ' input#esr-sendtime';
@@ -71,7 +71,29 @@ define([
     var tabs = '[data-plugin="tabs"] .nav-link, [data-plugin="tabs"] .tab-pane';
     var formTab = '[aria-controls="scheduletab"], #scheduletab';
 
-    var windowLoader = '<div id="cover-spin"></div>';
+    // Loader functions.
+    var loader = {
+        show: function(id) {
+            var $class;
+            if (id == undefined) {
+                id = 'body';
+                $class = 'position-fixed';
+            } else {
+                $class = 'position-absolute';
+            }
+            $(id).append(`
+            <div class="sitereport-loader ${$class}">
+                <i class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i>
+            </div>
+            `);
+        },
+        hide: function(id) {
+            if (id == undefined) {
+                id = 'body';
+            }
+            $(id + ' > .sitereport-loader').remove();
+        }
+    };
 
     /**
      * Email Shcedule Modal Related Psrametres end
@@ -98,13 +120,6 @@ define([
             var pageWidth = v.pluginPage.width();
             rearrangeBlocks(pageWidth);
         });
-
-        // function showCoverLoader() {
-        //     if ($(document).find('#cover-spin')) {
-        //         $("body").append(windowLoader);
-        //     }
-        //     $(document).find('#cover-spin').show(0);
-        // }
 
         // // Export data in various formats
         // $(document).on("click", exportLink, function(e) {
@@ -137,12 +152,6 @@ define([
         $(document).on("click", exportPdf, function(e) {
             e.preventDefault();
 
-            // if ($(document).find('#cover-spin')) {
-            //     $("body").append(windowLoader);
-            // }
-
-            // $(document).find('#cover-spin').show(0);
-
             var _this = this;
             var form = $(_this).closest("form");
             $.ajax({
@@ -167,9 +176,9 @@ define([
 
                 pdf.setFontSize(10)
 
-                // we support special element handlers. Register them with jQuery-style 
+                // we support special element handlers. Register them with jQuery-style
                 // ID selector for either ID or node name. ("#iAmID", "div", "span" etc.)
-                // There is no support for any other type of selectors 
+                // There is no support for any other type of selectors
                 // (class, of compound) at this time.
                 var specialElementHandlers = {
                     // element with id of "bypass" - jQuery style selector
@@ -189,7 +198,7 @@ define([
                 },
 
                 function (dispose) {
-                    // dispose: object with X, Y of the last line add to the PDF 
+                    // dispose: object with X, Y of the last line add to the PDF
                     //          this allow the insertion of new lines after html
                     pdf.save(response.data.filename);
                 }, margins);
@@ -331,7 +340,7 @@ define([
                             $(formData).each(function($k, $d) {
                                 data[$d.name] = $d.value;
                             });
-                            
+
                             // Set users preferences
                             set_block_preference(blockname, data, function() {
 
@@ -421,7 +430,7 @@ define([
                             $(formData).each(function($k, $d) {
                                 data[$d.name] = $d.value;
                             });
-                            
+
                             // Set block capabilities
                             setBlockCapabilities(blockname, data, function() {
                                 modal.destroy();
@@ -459,12 +468,12 @@ define([
 
     /**
      * Set blocks capabilities
-     * @param {string} blockname 
-     * @param {string} data 
-     * @param {function} callback 
+     * @param {string} blockname
+     * @param {string} data
+     * @param {function} callback
      */
     function setBlockCapabilities(blockname, data, callback) {
-        data['blockname'] = blockname; 
+        data['blockname'] = blockname;
         data = JSON.stringify(data);
         var sesskey = $('#' + blockname).data('sesskey');
 
@@ -502,12 +511,12 @@ define([
 
     /**
      * Set users preferences
-     * @param {string} blockname 
-     * @param {string} data 
-     * @param {function} callback 
+     * @param {string} blockname
+     * @param {string} data
+     * @param {function} callback
      */
     function set_block_preference(blockname, data, callback) {
-        data['blockname'] = blockname; 
+        data['blockname'] = blockname;
         data = JSON.stringify(data);
         var prefname = 'pref_' + blockname
         var sesskey = $('#' + blockname).data('sesskey');
@@ -683,7 +692,7 @@ define([
         var val = $(_this).data('value');
         var text = $(_this).text();
         var dropdownBtn = $(_this).closest(".dropdown").find(dropdownSelector);
-        
+
         // Set button values
         dropdownBtn.text(text);
         dropdownBtn.data("value", val);
@@ -795,7 +804,7 @@ define([
 
         // Subdropdown click event
         var subSelectedDropdpown = '.dropdown-item[data-value="' + esrTimeVal + '"]';
-        
+
         // Show only selected dropdown
         var subDropdown = null;
         switch(esrDurationVal) {
@@ -1030,14 +1039,14 @@ define([
     }
 
     /**
-     * Generate Email dialog to send emails 
+     * Generate Email dialog to send emails
      * @param  {string} url Url to send emails
      * @param  {int} CONTEXTID Context Id
      */
     function emailDialogBox(url, CONTEXTID) {
         fragment.loadFragment('local_sitereport', 'email_dialog', CONTEXTID)
         .done(function(html, js) {
-            ModalFactory.create({            
+            ModalFactory.create({
                 type: ModalFactory.types.SAVE_CANCEL,
                 title: 'Email Dialog Box',
                 body: html,
@@ -1050,4 +1059,7 @@ define([
             console.log(e)
         });
     }
+    return {
+        loader: loader
+    };
 });

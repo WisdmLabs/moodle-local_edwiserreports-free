@@ -3,8 +3,9 @@ define([
     'core/chartjs',
     'local_sitereport/defaultconfig',
     'local_sitereport/variables',
+    './common',
     'local_sitereport/select2'
-], function ($, Chart, cfg, V) {
+], function ($, Chart, cfg, V, common) {
     function init(notifyListner) {
         var cpGraph = null;
         var panel = cfg.getPanel("#courseprogressblock");
@@ -57,6 +58,9 @@ define([
                 cpGraph.destroy();
             }
 
+            // Show loader.
+            common.loader.show('#courseprogressblock');
+
             $.ajax({
                 url: cfg.requestUrl,
                 type: cfg.requestType,
@@ -82,6 +86,9 @@ define([
 
                 /* Notify that this event is completed */
                 notifyListner("courseProgress");
+
+                // Hide loader.
+                common.loader.hide('#courseprogressblock');
             });
         }
 

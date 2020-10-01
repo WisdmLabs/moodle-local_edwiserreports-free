@@ -531,11 +531,11 @@ div[id^="wdm-"][id*="-individual"] table.table,
     body.site-menubar-unfold #wdm-courseanalytics-individual [class^="recent-"] {
         min-width: 50%;
     }
-    
+
     body.pinaside #wdm-courseanalytics-individual [class^="recent-"] {
         min-width: 50%;
     }
-    
+
     body.pinaside.site-menubar-unfold #wdm-courseanalytics-individual [class^="recent-"] {
         min-width: 100% !important;
     }
@@ -671,6 +671,7 @@ div[id^="wdm-"][id*="-individual"] table.table,
 }
 
 #wdm-elucidsitereport .elucidsitereport-block > div {
+    position: relative;
     height: 100%;
     padding: 1rem;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
@@ -747,7 +748,7 @@ div[id^="wdm-"][id*="-individual"] table.table,
 
 @media (min-width: 768px) {
     #page-local-sitereport-index #page-header #editing-btn {
-        position: absolute;   
+        position: absolute;
     }
 }
 
@@ -764,5 +765,21 @@ div[id^="wdm-"][id*="-individual"] {
 }
 
 table.dataTable td.dataTables_empty {
-    text-align: center;    
+    text-align: center;
+}
+
+.sitereport-loader {
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.7);
+}
+
+.sitereport-loader i {
+    font-size: 2rem;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
 }

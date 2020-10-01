@@ -1,4 +1,10 @@
-define(["jquery", "local_sitereport/defaultconfig", "local_sitereport/jquery.dataTables", "local_sitereport/dataTables.bootstrap4"], function($, cfg) {
+define([
+    "jquery",
+    "local_sitereport/defaultconfig",
+    "./common",
+    "local_sitereport/jquery.dataTables",
+    "local_sitereport/dataTables.bootstrap4"
+], function($, cfg, common) {
     var liveUsersTable = null;
     var panel = cfg.getPanel("#liveusersblock");
     var panelBody = cfg.getPanel("#liveusersblock", "body");
@@ -14,6 +20,10 @@ define(["jquery", "local_sitereport/defaultconfig", "local_sitereport/jquery.dat
 
     /* Get online users data */
     function getOnlineUsersData() {
+
+        // Show loader.
+        common.loader.show("#liveusersblock");
+
         $.ajax({
             url: cfg.requestUrl,
             type: cfg.requestType,
@@ -31,6 +41,10 @@ define(["jquery", "local_sitereport/defaultconfig", "local_sitereport/jquery.dat
         }).always(function(){
             listner("realTimeUsers");
             setTimeout(getOnlineUsersData, 2 * 60 * 1000);
+
+            // Hide loader.
+            common.loader.hide("#liveusersblock");
+
         });
     }
 

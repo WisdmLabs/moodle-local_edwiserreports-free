@@ -1,10 +1,22 @@
-define(["jquery", "core/templates", "local_sitereport/defaultconfig"], function($, templates, cfg) {
+define([
+    "jquery",
+    "core/templates",
+    "local_sitereport/defaultconfig",
+    './common',
+], function($, templates, cfg, common) {
     var panel = cfg.getPanel("#certificatesblock");
     var panelBody = cfg.getPanel("#certificatesblock", "body");
     var table = panel + " .table";
     var dropdownBody = panel + " .table-dropdown";
 
     function init () {
+
+        function hideLoader() {
+            common.loader.hide('#certificatesblock');
+        }
+        // Show loader.
+        common.loader.show('#certificatesblock');
+
         $.ajax({
             url: cfg.requestUrl,
             type: cfg.requestType,
@@ -20,12 +32,21 @@ define(["jquery", "core/templates", "local_sitereport/defaultconfig"], function(
                 $(panelBody).empty();
                 templates.appendNodeContents(panelBody, html, js);
                 createCertificatesTable(response.data);
+
+                // Hide loader.
+                hideLoader();
             }).fail(function(ex) {
                 console.log(ex);
+
+                // Hide loader.
+                hideLoader();
             });
         })
         .fail(function(error) {
             console.log(error);
+
+            // Hide loader.
+            hideLoader();
         });
     }
 
