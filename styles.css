@@ -748,7 +748,9 @@ div[id^="wdm-"][id*="-individual"] table.table,
     }
 }
 
-.block-hidden {
+.block-hidden .panel-title,
+.block-hidden .panel-body,
+.block-hidden .panel-footer {
     opacity: 0.4;
 }
 

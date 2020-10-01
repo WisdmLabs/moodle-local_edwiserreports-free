@@ -87,7 +87,7 @@ class activeusersblock extends block_base {
     public function get_activeusers_filter() {
         // Add last updated text in header.
         $lastupdatetext = html_writer::start_tag('small', array(
-            'id' => 'update-time',
+            'id' => 'updated-time',
             'class' => 'font-size-12'
         ));
         $lastupdatetext .= get_string('lastupdate', 'local_sitereport');
