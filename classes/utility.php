@@ -558,8 +558,23 @@ class utility {
     public static function get_scheduled_emails($data) {
         $response = new stdClass();
         $response->error = false;
-        $response->data = array();
-        $response->data = self::local_sitereport_get_schedule_emaillist();
+
+        if (!$blockname = isset($data->blockname) ? $data->blockname : false) {
+            $response->error = true;
+        }
+
+        if (!$component = isset($data->region) ? $data->region : false) {
+            $response->error = true;
+        }
+
+        if ($blockname && $component) {
+            $response->data = array();
+            $params = array(
+                'blockname' => $blockname,
+                'component' => $component
+            );
+            $response->data = self::local_sitereport_get_schedule_emaillist($params);
+        }
         return $response;
     }
 
@@ -568,44 +583,44 @@ class utility {
      * Get Scheduled email list
      * @return [type] [description]
      */
-    public static function local_sitereport_get_schedule_emaillist() {
+    public static function local_sitereport_get_schedule_emaillist($params) {
         global $DB;
 
         $emails = array();
-        $rec = $DB->get_records('sitereport_schedemails');
-        foreach ($rec as $key => $val) {
-            // If it dosent have email data.
-            if (!$emaildata = json_decode($val->emaildata)) {
-                continue;
-            }
+        $cmpblocknamesql = $DB->sql_compare_text('blockname');
+        $cmpcomponentsql = $DB->sql_compare_text('component');
 
-            // If dta is not an array.
-            if (!is_array($emaildata)) {
-                continue;
-            }
+        // echo $cmpblocknamesql; var_dump($params); die;
+        $sql = "SELECT * FROM {sitereport_schedemails}
+            WHERE $cmpblocknamesql = :blockname
+            AND $cmpcomponentsql = :component";
 
+        $rec = $DB->get_record_sql($sql, $params);
+// echo "<pre>"; var_dump(json_decode($rec->emaildata)); die;
+         // If data is not an array.
+        if ($rec && ($emaildata = json_decode($rec->emaildata)) && is_array($emaildata)) {
             // If everythings is ok then.
             foreach ($emaildata as $key => $emailinfo) {
                 $data = array();
-                $data["esrtoggle"] = local_sitereport_create_toggle_switch_for_emails(
-                    $key,
-                    $emailinfo->esremailenable,
-                    $val->blockname,
-                    $val->component
-                );
+                // $data["esrtoggle"] = local_sitereport_create_toggle_switch_for_emails(
+                //     $key,
+                //     $emailinfo->esremailenable,
+                //     $rec->blockname,
+                //     $rec->component
+                // );
                 $data["esrname"] = $emailinfo->esrname;
                 $data["esrnextrun"] = date("d M y", $emailinfo->esrnextrun);
                 $data["esrfrequency"] = $emailinfo->esrfrequency;
-                $data["esrcomponent"] = $val->blockname;
                 $data["esrmanage"] = local_sitereport_create_manage_icons_for_emaillist(
                     $key,
-                    $val->blockname,
-                    $val->component,
+                    $rec->blockname,
+                    $rec->component,
                     $emailinfo->esremailenable
                 );
                 $emails[] = $data;
             }
         }
+
         return $emails;
     }
 

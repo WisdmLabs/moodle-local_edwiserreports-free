@@ -756,16 +756,24 @@ function local_sitereport_carete_select_icons_for_emaillist($select) {
  * Create mange icons to manage email list
  * @return [string] Html manage icon string
  */
-function local_sitereport_create_manage_icons_for_emaillist($id, $blockname, $region) {
+function local_sitereport_create_manage_icons_for_emaillist($id, $blockname, $region, $enable) {
     $manage = html_writer::start_span("row esr-manage-scheduled-emails m-0 p-0 justify-content-center");
+    $manage .= local_sitereport_create_toggle_switch_for_emails(
+        $id,
+        $enable,
+        $blockname,
+        $region
+    );
     $manage .= html_writer::link('javascript:void(0)',
-        '<i class="fa fa-cog mx-1"></i>',
+        '<i class="fa fa-edit mx-1"></i>',
         array(
             "class" => "esr-email-sched-setting",
             "data-blockname" => $blockname,
             "data-region" => $region,
             "data-id" => $id,
-            "data-sesskey" => sesskey()
+            "data-sesskey" => sesskey(),
+            "data-toggle" => "tooltip",
+            "title" => get_string('edit', 'local_sitereport')
         )
     );
     $manage .= html_writer::link('javascript:void(0)',
@@ -775,7 +783,9 @@ function local_sitereport_create_manage_icons_for_emaillist($id, $blockname, $re
             "data-blockname" => $blockname,
             "data-region" => $region,
             "data-id" => $id,
-            "data-sesskey" => sesskey()
+            "data-sesskey" => sesskey(),
+            "data-toggle" => "tooltip",
+            "title" => get_string('delete', 'local_sitereport')
         )
     );
 
@@ -814,7 +824,8 @@ function local_sitereport_create_toggle_switch_for_emails($id, $emailenable, $bl
         ), $toggleid, true,
         array(
             "class" => "esr-switch",
-            "title" => "Enable/Disable email"
+            "title" => "Enable/Disable email",
+            "data-toggle" => "tootip"
         )
     );
     $out .= html_writer::end_div();

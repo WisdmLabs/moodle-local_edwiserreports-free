@@ -233,13 +233,13 @@
                     </div>
                 </div>
                 <div class="modal-footer" data-region="footer">
-                    <button class="btn btn-primary" type="button" data-action="send">
+                    <button class="btn btn-primary" type="button" data-action="send" data-toggle="tooltip" title="{{#str}} send, local_sitereport {{/str}}">
                         {{#str}} send, local_sitereport {{/str}}
                     </button>
-                    <button class="btn btn-primary" type="button" data-action="save">
+                    <button class="btn btn-primary" type="button" data-action="save" data-toggle="tooltip" title="{{#str}} schedule, local_sitereport {{/str}}">
                         {{#str}} schedule, local_sitereport {{/str}}
                     </button>
-                    <button class="btn btn-secondary" type="button" data-action="cancel">
+                    <button class="btn btn-secondary" type="button" data-action="cancel" data-toggle="tooltip" title="{{#str}} reset, local_sitereport {{/str}}">
                         {{#str}} reset, local_sitereport {{/str}}
                     </button>
                 </div>
@@ -250,12 +250,10 @@
                 <table id="esr-shceduled-emails" class="table" data-role="content" data-plugin="selectable" data-row-selectable="true">
                     <thead>
                         <tr>
-                            <th></th>
-                            <th>Name</th>
-                            <th>Report</th>
-                            <th>Next run</th>
-                            <th>Frequency</th>
-                            <th>Manage</th>
+                            <th>{{#str}} name, local_sitereport {{/str}}</th>
+                            <th>{{#str}} nextrun, local_sitereport {{/str}}</th>
+                            <th>{{#str}} frequency, local_sitereport {{/str}}</th>
+                            <th class="text-center">{{#str}} manage, local_sitereport {{/str}}</th>
                         </tr>
                     </thead>
                     <tbody></tbody>

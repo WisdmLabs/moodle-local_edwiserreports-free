@@ -106,7 +106,7 @@ $string['recipient'] = "Recipient";
 $string['subject'] = "Subject";
 $string['message'] = "Message";
 $string['reset'] = "Reset";
-$string['send'] = "Send";
+$string['send'] = "Send Now";
 
 
 /* Block help tooltips */
@@ -289,7 +289,7 @@ $string['duration_2'] = "Monthly";
 $string['everydays'] = 'Everyday {$a->time}';
 $string['everyweeks'] = 'Every {$a->day}';
 $string['everymonths'] = 'Every month at {$a->time}';
-$string['schedule'] = "Schedule";
+$string['schedule'] = "Schedule Email";
 $string['scheduledlist'] = "All Scheduled Reports";
 $string['reset'] = "Reset";
 $string['confirmemailremovaltitle'] = "Delete Scheduled Email";
@@ -562,3 +562,10 @@ $string['emptyerrormsg'] = '<div class="alert alert-danger"><b>ERROR:</b> Name a
 $string['emailinvaliderrormsg'] = '<div class="alert alert-danger"><b>ERROR:</b> Invalid email adderesses (space not allowed)</div>';
 $string['scheduledemaildisbled'] = '<div class="alert alert-success"><b>SUCCESS:</b> Scheduled Email Disabled</div>';
 $string['scheduledemailenabled'] = '<div class="alert alert-success"><b>SUCCESS:</b> Scheduled Email Enabled</div>';
+
+$string['nextrun'] = 'Next Run';
+$string['frequency'] = 'Frequency';
+$string['manage'] = 'Manage';
+$string['scheduleemailfor'] = 'Schedule Emails for';
+$string['edit'] = 'Edit';
+$string['delete'] = 'Delete';

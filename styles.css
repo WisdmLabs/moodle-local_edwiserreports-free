@@ -756,3 +756,7 @@ div[id^="wdm-"][id*="-individual"] {
     padding: 10px;
     background: #fff;
 }
+
+table.dataTable td.dataTables_empty {
+    text-align: center;    
+}

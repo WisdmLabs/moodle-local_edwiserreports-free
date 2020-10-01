@@ -242,7 +242,7 @@ define([
             });
 
             ModalFactory.create({
-                title: v.getEmailModalHeader(data.blockname, 1),
+                title: M.util.get_string('scheduleemailfor', 'local_sitereport') + ' ' +  M.util.get_string(data.block + 'exportheader', 'local_sitereport'),
                 body: Templates.render('local_sitereport/email_schedule_tabs', data)
             }, $(this))
             .done(function(modal) {
@@ -557,7 +557,7 @@ define([
                 data: {
                     action: 'get_scheduled_emails_ajax',
                     data : JSON.stringify({
-                        blockname : data.blockname,
+                        blockname : data.block,
                         // href : $(_this).attr("href"),
                         region : data.region
                     })
@@ -568,7 +568,8 @@ define([
             // scrollCollapse : true,
             language: {
                 searchPlaceholder: "Search shceduled email",
-                emptyTable: "There is no scheduled emails"
+                emptyTable: "There is no scheduled emails",
+                sClass: 'text-center'
             },
             drawCallback: function () {
                 $('.dataTables_paginate > .pagination').addClass('pagination-sm pull-right');
@@ -577,15 +578,7 @@ define([
             order : [[ 2, "asc" ]],
             columns : [
                 {
-                    "data" : "esrtoggle",
-                    "orderable" : false
-                },
-                {
                     "data" : "esrname",
-                    "orderable" : true
-                }, 
-                {
-                    "data" : "esrcomponent",
                     "orderable" : true
                 },
                 {
