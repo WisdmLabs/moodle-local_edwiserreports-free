@@ -683,12 +683,15 @@ class activeusersblock extends block_base {
         // Make cache.
         $cache = cache::make('local_sitereport', 'activeusers');
         $cachekey = "exportabledatablock-" . $filter;
+
         // If exportable data is set in cache then get it from there.
         if (!$export = $cache->get($cachekey)) {
             // Get exportable data for active users block.
             $export = array();
+
+            $obj = new self();
             $export[] = self::get_header();
-            $activeusersdata = self::get_data($filter);
+            $activeusersdata = $obj->get_data((object) array("filter" => $filter));
 
             // Generate active users data.
             foreach ($activeusersdata->labels as $key => $lable) {
@@ -721,7 +724,7 @@ class activeusersblock extends block_base {
 
             $blockobj = new self();
             $export[] = self::get_header_report();
-            $activeusersdata = $blockobj->get_data(array("filter" => $filter));
+            $activeusersdata = $blockobj->get_data((object) array("filter" => $filter));
             foreach ($activeusersdata->labels as $key => $lable) {
                 $export = array_merge($export,
                     self::get_usersdata($lable, "activeusers"),
