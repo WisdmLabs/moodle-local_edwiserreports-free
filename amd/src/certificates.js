@@ -80,8 +80,8 @@ define([
                 },
                 bInfo : false,
                 // lengthChange : false,
-                paginate : false,
-                responsive : true,
+                // paginate : false,
+                responsive : true
                 // scrollY : "350px",
                 // scrollX : true,
                 // sScrollX : "100%",
