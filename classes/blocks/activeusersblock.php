@@ -457,7 +457,7 @@ class activeusersblock extends block_base {
         $params["starttime"] = $filter;
         $params["endtime"] = $filter + LOCAL_SITEREPORT_ONEDAY;
         $data = array();
-        $records = $DB->get_records_sql($sql, $params);
+        $records = $DB->get_records_sql($sql, $params, IGNORE_MULTIPLE);
         if (!empty($records)) {
             foreach ($records as $record) {
                 $user = core_user::get_user($record->relateduserid);
@@ -522,7 +522,7 @@ class activeusersblock extends block_base {
         if (!$activeusers = $this->cache->get($cachekey)) {
             // Get Logs to generate active users data.
             $activeusers = array();
-            $logs = $DB->get_records_sql($sql, $params);
+            $logs = $DB->get_records_sql($sql, $params, IGNORE_MULTIPLE);
 
             // Get active users for every day.
             for ($i = 0; $i < $this->xlabelcount; $i++) {
@@ -590,7 +590,7 @@ class activeusersblock extends block_base {
         // Get data from cache if exist.
         if (!$enrolments = $this->cache->get($cachekey)) {
             // Get enrolments log.
-            $logs = $DB->get_records_sql($sql, $params);
+            $logs = $DB->get_records_sql($sql, $params, IGNORE_MULTIPLE);
             $enrolments = array();
 
             // Get enrolments from every day.
@@ -650,7 +650,7 @@ class activeusersblock extends block_base {
         // Get data from cache if exist.
         if (!$completionrate = $this->cache->get($cachekey)) {
             $completionrate = array();
-            $completions = $DB->get_records_sql($sql, $params);
+            $completions = $DB->get_records_sql($sql, $params, IGNORE_MULTIPLE);
             // Get completion for each day.
             for ($i = 0; $i < $this->xlabelcount; $i++) {
                 $time = $this->timenow - $i * LOCAL_SITEREPORT_ONEDAY;

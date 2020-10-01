@@ -373,10 +373,11 @@ define([
                         if (hidden) {
                             _this.closest('.elucidsitereport-block').removeClass('block-hidden');
                             _this.data("hidden", 0);
-                            _this.html("Hide Block");
+                            _this.html(M.util.get_string('hide', 'local_sitereport'));
                         } else {
                             _this.closest('.elucidsitereport-block').addClass('block-hidden');
-                            _this.data("Unhide Block");
+                            _this.data("hidden", 1);
+                            _this.html(M.util.get_string('unhide', 'local_sitereport'));
                         }
                     }
                 }).fail(function(error) {

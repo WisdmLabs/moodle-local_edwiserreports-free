@@ -1274,7 +1274,7 @@ class utility {
         }
 
         $hide = $hidden ? 0 : 1;
-        $pref = self::SMALL($block);
+        $pref = self::get_reportsblock_preferences($block);
         $pref['hidden'] = $hide;
 
         // Set block Preference.
