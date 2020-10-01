@@ -709,17 +709,16 @@ function local_sitereport_get_schedule_emaillist() {
         // If everythings is ok then.
         foreach ($emaildata as $key => $emailinfo) {
             $data = array();
-            $data["esrselect"] = local_sitereport_create_toggle_switch_for_emails(
-                $key,
-                $emailinfo->esremailenable,
-                $val->blockname,
-                $val->component
-            );
             $data["esrname"] = $emailinfo->esrname;
             $data["esrnextrun"] = date("d M y", $emailinfo->esrnextrun);
             $data["esrfrequency"] = $emailinfo->esrfrequency;
             $data["esrcomponent"] = $val->blockname;
-            $data["esrmanage"] = local_sitereport_create_manage_icons_for_emaillist(
+            $data["esrmanage"] = local_sitereport_create_toggle_switch_for_emails(
+                $key,
+                $emailinfo->esremailenable,
+                $val->blockname,
+                $val->component
+            ) . local_sitereport_create_manage_icons_for_emaillist(
                 $val->blockname,
                 $val->component,
                 $emailinfo->esremailenable
@@ -814,7 +813,7 @@ function local_sitereport_create_toggle_switch_for_emails($id, $emailenable, $bl
     }
 
     // Toggle Switch For Enable and Disable Start.
-    $out = html_writer::start_div("my-auto ". $customclass);
+    $out = html_writer::start_div("my-auto w-auto d-inline-block ". $customclass);
     $out .= html_writer::label(
         html_writer::tag("input", "", $switchparams).
         html_writer::div(
