@@ -538,7 +538,7 @@ function local_sitereport_extend_navigation(navigation_node $nav) {
     );
     $node->showinflatnavigation = true;
 
-    if ($PAGE->pagelayout !== 'course') {
+    if ($PAGE->pagelayout !== 'course' && $PAGE->pagelayout !== 'incourse') {
         return true;
     }
 

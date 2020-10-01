@@ -755,6 +755,7 @@ div[id^="wdm-"][id*="-individual"] table.table,
 div[id^="wdm-"][id*="-individual"] {
     padding: 10px;
     background: #fff;
+    min-height: 600px;
 }
 
 table.dataTable td.dataTables_empty {
