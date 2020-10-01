@@ -1006,7 +1006,6 @@ define([
             type: "POST",
             data: root.find('form').serialize()
         }).done(function(response) {
-            console.log(response);
             response = $.parseJSON(response);
             if (response.error) {
                 errorBox.html('<div class="alert alert-danger"><b>ERROR:</b>' + response.errormsg + '</div>');
