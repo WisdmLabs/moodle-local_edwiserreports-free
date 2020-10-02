@@ -137,7 +137,7 @@ class block_base {
         global $DB, $USER;
 
         // If user is not editing.
-        if (!$USER->editing) {
+        if (!isset($USER->editing) && !$USER->editing) {
             return false;
         }
 
