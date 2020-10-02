@@ -115,13 +115,13 @@ define([
         var exportLinks = '.download-links';
         var exportLink = '.download-links a[data-typr="pdf"], .download-links a[data-typr="csv"]';
 
-        rearrangeBlocks(pageWidth, isNavlink);
+        // rearrangeBlocks(pageWidth, isNavlink);
 
         // Resize block according to the block
-        $(window).on('resize', function() {
-            var pageWidth = v.pluginPage.width();
-            rearrangeBlocks(pageWidth);
-        });
+        // $(window).on('resize', function() {
+        //     var pageWidth = v.pluginPage.width();
+        //     rearrangeBlocks(pageWidth);
+        // });
 
         // // Export data in various formats
         // $(document).on("click", exportLink, function(e) {

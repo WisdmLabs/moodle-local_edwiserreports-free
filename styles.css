@@ -747,11 +747,11 @@ div[id^="wdm-"][id*="-individual"] table.table,
     top: 28px;
 }
 
-@media (min-width: 768px) {
+/* @media (min-width: 768px) {
     #page-local-sitereport-index #page-header #editing-btn {
         position: absolute;
     }
-}
+} */
 
 .block-hidden .panel-title,
 .block-hidden .panel-body,

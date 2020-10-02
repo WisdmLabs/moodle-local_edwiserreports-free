@@ -44,7 +44,7 @@ class block_base {
 
         $this->layout = new stdClass();
         $this->layout->sesskey = sesskey();
-        $this->layout->class = '';
+        $this->layout->extraclasses = '';
         $this->layout->contextid = $context->id;
         $this->layout->caneditadv = false;
         $this->layout->region = 'block';
@@ -109,13 +109,13 @@ class block_base {
         foreach ($sizes as $media => $size) {
             switch($size) {
                 case LOCAL_SITEREPORT_BLOCK_LARGE:
-                    $this->layout->class .= $devicecolclass[$media] . '12 ';
+                    $this->layout->extraclasses .= $devicecolclass[$media] . '12 ';
                     break;
                 case LOCAL_SITEREPORT_BLOCK_MEDIUM:
-                    $this->layout->class .= $devicecolclass[$media] . '6 ';
+                    $this->layout->extraclasses .= $devicecolclass[$media] . '6 ';
                     break;
                 case LOCAL_SITEREPORT_BLOCK_SMALL:
-                    $this->layout->class .= $devicecolclass[$media] . '4 ';
+                    $this->layout->extraclasses .= $devicecolclass[$media] . '4 ';
                     break;
                 default:
                     break;
