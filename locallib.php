@@ -923,3 +923,19 @@ function local_sitereport_get_recquired_strings_for_js() {
     );
     $PAGE->requires->strings_for_js($str, 'role');
 }
+
+/**
+ * Reset Site Report Page to default
+ */
+function reset_sitereport_page_default() {
+    global $CFG, $DB, $USER;
+    $blocks = \local_sitereport\utility::get_reports_block();
+
+    foreach ($blocks as $block) {
+        $prefname = 'pref_' . $block->classname;
+        $DB->delete_records('user_preferences', array('userid' => $USER->id, 'name' => $prefname));
+        unset($USER->preference[$prefname]);
+    }
+
+    redirect($CFG->wwwroot . '/local/sitereport/index.php');
+}

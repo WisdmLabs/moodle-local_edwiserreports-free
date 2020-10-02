@@ -286,22 +286,35 @@ define([
     });
 
     function setupBlockHiding(editing) {
+        var editForm = '<div id="editing-btn" class="d-flex flex-wrap">';
+            editForm += '<div class="ml-auto d-flex">';
+
         // Change editing option
         if (editing) {
             editing = 0;
             editingtxt = "Stop Customising this page";
+
+            editForm += '<div class="singlebutton">';
+            editForm += '<form method="post" action="' + M.cfg.wwwroot + '/local/sitereport/index.php">';
+            editForm += '<input type="hidden" name="reset" value="1">';
+            editForm += '<input type="hidden" name="sesskey" value="' + M.cfg.sesskey + '">';
+            editForm += '<button type="submit" class="btn btn-secondary" title="">Reset Page to Default</button>';
+            editForm += '</form>';
+            editForm += '</div>';
         } else {
             editing = 1;
             editingtxt = "Customise this page";
         }
-        var editForm = '<div id="editing-btn" class="d-flex flex-wrap">';
-            editForm += '<div class="ml-auto d-flex">';
-            editForm += '<div class="singlebutton">';
-            editForm += '<form method="post" action="' + M.cfg.wwwroot + '/local/sitereport/index.php">';
-            editForm += '<input type="hidden" name="edit" value="' + editing + '">';
-            editForm += '<input type="hidden" name="sesskey" value="' + M.cfg.sesskey + '">';
-            editForm += '<button type="submit" class="btn btn-secondary" title="">' + editingtxt + '</button>';
-            editForm += '</form></div></div>';
+
+        editForm += '<div class="singlebutton">';
+        editForm += '<form method="post" action="' + M.cfg.wwwroot + '/local/sitereport/index.php">';
+        editForm += '<input type="hidden" name="edit" value="' + editing + '">';
+        editForm += '<input type="hidden" name="sesskey" value="' + M.cfg.sesskey + '">';
+        editForm += '<button type="submit" class="btn btn-secondary" title="">' + editingtxt + '</button>';
+        editForm += '</form>';
+        editForm += '</div>';
+
+        editForm += '</div></div>';
 
         $("#page-local-sitereport-index #page-header .card-body").append(editForm);
     }

@@ -42,6 +42,14 @@ require_login();
 $edit = optional_param('edit', false, PARAM_BOOL);
 if ($edit !== false) {
     $USER->editing = $edit;
+    redirect($CFG->wwwroot . '/local/sitereport/index.php');
+}
+
+// If use want to edit page.
+$reset = optional_param('reset', false, PARAM_BOOL);
+if ($reset !== false) {
+    $USER->editing = false;
+    reset_sitereport_page_default();
 }
 
 // Allow users preferences set remotly.
