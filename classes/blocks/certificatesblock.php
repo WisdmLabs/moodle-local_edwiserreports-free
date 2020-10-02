@@ -210,7 +210,7 @@ class certificatesblock extends block_base {
     public static function get_certinfo($course, $issue) {
         global $DB;
 
-        $enrolsql = "SELECT *
+        $enrolsql = "SELECT ue.id, ue.timemodified
             FROM {user_enrolments} ue
             JOIN {enrol} e ON (e.id = ue.enrolid AND e.courseid = :courseid)
             JOIN {user} u ON u.id = ue.userid
@@ -226,7 +226,7 @@ class certificatesblock extends block_base {
             $gradeval = $grade->finalgrade;
         }
 
-        $enrolment = $DB->get_record_sql($enrolsql, $params, IGNORE_MULTIPLE);
+        $enrolment = $DB->get_record_sql($enrolsql, $params);
         $enrolmentdate = get_string("notenrolled", "local_sitereport");
         $progressper = 0;
         if ($enrolment) {
