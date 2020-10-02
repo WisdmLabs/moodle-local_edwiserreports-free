@@ -161,6 +161,6 @@ class block_base {
         $this->layout->caneditadv = has_capability('report/sitereport_' . $blockname . ':editadvance', $context);
 
         // If have capability to edit.
-        $this->layout->editopt = $this->layout->caneditadv;
+        $this->layout->editopt = true;
     }
 }

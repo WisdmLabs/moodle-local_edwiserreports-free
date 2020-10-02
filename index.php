@@ -39,8 +39,8 @@ $component = "local_sitereport";
 require_login();
 
 // If use want to edit page.
-$edit = optional_param('edit', null, PARAM_BOOL);
-if ($edit) {
+$edit = optional_param('edit', false, PARAM_BOOL);
+if ($edit !== false) {
     $USER->editing = $edit;
 }
 
