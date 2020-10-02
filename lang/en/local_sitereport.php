@@ -112,16 +112,16 @@ $string['send'] = "Send Now";
 
 
 /* Block help tooltips */
-$string['activeusersblocktitlehelp'] = "Active Users Block";
+$string['activeusersblocktitlehelp'] = "This block will show active users, course enrolment and course completion over the period in line chart.";
 $string['activeusersblockhelp'] = "This block will show graph of active users over the period with course enrolment and course completion.";
 $string['courseprogressblockhelp'] = "This block will show the pie chart of a course with percantage.";
 $string['activecoursesblockhelp'] = "This block will show the most active courses based on the visits enrolment and completions.";
 $string['certificatestatsblockhelp'] = "This block will show all created custom certificates and how many enrolled users awarded with this certificates.";
 $string['realtimeusersblockhelp'] = "This block will show all logged in users in this site.";
 $string['f2fsessionsblockhelp'] = "This block will show all created face to face sessions and count of all signups and attendees.";
-$string['accessinfoblockhelp'] = "This block will show the avg usage of the site in a week.";
+$string['accessinfoblockhelp'] = "This block will show the average usage of the site in a week.";
 $string['lpstatsblockhelp'] = "This block will show all the course completed by the users in a learning program.";
-$string['todaysactivityblockhelp'] = "This block will show the todays activities performed by in this website.";
+$string['todaysactivityblockhelp'] = "This block will show the daily activities performed in this site.";
 $string['inactiveusersblockhelp'] = "This block will show list of users inactive in this site.";
 $string['inactiveusersexporthelp'] = "This report will show inactivity of users in the website";
 $string['none'] = "None";
@@ -251,11 +251,11 @@ $string['emailexample'] = "example1.mail.com; example2.mail.com;";
 $string['activeusersblockexportheader'] = "Active Users, Course Enrolment and Course Completion Rate";
 $string['activeusersblockexporthelp'] = "This report will show active users, course enrolment and course completion over the period.";
 $string['courseprogressblockexportheader'] = "Course Progress Report";
-$string['courseprogressblockexporthelp'] = "This report will show the course progress of a perticuler course by the users.";
+$string['courseprogressblockexporthelp'] = "This report will show the course progress of a particular course by the users.";
 $string['activecoursesblockexportheader'] = "Most active course report";
 $string['activecoursesblockexporthelp'] = "This report will show the most active courses based on the enrolments, visits and completions.";
 $string['certificatesblockexportheader'] = "Awarded certificates report";
-$string['certificatesblockexporthelp'] = "This report will show the certificates who have issued or not issue issue to enrolled users.";
+$string['certificatesblockexporthelp'] = "This report will show the certificates who have issued or not issued to enrolled users.";
 $string['f2fsessionblockexportheader'] = "Instructor-Led Sessions report";
 $string['f2fsessionblockexporthelp'] = "This report will show the Instructor-Led Sessions details.";
 $string['lpstatsblockexportheader'] = "Learning Program report";
@@ -269,6 +269,7 @@ $string['completionexporthelp'] = "This report will show the course completions 
 $string['courseanalyticsblockexportheader'] = "Course Completion Report";
 $string['courseanalyticsblockexporthelp'] = "This report will show the course completions by the users.";
 $string['exportlpdetailedreports'] = 'Export Detailed Reports';
+$string['inactiveusersblockexporthelp'] = "This report will show inactivity of users in the website";
 
 $string['times_0'] = "06:30 AM";
 $string['times_1'] = "10:00 AM";
