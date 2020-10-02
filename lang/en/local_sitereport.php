@@ -140,8 +140,8 @@ $string['before6month'] = "Before 6 Month";
 
 /* Active Users Page */
 $string['noofactiveusers'] = "No. of active users";
-$string['noofenrolledusers'] = "No. of enrolled users";
-$string['noofcompletedusers'] = "No. of completed users";
+$string['noofenrolledusers'] = "No. of enrollments";
+$string['noofcompletedusers'] = "No. of completions";
 $string['email'] = "Email";
 $string['emailscheduled'] = "Email Scheduled";
 $string['usersnotavailable'] = "No Users are available for this day";

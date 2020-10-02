@@ -244,7 +244,7 @@ define([
                         // dom : '<"pull-left"f><t><p>',
                         order : [[0, 'desc']],
                         language: {
-                            searchPlaceholder: "Search Active Users",
+                            searchPlaceholder: "Search Date",
                             emptyTable: "There are no active users"
                         },
                         columnDefs: [
