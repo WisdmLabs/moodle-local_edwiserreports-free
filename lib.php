@@ -538,7 +538,8 @@ function local_sitereport_extend_navigation(navigation_node $nav) {
     );
     $node->showinflatnavigation = true;
 
-    if ($PAGE->pagelayout !== 'course' && $PAGE->pagelayout !== 'incourse') {
+    $iscompletionpage = strpos($PAGE->url, '/local/sitereport/completion.php');
+    if ($PAGE->pagelayout !== 'course' && $PAGE->pagelayout !== 'incourse' && !$iscompletionpage) {
         return true;
     }
 
