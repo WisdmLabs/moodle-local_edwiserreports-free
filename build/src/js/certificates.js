@@ -60,7 +60,7 @@ define([
                 ],
                 columns : [
                     { "data": "username" },
-                    { "data": "email" }, 
+                    { "data": "email" },
                     { "data": "issuedate" },
                     { "data": "dateenrolled" },
                     { "data": "grade" },
@@ -77,6 +77,7 @@ define([
                 drawCallback: function () {
                     $('.dataTables_paginate > .pagination').addClass('pagination-sm pull-right');
                     $('.dataTables_filter').addClass('pagination-sm pull-right');
+                    createPieProgress('');
                 },
                 bInfo : false,
                 // lengthChange : false,
@@ -88,6 +89,26 @@ define([
                 // bScrollCollapse : true
             });
         }
+
+        /**
+     * Create pie progress where div with .pie-progress class is present
+     */
+    function createPieProgress(target) {
+        var element = PageId;
+        if (target != '') {
+            element = element.find(target);
+        }
+        element.find('.pie-progress').asPieProgress({
+            namespace: 'pie-progress',
+            speed: 30,
+            classes: {
+                svg: 'pie-progress-svg',
+                element: 'pie-progress',
+                number: 'pie-progress-number',
+                content: 'pie-progress-content'
+            }
+        });
+    }
 
         $(document).ready(function() {
             // filterSection.html(CertDropdown.html());
@@ -118,5 +139,5 @@ define([
     return {
         init : init
     };
-	
+
 });
