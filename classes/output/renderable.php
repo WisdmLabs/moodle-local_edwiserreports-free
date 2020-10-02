@@ -73,7 +73,7 @@ class elucidreport_renderable implements renderable, templatable {
             $export->certificateslink = new moodle_url($CFG->wwwroot."/local/sitereport/certificates.php");
         }
 
-        $export->editing = $USER->editing;
+        $export->editing = isset($USER->editing) ? $USER->editing : false;
 
         return $export;
     }

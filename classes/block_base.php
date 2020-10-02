@@ -136,8 +136,12 @@ class block_base {
     public function set_block_edit_capabilities($blockname) {
         global $DB, $USER;
 
+        if (!isset($USER->editing)) {
+            return false;
+        }
+
         // If user is not editing.
-        if (!isset($USER->editing) && !$USER->editing) {
+        if (!$USER->editing) {
             return false;
         }
 
