@@ -251,6 +251,7 @@ class activeusers_renderable implements renderable, templatable {
         $output->sesskey = sesskey();
 
         $downloadurl = $CFG->wwwroot."/local/sitereport/download.php";
+        $output->backurl = $CFG->wwwroot."/local/sitereport/index.php";
 
         if ($cohortfilter = local_sitereport_get_cohort_filter()) {
             $output->cohortfilters = $cohortfilter;
@@ -293,6 +294,8 @@ class coursereport_renderable implements renderable, templatable {
             "downloadurl" => $CFG->wwwroot . "/local/sitereport/download.php"
         );
 
+        $output->backurl = $CFG->wwwroot."/local/sitereport/index.php";
+
         if ($cohortfilter = local_sitereport_get_cohort_filter()) {
             $output->cohortfilters = $cohortfilter;
         }
@@ -318,6 +321,7 @@ class certificates_renderable implements renderable, templatable {
         $output = new stdClass();
         $output->sesskey = sesskey();
         $customcerts = $DB->get_records("customcert", array());
+        $output->backurl = $CFG->wwwroot."/local/sitereport/index.php";
 
         if (!empty($customcerts)) {
             $output->hascertificates = true;
