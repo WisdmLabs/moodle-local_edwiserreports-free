@@ -416,6 +416,7 @@ class activeusersblock extends block_base {
         global $DB;
         // If cohort ID is there then add cohort filter in sqlquery.
         $sqlcohort = "";
+        $cohortcondition = "";
         if ($cohortid) {
             $sqlcohort .= " JOIN {cohort_members} cm
                    ON cm.userid = l.relateduserid";
