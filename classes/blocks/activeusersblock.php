@@ -419,6 +419,7 @@ class activeusersblock extends block_base {
         if ($cohortid) {
             $sqlcohort .= " JOIN {cohort_members} cm
                    ON cm.userid = l.relateduserid";
+            $cohortcondition = "AND cm.cohortid = :cohortid";
             $params["cohortid"] = $cohortid;
         }
         // Based on action prepare query.
@@ -429,7 +430,7 @@ class activeusersblock extends block_base {
                    WHERE l.timecreated >= :starttime
                    AND l.timecreated < :endtime
                    AND l.action = :action
-                   AND l.userid > 1";
+                   AND l.userid > 1 $cohortcondition";
                 $params["action"] = 'viewed';
                 break;
             case "enrolments":
@@ -437,7 +438,7 @@ class activeusersblock extends block_base {
                    FROM {logstore_standard_log} l $sqlcohort
                    WHERE l.timecreated >= :starttime
                    AND l.timecreated < :endtime
-                   AND l.eventname = :eventname";
+                   AND l.eventname = :eventname $cohortcondition";
                 $params["eventname"] = '\core\event\user_enrolment_created';
                 break;
             case "completions";
