@@ -910,3 +910,7 @@ table.dataTable td.dataTables_empty {
     left: 0;
     width: 100%;
 }
+
+.path-local-sitereport .modal-dialog:focus {
+	outline: -webkit-focus-ring-color auto 0px !important;
+}
