@@ -649,7 +649,7 @@ class activeusersblock extends block_base {
         // Get data from cache if exist.
         if (!$completionrate = $this->cache->get($cachekey)) {
             $completionrate = array();
-            $records = $DB->get_records_sql($sql, $params);
+            $completions = $DB->get_records_sql($sql, $params);
 
             // Get completion for each day.
             for ($i = 0; $i < $this->xlabelcount; $i++) {
