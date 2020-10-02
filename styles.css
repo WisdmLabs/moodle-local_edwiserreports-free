@@ -914,3 +914,6 @@ table.dataTable td.dataTables_empty {
 .path-local-sitereport .modal-dialog:focus {
 	outline: -webkit-focus-ring-color auto 0px !important;
 }
+#page-local-sitereport-index .modal-dialog {
+    min-height: auto;
+}
