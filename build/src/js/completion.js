@@ -57,7 +57,7 @@ define([
                 // dom : "<'pull-left'f><t><p>",
                 oLanguage : {
                     sEmptyTable : "No users are enrolled as student",
-                    sSearchPlaceholder : "Search Course"
+                    sSearchPlaceholder : "Search User"
                 },
                 columns : [
                     { "data": "username" },

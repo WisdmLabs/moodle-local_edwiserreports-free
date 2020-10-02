@@ -907,7 +907,7 @@ function local_sitereport_prepare_export_filename($params) {
     return "report_" . implode("_", $params);
 }
 
-function local_sitereport_get_recquired_strings_for_js() {
+function local_sitereport_get_required_strings_for_js() {
     global $PAGE;
 
     $stringman = get_string_manager();

@@ -30,7 +30,7 @@ require_once('classes/export.php');
 global $OUTPUT;
 
 // Strings for js.
-local_sitereport_get_recquired_strings_for_js();
+local_sitereport_get_required_strings_for_js();
 
 // Set external page admin.
 $context = context_system::instance();

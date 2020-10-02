@@ -33,7 +33,7 @@ require_once('classes/output/renderable.php');
 // Require login.
 require_login();
 
-local_sitereport_get_recquired_strings_for_js();
+local_sitereport_get_required_strings_for_js();
 
 // System Context.
 $context = context_system::instance();
