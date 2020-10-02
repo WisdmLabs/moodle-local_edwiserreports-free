@@ -272,20 +272,23 @@ class export {
         if ($emailids && $emailids !== '') {
             // process in background and dont show message in console.
             ob_start();
-            foreach(explode(";", $emailids) as $emailid) {
-                // trim email id if white spaces are added
-                $recuser->email = trim($emailid);
+            $emailids = explode(";", $emailids);
+            foreach($emailids as $emailcommaids) {
+                foreach(explode(",", $emailcommaids) as $emailid) {
+                    // trim email id if white spaces are added
+                    $recuser->email = trim($emailid);
 
-                // Send email to user
-                email_to_user(
-                    $recuser,
-                    $senduser,
-                    $subject,
-                    '',
-                    $contenttext,
-                    $filepath,
-                    $filename
-                );
+                    // Send email to user
+                    email_to_user(
+                        $recuser,
+                        $senduser,
+                        $subject,
+                        '',
+                        $contenttext,
+                        $filepath,
+                        $filename
+                    );
+                }
             }
             ob_end_clean();
 
