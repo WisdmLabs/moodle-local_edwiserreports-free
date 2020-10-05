@@ -939,3 +939,20 @@ function reset_sitereport_page_default() {
 
     redirect($CFG->wwwroot . '/local/sitereport/index.php');
 }
+
+/**
+ * Check if any of the blocks are present in reports dashboard.
+ */
+function is_block_present_indashboard() {
+    // Check if any of the block is present.
+    $hasblock = false;
+    $blocks = \local_sitereport\utility::get_reports_block();
+    foreach ($blocks as $key => $block) {
+        if (has_capability('report/sitereport_' . $block->classname . ':view', context_system::instance())) {
+            $hasblock = true;
+            continue;
+        }
+    }
+
+    return $hasblock;
+}

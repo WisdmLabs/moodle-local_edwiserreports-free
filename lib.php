@@ -519,24 +519,28 @@ function local_sitereport_output_fragment_block_overview_display($data) {
 function local_sitereport_extend_navigation(navigation_node $nav) {
     global $CFG, $PAGE, $COURSE;
 
+    $hasblocks = is_block_present_indashboard();
+
     // During the installation save the capability.
     $PAGE->requires->js_call_amd('local_sitereport/install', 'init');
 
-    if ($PAGE->theme->resolve_image_location('icon', 'local_sitereport', null)) {
-        $icon = new pix_icon('icon', '', 'local_sitereport', array('class' => 'icon pluginicon'));
-    } else {
-        $icon = new pix_icon('i/stats', '');
-    }
+    if ($hasblocks) {
+        if ($PAGE->theme->resolve_image_location('icon', 'local_sitereport', null)) {
+            $icon = new pix_icon('icon', '', 'local_sitereport', array('class' => 'icon pluginicon'));
+        } else {
+            $icon = new pix_icon('i/stats', '');
+        }
 
-    $node = $nav->add(
-        get_string('reportsandanalytics', 'local_sitereport'),
-        new moodle_url($CFG->wwwroot . '/local/sitereport/index.php'),
-        navigation_node::TYPE_CUSTOM,
-        'reportsandanalytics',
-        'reportsandanalytics',
-        $icon
-    );
-    $node->showinflatnavigation = true;
+        $node = $nav->add(
+            get_string('reportsandanalytics', 'local_sitereport'),
+            new moodle_url($CFG->wwwroot . '/local/sitereport/index.php'),
+            navigation_node::TYPE_CUSTOM,
+            'reportsandanalytics',
+            'reportsandanalytics',
+            $icon
+        );
+        $node->showinflatnavigation = true;
+    }
 
     $iscompletionpage = strpos($PAGE->url, '/local/sitereport/completion.php');
     if ($PAGE->pagelayout !== 'course' && $PAGE->pagelayout !== 'incourse' && !$iscompletionpage) {
