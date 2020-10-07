@@ -24,7 +24,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['pluginname'] = 'Reports & Analytics Dashboard';
+$string['pluginname'] = 'Edwiser Reports';
+$string['reportsdashboard'] = 'Reports & Analytics Dashboard';
 $string['reportsandanalytics'] = "Reports & Analytics";
 $string['all'] = "All";
 $string['refresh'] = "Refresh";

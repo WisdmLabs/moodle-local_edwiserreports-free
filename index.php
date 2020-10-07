@@ -80,8 +80,8 @@ $renderable = new \local_sitereport\output\elucidreport_renderable();
 $output = $PAGE->get_renderer($component)->render($renderable);
 
 // Set page heading.
-$PAGE->set_heading(get_string("pluginname", "local_sitereport"));
-$PAGE->set_title(get_string("pluginname", "local_sitereport"));
+$PAGE->set_heading(get_string("reportsdashboard", "local_sitereport"));
+$PAGE->set_title(get_string("reportsdashboard", "local_sitereport"));
 
 // Print output in page.
 echo $OUTPUT->header();
