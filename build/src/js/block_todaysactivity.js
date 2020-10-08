@@ -1,7 +1,7 @@
 define([
     'jquery',
     'core/chartjs',
-    'local_sitereport/defaultconfig',
+    'local_edwiserreports/defaultconfig',
     './common'
 ], function ($, Chart, cfg, common) {
     function init(notifyListner) {

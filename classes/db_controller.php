@@ -17,14 +17,14 @@
 /**
  * Local Course Progress Manager Plugin Database Comtroller.
  *
- * @package     local_sitereport
+ * @package     local_edwiserreports
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 /* Local course progress manager namespace */
-namespace local_sitereport;
+namespace local_edwiserreports;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -49,7 +49,7 @@ class db_controller {
      */
     public function __construct() {
         // Set Progress Table Name.
-        $this->progresstable = 'sitereport_course_progress';
+        $this->progresstable = 'edw_course_progress';
     }
 
     /**
@@ -103,7 +103,7 @@ class db_controller {
 
         // If params is null the return moodle exception.
         if (!$params || empty((array) $params)) {
-            new moodle_exception(get_string('invalidparam', 'local_sitereport'));
+            new moodle_exception(get_string('invalidparam', 'local_edwiserreports'));
         }
 
         // If paramter i object.

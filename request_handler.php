@@ -16,8 +16,8 @@
 
 require('../../config.php');
 
-use local_sitereport\controller\elucidsitereportKernel;
-use local_sitereport\controller\elucidsitereportRouter;
+use local_edwiserreports\controller\edwiserReportKernel;
+use local_edwiserreports\controller\edwiserReportRouter;
 
 // Define ajax script based on action value.
 $action = filter_input(INPUT_GET, 'action', FILTER_SANITIZE_STRIPPED);
@@ -57,13 +57,13 @@ $PAGE->set_context($context);
 if ($course !== null) {
     $PAGE->set_course($course);
 }
-$PAGE->set_url('/local/sitereport/request_handler.php', array('action' => $action, 'contextid' => $context->id));
+$PAGE->set_url('/local/edwiserreports/request_handler.php', array('action' => $action, 'contextid' => $context->id));
 
 if ($cm !== null) {
     $PAGE->set_cm($cm);
 }
 
-$router = new elucidsitereportRouter();
+$router = new edwiserReportRouter();
 
 // Add controllers automatically.
 $controllerdir = __DIR__.'/classes/controller';
@@ -73,15 +73,15 @@ foreach ($contfiles as $contfile) {
     // Include controllers.
     $pattern = '/Controller.php$/i';
     if (preg_match($pattern, $contfile)) {
-        $classname = '\\local_sitereport\\controller\\'.str_ireplace('.php', '', $contfile);
+        $classname = '\\local_edwiserreports\\controller\\'.str_ireplace('.php', '', $contfile);
         if (class_exists($classname)) {
             $rc = new ReflectionClass($classname);
-            if ($rc->isSubclassOf('\\local_sitereport\\controller\\controllerAbstract')) {
+            if ($rc->isSubclassOf('\\local_edwiserreports\\controller\\controllerAbstract')) {
                 $router->add_controller(new $classname());
             }
         }
     }
 }
 
-$kernel = new elucidsitereportKernel($router);
+$kernel = new edwiserReportKernel($router);
 $kernel->handle($action);

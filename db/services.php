@@ -16,7 +16,7 @@
 /**
  * Reports ablock external services
  *
- * @package     local_sitereport
+ * @package     local_edwiserreports
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -24,24 +24,24 @@
 defined('MOODLE_INTERNAL') || die();
 
 $functions = array(
-    'local_sitereport_complete_sitereport_installation' => array(
-        'classname' => 'local_sitereport\external\api',
-        'methodname' => 'complete_sitereport_installation',
+    'local_edwiserreports_complete_edwiserreports_installation' => array(
+        'classname' => 'local_edwiserreports\external\api',
+        'methodname' => 'complete_edwiserreports_installation',
         'classpath' => '',
-        'description' => 'Complete sitereport plugin installation',
+        'description' => 'Complete edwiserreports plugin installation',
         'type' => 'write',
         'ajax' => true,
     ),
-    'local_sitereport_get_plugin_config' => array(
-        'classname' => 'local_sitereport\external\api',
+    'local_edwiserreports_get_plugin_config' => array(
+        'classname' => 'local_edwiserreports\external\api',
         'methodname' => 'get_plugin_config',
         'classpath' => '',
         'description' => 'Get plugin config',
         'type' => 'write',
         'ajax' => true,
     ),
-    'local_sitereport_set_plugin_config' => array(
-        'classname' => 'local_sitereport\external\api',
+    'local_edwiserreports_set_plugin_config' => array(
+        'classname' => 'local_edwiserreports\external\api',
         'methodname' => 'set_plugin_config',
         'classpath' => '',
         'description' => 'Set plugin config',

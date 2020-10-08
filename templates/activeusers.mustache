@@ -15,7 +15,7 @@
                         </button>
                         <div class="dropdown-menu" aria-labelledby="cohortfilter" role="menu" x-placement="bottom-start">
                             <a class="dropdown-item" href="javascript:void(0)" data-cohortid="0" role="menuitem">
-                                {{# str }} all, local_sitereport {{/ str }}
+                                {{# str }} all, local_edwiserreports {{/ str }}
                             </a>
                             {{# values }}
                             <a class="dropdown-item" href="javascript:void(0)" data-cohortid="{{ id }}" role="menuitem">
@@ -27,21 +27,21 @@
                     {{/ cohortfilters }}
                     <div class="dropdown">
                         <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" id="filter-dropdown" aria-expanded="false">
-                            {{# str }} lastweek, local_sitereport {{/ str }}
+                            {{# str }} lastweek, local_edwiserreports {{/ str }}
                         </button>
                         <div class="dropdown-menu" aria-labelledby="filter-dropdown" role="menu">
                             <div id="activeUser-calendar" class="dropdown-calendar"></div>
                             <div class="dropdown-body">
                                 <a class="dropdown-item" href="javascript:void(0)" role="menuitem" value="weekly">
-                                    {{# str }} lastweek, local_sitereport {{/ str }}
+                                    {{# str }} lastweek, local_edwiserreports {{/ str }}
                                 </a>
                                 <a class="dropdown-item" href="javascript:void(0)" role="menuitem" value="monthly">
-                                    {{# str }} lastmonth, local_sitereport {{/ str }}
+                                    {{# str }} lastmonth, local_edwiserreports {{/ str }}
                                 </a>
                                 <a class="dropdown-item" href="javascript:void(0)" role="menuitem" value="yearly">
-                                    {{# str }} lastyear, local_sitereport {{/ str }}
+                                    {{# str }} lastyear, local_edwiserreports {{/ str }}
                                 </a>
-                                <input class="dropdown-item border-0 custom d-none d-md-block" id="flatpickrCalender" placeholder="{{# str }} custom, local_sitereport{{/ str }}"  data-input/>
+                                <input class="dropdown-item border-0 custom d-none d-md-block" id="flatpickrCalender" placeholder="{{# str }} custom, local_edwiserreports{{/ str }}"  data-input/>
                             </div>
                         </div>
                     </div>
@@ -51,14 +51,14 @@
     </div>
     <div class="alert alert-info alert-block fade in " role="alert" data-aria-autofocus="true">
         <button type="button" class="close" data-dismiss="alert">×</button>
-        {{# str }} clicktogetuserslist, local_sitereport {{/ str}}
+        {{# str }} clicktogetuserslist, local_edwiserreports {{/ str}}
     </div>
     <div class="table-responsive">
-        {{> local_sitereport/activeuserstable }}
+        {{> local_edwiserreports/activeuserstable }}
     </div>
     {{# export }}
         <div class="pull-right px-5">
-            {{> local_sitereport/exportreports }}
+            {{> local_edwiserreports/exportreports }}
         </div>
     {{/ export }}
 </div>

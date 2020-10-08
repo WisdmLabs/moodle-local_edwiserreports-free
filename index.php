@@ -16,7 +16,7 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     local_sitereport
+ * @package     local_edwiserreports
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -30,11 +30,11 @@ require_once('classes/export.php');
 global $OUTPUT;
 
 // Strings for js.
-local_sitereport_get_required_strings_for_js();
+local_edwiserreports_get_required_strings_for_js();
 
 // Set external page admin.
 $context = context_system::instance();
-$component = "local_sitereport";
+$component = "local_edwiserreports";
 
 require_login();
 
@@ -42,46 +42,46 @@ require_login();
 $edit = optional_param('edit', false, PARAM_BOOL);
 if ($edit !== false) {
     $USER->editing = $edit;
-    redirect($CFG->wwwroot . '/local/sitereport/index.php');
+    redirect($CFG->wwwroot . '/local/edwiserreports/index.php');
 }
 
 // If use want to edit page.
 $reset = optional_param('reset', false, PARAM_BOOL);
 if ($reset !== false) {
     $USER->editing = false;
-    reset_sitereport_page_default();
+    reset_edwiserreports_page_default();
 }
 
 // Allow users preferences set remotly.
-\local_sitereport\utility::allow_update_userpreferences_remotly();
+\local_edwiserreports\utility::allow_update_userpreferences_remotly();
 
 // Page URL.
-$pageurl = new moodle_url($CFG->wwwroot."/local/sitereport/index.php");
+$pageurl = new moodle_url($CFG->wwwroot."/local/edwiserreports/index.php");
 
 // Require JS for index page.
-$PAGE->requires->js_call_amd('local_sitereport/main', 'init');
+$PAGE->requires->js_call_amd('local_edwiserreports/main', 'init');
 
 // Require CSS for index page.
-$PAGE->requires->css('/local/sitereport/styles/loader.css');
+$PAGE->requires->css('/local/edwiserreports/styles/loader.css');
 
 // Set page context.
 $PAGE->set_context($context);
 
 // Require fixes for boost.
 if ($PAGE->theme->name == 'boost') {
-    $PAGE->requires->css('/local/sitereport/styles/datatable-fix.css');
+    $PAGE->requires->css('/local/edwiserreports/styles/datatable-fix.css');
 }
 
 // Set page URL.
 $PAGE->set_url($pageurl);
 
 // Get renderable.
-$renderable = new \local_sitereport\output\elucidreport_renderable();
+$renderable = new \local_edwiserreports\output\elucidreport_renderable();
 $output = $PAGE->get_renderer($component)->render($renderable);
 
 // Set page heading.
-$PAGE->set_heading(get_string("reportsdashboard", "local_sitereport"));
-$PAGE->set_title(get_string("reportsdashboard", "local_sitereport"));
+$PAGE->set_heading(get_string("reportsdashboard", "local_edwiserreports"));
+$PAGE->set_title(get_string("reportsdashboard", "local_edwiserreports"));
 
 // Print output in page.
 echo $OUTPUT->header();

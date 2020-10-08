@@ -4,12 +4,12 @@ define([
     'core/modal_events',
     'core/fragment',
     'core/templates',
-    'local_sitereport/variables',
+    'local_edwiserreports/variables',
     './common',
-    'local_sitereport/jquery.dataTables',
-    'local_sitereport/dataTables.bootstrap4',
-    'local_sitereport/flatpickr',
-    'local_sitereport/common'
+    'local_edwiserreports/jquery.dataTables',
+    'local_edwiserreports/dataTables.bootstrap4',
+    'local_edwiserreports/flatpickr',
+    'local_edwiserreports/common'
 ], function($, ModalFactory, ModalEvents, Fragment, Templates, V, common) {
     function init(CONTEXTID) {
         var PageId            = "#wdm-activeusers-individual";
@@ -106,7 +106,7 @@ define([
 
                 ModalFactory.create({
                     body: Fragment.loadFragment(
-                        'local_sitereport',
+                        'local_edwiserreports',
                         'userslist',
                         CONTEXTID,
                         {
@@ -233,7 +233,7 @@ define([
                     sesskey : sesskey
                 }
 
-                Templates.render('local_sitereport/activeuserstable', context)
+                Templates.render('local_edwiserreports/activeuserstable', context)
                 .then(function(html, js) {
                     Templates.replaceNode(ActiveUsersTable, html, js);
                 }).fail(function(ex) {

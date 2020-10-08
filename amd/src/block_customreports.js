@@ -1,11 +1,11 @@
 define([
     'jquery',
     'core/str',
-    'local_sitereport/defaultconfig',
-    'local_sitereport/variables',
-    'local_sitereport/flatpickr',
-    'local_sitereport/jquery.dataTables',
-    'local_sitereport/dataTables.bootstrap4'
+    'local_edwiserreports/defaultconfig',
+    'local_edwiserreports/variables',
+    'local_edwiserreports/flatpickr',
+    'local_edwiserreports/jquery.dataTables',
+    'local_edwiserreports/dataTables.bootstrap4'
 ], function ($, str, config, v) {
     /**
      * Selector datable variable
@@ -53,7 +53,7 @@ define([
      * Plugin component
      * @type {String}
      */
-    var component = 'local_sitereport';
+    var component = 'local_edwiserreports';
 
     /**
      * Get translation to use strings

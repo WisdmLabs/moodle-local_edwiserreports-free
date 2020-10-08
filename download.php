@@ -16,18 +16,18 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     local_sitereport
+ * @package     local_edwiserreports
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use local_sitereport\export;
+use local_edwiserreports\export;
 
 require_once(__DIR__ .'/../../config.php');
-require_once($CFG->dirroot."/local/sitereport/locallib.php");
-require_once($CFG->dirroot."/local/sitereport/classes/export.php");
-require_once($CFG->dirroot."/local/sitereport/classes/utility.php");
+require_once($CFG->dirroot."/local/edwiserreports/locallib.php");
+require_once($CFG->dirroot."/local/edwiserreports/classes/export.php");
+require_once($CFG->dirroot."/local/edwiserreports/classes/utility.php");
 
 // Check if users is logged in.
 require_login();
@@ -46,7 +46,7 @@ if ($type = optional_param("type", false, PARAM_TEXT)) {
     $filter = optional_param("filter", false, PARAM_TEXT);
 
     // Prepare export filname.
-    $filename = local_sitereport_prepare_export_filename(array(
+    $filename = local_edwiserreports_prepare_export_filename(array(
         "region" => $region,
         "blockname" => $blockname,
         "date" => date("d_M_y", time()),

@@ -16,20 +16,20 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     local_sitereport
+ * @package     local_edwiserreports
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_sitereport;
+namespace local_edwiserreports;
 
 defined('MOODLE_INTERNAL') || die;
 
 use stdClass;
 use cache;
 
-require_once($CFG->dirroot . "/local/sitereport/classes/constants.php");
+require_once($CFG->dirroot . "/local/edwiserreports/classes/constants.php");
 /**
  * Class Inacive Users Block
  * To get the data related to inactive users block
@@ -44,8 +44,8 @@ class inactiveusersblock extends block_base {
 
         // Layout related data.
         $this->layout->id = 'inactiveusersblock';
-        $this->layout->name = get_string('inactiveusers', 'local_sitereport');
-        $this->layout->info = get_string('inactiveusersblockhelp', 'local_sitereport');
+        $this->layout->name = get_string('inactiveusers', 'local_edwiserreports');
+        $this->layout->info = get_string('inactiveusersblockhelp', 'local_edwiserreports');
         $this->layout->hasdownloadlink = true;
         $this->layout->filters = $this->get_inactiveusers_filter();
 
@@ -95,7 +95,7 @@ class inactiveusersblock extends block_base {
         $filter = isset($params->filter) ? $params->filter : false;
 
         // Make cache for inactive users block.
-        $cache = cache::make("local_sitereport", "courseprogress");
+        $cache = cache::make("local_edwiserreports", "courseprogress");
 
         $cachekey = "inactiveusers-" . $filter;
 
@@ -184,9 +184,9 @@ class inactiveusersblock extends block_base {
      */
     private static function get_headers() {
         return array(
-            get_string('fullname', 'local_sitereport'),
-            get_string('email', 'local_sitereport'),
-            get_string('lastaccess', 'local_sitereport')
+            get_string('fullname', 'local_edwiserreports'),
+            get_string('email', 'local_edwiserreports'),
+            get_string('lastaccess', 'local_edwiserreports')
         );
     }
 

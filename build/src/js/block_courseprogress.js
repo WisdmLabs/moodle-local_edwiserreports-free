@@ -1,10 +1,10 @@
 define([
     'jquery',
     'core/chartjs',
-    'local_sitereport/defaultconfig',
-    'local_sitereport/variables',
+    'local_edwiserreports/defaultconfig',
+    'local_edwiserreports/variables',
     './common',
-    'local_sitereport/select2'
+    'local_edwiserreports/select2'
 ], function ($, Chart, cfg, V, common) {
     function init(notifyListner) {
         var cpGraph = null;

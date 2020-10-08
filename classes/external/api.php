@@ -16,12 +16,12 @@
 /**
  * Reports ablock external apis
  *
- * @package     local_sitereport
+ * @package     local_edwiserreports
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_sitereport\external;
+namespace local_edwiserreports\external;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -36,7 +36,7 @@ use external_api;
  * aggregates them all.
  */
 class api extends external_api {
-    use complete_sitereport_installation;
+    use complete_edwiserreports_installation;
     use get_plugin_config;
     use set_plugin_config;
 }

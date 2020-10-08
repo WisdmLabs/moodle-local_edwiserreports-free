@@ -16,17 +16,17 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     local_sitereport
+ * @package     local_edwiserreports
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_sitereport;
+namespace local_edwiserreports;
 
 defined('MOODLE_INTERNAL') || die;
 
-require_once($CFG->dirroot . "/local/sitereport/classes/constants.php");
+require_once($CFG->dirroot . "/local/edwiserreports/classes/constants.php");
 
 use stdClass;
 use cache;
@@ -50,8 +50,8 @@ class siteaccessblock extends block_base {
 
         // Layout related data.
         $this->layout->id = 'siteaccessblock';
-        $this->layout->name = get_string('accessinfo', 'local_sitereport');
-        $this->layout->info = get_string('accessinfoblockhelp', 'local_sitereport');
+        $this->layout->name = get_string('accessinfo', 'local_edwiserreports');
+        $this->layout->info = get_string('accessinfoblockhelp', 'local_edwiserreports');
 
         // Block related data.
         $this->block = new stdClass();
@@ -84,30 +84,30 @@ class siteaccessblock extends block_base {
 
         // Getting time strings for access inforamtion block.
         $times = array(
-            get_string("time00", "local_sitereport"),
-            get_string("time01", "local_sitereport"),
-            get_string("time02", "local_sitereport"),
-            get_string("time03", "local_sitereport"),
-            get_string("time04", "local_sitereport"),
-            get_string("time05", "local_sitereport"),
-            get_string("time06", "local_sitereport"),
-            get_string("time07", "local_sitereport"),
-            get_string("time08", "local_sitereport"),
-            get_string("time09", "local_sitereport"),
-            get_string("time10", "local_sitereport"),
-            get_string("time11", "local_sitereport"),
-            get_string("time12", "local_sitereport"),
-            get_string("time13", "local_sitereport"),
-            get_string("time14", "local_sitereport"),
-            get_string("time15", "local_sitereport"),
-            get_string("time16", "local_sitereport"),
-            get_string("time17", "local_sitereport"),
-            get_string("time18", "local_sitereport"),
-            get_string("time19", "local_sitereport"),
-            get_string("time20", "local_sitereport"),
-            get_string("time21", "local_sitereport"),
-            get_string("time22", "local_sitereport"),
-            get_string("time23", "local_sitereport")
+            get_string("time00", "local_edwiserreports"),
+            get_string("time01", "local_edwiserreports"),
+            get_string("time02", "local_edwiserreports"),
+            get_string("time03", "local_edwiserreports"),
+            get_string("time04", "local_edwiserreports"),
+            get_string("time05", "local_edwiserreports"),
+            get_string("time06", "local_edwiserreports"),
+            get_string("time07", "local_edwiserreports"),
+            get_string("time08", "local_edwiserreports"),
+            get_string("time09", "local_edwiserreports"),
+            get_string("time10", "local_edwiserreports"),
+            get_string("time11", "local_edwiserreports"),
+            get_string("time12", "local_edwiserreports"),
+            get_string("time13", "local_edwiserreports"),
+            get_string("time14", "local_edwiserreports"),
+            get_string("time15", "local_edwiserreports"),
+            get_string("time16", "local_edwiserreports"),
+            get_string("time17", "local_edwiserreports"),
+            get_string("time18", "local_edwiserreports"),
+            get_string("time19", "local_edwiserreports"),
+            get_string("time20", "local_edwiserreports"),
+            get_string("time21", "local_edwiserreports"),
+            get_string("time22", "local_edwiserreports"),
+            get_string("time23", "local_edwiserreports")
         );
 
         // Initialize access inforamtion object.
@@ -127,7 +127,7 @@ class siteaccessblock extends block_base {
     public function get_data($params = false) {
         $response = new stdClass();
 
-        $cache = cache::make('local_sitereport', 'siteaccess');
+        $cache = cache::make('local_edwiserreports', 'siteaccess');
 
         if (!$data = $cache->get('siteaccessinfodata')) {
             $data = $this->get_siteaccess_info();

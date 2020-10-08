@@ -16,12 +16,12 @@
 /**
  * Reports abstract block will define here to which will extend for each repoers blocks
  *
- * @package     local_sitereport
+ * @package     local_edwiserreports
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_sitereport;
+namespace local_edwiserreports;
 
 defined('MOODLE_INTERNAL') || die;
 
@@ -33,7 +33,7 @@ use html_writer;
 use html_table;
 use core_user;
 
-require_once($CFG->dirroot . '/local/sitereport/classes/block_base.php');
+require_once($CFG->dirroot . '/local/edwiserreports/classes/block_base.php');
 
 class courseprogressblock extends block_base {
     /**
@@ -44,7 +44,7 @@ class courseprogressblock extends block_base {
         $cohortid = isset($params->cohortid) ? $params->cohortid : false;
 
         // Make cache for courseprogress block.
-        $cache = cache::make("local_sitereport", "courseprogress");
+        $cache = cache::make("local_edwiserreports", "courseprogress");
         $cachekey = $this->generate_cache_key('courseprogress', $courseid, $cohortid);
 
         // If cache not set for course progress.
@@ -76,14 +76,14 @@ class courseprogressblock extends block_base {
 
         // Layout related data.
         $this->layout->id = 'courseprogressblock';
-        $this->layout->name = get_string('courseprogress', 'local_sitereport');
-        $this->layout->info = get_string('courseprogressblockhelp', 'local_sitereport');
-        $this->layout->morelink = new moodle_url($CFG->wwwroot . "/local/sitereport/coursereport.php");
+        $this->layout->name = get_string('courseprogress', 'local_edwiserreports');
+        $this->layout->info = get_string('courseprogressblockhelp', 'local_edwiserreports');
+        $this->layout->morelink = new moodle_url($CFG->wwwroot . "/local/edwiserreports/coursereport.php");
         $this->layout->hasdownloadlink = true;
         $this->layout->filters = '';
 
         // Block related data.
-        $this->block->courses = \local_sitereport\utility::get_courses();
+        $this->block->courses = \local_edwiserreports\utility::get_courses();
         if (!empty($this->block->courses)) {
             $this->block->hascourses = true;
             $this->block->firstcourseid = $this->block->courses[0]->id;
@@ -107,7 +107,7 @@ class courseprogressblock extends block_base {
      * @return [array] Array of completion with percentage
      */
     public static function get_completion_with_percentage($course, $users, $cohortid) {
-        $completions = \local_sitereport\utility::get_course_completion($course->id);
+        $completions = \local_edwiserreports\utility::get_course_completion($course->id);
         $completedusers = array(
             LOCAL_SITEREPORT_PERCENTAGE_00 => 0,
             LOCAL_SITEREPORT_PERCENTAGE_20 => 0,
@@ -167,11 +167,11 @@ class courseprogressblock extends block_base {
      */
     public static function get_header() {
         $header = array(
-            get_string("name", "local_sitereport"),
-            get_string("email", "local_sitereport"),
-            get_string("coursename", "local_sitereport"),
-            get_string("completedactivity", "local_sitereport"),
-            get_string("completions", "local_sitereport")
+            get_string("name", "local_edwiserreports"),
+            get_string("email", "local_edwiserreports"),
+            get_string("coursename", "local_edwiserreports"),
+            get_string("completedactivity", "local_edwiserreports"),
+            get_string("completions", "local_edwiserreports")
         );
         return $header;
     }
@@ -182,14 +182,14 @@ class courseprogressblock extends block_base {
      */
     public static function get_header_report() {
         $header = array(
-            get_string("coursename", "local_sitereport"),
-            get_string("enrolled", "local_sitereport"),
-            get_string("completed", "local_sitereport"),
-            get_string("per100-80", "local_sitereport"),
-            get_string("per80-60", "local_sitereport"),
-            get_string("per60-40", "local_sitereport"),
-            get_string("per40-20", "local_sitereport"),
-            get_string("per20-0", "local_sitereport"),
+            get_string("coursename", "local_edwiserreports"),
+            get_string("enrolled", "local_edwiserreports"),
+            get_string("completed", "local_edwiserreports"),
+            get_string("per100-80", "local_edwiserreports"),
+            get_string("per80-60", "local_edwiserreports"),
+            get_string("per60-40", "local_edwiserreports"),
+            get_string("per40-20", "local_edwiserreports"),
+            get_string("per20-0", "local_edwiserreports"),
         );
         return $header;
     }
@@ -201,7 +201,7 @@ class courseprogressblock extends block_base {
      */
     public function get_courselist($cohortid) {
         global $CFG;
-        $courses = \local_sitereport\utility::get_courses(true);
+        $courses = \local_edwiserreports\utility::get_courses(true);
 
         $response = array();
         foreach ($courses as $course) {
@@ -226,12 +226,12 @@ class courseprogressblock extends block_base {
             $coursecontext = context_course::instance($course->id);
 
             // Get only enrolled student.
-            $enrolledstudents = \local_sitereport\utility::get_enrolled_students($course->id);
+            $enrolledstudents = \local_edwiserreports\utility::get_enrolled_students($course->id);
             if (!count($enrolledstudents) && !is_siteadmin()) {
                 continue;
             }
             // Get completions.
-            $compobj = new \local_sitereport\completions();
+            $compobj = new \local_edwiserreports\completions();
             $completions = $compobj->get_course_completions($course->id);
 
             // For each enrolled student get completions.
@@ -332,8 +332,8 @@ class courseprogressblock extends block_base {
     public static function get_userslist_table($courseid, $minval, $maxval, $cohortid) {
         $table = new html_table();
         $table->head = array(
-            get_string("fullname", "local_sitereport"),
-            get_string("email", "local_sitereport")
+            get_string("fullname", "local_edwiserreports"),
+            get_string("email", "local_edwiserreports")
         );
         $table->attributes["class"] = "modal-table table";
         $table->attributes["style"] = "min-width: 100%;";
@@ -355,10 +355,10 @@ class courseprogressblock extends block_base {
     public static function get_userslist($courseid, $minval, $maxval, $cohortid) {
         $course = get_course($courseid);
         $coursecontext = context_course::instance($courseid);
-        $enrolledstudents = \local_sitereport\utility::get_enrolled_students($course->id);
+        $enrolledstudents = \local_edwiserreports\utility::get_enrolled_students($course->id);
 
         // Get completions.
-        $compobj = new \local_sitereport\completions();
+        $compobj = new \local_edwiserreports\completions();
         $completions = $compobj->get_course_completions($course->id);
 
         $usersdata = array();
@@ -404,9 +404,9 @@ class courseprogressblock extends block_base {
         $export[] = self::get_header();
         $coursecontext = context_course::instance($filter);
         $course = get_course($filter);
-        $enrolledstudents = \local_sitereport\utility::get_enrolled_students($filter);
+        $enrolledstudents = \local_edwiserreports\utility::get_enrolled_students($filter);
         foreach ($enrolledstudents as $key => $student) {
-            $completion = \local_sitereport\utility::get_course_completion_info($course, $student->id);
+            $completion = \local_edwiserreports\utility::get_course_completion_info($course, $student->id);
             $completed = $completion["completedactivities"] . "/" . $completion["totalactivities"];
             $export[] = array(
                 fullname($student),
@@ -429,7 +429,7 @@ class courseprogressblock extends block_base {
         $cohortid = optional_param("cohortid", 0, PARAM_INT);
         $export = array();
         $export[] = self::get_header_report();
-        $courses = \local_sitereport\utility::get_courses();
+        $courses = \local_edwiserreports\utility::get_courses();
 
         foreach ($courses as $key => $course) {
             $blockobj = new self();
@@ -440,7 +440,7 @@ class courseprogressblock extends block_base {
             );
             $courseprogress = $blockobj->get_data($params);
             $coursecontext = context_course::instance($course->id);
-            $enrolledstudents = \local_sitereport\utility::get_enrolled_students($course->id);
+            $enrolledstudents = \local_edwiserreports\utility::get_enrolled_students($course->id);
             if ($cohortid) {
                 foreach ($enrolledstudents as $key => $user) {
                     $cohorts = cohort_get_user_cohorts($user->id);

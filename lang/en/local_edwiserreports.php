@@ -16,7 +16,7 @@
 /**
  * Plugin strings are defined here.
  *
- * @package     local_sitereport
+ * @package     local_edwiserreports
  * @category    string
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -341,10 +341,10 @@ $string['sendscheduledemails'] = 'Send Scheduled Emails';
 $string['sendingscheduledemails'] = 'Sending Scheduled Emails...';
 
 /* Cache Strings */
-$string['cachedef_elucidsitereport'] = 'This is the caches of elucid site report';
+$string['cachedef_edwiserReport'] = 'This is the caches of elucid site report';
 
 /* Capabilties */
-$string['elucidsitereport:view'] = 'View Reports and analytics dashboard';
+$string['edwiserReport:view'] = 'View Reports and analytics dashboard';
 
 /* Custom report block */
 $string['downloadcustomtreport'] = 'Download Users Progress Report';
@@ -375,7 +375,7 @@ $string['na'] = 'NA';
 $string['activityname'] = 'Activity Name';
 
 // Setting.
-$string['elucidsitereport_settings'] = 'Reports & Analytics Dashboard Settings';
+$string['edwiserReport_settings'] = 'Reports & Analytics Dashboard Settings';
 $string['selectblocks'] = 'Select blocks to show for Reporting Managers: ';
 $string['rpmblocks'] = 'Reporting Manager Blocks';
 $string['addblocks'] = 'Add Blocks';
@@ -459,7 +459,7 @@ $string['inactiveusersblockview'] = 'Inactive Users Block View';
 $string['inactiveusersblockedit'] = 'Inactive Users Block Edit';
 $string['inactiveusersblockeditadvance'] = 'Inactive Users Block Advance Edit';
 
-$string['managesitereports'] = 'Manage Site Reports Dashboard';
+$string['manageedwiserreportss'] = 'Manage Site Reports Dashboard';
 $string['activeusersrolesetting'] = 'Active Users Block Roles';
 $string['activeusersrolesettinghelp'] = 'Define view capability for active users block';
 $string['courseprogressrolesetting'] = 'Course Progress Block Roles';
@@ -576,4 +576,4 @@ $string['scheduleemailfor'] = 'Schedule Emails for';
 $string['edit'] = 'Edit';
 $string['delete'] = 'Delete';
 
-$string['report/sitereport_activeusersblock:editadvance'] = 'Edit Advance';
+$string['report/edwiserreports_activeusersblock:editadvance'] = 'Edit Advance';

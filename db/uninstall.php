@@ -17,7 +17,7 @@
 /**
  * Code that is executed before the tables and data are dropped during the plugin uninstallation.
  *
- * @package     local_sitereport
+ * @package     local_edwiserreports
  * @category    upgrade
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -28,10 +28,10 @@ defined('MOODLE_INTERNAL') || die();
 /**
  * Custom uninstallation procedure.
  */
-function xmldb_local_sitereport_uninstall() {
+function xmldb_local_edwiserreports_uninstall() {
     global $DB, $CFG;
 
-    require_once($CFG->dirroot . '/local/sitereport/lib.php');
+    require_once($CFG->dirroot . '/local/edwiserreports/lib.php');
 
     $blocks = get_default_block_settings();
 

@@ -17,17 +17,17 @@
 /**
  * Local Course Progress Manager Plugin Events Observer.
  *
- * @package     local_sitereport
+ * @package     local_edwiserreports
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_sitereport\task;
+namespace local_edwiserreports\task;
 
 defined('MOODLE_INTERNAL') || die;
 
-require_once($CFG->dirroot . '/local/sitereport/classes/db_controller.php');
+require_once($CFG->dirroot . '/local/edwiserreports/classes/db_controller.php');
 
 use context_course;
 
@@ -41,7 +41,7 @@ class update_course_progress_data extends \core\task\scheduled_task {
      * @return string
      */
     public function get_name() {
-        return get_string('update_course_progress_data', 'local_sitereport');
+        return get_string('update_course_progress_data', 'local_edwiserreports');
     }
 
     /**
@@ -49,7 +49,7 @@ class update_course_progress_data extends \core\task\scheduled_task {
      */
     public function execute() {
         // Database controller.
-        $dbc = new \local_sitereport\db_controller();
+        $dbc = new \local_edwiserreports\db_controller();
 
         // Get updatable record from database.
         $progressdata = $dbc->get_course_progress_changeble_records();
@@ -104,7 +104,7 @@ class update_course_progress_data extends \core\task\scheduled_task {
                     $oldprogress != $data->progress // If progress is changed.
                 ) {
                     // Create a course completion event.
-                    $event = \local_sitereport\event\edw_course_completed::create(array(
+                    $event = \local_edwiserreports\event\edw_course_completed::create(array(
                         'context' => $coursecontext,
                         'objectid' => $data->id
                     ));
@@ -120,7 +120,7 @@ class update_course_progress_data extends \core\task\scheduled_task {
             // Set course module records.
             if ($dbc->update_course_completion($data)) {
                 // Trigger course progress updated event.
-                $event = \local_sitereport\event\course_progress_updated::create(array(
+                $event = \local_edwiserreports\event\course_progress_updated::create(array(
                     'context' => $coursecontext,
                     'objectid' => $data->id,
                     'relateduserid' => $data->userid

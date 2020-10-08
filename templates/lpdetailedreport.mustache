@@ -8,25 +8,25 @@
             </span>
         </th>
         <th class="">
-            {{#str}} name , local_sitereport {{/str}}
+            {{#str}} name , local_edwiserreports {{/str}}
         </th>
         <th class="">
-            {{#str}} shortname , local_sitereport {{/str}}
+            {{#str}} shortname , local_edwiserreports {{/str}}
         </th>
         <th class="">
-            {{#str}} startdate , local_sitereport {{/str}}
+            {{#str}} startdate , local_edwiserreports {{/str}}
         </th>
         <th class="">
-            {{#str}} enddate , local_sitereport {{/str}}
+            {{#str}} enddate , local_edwiserreports {{/str}}
         </th>
         <th class="">
-            {{#str}} duration , local_sitereport {{/str}}
+            {{#str}} duration , local_edwiserreports {{/str}}
         </th>
     </thead>
     <tbody></tbody>
 </table>
 <a id="wdm-lpdetailedreport" class="btn btn-secondary mt-10 pull-right" style="display: none;">
-    {{#str}} exportlpdetailedreport, local_sitereport {{/str}}
+    {{#str}} exportlpdetailedreport, local_edwiserreports {{/str}}
 </a>
 <form id="wdm-lpdetailedreport-form" action="{{formaction}}" target="_blank" class="hidden" method="post">
     <input type="hidden" name="filters"/>
@@ -34,7 +34,7 @@
     <input type="hidden" name="cohortid" value="{{cohortid}}"/>
 </form>
 {{#js}}
-require(['local_sitereport/lpdetailedreport'], function() {
+require(['local_edwiserreports/lpdetailedreport'], function() {
     Breakpoints();
 });
 {{/js}}

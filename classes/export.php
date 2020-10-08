@@ -16,23 +16,23 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     local_sitereport
+ * @package     local_edwiserreports
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_sitereport;
+namespace local_edwiserreports;
 
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir."/csvlib.class.php");
 require_once($CFG->libdir."/excellib.class.php");
 require_once($CFG->libdir."/pdflib.php");
-require_once($CFG->dirroot."/local/sitereport/classes/utility.php");
-require_once($CFG->dirroot."/local/sitereport/lib.php");
-require_once($CFG->dirroot."/local/sitereport/locallib.php");
-require_once($CFG->dirroot."/local/sitereport/classes/output/renderable.php");
+require_once($CFG->dirroot."/local/edwiserreports/classes/utility.php");
+require_once($CFG->dirroot."/local/edwiserreports/lib.php");
+require_once($CFG->dirroot."/local/edwiserreports/locallib.php");
+require_once($CFG->dirroot."/local/edwiserreports/classes/output/renderable.php");
 
 use csv_export_writer;
 use moodle_exception;
@@ -187,7 +187,7 @@ class export {
         // Prepare file record object.
         $fileinfo = array(
             'contextid' => $context->id, // ID of context
-            'component' => 'local_sitereport',     // usually = table name
+            'component' => 'local_edwiserreports',     // usually = table name
             'filearea' => 'downloadreport',     // usually = table name
             'itemid' => 0,               // usually = ID of row in table
             'filepath' => '/',           // any path beginning and ending in /
@@ -265,7 +265,7 @@ class export {
 
         // If subject is not set the get default subject
         if (!$subject && $subject == '') {
-            $subject = get_string($this->blockname . "exportheader", "local_sitereport");
+            $subject = get_string($this->blockname . "exportheader", "local_edwiserreports");
         }
 
         // Send emails foreach email ids.
@@ -295,13 +295,13 @@ class export {
             // If failed then return error
             $res = new stdClass();
             $res->error = false;
-            $res->errormsg = get_string('emailsent', 'local_sitereport');
+            $res->errormsg = get_string('emailsent', 'local_edwiserreports');
             echo json_encode($res);
         } else {
             // If failed then return error
             $res = new stdClass();
             $res->error = true;
-            $res->errormsg = get_string('emailnotsent', 'local_sitereport');
+            $res->errormsg = get_string('emailnotsent', 'local_edwiserreports');
             echo json_encode($res);
         }
 
@@ -323,8 +323,8 @@ class export {
         $data->blockname = $this->blockname;
         $data->component = $this->region;
 
-        $table = "sitereport_schedemails";
-        $sql = "SELECT id, emaildata FROM {sitereport_schedemails}
+        $table = "edwreports_schedemails";
+        $sql = "SELECT id, emaildata FROM {edwreports_schedemails}
             WHERE blockname = :blockname
             AND component = :component";
         if ($rec = $DB->get_record_sql($sql, (array)$data)) {
@@ -372,7 +372,7 @@ class export {
         );
 
         // Calculate Next Run
-        list($fequency, $nextrun) = local_sitereport_get_email_schedule_next_run($emailinfo["esrduration"], $emailinfo["esrtime"]);
+        list($fequency, $nextrun) = local_edwiserreports_get_email_schedule_next_run($emailinfo["esrduration"], $emailinfo["esrtime"]);
 
         $emailinfo["esrnextrun"] = $nextrun;
         $emailinfo["esrfrequency"] = $fequency;
@@ -439,14 +439,14 @@ class export {
         // Generate HTML to export.
         $html = html_writer::tag(
             "h1",
-            get_string($this->blockname . "exportheader", "local_sitereport"),
+            get_string($this->blockname . "exportheader", "local_edwiserreports"),
             array(
                 "style" => "width:100%;text-align:center"
             )
         );
 
         $html .= html_writer::tag("p",
-            get_string($this->blockname . "exporthelp", "local_sitereport"),
+            get_string($this->blockname . "exporthelp", "local_edwiserreports"),
             array(
                 "style" => "text-indent: 50px"
             )
@@ -473,14 +473,14 @@ class export {
     public function get_html_for_pdf2($data) {
         // Generate HTML to export
         $html = html_writer::tag("h1",
-            get_string($this->blockname . "exportheader", "local_sitereport"),
+            get_string($this->blockname . "exportheader", "local_edwiserreports"),
             array(
                 "style" => "width:100%;text-align:center"
             )
         );
 
         $html .= html_writer::tag("p",
-            get_string($this->blockname . "exporthelp", "local_sitereport"),
+            get_string($this->blockname . "exporthelp", "local_edwiserreports"),
             array(
                 "style" => "text-indent: 50px"
             )
@@ -542,13 +542,13 @@ class export {
 
         // Check if class file exist
         $classname = $blockname;
-        $filepath = $CFG->dirroot . '/local/sitereport/classes/blocks/' . $classname . '.php';
+        $filepath = $CFG->dirroot . '/local/edwiserreports/classes/blocks/' . $classname . '.php';
         if (!file_exists($filepath)) {
             debugging('Class file dosn\'t exist ' . $classname);
         }
         require_once($filepath);
 
-        $classname = '\\local_sitereport\\' . $classname;
+        $classname = '\\local_edwiserreports\\' . $classname;
         $blockbase = new $classname();
 
         return $blockbase->get_exportable_data_block($filter);
@@ -566,7 +566,7 @@ class export {
 
         switch ($blockname) {
             case "activeusersblock":
-                require_once($CFG->dirroot . '/local/sitereport/classes/blocks/activeusersblock.php');
+                require_once($CFG->dirroot . '/local/edwiserreports/classes/blocks/activeusersblock.php');
                 $export = activeusersblock::get_exportable_data_report($filter);
                 break;
             case "courseprogressblock":
@@ -613,7 +613,7 @@ class export {
     public function get_lpdetailed_report_excel($lpid, &$workbook, $cohortid = false) {
         global $CFG, $DB;
 
-        require_once($CFG->dirroot."/local/sitereport/classes/blocks/lpstats_block.php");
+        require_once($CFG->dirroot."/local/edwiserreports/classes/blocks/lpstats_block.php");
 
         // Get learning program
         $table = 'wdm_learning_program';
@@ -627,10 +627,10 @@ class export {
         $xls = $workbook->add_worksheet($lp->name);
 
         // Get Lp reports
-        $lpreports = \local_sitereport\lpstats_block::get_lpstats_usersdata($lpid, $cohortid);
+        $lpreports = \local_edwiserreports\lpstats_block::get_lpstats_usersdata($lpid, $cohortid);
 
         // Prepare report header
-        $header = \local_sitereport\lpstats_block::get_header_report();
+        $header = \local_edwiserreports\lpstats_block::get_header_report();
         $courseids = json_decode($lp->courses);
         foreach ($lpreports->courses as $course) {
             $header[] = $course->shortname;
@@ -638,8 +638,8 @@ class export {
 
         // Add additional headers
         $header = array_merge($header, array(
-            get_string('avgprogress', 'local_sitereport'),
-            get_string('completedactivity', 'local_sitereport'),
+            get_string('avgprogress', 'local_edwiserreports'),
+            get_string('completedactivity', 'local_edwiserreports'),
         ));
 
         // Add custom fields
@@ -785,7 +785,7 @@ class export {
 
         // Check if learning hour plugin is available
         $lhdb = '';
-        if (local_sitereport_has_plugin('report', 'learning_hours')) {
+        if (local_edwiserreports_has_plugin('report', 'learning_hours')) {
             $lhdb = 'LEFT JOIN {edw_learning_hours} lh ON lh.courseid = c.id
                 LEFT JOIN {edw_users_learning_hours} ulh ON ulh.userid = u.id AND ulh.lhid = lh.id';
         }
@@ -793,12 +793,12 @@ class export {
         // Check Cohorts
         $allusers = false;
         if ($cohortids === "0") {
-            $cohorts = \local_sitereport\utility::get_cohort_users(array(0));
+            $cohorts = \local_edwiserreports\utility::get_cohort_users(array(0));
             $userids = array_column($cohorts['users'], 'id');
         } else if ($cohortids !== "") {
             if ($userids === "0") {
                 $cohortids = explode(",", $cohortids);
-                $cohorts = \local_sitereport\utility::get_cohort_users($cohortids);
+                $cohorts = \local_edwiserreports\utility::get_cohort_users($cohortids);
                 $userids = array_column($cohorts['users'], 'id');
             } else {
                 $userids = explode(",", $userids);
@@ -843,7 +843,7 @@ class export {
                 JOIN {role} r ON r.id = ra.roleid
                 JOIN {context} ct ON ct.id = ra.contextid
                 JOIN {course} c ON c.id = ct.instanceid '.$lpjoinquery.' ' . $activitytypejoin . '
-                JOIN {sitereport_course_progress} ec ON ec.courseid = c.id AND ec.userid = u.id AND c.id '.$coursedb.'
+                JOIN {edw_course_progress} ec ON ec.courseid = c.id AND ec.userid = u.id AND c.id '.$coursedb.'
                 JOIN {course_categories} ctg ON ctg.id = c.category ' . $lhdb . '
                 WHERE u.id '.$userdb.'
                 AND ct.contextlevel = '.CONTEXT_COURSE.'
@@ -860,7 +860,7 @@ class export {
         if (isset($tablename)) {
             $this->drop_table($tablename);
         }
-        $filename = get_string('reportname', 'local_sitereport', array(
+        $filename = get_string('reportname', 'local_edwiserreports', array(
             "date" => date('d_M_y_h-t-s', time())
         ));
         // Download csv based on query result.
@@ -947,7 +947,7 @@ class export {
      */
     public function create_query_fields($fields) {
         // Get all the fields
-        $allFields = \local_sitereport\output\elucidreport_renderable::get_report_fields();
+        $allFields = \local_edwiserreports\output\elucidreport_renderable::get_report_fields();
         $allFields = array_values($allFields);
         $allFields = array_reduce($allFields, 'array_merge', array());
         // sort fields according to selected fields
@@ -1019,7 +1019,7 @@ class export {
      */
     private function render_course_report_exportable_header() {
         // Plugin component
-        $component = 'local_sitereport';
+        $component = 'local_edwiserreports';
 
         // Header for reports
         $head = array();
@@ -1048,7 +1048,7 @@ class export {
      */
     private function render_lp_report_exportable_header() {
         // Plugin component
-        $component = 'local_sitereport';
+        $component = 'local_edwiserreports';
 
         // Header for reports
         $head = array();
@@ -1143,7 +1143,7 @@ class export {
             // Prepare reports for each students
             foreach ($users as $user) {
                 // Get enrolment informations
-                $enrolinfo = \local_sitereport\utility::get_course_enrolment_info($course->id, $user->id);
+                $enrolinfo = \local_edwiserreports\utility::get_course_enrolment_info($course->id, $user->id);
 
                 // If startdate is less then the selected start date
                 if ($enrolinfo->timecreated < $enrolstartdate) {
@@ -1170,13 +1170,13 @@ class export {
                 $data->category = $category->get_formatted_name();
 
                 // Get completions data
-                $completion = (object) \local_sitereport\utility::get_course_completion_info($course, $user->id);
+                $completion = (object) \local_edwiserreports\utility::get_course_completion_info($course, $user->id);
                 if ($completion && !empty($completion)) {
                     $data->completedactivities = '(' . $completion->completedactivities . '/' . $completion->totalactivities . ')';
                     $data->completionsper = $completion->progresspercentage . "%";
                 } else {
-                    $data->completedactivities = get_string('na', 'local_sitereport');
-                    $data->completionsper = get_string('na', 'local_sitereport');
+                    $data->completedactivities = get_string('na', 'local_edwiserreports');
+                    $data->completionsper = get_string('na', 'local_edwiserreports');
                 }
 
                 $this->inseart_custom_filed_data($data, $user->id);
@@ -1205,7 +1205,7 @@ class export {
      */
     private function render_lps_report_exportable_data($lpids, $enrolstartdate, $enrolenddate) {
         global $DB;
-        $component = 'local_sitereport';
+        $component = 'local_edwiserreports';
 
         // Render reports header
         $head = $this->render_lp_report_exportable_header();
@@ -1217,7 +1217,7 @@ class export {
             $lp = $DB->get_record($table, array("id" => $lpid, "visible" => true));
 
             // Get only enrolled students
-            $enrolments = \local_sitereport\utility::get_lp_students($lpid);
+            $enrolments = \local_edwiserreports\utility::get_lp_students($lpid);
 
             // Prepare reports for each students
             foreach ($enrolments as $enrolment) {
@@ -1239,7 +1239,7 @@ class export {
                     }
 
                     // Get completions data
-                    $completion = \local_sitereport\utility::get_course_completion_info($course, $enrolment->userid);
+                    $completion = \local_edwiserreports\utility::get_course_completion_info($course, $enrolment->userid);
 
                     if ($completion && !empty($completion)) {
                         $completionavg += $completion['progresspercentage'];

@@ -1,10 +1,10 @@
 define([
     'jquery',
     'core/chartjs',
-    'local_sitereport/defaultconfig',
+    'local_edwiserreports/defaultconfig',
     './common',
-    'local_sitereport/jquery.dataTables',
-    'local_sitereport/dataTables.bootstrap4'
+    'local_edwiserreports/jquery.dataTables',
+    'local_edwiserreports/dataTables.bootstrap4'
 ], function ($, Chart, cfg, common) {
     function init(notifyListner) {
         var activeCourseTable;

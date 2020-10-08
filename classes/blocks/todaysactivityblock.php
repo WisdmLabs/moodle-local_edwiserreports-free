@@ -16,13 +16,13 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     local_sitereport
+ * @package     local_edwiserreports
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_sitereport;
+namespace local_edwiserreports;
 use stdClass;
 use context_system;
 use context_course;
@@ -42,11 +42,11 @@ class todaysactivityblock extends block_base {
 
         // Layout related data.
         $this->layout->id = 'todaysactivityblock';
-        $this->layout->name = get_string('todaysactivityheader', 'local_sitereport');
-        $this->layout->info = get_string('todaysactivityblockhelp', 'local_sitereport');
+        $this->layout->name = get_string('todaysactivityheader', 'local_edwiserreports');
+        $this->layout->info = get_string('todaysactivityblockhelp', 'local_edwiserreports');
         $this->layout->filters = '<input class="btn btn-sm dropdown-toggle input-group-addon"';
         $this->layout->filters .= 'id="flatpickrCalender" placeholder="' .
-        get_string('selectdate', 'local_sitereport') .
+        get_string('selectdate', 'local_edwiserreports') .
         '" data-input/>';
 
         // Block related data.

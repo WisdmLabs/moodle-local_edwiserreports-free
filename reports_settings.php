@@ -26,15 +26,15 @@ require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->libdir . '/formslib.php');
 require_once('lib.php');
 // Restrict normal user to access this page.
-admin_externalpage_setup('elucidsitereport_settings');
+admin_externalpage_setup('edwiserReport_settings');
 
 // Require Login.
 require_login();
 $context = context_system::instance();
 $PAGE->set_pagelayout('admin');
 $PAGE->set_context($context);
-$PAGE->set_url('/local/sitereport/reports_settings.php');
-$PAGE->set_title(get_string('pluginname', 'local_sitereport'));
+$PAGE->set_url('/local/edwiserreports/reports_settings.php');
+$PAGE->set_title(get_string('pluginname', 'local_edwiserreports'));
 
 class report_blocks_form extends moodleform {
 
@@ -42,30 +42,30 @@ class report_blocks_form extends moodleform {
 
         $mform = $this->_form;
 
-        $mform->addElement('header', 'addfunction', get_string('rpmblocks', 'local_sitereport'));
+        $mform->addElement('header', 'addfunction', get_string('rpmblocks', 'local_edwiserreports'));
         $blocks = array(
-            'activeusers' => get_string('activeusersheader', 'local_sitereport'),
-            'courseprogress' => get_string('courseprogress', 'local_sitereport'),
-            'activecourses' => get_string('activecoursesheader', 'local_sitereport'),
-            'certificatestats' => get_string('certificatestats', 'local_sitereport'),
-            'realtimeusers' => get_string('realtimeusers', 'local_sitereport'),
-            'f2fsessions' => get_string('f2fsessionsheader', 'local_sitereport'),
-            'accessinfo' => get_string('accessinfo', 'local_sitereport'),
-            'lpstats' => get_string('lpstatsheader', 'local_sitereport'),
-            'todaysactivity' => get_string('todaysactivityheader', 'local_sitereport'),
-            'inactiveusers' => get_string('inactiveusers', 'local_sitereport'),
+            'activeusers' => get_string('activeusersheader', 'local_edwiserreports'),
+            'courseprogress' => get_string('courseprogress', 'local_edwiserreports'),
+            'activecourses' => get_string('activecoursesheader', 'local_edwiserreports'),
+            'certificatestats' => get_string('certificatestats', 'local_edwiserreports'),
+            'realtimeusers' => get_string('realtimeusers', 'local_edwiserreports'),
+            'f2fsessions' => get_string('f2fsessionsheader', 'local_edwiserreports'),
+            'accessinfo' => get_string('accessinfo', 'local_edwiserreports'),
+            'lpstats' => get_string('lpstatsheader', 'local_edwiserreports'),
+            'todaysactivity' => get_string('todaysactivityheader', 'local_edwiserreports'),
+            'inactiveusers' => get_string('inactiveusers', 'local_edwiserreports'),
         );
         // Get previously added blocks.
         $options = array(
-           'noselectionstring' => get_string('notselected', 'local_sitereport'),
+           'noselectionstring' => get_string('notselected', 'local_edwiserreports'),
            'multiple' => true,
         );
-        $mform->addElement('autocomplete', 'rpmblocks', get_string('selectblocks', 'local_sitereport'), $blocks, $options);
+        $mform->addElement('autocomplete', 'rpmblocks', get_string('selectblocks', 'local_edwiserreports'), $blocks, $options);
 
-        $mform->addElement('autocomplete', 'rpmblocks1', get_string('selectblocks', 'local_sitereport'), $blocks, $options);
+        $mform->addElement('autocomplete', 'rpmblocks1', get_string('selectblocks', 'local_edwiserreports'), $blocks, $options);
 
         // Set previously added blocks as default.
-        $this->add_action_buttons(true, get_string('addblocks', 'local_sitereport'));
+        $this->add_action_buttons(true, get_string('addblocks', 'local_edwiserreports'));
     }
 }
 
@@ -74,7 +74,7 @@ $mform = new report_blocks_form();
 // Form processing and displaying is done here.
 if ($mform->is_cancelled()) {
     // Handle form cancel operation, if cancel button is present on form.
-    redirect(new moodle_url('/local/sitereport/reports_settings.php'));
+    redirect(new moodle_url('/local/edwiserreports/reports_settings.php'));
 } else if ($formdata = $mform->get_data()) {
     // In this case you process validated data. $mform->get_data() returns data posted in form.
     save_settings_form_data($formdata);

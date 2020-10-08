@@ -4,12 +4,12 @@ define([
     'core/modal_events',
     'core/fragment',
     'core/templates',
-    'local_sitereport/variables',
-    'local_sitereport/select2',
-    'local_sitereport/jquery.dataTables',
-    'local_sitereport/dataTables.bootstrap4',
-    'local_sitereport/jquery-asPieProgress',
-    'local_sitereport/common'
+    'local_edwiserreports/variables',
+    'local_edwiserreports/select2',
+    'local_edwiserreports/jquery.dataTables',
+    'local_edwiserreports/dataTables.bootstrap4',
+    'local_edwiserreports/jquery-asPieProgress',
+    'local_edwiserreports/common'
 ], function($, ModalFactory, ModalEvents, Fragment, Templates, V) {
     function init(CONTEXTID) {
         var PageId = $("#wdm-certificates-individual");

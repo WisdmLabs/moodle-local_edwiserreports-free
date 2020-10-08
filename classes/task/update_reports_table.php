@@ -16,7 +16,7 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     local_sitereport
+ * @package     local_edwiserreports
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -25,9 +25,9 @@
 defined('MOODLE_INTERNAL') || die();
 
 //@codingStandardsIgnoreStart
-// namespace local_sitereport\task;
+// namespace local_edwiserreports\task;
 // require_once($CFG->libdir . "/enrollib.php");
-// require_once($CFG->dirroot . "/local/sitereport/classes/completions.php");
+// require_once($CFG->dirroot . "/local/edwiserreports/classes/completions.php");
 
 // use stdClass;
 // use context_course;
@@ -43,7 +43,7 @@ defined('MOODLE_INTERNAL') || die();
 //      * @return string
 //      */
 //     public function get_name() {
-//         return get_string('updatetables', 'local_sitereport');
+//         return get_string('updatetables', 'local_edwiserreports');
 //     }
 
 //     /**
@@ -53,10 +53,10 @@ defined('MOODLE_INTERNAL') || die();
 //         global $DB;
 
 //         // Update completions table in report plugin
-//         $completions = new \local_sitereport\completions();
+//         $completions = new \local_edwiserreports\completions();
 
 //         // Updating reports table
-//         mtrace(get_string('updatingreportstable', 'local_sitereport'));
+//         mtrace(get_string('updatingreportstable', 'local_edwiserreports'));
 //         $completions->update_local_completion_table();
 //     }
 // }

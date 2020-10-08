@@ -1,7 +1,7 @@
-define(['local_sitereport/variables'], function(V) {
+define(['local_edwiserreports/variables'], function(V) {
     return {
-        pluginPage: $("#wdm-elucidsitereport"),
-        requestUrl : M.cfg.wwwroot + '/local/sitereport/request_handler.php',
+        pluginPage: $("#wdm-edwiserreports"),
+        requestUrl : M.cfg.wwwroot + '/local/edwiserreports/request_handler.php',
         requestType : 'GET',
         requestDataType : 'json',
         whiteColor : "rgba(255, 255, 255, 0.8)",
@@ -56,7 +56,7 @@ define(['local_sitereport/variables'], function(V) {
         filterReplaceFlag : "F",
 
         // Plugin component
-        component : 'local_sitereport',
+        component : 'local_edwiserreports',
 
         // Get scheduled email context
         getScheduledEmailFormContext : function() {

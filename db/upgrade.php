@@ -16,7 +16,7 @@
 /**
  * Code to be executed after the plugin's database scheme has been installed is defined here.
  *
- * @package     local_sitereport
+ * @package     local_edwiserreports
  * @category    upgrade
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -27,13 +27,13 @@ defined('MOODLE_INTERNAL') || die();
 /**
  * Custom code to be run on upgrading the plugin.
  */
-function xmldb_local_sitereport_upgrade($oldversion) {
+function xmldb_local_edwiserreports_upgrade($oldversion) {
     global $DB;
 
     // Check the old version.
     if (2020030400 <= $oldversion) {
         // Table name to be removed.
-        $tablename = 'elucidsitereport_completion';
+        $tablename = 'edwiserReport_completion';
 
         // Get all tables.
         $tables = $DB->get_tables();

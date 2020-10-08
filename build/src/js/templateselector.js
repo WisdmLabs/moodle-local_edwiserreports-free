@@ -1,5 +1,5 @@
 define([], function() {
     return {
-        blockEditSettings: 'local_sitereport/blockeditsettings'
+        blockEditSettings: 'local_edwiserreports/blockeditsettings'
     }
 });

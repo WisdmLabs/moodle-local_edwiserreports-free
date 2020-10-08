@@ -17,13 +17,13 @@
 /**
  * Local Course Progress Manager Plugin Events.
  *
- * @package     local_sitereport
+ * @package     local_edwiserreports
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_sitereport\event;
+namespace local_edwiserreports\event;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -40,7 +40,7 @@ class edw_course_completed extends \core\event\base {
      * @return string
      */
     public static function get_name() {
-        return get_string('coursecompletionevent', 'local_sitereport');
+        return get_string('coursecompletionevent', 'local_edwiserreports');
     }
 
     /**
@@ -51,6 +51,6 @@ class edw_course_completed extends \core\event\base {
     protected function init() {
         $this->data['crud'] = 'u';
         $this->data['edulevel'] = self::LEVEL_PARTICIPATING;
-        $this->data['objecttable'] = 'sitereport_course_progress';
+        $this->data['objecttable'] = 'edw_course_progress';
     }
 }

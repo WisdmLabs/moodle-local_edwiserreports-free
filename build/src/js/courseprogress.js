@@ -4,10 +4,10 @@ define([
     'core/modal_events',
     'core/fragment',
     'core/templates',
-    'local_sitereport/variables',
-    'local_sitereport/jquery.dataTables',
-    'local_sitereport/dataTables.bootstrap4',
-    'local_sitereport/common'
+    'local_edwiserreports/variables',
+    'local_edwiserreports/jquery.dataTables',
+    'local_edwiserreports/dataTables.bootstrap4',
+    'local_edwiserreports/common'
 ], function($, ModalFactory, ModalEvents, Fragment, Templates, V) {
     function init(CONTEXTID) {
         var PageId = "#wdm-courseprogress-individual";
@@ -50,7 +50,7 @@ define([
 
                 ModalFactory.create({
                     body: Fragment.loadFragment(
-                        'local_sitereport',
+                        'local_edwiserreports',
                         'userslist',
                         CONTEXTID,
                         {
@@ -158,7 +158,7 @@ define([
             //         sesskey : sesskey
             //     };
 
-            //     Templates.render('local_sitereport/courseprogress', context)
+            //     Templates.render('local_edwiserreports/courseprogress', context)
             //     .then(function(html, js) {
             //         Templates.replaceNode(PageId, html, js);
             //         datatable = $(CourseProgressTable).DataTable({

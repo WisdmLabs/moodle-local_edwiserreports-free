@@ -16,12 +16,12 @@
 /**
  * Reportng manager operations are defined here.
  *
- * @package     local_sitereport
+ * @package     local_edwiserreports
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_sitereport;
+namespace local_edwiserreports;
 
 defined('MOODLE_INTERNAL') || die();
 

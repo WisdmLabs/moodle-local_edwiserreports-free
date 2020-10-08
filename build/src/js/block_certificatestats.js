@@ -1,7 +1,7 @@
 define([
     "jquery",
     "core/templates",
-    "local_sitereport/defaultconfig",
+    "local_edwiserreports/defaultconfig",
     './common',
 ], function($, templates, cfg, common) {
     var panel = cfg.getPanel("#certificatesblock");
@@ -27,7 +27,7 @@ define([
             },
         })
         .done(function(response) {
-            templates.render('local_sitereport/certificatestable', response.data)
+            templates.render('local_edwiserreports/certificatestable', response.data)
             .then(function(html, js) {
                 $(panelBody).empty();
                 templates.appendNodeContents(panelBody, html, js);

@@ -1,4 +1,4 @@
-define(['jquery', 'core/templates', 'local_sitereport/defaultconfig', 'local_sitereport/jquery.dataTables', 'local_sitereport/dataTables.bootstrap4'], function ($, templates, cfg) {
+define(['jquery', 'core/templates', 'local_edwiserreports/defaultconfig', 'local_edwiserreports/jquery.dataTables', 'local_edwiserreports/dataTables.bootstrap4'], function ($, templates, cfg) {
     var panel = cfg.getPanel("#f2fsessionsblock");
     var panelBody = cfg.getPanel("#f2fsessionsblock", "body");
     var table = panelBody + " #f2fsessionstable";

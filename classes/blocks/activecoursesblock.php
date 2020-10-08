@@ -16,13 +16,13 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     local_sitereport
+ * @package     local_edwiserreports
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_sitereport;
+namespace local_edwiserreports;
 
 use stdClass;
 use context_course;
@@ -42,8 +42,8 @@ class activecoursesblock extends block_base {
 
         // Layout related data.
         $this->layout->id = 'activecoursesblock';
-        $this->layout->name = get_string('activecoursesheader', 'local_sitereport');
-        $this->layout->info = get_string('activecoursesblockhelp', 'local_sitereport');
+        $this->layout->name = get_string('activecoursesheader', 'local_edwiserreports');
+        $this->layout->info = get_string('activecoursesblockhelp', 'local_edwiserreports');
         $this->layout->hasdownloadlink = true;
 
         // Block related data.
@@ -69,7 +69,7 @@ class activecoursesblock extends block_base {
 
         $response = new stdClass();
 
-        $cache = cache::make('local_sitereport', 'activecourses');
+        $cache = cache::make('local_edwiserreports', 'activecourses');
         if (!$data = $cache->get('activecoursesdata')) {
             $data = self::get_course_data();
             $cache->set('activecoursesdata', $data);
@@ -85,10 +85,10 @@ class activecoursesblock extends block_base {
      */
     public static function get_header() {
         $header = array(
-            get_string("coursename", "local_sitereport"),
-            get_string("enrolments", "local_sitereport"),
-            get_string("visits", "local_sitereport"),
-            get_string("completions", "local_sitereport"),
+            get_string("coursename", "local_edwiserreports"),
+            get_string("enrolments", "local_edwiserreports"),
+            get_string("visits", "local_edwiserreports"),
+            get_string("completions", "local_edwiserreports"),
         );
 
         return $header;
@@ -107,7 +107,7 @@ class activecoursesblock extends block_base {
         $response = array();
         // Calculate Completion Count for All Course.
         $sql = "SELECT courseid, COUNT(userid) AS users
-            FROM {sitereport_course_progress}
+            FROM {edw_course_progress}
             WHERE progress = :progress
             GROUP BY courseid";
         $params = array("progress" => 100);

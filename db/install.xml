@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="local/sitereport/db" VERSION="2019091100" COMMENT="XMLDB file for eLucid Site Reports"
+<XMLDB PATH="local/edwiserreports/db" VERSION="2019091100" COMMENT="XMLDB file for eLucid Site Reports"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd">
     <TABLES>
-        <TABLE NAME="sitereport_blocks" COMMENT="This table saves course completion infomation.">
+        <TABLE NAME="edwreports_blocks" COMMENT="This table saves course completion infomation.">
             <FIELDS>
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
                 <FIELD NAME="blockname" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Course ID for completion."/>
@@ -17,7 +17,7 @@
                 <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="The unique id for this report_completion instance."/>
             </KEYS>
         </TABLE>
-        <TABLE NAME="sitereport_schedemails" COMMENT="This table saves scheduled emails inforamtion.">
+        <TABLE NAME="edwreports_schedemails" COMMENT="This table saves scheduled emails inforamtion.">
             <FIELDS>
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
                 <FIELD NAME="blockname" TYPE="text" LENGTH="255" COMMENT="Block name."/>
@@ -30,7 +30,7 @@
         </TABLE>
         <TABLE
             COMMENT="Information about the course progress by all users"
-            NAME="sitereport_course_progress">
+            NAME="edwreports_course_progress">
             <FIELDS>
                 <FIELD COMMENT="Course Progress Id" NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
                 <FIELD COMMENT="Course Id" NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>

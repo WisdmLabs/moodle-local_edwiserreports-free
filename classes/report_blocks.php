@@ -16,12 +16,12 @@
 /**
  * Get Reports blocks to render in the dashboard
  *
- * @package     local_sitereport
+ * @package     local_edwiserreports
  * @copyright   2020 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_sitereport;
+namespace local_edwiserreports;
 
 use context_system;
 
@@ -41,25 +41,25 @@ class report_blocks {
         global $CFG, $USER;
 
         // Rearrange blocks based on the saved preferences.
-        \local_sitereport\utility::rearrange_block_with_preferences($blocks);
+        \local_edwiserreports\utility::rearrange_block_with_preferences($blocks);
         $context = context_system::instance();
 
         // Prepare layout for each block.
         foreach ($blocks as $key => $block) {
             // If user dont have capability to see the block.
-            if (!has_capability('report/sitereport_' . $block->classname . ':view', $context)) {
+            if (!has_capability('report/edwiserreports_' . $block->classname . ':view', $context)) {
                 continue;
             }
 
             // Check if class file exist.
             $classname = $block->classname;
-            $filepath = $CFG->dirroot . '/local/sitereport/classes/blocks/' . $classname . '.php';
+            $filepath = $CFG->dirroot . '/local/edwiserreports/classes/blocks/' . $classname . '.php';
             if (!file_exists($filepath)) {
                 debugging('Class file dosn\'t exist ' . $classname);
             }
             require_once($filepath);
 
-            $classname = '\\local_sitereport\\' . $classname;
+            $classname = '\\local_edwiserreports\\' . $classname;
             $blockbase = new $classname();
             $layout = $blockbase->get_layout();
 
@@ -68,7 +68,7 @@ class report_blocks {
             }
 
             // Get block preferences.
-            $pref = \local_sitereport\utility::get_reportsblock_preferences($block);
+            $pref = \local_edwiserreports\utility::get_reportsblock_preferences($block);
 
             if ($pref["hidden"] && !$USER->editing) {
                 continue;

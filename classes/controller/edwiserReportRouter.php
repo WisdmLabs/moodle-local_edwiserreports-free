@@ -15,12 +15,12 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 /**
  * Edwiser RemUI
- * @package    local_sitereport
+ * @package    local_edwiserreports
  * @copyright  (c) 2018 WisdmLabs (https://wisdmlabs.com/)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_sitereport\controller;
+namespace local_edwiserreports\controller;
 
 use coding_exception;
 
@@ -33,11 +33,11 @@ defined('MOODLE_INTERNAL') || die();
  * Can work with multiple controllers, first controller
  * that matches the action wins.
  *
- * @package   local_sitereport
+ * @package   local_edwiserreports
  * @copyright Copyright (c) 2015 Moodlerooms Inc. (http://www.moodlerooms.com)
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class elucidsitereportRouter {
+class edwiserReportRouter {
     /**
      * @var \SplObjectStorage
      */

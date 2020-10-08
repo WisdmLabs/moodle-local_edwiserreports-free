@@ -3,19 +3,19 @@
         <thead class="bg-secondary">
             <tr>
                 <th class="bg-secondary border-bottom-0">
-                    {{#str}} name, local_sitereport{{/str}}
+                    {{#str}} name, local_edwiserreports{{/str}}
                 </th>
                 <th class="bg-secondary border-bottom-0">
-                    {{#str}} course, local_sitereport {{/str}}
+                    {{#str}} course, local_edwiserreports {{/str}}
                 </th>
                 <th class="bg-secondary border-bottom-0">
-                    {{#str}} signups, local_sitereport {{/str}}
+                    {{#str}} signups, local_edwiserreports {{/str}}
                 </th>
                 <th class="bg-secondary border-bottom-0">
-                    {{#str}} attendees, local_sitereport {{/str}}
+                    {{#str}} attendees, local_edwiserreports {{/str}}
                 </th>
                 <th class="bg-secondary border-bottom-0 w-50">
-                    {{#str}} f2fmore, local_sitereport {{/str}}
+                    {{#str}} f2fmore, local_edwiserreports {{/str}}
                 </th>
             </tr>
         </thead>
@@ -44,11 +44,11 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th class="bg-secondary bg-image-none no-sorting-arrow border-bottom-0">{{#str}} date, local_sitereport {{/str}}</th>
-                                    <th class="bg-secondary bg-image-none no-sorting-arrow border-bottom-0">{{#str}} time, local_sitereport {{/str}}</th>
-                                    <th class="bg-secondary bg-image-none no-sorting-arrow border-bottom-0">{{#str}} venue, local_sitereport {{/str}}</th>
-                                    <th class="bg-secondary bg-image-none no-sorting-arrow border-bottom-0">{{#str}} signups, local_sitereport {{/str}}</th>
-                                    <th class="bg-secondary bg-image-none no-sorting-arrow border-bottom-0">{{#str}} attendees, local_sitereport {{/str}}</th>
+                                    <th class="bg-secondary bg-image-none no-sorting-arrow border-bottom-0">{{#str}} date, local_edwiserreports {{/str}}</th>
+                                    <th class="bg-secondary bg-image-none no-sorting-arrow border-bottom-0">{{#str}} time, local_edwiserreports {{/str}}</th>
+                                    <th class="bg-secondary bg-image-none no-sorting-arrow border-bottom-0">{{#str}} venue, local_edwiserreports {{/str}}</th>
+                                    <th class="bg-secondary bg-image-none no-sorting-arrow border-bottom-0">{{#str}} signups, local_edwiserreports {{/str}}</th>
+                                    <th class="bg-secondary bg-image-none no-sorting-arrow border-bottom-0">{{#str}} attendees, local_edwiserreports {{/str}}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -64,7 +64,7 @@
                                 {{^sessions}}
                                     <tr>
                                         <td class="text-center" colspan="5">
-                                            {{#str}} nof2fsession, local_sitereport {{/str}}
+                                            {{#str}} nof2fsession, local_edwiserreports {{/str}}
                                         </td>
                                     </tr>
                                 {{/sessions}}
@@ -76,7 +76,7 @@
             {{/f2fmodules}}
             {{^f2fmodules}}
             <tr>
-                <td class="text-center" colspan="4">{{#str}} nof2fmodule, local_sitereport {{/str}}</td>
+                <td class="text-center" colspan="4">{{#str}} nof2fmodule, local_edwiserreports {{/str}}</td>
             </tr>
             {{/f2fmodules}}
         </tbody>

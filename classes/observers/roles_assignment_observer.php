@@ -17,7 +17,7 @@
 /**
  * Local Course Progress Manager Plugin Events Onserver.
  *
- * @package     local_sitereport
+ * @package     local_edwiserreports
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -26,15 +26,15 @@
 /**
  * Local Course Progress Manager Namespace
  */
-namespace local_sitereport\observers;
+namespace local_edwiserreports\observers;
 
 defined('MOODLE_INTERNAL') || die();
 
 use stdClass;
 
 // Require files.
-require_once($CFG->dirroot . '/local/sitereport/classes/db_controller.php');
-require_once($CFG->dirroot . '/local/sitereport/classes/constants.php');
+require_once($CFG->dirroot . '/local/edwiserreports/classes/db_controller.php');
+require_once($CFG->dirroot . '/local/edwiserreports/classes/constants.php');
 
 /**
  * Roles Assignment observer
@@ -77,7 +77,7 @@ trait roles_assignment_observer {
         // If event data is there then create progress data.
         if ($data = self::get_roles_assignment_eventdata($event)) {
             // Get datatbase controller.
-            $dbc = new \local_sitereport\db_controller();
+            $dbc = new \local_edwiserreports\db_controller();
 
             // Create course module completion.
             $dbc->update_course_completion($data);
@@ -92,7 +92,7 @@ trait roles_assignment_observer {
         // If event data is there then delet progress data.
         if ($data = self::get_roles_assignment_eventdata($event)) {
             // Get datatbase controller.
-            $dbc = new \local_sitereport\db_controller();
+            $dbc = new \local_edwiserreports\db_controller();
 
             // Create course module completion.
             $dbc->delete_course_completion($data);

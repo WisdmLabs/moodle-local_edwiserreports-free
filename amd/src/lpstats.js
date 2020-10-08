@@ -5,8 +5,8 @@ define([
     'core/modal_factory',
     'core/modal_events',
     'core/str',
-    'local_sitereport/variables',
-    'local_sitereport/common'
+    'local_edwiserreports/variables',
+    'local_edwiserreports/common'
 ], function(
     $,
     Templates,
@@ -36,7 +36,7 @@ define([
          * Plugin Component
          * @type {String}
          */
-        var component = 'local_sitereport';
+        var component = 'local_edwiserreports';
 
         /**
          * Get translation to use strings
@@ -108,9 +108,9 @@ define([
 
                         // Set Modal Body
                         modal.setBody(Templates.render(
-                            'local_sitereport/lpdetailedreport', {
+                            'local_edwiserreports/lpdetailedreport', {
                                 sesskey : $(PageId).data('sesskey'),
-                                formaction : M.cfg.wwwroot + "/local/sitereport/download.php" 
+                                formaction : M.cfg.wwwroot + "/local/edwiserreports/download.php" 
                             }
                         ));
 
@@ -134,7 +134,7 @@ define([
             }
 
             var fragment = Fragment.loadFragment(
-                'local_sitereport',
+                'local_edwiserreports',
                 'lpstats',
                 CONTEXTID,
                 {
@@ -145,7 +145,7 @@ define([
 
             fragment.done(function(response) {
                 var context = JSON.parse(response);
-                Templates.render('local_sitereport/lpstatsinfo', context)
+                Templates.render('local_edwiserreports/lpstatsinfo', context)
                 .then(function(html, js) {
                     Templates.replaceNode(LpTable, html, js);
                 }).fail(function(ex) {

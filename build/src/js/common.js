@@ -6,13 +6,13 @@ define([
     'core/modal_events',
     'core/templates',
     'core/str',
-    'local_sitereport/variables',
-    'local_sitereport/selectors',
-    'local_sitereport/templateselector',
-    'local_sitereport/jspdf',
-    'local_sitereport/select2',
-    'local_sitereport/jquery.dataTables',
-    'local_sitereport/dataTables.bootstrap4'
+    'local_edwiserreports/variables',
+    'local_edwiserreports/selectors',
+    'local_edwiserreports/templateselector',
+    'local_edwiserreports/jspdf',
+    'local_edwiserreports/select2',
+    'local_edwiserreports/jquery.dataTables',
+    'local_edwiserreports/dataTables.bootstrap4'
     ], function(
         $,
         notif,
@@ -61,12 +61,12 @@ define([
 
     // Messaged for email schedule
     var loader = '<div class="w-full text-center"><i class="fa fa-spinner fa-spin" aria-hidden="true"></i></div>'
-    var schedulerrormsg = M.util.get_string('scheduleerrormsg', 'local_sitereport');
-    var schedulesuccessmsg = M.util.get_string('schedulesuccessmsg', 'local_sitereport');
-    var deletesuccessmsg = M.util.get_string('deletesuccessmsg', 'local_sitereport');
-    var deleteerrormsg = M.util.get_string('deleteerrormsg', 'local_sitereport');
-    var emptyerrormsg = M.util.get_string('emptyerrormsg', 'local_sitereport');
-    var emailinvaliderrormsg = M.util.get_string('emailinvaliderrormsg', 'local_sitereport');
+    var schedulerrormsg = M.util.get_string('scheduleerrormsg', 'local_edwiserreports');
+    var schedulesuccessmsg = M.util.get_string('schedulesuccessmsg', 'local_edwiserreports');
+    var deletesuccessmsg = M.util.get_string('deletesuccessmsg', 'local_edwiserreports');
+    var deleteerrormsg = M.util.get_string('deleteerrormsg', 'local_edwiserreports');
+    var emptyerrormsg = M.util.get_string('emptyerrormsg', 'local_edwiserreports');
+    var emailinvaliderrormsg = M.util.get_string('emailinvaliderrormsg', 'local_edwiserreports');
 
     var tabs = '[data-plugin="tabs"] .nav-link, [data-plugin="tabs"] .tab-pane';
     var formTab = '[aria-controls="scheduletab"], #scheduletab';
@@ -84,7 +84,7 @@ define([
                 $class = 'position-absolute';
             }
             $(id).append(`
-            <div class="sitereport-loader ${$class}">
+            <div class="edwiserreports-loader ${$class}">
                 <i class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i>
             </div>
             `);
@@ -93,7 +93,7 @@ define([
             if (id == undefined) {
                 id = 'body';
             }
-            $(id + ' > .sitereport-loader').remove();
+            $(id + ' > .edwiserreports-loader').remove();
         }
     };
 
@@ -103,7 +103,7 @@ define([
 
     $(document).ready(function() {
         var isNavlink = null;
-        var pageContent = $("#page-admin-report-elucidsitereport-index .page-content");
+        var pageContent = $("#page-admin-report-edwiserReport-index .page-content");
         var pageWidth = pageContent.width();
         var exportPdf = '.download-links button[value="pdf"]';
         // var exportEmailDropdown = '.download-links button[value="emailscheduled"]';
@@ -217,7 +217,7 @@ define([
         //         type: ModalFactory.types.SAVE_CANCEL,
         //         title: v.getEmailModalHeader($(_this).data("blockname"), 0),
         //         body: fragment.loadFragment(
-        //             'local_sitereport',
+        //             'local_edwiserreports',
         //             'email_dialog',
         //             $(_this).data("contextid"),
         //             {
@@ -253,8 +253,8 @@ define([
             });
 
             ModalFactory.create({
-                title: M.util.get_string('scheduleemailfor', 'local_sitereport') + ' ' +  M.util.get_string(data.block + 'exportheader', 'local_sitereport'),
-                body: Templates.render('local_sitereport/email_schedule_tabs', data)
+                title: M.util.get_string('scheduleemailfor', 'local_edwiserreports') + ' ' +  M.util.get_string(data.block + 'exportheader', 'local_edwiserreports'),
+                body: Templates.render('local_edwiserreports/email_schedule_tabs', data)
             }, $(this))
             .done(function(modal) {
                 var root = modal.getRoot();
@@ -278,11 +278,11 @@ define([
         });
 
         // Show reports page when document is ready
-        $('#wdm-elucidsitereport').removeClass('d-none');
+        $('#wdm-edwiserreports').removeClass('d-none');
 
         setupBlockEditing();
 
-        setupBlockHiding($('#wdm-elucidsitereport').data("editing"));
+        setupBlockHiding($('#wdm-edwiserreports').data("editing"));
     });
 
     function setupBlockHiding(editing) {
@@ -295,7 +295,7 @@ define([
             editingtxt = "Stop Customising this page";
 
             editForm += '<div class="singlebutton">';
-            editForm += '<form method="post" action="' + M.cfg.wwwroot + '/local/sitereport/index.php">';
+            editForm += '<form method="post" action="' + M.cfg.wwwroot + '/local/edwiserreports/index.php">';
             editForm += '<input type="hidden" name="reset" value="1">';
             editForm += '<input type="hidden" name="sesskey" value="' + M.cfg.sesskey + '">';
             editForm += '<button type="submit" class="btn btn-secondary" title="">Reset Page to Default</button>';
@@ -307,7 +307,7 @@ define([
         }
 
         editForm += '<div class="singlebutton">';
-        editForm += '<form method="post" action="' + M.cfg.wwwroot + '/local/sitereport/index.php">';
+        editForm += '<form method="post" action="' + M.cfg.wwwroot + '/local/edwiserreports/index.php">';
         editForm += '<input type="hidden" name="edit" value="' + editing + '">';
         editForm += '<input type="hidden" name="sesskey" value="' + M.cfg.sesskey + '">';
         editForm += '<button type="submit" class="btn btn-secondary" title="">' + editingtxt + '</button>';
@@ -316,7 +316,7 @@ define([
 
         editForm += '</div></div>';
 
-        $("#page-local-sitereport-index #page-header .card-body").append(editForm);
+        $("#page-local-edwiserreports-index #page-header .card-body").append(editForm);
     }
 
     /**
@@ -335,7 +335,7 @@ define([
                     title: 'Edit Block Setting',
                     // body: Templates.render(tempSelector.blockEditSettings, {})
                     body: fragment.loadFragment(
-                        'local_sitereport',
+                        'local_edwiserreports',
                         'get_blocksetting_form',
                         contextid,
                         {
@@ -386,13 +386,13 @@ define([
                     response = JSON.parse(response);
                     if (response.success) {
                         if (hidden) {
-                            _this.closest('.elucidsitereport-block').removeClass('block-hidden');
+                            _this.closest('.edwiserReport-block').removeClass('block-hidden');
                             _this.data("hidden", 0);
-                            _this.html(M.util.get_string('hide', 'local_sitereport'));
+                            _this.html(M.util.get_string('hide', 'local_edwiserreports'));
                         } else {
-                            _this.closest('.elucidsitereport-block').addClass('block-hidden');
+                            _this.closest('.edwiserReport-block').addClass('block-hidden');
                             _this.data("hidden", 1);
-                            _this.html(M.util.get_string('unhide', 'local_sitereport'));
+                            _this.html(M.util.get_string('unhide', 'local_edwiserreports'));
                         }
                     }
                 }).fail(function(error) {
@@ -402,7 +402,7 @@ define([
                 ModalFactory.create({
                     title: 'Edit Block Capabilities',
                     body: fragment.loadFragment(
-                        'local_sitereport',
+                        'local_edwiserreports',
                         'get_blockscap_form',
                         contextid,
                         {
@@ -424,7 +424,7 @@ define([
                             });
 
                             fragment.loadFragment(
-                                'local_sitereport',
+                                'local_edwiserreports',
                                 'block_overview_display',
                                 contextid,
                                 {
@@ -663,7 +663,7 @@ define([
                 var filter = data.filter;
                 var cohortid = data.cohortid;
                 var block = data.block;
-                var url = M.cfg.wwwroot + "/local/sitereport/download.php?type=emailscheduled&filter=" + filter + "&cohortid=" + cohortid + "&block=" + block;
+                var url = M.cfg.wwwroot + "/local/edwiserreports/download.php?type=emailscheduled&filter=" + filter + "&cohortid=" + cohortid + "&block=" + block;
 
                 // Send ajax to save the scheduled email
                 $.ajax({
@@ -962,11 +962,11 @@ define([
             str.get_strings([
                 {
                     key:        'confirmemailremovaltitle',
-                    component:  'local_sitereport'
+                    component:  'local_edwiserreports'
                 },
                 {
                     key:        'confirmemailremovalquestion',
-                    component:  'local_sitereport'
+                    component:  'local_edwiserreports'
                 },
                 {
                     key:        'yes',
@@ -1015,7 +1015,7 @@ define([
         $(document).find('#cover-spin').show(0);
 
         $.ajax({
-            url: M.cfg.wwwroot + "/local/sitereport/download.php?type=email&filter=" + filter + "&cohortid=" + cohortid + "&block=" + block,
+            url: M.cfg.wwwroot + "/local/edwiserreports/download.php?type=email&filter=" + filter + "&cohortid=" + cohortid + "&block=" + block,
             type: "POST",
             data: root.find('form').serialize()
         }).done(function(response) {
@@ -1043,7 +1043,7 @@ define([
 
     // Rearrange Block according to the width of the page
     function rearrangeBlocks(pageWidth) {
-        var blocks ="#wdm-elucidsitereport > div";
+        var blocks ="#wdm-edwiserreports > div";
 
         if (pageWidth < 780 ) {
             $(blocks).addClass("col-lg-12");
@@ -1060,7 +1060,7 @@ define([
      * @param  {int} CONTEXTID Context Id
      */
     function emailDialogBox(url, CONTEXTID) {
-        fragment.loadFragment('local_sitereport', 'email_dialog', CONTEXTID)
+        fragment.loadFragment('local_edwiserreports', 'email_dialog', CONTEXTID)
         .done(function(html, js) {
             ModalFactory.create({
                 type: ModalFactory.types.SAVE_CANCEL,

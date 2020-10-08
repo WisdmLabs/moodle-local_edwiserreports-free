@@ -16,7 +16,7 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     local_sitereport
+ * @package     local_edwiserreports
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -25,7 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . "/cohort/lib.php");
-require_once($CFG->dirroot . "/local/sitereport/classes/constants.php");
+require_once($CFG->dirroot . "/local/edwiserreports/classes/constants.php");
 
 /**
  * Get Export Link to export data from blocks and individual page
@@ -33,7 +33,7 @@ require_once($CFG->dirroot . "/local/sitereport/classes/constants.php");
  * @param  [stdClass] $data Object for additional data
  * @return [string] moodle link detail
  */
-function local_sitereport_get_block_exportlinks($url, $data) {
+function local_edwiserreports_get_block_exportlinks($url, $data) {
     $links = new stdClass();
 
     /* Course Progress Filter Id*/
@@ -50,13 +50,13 @@ function local_sitereport_get_block_exportlinks($url, $data) {
     }
 
     $region = "block";
-    $links->blockactiveusers = local_sitereport_get_exportlinks($url, $region, "activeusers", "weekly");
-    $links->blockactivecourses = local_sitereport_get_exportlinks($url, $region, "activecourses");
-    $links->blockcourseprogress = local_sitereport_get_exportlinks($url, $region, "courseprogress", $cpfilter);
-    $links->blockcertificates = local_sitereport_get_exportlinks($url, $region, "certificates");
-    $links->blockf2fsessions = local_sitereport_get_exportlinks($url, $region, "f2fsession");
-    $links->blocklpstats = local_sitereport_get_exportlinks($url, $region, "lpstats", $lpfilter);
-    $links->blockinactiveusers = local_sitereport_get_exportlinks($url, $region, "inactiveusers", "never", false, false, "mt-20");
+    $links->blockactiveusers = local_edwiserreports_get_exportlinks($url, $region, "activeusers", "weekly");
+    $links->blockactivecourses = local_edwiserreports_get_exportlinks($url, $region, "activecourses");
+    $links->blockcourseprogress = local_edwiserreports_get_exportlinks($url, $region, "courseprogress", $cpfilter);
+    $links->blockcertificates = local_edwiserreports_get_exportlinks($url, $region, "certificates");
+    $links->blockf2fsessions = local_edwiserreports_get_exportlinks($url, $region, "f2fsession");
+    $links->blocklpstats = local_edwiserreports_get_exportlinks($url, $region, "lpstats", $lpfilter);
+    $links->blockinactiveusers = local_edwiserreports_get_exportlinks($url, $region, "inactiveusers", "never", false, false, "mt-20");
     return $links;
 }
 
@@ -69,7 +69,7 @@ function local_sitereport_get_block_exportlinks($url, $data) {
  * @param  [string] $action Action of a page report
  * @return [array] Array of export link
  */
-function local_sitereport_get_exportlinks(
+function local_edwiserreports_get_exportlinks(
         $url,
         $region,
         $blockname,
@@ -96,7 +96,7 @@ function local_sitereport_get_exportlinks(
     }
 
     $out = new stdClass();
-    $out->export = local_sitereport_get_exportlink_array($url, $blockname, $params, $region);
+    $out->export = local_edwiserreports_get_exportlink_array($url, $blockname, $params, $region);
     $out->customclass = $customclass;
     return $out;
 }
@@ -108,12 +108,12 @@ function local_sitereport_get_exportlinks(
  * @param  [array] $params Prameters for link
  * @return [array] Array of export link
  */
-function local_sitereport_get_exportlink_array($url, $blockname, $params, $region) {
+function local_edwiserreports_get_exportlink_array($url, $blockname, $params, $region) {
     $context = context_system::instance();
 
     return array(
         array(
-            "name" => get_string("csv", "local_sitereport"),
+            "name" => get_string("csv", "local_edwiserreports"),
             "icon" => "file-o",
             "link" => (new moodle_url($url, array_merge(array("format" => "csv"), $params)))->out(),
             "action" => 'csv',
@@ -122,7 +122,7 @@ function local_sitereport_get_exportlink_array($url, $blockname, $params, $regio
             "contextid" => $context->id
         ),
         array(
-            "name" => get_string("excel", "local_sitereport"),
+            "name" => get_string("excel", "local_edwiserreports"),
             "icon" => "file-excel-o",
             "link" => (new moodle_url($url, array_merge(array("format" => "excel"), $params)))->out(),
             "action" => 'excel',
@@ -131,7 +131,7 @@ function local_sitereport_get_exportlink_array($url, $blockname, $params, $regio
             "contextid" => $context->id
         ),
         array(
-            "name" => get_string("pdf", "local_sitereport"),
+            "name" => get_string("pdf", "local_edwiserreports"),
             "icon" => "file-pdf-o",
             "link" => (new moodle_url($url, array_merge(array("format" => "pdf"), $params)))->out(),
             "action" => 'pdf',
@@ -140,7 +140,7 @@ function local_sitereport_get_exportlink_array($url, $blockname, $params, $regio
             "contextid" => $context->id
         ),
         array(
-            "name" => get_string("email", "local_sitereport"),
+            "name" => get_string("email", "local_edwiserreports"),
             "icon" => "envelope-o",
             "link" => (new moodle_url($url, array_merge(array("format" => "email"), $params)))->out(),
             "action" => 'email',
@@ -149,7 +149,7 @@ function local_sitereport_get_exportlink_array($url, $blockname, $params, $regio
             "contextid" => $context->id
         ),
         array(
-            "name" => get_string("emailscheduled", "local_sitereport"),
+            "name" => get_string("emailscheduled", "local_edwiserreports"),
             "icon" => "envelope-o",
             "link" => (new moodle_url($url, array_merge(array("format" => "emailscheduled"), $params)))->out(),
             "action" => 'emailscheduled',
@@ -168,11 +168,11 @@ function local_sitereport_get_exportlink_array($url, $blockname, $params, $regio
  * @param [boolean] $rangeselector Range Selector
  * @return [array] Array of filters
  */
-function local_sitereport_get_userfilters($customfields, $cohortfilter, $rangeselector) {
+function local_edwiserreports_get_userfilters($customfields, $cohortfilter, $rangeselector) {
     $userfilters = new stdClass();
 
     if ($cohortfilter) {
-        $userfilters->cohortfilter = local_sitereport_get_cohort_filter();
+        $userfilters->cohortfilter = local_edwiserreports_get_cohort_filter();
     }
 
     if ($rangeselector) {
@@ -186,7 +186,7 @@ function local_sitereport_get_userfilters($customfields, $cohortfilter, $rangese
  * Get Cohort filter Filter for filer the data
  * @return [array] Array of Cohort filters
  */
-function local_sitereport_get_cohort_filter() {
+function local_edwiserreports_get_cohort_filter() {
     global $DB;
 
     $syscontext = context_system::instance();
@@ -203,7 +203,7 @@ function local_sitereport_get_cohort_filter() {
     }
 
     $cohortfilter = new stdClass();
-    $cohortfilter->text = get_string('cohorts', 'local_sitereport');
+    $cohortfilter->text = get_string('cohorts', 'local_edwiserreports');
     $cohortfilter->values = $cohorts;
     return $cohortfilter;
 }
@@ -213,12 +213,12 @@ function local_sitereport_get_cohort_filter() {
  * Create individual pageheader
  * @return [string] HTML header string
  */
-function local_sitereport_create_page_header($blockname, $coursename = false) {
+function local_edwiserreports_create_page_header($blockname, $coursename = false) {
     global $CFG;
 
     // Create backurl.
-    $backurl = $CFG->wwwroot . "/local/sitereport/";
-    $component = "local_sitereport";
+    $backurl = $CFG->wwwroot . "/local/edwiserreports/";
+    $component = "local_edwiserreports";
 
     // Start page header.
     $out = html_writer::start_div("d-md-flex mb-10", array("id" => "esr-page-header"));
@@ -257,7 +257,7 @@ function local_sitereport_create_page_header($blockname, $coursename = false) {
  * @param [object] $backurl Moodle Url Object
  * @return [string] Html string for back button
  */
-function local_sitereport_create_back_button($backurl) {
+function local_edwiserreports_create_back_button($backurl) {
     $html = html_writer::div(
         html_writer::link(
             $backurl,
@@ -285,7 +285,7 @@ function local_sitereport_create_back_button($backurl) {
  * @param [string] $pluginname Plugin Name
  * @return [boolean] True|False based on plugin exist
  */
-function local_sitereport_has_plugin($plugintype, $puginname) {
+function local_edwiserreports_has_plugin($plugintype, $puginname) {
     $plugins = core_plugin_manager::instance()->get_plugins_of_type($plugintype);
 
     if (array_key_exists($puginname, $plugins)) {
@@ -300,7 +300,7 @@ function local_sitereport_has_plugin($plugintype, $puginname) {
  * @param [string] Url for submiting form
  * @return [string] HTML String of schedule form
  */
-function local_sitereport_get_schedule_emailform($id, $formaction, $blockname, $region) {
+function local_edwiserreports_get_schedule_emailform($id, $formaction, $blockname, $region) {
     global $DB;
 
     // Default values for form.
@@ -316,8 +316,8 @@ function local_sitereport_get_schedule_emailform($id, $formaction, $blockname, $
     $esrnextrun = '';
 
     // Get data from table.
-    $table = "sitereport_schedemails";
-    $sql = "SELECT * FROM {sitereport_schedemails}
+    $table = "edwreports_schedemails";
+    $sql = "SELECT * FROM {edwreports_schedemails}
         WHERE blockname = :blockname
         AND component = :component";
     $params = array(
@@ -349,7 +349,7 @@ function local_sitereport_get_schedule_emailform($id, $formaction, $blockname, $
         "action" => $formaction
     ));
 
-    $out .= local_sitereport_get_email_schedule_header($esremailenable, $esrduration, $esrtime);
+    $out .= local_edwiserreports_get_email_schedule_header($esremailenable, $esrduration, $esrtime);
 
     // Start Body Div.
     $out .= html_writer::start_div("w-full my-10");
@@ -444,7 +444,7 @@ function local_sitereport_get_schedule_emailform($id, $formaction, $blockname, $
         "data-region" => "footer"
     ));
     $out .= html_writer::tag("button",
-        get_string("schedule", "local_sitereport"),
+        get_string("schedule", "local_edwiserreports"),
         array(
             "class" => "btn btn-primary",
             "type" => "button",
@@ -453,7 +453,7 @@ function local_sitereport_get_schedule_emailform($id, $formaction, $blockname, $
     );
 
     $out .= html_writer::tag("button",
-        get_string("reset", "local_sitereport"),
+        get_string("reset", "local_edwiserreports"),
         array(
             "class" => "btn btn-secondary",
             "type" => "button",
@@ -475,7 +475,7 @@ function local_sitereport_get_schedule_emailform($id, $formaction, $blockname, $
  * @param  [type] $time        [description]
  * @return [type]              [description]
  */
-function local_sitereport_get_email_schedule_header($emailenable, $duration, $time) {
+function local_edwiserreports_get_email_schedule_header($emailenable, $duration, $time) {
     // Select which sropdown has to be select.
     $daily = $weekly = $monthly = false;
     $dayofweek = $timeofday = $dayofmonth = 0;
@@ -517,21 +517,21 @@ function local_sitereport_get_email_schedule_header($emailenable, $duration, $ti
         "aria-hidden" => "true"
     ));
     // Header Duration Count.
-    $out .= html_writer::span(get_string("emailthisreport", "local_sitereport"), "my-auto mx-5");
+    $out .= html_writer::span(get_string("emailthisreport", "local_edwiserreports"), "my-auto mx-5");
 
     // Email Shcedule Duration.
-    $out .= html_writer::span(local_sitereport_get_duration_dropdown($duration), "duration-dropdown dropdown");
+    $out .= html_writer::span(local_edwiserreports_get_duration_dropdown($duration), "duration-dropdown dropdown");
 
-    $out .= html_writer::span(get_string("onevery", "local_sitereport"), "my-auto mx-5");
+    $out .= html_writer::span(get_string("onevery", "local_edwiserreports"), "my-auto mx-5");
 
     // Weeks Dropdown.
-    $out .= html_writer::span(local_sitereport_get_weeks_dropdown($dayofweek, $weekly), "weekly-dropdown dropdown");
+    $out .= html_writer::span(local_edwiserreports_get_weeks_dropdown($dayofweek, $weekly), "weekly-dropdown dropdown");
     // Times Dropdown.
-    $out .= html_writer::span(local_sitereport_get_times_dropdown($timeofday, $daily), "daily-dropdown dropdown");
+    $out .= html_writer::span(local_edwiserreports_get_times_dropdown($timeofday, $daily), "daily-dropdown dropdown");
     // Monthly Dropdown.
-    $out .= html_writer::span(local_sitereport_get_monthly_dropdown($dayofmonth, $monthly), "monthly-dropdown dropdown");
+    $out .= html_writer::span(local_edwiserreports_get_monthly_dropdown($dayofmonth, $monthly), "monthly-dropdown dropdown");
 
-    $out .= local_sitereport_create_toggle_switch_for_emails("", $emailenable, "", "", "ml-auto");
+    $out .= local_edwiserreports_create_toggle_switch_for_emails("", $emailenable, "", "", "ml-auto");
     // End Header Div.
     $out .= html_writer::end_div();
 
@@ -543,13 +543,13 @@ function local_sitereport_get_email_schedule_header($emailenable, $duration, $ti
  * @param  integer $time [description]
  * @return [type]        [description]
  */
-function local_sitereport_get_times_dropdown($time = 0, $active = false) {
+function local_edwiserreports_get_times_dropdown($time = 0, $active = false) {
     $dnone = '';
     if (!$active) {
         $dnone = "display: none;";
     }
 
-    $timesdropdown = html_writer::tag("button", get_string("times_" . $time, "local_sitereport"), array(
+    $timesdropdown = html_writer::tag("button", get_string("times_" . $time, "local_edwiserreports"), array(
         "data-value" => $time,
         "type" => "button",
         "class" => "btn btn-default btn-sm dropdown-toggle mx-5",
@@ -567,7 +567,7 @@ function local_sitereport_get_times_dropdown($time = 0, $active = false) {
 
     // Get all 7 weeks.
     for ($i = 0; $i <= 3; $i++) {
-        $str = get_string("times_". $i, "local_sitereport");
+        $str = get_string("times_". $i, "local_edwiserreports");
         $timesdropdown .= '<a class="dropdown-item" href="javascript:void(0)"
         data-value="'. $i .'" role="menuitem">'. $str .'</a>';
     }
@@ -582,13 +582,13 @@ function local_sitereport_get_times_dropdown($time = 0, $active = false) {
  * @param  [type] $time [description]
  * @return [type]      [description]
  */
-function local_sitereport_get_weeks_dropdown($time = 0, $active = false) {
+function local_edwiserreports_get_weeks_dropdown($time = 0, $active = false) {
     $dnone = '';
     if (!$active) {
         $dnone = "display: none;";
     }
 
-    $weeksdropdown = html_writer::tag("button", get_string("week_" . $time, "local_sitereport"), array(
+    $weeksdropdown = html_writer::tag("button", get_string("week_" . $time, "local_edwiserreports"), array(
         "data-value" => $time,
         "type" => "button",
         "class" => "btn btn-default btn-sm dropdown-toggle mx-5",
@@ -606,7 +606,7 @@ function local_sitereport_get_weeks_dropdown($time = 0, $active = false) {
 
     // Get all 7 weeks.
     for ($i = 0; $i <= 6; $i++) {
-        $str = get_string("week_". $i, "local_sitereport");
+        $str = get_string("week_". $i, "local_edwiserreports");
         $weeksdropdown .= '<a class="dropdown-item" href="javascript:void(0)"
         data-value="'. $i .'" role="menuitem">'. $str .'</a>';
     }
@@ -621,13 +621,13 @@ function local_sitereport_get_weeks_dropdown($time = 0, $active = false) {
  * @param  [int] $time Which quater is selected
  * @return [string] HTML string for quaterly dropdown
  */
-function local_sitereport_get_monthly_dropdown($time = 0, $active = false) {
+function local_edwiserreports_get_monthly_dropdown($time = 0, $active = false) {
     $dnone = '';
     if (!$active) {
         $dnone = "display: none;";
     }
 
-    $monthlydropdown = html_writer::tag("button", get_string("monthly_" . $time, "local_sitereport"), array(
+    $monthlydropdown = html_writer::tag("button", get_string("monthly_" . $time, "local_edwiserreports"), array(
         "data-value" => $time,
         "type" => "button",
         "class" => "btn btn-default btn-sm dropdown-toggle mx-5",
@@ -645,7 +645,7 @@ function local_sitereport_get_monthly_dropdown($time = 0, $active = false) {
 
     // Get all 7 weeks.
     for ($i = 0; $i <= 2; $i++) {
-        $str = get_string("monthly_". $i, "local_sitereport");
+        $str = get_string("monthly_". $i, "local_edwiserreports");
         $monthlydropdown .= '<a class="dropdown-item" href="javascript:void(0)"
         data-value="'. $i .'" role="menuitem">'. $str .'</a>';
     }
@@ -660,9 +660,9 @@ function local_sitereport_get_monthly_dropdown($time = 0, $active = false) {
  * @param  integer $duration [description]
  * @return [type]            [description]
  */
-function local_sitereport_get_duration_dropdown($duration = 0) {
+function local_edwiserreports_get_duration_dropdown($duration = 0) {
     // Create count dropdown.
-    $durationdropdown = html_writer::tag("button", get_string("duration_" .$duration, "local_sitereport"), array(
+    $durationdropdown = html_writer::tag("button", get_string("duration_" .$duration, "local_edwiserreports"), array(
         "data-value" => $duration,
         "type" => "button",
         "class" => "btn btn-default btn-sm dropdown-toggle",
@@ -678,7 +678,7 @@ function local_sitereport_get_duration_dropdown($duration = 0) {
 
     for ($i = 0; $i <= 2; $i++) {
         $durationdropdown .= '<a class="dropdown-item" href="javascript:void(0)"
-        data-value="'. $i .'" role="menuitem">'. get_string("duration_" .$i, "local_sitereport") .'</a>';
+        data-value="'. $i .'" role="menuitem">'. get_string("duration_" .$i, "local_edwiserreports") .'</a>';
     }
 
     $durationdropdown .= html_writer::end_div();
@@ -690,11 +690,11 @@ function local_sitereport_get_duration_dropdown($duration = 0) {
  * Get Scheduled email list
  * @return [type] [description]
  */
-function local_sitereport_get_schedule_emaillist() {
+function local_edwiserreports_get_schedule_emaillist() {
     global $DB;
 
     $emails = array();
-    $rec = $DB->get_records('sitereport_schedemails');
+    $rec = $DB->get_records('edwreports_schedemails');
     foreach ($rec as $key => $val) {
         // If it dosent have email data.
         if (!$emaildata = json_decode($val->emaildata)) {
@@ -713,12 +713,12 @@ function local_sitereport_get_schedule_emaillist() {
             $data["esrnextrun"] = date("d M y", $emailinfo->esrnextrun);
             $data["esrfrequency"] = $emailinfo->esrfrequency;
             $data["esrcomponent"] = $val->blockname;
-            $data["esrmanage"] = local_sitereport_create_toggle_switch_for_emails(
+            $data["esrmanage"] = local_edwiserreports_create_toggle_switch_for_emails(
                 $key,
                 $emailinfo->esremailenable,
                 $val->blockname,
                 $val->component
-            ) . local_sitereport_create_manage_icons_for_emaillist(
+            ) . local_edwiserreports_create_manage_icons_for_emaillist(
                 $val->blockname,
                 $val->component,
                 $emailinfo->esremailenable
@@ -734,7 +734,7 @@ function local_sitereport_get_schedule_emaillist() {
  * @param  [bolean] $select True (If selected)
  * @return [string] Html string to render select
  */
-function local_sitereport_carete_select_icons_for_emaillist($select) {
+function local_edwiserreports_carete_select_icons_for_emaillist($select) {
     $selectparam = array(
         "class" => "checkbox-custom checkbox-primary",
         "type" => "checkbox"
@@ -755,9 +755,9 @@ function local_sitereport_carete_select_icons_for_emaillist($select) {
  * Create mange icons to manage email list
  * @return [string] Html manage icon string
  */
-function local_sitereport_create_manage_icons_for_emaillist($id, $blockname, $region, $enable) {
+function local_edwiserreports_create_manage_icons_for_emaillist($id, $blockname, $region, $enable) {
     $manage = html_writer::start_span("row esr-manage-scheduled-emails m-0 p-0 justify-content-center");
-    $manage .= local_sitereport_create_toggle_switch_for_emails(
+    $manage .= local_edwiserreports_create_toggle_switch_for_emails(
         $id,
         $enable,
         $blockname,
@@ -772,7 +772,7 @@ function local_sitereport_create_manage_icons_for_emaillist($id, $blockname, $re
             "data-id" => $id,
             "data-sesskey" => sesskey(),
             "data-toggle" => "tooltip",
-            "title" => get_string('edit', 'local_sitereport')
+            "title" => get_string('edit', 'local_edwiserreports')
         )
     );
     $manage .= html_writer::link('javascript:void(0)',
@@ -784,7 +784,7 @@ function local_sitereport_create_manage_icons_for_emaillist($id, $blockname, $re
             "data-id" => $id,
             "data-sesskey" => sesskey(),
             "data-toggle" => "tooltip",
-            "title" => get_string('delete', 'local_sitereport')
+            "title" => get_string('delete', 'local_edwiserreports')
         )
     );
 
@@ -795,7 +795,7 @@ function local_sitereport_create_manage_icons_for_emaillist($id, $blockname, $re
  * Create toggle switch to enable disable emails
  * @return [string] Html string for toggle switch
  */
-function local_sitereport_create_toggle_switch_for_emails($id, $emailenable, $blockname, $region, $customclass = '') {
+function local_edwiserreports_create_toggle_switch_for_emails($id, $emailenable, $blockname, $region, $customclass = '') {
     $toggleid = "esr-toggle-" . $blockname . "-" . $region . "-" . $id;
     $switchparams = array(
         "id" => $toggleid,
@@ -838,18 +838,18 @@ function local_sitereport_create_toggle_switch_for_emails($id, $emailenable, $bl
  * @param  [int] $time Time
  * @return [int] Run time
  */
-function local_sitereport_get_email_schedule_next_run($duration, $time) {
+function local_edwiserreports_get_email_schedule_next_run($duration, $time) {
     $timenow = time();
     $frequency = '';
     // According to duation and time calculate the next scheduled time.
     switch($duration) {
         case LOCAL_SITEREPORT_ESR_LOCAL_SITEREPORT_WEEKLY_EMAIL:
-            $day = get_string("week_" . $time, "local_sitereport");
+            $day = get_string("week_" . $time, "local_edwiserreports");
             $weekstr = 'next ' . $day;
 
             // Calculate time.
             $schedtime = strtotime($weekstr);
-            $frequency = get_string("everyweeks", "local_sitereport", array("day" => $day));
+            $frequency = get_string("everyweeks", "local_edwiserreports", array("day" => $day));
             break;
         case LOCAL_SITEREPORT_ESR_LOCAL_SITEREPORT_MONTHLY_EMAIL:
             // Get last date of the month.
@@ -866,7 +866,7 @@ function local_sitereport_get_email_schedule_next_run($duration, $time) {
 
             // Calculate time.
             $schedtime = strtotime($monthstr);
-            $frequency = get_string("everymonths", "local_sitereport", array("time" => $day));
+            $frequency = get_string("everymonths", "local_edwiserreports", array("time" => $day));
 
             // If time has passed the add one month.
             if ($timenow > $schedtime) {
@@ -881,13 +881,13 @@ function local_sitereport_get_email_schedule_next_run($duration, $time) {
             $schedtime = strtotime($dailystr) + $time * 60 * 60;
 
             if ($time < 10) {
-                $day = get_string("time0".$time, "local_sitereport");
+                $day = get_string("time0".$time, "local_edwiserreports");
             } else {
-                $day = get_string("time".$time, "local_sitereport");
+                $day = get_string("time".$time, "local_edwiserreports");
             }
 
             // Get frequency string.
-            $frequency = get_string("everydays", "local_sitereport", array("time" => $day));
+            $frequency = get_string("everydays", "local_edwiserreports", array("time" => $day));
 
             // If scheduledtime has been passed then add one day.
             if ($timenow > $schedtime) {
@@ -903,16 +903,16 @@ function local_sitereport_get_email_schedule_next_run($duration, $time) {
  * Prepare export filename
  * @param [array] $param Params to prepare filename
  */
-function local_sitereport_prepare_export_filename($params) {
+function local_edwiserreports_prepare_export_filename($params) {
     return "report_" . implode("_", $params);
 }
 
-function local_sitereport_get_required_strings_for_js() {
+function local_edwiserreports_get_required_strings_for_js() {
     global $PAGE;
 
     $stringman = get_string_manager();
-    $strings = $stringman->load_component_strings('local_sitereport', 'en');
-    $PAGE->requires->strings_for_js(array_keys($strings), 'local_sitereport');
+    $strings = $stringman->load_component_strings('local_edwiserreports', 'en');
+    $PAGE->requires->strings_for_js(array_keys($strings), 'local_edwiserreports');
 
     // Require string from role component.
     $str = array(
@@ -927,9 +927,9 @@ function local_sitereport_get_required_strings_for_js() {
 /**
  * Reset Site Report Page to default
  */
-function reset_sitereport_page_default() {
+function reset_edwiserreports_page_default() {
     global $CFG, $DB, $USER;
-    $blocks = \local_sitereport\utility::get_reports_block();
+    $blocks = \local_edwiserreports\utility::get_reports_block();
 
     foreach ($blocks as $block) {
         $prefname = 'pref_' . $block->classname;
@@ -937,7 +937,7 @@ function reset_sitereport_page_default() {
         unset($USER->preference[$prefname]);
     }
 
-    redirect($CFG->wwwroot . '/local/sitereport/index.php');
+    redirect($CFG->wwwroot . '/local/edwiserreports/index.php');
 }
 
 /**
@@ -946,9 +946,9 @@ function reset_sitereport_page_default() {
 function is_block_present_indashboard() {
     // Check if any of the block is present.
     $hasblock = false;
-    $blocks = \local_sitereport\utility::get_reports_block();
+    $blocks = \local_edwiserreports\utility::get_reports_block();
     foreach ($blocks as $key => $block) {
-        if (has_capability('report/sitereport_' . $block->classname . ':view', context_system::instance())) {
+        if (has_capability('report/edwiserreports_' . $block->classname . ':view', context_system::instance())) {
             $hasblock = true;
             continue;
         }

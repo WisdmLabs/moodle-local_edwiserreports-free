@@ -1,9 +1,9 @@
 define([
     "jquery",
-    "local_sitereport/defaultconfig",
+    "local_edwiserreports/defaultconfig",
     "./common",
-    "local_sitereport/jquery.dataTables",
-    "local_sitereport/dataTables.bootstrap4"
+    "local_edwiserreports/jquery.dataTables",
+    "local_edwiserreports/dataTables.bootstrap4"
 ], function($, cfg, common) {
     var liveUsersTable = null;
     var panel = cfg.getPanel("#liveusersblock");

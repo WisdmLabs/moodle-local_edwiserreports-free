@@ -1,9 +1,9 @@
 define([
     'jquery',
     'core/chartjs',
-    'local_sitereport/defaultconfig',
-    'local_sitereport/variables',
-    'local_sitereport/select2'
+    'local_edwiserreports/defaultconfig',
+    'local_edwiserreports/variables',
+    'local_edwiserreports/select2'
 ], function ($, Chart, cfg, V) {
     function init(notifyListner) {
         var lpChart = null;

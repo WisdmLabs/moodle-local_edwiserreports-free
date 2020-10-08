@@ -1,13 +1,13 @@
 define([
-    'local_sitereport/block_accessinfo',
-    'local_sitereport/block_activecourses',
-    'local_sitereport/block_activeusers',
-    'local_sitereport/block_courseprogress',
-    'local_sitereport/block_inactiveusers',
-    'local_sitereport/block_lpstats',
-    'local_sitereport/block_realtimeusers',
-    'local_sitereport/block_todaysactivity',
-    'local_sitereport/common'
+    'local_edwiserreports/block_accessinfo',
+    'local_edwiserreports/block_activecourses',
+    'local_edwiserreports/block_activeusers',
+    'local_edwiserreports/block_courseprogress',
+    'local_edwiserreports/block_inactiveusers',
+    'local_edwiserreports/block_lpstats',
+    'local_edwiserreports/block_realtimeusers',
+    'local_edwiserreports/block_todaysactivity',
+    'local_edwiserreports/common'
 ], function (
     accessInfo,
     activeCourses,

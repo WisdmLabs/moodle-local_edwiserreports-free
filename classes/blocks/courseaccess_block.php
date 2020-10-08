@@ -16,13 +16,13 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     local_sitereport
+ * @package     local_edwiserreports
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_sitereport;
+namespace local_edwiserreports;
 use stdClass;
 use context_course;
 
@@ -73,7 +73,7 @@ class courseaccess_block extends utility {
             } else {
                 $activitycompletion = get_string(
                     'activitycompleted',
-                    'local_sitereport',
+                    'local_edwiserreports',
                     array(
                         "completed" => $completion["completedactivities"],
                         "total" => $completion["totalactivities"]

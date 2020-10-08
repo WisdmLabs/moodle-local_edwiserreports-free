@@ -17,7 +17,7 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     local_sitereport
+ * @package     local_edwiserreports
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $tasks = [
     [
-        'classname' => 'local_sitereport\task\send_scheduled_emails',
+        'classname' => 'local_edwiserreports\task\send_scheduled_emails',
         'blocking' => 0,
         'minute' => '*',
         'hour' => '*',
@@ -36,7 +36,7 @@ $tasks = [
         'dayofweek' => '*',
     ],
     [
-        'classname' => '\local_sitereport\task\update_course_progress_data',
+        'classname' => '\local_edwiserreports\task\update_course_progress_data',
         'blocking' => 0,
         'minute' => '*/5',
         'hour' => '*',

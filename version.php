@@ -16,14 +16,14 @@
 /**
  * Plugin version and other meta-data are defined here.
  *
- * @package     local_sitereport
+ * @package     local_edwiserreports
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component = 'local_sitereport';
+$plugin->component = 'local_edwiserreports';
 $plugin->release = '1.0.0';
 $plugin->version = 2020100700;
 $plugin->requires = 2018120300;

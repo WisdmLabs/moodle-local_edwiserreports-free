@@ -17,14 +17,14 @@
 /**
  * Local Course Progress Manager Plugin Database Comtroller.
  *
- * @package     local_sitereport
+ * @package     local_edwiserreports
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 /* Local course progress manager namespace */
-namespace local_sitereport\observers;
+namespace local_edwiserreports\observers;
 
 defined('MOODLE_INTERNAL') || die();
 

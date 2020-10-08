@@ -16,13 +16,13 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     local_sitereport
+ * @package     local_edwiserreports
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_sitereport;
+namespace local_edwiserreports;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -30,7 +30,7 @@ use stdClass;
 use context_course;
 use html_writer;
 
-require_once($CFG->dirroot . '/local/sitereport/classes/blocks/courseprogressblock.php');
+require_once($CFG->dirroot . '/local/edwiserreports/classes/blocks/courseprogressblock.php');
 
 /**
  * Class Course Completion Block
@@ -134,13 +134,13 @@ class completionblock extends utility {
         global $DB;
 
         // Get completions.
-        $compobj = new \local_sitereport\completions();
+        $compobj = new \local_edwiserreports\completions();
         $completions = $compobj->get_course_completions($courseid);
 
         if (isset($completions[$userid]) && $completions[$userid]->completiontime) {
             return date("d M Y", $completions[$userid]->completiontime);
         } else {
-            return get_string("notyet", "local_sitereport");
+            return get_string("notyet", "local_edwiserreports");
         }
     }
 
@@ -150,14 +150,14 @@ class completionblock extends utility {
      */
     public static function get_header() {
         return array(
-            get_string("fullname", "local_sitereport"),
-            get_string("enrolledon", "local_sitereport"),
-            get_string("enrolltype", "local_sitereport"),
-            get_string("noofvisits", "local_sitereport"),
-            get_string("coursecompletion", "local_sitereport"),
-            get_string("completiontime", "local_sitereport"),
-            get_string("grade", "local_sitereport"),
-            get_string("lastaccess", "local_sitereport")
+            get_string("fullname", "local_edwiserreports"),
+            get_string("enrolledon", "local_edwiserreports"),
+            get_string("enrolltype", "local_edwiserreports"),
+            get_string("noofvisits", "local_edwiserreports"),
+            get_string("coursecompletion", "local_edwiserreports"),
+            get_string("completiontime", "local_edwiserreports"),
+            get_string("grade", "local_edwiserreports"),
+            get_string("lastaccess", "local_edwiserreports")
         );
     }
 

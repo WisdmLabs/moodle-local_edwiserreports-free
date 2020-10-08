@@ -16,13 +16,13 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     local_sitereport
+ * @package     local_edwiserreports
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_sitereport;
+namespace local_edwiserreports;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -47,15 +47,15 @@ class certificatesblock extends block_base {
     public function get_layout() {
         global $CFG;
 
-        if (!local_sitereport_has_plugin("mod", "customcert")) {
+        if (!local_edwiserreports_has_plugin("mod", "customcert")) {
             return false;
         }
 
         // Layout related data.
         $this->layout->id = 'certificatesblock';
-        $this->layout->name = get_string('certificatestatsheader', 'local_sitereport');
-        $this->layout->info = get_string('certificatestatsblockhelp', 'local_sitereport');
-        $this->layout->morelink = new moodle_url($CFG->wwwroot . "/local/sitereport/certificates.php");
+        $this->layout->name = get_string('certificatestatsheader', 'local_edwiserreports');
+        $this->layout->info = get_string('certificatestatsblockhelp', 'local_edwiserreports');
+        $this->layout->morelink = new moodle_url($CFG->wwwroot . "/local/edwiserreports/certificates.php");
         $this->layout->hasdownloadlink = true;
         $this->layout->filters = '';
 
@@ -81,7 +81,7 @@ class certificatesblock extends block_base {
         $response = new stdClass();
         $response->data = new stdClass();
         // Get response from cache.
-        $cache = cache::make('local_sitereport', 'certificates');
+        $cache = cache::make('local_edwiserreports', 'certificates');
         if (!$response = $cache->get('response')) {
             $response = new stdClass();
             $response->data = new stdClass();
@@ -118,7 +118,7 @@ class certificatesblock extends block_base {
 
             $modulecontext = context_module::instance($cm->id);
             // Get only enrolled students.
-            $enrolledusers = \local_sitereport\utility::get_enrolled_students($cm->id, $modulecontext);
+            $enrolledusers = \local_edwiserreports\utility::get_enrolled_students($cm->id, $modulecontext);
 
             $sql = "SELECT * FROM {customcert_issues}
                 WHERE customcertid = :customcertid";
@@ -164,7 +164,7 @@ class certificatesblock extends block_base {
     public static function get_issued_users($certid, $cohortid = false) {
         global $DB;
 
-        $cache = cache::make('local_sitereport', 'certificates');
+        $cache = cache::make('local_edwiserreports', 'certificates');
         $cachekey = "certificates-userslist-" . $certid . "-";
         if ($cohortid) {
             $cachekey .= $cohortid;
@@ -221,17 +221,17 @@ class certificatesblock extends block_base {
 
         $params = array('courseid' => $course->id, 'userid' => $issue->userid);
         $gradeval = 0;
-        $grade = \local_sitereport\utility::get_grades($course->id, $issue->userid);
+        $grade = \local_edwiserreports\utility::get_grades($course->id, $issue->userid);
         if ($grade) {
             $gradeval = $grade->finalgrade;
         }
 
         $enrolment = $DB->get_record_sql($enrolsql, $params, IGNORE_MULTIPLE);
-        $enrolmentdate = get_string("notenrolled", "local_sitereport");
+        $enrolmentdate = get_string("notenrolled", "local_edwiserreports");
         $progressper = 0;
         if ($enrolment) {
             $enrolmentdate = date("d M y", $enrolment->timemodified);
-            $completion = \local_sitereport\utility::get_course_completion_info($course, $user->id);
+            $completion = \local_edwiserreports\utility::get_course_completion_info($course, $user->id);
 
             if (isset($completion["progresspercentage"])) {
                 $progressper = $completion["progresspercentage"];
@@ -275,10 +275,10 @@ class certificatesblock extends block_base {
      */
     public static function get_headers() {
         $headers = array(
-            get_string("name", "local_sitereport"),
-            get_string("coursename", "local_sitereport"),
-            get_string("issued", "local_sitereport"),
-            get_string("notissued", "local_sitereport")
+            get_string("name", "local_edwiserreports"),
+            get_string("coursename", "local_edwiserreports"),
+            get_string("issued", "local_edwiserreports"),
+            get_string("notissued", "local_edwiserreports")
         );
         return $headers;
     }
@@ -289,12 +289,12 @@ class certificatesblock extends block_base {
      */
     public static function get_headers_report() {
         $headers = array(
-            get_string("username", "local_sitereport"),
-            get_string("useremail", "local_sitereport"),
-            get_string("dateofissue", "local_sitereport"),
-            get_string("dateofenrol", "local_sitereport"),
-            get_string("grade", "local_sitereport"),
-            get_string("courseprogress", "local_sitereport")
+            get_string("username", "local_edwiserreports"),
+            get_string("useremail", "local_edwiserreports"),
+            get_string("dateofissue", "local_edwiserreports"),
+            get_string("dateofenrol", "local_edwiserreports"),
+            get_string("grade", "local_edwiserreports"),
+            get_string("courseprogress", "local_edwiserreports")
         );
         return $headers;
     }

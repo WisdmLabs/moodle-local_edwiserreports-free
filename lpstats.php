@@ -16,13 +16,13 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     local_sitereport
+ * @package     local_edwiserreports
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_sitereport;
+namespace local_edwiserreports;
 
 use context_system;
 use moodle_url;
@@ -34,24 +34,24 @@ require_login();
 
 // System Context.
 $context = context_system::instance();
-$component = "local_sitereport";
+$component = "local_edwiserreports";
 
 // The requested section isn't in the admin tree
 // It could be because the user has inadequate capapbilities or because the section doesn't exist.
-if (!has_capability('report/local_sitereport:view', $context)) {
+if (!has_capability('report/local_edwiserreports:view', $context)) {
     // The requested section could depend on a different capability
     // But most likely the user has inadequate capabilities.
     print_error('accessdenied', 'admin');
 }
 
 // Require JS for lpstats page.
-$PAGE->requires->js_call_amd('local_sitereport/lpstats', 'init', array($context->id));
+$PAGE->requires->js_call_amd('local_edwiserreports/lpstats', 'init', array($context->id));
 
 // Require CSS for lpstats page.
-$PAGE->requires->css('/local/sitereport/styles/select2.min.css');
+$PAGE->requires->css('/local/edwiserreports/styles/select2.min.css');
 
 // Page URL.
-$pageurl = new moodle_url($CFG->wwwroot . "/local/sitereport/lpstats.php");
+$pageurl = new moodle_url($CFG->wwwroot . "/local/edwiserreports/lpstats.php");
 
 // Set page context.
 $PAGE->set_context($context);
@@ -60,11 +60,11 @@ $PAGE->set_context($context);
 $PAGE->set_url($pageurl);
 
 // Get lpstats renderer.
-$lpstatsrenderable = new \local_sitereport\output\lpstats_renderable();
+$lpstatsrenderable = new \local_edwiserreports\output\lpstats_renderable();
 $output = $PAGE->get_renderer($component)->render($lpstatsrenderable);
 
 // Print output in page.
 echo $OUTPUT->header();
-echo $OUTPUT->heading(local_sitereport_create_page_header("lpstats"), "1", "page-title p-5");
+echo $OUTPUT->heading(local_edwiserreports_create_page_header("lpstats"), "1", "page-title p-5");
 echo $output;
 echo $OUTPUT->footer();

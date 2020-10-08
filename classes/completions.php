@@ -16,7 +16,7 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     local_sitereport
+ * @package     local_edwiserreports
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -26,12 +26,12 @@
  * Define all constants for use
  */
 
-namespace local_sitereport;
+namespace local_edwiserreports;
 
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir . '/completionlib.php');
-require_once($CFG->dirroot . '/local/sitereport/classes/utility.php');
+require_once($CFG->dirroot . '/local/edwiserreports/classes/utility.php');
 
 use completion_info;
 use core_completion\progress;
@@ -46,7 +46,7 @@ class completions {
      * Completions table name for plugin
      * @var string
      */
-    public $tablename = "sitereport_course_progress";
+    public $tablename = "edwreports_course_progress";
 
 
     /**
@@ -125,7 +125,7 @@ class completions {
 
                     // Get Course Grades.
                     $completionobj->grade = 0;
-                    $grades = \local_sitereport\utility::get_grades($course->id, $user->id);
+                    $grades = \local_edwiserreports\utility::get_grades($course->id, $user->id);
                     // If course grade is set then update course grade.
                     if ($grades && $grades->finalgrade) {
                         $coursegrade = $grades->finalgrade;

@@ -16,25 +16,25 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     local_sitereport
+ * @package     local_edwiserreports
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_sitereport;
+namespace local_edwiserreports;
 
 use context_course;
 use moodle_url;
 use context_system;
-use \local_sitereport\output\courseaccess;
+use \local_edwiserreports\output\courseaccess;
 
 require_once(__DIR__ . '/../../config.php');
 require_once('classes/output/renderable.php');
 
 require_login();
 
-local_sitereport_get_required_strings_for_js();
+local_edwiserreports_get_required_strings_for_js();
 
 $context = context_system::instance();
 
@@ -44,18 +44,18 @@ $params = array(
     "courseid" => $courseid
 );
 
-$pageurl = new moodle_url($CFG->wwwroot . "/local/sitereport/courseaccess.php", $params);
+$pageurl = new moodle_url($CFG->wwwroot . "/local/edwiserreports/courseaccess.php", $params);
 
 $PAGE->set_context($coursecontext);
 $PAGE->set_url($pageurl);
-$PAGE->requires->js_call_amd('local_sitereport/courseaccess', 'init', array($coursecontext->id));
+$PAGE->requires->js_call_amd('local_edwiserreports/courseaccess', 'init', array($coursecontext->id));
 
-$courseaccess = new local_sitereport\output\courseaccess();
-$courseaccessrenderable = new \local_sitereport\output\courseaccess_renderable();
+$courseaccess = new local_edwiserreports\output\courseaccess();
+$courseaccessrenderable = new \local_edwiserreports\output\courseaccess_renderable();
 $output = $courseaccess->get_renderer()->render($courseaccessrenderable);
 
 $course = get_course($courseid);
-$PAGE->set_heading($course->fullname . ": " . get_string("courseaccessheader", "local_sitereport"));
+$PAGE->set_heading($course->fullname . ": " . get_string("courseaccessheader", "local_edwiserreports"));
 
 echo $OUTPUT->header();
 echo $output;

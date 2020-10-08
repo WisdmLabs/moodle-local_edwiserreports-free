@@ -16,12 +16,12 @@
 /**
  * Reports block external apis
  *
- * @package     local_sitereport
+ * @package     local_edwiserreports
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_sitereport\external;
+namespace local_edwiserreports\external;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -32,16 +32,16 @@ use context_system;
 
 require_once($CFG->libdir.'/externallib.php');
 /**
- * Trait implementing the external function local_sitereport_complete_sitereport_installation.
+ * Trait implementing the external function local_edwiserreports_complete_edwiserreports_installation.
  */
-trait complete_sitereport_installation {
+trait complete_edwiserreports_installation {
 
     /**
      * Describes the structure of parameters for the function.
      *
      * @return external_function_parameters
      */
-    public static function complete_sitereport_installation_parameters() {
+    public static function complete_edwiserreports_installation_parameters() {
         return new external_function_parameters(
             array ()
         );
@@ -50,11 +50,11 @@ trait complete_sitereport_installation {
      * Delete Notification From Log
      * @param Integer $logid Notification Log ID
      **/
-    public static function complete_sitereport_installation() {
+    public static function complete_edwiserreports_installation() {
         $res = new stdClass();
 
-        $configs = get_config('local_sitereport');
-        if (!$configs && !$configs->sitereportinstallation) {
+        $configs = get_config('local_edwiserreports');
+        if (!$configs && !$configs->edwiserreportsinstallation) {
             $res->success = false;
             $res->value  = '';
             return $res;
@@ -72,7 +72,7 @@ trait complete_sitereport_installation {
             $roles = get_all_roles();
 
             foreach (array_keys($roles) as $roleid) {
-                $capname = 'report/sitereport_' . $blockname . 'block:view';
+                $capname = 'report/edwiserreports_' . $blockname . 'block:view';
                 if (is_array($allowroleids) && in_array($roleid, $allowroleids)) {
                     assign_capability($capname, CAP_ALLOW, $roleid, $context->id, true);
                 } else {
@@ -84,7 +84,7 @@ trait complete_sitereport_installation {
         }
 
         if ($capchanged) {
-            set_config('sitereportinstallation', false, 'local_sitereport');
+            set_config('edwiserreportsinstallation', false, 'local_edwiserreports');
             $res->success = true;
         } else {
             $res->success = false;
@@ -97,7 +97,7 @@ trait complete_sitereport_installation {
      *
      * @return external_single_structure
      */
-    public static function complete_sitereport_installation_returns() {
+    public static function complete_edwiserreports_installation_returns() {
         return new \external_single_structure(
             array(
                 'success' => new external_value(PARAM_RAW, 'Success Status', null),

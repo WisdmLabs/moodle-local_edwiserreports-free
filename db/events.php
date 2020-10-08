@@ -17,7 +17,7 @@
 /**
  * Local Course Progress Manager Plugin Events Observer.
  *
- * @package     local_sitereport
+ * @package     local_edwiserreports
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -25,8 +25,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$observerfile = '/local/sitereport/classes/observer.php';
-$observerclassname = '\local_sitereport\observers\event_observer';
+$observerfile = '/local/edwiserreports/classes/observer.php';
+$observerclassname = '\local_edwiserreports\observers\event_observer';
 
 $observers = array(
     // Event observer for role assignment.

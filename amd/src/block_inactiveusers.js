@@ -1,11 +1,11 @@
 define([
     'jquery',
     'core/chartjs',
-    'local_sitereport/defaultconfig',
-    'local_sitereport/variables',
+    'local_edwiserreports/defaultconfig',
+    'local_edwiserreports/variables',
     './common',
-    'local_sitereport/jquery.dataTables',
-    'local_sitereport/dataTables.bootstrap4'
+    'local_edwiserreports/jquery.dataTables',
+    'local_edwiserreports/dataTables.bootstrap4'
  ], function (
     $,
     Chart,

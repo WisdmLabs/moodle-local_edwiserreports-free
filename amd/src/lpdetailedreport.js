@@ -1,7 +1,7 @@
 define([
     'jquery',
     'core/str',
-    'local_sitereport/variables'
+    'local_edwiserreports/variables'
 ], function(
     $,
     str,
@@ -19,7 +19,7 @@ define([
      * Plugin Component
      * @type {String}
      */
-    var component = 'local_sitereport';
+    var component = 'local_edwiserreports';
 
     /**
      * Checkbox selector

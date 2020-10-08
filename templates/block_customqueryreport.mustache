@@ -3,7 +3,7 @@
         <div class="panel-header clearfix">
             <div class="panel-title px-0">
                 <strong>
-                    {{#str}} customqueryreport, local_sitereport {{/str}}
+                    {{#str}} customqueryreport, local_edwiserreports {{/str}}
                 </strong>
             </div>
         </div>
@@ -12,11 +12,11 @@
               <div class="btn-group" data-toggle="buttons" role="group">
                   <label class="btn btn-outline btn-primary active">
                       <input type="radio" name="reporttype" autocomplete="off" value="courses" checked="" class="d-none">
-                      {{#str}} course, local_sitereport {{/str}}
+                      {{#str}} course, local_edwiserreports {{/str}}
                   </label>
                   <label class="btn btn-outline btn-primary">
                       <input type="radio" name="reporttype" autocomplete="off" value="activities" class="d-none">
-                      {{#str}} activity, local_sitereport {{/str}}
+                      {{#str}} activity, local_edwiserreports {{/str}}
                   </label>
               </div>
           </div>
@@ -24,42 +24,42 @@
 		        <div class="col-md-4">
 		          	<label>Learning Programs</label>
 		          	<select id="ed_lps" class="js-states form-control select25">
-		          		{{> local_sitereport/customquery_lpoptions}}
+		          		{{> local_edwiserreports/customquery_lpoptions}}
 		          	</select>
 		        </div>
 		        <div class="col-md-4">
 		          	<label>Courses</label>
 		          	<select id="ed_courses" class="js-states form-control select25">
-			            {{> local_sitereport/customquery_options}}
+			            {{> local_edwiserreports/customquery_options}}
 		          	</select>
 		        </div>
                 <div class="col-md-12 row px-0 mx-0 mt-2">
-                    {{> local_sitereport/customquery_cohortoptions }}
+                    {{> local_edwiserreports/customquery_cohortoptions }}
 		            </div>
           	</div>
           	<div class="row mx-0">
           		<div class="mr-25 mt-25 pl-15">
-          			<label>{{#str}} enrolmentrangeselector, local_sitereport {{/str}}</label>
+          			<label>{{#str}} enrolmentrangeselector, local_edwiserreports {{/str}}</label>
           			<div class="form-group w-250 mb-0">
                         <div class="input-search input-search-dark">
-                            <input type="text" id="customqueryenrollstart" placeholder="{{#str}} selectdate, local_sitereport{{/str}}" class="form-control rounded w-full" data-input/>
+                            <input type="text" id="customqueryenrollstart" placeholder="{{#str}} selectdate, local_edwiserreports{{/str}}" class="form-control rounded w-full" data-input/>
                             <button type="button" class="input-search-close icon wb-close" aria-label="Close"></button>
                         </div>
                         <div class="input-search input-search-dark mt-10">
-                            <input type="text" id="customqueryenrollend" placeholder="{{#str}} selectdate, local_sitereport{{/str}}" class="form-control rounded w-full" data-input/>
+                            <input type="text" id="customqueryenrollend" placeholder="{{#str}} selectdate, local_edwiserreports{{/str}}" class="form-control rounded w-full" data-input/>
                             <button type="button" class="input-search-close icon wb-close" aria-label="Close"></button>
                         </div>
                     </div>
           		</div>
           		<div class="mr-25 mt-25 pl-25">
-          			<label>{{#str}} completionrangeselector, local_sitereport {{/str}}</label>
+          			<label>{{#str}} completionrangeselector, local_edwiserreports {{/str}}</label>
           			<div class="form-group w-250 mb-0">
                         <div class="input-search input-search-dark">
-                            <input type="text" id="customquerycompletionstart" placeholder="{{#str}} selectdate, local_sitereport{{/str}}" class="form-control rounded w-full" data-input/>
+                            <input type="text" id="customquerycompletionstart" placeholder="{{#str}} selectdate, local_edwiserreports{{/str}}" class="form-control rounded w-full" data-input/>
                             <button type="button" class="input-search-close icon wb-close" aria-label="Close"></button>
                         </div>
                         <div class="input-search input-search-dark mt-10">
-                            <input type="text" id="customquerycompletionend" placeholder="{{#str}} selectdate, local_sitereport{{/str}}" class="form-control rounded w-full" data-input/>
+                            <input type="text" id="customquerycompletionend" placeholder="{{#str}} selectdate, local_edwiserreports{{/str}}" class="form-control rounded w-full" data-input/>
                             <button type="button" class="input-search-close icon wb-close" aria-label="Close"></button>
                         </div>
                     </div>
@@ -67,17 +67,17 @@
           	</div>
           	<div class="row mt-25">
           		<div class="col-md-4">
-	          		<label>{{#str}} reportfields, local_sitereport {{/str}}</label>
+	          		<label>{{#str}} reportfields, local_edwiserreports {{/str}}</label>
           		</div>
           	</div>
             <div class="userfields example-wrap reportfields">
               <h5 class="example-title">
-                <strong> {{#str}} userfields, local_sitereport {{/str}} </strong>
+                <strong> {{#str}} userfields, local_edwiserreports {{/str}} </strong>
                 <a class="unselect-userfields pull-right text-sm" href="javascript:void(0)">
-                    <small>{{#str}} unselectall, local_sitereport {{/str}}</small>
+                    <small>{{#str}} unselectall, local_edwiserreports {{/str}}</small>
                 </a>
                 <a class="select-userfields pull-right text-sm hidden" href="javascript:void(0)">
-                    <small>{{#str}} selectall, local_sitereport {{/str}}</small>
+                    <small>{{#str}} selectall, local_edwiserreports {{/str}}</small>
                 </a>
               </h5>
               <div class="row">
@@ -93,12 +93,12 @@
             </div>
             <div class="coursefields example-wrap reportfields">
                 <h5 class="example-title">
-                    <strong> {{#str}} coursefields, local_sitereport {{/str}} </strong>
+                    <strong> {{#str}} coursefields, local_edwiserreports {{/str}} </strong>
                     <a class="unselect-coursefields pull-right text-sm" href="javascript:void(0)">
-                        <small>{{#str}} unselectall, local_sitereport {{/str}}</small>
+                        <small>{{#str}} unselectall, local_edwiserreports {{/str}}</small>
                     </a>
                     <a class="select-coursefields pull-right text-sm hidden" href="javascript:void(0)">
-                        <small>{{#str}} selectall, local_sitereport {{/str}}</small>
+                        <small>{{#str}} selectall, local_edwiserreports {{/str}}</small>
                     </a>
                 </h5>
             	<div class="row">
@@ -115,12 +115,12 @@
 
             <div class="lpreportfields example-wrap reportfields">
               <h5 class="example-title">
-                  <strong> {{#str}} lpfields, local_sitereport {{/str}} </strong>
+                  <strong> {{#str}} lpfields, local_edwiserreports {{/str}} </strong>
                   <a class="unselect-lpreportfields pull-right text-sm" href="javascript:void(0)">
-                  <small>{{#str}} unselectall, local_sitereport {{/str}}</small>
+                  <small>{{#str}} unselectall, local_edwiserreports {{/str}}</small>
                   </a>
                   <a class="select-lpreportfields pull-right text-sm hidden" href="javascript:void(0)">
-                      <small>{{#str}} selectall, local_sitereport {{/str}}</small>
+                      <small>{{#str}} selectall, local_edwiserreports {{/str}}</small>
                   </a>
               </h5>
               <div class="lpfields row">
@@ -137,12 +137,12 @@
 
             <div class="activityreportfields example-wrap reportfields hidden">
               <h5 class="example-title">
-                  <strong> {{#str}} activityfields, local_sitereport {{/str}} </strong>
+                  <strong> {{#str}} activityfields, local_edwiserreports {{/str}} </strong>
                   <a class="unselect-lpreportfields pull-right text-sm" href="javascript:void(0)">
-                  <small>{{#str}} unselectall, local_sitereport {{/str}}</small>
+                  <small>{{#str}} unselectall, local_edwiserreports {{/str}}</small>
                   </a>
                   <a class="select-lpreportfields pull-right text-sm hidden" href="javascript:void(0)">
-                      <small>{{#str}} selectall, local_sitereport {{/str}}</small>
+                      <small>{{#str}} selectall, local_edwiserreports {{/str}}</small>
                   </a>
               </h5>
               <div class="activityfields row">
@@ -175,7 +175,7 @@
                           <input type="hidden" name="userids"/>
                           <input type="hidden" name="activitytype"/>
                           <button type="submit" id="customQueryReportDownload" class="btn btn-secondary">
-                              {{#str}} downloadreportincsv , local_sitereport {{/str}}
+                              {{#str}} downloadreportincsv , local_edwiserreports {{/str}}
                           </button>
                       </form>
                 </div>
@@ -185,19 +185,19 @@
                   <button type="button" class="close" data-hide="alert" aria-label="Close">
                     <span aria-hidden="true">×</span>
                   </button>
-                  {{#str}} selectatleastonecvourse, local_sitereport {{/str}}
+                  {{#str}} selectatleastonecvourse, local_edwiserreports {{/str}}
                 </div>
                 <div class="enroldatealert alert alert-danger hidden" role="alert">
                   <button type="button" class="close" data-hide="alert" aria-label="Close">
                     <span aria-hidden="true">×</span>
                   </button>
-                  {{#str}} enroldatealert, local_sitereport {{/str}}
+                  {{#str}} enroldatealert, local_edwiserreports {{/str}}
                 </div>
                 <div class="completiondatealert alert alert-danger hidden" role="alert">
                   <button type="button" class="close" data-hide="alert" aria-label="Close">
                     <span aria-hidden="true">×</span>
                   </button>
-                  {{#str}} completiondatealert, local_sitereport {{/str}}
+                  {{#str}} completiondatealert, local_edwiserreports {{/str}}
                 </div>
               </div>
           	</div>
@@ -206,6 +206,6 @@
 </div>
 
 {{#js}}
-require(['local_sitereport/block_queryreport'], function ($) {
+require(['local_edwiserreports/block_queryreport'], function ($) {
 });
 {{/js}}

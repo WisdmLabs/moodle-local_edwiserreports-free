@@ -1,4 +1,4 @@
-define(["jquery", "local_sitereport/variables", "local_sitereport/select2"], function($, v) {
+define(["jquery", "local_edwiserreports/variables", "local_edwiserreports/select2"], function($, v) {
     return defaultConfig = {
         // Default Config
         requestUrl : v.requestUrl,
@@ -234,7 +234,7 @@ define(["jquery", "local_sitereport/variables", "local_sitereport/select2"], fun
         },
         // Function to get panelbody, paneltitle and panelfooter
         getPanel: function (blockid, type) {
-            var panel = "#wdm-elucidsitereport " + blockid;
+            var panel = "#wdm-edwiserreports " + blockid;
 
             switch(type) {
                 case "body":
@@ -258,7 +258,7 @@ define(["jquery", "local_sitereport/variables", "local_sitereport/select2"], fun
 
         // function to get Template
         getTemplate: function(template) {
-            return "local_sitereport/" + template;
+            return "local_edwiserreports/" + template;
         },
 
         // Get URL Params

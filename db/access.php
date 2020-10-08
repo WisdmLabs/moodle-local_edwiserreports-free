@@ -17,7 +17,7 @@
 /**
  * Code to be executed after the plugin's database scheme has been installed is defined here.
  *
- * @package     local_sitereport
+ * @package     local_edwiserreports
  * @category    upgrade
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -26,7 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $capabilities = array(
-    'report/local_sitereport:view' => array(
+    'report/local_edwiserreports:view' => array(
         'riskbitmask' => RISK_CONFIG,
         'captype' => 'read',
         'contextlevel' => CONTEXT_SYSTEM,
@@ -35,7 +35,7 @@ $capabilities = array(
             'manager' => CAP_ALLOW,
         ),
     ),
-    'report/sitereport_activeusersblock:view' => array(
+    'report/edwiserreports_activeusersblock:view' => array(
         'riskbitmask' => RISK_SPAM,
         'captype' => 'read',
         'contextlevel' => CONTEXT_SYSTEM,
@@ -44,7 +44,7 @@ $capabilities = array(
             'manager' => CAP_ALLOW
         ),
     ),
-    'report/sitereport_activeusersblock:editadvance' => array(
+    'report/edwiserreports_activeusersblock:editadvance' => array(
         'riskbitmask' => RISK_SPAM,
         'captype' => 'read',
         'contextlevel' => CONTEXT_SYSTEM,
@@ -53,7 +53,7 @@ $capabilities = array(
             'manager' => CAP_ALLOW
         ),
     ),
-    'report/sitereport_activecoursesblock:view' => array(
+    'report/edwiserreports_activecoursesblock:view' => array(
         'riskbitmask' => RISK_SPAM,
         'captype' => 'read',
         'contextlevel' => CONTEXT_SYSTEM,
@@ -62,7 +62,7 @@ $capabilities = array(
             'manager' => CAP_ALLOW
         ),
     ),
-    'report/sitereport_activecoursesblock:editadvance' => array(
+    'report/edwiserreports_activecoursesblock:editadvance' => array(
         'riskbitmask' => RISK_SPAM,
         'captype' => 'read',
         'contextlevel' => CONTEXT_SYSTEM,
@@ -71,7 +71,7 @@ $capabilities = array(
             'manager' => CAP_ALLOW
         ),
     ),
-    'report/sitereport_courseprogressblock:view' => array(
+    'report/edwiserreports_courseprogressblock:view' => array(
         'riskbitmask' => RISK_SPAM,
         'captype' => 'read',
         'contextlevel' => CONTEXT_SYSTEM,
@@ -80,7 +80,7 @@ $capabilities = array(
             'manager' => CAP_ALLOW
         ),
     ),
-    'report/sitereport_courseprogressblock:editadvance' => array(
+    'report/edwiserreports_courseprogressblock:editadvance' => array(
         'riskbitmask' => RISK_SPAM,
         'captype' => 'read',
         'contextlevel' => CONTEXT_SYSTEM,
@@ -89,7 +89,7 @@ $capabilities = array(
             'manager' => CAP_ALLOW
         ),
     ),
-    'report/sitereport_certificatesblock:view' => array(
+    'report/edwiserreports_certificatesblock:view' => array(
         'riskbitmask' => RISK_SPAM,
         'captype' => 'read',
         'contextlevel' => CONTEXT_SYSTEM,
@@ -98,7 +98,7 @@ $capabilities = array(
             'manager' => CAP_ALLOW
         ),
     ),
-    'report/sitereport_certificatesblock:editadvance' => array(
+    'report/edwiserreports_certificatesblock:editadvance' => array(
         'riskbitmask' => RISK_SPAM,
         'captype' => 'read',
         'contextlevel' => CONTEXT_SYSTEM,
@@ -107,7 +107,7 @@ $capabilities = array(
             'manager' => CAP_ALLOW
         ),
     ),
-    'report/sitereport_liveusersblock:view' => array(
+    'report/edwiserreports_liveusersblock:view' => array(
         'riskbitmask' => RISK_SPAM,
         'captype' => 'read',
         'contextlevel' => CONTEXT_SYSTEM,
@@ -116,7 +116,7 @@ $capabilities = array(
             'manager' => CAP_ALLOW
         ),
     ),
-    'report/sitereport_liveusersblock:editadvance' => array(
+    'report/edwiserreports_liveusersblock:editadvance' => array(
         'riskbitmask' => RISK_SPAM,
         'captype' => 'read',
         'contextlevel' => CONTEXT_SYSTEM,
@@ -125,7 +125,7 @@ $capabilities = array(
             'manager' => CAP_ALLOW
         ),
     ),
-    'report/sitereport_siteaccessblock:view' => array(
+    'report/edwiserreports_siteaccessblock:view' => array(
         'riskbitmask' => RISK_SPAM,
         'captype' => 'read',
         'contextlevel' => CONTEXT_SYSTEM,
@@ -134,7 +134,7 @@ $capabilities = array(
             'manager' => CAP_ALLOW
         ),
     ),
-    'report/sitereport_siteaccessblock:editadvance' => array(
+    'report/edwiserreports_siteaccessblock:editadvance' => array(
         'riskbitmask' => RISK_SPAM,
         'captype' => 'read',
         'contextlevel' => CONTEXT_SYSTEM,
@@ -143,7 +143,7 @@ $capabilities = array(
             'manager' => CAP_ALLOW
         ),
     ),
-    'report/sitereport_todaysactivityblock:view' => array(
+    'report/edwiserreports_todaysactivityblock:view' => array(
         'riskbitmask' => RISK_SPAM,
         'captype' => 'read',
         'contextlevel' => CONTEXT_SYSTEM,
@@ -152,7 +152,7 @@ $capabilities = array(
             'manager' => CAP_ALLOW
         ),
     ),
-    'report/sitereport_todaysactivityblock:editadvance' => array(
+    'report/edwiserreports_todaysactivityblock:editadvance' => array(
         'riskbitmask' => RISK_SPAM,
         'captype' => 'read',
         'contextlevel' => CONTEXT_SYSTEM,
@@ -161,7 +161,7 @@ $capabilities = array(
             'manager' => CAP_ALLOW
         ),
     ),
-    'report/sitereport_inactiveusersblock:view' => array(
+    'report/edwiserreports_inactiveusersblock:view' => array(
         'riskbitmask' => RISK_SPAM,
         'captype' => 'read',
         'contextlevel' => CONTEXT_SYSTEM,
@@ -170,7 +170,7 @@ $capabilities = array(
             'manager' => CAP_ALLOW
         ),
     ),
-    'report/sitereport_inactiveusersblock:editadvance' => array(
+    'report/edwiserreports_inactiveusersblock:editadvance' => array(
         'riskbitmask' => RISK_SPAM,
         'captype' => 'read',
         'contextlevel' => CONTEXT_SYSTEM,

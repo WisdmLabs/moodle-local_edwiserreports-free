@@ -16,12 +16,12 @@
 /**
  * Reports block external apis
  *
- * @package     local_sitereport
+ * @package     local_edwiserreports
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_sitereport\external;
+namespace local_edwiserreports\external;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -31,7 +31,7 @@ use stdClass;
 
 require_once($CFG->libdir.'/externallib.php');
 /**
- * Trait implementing the external function local_sitereport_set_plugin_config.
+ * Trait implementing the external function local_edwiserreports_set_plugin_config.
  */
 trait set_plugin_config {
 
@@ -43,7 +43,7 @@ trait set_plugin_config {
     public static function set_plugin_config_parameters() {
         return new external_function_parameters(
             array (
-                'pluginname' => new external_value(PARAM_RAW, 'Plugin Name', 'local_sitereport', 0),
+                'pluginname' => new external_value(PARAM_RAW, 'Plugin Name', 'local_edwiserreports', 0),
                 'configname' => new external_value(PARAM_RAW, 'Config Name', '', 0)
             )
         );

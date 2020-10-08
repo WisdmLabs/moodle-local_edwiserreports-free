@@ -16,13 +16,13 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     local_sitereport
+ * @package     local_edwiserreports
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_sitereport;
+namespace local_edwiserreports;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -45,8 +45,8 @@ class liveusersblock extends block_base {
 
         // Layout related data.
         $this->layout->id = 'liveusersblock';
-        $this->layout->name = get_string('realtimeusers', 'local_sitereport');
-        $this->layout->info = get_string('realtimeusersblockhelp', 'local_sitereport');
+        $this->layout->name = get_string('realtimeusers', 'local_edwiserreports');
+        $this->layout->info = get_string('realtimeusersblockhelp', 'local_edwiserreports');
 
         // Add block view in layout.
         $this->layout->blockview = $this->render_block('liveusersblock', $this->block);

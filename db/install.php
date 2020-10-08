@@ -16,7 +16,7 @@
 /**
  * Code to be executed after the plugin's database scheme has been installed is defined here.
  *
- * @package     local_sitereport
+ * @package     local_edwiserreports
  * @category    upgrade
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -27,10 +27,10 @@ defined('MOODLE_INTERNAL') || die();
 /**
  * Custom code to be run on installing the plugin.
  */
-function xmldb_local_sitereport_install() {
+function xmldb_local_edwiserreports_install() {
     global $CFG, $DB;
 
-    set_config('sitereportinstallation', true, 'local_sitereport');
+    set_config('edwiserreportsinstallation', true, 'local_edwiserreports');
 
     // All Default blocks.
     $defaultblocks = get_default_block_settings();
@@ -53,11 +53,11 @@ function xmldb_local_sitereport_install() {
     }
 
     // Database controller.
-    $dbcontroller = new local_sitereport\db_controller();
+    $dbcontroller = new local_edwiserreports\db_controller();
 
     // Sync all users in installations process.
     $completionupgrade = $dbcontroller->sync_old_users_with_course_progress();
-    $reportpluginupgrade = $DB->insert_records('sitereport_blocks', $blocks);
+    $reportpluginupgrade = $DB->insert_records('edwreports_blocks', $blocks);
 
     return $completionupgrade && $reportpluginupgrade;
 }

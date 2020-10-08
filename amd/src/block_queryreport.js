@@ -1,8 +1,8 @@
 define([
     'jquery',
-    'local_sitereport/defaultconfig',
+    'local_edwiserreports/defaultconfig',
     'core/templates',
-    'local_sitereport/select2'
+    'local_edwiserreports/select2'
  ], function (
     $, cfg,Templates
 ) {
@@ -99,7 +99,7 @@ define([
                 })
                 .done(function(response) {
                     $("#ed_courses").html('');
-                    var template = "local_sitereport/customquery_options";
+                    var template = "local_edwiserreports/customquery_options";
                     var context = {courses:response};
                     Templates.render(template, context).then(function(html, js) {
                             Templates.replaceNodeContents($("#ed_courses"), html , js);
@@ -188,7 +188,7 @@ define([
                 .done(function(response) {
                     $("#ed_lps").html('');
                     $("#ed_courses").html('');
-                    var template = "local_sitereport/customquery_lpoptions";
+                    var template = "local_edwiserreports/customquery_lpoptions";
                     var context = {lps:response.lps};
                     if (response.lps.length > 0) {
                         Templates.render(template, context).then(function(html, js) {
@@ -197,7 +197,7 @@ define([
                         );
                     }
                     if (response.courses.length > 0) {
-                        var template = "local_sitereport/customquery_options";
+                        var template = "local_edwiserreports/customquery_options";
                         var context = {courses:response.courses};
                         Templates.render(template, context).then(function(html, js) {
                                 Templates.appendNodeContents($("#ed_courses"), html , js);
@@ -207,7 +207,7 @@ define([
 
                     // Render users
                     if (response.users.length > 0) {
-                        var template = "local_sitereport/customquery_lpoptions"; // Work same as lp filter
+                        var template = "local_edwiserreports/customquery_lpoptions"; // Work same as lp filter
                         var context = {lps:response.users}; // work same as lp filters
                         if (response.users.length > 0) {
                             Templates.render(template, context).then(function(html, js) {
@@ -336,7 +336,7 @@ define([
                     },
                 })
                 .done(function(response) {
-                    var template = "local_sitereport/customquery_lpoptions"; // Work same as lp filter
+                    var template = "local_edwiserreports/customquery_lpoptions"; // Work same as lp filter
                     var context = {lps:response.users}; // work same as lp filters
                     if (response.users.length > 0) {
                         Templates.render(template, context).then(function(html, js) {

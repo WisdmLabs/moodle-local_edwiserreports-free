@@ -16,21 +16,21 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     local_sitereport
+ * @package     local_edwiserreports
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_sitereport\task;
+namespace local_edwiserreports\task;
 
 defined('MOODLE_INTERNAL') || die;
 
-require_once($CFG->dirroot."/local/sitereport/classes/export.php");
+require_once($CFG->dirroot."/local/edwiserreports/classes/export.php");
 
 use core_user;
 use stdClass;
-use local_sitereport\export;
+use local_edwiserreports\export;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -45,7 +45,7 @@ class send_scheduled_emails extends \core\task\scheduled_task {
      * @return string
      */
     public function get_name() {
-        return get_string('sendscheduledemails', 'local_sitereport');
+        return get_string('sendscheduledemails', 'local_edwiserreports');
     }
 
     /**
@@ -57,7 +57,7 @@ class send_scheduled_emails extends \core\task\scheduled_task {
         $timenow = time();
 
         // Get data from table.
-        $table = "sitereport_schedemails";
+        $table = "edwreports_schedemails";
         $records = $DB->get_records($table);
         foreach ($records as $key => $record) {
             // If it dosent have email data.
@@ -101,7 +101,7 @@ class send_scheduled_emails extends \core\task\scheduled_task {
 
                 // If data exist then send emails.
                 if ($data) {
-                    mtrace(get_string('sendingscheduledemails', 'local_sitereport'));
+                    mtrace(get_string('sendingscheduledemails', 'local_edwiserreports'));
                     ob_start();
 
                     // If email successfully sent.
@@ -110,7 +110,7 @@ class send_scheduled_emails extends \core\task\scheduled_task {
 
                     $esrduration = $email->esrduration;
                     $esrtime = $email->esrtime;
-                    list($frequency, $schedtime) = local_sitereport_get_email_schedule_next_run($esrduration, $esrtime);
+                    list($frequency, $schedtime) = local_edwiserreports_get_email_schedule_next_run($esrduration, $esrtime);
                     $email->esrnextrun = $schedtime;
                     $emaildata[$k] = $email;
                     ob_clean();
@@ -148,12 +148,12 @@ class send_scheduled_emails extends \core\task\scheduled_task {
 
         // If subject is not set the get default subject.
         if (!$subject && $subject == '') {
-            $subject = get_string($blockname . "exportheader", "local_sitereport");
+            $subject = get_string($blockname . "exportheader", "local_edwiserreports");
         }
 
         // Get content text to send emails.
         if (contenttext == '') {
-            $contenttext = get_string($blockname . "exporthelp", "local_sitereport");
+            $contenttext = get_string($blockname . "exporthelp", "local_edwiserreports");
         }
 
         // Send emails foreach email ids.

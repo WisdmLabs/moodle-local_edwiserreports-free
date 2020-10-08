@@ -16,12 +16,12 @@
 /**
  * Reports abstract block will define here to which will extend for each repoers blocks
  *
- * @package     local_sitereport
+ * @package     local_edwiserreports
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_sitereport;
+namespace local_edwiserreports;
 
 defined('MOODLE_INTERNAL') or die;
 use stdClass;
@@ -31,7 +31,7 @@ use html_writer;
 use html_table;
 use core_user;
 
-require_once($CFG->dirroot . '/local/sitereport/classes/block_base.php');
+require_once($CFG->dirroot . '/local/edwiserreports/classes/block_base.php');
 
 class activeusersblock extends block_base {
     // Get the first site access data.
@@ -57,9 +57,9 @@ class activeusersblock extends block_base {
 
         // Layout related data.
         $this->layout->id = 'activeusersblock';
-        $this->layout->name = get_string('activeusersheader', 'local_sitereport');
-        $this->layout->info = get_string('activeusersblocktitlehelp', 'local_sitereport');
-        $this->layout->morelink = new moodle_url($CFG->wwwroot . "/local/sitereport/activeusers.php");
+        $this->layout->name = get_string('activeusersheader', 'local_edwiserreports');
+        $this->layout->info = get_string('activeusersblocktitlehelp', 'local_edwiserreports');
+        $this->layout->morelink = new moodle_url($CFG->wwwroot . "/local/edwiserreports/activeusers.php");
         $this->layout->hasdownloadlink = true;
         $this->layout->filters = $this->get_activeusers_filter();
 
@@ -90,18 +90,18 @@ class activeusersblock extends block_base {
             'id' => 'updated-time',
             'class' => 'font-size-12'
         ));
-        $lastupdatetext .= get_string('lastupdate', 'local_sitereport');
+        $lastupdatetext .= get_string('lastupdate', 'local_edwiserreports');
         $lastupdatetext .= html_writer::tag('i', '', array(
             'class' => 'refresh fa fa-refresh px-1',
             'data-toggle' => 'tooltip',
-            'title' => get_string('refresh', 'local_sitereport')
+            'title' => get_string('refresh', 'local_edwiserreports')
         ));
         $lastupdatetext .= html_writer::end_tag('small');
 
         // Prepare filter HTML for active users block.
         $filterhtml = html_writer::start_tag('form', array("action" => "javascript:void(0)"));
         $filterhtml .= html_writer::start_tag('div', array('class' => 'd-flex mt-1'));
-        $filterhtml .= html_writer::tag('button', get_string('lastweek', 'local_sitereport'), array(
+        $filterhtml .= html_writer::tag('button', get_string('lastweek', 'local_edwiserreports'), array(
             'type' => 'button',
             'class' => 'btn btn-sm dropdown-toggle',
             'data-toggle' => 'dropdown',
@@ -123,22 +123,22 @@ class activeusersblock extends block_base {
         $datefilter = html_writer::empty_tag('input', array(
             'class' => 'dropdown-item border-0 custom p-0',
             'id' => 'flatpickrCalender',
-            'placeholder' => get_string('custom', 'local_sitereport'),
+            'placeholder' => get_string('custom', 'local_edwiserreports'),
             'data-input'
         ));
         $filteropt = array(
             'weekly' => array(
-                'name' => get_string('lastweek', 'local_sitereport'),
+                'name' => get_string('lastweek', 'local_edwiserreports'),
                 'value' => 'weekly',
                 'classes' => ''
             ),
             'monthly' => array(
-                'name' => get_string('lastmonth', 'local_sitereport'),
+                'name' => get_string('lastmonth', 'local_edwiserreports'),
                 'value' => 'monthly',
                 'classes' => ''
             ),
             'yearly' => array(
-                'name' => get_string('lastyear', 'local_sitereport'),
+                'name' => get_string('lastyear', 'local_edwiserreports'),
                 'value' => 'yearly',
                 'classes' => ''
             ),
@@ -185,7 +185,7 @@ class activeusersblock extends block_base {
         // Set current time.
         $this->timenow = time();
         // Set cache for active users block.
-        $this->cache = cache::make('local_sitereport', 'activeusers');
+        $this->cache = cache::make('local_edwiserreports', 'activeusers');
         // Get logs from cache.
         if (!$record = $this->cache->get("activeusers-first-log")) {
             $sql = "SELECT id, userid, timecreated
@@ -306,10 +306,10 @@ class activeusersblock extends block_base {
      */
     public static function get_header() {
         $header = array(
-            get_string("date", "local_sitereport"),
-            get_string("noofactiveusers", "local_sitereport"),
-            get_string("noofenrolledusers", "local_sitereport"),
-            get_string("noofcompletedusers", "local_sitereport"),
+            get_string("date", "local_edwiserreports"),
+            get_string("noofactiveusers", "local_edwiserreports"),
+            get_string("noofenrolledusers", "local_edwiserreports"),
+            get_string("noofcompletedusers", "local_edwiserreports"),
         );
 
         return $header;
@@ -321,11 +321,11 @@ class activeusersblock extends block_base {
      */
     public static function get_header_report() {
         $header = array(
-            get_string("date", "local_sitereport"),
-            get_string("fullname", "local_sitereport"),
-            get_string("email", "local_sitereport"),
-            get_string("coursename", "local_sitereport"),
-            get_string("status", "local_sitereport"),
+            get_string("date", "local_edwiserreports"),
+            get_string("fullname", "local_edwiserreports"),
+            get_string("email", "local_edwiserreports"),
+            get_string("coursename", "local_edwiserreports"),
+            get_string("status", "local_edwiserreports"),
         );
 
         return $header;
@@ -341,24 +341,24 @@ class activeusersblock extends block_base {
             case 'completions':
                 // Return table header.
                 $str = array(
-                    get_string("fullname", "local_sitereport"),
-                    get_string("email", "local_sitereport"),
-                    get_string("coursename", "local_sitereport")
+                    get_string("fullname", "local_edwiserreports"),
+                    get_string("email", "local_edwiserreports"),
+                    get_string("coursename", "local_edwiserreports")
                 );
                 break;
             case 'enrolments':
                 // Return table header.
                 $str = array(
-                    get_string("fullname", "local_sitereport"),
-                    get_string("email", "local_sitereport"),
-                    get_string("coursename", "local_sitereport")
+                    get_string("fullname", "local_edwiserreports"),
+                    get_string("email", "local_edwiserreports"),
+                    get_string("coursename", "local_edwiserreports")
                 );
                 break;
             default:
                 // Return table header.
                 $str = array(
-                    get_string("fullname", "local_sitereport"),
-                    get_string("email", "local_sitereport")
+                    get_string("fullname", "local_edwiserreports"),
+                    get_string("email", "local_edwiserreports")
                 );
         }
 
@@ -374,7 +374,7 @@ class activeusersblock extends block_base {
      */
     public static function get_userslist_table($filter, $action, $cohortid) {
         // Make cache.
-        $cache = cache::make('local_sitereport', 'activeusers');
+        $cache = cache::make('local_edwiserreports', 'activeusers');
         // Get values from cache if it is set.
         $cachekey = "userslist-" . $filter . "-" . $action . "-" . "-" . $cohortid;
         if (!$table = $cache->get($cachekey)) {
@@ -450,7 +450,7 @@ class activeusersblock extends block_base {
                     $params["cohortid"] = $cohortid;
                 }
                 $sql = "SELECT CONCAT(l.userid, '-', l.courseid) as id, l.userid as relateduserid, l.courseid as courseid
-                   FROM {sitereport_course_progress} l $sqlcohort
+                   FROM {edw_course_progress} l $sqlcohort
                    WHERE l.completiontime IS NOT NULL
                    AND l.completiontime >= :starttime
                    AND l.completiontime < :endtime";
@@ -641,7 +641,7 @@ class activeusersblock extends block_base {
             YEAR(FROM_UNIXTIME(cc.completiontime))
             ) USERDATE,
             COUNT( CONCAT(cc.courseid, '-', cc.userid )) as usercount
-            FROM {sitereport_course_progress} cc "
+            FROM {edw_course_progress} cc "
             . $cohortjoin .
             " WHERE cc.completiontime IS NOT NULL "
             . $cohortcondition .
@@ -683,7 +683,7 @@ class activeusersblock extends block_base {
     public function get_exportable_data_block($filter) {
         $cohortid = optional_param("cohortid", 0, PARAM_INT);
         // Make cache.
-        $cache = cache::make('local_sitereport', 'activeusers');
+        $cache = cache::make('local_edwiserreports', 'activeusers');
         $cachekey = "exportabledatablock-" . $filter;
 
         // If exportable data is set in cache then get it from there.
@@ -719,7 +719,7 @@ class activeusersblock extends block_base {
      */
     public static function get_exportable_data_report($filter) {
         // Make cache.
-        $cache = cache::make('local_sitereport', 'activeusers');
+        $cache = cache::make('local_edwiserreports', 'activeusers');
 
         if (!$export = $cache->get("exportabledatareport")) {
             $export = array();
@@ -763,7 +763,7 @@ class activeusersblock extends block_base {
                 $user = array_merge($user, array(''));
             }
 
-            $user = array_merge($user, array(get_string($action . "_status", "local_sitereport")));
+            $user = array_merge($user, array(get_string($action . "_status", "local_edwiserreports")));
             $usersdata[] = $user;
         }
 

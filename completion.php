@@ -16,13 +16,13 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     local_sitereport
+ * @package     local_edwiserreports
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_sitereport;
+namespace local_edwiserreports;
 
 use context_system;
 use context_course;
@@ -34,7 +34,7 @@ require_once('classes/output/renderable.php');
 
 // Context system.
 $context = context_system::instance();
-$component = "local_sitereport";
+$component = "local_edwiserreports";
 
 // Get require param course id.
 $courseid = required_param("courseid", PARAM_INT);
@@ -43,23 +43,23 @@ $courseid = required_param("courseid", PARAM_INT);
 $course = get_course($courseid);
 require_login(get_course($courseid));
 
-local_sitereport_get_required_strings_for_js();
+local_edwiserreports_get_required_strings_for_js();
 
 // Get course context.
 $coursecontext = context_course::instance($courseid);
 
 // Require CSS.
-$PAGE->requires->css('/local/sitereport/styles/loader.css');
+$PAGE->requires->css('/local/edwiserreports/styles/loader.css');
 
 // Page URL.
-$pageurl = new moodle_url($CFG->wwwroot . "/local/sitereport/completion.php", array("courseid" => $courseid));
+$pageurl = new moodle_url($CFG->wwwroot . "/local/edwiserreports/completion.php", array("courseid" => $courseid));
 
 // Set page context.
 $PAGE->set_context($coursecontext);
 
 // Require fixes for boost.
 if ($PAGE->theme->name == 'boost') {
-    $PAGE->requires->css('/local/sitereport/styles/datatable-fix.css');
+    $PAGE->requires->css('/local/edwiserreports/styles/datatable-fix.css');
 }
 
 // Set page layout.
@@ -69,14 +69,14 @@ $PAGE->set_pagelayout('standard');
 $PAGE->set_url($pageurl);
 
 // Require JS for course completion page.
-$PAGE->requires->js_call_amd('local_sitereport/completion', 'init', array($coursecontext->id));
+$PAGE->requires->js_call_amd('local_edwiserreports/completion', 'init', array($coursecontext->id));
 
 // Get renderable for coourse completion page.
-$renderable = new \local_sitereport\output\completion_renderable();
+$renderable = new \local_edwiserreports\output\completion_renderable();
 $output = $PAGE->get_renderer($component)->render($renderable);
 
-$PAGE->set_heading(get_string("completionheader", "local_sitereport", array('coursename' => $course->fullname)));
-$PAGE->set_title(get_string("completionheader", "local_sitereport", array('coursename' => $course->fullname)));
+$PAGE->set_heading(get_string("completionheader", "local_edwiserreports", array('coursename' => $course->fullname)));
+$PAGE->set_title(get_string("completionheader", "local_edwiserreports", array('coursename' => $course->fullname)));
 
 // Print output for course completion page.
 echo $OUTPUT->header();

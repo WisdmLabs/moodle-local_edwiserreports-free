@@ -4,8 +4,8 @@ define([
     'core/modal_events',
     'core/fragment',
     'core/templates',
-    'local_sitereport/variables',
-    'local_sitereport/common'
+    'local_edwiserreports/variables',
+    'local_edwiserreports/common'
 ], function($,
     ModalFactory,
     ModalEvents,
@@ -41,7 +41,7 @@ define([
                 var context = response.data;
                 context.sesskey = sesskey;
 
-                Templates.render('local_sitereport/f2fsessions', context)
+                Templates.render('local_edwiserreports/f2fsessions', context)
                 .then(function(html, js) {
                     Templates.replaceNode(PageId, html, js);
                 }).fail(function(ex) {

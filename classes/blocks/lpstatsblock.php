@@ -16,13 +16,13 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     local_sitereport
+ * @package     local_edwiserreports
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_sitereport;
+namespace local_edwiserreports;
 
 use stdClass;
 use core_user;
@@ -41,15 +41,15 @@ class lpstatsblock extends block_base {
 
         // Layout related data.
         $this->layout->id = 'lpstatsblock';
-        $this->layout->name = get_string('lpstatsheader', 'local_sitereport');
-        $this->layout->info = get_string('lpstatsblockhelp', 'local_sitereport');
-        $this->layout->morelink = new moodle_url($CFG->wwwroot . "/local/sitereport/lpstats.php");
+        $this->layout->name = get_string('lpstatsheader', 'local_edwiserreports');
+        $this->layout->info = get_string('lpstatsblockhelp', 'local_edwiserreports');
+        $this->layout->morelink = new moodle_url($CFG->wwwroot . "/local/edwiserreports/lpstats.php");
         $this->layout->hasdownloadlink = true;
         $this->layout->filters = '';
 
         // Block related data.
         $this->block = new stdClass();
-        $lps = \local_sitereport\utility::get_lps();
+        $lps = \local_edwiserreports\utility::get_lps();
         if (!empty($export->lps)) {
             $this->block->haslps = true;
             $this->block->firstlpid = $this->block->lps[0]["id"];
@@ -115,7 +115,7 @@ class lpstatsblock extends block_base {
         }
 
         // No users are completd any courses.
-        $lpstats->labels[] = get_string("none", "local_sitereport");
+        $lpstats->labels[] = get_string("none", "local_edwiserreports");
         $lpstats->data[] = count($lpenrolment) - count($completedusers);
 
         return $lpstats;
@@ -164,7 +164,7 @@ class lpstatsblock extends block_base {
             $userinfo->enrolled = date("d M y", $enrol->timeenroled);
 
             $lastaccess = date("d M y", $enrol->lastaccess);
-            $notyetstr = get_string("notyet", "local_sitereport");
+            $notyetstr = get_string("notyet", "local_edwiserreports");
             $userinfo->lastaccess = $enrol->lastaccess ? $lastaccess : $notyetstr;
 
             $userinfo->grade = 0;
@@ -227,9 +227,9 @@ class lpstatsblock extends block_base {
      */
     public static function get_header_block() {
         $header = array(
-            get_string("coursename", "local_sitereport"),
-            get_string("lpname", "local_sitereport"),
-            get_string("coursecompletedusers", "local_sitereport")
+            get_string("coursename", "local_edwiserreports"),
+            get_string("lpname", "local_edwiserreports"),
+            get_string("coursecompletedusers", "local_edwiserreports")
         );
 
         return $header;
@@ -241,11 +241,11 @@ class lpstatsblock extends block_base {
      */
     public static function get_header_report() {
         $header = array(
-            get_string("name", "local_sitereport"),
-            get_string("email", "local_sitereport"),
-            get_string("enrolled", "local_sitereport"),
-            get_string("lastaccess", "local_sitereport"),
-            get_string("grade", "local_sitereport")
+            get_string("name", "local_edwiserreports"),
+            get_string("email", "local_edwiserreports"),
+            get_string("enrolled", "local_edwiserreports"),
+            get_string("lastaccess", "local_edwiserreports"),
+            get_string("grade", "local_edwiserreports")
         );
 
         return $header;

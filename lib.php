@@ -16,7 +16,7 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     local_sitereport
+ * @package     local_edwiserreports
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -32,14 +32,14 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot."/local/sitereport/locallib.php");
+require_once($CFG->dirroot."/local/edwiserreports/locallib.php");
 
 /**
  * Get Users List Fragments for diffrent pages
  * @param [array] $args Array of arguments
  * @return [string] HTML table
  */
-function local_sitereport_output_fragment_userslist($args) {
+function local_edwiserreports_output_fragment_userslist($args) {
     global $CFG;
 
     $response = null;
@@ -48,27 +48,27 @@ function local_sitereport_output_fragment_userslist($args) {
 
     switch ($page) {
         case "activeusers":
-            require_once($CFG->dirroot . '/local/sitereport/classes/blocks/activeusersblock.php');
+            require_once($CFG->dirroot . '/local/edwiserreports/classes/blocks/activeusersblock.php');
             $filter = clean_param($args['filter'], PARAM_TEXT);
             $action = clean_param($args['action'], PARAM_TEXT);
 
-            $response = \local_sitereport\activeusersblock::get_userslist_table($filter, $action, $cohortid);
+            $response = \local_edwiserreports\activeusersblock::get_userslist_table($filter, $action, $cohortid);
             break;
 
         case "courseprogress":
-            require_once($CFG->dirroot . '/local/sitereport/classes/blocks/courseprogressblock.php');
+            require_once($CFG->dirroot . '/local/edwiserreports/classes/blocks/courseprogressblock.php');
             $courseid = clean_param($args['courseid'], PARAM_TEXT);
             $minval = clean_param($args['minval'], PARAM_TEXT);
             $maxval = clean_param($args['maxval'], PARAM_TEXT);
 
-            $response = \local_sitereport\courseprogressblock::get_userslist_table($courseid, $minval, $maxval, $cohortid);
+            $response = \local_edwiserreports\courseprogressblock::get_userslist_table($courseid, $minval, $maxval, $cohortid);
             break;
         case "courseengage":
-            require_once($CFG->dirroot . '/local/sitereport/classes/blocks/courseengageblock.php');
+            require_once($CFG->dirroot . '/local/edwiserreports/classes/blocks/courseengageblock.php');
             $courseid = clean_param($args['courseid'], PARAM_TEXT);
             $action   = clean_param($args['action'], PARAM_TEXT);
 
-            $response = \local_sitereport\courseengageblock::get_userslist_table($courseid, $action, $cohortid);
+            $response = \local_edwiserreports\courseengageblock::get_userslist_table($courseid, $action, $cohortid);
             break;
     }
 
@@ -80,12 +80,12 @@ function local_sitereport_output_fragment_userslist($args) {
  * @param [array] $args Array of arguments
  * @return [string] HTML table
  */
-function local_sitereport_output_fragment_lpstats($args) {
+function local_edwiserreports_output_fragment_lpstats($args) {
     global $DB;
     $lpid = clean_param($args["lpid"], PARAM_TEXT);
     $cohortid = clean_param($args["cohortid"], PARAM_TEXT);
 
-    return json_encode(\local_sitereport\lpstats_block::get_lpstats_usersdata($lpid, $cohortid));
+    return json_encode(\local_edwiserreports\lpstats_block::get_lpstats_usersdata($lpid, $cohortid));
 }
 
 require_once("$CFG->libdir/formslib.php");
@@ -93,7 +93,7 @@ require_once("$CFG->libdir/formslib.php");
 /**
  * Email Dialog form to send report via email
  */
-class local_sitereport_email_dialog_form extends moodleform {
+class local_edwiserreports_email_dialog_form extends moodleform {
     /**
      * The constructor function calls the abstract function definition() and it will then
      * process and clean and attempt to validate incoming data.
@@ -144,27 +144,27 @@ class local_sitereport_email_dialog_form extends moodleform {
 
         // Email Text area.
         $mform->addElement('text', 'email',
-            get_string('email', 'local_sitereport'),
+            get_string('email', 'local_edwiserreports'),
             array(
                 'size' => '30',
-                'placeholder' => get_string("emailexample", "local_sitereport")
+                'placeholder' => get_string("emailexample", "local_edwiserreports")
             )
         );
         $mform->setType('email', PARAM_NOTAGS);
 
         // Subject Text area.
         $mform->addElement('text', 'subject',
-            get_string("subject", "local_sitereport"),
+            get_string("subject", "local_edwiserreports"),
             array(
                 'size' => '30',
-                'placeholder' => get_string($blockname . "exportheader", "local_sitereport")
+                'placeholder' => get_string($blockname . "exportheader", "local_edwiserreports")
             )
         );
         $mform->setType('subject', PARAM_NOTAGS);
 
         // Content Text area.
         $mform->addElement('editor', 'content',
-            get_string("content", "local_sitereport"),
+            get_string("content", "local_edwiserreports"),
             array(
                 'rows' => '5',
                 'cols' => '40',
@@ -172,7 +172,7 @@ class local_sitereport_email_dialog_form extends moodleform {
             )
         );
         $mform->setType('content', PARAM_RAW);
-        $this->content["text"] = get_string($blockname . "exporthelp", "local_sitereport");
+        $this->content["text"] = get_string($blockname . "exporthelp", "local_edwiserreports");
     }
 }
 
@@ -181,9 +181,9 @@ class local_sitereport_email_dialog_form extends moodleform {
  * @param  [array] $args Arguments
  * @return [string] HTML String
  */
-function local_sitereport_output_fragment_email_dialog($args) {
+function local_edwiserreports_output_fragment_email_dialog($args) {
     $blockname = clean_param($args["blockname"], PARAM_TEXT);
-    $form = new local_sitereport_email_dialog_form(null, array("blockname" => $blockname));
+    $form = new local_edwiserreports_email_dialog_form(null, array("blockname" => $blockname));
     ob_start();
     $form->display();
     return ob_get_clean();
@@ -194,7 +194,7 @@ function local_sitereport_output_fragment_email_dialog($args) {
  * @param  [type] $args [description]
  * @return [type]       [description]
  */
-function local_sitereport_output_fragment_schedule_email_dialog($args) {
+function local_edwiserreports_output_fragment_schedule_email_dialog($args) {
     $formaction = clean_param($args["href"], PARAM_TEXT);
     $blockname = clean_param($args["blockname"], PARAM_TEXT);
     $region = clean_param($args["region"], PARAM_TEXT);
@@ -217,7 +217,7 @@ function local_sitereport_output_fragment_schedule_email_dialog($args) {
         "role" => "presentation"
     ));
     $out .= html_writer::link("#scheduletab",
-        get_string("schedule", "local_sitereport"),
+        get_string("schedule", "local_edwiserreports"),
         array(
             "class" => "nav-link active",
             "data-toggle" => "tab",
@@ -234,7 +234,7 @@ function local_sitereport_output_fragment_schedule_email_dialog($args) {
         "role" => "presentation"
     ));
     $out .= html_writer::link("#listemailstab",
-        get_string("scheduledlist", "local_sitereport"),
+        get_string("scheduledlist", "local_edwiserreports"),
         array(
             "class" => "nav-link",
             "data-toggle" => "tab",
@@ -251,7 +251,7 @@ function local_sitereport_output_fragment_schedule_email_dialog($args) {
     $out .= html_writer::start_div("tab-content pt-20");
 
     // Tab Content 1.
-    $out .= html_writer::div(local_sitereport_get_schedule_emailform($id, $formaction, $blockname, $region),
+    $out .= html_writer::div(local_edwiserreports_get_schedule_emailform($id, $formaction, $blockname, $region),
         "tab-pane active",
         array(
             "id" => "scheduletab",
@@ -264,7 +264,7 @@ function local_sitereport_output_fragment_schedule_email_dialog($args) {
     ));
 
     // Tab Content 2.
-    $out .= html_writer::div(local_sitereport_get_schedule_emaillist(), "tab-pane", array(
+    $out .= html_writer::div(local_edwiserreports_get_schedule_emaillist(), "tab-pane", array(
         "id" => "listemailstab",
         "role" => "tabpanel"
     ));
@@ -289,7 +289,7 @@ function local_sitereport_output_fragment_schedule_email_dialog($args) {
  * @param array $options
  * @return bool
  */
-function local_sitereport_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options = array()) {
+function local_edwiserreports_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options = array()) {
     static $report;
     $course = $course;
     $cm = $cm;
@@ -305,7 +305,7 @@ function local_sitereport_pluginfile($course, $cm, $context, $filearea, $args, $
 
     $relativepath = implode('/', $args);
 
-    $fullpath = "/{$context->id}/local_sitereport/$filearea/$itemid/$relativepath";
+    $fullpath = "/{$context->id}/local_edwiserreports/$filearea/$itemid/$relativepath";
 
     $fs = get_file_storage();
     if (!$file = $fs->get_file_by_hash(sha1($fullpath)) or $file->is_directory()) {
@@ -317,24 +317,24 @@ function local_sitereport_pluginfile($course, $cm, $context, $filearea, $args, $
 /**
  * Get for for blocks setting
  */
-function local_sitereport_output_fragment_get_blocksetting_form($params) {
+function local_edwiserreports_output_fragment_get_blocksetting_form($params) {
     global $PAGE;
     $blockname = isset($params['blockname']) ? $params['blockname'] : false;
-    $component = 'local_sitereport';
+    $component = 'local_edwiserreports';
 
     if (!$blockname) {
         throw new moodle_exception('blocknameinvalid', 'error');
     }
 
     // Check if block is exist or not.
-    $block = \local_sitereport\utility::get_reportsblock_by_name($blockname);
+    $block = \local_edwiserreports\utility::get_reportsblock_by_name($blockname);
 
     if (!$block) {
         throw new moodle_exception('noblockfound', 'error');
     }
 
     // Get block preferences.
-    $preferences = \local_sitereport\utility::get_reportsblock_preferences($block);
+    $preferences = \local_edwiserreports\utility::get_reportsblock_preferences($block);
 
     // Prepare form for block editing.
     $o = html_writer::start_tag('form', array('class' => 'form block-settings-form'));
@@ -371,7 +371,7 @@ function local_sitereport_output_fragment_get_blocksetting_form($params) {
         $o .= html_writer::end_tag('div');
     }
 
-    $blocks = \local_sitereport\utility::get_reports_block();
+    $blocks = \local_edwiserreports\utility::get_reports_block();
     $positions = range(1, count($blocks));
     $o .= html_writer::start_tag('div', array('class' => 'form-group row fitem'));
     $o .= html_writer::start_tag('div', array('class' => 'col-md-6'));
@@ -398,25 +398,25 @@ function local_sitereport_output_fragment_get_blocksetting_form($params) {
 /**
  * Get for for blocks capabilty from
  */
-function local_sitereport_output_fragment_get_blockscap_form($block) {
+function local_edwiserreports_output_fragment_get_blockscap_form($block) {
     global $CFG, $PAGE;
 
     $blockname = isset($block['blockname']) ? $block['blockname'] : false;
-    $component = 'local_sitereport';
+    $component = 'local_edwiserreports';
 
     if (!$blockname) {
         throw new moodle_exception('blocknameinvalid', 'error');
     }
 
     // Check if block is exist or not.
-    $block = \local_sitereport\utility::get_reportsblock_by_name($blockname);
+    $block = \local_edwiserreports\utility::get_reportsblock_by_name($blockname);
 
     if (!$block) {
         throw new moodle_exception('noblockfound', 'error');
     }
 
     // Get block capabilities.
-    $capabilities = \local_sitereport\utility::get_blocks_capability($block);
+    $capabilities = \local_edwiserreports\utility::get_blocks_capability($block);
     $capvalues = array_values($capabilities);
 
     // Prepare form for block editing.
@@ -439,7 +439,7 @@ function local_sitereport_output_fragment_get_blockscap_form($block) {
     $o .= html_writer::start_div('clearfix path-admin-tool-capability overflow-scroll col-12 cap-overview');
     $data = array();
     $data['capvalue'] = array_search($capvalues[0], $capabilities);
-    $o .= local_sitereport_output_fragment_block_overview_display($data);
+    $o .= local_edwiserreports_output_fragment_block_overview_display($data);
     $o .= html_writer::end_div();
     $o .= html_writer::tag('button', 'Save', array('type' => 'submit', 'class' => 'btn btn-primary pull-right save-block-caps'));
 
@@ -451,7 +451,7 @@ function local_sitereport_output_fragment_get_blockscap_form($block) {
 /**
  * Render blocks capability view
  */
-function local_sitereport_output_fragment_block_overview_display($data) {
+function local_edwiserreports_output_fragment_block_overview_display($data) {
     global $CFG, $PAGE;
 
     require_once($CFG->dirroot . '/admin/tool/capability/locallib.php');
@@ -516,24 +516,24 @@ function local_sitereport_output_fragment_block_overview_display($data) {
  * Adding learning program link in sidebar
  * @param navigation_node $nav navigation node
  */
-function local_sitereport_extend_navigation(navigation_node $nav) {
+function local_edwiserreports_extend_navigation(navigation_node $nav) {
     global $CFG, $PAGE, $COURSE;
 
     $hasblocks = is_block_present_indashboard();
 
     // During the installation save the capability.
-    $PAGE->requires->js_call_amd('local_sitereport/install', 'init');
+    $PAGE->requires->js_call_amd('local_edwiserreports/install', 'init');
 
     if ($hasblocks) {
-        if ($PAGE->theme->resolve_image_location('icon', 'local_sitereport', null)) {
-            $icon = new pix_icon('icon', '', 'local_sitereport', array('class' => 'icon pluginicon'));
+        if ($PAGE->theme->resolve_image_location('icon', 'local_edwiserreports', null)) {
+            $icon = new pix_icon('icon', '', 'local_edwiserreports', array('class' => 'icon pluginicon'));
         } else {
             $icon = new pix_icon('i/stats', '');
         }
 
         $node = $nav->add(
-            get_string('reportsandanalytics', 'local_sitereport'),
-            new moodle_url($CFG->wwwroot . '/local/sitereport/index.php'),
+            get_string('reportsandanalytics', 'local_edwiserreports'),
+            new moodle_url($CFG->wwwroot . '/local/edwiserreports/index.php'),
             navigation_node::TYPE_CUSTOM,
             'reportsandanalytics',
             'reportsandanalytics',
@@ -542,20 +542,20 @@ function local_sitereport_extend_navigation(navigation_node $nav) {
         $node->showinflatnavigation = true;
     }
 
-    $iscompletionpage = strpos($PAGE->url, '/local/sitereport/completion.php');
+    $iscompletionpage = strpos($PAGE->url, '/local/edwiserreports/completion.php');
     if ($PAGE->pagelayout !== 'course' && $PAGE->pagelayout !== 'incourse' && !$iscompletionpage) {
         return true;
     }
 
-    if ($PAGE->theme->resolve_image_location('icon', 'local_sitereport', null)) {
-        $icon = new pix_icon('icon', '', 'local_sitereport', array('class' => 'icon pluginicon'));
+    if ($PAGE->theme->resolve_image_location('icon', 'local_edwiserreports', null)) {
+        $icon = new pix_icon('icon', '', 'local_edwiserreports', array('class' => 'icon pluginicon'));
     } else {
         $icon = new pix_icon('i/report', '');
     }
 
     $node = $nav->add(
-        get_string('completionreports', 'local_sitereport'),
-        new moodle_url($CFG->wwwroot . '/local/sitereport/completion.php', array('courseid' => $COURSE->id)),
+        get_string('completionreports', 'local_edwiserreports'),
+        new moodle_url($CFG->wwwroot . '/local/edwiserreports/completion.php', array('courseid' => $COURSE->id)),
         navigation_node::TYPE_CUSTOM,
         'completionreports',
         'completionreports',
@@ -563,8 +563,8 @@ function local_sitereport_extend_navigation(navigation_node $nav) {
     );
     $node->showinflatnavigation = true;
 
-    if ($PAGE->theme->resolve_image_location('icon', 'local_sitereport', null)) {
-        $icon = new pix_icon('icon', '', 'local_sitereport', array('class' => 'icon pluginicon'));
+    if ($PAGE->theme->resolve_image_location('icon', 'local_edwiserreports', null)) {
+        $icon = new pix_icon('icon', '', 'local_edwiserreports', array('class' => 'icon pluginicon'));
     } else {
         $icon = new pix_icon('i/report', '');
     }

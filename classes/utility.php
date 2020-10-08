@@ -16,30 +16,30 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     local_sitereport
+ * @package     local_edwiserreports
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_sitereport;
+namespace local_edwiserreports;
 
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . "/completion/classes/progress.php");
 require_once($CFG->dirroot . "/cohort/lib.php");
 require_once($CFG->libdir."/csvlib.class.php");
-require_once($CFG->dirroot . "/local/sitereport/classes/blocks/activecoursesblock.php");
-require_once($CFG->dirroot . "/local/sitereport/classes/blocks/f2fsessionsblock.php");
-require_once($CFG->dirroot . "/local/sitereport/classes/blocks/certificatesblock.php");
-require_once($CFG->dirroot . "/local/sitereport/classes/blocks/liveusersblock.php");
-require_once($CFG->dirroot . "/local/sitereport/classes/blocks/siteaccessblock.php");
-require_once($CFG->dirroot . "/local/sitereport/classes/blocks/todaysactivityblock.php");
-require_once($CFG->dirroot . "/local/sitereport/classes/blocks/lpstatsblock.php");
-require_once($CFG->dirroot . "/local/sitereport/classes/blocks/inactiveusersblock.php");
-require_once($CFG->dirroot . "/local/sitereport/classes/blocks/courseengageblock.php");
-require_once($CFG->dirroot . "/local/sitereport/classes/blocks/completionblock.php");
-require_once($CFG->dirroot . "/local/sitereport/classes/blocks/courseanalytics_block.php");
+require_once($CFG->dirroot . "/local/edwiserreports/classes/blocks/activecoursesblock.php");
+require_once($CFG->dirroot . "/local/edwiserreports/classes/blocks/f2fsessionsblock.php");
+require_once($CFG->dirroot . "/local/edwiserreports/classes/blocks/certificatesblock.php");
+require_once($CFG->dirroot . "/local/edwiserreports/classes/blocks/liveusersblock.php");
+require_once($CFG->dirroot . "/local/edwiserreports/classes/blocks/siteaccessblock.php");
+require_once($CFG->dirroot . "/local/edwiserreports/classes/blocks/todaysactivityblock.php");
+require_once($CFG->dirroot . "/local/edwiserreports/classes/blocks/lpstatsblock.php");
+require_once($CFG->dirroot . "/local/edwiserreports/classes/blocks/inactiveusersblock.php");
+require_once($CFG->dirroot . "/local/edwiserreports/classes/blocks/courseengageblock.php");
+require_once($CFG->dirroot . "/local/edwiserreports/classes/blocks/completionblock.php");
+require_once($CFG->dirroot . "/local/edwiserreports/classes/blocks/courseanalytics_block.php");
 
 use stdClass;
 use completion_info;
@@ -65,9 +65,9 @@ class utility {
         global $CFG;
 
         // Require block file.
-        require_once($CFG->dirroot . '/local/sitereport/classes/blocks/activeusersblock.php');
+        require_once($CFG->dirroot . '/local/edwiserreports/classes/blocks/activeusersblock.php');
 
-        $activeusersblock = new \local_sitereport\activeusersblock($data);
+        $activeusersblock = new \local_edwiserreports\activeusersblock($data);
         return $activeusersblock->get_data($data);
     }
 
@@ -79,11 +79,11 @@ class utility {
     public static function get_course_progress_data($data) {
         global $CFG;
 
-        require_once($CFG->dirroot . '/local/sitereport/classes/blocks/courseprogressblock.php');
+        require_once($CFG->dirroot . '/local/edwiserreports/classes/blocks/courseprogressblock.php');
 
         $data = json_decode(required_param('data', PARAM_RAW));
 
-        $courseprogress = new \local_sitereport\courseprogressblock();
+        $courseprogress = new \local_edwiserreports\courseprogressblock();
         if ($data->courseid == "all") {
             return array("data" => $courseprogress->get_courselist($data->cohortid));
         }
@@ -93,9 +93,9 @@ class utility {
     public static function get_active_courses_data() {
         global $CFG;
 
-        require_once($CFG->dirroot . '/local/sitereport/classes/blocks/activecoursesblock.php');
+        require_once($CFG->dirroot . '/local/edwiserreports/classes/blocks/activecoursesblock.php');
 
-        $activecourses = new \local_sitereport\activecoursesblock();
+        $activecourses = new \local_edwiserreports\activecoursesblock();
         return $activecourses->get_data(false);
     }
 
@@ -106,65 +106,65 @@ class utility {
     public static function get_f2fsessiondata_data($data) {
         global $CFG;
 
-        require_once($CFG->dirroot . '/local/sitereport/classes/blocks/f2fsessionsblock.php');
+        require_once($CFG->dirroot . '/local/edwiserreports/classes/blocks/f2fsessionsblock.php');
 
-        $f2fsession = new \local_sitereport\f2fsessionsblock();
+        $f2fsession = new \local_edwiserreports\f2fsessionsblock();
         return $f2fsession->get_data($data);
     }
 
     public static function get_certificates_data($data) {
         global $CFG;
-        require_once($CFG->dirroot . '/local/sitereport/classes/blocks/certificatesblock.php');
+        require_once($CFG->dirroot . '/local/edwiserreports/classes/blocks/certificatesblock.php');
 
-        $certificatesblock = new \local_sitereport\certificatesblock();
+        $certificatesblock = new \local_edwiserreports\certificatesblock();
         if (isset($data->certificateid)) {
             $cohortid = isset($data->cohortid) ? $data->cohortid : false;
-            return \local_sitereport\certificatesblock::get_issued_users($data->certificateid, $cohortid);
+            return \local_edwiserreports\certificatesblock::get_issued_users($data->certificateid, $cohortid);
         }
         return $certificatesblock->get_data();
     }
 
     public static function get_liveusers_data() {
         global $CFG;
-        require_once($CFG->dirroot . '/local/sitereport/classes/blocks/liveusersblock.php');
+        require_once($CFG->dirroot . '/local/edwiserreports/classes/blocks/liveusersblock.php');
 
-        $liveusers = new \local_sitereport\liveusersblock();
+        $liveusers = new \local_edwiserreports\liveusersblock();
         return $liveusers->get_data();
     }
 
     public static function get_siteaccess_data() {
         global $CFG;
-        require_once($CFG->dirroot . '/local/sitereport/classes/blocks/liveusersblock.php');
+        require_once($CFG->dirroot . '/local/edwiserreports/classes/blocks/liveusersblock.php');
 
-        $siteaccess = new \local_sitereport\siteaccessblock();
+        $siteaccess = new \local_edwiserreports\siteaccessblock();
         return $siteaccess->get_data();
     }
 
     public static function get_todaysactivity_data($data) {
         global $CFG;
-        require_once($CFG->dirroot . '/local/sitereport/classes/blocks/todaysactivityblock.php');
+        require_once($CFG->dirroot . '/local/edwiserreports/classes/blocks/todaysactivityblock.php');
 
-        $todaysactivityblock = new \local_sitereport\todaysactivityblock();
+        $todaysactivityblock = new \local_edwiserreports\todaysactivityblock();
         return $todaysactivityblock->get_data($data);
     }
 
     public static function get_lpstats_data($data) {
         global $CFG;
-        require_once($CFG->dirroot . '/local/sitereport/classes/blocks/lpstatsblock.php');
+        require_once($CFG->dirroot . '/local/edwiserreports/classes/blocks/lpstatsblock.php');
 
-        $lpstatsblock = new \local_sitereport\lpstatsblock();
+        $lpstatsblock = new \local_edwiserreports\lpstatsblock();
         return $lpstatsblock->get_data($data);
     }
 
     public static function get_courseengage_data($cohortid) {
-        return \local_sitereport\courseengageblock::get_data($cohortid);
+        return \local_edwiserreports\courseengageblock::get_data($cohortid);
     }
 
     public static function get_inactiveusers_data($data) {
         global $CFG;
-        require_once($CFG->dirroot . '/local/sitereport/classes/blocks/inactiveusersblock.php');
+        require_once($CFG->dirroot . '/local/edwiserreports/classes/blocks/inactiveusersblock.php');
 
-        $inactiveusers = new \local_sitereport\inactiveusersblock();
+        $inactiveusers = new \local_edwiserreports\inactiveusersblock();
         return $inactiveusers->get_data($data);
     }
 
@@ -178,7 +178,7 @@ class utility {
         } else {
             $cohortid = 0;
         }
-        return \local_sitereport\completionblock::get_data($data->courseid, $cohortid);
+        return \local_edwiserreports\completionblock::get_data($data->courseid, $cohortid);
     }
 
     public static function get_courseanalytics_data($data) {
@@ -187,7 +187,7 @@ class utility {
         } else {
             $cohortid = 0;
         }
-        return \local_sitereport\courseanalytics_block::get_data($data->courseid, $cohortid);
+        return \local_edwiserreports\courseanalytics_block::get_data($data->courseid, $cohortid);
     }
 
     /** Generate Course Filter for course progress block
@@ -276,7 +276,7 @@ class utility {
         global $DB;
 
         // Return course completion from report completion table.
-        $table = "sitereport_course_progress";
+        $table = "edw_course_progress";
         return $DB->get_records($table, array("courseid" => $courseid), "", "userid, progress as completion");
     }
 
@@ -483,7 +483,7 @@ class utility {
             }
 
             $completionsql = "SELECT id, progress as completion
-                FROM {sitereport_course_progress}
+                FROM {edw_course_progress}
                 WHERE userid = :userid
                 AND courseid = :courseid
                 AND progress
@@ -573,7 +573,7 @@ class utility {
                 'blockname' => $blockname,
                 'component' => $component
             );
-            $response->data = self::local_sitereport_get_schedule_emaillist($params);
+            $response->data = self::local_edwiserreports_get_schedule_emaillist($params);
         }
         return $response;
     }
@@ -583,14 +583,14 @@ class utility {
      * Get Scheduled email list
      * @return [type] [description]
      */
-    public static function local_sitereport_get_schedule_emaillist($params) {
+    public static function local_edwiserreports_get_schedule_emaillist($params) {
         global $DB;
 
         $emails = array();
         $cmpblocknamesql = $DB->sql_compare_text('blockname');
         $cmpcomponentsql = $DB->sql_compare_text('component');
 
-        $sql = "SELECT * FROM {sitereport_schedemails}
+        $sql = "SELECT * FROM {edwreports_schedemails}
             WHERE $cmpblocknamesql = :blockname
             AND $cmpcomponentsql = :component";
 
@@ -603,7 +603,7 @@ class utility {
                 $data["esrname"] = $emailinfo->esrname;
                 $data["esrnextrun"] = date("d M y", $emailinfo->esrnextrun);
                 $data["esrfrequency"] = $emailinfo->esrfrequency;
-                $data["esrmanage"] = local_sitereport_create_manage_icons_for_emaillist(
+                $data["esrmanage"] = local_edwiserreports_create_manage_icons_for_emaillist(
                     $key,
                     $rec->blockname,
                     $rec->component,
@@ -624,8 +624,8 @@ class utility {
         global $DB;
 
         // Get data from table.
-        $table = "sitereport_schedemails";
-        $sql = "SELECT * FROM {sitereport_schedemails}
+        $table = "edwreports_schedemails";
+        $sql = "SELECT * FROM {edwreports_schedemails}
             WHERE blockname = :blockname
             AND component = :component";
         $params = array(
@@ -674,8 +674,8 @@ class utility {
         global $DB;
 
         // Get data from table.
-        $table = "sitereport_schedemails";
-        $sql = "SELECT * FROM {sitereport_schedemails}
+        $table = "edwreports_schedemails";
+        $sql = "SELECT * FROM {edwreports_schedemails}
             WHERE blockname = :blockname
             AND component = :component";
         $params = array(
@@ -728,8 +728,8 @@ class utility {
         global $DB;
 
         // Get data from table.
-        $table = "sitereport_schedemails";
-        $sql = "SELECT * FROM {sitereport_schedemails}
+        $table = "edwreports_schedemails";
+        $sql = "SELECT * FROM {edwreports_schedemails}
             WHERE blockname = :blockname
             AND component = :component";
         $params = array(
@@ -767,10 +767,10 @@ class utility {
         $response->error = false;
         if ($status = $emaildata[$data->id]->esremailenable) {
             $emaildata[$data->id]->esremailenable = false;
-            $response->successmsg = get_string('scheduledemaildisbled', 'local_sitereport');
+            $response->successmsg = get_string('scheduledemaildisbled', 'local_edwiserreports');
         } else {
             $emaildata[$data->id]->esremailenable = true;
-            $response->successmsg = get_string('scheduledemailenabled', 'local_sitereport');
+            $response->successmsg = get_string('scheduledemailenabled', 'local_edwiserreports');
         }
 
         $rec->emaildata = json_encode(array_values($emaildata));
@@ -844,8 +844,8 @@ class utility {
                 $res->duration = format_time($lp['durationtime']);
 
                 // Set starttime and endtime not applicable.
-                $res->startdate = get_string('na', 'local_sitereport');
-                $res->enddate = get_string('na', 'local_sitereport');
+                $res->startdate = get_string('na', 'local_edwiserreports');
+                $res->enddate = get_string('na', 'local_edwiserreports');
             } else {
                 // Get learning programs startdate in redable format.
                 $res->startdate = date('d-M-Y', $lp['timestart']);
@@ -858,7 +858,7 @@ class utility {
                 }
 
                 // Set duration not applicable.
-                $res->duration = get_string('na', 'local_sitereport');
+                $res->duration = get_string('na', 'local_edwiserreports');
             }
 
             $response[] = $res;
@@ -1005,7 +1005,7 @@ class utility {
         global $DB;
 
         if (in_array(0, $cohortids)) {
-            $cohorts = local_sitereport_get_cohort_filter();
+            $cohorts = local_edwiserreports_get_cohort_filter();
             if (isset($cohorts->values) && !empty($cohorts->values)) {
                 $cohortids = array_column($cohorts->values, 'id');
             }
@@ -1060,7 +1060,7 @@ class utility {
     public static function get_reports_block() {
         global $DB;
 
-        return $DB->get_records('sitereport_blocks');
+        return $DB->get_records('edwreports_blocks');
     }
 
     /**
@@ -1143,7 +1143,7 @@ class utility {
     public static function get_reportsblock_by_name($blockname) {
         global $DB;
 
-        return $DB->get_record('sitereport_blocks', array('classname' => $blockname));
+        return $DB->get_record('edwreports_blocks', array('classname' => $blockname));
     }
 
     /**
@@ -1157,9 +1157,9 @@ class utility {
             $desktopview = $blockdata[LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW];
             $tabletview = $blockdata[LOCAL_SITEREPORT_BLOCK_TABLET_VIEW];
         } else {
-            $position = get_config('local_sitereport', $block->blockname . 'position');
-            $desktopview = get_config('local_sitereport', $block->blockname . 'desktopsize');
-            $tabletview = get_config('local_sitereport', $block->blockname . 'tabletsize');
+            $position = get_config('local_edwiserreports', $block->blockname . 'position');
+            $desktopview = get_config('local_edwiserreports', $block->blockname . 'desktopsize');
+            $tabletview = get_config('local_edwiserreports', $block->blockname . 'tabletsize');
         }
 
         // Set default preference.
@@ -1196,9 +1196,9 @@ class utility {
         // Prepare the list of capabilities to choose from.
         $capabilitychoices = array();
         foreach ($context->get_capabilities() as $cap) {
-            if (strpos($cap->name, 'report/sitereport_' . $block->classname) !== false) {
-                $strkey = str_replace(array('report/sitereport_', ':'), array('', ''), $cap->name);
-                $capabilitychoices[$cap->name] = get_string($strkey, 'local_sitereport');
+            if (strpos($cap->name, 'report/edwiserreports_' . $block->classname) !== false) {
+                $strkey = str_replace(array('report/edwiserreports_', ':'), array('', ''), $cap->name);
+                $capabilitychoices[$cap->name] = get_string($strkey, 'local_edwiserreports');
             }
         }
 
@@ -1226,7 +1226,7 @@ class utility {
              'prohibit' => CAP_PROHIBIT
         );
 
-        if (!$config = get_config('local_sitereport', str_replace('block', 'roleallow', $blockname))) {
+        if (!$config = get_config('local_edwiserreports', str_replace('block', 'roleallow', $blockname))) {
             return array('success' => false);
         }
         $config = explode(',', $config);
@@ -1249,7 +1249,7 @@ class utility {
         }
 
         $config = implode(',', $config);
-        set_config(str_replace('block', 'roleallow', $blockname), $config, 'local_sitereport');
+        set_config(str_replace('block', 'roleallow', $blockname), $config, 'local_edwiserreports');
 
         return array(
             "success" => true

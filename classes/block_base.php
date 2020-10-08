@@ -16,12 +16,12 @@
 /**
  * Reports abstract block will define here to which will extend for each repoers blocks
  *
- * @package     local_sitereport
+ * @package     local_edwiserreports
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_sitereport;
+namespace local_edwiserreports;
 
 use stdClass;
 use context_system;
@@ -75,7 +75,7 @@ class block_base {
 
         $base = new \plugin_renderer_base($PAGE, RENDERER_TARGET_GENERAL);
         // @codingStandardsIgnoreEnd
-        return $base->render_from_template('local_sitereport/' . $templatename, $context);
+        return $base->render_from_template('local_edwiserreports/' . $templatename, $context);
     }
 
     /**
@@ -96,9 +96,9 @@ class block_base {
             $sizes[LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW] = $blockdata[LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW];
             $sizes[LOCAL_SITEREPORT_BLOCK_TABLET_VIEW] = $blockdata[LOCAL_SITEREPORT_BLOCK_TABLET_VIEW];
         } else {
-            $position = get_config('local_sitereport', $blockname . 'position');
-            $sizes[LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW] = get_config('local_sitereport', $blockname . 'desktopsize');
-            $sizes[LOCAL_SITEREPORT_BLOCK_TABLET_VIEW] = get_config('local_sitereport', $blockname . 'tabletsize');
+            $position = get_config('local_edwiserreports', $blockname . 'position');
+            $sizes[LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW] = get_config('local_edwiserreports', $blockname . 'desktopsize');
+            $sizes[LOCAL_SITEREPORT_BLOCK_TABLET_VIEW] = get_config('local_edwiserreports', $blockname . 'tabletsize');
         }
 
         $devicecolclass = array(
@@ -145,12 +145,12 @@ class block_base {
             return false;
         }
 
-        $block = \local_sitereport\utility::get_reportsblock_by_name($blockname);
+        $block = \local_edwiserreports\utility::get_reportsblock_by_name($blockname);
         if (!$block) {
             return false;
         }
 
-        $pref = \local_sitereport\utility::get_reportsblock_preferences($block);
+        $pref = \local_edwiserreports\utility::get_reportsblock_preferences($block);
 
         $this->layout->hidden = isset($pref["hidden"]) ? $pref["hidden"] : 0;
 
@@ -158,7 +158,7 @@ class block_base {
 
         // Based on capability show the edit button
         // If user dont have capability to see the block.
-        $this->layout->caneditadv = has_capability('report/sitereport_' . $blockname . ':editadvance', $context);
+        $this->layout->caneditadv = has_capability('report/edwiserreports_' . $blockname . ':editadvance', $context);
 
         // If have capability to edit.
         $this->layout->editopt = true;

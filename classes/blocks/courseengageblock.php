@@ -16,13 +16,13 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     local_sitereport
+ * @package     local_edwiserreports
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_sitereport;
+namespace local_edwiserreports;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -71,7 +71,7 @@ class courseengageblock extends utility {
         }
         $completionsql = "SELECT c.courseid, COUNT(c.userid) AS usercount,
             c.progress as completion
-            FROM {sitereport_course_progress} c
+            FROM {edw_course_progress} c
             JOIN {user} u ON u.id = c.userid "
             . $cohortjoin .
             " WHERE c.progress
@@ -82,7 +82,7 @@ class courseengageblock extends utility {
             " GROUP BY c.courseid";
         // Calculate atleast completed one modules.
         $completionmodulesql = "SELECT c.courseid, COUNT(c.userid) AS usercount
-            FROM {sitereport_course_progress} c
+            FROM {edw_course_progress} c
             JOIN {user} u ON u.id = c.userid "
             . $cohortjoin .
             " WHERE (LENGTH(completedmodules) -
@@ -142,7 +142,7 @@ class courseengageblock extends utility {
         $engagement = new stdClass();
 
         // Get only enrolled students.
-        $enrolledstudents = \local_sitereport\utility::get_enrolled_students($course->id);
+        $enrolledstudents = \local_edwiserreports\utility::get_enrolled_students($course->id);
         /* If cohort filter is there then select only cohort users */
         if ($cohortid) {
             foreach ($enrolledstudents as $key => $user) {
@@ -275,12 +275,12 @@ class courseengageblock extends utility {
      */
     public static function get_enrolled_users($course, $cohortid) {
         $coursecontext = context_course::instance($course->id);
-        $users = \local_sitereport\utility::get_enrolled_students($course->id);
+        $users = \local_edwiserreports\utility::get_enrolled_students($course->id);
 
         $usersdata = new stdClass();
         $usresdata->head = array(
-            get_string("name", "local_sitereport"),
-            get_string("email", "local_sitereport")
+            get_string("name", "local_edwiserreports"),
+            get_string("email", "local_edwiserreports")
         );
 
         $userdata->data = array();
@@ -311,8 +311,8 @@ class courseengageblock extends utility {
         $users = self::get_course_visites($course->id, $cohortid);
         $usersdata = new stdClass();
         $userdata->head = array(
-            get_string("name", "local_sitereport"),
-            get_string("email", "local_sitereport")
+            get_string("name", "local_edwiserreports"),
+            get_string("email", "local_edwiserreports")
         );
 
         $userdata->data = array();
@@ -341,12 +341,12 @@ class courseengageblock extends utility {
      */
     public static function get_users_started_an_activity($course, $cohortid) {
         $coursecontext = context_course::instance($course->id);
-        $enrolledusers = \local_sitereport\utility::get_enrolled_students($course->id);
+        $enrolledusers = \local_edwiserreports\utility::get_enrolled_students($course->id);
         $users = self::users_completed_a_module($course, $enrolledusers, $cohortid);
         $usersdata = new stdClass();
         $userdata->head = array(
-            get_string("name", "local_sitereport"),
-            get_string("email", "local_sitereport")
+            get_string("name", "local_edwiserreports"),
+            get_string("email", "local_edwiserreports")
         );
 
         $userdata->data = array();
@@ -374,16 +374,16 @@ class courseengageblock extends utility {
      */
     public static function get_users_completed_half_courses($course, $cohortid) {
         $coursecontext = context_course::instance($course->id);
-        $enrolledusers = \local_sitereport\utility::get_enrolled_students($course->id);
+        $enrolledusers = \local_edwiserreports\utility::get_enrolled_students($course->id);
 
         // Get completions.
-        $compobj = new \local_sitereport\completions();
+        $compobj = new \local_edwiserreports\completions();
         $completions = $compobj->get_course_completions($course->id);
 
         $usersdata = new stdClass();
         $userdata->head = array(
-            get_string("name", "local_sitereport"),
-            get_string("email", "local_sitereport")
+            get_string("name", "local_edwiserreports"),
+            get_string("email", "local_edwiserreports")
         );
 
         $userdata->data = array();
@@ -414,16 +414,16 @@ class courseengageblock extends utility {
      */
     public static function get_users_completed_courses($course, $cohortid) {
         $coursecontext = context_course::instance($course->id);
-        $enrolledusers = \local_sitereport\utility::get_enrolled_students($course->id);
+        $enrolledusers = \local_edwiserreports\utility::get_enrolled_students($course->id);
 
         // Get completions.
-        $compobj = new \local_sitereport\completions();
+        $compobj = new \local_edwiserreports\completions();
         $completions = $compobj->get_course_completions($course->id);
 
         $usersdata = new stdClass();
         $userdata->head = array(
-            get_string("name", "local_sitereport"),
-            get_string("email", "local_sitereport")
+            get_string("name", "local_edwiserreports"),
+            get_string("email", "local_edwiserreports")
         );
 
         $userdata->data = array();
@@ -455,12 +455,12 @@ class courseengageblock extends utility {
      */
     public static function get_header_report() {
         $header = array(
-            get_string("coursename", "local_sitereport"),
-            get_string("enrolments", "local_sitereport"),
-            get_string("visits", "local_sitereport"),
-            get_string("activitystart", "local_sitereport"),
-            get_string("completedhalf", "local_sitereport"),
-            get_string("coursecompleted", "local_sitereport")
+            get_string("coursename", "local_edwiserreports"),
+            get_string("enrolments", "local_edwiserreports"),
+            get_string("visits", "local_edwiserreports"),
+            get_string("activitystart", "local_edwiserreports"),
+            get_string("completedhalf", "local_edwiserreports"),
+            get_string("coursecompleted", "local_edwiserreports")
         );
         return $header;
     }

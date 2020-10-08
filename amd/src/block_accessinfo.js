@@ -1,7 +1,7 @@
 define([
     'jquery',
     'core/templates',
-    'local_sitereport/defaultconfig',
+    'local_edwiserreports/defaultconfig',
     './common'
 ], function ($, templates, cfg, common) {
     var panel = cfg.getPanel("#siteaccessblock");

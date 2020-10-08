@@ -15,7 +15,7 @@
                         </button>
                         <div class="dropdown-menu" aria-labelledby="cohortfilter" role="menu" x-placement="bottom-start">
                             <a class="dropdown-item" href="javascript:void(0)" data-cohortid="0" role="menuitem">
-                                {{# str }} all, local_sitereport {{/ str }}
+                                {{# str }} all, local_edwiserreports {{/ str }}
                             </a>
                             {{# values }}
                             <a class="dropdown-item" href="javascript:void(0)" data-cohortid="{{ id }}" role="menuitem">
@@ -31,34 +31,34 @@
     </div>
     <div class="alert alert-info alert-block fade in " role="alert" data-aria-autofocus="true">
         <button type="button" class="close" data-dismiss="alert">×</button>
-        {{# str }} clicktogetuserslist, local_sitereport {{/ str}}
+        {{# str }} clicktogetuserslist, local_edwiserreports {{/ str}}
     </div>
     <ul class="nav nav-tabs nav-tabs-line w-full" role="tablist">
         <li class="nav-item" role="presentation">
             <a class="nav-link active" data-toggle="tab" href="#progress" aria-controls="progress" role="tab" aria-selected="true">
-                {{#str}} courseprogress, local_sitereport {{/str}}
+                {{#str}} courseprogress, local_edwiserreports {{/str}}
             </a>
         </li>
         <li class="nav-item" role="presentation">
             <a class="nav-link" data-toggle="tab" href="#engagement" aria-controls="engagement" role="tab" aria-selected="false">
-                {{#str}} courseengagement, local_sitereport {{/str}}
+                {{#str}} courseengagement, local_edwiserreports {{/str}}
             </a>
         </li>
     </ul>
     <div class="tab-content pt-20">
         <div class="tab-pane active" id="progress" role="tabpanel">
-            {{> local_sitereport/courseprogress }}
+            {{> local_edwiserreports/courseprogress }}
             {{# courseprogressexport }}
             <div class="pull-right px-5">
-                {{> local_sitereport/exportreports }}
+                {{> local_edwiserreports/exportreports }}
             </div>
             {{/ courseprogressexport }}
         </div>
         <div class="tab-pane" id="engagement" role="tabpanel">
-            {{> local_sitereport/courseengage }}
+            {{> local_edwiserreports/courseengage }}
             {{# courseengageexport }}
             <div class="pull-right px-5">
-                {{> local_sitereport/exportreports }}
+                {{> local_edwiserreports/exportreports }}
             </div>
             {{/ courseengageexport }}
         </div>

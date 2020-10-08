@@ -1,10 +1,10 @@
 define([
     'jquery',
     'core/chartjs',
-    'local_sitereport/defaultconfig',
-    'local_sitereport/variables',
+    'local_edwiserreports/defaultconfig',
+    'local_edwiserreports/variables',
     './common',
-    'local_sitereport/flatpickr'
+    'local_edwiserreports/flatpickr'
 ], function ($, Chart, defaultConfig, V, common) {
     /* Varible for active users block */
     var cfg               = null;

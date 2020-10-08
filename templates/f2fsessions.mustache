@@ -1,53 +1,53 @@
 {{#userfilters}}
-    {{> local_sitereport/userfilters }}
+    {{> local_edwiserreports/userfilters }}
 {{/userfilters}}
 
 <div id="wdm-f2fsessions-individual" class="overflow-scroll" data-sesskey="{{sesskey}}">
     <div class="table-reponsive">
         <div class="loader w-full text-center py-110 my-50">
-            {{# pix }} loader, local_sitereport{{/ pix }}
+            {{# pix }} loader, local_edwiserreports{{/ pix }}
         </div>
         <table id="f2fsessionstable" class="table dataTable no-footer clickable" style="display: none;">
             <thead>
                 <tr>
                     <th class="text-nowrap bg-image-none no-sorting-arrow">
-                        {{#str}} date, local_sitereport {{/str}}
+                        {{#str}} date, local_edwiserreports {{/str}}
                     </th>
                     <th class="text-nowrap bg-image-none no-sorting-arrow">
-                        {{#str}} time, local_sitereport {{/str}}
+                        {{#str}} time, local_edwiserreports {{/str}}
                     </th>
                     <th class="text-nowrap bg-image-none no-sorting-arrow">
-                        {{#str}} name, local_sitereport{{/str}}
+                        {{#str}} name, local_edwiserreports{{/str}}
                     </th>
                     <th class="text-nowrap bg-image-none no-sorting-arrow">
-                        {{#str}} course, local_sitereport {{/str}}
+                        {{#str}} course, local_edwiserreports {{/str}}
                     </th>
                     <th class="text-nowrap bg-image-none no-sorting-arrow">
-                        {{#str}} venue, local_sitereport {{/str}}
+                        {{#str}} venue, local_edwiserreports {{/str}}
                     </th>
                     <th class="text-nowrap bg-image-none no-sorting-arrow">
-                        {{#str}} signups, local_sitereport {{/str}}
+                        {{#str}} signups, local_edwiserreports {{/str}}
                     </th>
                     <th class="text-nowrap bg-image-none no-sorting-arrow">
-                        {{#str}} confirmed, local_sitereport {{/str}}
+                        {{#str}} confirmed, local_edwiserreports {{/str}}
                     </th>
                     <th class="text-nowrap bg-image-none no-sorting-arrow">
-                        {{#str}} attendees, local_sitereport {{/str}}
+                        {{#str}} attendees, local_edwiserreports {{/str}}
                     </th>
                     <th class="text-nowrap bg-image-none no-sorting-arrow">
-                        {{#str}} waitlist, local_sitereport {{/str}}
+                        {{#str}} waitlist, local_edwiserreports {{/str}}
                     </th>
                     <th class="text-nowrap bg-image-none no-sorting-arrow">
-                        {{#str}} declined, local_sitereport {{/str}}
+                        {{#str}} declined, local_edwiserreports {{/str}}
                     </th>
                     <th class="text-nowrap bg-image-none no-sorting-arrow">
-                        {{#str}} canceled, local_sitereport {{/str}}
+                        {{#str}} canceled, local_edwiserreports {{/str}}
                     </th>
                     <th>
-                        {{#str}} download, local_sitereport {{/str}}
+                        {{#str}} download, local_edwiserreports {{/str}}
                     </th>
                     <th>
-                        {{#str}} f2fmore, local_sitereport {{/str}}
+                        {{#str}} f2fmore, local_edwiserreports {{/str}}
                     </th>
                 </tr>
             </thead>
@@ -77,13 +77,13 @@
                                 <thead>
                                     <tr>
                                         <th class="text-nowrap">
-                                            {{#str}} username, local_sitereport {{/str}}
+                                            {{#str}} username, local_edwiserreports {{/str}}
                                         </th>
                                         <th class="text-nowrap">
-                                            {{#str}} status, local_sitereport {{/str}}
+                                            {{#str}} status, local_edwiserreports {{/str}}
                                         </th>
                                         <th class="text-nowrap">
-                                            {{#str}} reason, local_sitereport {{/str}}
+                                            {{#str}} reason, local_edwiserreports {{/str}}
                                         </th>
                                     </tr>
                                 </thead>
@@ -98,7 +98,7 @@
                                     {{^users}}
                                     <tr>
                                         <td class="text-center" colspan="3">
-                                            {{#str}} nosignups, local_sitereport{{/str}}
+                                            {{#str}} nosignups, local_edwiserreports{{/str}}
                                         </td>
                                     </tr>
                                     {{/users}}
@@ -111,7 +111,7 @@
                 {{^sessions}}
                 <tr>
                     <td class="text-center" colspan="12">
-                        {{#str}} nosessions, local_sitereport{{/str}}
+                        {{#str}} nosessions, local_edwiserreports{{/str}}
                     </td>
                 </tr>
                 {{/sessions}}
@@ -119,7 +119,7 @@
                 {{^f2fmodules}}
                 <tr>
                     <td class="text-center" colspan="12">
-                        {{#str}} nosessions, local_sitereport{{/str}}
+                        {{#str}} nosessions, local_edwiserreports{{/str}}
                     </td>
                 </tr>
                 {{/f2fmodules}}

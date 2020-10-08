@@ -16,13 +16,13 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     local_sitereport
+ * @package     local_edwiserreports
  * @category    admin
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_sitereport;
+namespace local_edwiserreports;
 
 use context_system;
 use moodle_url;
@@ -33,39 +33,39 @@ require_once('classes/output/renderable.php');
 // Required login.
 require_login();
 
-local_sitereport_get_required_strings_for_js();
+local_edwiserreports_get_required_strings_for_js();
 
 // System Context.
 $context = context_system::instance();
-$component = "local_sitereport";
+$component = "local_edwiserreports";
 
 // Include JS for course report page.
-$PAGE->requires->js_call_amd('local_sitereport/courseprogress', 'init', array($context->id));
-$PAGE->requires->js_call_amd('local_sitereport/courseengage', 'init', array($context->id));
+$PAGE->requires->js_call_amd('local_edwiserreports/courseprogress', 'init', array($context->id));
+$PAGE->requires->js_call_amd('local_edwiserreports/courseengage', 'init', array($context->id));
 
 // Get page URL.
-$pageurl = new moodle_url($CFG->wwwroot . "/local/sitereport/coursereport.php");
+$pageurl = new moodle_url($CFG->wwwroot . "/local/edwiserreports/coursereport.php");
 
 // Require CSS.
-$PAGE->requires->css('/local/sitereport/styles/loader.css');
+$PAGE->requires->css('/local/edwiserreports/styles/loader.css');
 
 // Set page context.
 $PAGE->set_context($context);
 
 // Require fixes for boost.
 if ($PAGE->theme->name == 'boost') {
-    $PAGE->requires->css('/local/sitereport/styles/datatable-fix.css');
+    $PAGE->requires->css('/local/edwiserreports/styles/datatable-fix.css');
 }
 
 // Set page url.
 $PAGE->set_url($pageurl);
 
 // Get renderable.
-$renderable = new \local_sitereport\output\coursereport_renderable();
+$renderable = new \local_edwiserreports\output\coursereport_renderable();
 $output = $PAGE->get_renderer($component)->render($renderable);
 
-$PAGE->set_heading(get_string("coursereportsheader", "local_sitereport"));
-$PAGE->set_title(get_string("coursereportsheader", "local_sitereport"));
+$PAGE->set_heading(get_string("coursereportsheader", "local_edwiserreports"));
+$PAGE->set_title(get_string("coursereportsheader", "local_edwiserreports"));
 
 // Print output in page.
 echo $OUTPUT->header();

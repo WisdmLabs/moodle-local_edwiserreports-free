@@ -15,11 +15,11 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 /**
  * Edwiser RemUI
- * @package    local_sitereport
+ * @package    local_edwiserreports
  * @copyright  (c) 2018 WisdmLabs (https://wisdmlabs.com/)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-namespace local_sitereport\controller;
+namespace local_edwiserreports\controller;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -28,7 +28,7 @@ defined('MOODLE_INTERNAL') || die();
  * Controllers handle requests.  Any methods that end with "_action"
  * can be routed to via the URL.  See the router for how this happens.
  *
- * @package   local_sitereport
+ * @package   local_edwiserreports
  * @copyright Copyright (c) 2015 Moodlerooms Inc. (http://www.moodlerooms.com)
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

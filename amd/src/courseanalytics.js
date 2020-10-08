@@ -1,9 +1,9 @@
 define([
     'jquery',
-    'local_sitereport/variables',
-    'local_sitereport/jquery.dataTables',
-    'local_sitereport/dataTables.bootstrap4',
-    'local_sitereport/common'
+    'local_edwiserreports/variables',
+    'local_edwiserreports/jquery.dataTables',
+    'local_edwiserreports/dataTables.bootstrap4',
+    'local_edwiserreports/common'
 ], function($, V) {
     function init(CONTEXTID) {
         var PageId = $("#wdm-courseanalytics-individual");
