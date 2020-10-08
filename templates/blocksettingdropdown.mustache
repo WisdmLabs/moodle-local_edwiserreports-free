@@ -1,0 +1,29 @@
+<div class="dropdown blocksetting">
+    <a href="#" tabindex="0" class=" dropdown-toggle icon-no-margin" id="blocksetting-{{id}}" data-toggle="dropdown">
+        <i class="icon fa fa-cog fa-fw " title="Actions menu" aria-label="Actions menu"></i>
+    </a>
+    <div class="dropdown-menu dropdown-menu-right menu align-tr-br" aria-labelledby="blocksetting-{{id}}">
+        <div class="dropdown-item">
+            <a href="#" class="" data-contextid="{{contextid}}" data-blockname="{{id}}" data-action="edit">
+                {{#str}} editblockview, local_edwiserreports {{/str}}
+            </a>
+        </div>
+        <div class="dropdown-item">
+            <a href="#" class="" data-contextid="{{contextid}}" data-blockname="{{id}}" data-action="hide" data-hidden="{{hidden}}">
+                {{# hiddenblock }}
+                    {{#str}} unhide, local_edwiserreports {{/str}}
+                {{/ hiddenblock }}
+                {{^ hiddenblock }}
+                    {{#str}} hide, local_edwiserreports {{/str}}
+                {{/ hiddenblock }}
+            </a>
+        </div>
+        {{# caneditadv }}
+        <div class="dropdown-item">
+            <a href="#" class="" data-contextid="{{contextid}}" data-blockname="{{id}}" data-action="editcap">
+                {{#str}} editcapability, local_edwiserreports {{/str}}
+            </a>
+        </div>
+        {{/ caneditadv }}
+    </div>
+</div>

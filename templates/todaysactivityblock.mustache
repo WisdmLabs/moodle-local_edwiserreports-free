@@ -1,0 +1,111 @@
+<div class="card bg-primary">
+    <div class="card-block text-white">
+        <div class="row mx-0">
+            <div class="col-5">
+                <div class="bold mb-1">
+                    {{#str}} todayslogin, local_edwiserreports {{/str}}
+                </div>
+                <div class="row mx-0 text-center">
+                    <div class="d-flex w-100 todays-block bg-primary">
+                        <div>
+                            <div id="todays-onlinelearners" class=" font-size-30 font-weight-600 w-full">
+                                <div class="data">0</div>
+                            </div>
+                            <small>
+                                {{#str}} learners, local_edwiserreports {{/str}}
+                            </small>
+                        </div>
+                    </div>
+                    <div class="d-flex w-100 todays-block bg-primary">
+                        <div>
+                            <div id="todays-onlineteachers" class=" font-size-30 font-weight-600 w-full">
+                                <div class="data">0</div>
+                            </div>
+                            <small>
+                                {{#str}} teachers, local_edwiserreports {{/str}}
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-7">
+                <table class="summary ml-auto">
+                    <thead class="border-bottom">
+                        <tr>
+                            <th class="text-left">
+                                {{#str}} eventtoday, local_edwiserreports {{/str}}
+                            </th>
+                            <th class="text-right ">
+                                {{#str}} count, local_edwiserreports {{/str}}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td align="left">
+                                {{#str}} enrollment, local_edwiserreports {{/str}}
+                            </td>
+                            <td align="right" class="" id="todays-enrollments">
+                                <span class="data">0</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="left">
+                                {{#str}} activitycompletion, local_edwiserreports {{/str}}
+                            </td>
+                            <td align="right" class="" id="todays-activitycompletions">
+                                <span class="data">0</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="left">
+                                {{#str}} coursecompletion, local_edwiserreports {{/str}}
+                            </td>
+                            <td align="right" class="" id="todays-coursecompletions">
+                                <span class="data">0</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="left">
+                                {{#str}} newregistration, local_edwiserreports {{/str}}
+                            </td>
+                            <td align="right" class="" id="todays-registrations">
+                                <span class="data">0</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="left">
+                                {{#str}} visits, local_edwiserreports {{/str}}
+                            </td>
+                            <td align="right" class="" id="todays-visits">
+                                <span class="data">0</span>
+                            </td>
+                        </tr>
+                        <tr class="d-none">
+                            <td align="left">
+                                {{#str}} timespent, local_edwiserreports {{/str}}
+                            </td>
+                            <td align="right" class="" id="todays-timespend">
+                                <span class="data">00:00:00</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="visual col-12">
+            <p class="visual-head bold">
+                {{#str}} sitevisits, local_edwiserreports {{/str}}
+            </p>
+            <div class="visual-body">
+                <canvas class="ct-chart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{#js}}
+require(['jquery'], function($) {
+    $('#todaysactivityblock .loader').hide();
+})
+{{/js}}
