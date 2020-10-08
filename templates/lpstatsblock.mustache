@@ -1,0 +1,21 @@
+{{#haslps}}
+    <select id="wdm-lpstats-select" class="form-control singleselect w-full" name="state">
+            {{#lps}}
+            <option value="{{id}}">{{fullname}}</option>
+            {{/lps}}
+        </select>
+    <div class="loader w-full text-center my-50 py-100">
+        {{# pix }} loader, local_edwiserreports{{/ pix }}
+    </div>
+    <canvas class="ct-chart d-none"></canvas>
+{{/haslps}}
+{{^haslps}}
+    <div class="pie-placeholder position-relative mt-30">
+        {{# pix }} pie-placeholder, local_edwiserreports{{/ pix }}
+        <div class="position-absolute w-full" style="top: 45%;">
+            <div class="alert alert-secondary text-center w-full" role="alert">
+                {{#str}} nolearningprograms, local_edwiserreports {{/str}}
+            </div>
+        </div>
+    </div>
+{{/haslps}}

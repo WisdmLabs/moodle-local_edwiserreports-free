@@ -1,0 +1,27 @@
+<form action="{{{ downloadurl }}}" target="_blank" method="post" class="download-links row m-0 ml-auto">
+    <input type="hidden" name="block" value="{{id}}" />
+    <input type="hidden" name="filter" value="{{filter}}" />
+    <input type="hidden" name="cohortid" value="{{cohortid}}" />
+    <input type="hidden" name="region" value="{{region}}" />
+    <input type="hidden" name="sesskey" value="{{sesskey}}">
+    <button type="submit" class="a border-0 bg-white fi fi-csv" name="type" value="csv">
+        <div class="fi-content">
+            <strong>csv</strong>
+        </div>
+    </button>
+    <button type="submit" class="a border-0 bg-white fi fi-excel" name="type" value="excel">
+        <div class="fi-content">
+            <strong>excel</strong>
+        </div>
+    </button>
+    <button type="submit" class="a border-0 bg-white fi fi-pdf" name="type" value="pdf">
+        <div class="fi-content">
+            <strong>pdf</strong>
+        </div>
+    </button>
+    <button type="submit" class="a border-0 bg-white fi fi-email" name="type" value="email">
+        <div class="fi-content">
+            <strong>email</strong>
+        </div>
+    </button>
+</form>

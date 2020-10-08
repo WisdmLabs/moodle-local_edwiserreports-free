@@ -1,0 +1,102 @@
+<table id="accessinfotable" class="table mb-1 d-none">
+    <tbody class="small">
+        {{#siteaccess}}
+        {{#.}}
+        <tr class="siteaccess-tablerow">
+                {{#access}}
+                    <td class="bg-secondary small font-weight-700 border border-white p-0"
+                    data-toggle="tooltip"
+                    title="{{#str}} siteaccessinfo , local_edwiserreports, {{/str}} {{value}}"
+                    style="background-color: rgba(52,137,223,{{opacity}}) !important;">
+                        <p class="m-0 d-none">{{value}}</p>
+                    </td>
+                {{/access}}
+                {{#time}}
+                <td class="empty-label siteacess-time bg-white small font-weight-700 border border-white py-0">{{.}}</td>
+                {{/time}}
+        </tr>
+        {{/.}}
+        {{/siteaccess}}
+
+        <tr class="text-center">
+            <td class="empty-label small font-weight-700 border-0">
+                <p class="m-0">
+                {{#str}} sun, local_edwiserreports {{/str}}
+            </p>
+            </td>
+            <td class="empty-label small font-weight-700 border-0">
+                <p class="m-0">
+                {{#str}} mon, local_edwiserreports {{/str}}
+            </p>
+            </td>
+            <td class="empty-label small font-weight-700 border-0">
+                <p class="m-0">
+                {{#str}} tue, local_edwiserreports {{/str}}
+            </p>
+            </td>
+            <td class="empty-label small font-weight-700 border-0">
+                <p class="m-0">
+                {{#str}} wed, local_edwiserreports {{/str}}
+            </p>
+            </td>
+            <td class="empty-label small font-weight-700 border-0">
+                <p class="m-0">
+                {{#str}} thu, local_edwiserreports {{/str}}
+            </p>
+            </td>
+            <td class="empty-label small font-weight-700 border-0">
+                <p class="m-0">
+                {{#str}} fri, local_edwiserreports {{/str}}
+            </p>
+            </td>
+            <td class="empty-label small font-weight-700 border-0">
+                <p class="m-0">
+                {{#str}} sat, local_edwiserreports {{/str}}
+            </p>
+            </td>
+            <td class="empty-label border-0"></td>
+        </tr>
+    </tbody>
+</table>
+<table id="accessinfodesctable" class="table small font-weight-700 mb-1" style="display: none;">
+    <tbody>
+        <tr>
+            <td class="color-label-20 bg-secondary small font-weight-700 border border-white p-0">
+                <p class="invisible m-0">0</p>
+            </td>
+            <td class="color-label-40 bg-secondary small font-weight-700 border border-white p-0">
+                <p class="invisible m-0">0</p>
+            </td>
+            <td class="color-label-60 bg-secondary small font-weight-700 border border-white p-0">
+                <p class="invisible m-0">0</p>
+            </td>
+            <td class="color-label-80 bg-secondary small font-weight-700 border border-white p-0">
+                <p class="invisible m-0">0</p>
+            </td>
+            <td class="color-label-100 bg-secondary small font-weight-700 border border-white p-0">
+                <p class="invisible m-0">0</p>
+            </td>
+            <td class="color-label empty-label border-0 p-0" style="width: 0.1px;"></td>
+        </tr>
+        <tr>
+            <td class="empty-label border-0 m-0 p-0">
+                <p class="position-relative">0%</p>
+            </td>
+            <td class="empty-label border-0 m-0 p-0">
+                <p class="position-relative">20%</p>
+            </td>
+            <td class="empty-label border-0 m-0 p-0">
+                <p class="position-relative">40%</p>
+            </td>
+            <td class="empty-label border-0 m-0 p-0">
+                <p class="position-relative">60%</p>
+            </td>
+            <td class="empty-label border-0 m-0 p-0">
+                <p class="position-relative">80%</p>
+            </td>
+            <td class="empty-label border-0 m-0 p-0">
+                <p class="position-relative">100%</p>
+            </td>
+        </tr>
+    </tbody>
+</table>

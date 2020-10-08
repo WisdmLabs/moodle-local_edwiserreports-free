@@ -1,0 +1,28 @@
+{{#hascohorts}}
+<div class="col-md-4">
+    <label>Cohorts</label>
+    <select id="ed_cohorts" class="js-states form-control select25">
+        <option value="0">All</option>
+        {{#cohorts}}
+        <option value="{{id}}">{{name}}</option>
+        {{/cohorts}}
+    </select>
+</div>
+{{/hascohorts}}
+<div class="col-md-4">
+    <label>Users</label>
+    <select id="ed_users" class="js-states form-control select25">
+        <option value="0">All</option>
+        {{#users}}
+        <option value={{id}}>{{fullname}}</option>
+        {{/users}}
+    </select>
+</div>
+<div class="col-md-4 activitytype select hidden">
+    <label>Activity Type</label>
+    <select id="ed_activitytype" class="js-states form-control select25">
+        {{#modules}}
+        <option value={{id}}>{{name}}</option>
+        {{/modules}}
+    </select>
+</div>

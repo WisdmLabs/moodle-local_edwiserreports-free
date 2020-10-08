@@ -1,0 +1,76 @@
+<div id="wdm-courseprogress-individual" class="table-responsive mt-1" data-sesskey="{{sesskey}}">
+    <table class="table admintable" style="display: none;">
+        <thead>
+            <th class="text-nowrap bg-image-none no-sorting-arrow">
+                {{#str}} coursename, local_edwiserreports {{/str}}
+            </th>
+            <th class="text-nowrap bg-image-none no-sorting-arrow">
+                {{#str}} enrolled, local_edwiserreports {{/str}}
+            </th>
+            <th class="text-nowrap bg-image-none no-sorting-arrow">
+                {{#str}} completed, local_edwiserreports {{/str}}
+            </th>
+            <th class="text-nowrap bg-image-none no-sorting-arrow">
+                {{#str}} per100-80, local_edwiserreports {{/str}}
+            </th>
+            <th class="text-nowrap bg-image-none no-sorting-arrow">
+                {{#str}} per80-60, local_edwiserreports {{/str}}
+            </th>
+            <th class="text-nowrap bg-image-none no-sorting-arrow">
+                {{#str}} per60-40, local_edwiserreports {{/str}}
+            </th>
+            <th class="text-nowrap bg-image-none no-sorting-arrow">
+                {{#str}} per40-20, local_edwiserreports {{/str}}
+            </th>
+            <th class="text-nowrap bg-image-none no-sorting-arrow">
+                {{#str}} per20-0, local_edwiserreports {{/str}}
+            </th>
+        </thead>
+        <tbody>
+            {{#courseprogress}}
+            <tr>
+                <td>
+                    <a href="{{courseurl}}" class="w-full text-dark">
+                        {{{fullname}}}
+                    </a>
+                </td>
+                <td>
+                    <a href="javascript:void(0)" class="w-full text-dark modal-trigger" data-action="enrolments" data-minvalue="-1" data-maxvalue="100" data-courseid="{{id}}" data-coursename="{{fullname}}">
+                        {{enrolments}}
+                    </a>
+                </td>
+                <td>
+                	<a href="javascript:void(0)" class="w-full text-dark modal-trigger" data-action="completed" data-minvalue="99" data-maxvalue="100" data-courseid="{{id}}" data-coursename="{{fullname}}">
+                		{{completed100}}
+                	</a>
+                </td>
+                <td>
+                    <a href="javascript:void(0)" class="w-full text-dark modal-trigger" data-action="completed80" data-minvalue="80" data-maxvalue="99" data-courseid="{{id}}" data-coursename="{{fullname}}">
+                        {{completed80}}
+                    </a>
+                </td>
+                <td>
+                    <a href="javascript:void(0)" class="w-full text-dark modal-trigger" data-action="completed60" data-minvalue="60" data-maxvalue="80" data-courseid="{{id}}" data-coursename="{{fullname}}">
+                        {{completed60}}
+                    </a>
+                </td>
+                <td>
+                    <a href="javascript:void(0)" class="w-full text-dark modal-trigger" data-action="completed40" data-minvalue="40" data-maxvalue="60" data-courseid="{{id}}" data-coursename="{{fullname}}">
+                        {{completed40}}
+                    </a>
+                </td>
+                <td>
+                    <a href="javascript:void(0)" class="w-full text-dark modal-trigger" data-action="completed20" data-minvalue="20" data-maxvalue="40" data-courseid="{{id}}" data-coursename="{{fullname}}">
+                        {{completed20}}
+                    </a>
+                </td>
+                <td>
+                    <a href="javascript:void(0)" class="w-full text-dark modal-trigger" data-action="incompleted" data-minvalue="-1" data-maxvalue="20" data-courseid="{{id}}" data-coursename="{{fullname}}">
+                        {{completed00}}
+                    </a>
+                </td>
+            </tr>
+            {{/courseprogress}}
+        </tbody>
+    </table>
+</div>
