@@ -71,7 +71,7 @@ class courseengageblock extends utility {
         }
         $completionsql = "SELECT c.courseid, COUNT(c.userid) AS usercount,
             c.progress as completion
-            FROM {edw_course_progress} c
+            FROM {edwreports_course_progress} c
             JOIN {user} u ON u.id = c.userid "
             . $cohortjoin .
             " WHERE c.progress
@@ -82,7 +82,7 @@ class courseengageblock extends utility {
             " GROUP BY c.courseid";
         // Calculate atleast completed one modules.
         $completionmodulesql = "SELECT c.courseid, COUNT(c.userid) AS usercount
-            FROM {edw_course_progress} c
+            FROM {edwreports_course_progress} c
             JOIN {user} u ON u.id = c.userid "
             . $cohortjoin .
             " WHERE (LENGTH(completedmodules) -

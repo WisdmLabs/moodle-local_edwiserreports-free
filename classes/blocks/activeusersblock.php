@@ -450,7 +450,7 @@ class activeusersblock extends block_base {
                     $params["cohortid"] = $cohortid;
                 }
                 $sql = "SELECT CONCAT(l.userid, '-', l.courseid) as id, l.userid as relateduserid, l.courseid as courseid
-                   FROM {edw_course_progress} l $sqlcohort
+                   FROM {edwreports_course_progress} l $sqlcohort
                    WHERE l.completiontime IS NOT NULL
                    AND l.completiontime >= :starttime
                    AND l.completiontime < :endtime";
@@ -641,7 +641,7 @@ class activeusersblock extends block_base {
             YEAR(FROM_UNIXTIME(cc.completiontime))
             ) USERDATE,
             COUNT( CONCAT(cc.courseid, '-', cc.userid )) as usercount
-            FROM {edw_course_progress} cc "
+            FROM {edwreports_course_progress} cc "
             . $cohortjoin .
             " WHERE cc.completiontime IS NOT NULL "
             . $cohortcondition .

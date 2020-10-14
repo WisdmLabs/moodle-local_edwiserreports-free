@@ -49,7 +49,7 @@ class db_controller {
      */
     public function __construct() {
         // Set Progress Table Name.
-        $this->progresstable = 'edw_course_progress';
+        $this->progresstable = 'edwreports_course_progress';
     }
 
     /**

@@ -107,7 +107,7 @@ class activecoursesblock extends block_base {
         $response = array();
         // Calculate Completion Count for All Course.
         $sql = "SELECT courseid, COUNT(userid) AS users
-            FROM {edw_course_progress}
+            FROM {edwreports_course_progress}
             WHERE progress = :progress
             GROUP BY courseid";
         $params = array("progress" => 100);
