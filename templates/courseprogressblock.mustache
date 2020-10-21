@@ -1,0 +1,18 @@
+{{#hascourses}}
+    <select id="wdm-courseprogress-select" class="form-control singleselect w-full" name="state">
+        {{#courses}}
+        <option value="{{id}}">{{fullname}}</option>
+        {{/courses}}
+    </select>
+    <canvas class="ct-chart p-10" style="display: none;"></canvas>
+{{/hascourses}}
+{{^hascourses}}
+    <div class="pie-placeholder position-relative mt-50">
+        {{# pix }} pie-placeholder, local_edwiserreports{{/ pix }}
+        <div class="position-absolute w-full" style="top: 45%;">
+            <div class="alert alert-secondary text-center w-full" role="alert">
+                {{#str}} nocourses, local_edwiserreports {{/str}}
+            </div>
+        </div>
+    </div>
+{{/hascourses}}

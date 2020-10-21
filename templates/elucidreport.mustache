@@ -1,0 +1,43 @@
+<div id="wdm-edwiserreports" class="row m-0 d-none" data-editing="{{ editing }}">
+    {{# blocks }}
+        <div class="{{{extraclasses}}} mb-5 edwiserReport-block {{# hiddenblock }} block-hidden {{/ hiddenblock}}">
+            <div id="{{id}}" data-sesskey="{{sesskey}}">
+                <div class="panel m-0">
+                    <div class="panel-header d-flex">
+                        <div class="panel-title px-0 col-10">
+                            <strong class="mb-1">
+                                {{{name}}}
+                                <a href="javascript:void(0)" data-title="{{info}}" class="small" data-toggle="tooltip" data-trigger="hover" data-placement="bottom">
+                                    <i class="fa fa-question-circle"></i>
+                                </a>
+                            </strong>
+
+                            <div>{{{ filters }}}</div>
+                        </div>
+                        {{# editopt }}
+                        <div class="col-2 p-0">
+                            {{> local_edwiserreports/blocksettingdropdown }}
+                        </div>
+                        {{/ editopt }}
+                    </div>
+                    <div class="panel-body p-0">
+                        {{{ blockview }}}
+                        <div class="loader w-full text-center">
+                            {{# pix }} loader, local_edwiserreports{{/ pix }}
+                        </div>
+                    </div>
+                    <div class="panel-footer row m-0">
+                        {{# morelink }}
+                            <div class="">
+                                <a href="{{{.}}}" class="btn btn-primary btn-sm">{{#str}} more, local_edwiserreports {{/str}}</a>
+                            </div>
+                        {{/ morelink }}
+                        {{# hasdownloadlink }}
+                            {{> local_edwiserreports/exportreports }}
+                        {{/ hasdownloadlink }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{/ blocks }}
+</div>

@@ -1,0 +1,45 @@
+<table class="table w-full" style="display: none;">
+    <thead>
+        <tr>
+            <th class="align-middle text-nowrap bg-image-none no-sorting-arrow" rowspan="2">
+                {{#str}} name, local_edwiserreports {{/str}}
+            </th>
+            <th class="align-middle text-nowrap bg-image-none no-sorting-arrow" rowspan="2">
+                {{#str}} email, local_edwiserreports {{/str}}
+            </th>
+            <th class="align-middle text-nowrap bg-image-none no-sorting-arrow" rowspan="2">
+                {{#str}} enrolled, local_edwiserreports {{/str}}
+            </th>
+            <th class="align-middle text-nowrap bg-image-none no-sorting-arrow" rowspan="2">
+                {{#str}} lastaccess, local_edwiserreports {{/str}}
+            </th>
+            <th class="align-middle text-nowrap bg-image-none no-sorting-arrow" rowspan="2">
+                {{#str}} grade, local_edwiserreports {{/str}}
+            </th>
+            <th class="text-center text-nowrap bg-image-none no-sorting-arrow border-bottom-0" colspan="{{coursecount}}">
+                {{#str}} progress, local_edwiserreports {{/str}}
+            </th>
+        </tr>
+        <tr>
+            {{#courses}}
+            <th class="text-center text-nowrap bg-image-none no-sorting-arrow">{{shortname}}</th>
+            {{/courses}}
+            <th class="text-center text-nowrap bg-image-none no-sorting-arrow">{{#str}} avgprogress, local_edwiserreports {{/str}}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#users}}
+        <tr>
+            <td>{{name}}</td>
+            <td>{{email}}</td>
+            <td>{{enrolled}}</td>
+            <td>{{lastaccess}}</td>
+            <td class="text-center">{{grade}}</td>
+            {{#progress}}
+            <td class="text-center">{{.}}</td>
+            {{/progress}}
+            <td class="text-center">{{avgprogress}}</td>
+        </tr>
+        {{/users}}
+    </tbody>
+</table>
