@@ -1,1 +1,1 @@
-# moodle-local_sitereport
+This file contains the plugin information.

@@ -1,0 +1,24 @@
+{{#userfilters}}
+    {{> local_edwiserreports/userfilters }}
+{{/userfilters}}
+
+<div id="wdm-lpstats-individual" class="table-responsive" data-sesskey="{{sesskey}}">
+    {{#haslps}}
+    <div id="wdm-lp-dropdown" class="d-none">
+        <select id="wdm-lp-select" class="form-control singleselect w-250" name="state">
+            {{#lps}}
+            <option value="{{id}}">{{name}}</option>
+            {{/lps}}
+        </select>
+    </div>
+    <div class="loader w-full text-center py-100 my-50">
+        {{# pix }} loader, local_edwiserreports{{/ pix }}
+    </div>
+    <table class="table w-full" style="display: none;"></table>
+    {{/haslps}}
+    {{^haslps}}
+        <div class="alert alert-danger w-full" role="alert">
+            {{#str}} nolearningprograms, local_edwiserreports {{/str}}
+        </div>
+    {{/haslps}}
+</div>
