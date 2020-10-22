@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 // eslint-disable-next-line no-unused-vars
-define(['core/jquery', 'local_edwiserreports/variables'], function($) {
+define(['jquery', 'local_edwiserreports/variables'], function($) {
     return {
         pluginPage: $("#wdm-edwiserreports"),
         requestUrl: M.cfg.wwwroot + '/local/edwiserreports/request_handler.php',
