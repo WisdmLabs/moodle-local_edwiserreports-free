@@ -64,6 +64,7 @@ class f2fsessionsblock extends block_base {
 
     /**
      * Get data for F2F session block
+     * @param Object $params Parameters
      */
     public function get_data($params = false) {
         $cohortid = isset($params->cohortid) ? $params->cohortid : false;
@@ -294,7 +295,6 @@ class f2fsessionsblock extends block_base {
         $sessiondata->confirmed = $confirmed;
         $sessiondata->canceled = count($canceledusers);
         $sessiondata->users = array_values($allsignups);
-        $downloadurl = $CFG->wwwroot."/local/edwiserreports/download.php";
         $sessiondata->exportlink->isindividual = true;
         return $sessiondata;
     }

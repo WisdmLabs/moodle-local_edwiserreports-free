@@ -61,6 +61,7 @@ class activecoursesblock extends block_base {
 
     /**
      * Get Data for Active Courses
+     * @param object $params Parameteres
      * @return [objext] Response for Active Courses
      */
     public function get_data($params = false) {

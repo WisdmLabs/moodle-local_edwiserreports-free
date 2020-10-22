@@ -30,6 +30,7 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir . '/completionlib.php');
 
+use moodle_exception;
 use completion_info;
 use context_course;
 use stdClass;
