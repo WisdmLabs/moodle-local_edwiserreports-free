@@ -75,19 +75,6 @@ function local_edwiserreports_output_fragment_userslist($args) {
     return $response;
 }
 
-/**
- * Get Learning Program stats fragment
- * @param [array] $args Array of arguments
- * @return [string] HTML table
- */
-function local_edwiserreports_output_fragment_lpstats($args) {
-    global $DB;
-    $lpid = clean_param($args["lpid"], PARAM_TEXT);
-    $cohortid = clean_param($args["cohortid"], PARAM_TEXT);
-
-    return json_encode(\local_edwiserreports\lpstats_block::get_lpstats_usersdata($lpid, $cohortid));
-}
-
 require_once("$CFG->libdir/formslib.php");
 
 /**

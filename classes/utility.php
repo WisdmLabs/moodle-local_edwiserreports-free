@@ -30,12 +30,10 @@ require_once($CFG->dirroot . "/completion/classes/progress.php");
 require_once($CFG->dirroot . "/cohort/lib.php");
 require_once($CFG->libdir."/csvlib.class.php");
 require_once($CFG->dirroot . "/local/edwiserreports/classes/blocks/activecoursesblock.php");
-require_once($CFG->dirroot . "/local/edwiserreports/classes/blocks/f2fsessionsblock.php");
 require_once($CFG->dirroot . "/local/edwiserreports/classes/blocks/certificatesblock.php");
 require_once($CFG->dirroot . "/local/edwiserreports/classes/blocks/liveusersblock.php");
 require_once($CFG->dirroot . "/local/edwiserreports/classes/blocks/siteaccessblock.php");
 require_once($CFG->dirroot . "/local/edwiserreports/classes/blocks/todaysactivityblock.php");
-require_once($CFG->dirroot . "/local/edwiserreports/classes/blocks/lpstatsblock.php");
 require_once($CFG->dirroot . "/local/edwiserreports/classes/blocks/inactiveusersblock.php");
 require_once($CFG->dirroot . "/local/edwiserreports/classes/blocks/courseengageblock.php");
 require_once($CFG->dirroot . "/local/edwiserreports/classes/blocks/completionblock.php");
@@ -99,19 +97,6 @@ class utility {
         return $activecourses->get_data(false);
     }
 
-    /**
-     * Get Face to Face session data
-     * @param [string] $data Data for external service
-     */
-    public static function get_f2fsessiondata_data($data) {
-        global $CFG;
-
-        require_once($CFG->dirroot . '/local/edwiserreports/classes/blocks/f2fsessionsblock.php');
-
-        $f2fsession = new \local_edwiserreports\f2fsessionsblock();
-        return $f2fsession->get_data($data);
-    }
-
     public static function get_certificates_data($data) {
         global $CFG;
         require_once($CFG->dirroot . '/local/edwiserreports/classes/blocks/certificatesblock.php');
@@ -146,14 +131,6 @@ class utility {
 
         $todaysactivityblock = new \local_edwiserreports\todaysactivityblock();
         return $todaysactivityblock->get_data($data);
-    }
-
-    public static function get_lpstats_data($data) {
-        global $CFG;
-        require_once($CFG->dirroot . '/local/edwiserreports/classes/blocks/lpstatsblock.php');
-
-        $lpstatsblock = new \local_edwiserreports\lpstatsblock();
-        return $lpstatsblock->get_data($data);
     }
 
     public static function get_courseengage_data($cohortid) {
@@ -1268,8 +1245,8 @@ class utility {
         $block = self::get_reportsblock_by_name($blockname);
         if (!$block) {
             return array(
-                error => true,
-                errormsg => "blocknotfound"
+                "error" => true,
+                "errormsg" => "blocknotfound"
             );
         }
 

@@ -727,6 +727,7 @@ function local_edwiserreports_get_schedule_emaillist() {
                 $val->blockname,
                 $val->component
             ) . local_edwiserreports_create_manage_icons_for_emaillist(
+                $key,
                 $val->blockname,
                 $val->component,
                 $emailinfo->esremailenable

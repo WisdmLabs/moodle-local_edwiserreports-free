@@ -91,7 +91,7 @@ class db_controller {
         $params->criteria = 1;
 
         // Update records in database.
-        return $DB->get_record($this->progresstable, $params);
+        return $DB->get_record($this->progresstable, (array) $params);
     }
 
     /**
@@ -332,7 +332,7 @@ class db_controller {
         global $DB;
 
         // If we update the pchange value then cron will automatically update the value.
-        return $DB->set_field($this->progresstable, 'pchange', '1', $params);
+        return $DB->set_field($this->progresstable, 'pchange', '1', (array) $params);
     }
 
     /**

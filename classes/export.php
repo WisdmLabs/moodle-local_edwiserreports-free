@@ -578,12 +578,6 @@ class export {
             case "certificatesblock":
                 $export = certificatesblock::get_exportable_data_report($filter);
                 break;
-            case "f2fsession":
-                $export = f2fsession_block::get_exportable_data_report($filter);
-                break;
-            case "lpstats":
-                $export = lpstats_block::get_exportable_data_report($filter);
-                break;
             case "completionblock":
                 $export = completionblock::get_exportable_data_report($filter);
                 break;
@@ -604,114 +598,7 @@ class export {
         header("Expires: 0");
     }
 
-    /**
-     * Get Lp detailed reports
-     * @param  [type] $lpid [description]
-     * @param  [type] $xls  [description]
-     * @return [type]       [description]
-     */
-    public function get_lpdetailed_report_excel($lpid, &$workbook, $cohortid = false) {
-        global $CFG, $DB;
 
-        require_once($CFG->dirroot."/local/edwiserreports/classes/blocks/lpstats_block.php");
-
-        // Get learning program
-        $table = 'wdm_learning_program';
-        $lp = $DB->get_record($table, array('id' => $lpid));
-
-        // If no learning program found
-        if (!$lp) {
-            return false;
-        }
-        // Adding the worksheet
-        $xls = $workbook->add_worksheet($lp->name);
-
-        // Get Lp reports
-        $lpreports = \local_edwiserreports\lpstats_block::get_lpstats_usersdata($lpid, $cohortid);
-
-        // Prepare report header
-        $header = \local_edwiserreports\lpstats_block::get_header_report();
-        $courseids = json_decode($lp->courses);
-        foreach ($lpreports->courses as $course) {
-            $header[] = $course->shortname;
-        }
-
-        // Add additional headers
-        $header = array_merge($header, array(
-            get_string('avgprogress', 'local_edwiserreports'),
-            get_string('completedactivity', 'local_edwiserreports'),
-        ));
-
-        // Add custom fields
-        $this->inseart_custom_filed_header($header);
-
-        // Render reporting header
-        $colnum = 0;
-        foreach (array_values($header) as $colnum => $head) {
-            $xls->write_string(0, $colnum, $head);
-        }
-
-        // Add reports data
-        foreach($lpreports->users as $key => $user) {
-            $colnum = 0;
-            $ckey = $key + 1;
-            $xls->write_string($ckey, $colnum++, $user->name);
-            $xls->write_string($ckey, $colnum++, $user->email);
-            $xls->write_string($ckey, $colnum++, $user->enrolled);
-            $xls->write_string($ckey, $colnum++, $user->lastaccess);
-            $xls->write_string($ckey, $colnum++, $user->grade);
-
-            // Prepare progress fpor each courses
-            foreach ($user->progress as $progress) {
-                $xls->write_string($ckey, $colnum++, $progress);
-            }
-
-            // Add avg progress
-            $xls->write_string($ckey, $colnum++, $user->avgprogress);
-
-            // Add completed activities
-            $xls->write_string($ckey, $colnum++, $user->completedactivities);
-
-            // Add custom data
-            $customdata = new stdClass();
-            $this->inseart_custom_filed_data($customdata, $user->id);
-            foreach ($customdata as $data) {
-                $xls->write_string($ckey, $colnum++, $data);
-            }
-        }
-    }
-
-    /**
-     * Export Learning progra
-     * @param  [type] $type      [description]
-     * @param  [type] $filters   [description]
-     * @param  [type] $startdate [description]
-     * @param  [type] $enddate   [description]
-     * @return [type]            [description]
-     */
-    public function export_lpdetailed_report_data($type, $filters, $startdate, $enddate) {
-        $filename = 'Lp_Deailed_Reports_';
-
-        $filename .= date('d_m_Y', time()) . '.xls';
-
-        // Get Cohort ID
-        $cohortid = optional_param('cohortid', false, PARAM_INT);
-
-        // Creating a workbook
-        $workbook = new MoodleExcelWorkbook($filename);
-
-        // For each pages create worksheet
-        $filters = explode(',', $filters);
-        foreach($filters as $filter) {
-            $this->get_lpdetailed_report_excel($filter, $workbook, $cohortid);
-        }
-
-        // Sending HTTP headers
-        $workbook->send($filename);
-
-        // Close the workbook
-        $workbook->close();
-    }
     /**
      * Export CSV for custom query report
      * @param  [strinf] $fields              [Selected Fields]
@@ -880,7 +767,7 @@ class export {
     public function get_filter_based_fields($lps, $fields) {
         // remove the lp fields if lp is not selected
         if ($lps == "") {
-            $fields = array_filter($fields, function ($string) {
+            $fields = array_filter((array) $fields, function ($string) {
                 return strpos($string, 'lp') === false;
             });
         }
@@ -910,7 +797,7 @@ class export {
         $dbman->create_temp_table($table);
         // get courses from selected lps
         $sql = "SELECT id, courses FROM {wdm_learning_program} WHERE id ".$lpdb;
-        $records = $DB->get_records_sql($sql,  $params);
+        $records = $DB->get_records_sql($sql, (array) $params);
         $tempArray = array();
         // iterate and add new entry in table for each course with respect to lp
         array_map(function($value) use (&$tempArray) {
@@ -948,12 +835,12 @@ class export {
     public function create_query_fields($fields) {
         // Get all the fields
         $allFields = \local_edwiserreports\output\elucidreport_renderable::get_report_fields();
-        $allFields = array_values($allFields);
+        $allFields = array_values((array) $allFields);
         $allFields = array_reduce($allFields, 'array_merge', array());
         // sort fields according to selected fields
         $header = array();
         $allFields = array_map(function($value) use ($fields, &$header) {
-            if (in_array($value['key'], $fields) ) {
+            if (in_array($value['key'], (array) $fields) ) {
                 $header[] = $value['value'];
                 return $value['dbkey'].' as '.$value['key'];
             }
@@ -1138,7 +1025,7 @@ class export {
             $coursecontext = context_course::instance($course->id);
 
             // Get only enrolled students
-            $users = course_progress_block::rep_get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+            $users = courseprogressblock::rep_get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
 
             // Prepare reports for each students
             foreach ($users as $user) {

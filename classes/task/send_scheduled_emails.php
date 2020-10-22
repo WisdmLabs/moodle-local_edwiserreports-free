@@ -152,7 +152,7 @@ class send_scheduled_emails extends \core\task\scheduled_task {
         }
 
         // Get content text to send emails.
-        if (contenttext == '') {
+        if ($contenttext == '') {
             $contenttext = get_string($blockname . "exporthelp", "local_edwiserreports");
         }
 
