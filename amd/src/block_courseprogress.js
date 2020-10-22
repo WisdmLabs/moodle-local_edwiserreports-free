@@ -51,7 +51,6 @@ define([
          */
         function getCourseProgressData() {
             var courseId = $(selectedCourse).val();
-            cfg.changeExportUrl(courseId, exportUrlLink, V.filterReplaceFlag);
             form.find('input[name="filter"]').val(courseId);
 
             // If progress graph already exist then destroy
