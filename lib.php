@@ -524,17 +524,16 @@ function local_edwiserreports_extend_navigation(navigation_node $nav) {
         );
         $node->showinflatnavigation = true;
     }
-
     $iscompletionpage = strpos($PAGE->url, '/local/edwiserreports/completion.php');
     if ($PAGE->pagelayout !== 'course' && $PAGE->pagelayout !== 'incourse' && !$iscompletionpage) {
         return true;
     }
 
-    if ($PAGE->theme->resolve_image_location('icon', 'local_edwiserreports', null)) {
-        $icon = new pix_icon('icon', '', 'local_edwiserreports', array('class' => 'icon pluginicon'));
-    } else {
-        $icon = new pix_icon('i/report', '');
+    if (!has_capability('moodle/course:viewhiddencourses', context_course::instance($COURSE->id))) {
+        return;
     }
+
+    $icon = new pix_icon('i/report', '');
 
     $node = $nav->add(
         get_string('completionreports', 'local_edwiserreports'),
@@ -544,13 +543,7 @@ function local_edwiserreports_extend_navigation(navigation_node $nav) {
         'completionreports',
         $icon
     );
-    $node->showinflatnavigation = true;
-
-    if ($PAGE->theme->resolve_image_location('icon', 'local_edwiserreports', null)) {
-        $icon = new pix_icon('icon', '', 'local_edwiserreports', array('class' => 'icon pluginicon'));
-    } else {
-        $icon = new pix_icon('i/report', '');
-    }
+    $node->showinflatnavigation = true;  
 }
 
 /**
