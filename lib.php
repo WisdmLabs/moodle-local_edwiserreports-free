@@ -525,11 +525,7 @@ function local_edwiserreports_extend_navigation(navigation_node $nav) {
     $PAGE->requires->js_call_amd('local_edwiserreports/install', 'init');
 
     if ($hasblocks) {
-        if ($PAGE->theme->resolve_image_location('icon', 'local_edwiserreports', null)) {
-            $icon = new pix_icon('icon', '', 'local_edwiserreports', array('class' => 'icon pluginicon'));
-        } else {
-            $icon = new pix_icon('i/stats', '');
-        }
+        $icon = new pix_icon('i/stats', '');
 
         $node = $nav->add(
             get_string('reportsandanalytics', 'local_edwiserreports'),
