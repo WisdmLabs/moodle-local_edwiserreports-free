@@ -9,18 +9,20 @@ define([
     'local_edwiserreports/dataTables.bootstrap4',
     'local_edwiserreports/common'
 ], function($, ModalFactory, ModalEvents, Fragment, Templates, V) {
+    /**
+     * Initialize
+     * @param {integer} CONTEXTID Current page context id
+     */
     function init(CONTEXTID) {
         var PageId = "#wdm-courseprogress-individual";
         var CourseProgressTable = PageId + " .table";
         var loader = PageId + " .loader";
         var ModalTrigger = CourseProgressTable + " a.modal-trigger";
-        var dropdownBody = ".table-dropdown";
-        var dropdownTable = PageId + " .dataTables_wrapper .row:first-child > div:first-child";
         var datatable = null;
 
         // Varibales for cohort filter
-        var cohortFilterBtn   = "#cohortfilter";
-        var cohortFilterItem  = cohortFilterBtn + " ~ .dropdown-menu .dropdown-item";
+        var cohortFilterBtn = "#cohortfilter";
+        var cohortFilterItem = cohortFilterBtn + " ~ .dropdown-menu .dropdown-item";
         var cohortId = 0;
         var sesskey = $(PageId).data("sesskey");
         var url = V.requestUrl + '?action=get_courseprogress_graph_data_ajax&sesskey=' + sesskey;
@@ -48,17 +50,18 @@ define([
                 var coursename = $(this).data("coursename");
                 var ModalRoot = null;
 
+                // eslint-disable-next-line promise/catch-or-return
                 ModalFactory.create({
                     body: Fragment.loadFragment(
                         'local_edwiserreports',
                         'userslist',
                         CONTEXTID,
                         {
-                            page : 'courseprogress',
-                            courseid : courseid,
-                            minval : minval,
-                            maxval : maxval,
-                            cohortid : cohortId
+                            page: 'courseprogress',
+                            courseid: courseid,
+                            minval: minval,
+                            maxval: maxval,
+                            cohortid: cohortId
                         }
                     )
                 }).then(function(modal) {
@@ -66,11 +69,11 @@ define([
                     ModalRoot.find('.modal-dialog').addClass('modal-lg');
                     modal.setTitle(coursename);
                     modal.show();
-                    ModalRoot.on(ModalEvents.hidden, function () {
+                    ModalRoot.on(ModalEvents.hidden, function() {
                         modal.destroy();
                     });
 
-                    ModalRoot.on(ModalEvents.bodyRendered, function () {
+                    ModalRoot.on(ModalEvents.bodyRendered, function() {
                         var ModalTable = ModalRoot.find(".modal-table");
 
                         // If empty then remove colspan
@@ -84,126 +87,63 @@ define([
                                 searchPlaceholder: "Search User",
                                 emptyTable: "There are no users"
                             },
-                            drawCallback: function () {
+                            drawCallback: function() {
                                 $('.dataTables_paginate > .pagination').addClass('pagination-sm pull-right');
                                 $('.dataTables_filter').addClass('pagination-sm pull-right');
                             },
-                            // scrollY : "350px",
-                            // scrollX : true,
-                            // paging: false,
                             lengthChange: false,
-                            bInfo : false
+                            bInfo: false
                         });
                     });
+                    return;
                 });
             });
         });
 
-        // Generate course progress table
+        /**
+         * Generate course progress table
+         * @param {Number} cohortId Cohort id
+         */
         function generateCourseProgressTable(cohortId) {
             $(CourseProgressTable).show();
             $(loader).hide();
 
             var data = JSON.stringify({
-                courseid : "all",
-                cohortid : cohortId
+                courseid: "all",
+                cohortid: cohortId
             });
 
-            datatable = $(CourseProgressTable).DataTable( {
-                ajax : url + "&cohortid=" + cohortId + "&data=" + data,
-                // dom : '<"pull-left"f><t><p>',
-                columns : [
-                    { "data": "coursename" },
-                    { "data": "enrolments" },
-                    { "data": "completed100" },
-                    { "data": "completed80" },
-                    { "data": "completed60" },
-                    { "data": "completed40" },
-                    { "data": "completed20" },
-                    { "data": "completed00" }
+            datatable = $(CourseProgressTable).DataTable({
+                ajax: url + "&cohortid=" + cohortId + "&data=" + data,
+                columns: [
+                    {"data": "coursename"},
+                    {"data": "enrolments"},
+                    {"data": "completed100"},
+                    {"data": "completed80"},
+                    {"data": "completed60"},
+                    {"data": "completed40"},
+                    {"data": "completed20"},
+                    {"data": "completed00"}
                 ],
                 columnDefs: [
-                    { className: "text-left", targets: 0 },
-                    { className: "text-center modal-trigger", targets: "_all" }
+                    {className: "text-left", targets: 0},
+                    {className: "text-center modal-trigger", targets: "_all"}
                 ],
                 language: {
                     searchPlaceholder: "Search Course",
                     emptyTable: "There are no courses"
                 },
-                drawCallback: function () {
+                drawCallback: function() {
                     $('.dataTables_paginate > .pagination').addClass('pagination-sm pull-right');
                     $('.dataTables_filter').addClass('pagination-sm pull-right');
                 },
-                // scrollY : 350,
-                // scrollX : true,
-                // paginate : false,
-                // sScrollX : "100%",
-                // bScrollCollapse : true
                 bInfo: false
             });
-
-            // $.ajax({
-            //     url: V.requestUrl,
-            //     data: {
-            //         action: 'get_courseprogress_graph_data_ajax',
-            //         sesskey: sesskey,
-            //         data: JSON.stringify({
-            //             courseid : "all",
-            //             cohortid : cohortId
-            //         })
-            //     },
-            // }).done(function(response) {
-            //     var context = {
-            //         courseprogress : response,
-            //         sesskey : sesskey
-            //     };
-
-            //     Templates.render('local_edwiserreports/courseprogress', context)
-            //     .then(function(html, js) {
-            //         Templates.replaceNode(PageId, html, js);
-            //         datatable = $(CourseProgressTable).DataTable({
-            //             // dom : '<"pull-left"f><t><p>',
-            //             order : [[0, 'desc']],
-            //             bLengthChange : false,
-            //             initComplete: function() {
-            //                 $(dropdownTable + " .dropdown").show();
-            //             },
-            //             columnDefs : [
-            //                 {
-            //                     "targets": 0,
-            //                     "className": "text-left"
-            //                 },
-            //                 {
-            //                     "targets": "_all",
-            //                     "className": "text-center",
-            //                 }
-            //             ],
-            //             language: {
-            //                 searchPlaceholder: "Search courses",
-            //                 emptyTable: "There are no courses"
-            //             },
-            //             // scrollY : 350,
-            //             // scrollX : true,
-            //             // paginate : false,
-            //             // sScrollX : "100%",
-            //             // bScrollCollapse : true
-            //             binfo: false
-            //         });
-            //         $(CourseProgressTable).show();
-            //         $(loader).hide();
-            //     }).fail(function(ex) {
-            //         console.log(ex);
-            //     }).always(function() {
-            //         $(window).resize();
-            //     });
-            // }).fail(function(error) {
-            //     console.log(error);
-            // });
         }
     }
 
     return {
-        init : init
+        init: init
     };
 
 });

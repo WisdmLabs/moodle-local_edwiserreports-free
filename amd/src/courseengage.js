@@ -9,6 +9,10 @@ define([
     'local_edwiserreports/dataTables.bootstrap4',
     'local_edwiserreports/common'
 ], function($, ModalFactory, ModalEvents, Fragment, Templates, V) {
+    /**
+     * Initialize
+     * @param {integer} CONTEXTID Current page context id
+     */
     function init(CONTEXTID) {
         var PageId = "#wdm-courseengage-individual";
         var CourseEngageTable = PageId + " .table";
@@ -20,8 +24,8 @@ define([
         var exportUrlLink = ".dropdown-menu[aria-labelledby='export-dropdown'] .dropdown-item";
 
         // Varibales for cohort filter
-        var cohortFilterBtn   = "#cohortfilter";
-        var cohortFilterItem  = cohortFilterBtn + " ~ .dropdown-menu .dropdown-item";
+        var cohortFilterBtn = "#cohortfilter";
+        var cohortFilterItem = cohortFilterBtn + " ~ .dropdown-menu .dropdown-item";
         var cohortId = 0;
 
         $(document).ready(function() {
@@ -48,16 +52,17 @@ define([
                 var coursename = $(this).data("coursename");
                 var ModalRoot = null;
 
+                // eslint-disable-next-line promise/catch-or-return
                 ModalFactory.create({
                     body: Fragment.loadFragment(
                         'local_edwiserreports',
                         'userslist',
                         CONTEXTID,
                         {
-                            page : 'courseengage',
-                            courseid : courseid,
-                            action : action,
-                            cohortid : cohortId
+                            page: 'courseengage',
+                            courseid: courseid,
+                            action: action,
+                            cohortid: cohortId
                         }
                     )
                 }).then(function(modal) {
@@ -65,15 +70,15 @@ define([
                     ModalRoot.find('.modal-dialog').addClass('modal-lg');
                     modal.setTitle(coursename);
                     modal.show();
-                    ModalRoot.on(ModalEvents.hidden, function () {
+                    ModalRoot.on(ModalEvents.hidden, function() {
                         modal.destroy();
                     });
 
-                    ModalRoot.on(ModalEvents.shown, function () {
+                    ModalRoot.on(ModalEvents.shown, function() {
                         $(window).resize();
                     });
 
-                    ModalRoot.on(ModalEvents.bodyRendered, function () {
+                    ModalRoot.on(ModalEvents.bodyRendered, function() {
                         var ModalTable = ModalRoot.find(".modal-table");
 
                         // If empty then remove colspan
@@ -87,17 +92,15 @@ define([
                                 searchPlaceholder: "Search User",
                                 emptyTable: "There are no users"
                             },
-                            drawCallback: function () {
+                            drawCallback: function() {
                                 ModalRoot.find('.dataTables_paginate > .pagination').addClass('pagination-sm pull-right');
                                 ModalRoot.find('.dataTables_filter').addClass('pagination-sm pull-right');
                             },
-                            // scrollY : "350px",
-                            // scrollX : true,
-                            // paging: false,
                             lengthChange: false,
-                            bInfo : false
+                            bInfo: false
                         });
                     });
+                    return;
                 });
             });
         });
@@ -110,40 +113,34 @@ define([
             $(CourseEngageTable).show();
             $(loader).hide();
 
-            datatable = $(CourseEngageTable).DataTable( {
-                ajax : url + "&cohortid=" + cohortId,
-                // dom : '<"pull-left"f><t><p>',
-                columns : [
-                    { "data": "coursename" },
-                    { "data": "enrolment" },
-                    { "data": "visited" },
-                    { "data": "activitystart" },
-                    { "data": "completedhalf" },
-                    { "data": "coursecompleted" }
+            datatable = $(CourseEngageTable).DataTable({
+                ajax: url + "&cohortid=" + cohortId,
+                columns: [
+                    {"data": "coursename"},
+                    {"data": "enrolment"},
+                    {"data": "visited"},
+                    {"data": "activitystart"},
+                    {"data": "completedhalf"},
+                    {"data": "coursecompleted"}
                 ],
                 columnDefs: [
-                    { className: "text-left", targets: 0 },
-                    { className: "text-center modal-trigger", targets: "_all" }
+                    {className: "text-left", targets: 0},
+                    {className: "text-center modal-trigger", targets: "_all"}
                 ],
                 language: {
                     searchPlaceholder: "Search Course",
                     emptyTable: "There are no courses"
                 },
-                drawCallback: function () {
+                drawCallback: function() {
                     $('.dataTables_paginate > .pagination').addClass('pagination-sm pull-right');
                     $('.dataTables_filter').addClass('pagination-sm pull-right');
                 },
-                // scrollY : 350,
-                // scrollX : true,
-                // paginate : false,
-                // sScrollX : "100%",
-                // bScrollCollapse : true
                 bInfo: false
             });
         }
     }
 
     return {
-        init : init
+        init: init
     };
 });

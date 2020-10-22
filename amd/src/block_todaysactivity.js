@@ -1,16 +1,20 @@
+/* eslint-disable no-console */
 define([
     'jquery',
     'core/chartjs',
     'local_edwiserreports/defaultconfig',
     './common'
-], function ($, Chart, cfg, common) {
+], function($, Chart, cfg, common) {
+    /**
+     * Initialize
+     * @param {function} notifyListner Callback function
+     */
     function init(notifyListner) {
         // Global data got todays activity block
         var todaysVisits;
         var panel = cfg.getPanel("#todaysactivityblock");
         var panelBody = cfg.getPanel("#todaysactivityblock", "body");
         var flatpickrCalender = panel + " #flatpickrCalender";
-        var time = null;
 
         /**
          * On document ready do the bellow stuff
@@ -18,7 +22,7 @@ define([
         $(document).ready(function() {
             cfg.todaysActivityBlock = cfg.getTodaysActivityBlock();
 
-            // if course progress block is there
+            // If course progress block is there
             if (cfg.todaysActivityBlock) {
                 getTodaysActivity();
                 /**
@@ -29,6 +33,7 @@ define([
                     dateFormat: "d M Y",
                     maxDate: "today",
                     defaultDate: ["today"],
+                    // eslint-disable-next-line no-unused-vars
                     onChange: function(selectedDates, dateStr, instance) {
                         // $(panelBody).find("loader").show();
                         getTodaysActivity(dateStr);
@@ -65,28 +70,27 @@ define([
                     })
                 }
             })
-            .done(function(response) {
-                /**
-                 * After getting todays activity information
-                 * update the value in todays activity block
-                 */
-                $.each(response.data, function(indx, el) {
-                    var section = $(panelBody + " #todays-" + indx);
-                    // section.find(".loader").hide();
-                    section.find(".data").html(el);
+                .done(function(response) {
+                    /**
+                     * After getting todays activity information
+                     * update the value in todays activity block
+                     */
+                    $.each(response.data, function(indx, el) {
+                        var section = $(panelBody + " #todays-" + indx);
+                        section.find(".data").html(el);
+                    });
+
+                    /* Generate Todays Activity Graph */
+                    generateTodaysVisitsGraph(response.data.visitshour);
+                })
+                .fail(function(error) {
+                    console.log(error);
+                }).always(function() {
+                    notifyListner("todaysActivity");
+
+                    // Hide loader.
+                    common.loader.hide('#todaysactivityblock');
                 });
-
-                /* Generate Todays Activity Graph */
-                generateTodaysVisitsGraph(response.data.visitshour);
-            })
-            .fail(function(error) {
-                console.log(error);
-            }).always(function() {
-                notifyListner("todaysActivity");
-
-                // Hide loader.
-                common.loader.hide('#todaysactivityblock');
-            });
         }
 
         /**
@@ -96,7 +100,7 @@ define([
         function generateTodaysVisitsGraph(data) {
             // Prepare data for generating graph
             cfg.todaysActivityBlock.graph.data = data;
-            var data = {
+            data = {
                 labels: cfg.todaysActivityBlock.graph.labels,
                 datasets: [{
                     label: cfg.todaysActivityBlock.graph.labelName,

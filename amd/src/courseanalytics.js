@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 define([
     'jquery',
     'local_edwiserreports/variables',
@@ -5,7 +6,13 @@ define([
     'local_edwiserreports/dataTables.bootstrap4',
     'local_edwiserreports/common'
 ], function($, V) {
+    /**
+     * Initialize
+     * @param {integer} CONTEXTID Current page context id
+     */
     function init(CONTEXTID) {
+        // eslint-disable-next-line no-unused-vars
+        CONTEXTID = null;
         var PageId = $("#wdm-courseanalytics-individual");
         var RecentVisits = PageId.find(".recent-visits .table");
         var RecentEnroled = PageId.find(".recent-enrolment .table");
@@ -17,8 +24,8 @@ define([
 
         // Varibales for cohort filter
         var cohortId = 0;
-        var cohortFilterBtn   = "#cohortfilter";
-        var cohortFilterItem  = cohortFilterBtn + " ~ .dropdown-menu .dropdown-item";
+        var cohortFilterBtn = "#cohortfilter";
+        var cohortFilterItem = cohortFilterBtn + " ~ .dropdown-menu .dropdown-item";
 
         $(document).ready(function() {
             var courseId = V.getUrlParameter("courseid");
@@ -54,22 +61,26 @@ define([
                     })
                 },
             })
-            .done(function(response) {
-                /* Generate Recent Visit Table */
-                RecentVisitsTable = generateDataTable(RecentVisits, RecentVisitsTable, response.data.recentvisits);
+                .done(function(response) {
+                    /* Generate Recent Visit Table */
+                    RecentVisitsTable = generateDataTable(RecentVisits, RecentVisitsTable, response.data.recentvisits);
 
-                /* Generate Recent Enrolment Table */
-                RecentEnroledTable = generateDataTable(RecentEnroled, RecentEnroledTable, response.data.recentenrolments);
+                    /* Generate Recent Enrolment Table */
+                    RecentEnroledTable = generateDataTable(RecentEnroled, RecentEnroledTable, response.data.recentenrolments);
 
-                /* Generate Recent Completion Table */
-                RecentCompletionTable = generateDataTable(RecentCompletion, RecentCompletionTable, response.data.recentcompletions);
-            })
-            .fail(function(error) {
-                console.log(error);
-            }).always(function() {
-                $(window).resize();
-                PageId.fadeIn("slow");
-            });
+                    /* Generate Recent Completion Table */
+                    RecentCompletionTable = generateDataTable(
+                        RecentCompletion,
+                        RecentCompletionTable,
+                        response.data.recentcompletions
+                    );
+                })
+                .fail(function(error) {
+                    console.log(error);
+                }).always(function() {
+                    $(window).resize();
+                    PageId.fadeIn("slow");
+                });
         }
 
         /**
@@ -77,18 +88,19 @@ define([
          * @param  {string} tableId Table Id
          * @param  {object} table Table Object
          * @param  {array} data Data to create table
+         * @return {Objcet} Datatable object
          */
         function generateDataTable(tableId, table, data) {
             var emptyStr = "No users has Enrolled in this course";
             var searchPlaceholder = "Search Analytics";
 
-            if (tableId == RecentCompletion){
+            if (tableId == RecentCompletion) {
                 emptyStr = "No users has completed this course";
-            } else if (tableId == RecentVisits){
+            } else if (tableId == RecentVisits) {
                 emptyStr = "No users has visited this course";
             }
 
-            if(table != null) {
+            if (table !== null) {
                 table.destroy();
             }
 
@@ -96,29 +108,24 @@ define([
             tableId.fadeIn("slow");
             PageId.fadeIn("slow");
 
-            return table = tableId.DataTable({
-                data : data,
+             table = tableId.DataTable({
+                data: data,
                 responsive: true,
-                oLanguage : {
-                    sEmptyTable : emptyStr,
-                    sSearchPlaceholder : searchPlaceholder
+                oLanguage: {
+                    sEmptyTable: emptyStr,
+                    sSearchPlaceholder: searchPlaceholder
                 },
                 columnDefs: [
-                    { className: "text-left", targets: 0 },
-                    { className: "text-center", targets: "_all" }
+                    {className: "text-left", targets: 0},
+                    {className: "text-center", targets: "_all"}
                 ],
-                drawCallback: function () {
+                drawCallback: function() {
                     $('.dataTables_paginate > .pagination').addClass('pagination-sm pull-right');
                     $('.dataTables_filter').addClass('pagination-sm pull-right');
                 },
-                order: [[ 1, 'desc' ]],
-                // scrollY: 350,
-                // scrollX:true,
-                // paging: true,
-                bInfo : false,
-                // searching : false,
+                order: [[1, 'desc']],
+                bInfo: false,
                 lengthChange: false,
-                // paging:false
             });
 
             // Return table
@@ -127,7 +134,7 @@ define([
     }
 
     return {
-        init : init
+        init: init
     };
-	
+
 });

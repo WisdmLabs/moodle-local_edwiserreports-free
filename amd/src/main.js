@@ -8,7 +8,7 @@ define([
     'local_edwiserreports/block_realtimeusers',
     'local_edwiserreports/block_todaysactivity',
     'local_edwiserreports/common'
-], function (
+], function(
     accessInfo,
     activeCourses,
     activeUsers,
@@ -19,61 +19,59 @@ define([
     todaysActivity
 ) {
     var notif = {
-        activeUsers : {
-            func : activeUsers,
-            status : false
+        activeUsers: {
+            func: activeUsers,
+            status: false
         },
-        courseProgress : {
-            func : courseProgress,
-            status : false
+        courseProgress: {
+            func: courseProgress,
+            status: false
         },
-        realTimeUsers : {
-            func : realTimeUsers,
-            status : false
+        realTimeUsers: {
+            func: realTimeUsers,
+            status: false
         },
-        accessInfo : {
-            func : accessInfo,
-            status : false
+        accessInfo: {
+            func: accessInfo,
+            status: false
         },
-        lpStatsBlock : {
-            func : lpStatsBlock,
-            status : false
-        }
-        ,
-        inActiveUsers : {
-            func : inActiveUsers,
-            status : false
+        lpStatsBlock: {
+            func: lpStatsBlock,
+            status: false
         },
-        todaysActivity : {
-            func : todaysActivity,
-            status : false
+        inActiveUsers: {
+            func: inActiveUsers,
+            status: false
         },
-        activeCourses : {
-            func : activeCourses,
-            status : false
+        todaysActivity: {
+            func: todaysActivity,
+            status: false
+        },
+        activeCourses: {
+            func: activeCourses,
+            status: false
         }
     };
 
     /**
      * Notify listner to listen if done execution
-     * @param  {[type]} event [description]
-     * @return {[type]}       [description]
+     * @param  {Event} event Triggered event
      */
-    var notifyListner = function (event) {
-        notif[event]["status"] = true;
+    var notifyListner = function(event) {
+        notif[event].status = true;
         var blockName = getKeyByValue(notif, false);
         if (blockName) {
             executeFunctionByName(blockName);
         }
-    }
+    };
 
     /**
      * Execute function by name
      * @param  {string} blockName Block Name
      */
-    var executeFunctionByName = function (blockName) {
-        notif[blockName]["func"].init(notifyListner);
-    }
+    var executeFunctionByName = function(blockName) {
+        notif[blockName].func.init(notifyListner);
+    };
 
     /**
      * Get key by value
@@ -82,24 +80,26 @@ define([
      * @return {string} object key
      */
     var getKeyByValue = function(obj, value) {
-        for(var prop in obj) {
-            if(obj.hasOwnProperty(prop)) {
-                 if(obj[prop]["status"] === value)
-                     return prop;
+        for (var prop in obj) {
+            if (obj.hasOwnProperty(prop)) {
+                if (obj[prop].status === value) {
+                    return prop;
+                }
             }
         }
-    }
+        return null;
+    };
 
     /**
      * Init main.js
      */
-    var init = function () {
+    var init = function() {
         var blockName = getKeyByValue(notif, false);
-        notif[blockName]["func"].init(notifyListner);
-    }
+        notif[blockName].func.init(notifyListner);
+    };
 
     // Must return the init function
     return {
-        init : init
+        init: init
     };
 });

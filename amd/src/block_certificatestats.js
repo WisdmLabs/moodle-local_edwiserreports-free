@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 define([
     "jquery",
     "core/templates",
@@ -9,8 +10,13 @@ define([
     var table = panel + " .table";
     var dropdownBody = panel + " .table-dropdown";
 
-    function init () {
-
+    /**
+     * Initialize
+     */
+    function init() {
+        /**
+         * Hide loader/
+         */
         function hideLoader() {
             common.loader.hide('#certificatesblock');
         }
@@ -26,54 +32,49 @@ define([
                 sesskey: $(panel).data("sesskey")
             },
         })
-        .done(function(response) {
-            templates.render('local_edwiserreports/certificatestable', response.data)
-            .then(function(html, js) {
-                $(panelBody).empty();
-                templates.appendNodeContents(panelBody, html, js);
-                createCertificatesTable(response.data);
+            .done(function(response) {
+                templates.render('local_edwiserreports/certificatestable', response.data)
+                    .then(function(html, js) {
+                        $(panelBody).empty();
+                        templates.appendNodeContents(panelBody, html, js);
+                        createCertificatesTable(response.data);
 
-                // Hide loader.
-                hideLoader();
-            }).fail(function(ex) {
-                console.log(ex);
+                        // Hide loader.
+                        hideLoader();
+                        return;
+                    }).fail(function(ex) {
+                        console.log(ex);
+
+                        // Hide loader.
+                        hideLoader();
+                    });
+            })
+            .fail(function(error) {
+                console.log(error);
 
                 // Hide loader.
                 hideLoader();
             });
-        })
-        .fail(function(error) {
-            console.log(error);
-
-            // Hide loader.
-            hideLoader();
-        });
     }
 
+    /**
+     * Create certificate table.
+     */
     function createCertificatesTable() {
-        certificatesTable = $(table).DataTable({
-            // dom : '<"pull-left"f><t>',
-            oLanguage : {
-                sEmptyTable : "There is no certificate created",
+        $(table).DataTable({
+            oLanguage: {
+                sEmptyTable: "There is no certificate created",
                 sSearchPlaceholder: "Search Certificates"
             },
             initComplete: function() {
                 $(dropdownBody).show();
             },
-            drawCallback: function () {
+            drawCallback: function() {
                 $('.dataTables_paginate > .pagination').addClass('pagination-sm pull-right');
                 $('.dataTables_filter').addClass('pagination-sm pull-right');
             },
-            // scrollY : "200px",
-            // scrollCollapse : true,
-            // fixedHeader: {
-            //     header: true,
-            //     headerOffset: 45
-            // },
-            // scrollX: true,
-            // paging: false,
             lengthChange: false,
-            bInfo : false
+            bInfo: false
         });
     }
 
