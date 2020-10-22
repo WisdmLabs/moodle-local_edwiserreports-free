@@ -95,11 +95,6 @@ class edwiserReportController extends controllerAbstract {
         echo json_encode(\local_edwiserreports\utility::get_inactiveusers_data($data));
     }
 
-    public function get_userslist_ajax_action() {
-        $data = json_decode(required_param('data', PARAM_RAW));
-        echo json_encode(\local_edwiserreports\utility::get_userslist_data($data));
-    }
-
     public function get_courseengage_data_ajax_action() {
         $cohortid = json_decode(optional_param('cohortid', 0, PARAM_RAW));
         echo json_encode(\local_edwiserreports\utility::get_courseengage_data($cohortid));
@@ -147,13 +142,6 @@ class edwiserReportController extends controllerAbstract {
         echo json_encode(\local_edwiserreports\utility::get_customreport_selectors($filter));
     }
 
-    public function get_customreport_data_ajax_action() {
-        // Get data.
-        $data = json_decode(required_param('data', PARAM_RAW));
-
-        // Response for ajax action.
-        echo json_encode(\local_edwiserreports\utility::get_customreport_data($data));
-    }
     public function get_customqueryreport_data_ajax_action() {
         // Get data.
         $data = json_decode(required_param('data', PARAM_RAW));

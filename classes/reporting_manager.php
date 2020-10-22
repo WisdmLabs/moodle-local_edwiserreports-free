@@ -54,50 +54,6 @@ class reporting_manager
             $this->get_reporting_manager_sql();
             $this->get_reporting_manager_cachekey();
         }
-
-        //@codingStandardsIgnoreStart
-        // Get system context
-        // $context = context_system::instance();
-        // if (!has_capability('moodle/site:configview', $context)) {
-        //     // Get reporting managers hierarchy
-        //     $this->get_rpm_hierarchy2($this->rpmindentusers, '', $this->userid, 0);
-        // } else {
-        //     /*$sql = "SELECT DISTINCT(uid.data)
-        //             FROM {user_info_data} uid,
-        //                  {user_info_field} uif
-        //             WHERE data NOT IN (
-        //                 SELECT userid
-        //                 FROM {user_info_data}
-        //                 WHERE data > 0
-        //             )
-        //             AND uif.shortname = :rolename
-        //             AND uid.fieldid = uif.id
-        //             AND uid.data != 0";*/
-        //     $sql = "SELECT DISTINCT(uid.data)
-        //             FROM {user_info_data} uid,
-        //                  {user_info_field} uif
-        //             WHERE uif.shortname = :rolename
-        //             AND uid.fieldid = uif.id
-        //             AND uid.data != 0";
-        //     $params = array('rolename' =>  'reportingmanager');
-        //     $data = $DB->get_records_sql($sql, $params);
-
-        //     // Get all reporting top level reporting managers
-        //     // foreach ($data as $key => $d) {
-        //     //     $prefix = '';
-        //     //     $data = new \stdClass();
-        //     //     $data->id = $key . $d->data;
-        //     //     $data->userid = $d->data;
-        //     //     $this->prepare_rpm_uers_data($this->rpmindentusers, $data, $prefix, 0, true);
-        //     //     $this->rpmindentusers = array_replace($this->rpmindentusers, $this->get_rpm_hierarchy2($this->rpmindentusers, $prefix, $d->data, 0));
-        //     // }
-        // }
-
-        // // Check if there is no reporting managers
-        // if (empty(array_filter($this->rpmindentusers))) {
-        //     $this->rpmindentusers = false;
-        // }
-        // @codingStandardsIgnoreEnd
     }
 
     /**
