@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 define([
     'jquery',
     'core/templates',
@@ -16,6 +17,10 @@ define([
     str,
     V
 ) {
+    /**
+     * Initialize
+     * @param {integer} CONTEXTID Current page context id
+     */
     function init(CONTEXTID) {
         var PageId = "#wdm-lpstats-individual";
         var LpSelect = "#wdm-lp-select";
@@ -78,11 +83,12 @@ define([
             /* Export Detailed Report */
             lpExportDetail.on('click', function() {
                 exportDetailedReport(lpExportDetail);
-            })
+            });
         });
 
         /**
          * Export Detailed Report
+         * @param {Objcet} trigger Trigger dom element
          */
         function exportDetailedReport(trigger) {
             // If modal already exist then show modal
@@ -90,16 +96,17 @@ define([
                 lpListModal.show();
             } else {
                 // When translation is redy then create modal
+                // eslint-disable-next-line promise/catch-or-return
                 translation.then(function() {
                     // Create Learning Program Modal
                     ModalFactory.create({
-                        title : M.util.get_string(
+                        title: M.util.get_string(
                             'lpdetailedreport', component
                         )
                     }, trigger).done(function(modal) {
                         // Get modal root
                         var root = modal.getRoot();
-                        
+
                         // Set global Modal
                         lpListModal = modal;
                         root.on(ModalEvents.cancel, function() {
@@ -109,14 +116,15 @@ define([
                         // Set Modal Body
                         modal.setBody(Templates.render(
                             'local_edwiserreports/lpdetailedreport', {
-                                sesskey : $(PageId).data('sesskey'),
-                                formaction : M.cfg.wwwroot + "/local/edwiserreports/download.php" 
-                            }
+                            sesskey: $(PageId).data('sesskey'),
+                            formaction: M.cfg.wwwroot + "/local/edwiserreports/download.php"
+                        }
                         ));
 
                         // Show learning program modal
                         modal.show();
                     });
+                    return;
                 });
             }
         }
@@ -138,26 +146,28 @@ define([
                 'lpstats',
                 CONTEXTID,
                 {
-                    lpid : lpid,
-                    cohortid : cohortId
+                    lpid: lpid,
+                    cohortid: cohortId
                 }
             );
 
             fragment.done(function(response) {
                 var context = JSON.parse(response);
+                // eslint-disable-next-line promise/catch-or-return
                 Templates.render('local_edwiserreports/lpstatsinfo', context)
                 .then(function(html, js) {
                     Templates.replaceNode(LpTable, html, js);
+                    return;
                 }).fail(function(ex) {
                     console.log(ex);
                 }).always(function() {
                     $(LpTable).show();
                     Table = $(LpTable).DataTable({
-                        dom : "<'pull-left'f><t><p>",
-                        oLanguage : {
-                            sEmptyTable : "No Users are enrolled in any Learning Programs"
+                        dom: "<'pull-left'f><t><p>",
+                        oLanguage: {
+                            sEmptyTable: "No Users are enrolled in any Learning Programs"
                         },
-                        responsive : true
+                        responsive: true
                     });
                     $(loader).hide();
                 });
@@ -166,7 +176,7 @@ define([
     }
 
     return {
-        init : init
+        init: init
     };
-	
+
 });

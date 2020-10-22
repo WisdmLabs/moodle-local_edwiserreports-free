@@ -1,9 +1,15 @@
+/* eslint-disable no-unused-vars */
 define([
     'jquery',
     'local_edwiserreports/variables',
     'local_edwiserreports/common'
 ], function($, V) {
+    /**
+     * Initialize
+     * @param {integer} CONTEXTID Current page context id
+     */
     function init(CONTEXTID) {
+        CONTEXTID = null;
         var PageId = $("#wdm-completion-individual");
         var CompletionTable = PageId.find(".table");
         var loader = PageId.find(".loader");
@@ -32,7 +38,6 @@ define([
          * Get Course Completion
          * @param  {Number} courseId Course Id
          * @param  {number} cohortId Cohort Id
-         * @return {}
          */
         function getCourseCompletion(courseId, cohortId) {
             if (Table) {
@@ -53,44 +58,40 @@ define([
 
             CompletionTable.show();
             Table = CompletionTable.DataTable({
-                ajax : url,
-                // dom : "<'pull-left'f><t><p>",
-                oLanguage : {
-                    sEmptyTable : "No users are enrolled as student",
-                    sSearchPlaceholder : "Search User"
+                ajax: url,
+                oLanguage: {
+                    sEmptyTable: "No users are enrolled as student",
+                    sSearchPlaceholder: "Search User"
                 },
-                columns : [
-                    { "data": "username" },
-                    { "data": "enrolledon" }, 
-                    { "data": "enrolltype" },
-                    { "data": "noofvisits" },
-                    { "data": "completion" },
-                    { "data": "compleiontime" },
-                    { "data": "grade" },
-                    { "data": "lastaccess" }
+                columns: [
+                    {"data": "username"},
+                    {"data": "enrolledon"},
+                    {"data": "enrolltype"},
+                    {"data": "noofvisits"},
+                    {"data": "completion"},
+                    {"data": "compleiontime"},
+                    {"data": "grade"},
+                    {"data": "lastaccess"}
                 ],
-                drawCallback: function () {
+                drawCallback: function() {
                     $('.dataTables_paginate > .pagination').addClass('pagination-sm pull-right');
                     $('.dataTables_filter').addClass('pagination-sm pull-right');
                 },
                 columnDefs: [
-                    { className: "text-left", targets: 0 },
-                    { className: "text-left", targets: 1 },
-                    { className: "text-center", targets: "_all" }
+                    {className: "text-left", targets: 0},
+                    {className: "text-left", targets: 1},
+                    {className: "text-center", targets: "_all"}
                 ],
                 initComplete: function() {
                     $(loader).hide();
                 },
-                // scrollY : 350,
-                // scrollX : true,
-                // paginate : false,
-                bInfo : false
+                bInfo: false
             });
         }
     }
 
     return {
-        init : init
+        init: init
     };
-	
+
 });

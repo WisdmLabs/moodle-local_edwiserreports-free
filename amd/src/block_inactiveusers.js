@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 define([
     'jquery',
     'core/chartjs',
@@ -6,13 +7,18 @@ define([
     './common',
     'local_edwiserreports/jquery.dataTables',
     'local_edwiserreports/dataTables.bootstrap4'
- ], function (
+], function(
     $,
     Chart,
     cfg,
     V,
     common
 ) {
+
+    /**
+     * Initialize
+     * @param {function} notifyListner Callback function
+     */
     function init(notifyListner) {
         var activeUsersTable;
         var panel = cfg.getPanel("#inactiveusersblock");
@@ -35,7 +41,7 @@ define([
         $(dropdown).on("click", function() {
             // Get filter
             var filter = $(this).data("value");
-            $(panel).find('.download-links input[name="filter"]').val(filter)
+            $(panel).find('.download-links input[name="filter"]').val(filter);
 
             // If table is already created then destroy the tablw
             if (activeUsersTable) {
@@ -60,7 +66,6 @@ define([
         /**
          * Get inactive users list based on filter
          * @param  {string} filter Filter
-         * @return {boolean}
          */
         function getInactiveUsersData(filter) {
 
@@ -79,22 +84,22 @@ define([
                     })
                 },
             })
-            .done(function(response) {
-                createInactiveUsersTable(response.data);
-            })
-            .fail(function(error) {
-                console.log(error);
-            }).always(function() {
-                notifyListner("inActiveUsers");
+                .done(function(response) {
+                    createInactiveUsersTable(response.data);
+                })
+                .fail(function(error) {
+                    console.log(error);
+                }).always(function() {
+                    notifyListner("inActiveUsers");
 
-                // Hide loader.
-                common.loader.hide('#inactiveusersblock');
-            });
+                    // Hide loader.
+                    common.loader.hide('#inactiveusersblock');
+                });
         }
 
         /**
          * Create inactive users table
-         * @param  {filter} filter Filter
+         * @param  {String} data Table data
          */
         function createInactiveUsersTable(data) {
             // If table is creted then destroy table
@@ -109,9 +114,9 @@ define([
             $(table).show();
 
             // Create inactive users table
-            inActiveUsersTable = $(table).DataTable( {
-                data : data,
-                // dom : '<"pull-left"f><t>',
+            inActiveUsersTable = $(table).DataTable({
+                data: data,
+                // Dom : '<"pull-left"f><t>',
                 aaSorting: [[2, 'desc']],
                 oLanguage: {
                     sEmptyTable: "No inactive users are available.",
@@ -123,20 +128,13 @@ define([
                         "className": "text-center"
                     }
                 ],
-                drawCallback: function () {
+                drawCallback: function() {
                     $('.dataTables_paginate > .pagination').addClass('pagination-sm pull-right');
                     $('.dataTables_filter').addClass('pagination-sm pull-right');
                 },
-                responsive : true,
-                // scrollY : "320px",
-                // scroller: {
-                //     loadingIndicator: true
-                // },
-                // scrollCollapse : true,
-                // scrollX: true,
-                // paging: false,
+                responsive: true,
                 lengthChange: false,
-                bInfo : false
+                bInfo: false
             });
         }
     }

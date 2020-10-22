@@ -1,20 +1,28 @@
+/* eslint-disable no-console */
 define([
     'jquery',
     'core/templates',
     'local_edwiserreports/defaultconfig',
     './common'
-], function ($, templates, cfg, common) {
+], function($, templates, cfg, common) {
     var panel = cfg.getPanel("#siteaccessblock");
     var panelBody = cfg.getPanel("#siteaccessblock", "body");
     var table = cfg.getPanel("#siteaccessblock", "table");
     var loader = cfg.getPanel("#siteaccessblock", "loader");
     var accessDesc = "#accessinfodesctable";
 
+    /**
+     * Initialize
+     * @param {function} notifyListner Callback function
+     */
     function init(notifyListner) {
         $(document).ready(function() {
             generateAccessInfoGraph();
         });
 
+        /**
+         * Generate access info graph
+         */
         function generateAccessInfoGraph() {
 
             // Show loader.
@@ -29,9 +37,11 @@ define([
                 },
             })
             .done(function(response) {
+                // eslint-disable-next-line promise/catch-or-return
                 templates.render(cfg.getTemplate("siteaccessblock"), response.data)
                 .then(function(html, js) {
                     templates.replaceNodeContents(panelBody, html, js);
+                    return;
                 })
                 .fail(function(ex) {
                     console.log(ex);

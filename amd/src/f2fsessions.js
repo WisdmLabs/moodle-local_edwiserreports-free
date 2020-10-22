@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 define([
     'jquery',
     'core/modal_factory',
@@ -6,14 +7,21 @@ define([
     'core/templates',
     'local_edwiserreports/variables',
     'local_edwiserreports/common'
-], function($,
+], function(
+    $,
     ModalFactory,
     ModalEvents,
     Fragment,
     Templates,
     V
 ) {
+    /**
+     * Initialize
+     * @param {integer} CONTEXTID Current page context id
+     */
     function init(CONTEXTID) {
+        // eslint-disable-next-line no-unused-vars
+        CONTEXTID = null;
         var PageId = "#wdm-f2fsessions-individual";
         var F2fTable = PageId + " .table";
         var loader = PageId + " .loader";
@@ -22,8 +30,12 @@ define([
         // Varibales for cohort filter
         var cohortId = 0;
         var cohortFilterBtn = "#cohortfilter";
-        var cohortFilterItem  = cohortFilterBtn + " ~ .dropdown-menu .dropdown-item";
+        var cohortFilterItem = cohortFilterBtn + " ~ .dropdown-menu .dropdown-item";
 
+        /**
+         * Get face 2 faqce sessions
+         * @param {Number} cohortId Cohort id
+         */
         function getF2fSessions(cohortId) {
             $.ajax({
                 url: V.requestUrl,
@@ -37,23 +49,25 @@ define([
                     })
                 },
             })
-            .done(function(response) {
-                var context = response.data;
-                context.sesskey = sesskey;
+                .done(function(response) {
+                    var context = response.data;
+                    context.sesskey = sesskey;
 
-                Templates.render('local_edwiserreports/f2fsessions', context)
-                .then(function(html, js) {
-                    Templates.replaceNode(PageId, html, js);
-                }).fail(function(ex) {
-                    console.log(ex);
-                }).always(function() {
-                    $(F2fTable).show();
-                    $(loader).hide();
+                    // eslint-disable-next-line promise/catch-or-return
+                    Templates.render('local_edwiserreports/f2fsessions', context)
+                    .then(function(html, js) {
+                        Templates.replaceNode(PageId, html, js);
+                        return;
+                    }).fail(function(ex) {
+                        console.log(ex);
+                    }).always(function() {
+                        $(F2fTable).show();
+                        $(loader).hide();
+                    });
+                })
+                .fail(function(error) {
+                    console.log(error);
                 });
-            })
-            .fail(function(error) {
-                console.log(error);
-            });
         }
 
         $(document).ready(function() {
@@ -73,7 +87,7 @@ define([
     }
 
     return {
-        init : init
+        init: init
     };
-	
+
 });

@@ -1,4 +1,5 @@
-define(['jquery'], function($) {
+/* eslint-disable */
+define(['jquery'], function ($) {
     /** @preserve
      * jsPDF - PDF Document creation from JavaScript
      * Version ${versionID}
@@ -204,9 +205,9 @@ define(['jquery'], function($) {
                 API = {},
                 events = new PubSub(API),
 
-            /////////////////////
-            // Private functions
-            /////////////////////
+                /////////////////////
+                // Private functions
+                /////////////////////
                 f2 = function (number) {
                     return number.toFixed(2); // Ie, %.2f
                 },
@@ -233,18 +234,18 @@ define(['jquery'], function($) {
                     out(objectNumber + ' 0 obj');
                     return objectNumber;
                 },
-            // Does not output the object until after the pages have been output.
-            // Returns an object containing the objectId and content.
-            // All pages have been added so the object ID can be estimated to start right after.
-            // This does not modify the current objectNumber;  It must be updated after the newObjects are output.
+                // Does not output the object until after the pages have been output.
+                // Returns an object containing the objectId and content.
+                // All pages have been added so the object ID can be estimated to start right after.
+                // This does not modify the current objectNumber;  It must be updated after the newObjects are output.
                 newAdditionalObject = function () {
                     var objId = pages.length * 2 + 1;
                     objId += additionalObjects.length;
-                    var obj = {objId: objId, content: ''};
+                    var obj = { objId: objId, content: '' };
                     additionalObjects.push(obj);
                     return obj;
                 },
-            // Does not output the object.  The caller must call newObjectDeferredBegin(oid) before outputing any data
+                // Does not output the object.  The caller must call newObjectDeferredBegin(oid) before outputing any data
                 newObjectDeferred = function () {
                     objectNumber++;
                     offsets[objectNumber] = function () {
@@ -279,7 +280,7 @@ define(['jquery'], function($) {
                         out('/Resources 2 0 R');
                         out('/MediaBox [0 0 ' + f2(wPt) + ' ' + f2(hPt) + ']');
                         // Added for annotation plugin
-                        events.publish('putPage', {pageNumber: n, page: pages[n]});
+                        events.publish('putPage', { pageNumber: n, page: pages[n] });
                         out('/Contents ' + (objectNumber + 1) + ' 0 R');
                         out('>>');
                         out('endobj');
@@ -406,7 +407,7 @@ define(['jquery'], function($) {
                  */
                 addFont = function (PostScriptName, fontName, fontStyle, encoding) {
                     var fontKey = 'F' + (Object.keys(fonts).length + 1).toString(10),
-                    // This is FontObject
+                        // This is FontObject
                         font = fonts[fontKey] = {
                             'id': fontKey,
                             'PostScriptName': PostScriptName,
@@ -444,7 +445,7 @@ define(['jquery'], function($) {
                             ['Times-Bold', TIMES, BOLD],
                             ['Times-Italic', TIMES, ITALIC],
                             ['Times-BoldItalic', TIMES, BOLD_ITALIC],
-                            ['ZapfDingbats',ZAPF ]
+                            ['ZapfDingbats', ZAPF]
                         ];
 
                     for (var i = 0, l = standardFonts.length; i < l; i++) {
@@ -458,7 +459,7 @@ define(['jquery'], function($) {
                         var parts = standardFonts[i][0].split('-');
                         addToFontDictionary(fontKey, parts[0], parts[1] || '');
                     }
-                    events.publish('addFonts', {fonts: fonts, dictionary: fontmap});
+                    events.publish('addFonts', { fonts: fonts, dictionary: fontmap });
                 },
                 SAFE = function __safeCall(fn) {
                     fn.foo = function __safeCallWrapper() {
@@ -660,16 +661,16 @@ define(['jquery'], function($) {
                     // PDF13ref Section 7.2.1
                     if (!zoomMode) zoomMode = 'fullwidth';
                     switch (zoomMode) {
-                        case 'fullwidth'  :
+                        case 'fullwidth':
                             out('/OpenAction [3 0 R /FitH null]');
                             break;
-                        case 'fullheight' :
+                        case 'fullheight':
                             out('/OpenAction [3 0 R /FitV null]');
                             break;
-                        case 'fullpage'   :
+                        case 'fullpage':
                             out('/OpenAction [3 0 R /Fit]');
                             break;
-                        case 'original'   :
+                        case 'original':
                             out('/OpenAction [3 0 R /XYZ null null 1]');
                             break;
                         default:
@@ -682,17 +683,17 @@ define(['jquery'], function($) {
                     }
                     if (!layoutMode) layoutMode = 'continuous';
                     switch (layoutMode) {
-                        case 'continuous' :
+                        case 'continuous':
                             out('/PageLayout /OneColumn');
                             break;
-                        case 'single'     :
+                        case 'single':
                             out('/PageLayout /SinglePage');
                             break;
                         case 'two':
-                        case 'twoleft'    :
+                        case 'twoleft':
                             out('/PageLayout /TwoColumnLeft');
                             break;
-                        case 'tworight'   :
+                        case 'tworight':
                             out('/PageLayout /TwoColumnRight');
                             break;
                     }
@@ -764,7 +765,7 @@ define(['jquery'], function($) {
                     if (lineJoinID !== 0) {
                         out(lineJoinID + ' j');
                     }
-                    events.publish('addPage', {pageNumber: page});
+                    events.publish('addPage', { pageNumber: page });
                 },
                 _deletePage = function (n) {
                     if (n > 0 && n <= page) {
@@ -803,29 +804,29 @@ define(['jquery'], function($) {
                     fontName = fontName !== undefined ? fontName : fonts[activeFontKey].fontName;
                     fontStyle = fontStyle !== undefined ? fontStyle : fonts[activeFontKey].fontStyle;
 
-                if (fontName !== undefined){
-                    fontName = fontName.toLowerCase();
-                }
-                switch(fontName){
-                case 'sans-serif':
-                case 'verdana':
-                case 'arial':
-                case 'helvetica':
-                    fontName = 'helvetica';
-                    break;
-                case 'fixed':
-                case 'monospace':
-                case 'terminal':
-                case 'courier':
-                    fontName = 'courier';
-                    break;
-                case 'serif':
-                case 'cursive':
-                case 'fantasy':
-                    default:
-                    fontName = 'times';
-                    break;
-                }
+                    if (fontName !== undefined) {
+                        fontName = fontName.toLowerCase();
+                    }
+                    switch (fontName) {
+                        case 'sans-serif':
+                        case 'verdana':
+                        case 'arial':
+                        case 'helvetica':
+                            fontName = 'helvetica';
+                            break;
+                        case 'fixed':
+                        case 'monospace':
+                        case 'terminal':
+                        case 'courier':
+                            fontName = 'courier';
+                            break;
+                        case 'serif':
+                        case 'cursive':
+                        case 'fantasy':
+                        default:
+                            fontName = 'times';
+                            break;
+                    }
 
                     try {
                         // get a string like 'F3' - the KEY corresponding tot he font + type combination.
@@ -932,7 +933,7 @@ define(['jquery'], function($) {
                     return ab;
                 },
                 getBlob = function () {
-                    return new Blob([getArrayBuffer()], {type: "application/pdf"});
+                    return new Blob([getArrayBuffer()], { type: "application/pdf" });
                 },
                 /**
                  * Generates the PDF document.
@@ -1089,11 +1090,11 @@ define(['jquery'], function($) {
                 'f2': f2,
                 'getPageInfo': function (pageNumberOneBased) {
                     var objId = (pageNumberOneBased - 1) * 2 + 3;
-                    return {objId: objId, pageNumber: pageNumberOneBased, pageContext: pagesContext[pageNumberOneBased]};
+                    return { objId: objId, pageNumber: pageNumberOneBased, pageContext: pagesContext[pageNumberOneBased] };
                 },
                 'getCurrentPageInfo': function () {
                     var objId = (currentPage - 1) * 2 + 3;
-                    return {objId: objId, pageNumber: currentPage, pageContext: pagesContext[currentPage]};
+                    return { objId: objId, pageNumber: currentPage, pageContext: pagesContext[currentPage] };
                 },
                 'getPDFVersion': function () {
                     return pdfVersion;
@@ -1163,18 +1164,18 @@ define(['jquery'], function($) {
                 return this;
             },
 
-            /**
-             * Adds text to page. Supports adding multiline text when 'text' argument is an Array of Strings.
-             *
-             * @function
-             * @param {String|Array} text String or array of strings to be added to the page. Each line is shifted one line down per font, spacing settings declared before this call.
-             * @param {Number} x Coordinate (in units declared at inception of PDF document) against left edge of the page
-             * @param {Number} y Coordinate (in units declared at inception of PDF document) against upper edge of the page
-             * @param {Object} flags Collection of settings signalling how the text must be encoded. Defaults are sane. If you think you want to pass some flags, you likely can read the source.
-             * @returns {jsPDF}
-             * @methodOf jsPDF#
-             * @name text
-             */
+                /**
+                 * Adds text to page. Supports adding multiline text when 'text' argument is an Array of Strings.
+                 *
+                 * @function
+                 * @param {String|Array} text String or array of strings to be added to the page. Each line is shifted one line down per font, spacing settings declared before this call.
+                 * @param {Number} x Coordinate (in units declared at inception of PDF document) against left edge of the page
+                 * @param {Number} y Coordinate (in units declared at inception of PDF document) against upper edge of the page
+                 * @param {Object} flags Collection of settings signalling how the text must be encoded. Defaults are sane. If you think you want to pass some flags, you likely can read the source.
+                 * @returns {jsPDF}
+                 * @methodOf jsPDF#
+                 * @name text
+                 */
                 API.text = function (text, x, y, flags, angle, align) {
                     /**
                      * Inserts something like this into PDF
@@ -1265,7 +1266,7 @@ define(['jquery'], function($) {
 
                     if (typeof text === 'string') {
                         text = ESC(text);
-                        } else if (Object.prototype.toString.call(text) === '[object Array]') {
+                    } else if (Object.prototype.toString.call(text) === '[object Array]') {
                         // we don't want to destroy  original text array, so cloning it
                         var sa = text.concat(), da = [], len = sa.length;
                         // we do array.join('text that must not be PDFescaped")
@@ -1309,7 +1310,7 @@ define(['jquery'], function($) {
                                 var delta = maxLineLength - lineWidths[i];
                                 if (align === "center") delta /= 2;
                                 // T* = x-offset leading Td ( text )
-                                text += ") Tj\n" + ( ( left - prevX ) + delta ) + " -" + leading + " Td (" + da[i];
+                                text += ") Tj\n" + ((left - prevX) + delta) + " -" + leading + " Td (" + da[i];
                                 prevX = left + delta;
                             }
                         } else {
@@ -1337,12 +1338,12 @@ define(['jquery'], function($) {
                     }
                     //curY = f2((pageHeight - (y - this._runningPageHeight)) * k);
 
-    //			if (curY < 0){
-    //				console.log('auto page break');
-    //				this.addPage();
-    //				this._runningPageHeight = y -  (activeFontSize * 1.7 / k);
-    //				curY = f2(pageHeight - activeFontSize * 1.7 /k);
-    //			}
+                    //			if (curY < 0){
+                    //				console.log('auto page break');
+                    //				this.addPage();
+                    //				this._runningPageHeight = y -  (activeFontSize * 1.7 / k);
+                    //				curY = f2(pageHeight - activeFontSize * 1.7 /k);
+                    //			}
 
                     out(
                         'BT\n/' +
@@ -2104,7 +2105,7 @@ define(['jquery'], function($) {
          * var pdfdoc = new jsPDF()
          * pdfdoc.mymethod() // <- !!!!!!
          */
-        jsPDF.API = {events: []};
+        jsPDF.API = { events: [] };
         jsPDF.version = "1.0.0-trunk";
 
         if (typeof define === 'function' && define.amd) {
@@ -2131,7 +2132,7 @@ define(['jquery'], function($) {
      * 
      * ====================================================================
      */
-  
+
     (function (jsPDFAPI) {
         var clone, _DrillForContent, FontNameDB, FontStyleMap, TextAlignMap, FontWeightMap, FloatMap, ClearMap, GetCSS, PurgeWhiteSpace, Renderer, ResolveFont, ResolveUnitedNumber, UnitedNumberMap, elementHandledElsewhere, images, loadImgs, checkForFooter, process, tableToJson;
         clone = function () {
@@ -2139,7 +2140,7 @@ define(['jquery'], function($) {
                 Clone.prototype = obj;
                 return new Clone();
             };
-            function Clone() {}
+            function Clone() { }
         }();
         PurgeWhiteSpace = function PurgeWhiteSpace(array) {
             var fragment, i, l, lTrimmed, r, rTrimmed, trailingSpace;
@@ -2204,7 +2205,7 @@ define(['jquery'], function($) {
             return name;
         };
         ResolveUnitedNumber = function ResolveUnitedNumber(css_line_height_string) {
-  
+
             //IE8 issues
             css_line_height_string = css_line_height_string === "auto" ? "0px" : css_line_height_string;
             if (css_line_height_string.indexOf("em") > -1 && !isNaN(Number(css_line_height_string.replace("em", "")))) {
@@ -2213,7 +2214,7 @@ define(['jquery'], function($) {
             if (css_line_height_string.indexOf("pt") > -1 && !isNaN(Number(css_line_height_string.replace("pt", "")))) {
                 css_line_height_string = Number(css_line_height_string.replace("pt", "")) * 1.333 + "px";
             }
-  
+
             var normal, undef, value;
             undef = void 0;
             normal = 16.00;
@@ -2231,7 +2232,7 @@ define(['jquery'], function($) {
                 "xx-large": 28,
                 auto: 0
             }[{ css_line_height_string: css_line_height_string }];
-  
+
             if (value !== undef) {
                 return UnitedNumberMap[css_line_height_string] = value / normal;
             }
@@ -2280,7 +2281,7 @@ define(['jquery'], function($) {
             css["font-size"] = ResolveUnitedNumber(computedCSSElement("font-size")) || 1;
             css["line-height"] = ResolveUnitedNumber(computedCSSElement("line-height")) || 1;
             css["display"] = computedCSSElement("display") === "inline" ? "inline" : "block";
-  
+
             tmp = css["display"] === "block";
             css["margin-top"] = tmp && ResolveUnitedNumber(computedCSSElement("margin-top")) || 0;
             css["margin-bottom"] = tmp && ResolveUnitedNumber(computedCSSElement("margin-bottom")) || 0;
@@ -2290,15 +2291,15 @@ define(['jquery'], function($) {
             css["margin-right"] = tmp && ResolveUnitedNumber(computedCSSElement("margin-right")) || 0;
             css["padding-left"] = tmp && ResolveUnitedNumber(computedCSSElement("padding-left")) || 0;
             css["padding-right"] = tmp && ResolveUnitedNumber(computedCSSElement("padding-right")) || 0;
-  
+
             css["page-break-before"] = computedCSSElement("page-break-before") || "auto";
-  
+
             //float and clearing of floats
             css["float"] = FloatMap[computedCSSElement("cssFloat")] || "none";
             css["clear"] = ClearMap[computedCSSElement("clear")] || "none";
-  
+
             css["color"] = computedCSSElement("color");
-  
+
             return css;
         };
         elementHandledElsewhere = function elementHandledElsewhere(element, renderer, elementHandlers) {
@@ -2393,10 +2394,10 @@ define(['jquery'], function($) {
             while (i < l) {
                 cn = cns[i];
                 if ((typeof cn === "undefined" ? "undefined" : _typeof(cn)) === "object") {
-  
+
                     //execute all watcher functions to e.g. reset floating
                     renderer.executeWatchFunctions(cn);
-  
+
                     /*** HEADER rendering **/
                     if (cn.nodeType === 1 && cn.nodeName === 'HEADER') {
                         var header = cn;
@@ -2414,7 +2415,7 @@ define(['jquery'], function($) {
                             renderer.y += 10;
                         }, false);
                     }
-  
+
                     if (cn.nodeType === 8 && cn.nodeName === "#comment") {
                         if (~cn.textContent.indexOf("ADD_PAGE")) {
                             renderer.pdf.addPage();
@@ -2434,17 +2435,17 @@ define(['jquery'], function($) {
                                 //check if we have to set back some values due to e.g. header rendering for new page
                                 renderer.executeWatchFunctions(cn);
                             }
-  
+
                             var imagesCSS = GetCSS(cn);
                             var imageX = renderer.x;
                             var fontToUnitRatio = 12 / renderer.pdf.internal.scaleFactor;
-  
+
                             //define additional paddings, margins which have to be taken into account for margin calculations
                             var additionalSpaceLeft = (imagesCSS["margin-left"] + imagesCSS["padding-left"]) * fontToUnitRatio;
                             var additionalSpaceRight = (imagesCSS["margin-right"] + imagesCSS["padding-right"]) * fontToUnitRatio;
                             var additionalSpaceTop = (imagesCSS["margin-top"] + imagesCSS["padding-top"]) * fontToUnitRatio;
                             var additionalSpaceBottom = (imagesCSS["margin-bottom"] + imagesCSS["padding-bottom"]) * fontToUnitRatio;
-  
+
                             //if float is set to right, move the image to the right border
                             //add space if margin is set
                             if (imagesCSS['float'] !== undefined && imagesCSS['float'] === 'right') {
@@ -2452,7 +2453,7 @@ define(['jquery'], function($) {
                             } else {
                                 imageX += additionalSpaceLeft;
                             }
-  
+
                             renderer.pdf.addImage(cached_image, imageX, renderer.y + additionalSpaceTop, cn.width, cn.height);
                             cached_image = undefined;
                             //if the float prop is specified we have to float the text around the image
@@ -2487,7 +2488,7 @@ define(['jquery'], function($) {
                                         return true;
                                     }
                                 }.bind(this, renderer.y + cn.height, renderer.pdf.internal.getNumberOfPages()));
-  
+
                                 //if floating is set we decrease the available width by the image width
                                 renderer.settings.width -= cn.width + additionalSpaceLeft + additionalSpaceRight;
                                 //if left just add the image width to the X coordinate
@@ -2498,7 +2499,7 @@ define(['jquery'], function($) {
                                 //if no floating is set, move the rendering cursor after the image height
                                 renderer.y += cn.height + additionalSpaceTop + additionalSpaceBottom;
                             }
-  
+
                             /*** TABLE RENDERING ***/
                         } else if (cn.nodeName === "TABLE") {
                             table2json = tableToJson(cn, renderer);
@@ -2559,7 +2560,7 @@ define(['jquery'], function($) {
                 i++;
             }
             elementHandlers.outY = renderer.y;
-  
+
             if (isBlock) {
                 return renderer.setBlockBoundary(cb);
             }
@@ -2601,28 +2602,28 @@ define(['jquery'], function($) {
             }
             while (l--) {
                 loadImage(imgs[l].getAttribute("src"), imgs[l].width, imgs[l].height);
-            }return x || done();
+            } return x || done();
         };
         checkForFooter = function checkForFooter(elem, renderer, elementHandlers) {
             //check if we can found a <footer> element
             var footer = elem.getElementsByTagName("footer");
             if (footer.length > 0) {
-  
+
                 footer = footer[0];
-  
+
                 //bad hack to get height of footer
                 //creat dummy out and check new y after fake rendering
                 var oldOut = renderer.pdf.internal.write;
                 var oldY = renderer.y;
-                renderer.pdf.internal.write = function () {};
+                renderer.pdf.internal.write = function () { };
                 _DrillForContent(footer, renderer, elementHandlers);
                 var footerHeight = Math.ceil(renderer.y - oldY) + 5;
                 renderer.y = oldY;
                 renderer.pdf.internal.write = oldOut;
-  
+
                 //add 20% to prevent overlapping
                 renderer.pdf.margins_doc.bottom += footerHeight;
-  
+
                 //Create function render header on every page
                 var renderFooter = function renderFooter(pageInfo) {
                     var pageNumber = pageInfo !== undefined ? pageInfo.pageNumber : 1;
@@ -2631,7 +2632,7 @@ define(['jquery'], function($) {
                     //render all child nodes of the header element
                     renderer.y = renderer.pdf.internal.pageSize.height - renderer.pdf.margins_doc.bottom;
                     renderer.pdf.margins_doc.bottom -= footerHeight;
-  
+
                     //check if we have to add page numbers
                     var spans = footer.getElementsByTagName('span');
                     for (var i = 0; i < spans.length; ++i) {
@@ -2644,7 +2645,7 @@ define(['jquery'], function($) {
                             spans[i].innerHTML = '###jsPDFVarTotalPages###';
                         }
                     }
-  
+
                     //render footer content
                     _DrillForContent(footer, renderer, elementHandlers);
                     //set bottom margin to previous height including the footer height
@@ -2652,7 +2653,7 @@ define(['jquery'], function($) {
                     //important for other plugins (e.g. table) to start rendering at correct position after header
                     renderer.y = oldPosition;
                 };
-  
+
                 //check if footer contains totalPages which should be replace at the disoposal of the document
                 var spans = footer.getElementsByTagName('span');
                 for (var i = 0; i < spans.length; ++i) {
@@ -2660,12 +2661,12 @@ define(['jquery'], function($) {
                         renderer.pdf.internal.events.subscribe('htmlRenderingFinished', renderer.pdf.putTotalPages.bind(renderer.pdf, '###jsPDFVarTotalPages###'), true);
                     }
                 }
-  
+
                 //register event to render footer on every new page
                 renderer.pdf.internal.events.subscribe('addPage', renderFooter, false);
                 //render footer on first page
                 renderFooter();
-  
+
                 //prevent footer rendering
                 SkipNode['FOOTER'] = 1;
             }
@@ -2691,7 +2692,7 @@ define(['jquery'], function($) {
             }
             var r = new Renderer(pdf, x, y, settings),
                 out;
-  
+
             // 1. load images
             // 2. prepare optional footer elements
             // 3. render content
@@ -2701,7 +2702,7 @@ define(['jquery'], function($) {
                 //send event dispose for final taks (e.g. footer totalpage replacement)
                 r.pdf.internal.events.publish('htmlRenderingFinished');
                 out = r.dispose();
-                if (typeof callback === 'function') callback(out);else if (found_images) console.error('jsPDF Warning: rendering issues? provide a callback to fromHTML!');
+                if (typeof callback === 'function') callback(out); else if (found_images) console.error('jsPDF Warning: rendering issues? provide a callback to fromHTML!');
             });
             return out || { x: r.x, y: r.y };
         };
@@ -2720,7 +2721,7 @@ define(['jquery'], function($) {
                 ready: true
             };
         };
-  
+
         //Checks if we have to execute some watcher functions
         //e.g. to end text floating around an image
         Renderer.prototype.executeWatchFunctions = function (el) {
@@ -2738,7 +2739,7 @@ define(['jquery'], function($) {
             }
             return ret;
         };
-  
+
         Renderer.prototype.splitFragmentsIntoLines = function (fragments, styles) {
             var currentLineLength, defaultFontSize, ff, fontMetrics, fontMetricsCache, fragment, fragmentChopped, fragmentLength, fragmentSpecificMetrics, fs, k, line, lines, maxLineLength, style;
             defaultFontSize = 12;
@@ -2791,7 +2792,7 @@ define(['jquery'], function($) {
                     }
                 }
             }
-  
+
             //if text alignment was set, set margin/indent of each line
             if (style['text-align'] !== undefined && (style['text-align'] === 'center' || style['text-align'] === 'right' || style['text-align'] === 'justify')) {
                 for (var i = 0; i < lines.length; ++i) {
@@ -2801,7 +2802,7 @@ define(['jquery'], function($) {
                         lines[i][0][1] = clone(lines[i][0][1]);
                     }
                     var space = maxLineLength - length;
-  
+
                     if (style['text-align'] === 'right') {
                         lines[i][0][1]['margin-left'] = space;
                         //if alignment is not right, it has to be center so split the space to the left and the right
@@ -2818,15 +2819,15 @@ define(['jquery'], function($) {
                     }
                 }
             }
-  
+
             return lines;
         };
         Renderer.prototype.RenderTextFragment = function (text, style) {
             var defaultFontSize, font, maxLineHeight;
-  
+
             maxLineHeight = 0;
             defaultFontSize = 12;
-  
+
             if (this.pdf.internal.pageSize.height - this.pdf.margins_doc.bottom < this.y + this.pdf.internal.getFontSize()) {
                 this.pdf.internal.write("ET", "Q");
                 this.pdf.addPage();
@@ -2836,34 +2837,34 @@ define(['jquery'], function($) {
                 maxLineHeight = Math.max(maxLineHeight, style["line-height"], style["font-size"]);
                 this.pdf.internal.write(0, (-1 * defaultFontSize * maxLineHeight).toFixed(2), "Td");
             }
-  
+
             font = this.pdf.internal.getFont(style["font-family"], style["font-style"]);
-  
+
             // text color
             var pdfTextColor = this.getPdfColor(style["color"]);
             if (pdfTextColor !== this.lastTextColor) {
                 this.pdf.internal.write(pdfTextColor);
                 this.lastTextColor = pdfTextColor;
             }
-  
+
             //set the word spacing for e.g. justify style
             if (style['word-spacing'] !== undefined && style['word-spacing'] > 0) {
                 this.pdf.internal.write(style['word-spacing'].toFixed(2), "Tw");
             }
-  
+
             this.pdf.internal.write("/" + font.id, (defaultFontSize * style["font-size"]).toFixed(2), "Tf", "(" + this.pdf.internal.pdfEscape(text) + ") Tj");
-  
+
             //set the word spacing back to neutral => 0
             if (style['word-spacing'] !== undefined) {
                 this.pdf.internal.write(0, "Tw");
             }
         };
-  
+
         // Accepts #FFFFFF, rgb(int,int,int), or CSS Color Name
         Renderer.prototype.getPdfColor = function (style) {
             var textColor;
             var r, g, b;
-  
+
             var rx = /rgb\s*\(\s*(\d+),\s*(\d+),\s*(\d+\s*)\)/;
             var m = rx.exec(style);
             if (m != null) {
@@ -2884,14 +2885,14 @@ define(['jquery'], function($) {
                 b = style.substring(5, 7);
                 b = parseInt(b, 16);
             }
-  
+
             if (typeof r === 'string' && /^#[0-9A-Fa-f]{6}$/.test(r)) {
                 var hex = parseInt(r.substr(1), 16);
                 r = hex >> 16 & 255;
                 g = hex >> 8 & 255;
                 b = hex & 255;
             }
-  
+
             var f3 = this.f3;
             if (r === 0 && g === 0 && b === 0 || typeof g === 'undefined') {
                 textColor = f3(r / 255) + ' g';
@@ -2900,7 +2901,7 @@ define(['jquery'], function($) {
             }
             return textColor;
         };
-  
+
         Renderer.prototype.f3 = function (number) {
             return number.toFixed(3); // Ie, %.3f
         }, Renderer.prototype.renderParagraph = function (cb) {
@@ -2927,22 +2928,22 @@ define(['jquery'], function($) {
             paragraphspacing_before = (Math.max((blockstyle["margin-top"] || 0) - this.priorMarginBottom, 0) + (blockstyle["padding-top"] || 0)) * fontToUnitRatio;
             paragraphspacing_after = ((blockstyle["margin-bottom"] || 0) + (blockstyle["padding-bottom"] || 0)) * fontToUnitRatio;
             this.priorMarginBottom = blockstyle["margin-bottom"] || 0;
-  
+
             if (blockstyle['page-break-before'] === 'always') {
                 this.pdf.addPage();
                 this.y = 0;
                 paragraphspacing_before = ((blockstyle["margin-top"] || 0) + (blockstyle["padding-top"] || 0)) * fontToUnitRatio;
             }
-  
+
             out = this.pdf.internal.write;
             i = void 0;
             l = void 0;
             this.y += paragraphspacing_before;
             out("q", "BT 0 g", this.pdf.internal.getCoordinateString(this.x), this.pdf.internal.getVerticalCoordinateString(this.y), "Td");
-  
+
             //stores the current indent of cursor position
             var currentIndent = 0;
-  
+
             while (lines.length) {
                 line = lines.shift();
                 maxLineHeight = 0;
@@ -2976,7 +2977,7 @@ define(['jquery'], function($) {
                     i++;
                 }
                 this.y += maxLineHeight * fontToUnitRatio;
-  
+
                 //if some watcher function was executed successful, so e.g. margin and widths were changed,
                 //reset line drawing and calculate position and lines again
                 //e.g. to stop text floating around an image
@@ -3086,19 +3087,19 @@ define(['jquery'], function($) {
       */
         jsPDFAPI.fromHTML = function (HTML, x, y, settings, callback, margins) {
             "use strict";
-  
+
             this.margins_doc = margins || {
                 top: 0,
                 bottom: 0
             };
             if (!settings) settings = {};
             if (!settings.elementHandlers) settings.elementHandlers = {};
-  
+
             return process(this, HTML, isNaN(x) ? 4 : x, isNaN(y) ? 4 : y, settings, callback);
         };
     })(jsPDF.API);
 
-      
+
     /** ====================================================================
      * jsPDF Cell plugin
      * Copyright (c) 2013 Youssef Beddad, youssef.beddad@gmail.com
@@ -3111,12 +3112,12 @@ define(['jquery'], function($) {
      * 
      * ====================================================================
      */
-  
+
     (function (jsPDFAPI) {
         'use strict';
         /*jslint browser:true */
         /*global document: false, jsPDF */
-  
+
         var fontName,
             fontSize,
             fontStyle,
@@ -3126,17 +3127,17 @@ define(['jquery'], function($) {
             lastCellPos = { x: undefined, y: undefined, w: undefined, h: undefined, ln: undefined },
             pages = 1,
             setLastCellPosition = function setLastCellPosition(x, y, w, h, ln) {
-            lastCellPos = { 'x': x, 'y': y, 'w': w, 'h': h, 'ln': ln };
-        },
+                lastCellPos = { 'x': x, 'y': y, 'w': w, 'h': h, 'ln': ln };
+            },
             getLastCellPosition = function getLastCellPosition() {
-            return lastCellPos;
-        },
+                return lastCellPos;
+            },
             NO_MARGINS = { left: 0, top: 0, bottom: 0 };
-  
+
         jsPDFAPI.setHeaderFunction = function (func) {
             headerFunction = func;
         };
-  
+
         jsPDFAPI.getTextDimensions = function (txt) {
             fontName = this.internal.getFont().fontName;
             fontSize = this.table_font_size || this.internal.getFontSize();
@@ -3145,16 +3146,16 @@ define(['jquery'], function($) {
             var px2pt = 0.264583 * 72 / 25.4,
                 dimensions,
                 text;
-  
+
             text = document.createElement('font');
             text.id = "jsPDFCell";
-  
+
             try {
                 text.style.fontStyle = fontStyle;
             } catch (e) {
                 text.style.fontWeight = fontStyle;
             }
-  
+
             text.style.fontName = fontName;
             text.style.fontSize = fontSize + 'pt';
             try {
@@ -3162,35 +3163,35 @@ define(['jquery'], function($) {
             } catch (e) {
                 text.innerText = txt;
             }
-  
+
             document.body.appendChild(text);
-  
+
             dimensions = { w: (text.offsetWidth + 1) * px2pt, h: (text.offsetHeight + 1) * px2pt };
-  
+
             document.body.removeChild(text);
-  
+
             return dimensions;
         };
-  
+
         jsPDFAPI.cellAddPage = function () {
             var margins = this.margins || NO_MARGINS;
-  
+
             this.addPage();
-  
+
             setLastCellPosition(margins.left, margins.top, undefined, undefined);
             //setLastCellPosition(undefined, undefined, undefined, undefined, undefined);
             pages += 1;
         };
-  
+
         jsPDFAPI.cellInitialize = function () {
             lastCellPos = { x: undefined, y: undefined, w: undefined, h: undefined, ln: undefined };
             pages = 1;
         };
-  
+
         jsPDFAPI.cell = function (x, y, w, h, txt, ln, align) {
             var curCell = getLastCellPosition();
             var pgAdded = false;
-  
+
             // If this is not the first cell, we must change its position
             if (curCell.ln !== undefined) {
                 if (curCell.ln === ln) {
@@ -3212,7 +3213,7 @@ define(['jquery'], function($) {
                     if (pgAdded) y = margin + 10;
                 }
             }
-  
+
             if (txt[0] !== undefined) {
                 if (this.printingHeaderRow) {
                     this.rect(x, y, w, h, 'FD');
@@ -3235,7 +3236,7 @@ define(['jquery'], function($) {
             setLastCellPosition(x, y, w, h, ln);
             return this;
         };
-  
+
         /**
          * Return the maximum value from an array
          * @param array
@@ -3247,10 +3248,10 @@ define(['jquery'], function($) {
                 i,
                 ln,
                 item;
-  
+
             for (i = 0, ln = array.length; i < ln; i += 1) {
                 item = array[i];
-  
+
                 if (comparisonFn) {
                     if (comparisonFn(max, item) === -1) {
                         max = item;
@@ -3261,10 +3262,10 @@ define(['jquery'], function($) {
                     }
                 }
             }
-  
+
             return max;
         };
-  
+
         /**
          * Create a table from a set of data.
          * @param {Integer} [x] : left-position for top-left corner of table
@@ -3276,12 +3277,12 @@ define(['jquery'], function($) {
          * @param {Object} [config.margins] margin values for left, top, bottom, and width
          * @param {Object} [config.fontSize] Integer fontSize to use (optional)
          */
-  
+
         jsPDFAPI.table = function (x, y, data, headers, config) {
             if (!data) {
                 throw 'No data for PDF table';
             }
-  
+
             var headerNames = [],
                 headerPrompts = [],
                 header,
@@ -3298,16 +3299,16 @@ define(['jquery'], function($) {
                 model,
                 jln,
                 func,
-  
-  
-            //set up defaults. If a value is provided in config, defaults will be overwritten:
-            autoSize = false,
+
+
+                //set up defaults. If a value is provided in config, defaults will be overwritten:
+                autoSize = false,
                 printHeaders = true,
                 fontSize = 12,
                 margins = NO_MARGINS;
-  
+
             margins.width = this.internal.pageSize.width;
-  
+
             if (config) {
                 //override config defaults if the user has specified non-default behavior:
                 if (config.autoSize === true) {
@@ -3326,26 +3327,26 @@ define(['jquery'], function($) {
                     margins = config.margins;
                 }
             }
-  
+
             /**
              * @property {Number} lnMod
              * Keep track of the current line number modifier used when creating cells
              */
             this.lnMod = 0;
             lastCellPos = { x: undefined, y: undefined, w: undefined, h: undefined, ln: undefined }, pages = 1;
-  
+
             this.printHeaders = printHeaders;
             this.margins = margins;
             this.setFontSize(fontSize);
             this.table_font_size = fontSize;
-  
+
             // Set header values
             if (headers === undefined || headers === null) {
                 // No headers defined so we derive from data
                 headerNames = Object.keys(data[0]);
             } else if (headers[0] && typeof headers[0] !== 'string') {
                 var px2pt = 0.264583 * 72 / 25.4;
-  
+
                 // Split header configs into names and prompts
                 for (i = 0, ln = headers.length; i < ln; i += 1) {
                     header = headers[i];
@@ -3356,60 +3357,60 @@ define(['jquery'], function($) {
             } else {
                 headerNames = headers;
             }
-  
+
             if (autoSize) {
                 // Create a matrix of columns e.g., {column_title: [row1_Record, row2_Record]}
                 func = function func(rec) {
                     return rec[header];
                 };
-  
+
                 for (i = 0, ln = headerNames.length; i < ln; i += 1) {
                     header = headerNames[i];
-  
+
                     columnMatrix[header] = data.map(func);
-  
+
                     // get header width
                     columnMinWidths.push(this.getTextDimensions(headerPrompts[i] || header).w);
                     column = columnMatrix[header];
-  
+
                     // get cell widths
                     for (j = 0, cln = column.length; j < cln; j += 1) {
                         columnData = column[j];
                         columnMinWidths.push(this.getTextDimensions(columnData).w);
                     }
-  
+
                     // get final column width
                     columnWidths[header] = jsPDFAPI.arrayMax(columnMinWidths);
-  
+
                     //have to reset
                     columnMinWidths = [];
                 }
             }
-  
+
             // -- Construct the table
-  
+
             if (printHeaders) {
                 var lineHeight = this.calculateLineHeight(headerNames, columnWidths, headerPrompts.length ? headerPrompts : headerNames);
-  
+
                 // Construct the header row
                 for (i = 0, ln = headerNames.length; i < ln; i += 1) {
                     header = headerNames[i];
                     tableHeaderConfigs.push([x, y, columnWidths[header], lineHeight, String(headerPrompts.length ? headerPrompts[i] : header)]);
                 }
-  
+
                 // Store the table header config
                 this.setTableHeaderRow(tableHeaderConfigs);
-  
+
                 // Print the header for the start of the table
                 this.printHeaderRow(1, false);
             }
-  
+
             // Construct the data rows
             for (i = 0, ln = data.length; i < ln; i += 1) {
                 var lineHeight;
                 model = data[i];
                 lineHeight = this.calculateLineHeight(headerNames, columnWidths, model);
-  
+
                 for (j = 0, jln = headerNames.length; j < jln; j += 1) {
                     header = headerNames[j];
                     this.cell(x, y, columnWidths[header], lineHeight, model[header], i + 2, header.align);
@@ -3437,7 +3438,7 @@ define(['jquery'], function($) {
             }
             return lineHeight;
         };
-  
+
         /**
          * Store the config for outputting a table header
          * @param {Object[]} config
@@ -3447,7 +3448,7 @@ define(['jquery'], function($) {
         jsPDFAPI.setTableHeaderRow = function (config) {
             this.tableHeaderRow = config;
         };
-  
+
         /**
          * Output the store header row
          * @param lineNumber The line number to output the header at
@@ -3456,9 +3457,9 @@ define(['jquery'], function($) {
             if (!this.tableHeaderRow) {
                 throw 'Property tableHeaderRow does not exist.';
             }
-  
+
             var tableHeaderCell, tmpArray, i, ln;
-  
+
             this.printingHeaderRow = true;
             if (headerFunction !== undefined) {
                 var position = headerFunction(this, pages);
@@ -3468,7 +3469,7 @@ define(['jquery'], function($) {
             var tempHeaderConf = [];
             for (i = 0, ln = this.tableHeaderRow.length; i < ln; i += 1) {
                 this.setFillColor(200, 200, 200);
-  
+
                 tableHeaderCell = this.tableHeaderRow[i];
                 if (new_page) {
                     this.margins.top = -50;
@@ -3486,19 +3487,19 @@ define(['jquery'], function($) {
         };
     })(jsPDF.API);
 
-        /** ==================================================================== 
-     * jsPDF JavaScript plugin
-     * Copyright (c) 2013 Youssef Beddad, youssef.beddad@gmail.com
-     * 
-     * 
-     * ====================================================================
-     */
-  
+    /** ==================================================================== 
+ * jsPDF JavaScript plugin
+ * Copyright (c) 2013 Youssef Beddad, youssef.beddad@gmail.com
+ * 
+ * 
+ * ====================================================================
+ */
+
     /*global jsPDF */
-  
+
     (function (jsPDFAPI) {
         'use strict';
-  
+
         var jsNamesObj, jsJsObj, text;
         jsPDFAPI.addJS = function (txt) {
             text = txt;
@@ -3516,7 +3517,7 @@ define(['jquery'], function($) {
             return this;
         };
     })(jsPDF.API);
-  
+
     /**
      * jsPDF Outline PlugIn
      * Copyright (c) 2014 Steven Spungin (TwelveTone LLC)  steven@twelvetone.tv
@@ -3524,18 +3525,18 @@ define(['jquery'], function($) {
      * Licensed under the MIT License.
      * http://opensource.org/licenses/mit-license
      */
-  
+
     /**
      * Generates a PDF Outline
      */
     ;
     (function (jsPDFAPI) {
         'use strict';
-  
+
         jsPDFAPI.events.push(['postPutResources', function () {
             var pdf = this;
             var rx = /^(\d+) 0 obj$/;
-  
+
             // Write action goto objects for each page
             // this.outline.destsGoto = [];
             // for (var i = 0; i < totalPages; i++) {
@@ -3562,7 +3563,7 @@ define(['jquery'], function($) {
                     pdf.internal.write(line);
                 }
             }
-  
+
             // This code will write named destination for each page reference
             // (page_1, etc)
             if (this.outline.createNamedDestinations) {
@@ -3577,7 +3578,7 @@ define(['jquery'], function($) {
                     var info = pdf.internal.getPageInfo(i + 1);
                     pdf.internal.write("<< /D[" + info.objId + " 0 R /XYZ null null null]>> endobj");
                 }
-  
+
                 // assign a name for each destination
                 var names2Oid = pdf.internal.newObject();
                 pdf.internal.write('<< /Names [ ');
@@ -3585,17 +3586,17 @@ define(['jquery'], function($) {
                     pdf.internal.write("(page_" + (i + 1) + ")" + dests[i] + " 0 R");
                 }
                 pdf.internal.write(' ] >>', 'endobj');
-  
+
                 // var kids = pdf.internal.newObject();
                 // pdf.internal.write('<< /Kids [ ' + names2Oid + ' 0 R');
                 // pdf.internal.write(' ] >>', 'endobj');
-  
+
                 var namesOid = pdf.internal.newObject();
                 pdf.internal.write('<< /Dests ' + names2Oid + " 0 R");
                 pdf.internal.write('>>', 'endobj');
             }
         }]);
-  
+
         jsPDFAPI.events.push(['putCatalog', function () {
             var pdf = this;
             if (pdf.outline.root.children.length > 0) {
@@ -3607,20 +3608,20 @@ define(['jquery'], function($) {
                 // pdf.internal.write("/PageMode /UseOutlines");
             }
         }]);
-  
+
         jsPDFAPI.events.push(['initialized', function () {
             var pdf = this;
-  
+
             pdf.outline = {
                 createNamedDestinations: false,
                 root: {
                     children: []
                 }
             };
-  
+
             var namesOid;
             var destsGoto = [];
-  
+
             /**
        * Options: pageNumber
        */
@@ -3636,26 +3637,26 @@ define(['jquery'], function($) {
                 parent.children.push(item);
                 return item;
             };
-  
+
             pdf.outline.render = function () {
                 this.ctx = {};
                 this.ctx.val = '';
                 this.ctx.pdf = pdf;
-  
+
                 this.genIds_r(this.root);
                 this.renderRoot(this.root);
                 this.renderItems(this.root);
-  
+
                 return this.ctx.val;
             };
-  
+
             pdf.outline.genIds_r = function (node) {
                 node.id = pdf.internal.newObjectDeferred();
                 for (var i = 0; i < node.children.length; i++) {
                     this.genIds_r(node.children[i]);
                 }
             };
-  
+
             pdf.outline.renderRoot = function (node) {
                 this.objStart(node);
                 this.line('/Type /Outlines');
@@ -3668,14 +3669,14 @@ define(['jquery'], function($) {
                 }, node));
                 this.objEnd();
             };
-  
+
             pdf.outline.renderItems = function (node) {
                 for (var i = 0; i < node.children.length; i++) {
                     var item = node.children[i];
                     this.objStart(item);
-  
+
                     this.line('/Title ' + this.makeString(item.title));
-  
+
                     this.line('/Parent ' + this.makeRef(node));
                     if (i > 0) {
                         this.line('/Prev ' + this.makeRef(node.children[i - 1]));
@@ -3687,14 +3688,14 @@ define(['jquery'], function($) {
                         this.line('/First ' + this.makeRef(item.children[0]));
                         this.line('/Last ' + this.makeRef(item.children[item.children.length - 1]));
                     }
-  
+
                     var count = this.count = this.count_r({
                         count: 0
                     }, item);
                     if (count > 0) {
                         this.line('/Count ' + count);
                     }
-  
+
                     if (item.options) {
                         if (item.options.pageNumber) {
                             // Explicit Destination
@@ -3703,10 +3704,10 @@ define(['jquery'], function($) {
                             this.line('/Dest ' + '[' + info.objId + ' 0 R /XYZ 0 ' + this.ctx.pdf.internal.pageSize.height + ' 0]');
                             // this line does not work on all clients (pageNumber instead of page ref)
                             //this.line('/Dest ' + '[' + (item.options.pageNumber - 1) + ' /XYZ 0 ' + this.ctx.pdf.internal.pageSize.height + ' 0]');
-  
+
                             // Named Destination
                             // this.line('/Dest (page_' + (item.options.pageNumber) + ')');
-  
+
                             // Action Destination
                             // var id = pdf.internal.newObject();
                             // pdf.internal.write('<</D[' + (item.options.pageNumber - 1) + ' /XYZ null null null]/S/GoTo>> endobj');
@@ -3720,27 +3721,27 @@ define(['jquery'], function($) {
                     this.renderItems(item);
                 }
             };
-  
+
             pdf.outline.line = function (text) {
                 this.ctx.val += text + '\r\n';
             };
-  
+
             pdf.outline.makeRef = function (node) {
                 return node.id + ' 0 R';
             };
-  
+
             pdf.outline.makeString = function (val) {
                 return '(' + pdf.internal.pdfEscape(val) + ')';
             };
-  
+
             pdf.outline.objStart = function (node) {
                 this.ctx.val += '\r\n' + node.id + ' 0 obj' + '\r\n<<\r\n';
             };
-  
+
             pdf.outline.objEnd = function (node) {
                 this.ctx.val += '>> \r\n' + 'endobj' + '\r\n';
             };
-  
+
             pdf.outline.count_r = function (ctx, node) {
                 for (var i = 0; i < node.children.length; i++) {
                     ctx.count++;
@@ -3749,10 +3750,10 @@ define(['jquery'], function($) {
                 return ctx.count;
             };
         }]);
-  
+
         return this;
     })(jsPDF.API);
-  
+
     /**@preserve
      *  ====================================================================
      * jsPDF PNG PlugIn
@@ -3761,10 +3762,10 @@ define(['jquery'], function($) {
      * 
      * ====================================================================
      */
-  
+
     (function (jsPDFAPI) {
         'use strict';
-  
+
         /*
       * @see http://www.w3.org/TR/PNG-Chunks.html
       *
@@ -3779,7 +3780,7 @@ define(['jquery'], function($) {
             6       8,16        Each pixel is an R,G,B triple,
                             followed by an alpha sample.
      */
-  
+
         /*
       * PNG filter method types
       *
@@ -3797,300 +3798,300 @@ define(['jquery'], function($) {
         3       Average
         4       Paeth
       */
-  
+
         var doesNotHavePngJS = function doesNotHavePngJS() {
             return typeof PNG !== 'function' || typeof FlateStream !== 'function';
         },
             canCompress = function canCompress(value) {
-            return value !== jsPDFAPI.image_compression.NONE && hasCompressionJS();
-        },
+                return value !== jsPDFAPI.image_compression.NONE && hasCompressionJS();
+            },
             hasCompressionJS = function hasCompressionJS() {
-            var inst = typeof Deflater === 'function';
-            if (!inst) throw new Error("requires deflate.js for compression");
-            return inst;
-        },
+                var inst = typeof Deflater === 'function';
+                if (!inst) throw new Error("requires deflate.js for compression");
+                return inst;
+            },
             compressBytes = function compressBytes(bytes, lineLength, colorsPerPixel, compression) {
-  
-            var level = 5,
-                filter_method = filterUp;
-  
-            switch (compression) {
-  
-                case jsPDFAPI.image_compression.FAST:
-  
-                    level = 3;
-                    filter_method = filterSub;
-                    break;
-  
-                case jsPDFAPI.image_compression.MEDIUM:
-  
-                    level = 6;
-                    filter_method = filterAverage;
-                    break;
-  
-                case jsPDFAPI.image_compression.SLOW:
-  
-                    level = 9;
-                    filter_method = filterPaeth; //uses to sum to choose best filter for each line
-                    break;
-            }
-  
-            bytes = applyPngFilterMethod(bytes, lineLength, colorsPerPixel, filter_method);
-  
-            var header = new Uint8Array(createZlibHeader(level));
-            var checksum = adler32(bytes);
-  
-            var deflate = new Deflater(level);
-            var a = deflate.append(bytes);
-            var cBytes = deflate.flush();
-  
-            var len = header.length + a.length + cBytes.length;
-  
-            var cmpd = new Uint8Array(len + 4);
-            cmpd.set(header);
-            cmpd.set(a, header.length);
-            cmpd.set(cBytes, header.length + a.length);
-  
-            cmpd[len++] = checksum >>> 24 & 0xff;
-            cmpd[len++] = checksum >>> 16 & 0xff;
-            cmpd[len++] = checksum >>> 8 & 0xff;
-            cmpd[len++] = checksum & 0xff;
-  
-            return jsPDFAPI.arrayBufferToBinaryString(cmpd);
-        },
+
+                var level = 5,
+                    filter_method = filterUp;
+
+                switch (compression) {
+
+                    case jsPDFAPI.image_compression.FAST:
+
+                        level = 3;
+                        filter_method = filterSub;
+                        break;
+
+                    case jsPDFAPI.image_compression.MEDIUM:
+
+                        level = 6;
+                        filter_method = filterAverage;
+                        break;
+
+                    case jsPDFAPI.image_compression.SLOW:
+
+                        level = 9;
+                        filter_method = filterPaeth; //uses to sum to choose best filter for each line
+                        break;
+                }
+
+                bytes = applyPngFilterMethod(bytes, lineLength, colorsPerPixel, filter_method);
+
+                var header = new Uint8Array(createZlibHeader(level));
+                var checksum = adler32(bytes);
+
+                var deflate = new Deflater(level);
+                var a = deflate.append(bytes);
+                var cBytes = deflate.flush();
+
+                var len = header.length + a.length + cBytes.length;
+
+                var cmpd = new Uint8Array(len + 4);
+                cmpd.set(header);
+                cmpd.set(a, header.length);
+                cmpd.set(cBytes, header.length + a.length);
+
+                cmpd[len++] = checksum >>> 24 & 0xff;
+                cmpd[len++] = checksum >>> 16 & 0xff;
+                cmpd[len++] = checksum >>> 8 & 0xff;
+                cmpd[len++] = checksum & 0xff;
+
+                return jsPDFAPI.arrayBufferToBinaryString(cmpd);
+            },
             createZlibHeader = function createZlibHeader(bytes, level) {
-            /*
-       * @see http://www.ietf.org/rfc/rfc1950.txt for zlib header
-       */
-            var cm = 8;
-            var cinfo = Math.LOG2E * Math.log(0x8000) - 8;
-            var cmf = cinfo << 4 | cm;
-  
-            var hdr = cmf << 8;
-            var flevel = Math.min(3, (level - 1 & 0xff) >> 1);
-  
-            hdr |= flevel << 6;
-            hdr |= 0; //FDICT
-            hdr += 31 - hdr % 31;
-  
-            return [cmf, hdr & 0xff & 0xff];
-        },
+                /*
+           * @see http://www.ietf.org/rfc/rfc1950.txt for zlib header
+           */
+                var cm = 8;
+                var cinfo = Math.LOG2E * Math.log(0x8000) - 8;
+                var cmf = cinfo << 4 | cm;
+
+                var hdr = cmf << 8;
+                var flevel = Math.min(3, (level - 1 & 0xff) >> 1);
+
+                hdr |= flevel << 6;
+                hdr |= 0; //FDICT
+                hdr += 31 - hdr % 31;
+
+                return [cmf, hdr & 0xff & 0xff];
+            },
             adler32 = function adler32(array, param) {
-            var adler = 1;
-            var s1 = adler & 0xffff,
-                s2 = adler >>> 16 & 0xffff;
-            var len = array.length;
-            var tlen;
-            var i = 0;
-  
-            while (len > 0) {
-                tlen = len > param ? param : len;
-                len -= tlen;
-                do {
-                    s1 += array[i++];
-                    s2 += s1;
-                } while (--tlen);
-  
-                s1 %= 65521;
-                s2 %= 65521;
-            }
-  
-            return (s2 << 16 | s1) >>> 0;
-        },
+                var adler = 1;
+                var s1 = adler & 0xffff,
+                    s2 = adler >>> 16 & 0xffff;
+                var len = array.length;
+                var tlen;
+                var i = 0;
+
+                while (len > 0) {
+                    tlen = len > param ? param : len;
+                    len -= tlen;
+                    do {
+                        s1 += array[i++];
+                        s2 += s1;
+                    } while (--tlen);
+
+                    s1 %= 65521;
+                    s2 %= 65521;
+                }
+
+                return (s2 << 16 | s1) >>> 0;
+            },
             applyPngFilterMethod = function applyPngFilterMethod(bytes, lineLength, colorsPerPixel, filter_method) {
-            var lines = bytes.length / lineLength,
-                result = new Uint8Array(bytes.length + lines),
-                filter_methods = getFilterMethods(),
-                i = 0,
-                line,
-                prevLine,
-                offset;
-  
-            for (; i < lines; i++) {
-                offset = i * lineLength;
-                line = bytes.subarray(offset, offset + lineLength);
-  
-                if (filter_method) {
-                    result.set(filter_method(line, colorsPerPixel, prevLine), offset + i);
-                } else {
-  
-                    var j = 0,
-                        len = filter_methods.length,
-                        results = [];
-  
-                    for (; j < len; j++) {
-                        results[j] = filter_methods[j](line, colorsPerPixel, prevLine);
-                    }var ind = getIndexOfSmallestSum(results.concat());
-  
-                    result.set(results[ind], offset + i);
+                var lines = bytes.length / lineLength,
+                    result = new Uint8Array(bytes.length + lines),
+                    filter_methods = getFilterMethods(),
+                    i = 0,
+                    line,
+                    prevLine,
+                    offset;
+
+                for (; i < lines; i++) {
+                    offset = i * lineLength;
+                    line = bytes.subarray(offset, offset + lineLength);
+
+                    if (filter_method) {
+                        result.set(filter_method(line, colorsPerPixel, prevLine), offset + i);
+                    } else {
+
+                        var j = 0,
+                            len = filter_methods.length,
+                            results = [];
+
+                        for (; j < len; j++) {
+                            results[j] = filter_methods[j](line, colorsPerPixel, prevLine);
+                        } var ind = getIndexOfSmallestSum(results.concat());
+
+                        result.set(results[ind], offset + i);
+                    }
+
+                    prevLine = line;
                 }
-  
-                prevLine = line;
-            }
-  
-            return result;
-        },
+
+                return result;
+            },
             filterNone = function filterNone(line, colorsPerPixel, prevLine) {
-            /*var result = new Uint8Array(line.length + 1);
-      result[0] = 0;
-      result.set(line, 1);*/
-  
-            var result = Array.apply([], line);
-            result.unshift(0);
-  
-            return result;
-        },
+                /*var result = new Uint8Array(line.length + 1);
+          result[0] = 0;
+          result.set(line, 1);*/
+
+                var result = Array.apply([], line);
+                result.unshift(0);
+
+                return result;
+            },
             filterSub = function filterSub(line, colorsPerPixel, prevLine) {
-            var result = [],
-                i = 0,
-                len = line.length,
-                left;
-  
-            result[0] = 1;
-  
-            for (; i < len; i++) {
-                left = line[i - colorsPerPixel] || 0;
-                result[i + 1] = line[i] - left + 0x0100 & 0xff;
-            }
-  
-            return result;
-        },
-            filterUp = function filterUp(line, colorsPerPixel, prevLine) {
-            var result = [],
-                i = 0,
-                len = line.length,
-                up;
-  
-            result[0] = 2;
-  
-            for (; i < len; i++) {
-                up = prevLine && prevLine[i] || 0;
-                result[i + 1] = line[i] - up + 0x0100 & 0xff;
-            }
-  
-            return result;
-        },
-            filterAverage = function filterAverage(line, colorsPerPixel, prevLine) {
-            var result = [],
-                i = 0,
-                len = line.length,
-                left,
-                up;
-  
-            result[0] = 3;
-  
-            for (; i < len; i++) {
-                left = line[i - colorsPerPixel] || 0;
-                up = prevLine && prevLine[i] || 0;
-                result[i + 1] = line[i] + 0x0100 - (left + up >>> 1) & 0xff;
-            }
-  
-            return result;
-        },
-            filterPaeth = function filterPaeth(line, colorsPerPixel, prevLine) {
-            var result = [],
-                i = 0,
-                len = line.length,
-                left,
-                up,
-                upLeft,
-                paeth;
-  
-            result[0] = 4;
-  
-            for (; i < len; i++) {
-                left = line[i - colorsPerPixel] || 0;
-                up = prevLine && prevLine[i] || 0;
-                upLeft = prevLine && prevLine[i - colorsPerPixel] || 0;
-                paeth = paethPredictor(left, up, upLeft);
-                result[i + 1] = line[i] - paeth + 0x0100 & 0xff;
-            }
-  
-            return result;
-        },
-            paethPredictor = function paethPredictor(left, up, upLeft) {
-  
-            var p = left + up - upLeft,
-                pLeft = Math.abs(p - left),
-                pUp = Math.abs(p - up),
-                pUpLeft = Math.abs(p - upLeft);
-  
-            return pLeft <= pUp && pLeft <= pUpLeft ? left : pUp <= pUpLeft ? up : upLeft;
-        },
-            getFilterMethods = function getFilterMethods() {
-            return [filterNone, filterSub, filterUp, filterAverage, filterPaeth];
-        },
-            getIndexOfSmallestSum = function getIndexOfSmallestSum(arrays) {
-            var i = 0,
-                len = arrays.length,
-                sum,
-                min,
-                ind;
-  
-            while (i < len) {
-                sum = absSum(arrays[i].slice(1));
-  
-                if (sum < min || !min) {
-                    min = sum;
-                    ind = i;
+                var result = [],
+                    i = 0,
+                    len = line.length,
+                    left;
+
+                result[0] = 1;
+
+                for (; i < len; i++) {
+                    left = line[i - colorsPerPixel] || 0;
+                    result[i + 1] = line[i] - left + 0x0100 & 0xff;
                 }
-  
-                i++;
-            }
-  
-            return ind;
-        },
+
+                return result;
+            },
+            filterUp = function filterUp(line, colorsPerPixel, prevLine) {
+                var result = [],
+                    i = 0,
+                    len = line.length,
+                    up;
+
+                result[0] = 2;
+
+                for (; i < len; i++) {
+                    up = prevLine && prevLine[i] || 0;
+                    result[i + 1] = line[i] - up + 0x0100 & 0xff;
+                }
+
+                return result;
+            },
+            filterAverage = function filterAverage(line, colorsPerPixel, prevLine) {
+                var result = [],
+                    i = 0,
+                    len = line.length,
+                    left,
+                    up;
+
+                result[0] = 3;
+
+                for (; i < len; i++) {
+                    left = line[i - colorsPerPixel] || 0;
+                    up = prevLine && prevLine[i] || 0;
+                    result[i + 1] = line[i] + 0x0100 - (left + up >>> 1) & 0xff;
+                }
+
+                return result;
+            },
+            filterPaeth = function filterPaeth(line, colorsPerPixel, prevLine) {
+                var result = [],
+                    i = 0,
+                    len = line.length,
+                    left,
+                    up,
+                    upLeft,
+                    paeth;
+
+                result[0] = 4;
+
+                for (; i < len; i++) {
+                    left = line[i - colorsPerPixel] || 0;
+                    up = prevLine && prevLine[i] || 0;
+                    upLeft = prevLine && prevLine[i - colorsPerPixel] || 0;
+                    paeth = paethPredictor(left, up, upLeft);
+                    result[i + 1] = line[i] - paeth + 0x0100 & 0xff;
+                }
+
+                return result;
+            },
+            paethPredictor = function paethPredictor(left, up, upLeft) {
+
+                var p = left + up - upLeft,
+                    pLeft = Math.abs(p - left),
+                    pUp = Math.abs(p - up),
+                    pUpLeft = Math.abs(p - upLeft);
+
+                return pLeft <= pUp && pLeft <= pUpLeft ? left : pUp <= pUpLeft ? up : upLeft;
+            },
+            getFilterMethods = function getFilterMethods() {
+                return [filterNone, filterSub, filterUp, filterAverage, filterPaeth];
+            },
+            getIndexOfSmallestSum = function getIndexOfSmallestSum(arrays) {
+                var i = 0,
+                    len = arrays.length,
+                    sum,
+                    min,
+                    ind;
+
+                while (i < len) {
+                    sum = absSum(arrays[i].slice(1));
+
+                    if (sum < min || !min) {
+                        min = sum;
+                        ind = i;
+                    }
+
+                    i++;
+                }
+
+                return ind;
+            },
             absSum = function absSum(array) {
-            var i = 0,
-                len = array.length,
-                sum = 0;
-  
-            while (i < len) {
-                sum += Math.abs(array[i++]);
-            }return sum;
-        },
+                var i = 0,
+                    len = array.length,
+                    sum = 0;
+
+                while (i < len) {
+                    sum += Math.abs(array[i++]);
+                } return sum;
+            },
             getPredictorFromCompression = function getPredictorFromCompression(compression) {
-            var predictor;
-            switch (compression) {
-                case jsPDFAPI.image_compression.FAST:
-                    predictor = 11;
-                    break;
-  
-                case jsPDFAPI.image_compression.MEDIUM:
-                    predictor = 13;
-                    break;
-  
-                case jsPDFAPI.image_compression.SLOW:
-                    predictor = 14;
-                    break;
-            }
-            return predictor;
-        },
+                var predictor;
+                switch (compression) {
+                    case jsPDFAPI.image_compression.FAST:
+                        predictor = 11;
+                        break;
+
+                    case jsPDFAPI.image_compression.MEDIUM:
+                        predictor = 13;
+                        break;
+
+                    case jsPDFAPI.image_compression.SLOW:
+                        predictor = 14;
+                        break;
+                }
+                return predictor;
+            },
             logImg = function logImg(img) {
-            console.log("width: " + img.width);
-            console.log("height: " + img.height);
-            console.log("bits: " + img.bits);
-            console.log("colorType: " + img.colorType);
-            console.log("transparency:");
-            console.log(img.transparency);
-            console.log("text:");
-            console.log(img.text);
-            console.log("compressionMethod: " + img.compressionMethod);
-            console.log("filterMethod: " + img.filterMethod);
-            console.log("interlaceMethod: " + img.interlaceMethod);
-            console.log("imgData:");
-            console.log(img.imgData);
-            console.log("palette:");
-            console.log(img.palette);
-            console.log("colors: " + img.colors);
-            console.log("colorSpace: " + img.colorSpace);
-            console.log("pixelBitlength: " + img.pixelBitlength);
-            console.log("hasAlphaChannel: " + img.hasAlphaChannel);
-        };
-  
+                console.log("width: " + img.width);
+                console.log("height: " + img.height);
+                console.log("bits: " + img.bits);
+                console.log("colorType: " + img.colorType);
+                console.log("transparency:");
+                console.log(img.transparency);
+                console.log("text:");
+                console.log(img.text);
+                console.log("compressionMethod: " + img.compressionMethod);
+                console.log("filterMethod: " + img.filterMethod);
+                console.log("interlaceMethod: " + img.interlaceMethod);
+                console.log("imgData:");
+                console.log(img.imgData);
+                console.log("palette:");
+                console.log(img.palette);
+                console.log("colors: " + img.colors);
+                console.log("colorSpace: " + img.colorSpace);
+                console.log("pixelBitlength: " + img.pixelBitlength);
+                console.log("hasAlphaChannel: " + img.hasAlphaChannel);
+            };
+
         jsPDFAPI.processPNG = function (imageData, imageIndex, alias, compression, dataAsBinaryString) {
             'use strict';
-  
+
             var colorSpace = this.color_spaces.DEVICE_RGB,
                 decode = this.decode.FLATE_DECODE,
                 bpc = 8,
@@ -4100,24 +4101,24 @@ define(['jquery'], function($) {
                 colors,
                 pal,
                 smask;
-  
+
             /*	if(this.isString(imageData)) {
               }*/
-  
+
             if (this.isArrayBuffer(imageData)) imageData = new Uint8Array(imageData);
-  
+
             if (this.isArrayBufferView(imageData)) {
-  
+
                 if (doesNotHavePngJS()) throw new Error("PNG support requires png.js and zlib.js");
-  
+
                 img = new PNG(imageData);
                 imageData = img.imgData;
                 bpc = img.bits;
                 colorSpace = img.colorSpace;
                 colors = img.colors;
-  
+
                 //logImg(img);
-  
+
                 /*
         * colorType 6 - Each pixel is an R,G,B triple, followed by an alpha sample.
         *
@@ -4126,12 +4127,12 @@ define(['jquery'], function($) {
         * Extract alpha to create two separate images, using the alpha as a sMask
         */
                 if ([4, 6].indexOf(img.colorType) !== -1) {
-  
+
                     /*
          * processes 8 bit RGBA and grayscale + alpha images
          */
                     if (img.bits === 8) {
-  
+
                         var pixels = img.pixelBitlength == 32 ? new Uint32Array(img.decodePixels().buffer) : img.pixelBitlength == 16 ? new Uint16Array(img.decodePixels().buffer) : new Uint8Array(img.decodePixels().buffer),
                             len = pixels.length,
                             imgData = new Uint8Array(len * img.colors),
@@ -4141,26 +4142,26 @@ define(['jquery'], function($) {
                             n = 0,
                             pixel,
                             pbl;
-  
+
                         for (; i < len; i++) {
                             pixel = pixels[i];
                             pbl = 0;
-  
+
                             while (pbl < pDiff) {
-  
+
                                 imgData[n++] = pixel >>> pbl & 0xff;
                                 pbl = pbl + img.bits;
                             }
-  
+
                             alphaData[i] = pixel >>> pbl & 0xff;
                         }
                     }
-  
+
                     /*
          * processes 16 bit RGBA and grayscale + alpha images
          */
                     if (img.bits === 16) {
-  
+
                         var pixels = new Uint32Array(img.decodePixels().buffer),
                             len = pixels.length,
                             imgData = new Uint8Array(len * (32 / img.pixelBitlength) * img.colors),
@@ -4170,126 +4171,126 @@ define(['jquery'], function($) {
                             n = 0,
                             a = 0,
                             pixel;
-  
+
                         while (i < len) {
                             pixel = pixels[i++];
-  
+
                             imgData[n++] = pixel >>> 0 & 0xFF;
-  
+
                             if (hasColors) {
                                 imgData[n++] = pixel >>> 16 & 0xFF;
-  
+
                                 pixel = pixels[i++];
                                 imgData[n++] = pixel >>> 0 & 0xFF;
                             }
-  
+
                             alphaData[a++] = pixel >>> 16 & 0xFF;
                         }
-  
+
                         bpc = 8;
                     }
-  
+
                     if (canCompress(compression)) {
-  
+
                         imageData = compressBytes(imgData, img.width * img.colors, img.colors, compression);
                         smask = compressBytes(alphaData, img.width, 1, compression);
                     } else {
-  
+
                         imageData = imgData;
                         smask = alphaData;
                         decode = null;
                     }
                 }
-  
+
                 /*
         * Indexed png. Each pixel is a palette index.
         */
                 if (img.colorType === 3) {
-  
+
                     colorSpace = this.color_spaces.INDEXED;
                     pal = img.palette;
-  
+
                     if (img.transparency.indexed) {
-  
+
                         var trans = img.transparency.indexed;
-  
+
                         var total = 0,
                             i = 0,
                             len = trans.length;
-  
+
                         for (; i < len; ++i) {
                             total += trans[i];
-                        }total = total / 255;
-  
+                        } total = total / 255;
+
                         /*
           * a single color is specified as 100% transparent (0),
           * so we set trns to use a /Mask with that index
           */
                         if (total === len - 1 && trans.indexOf(0) !== -1) {
                             trns = [trans.indexOf(0)];
-  
+
                             /*
            * there's more than one colour within the palette that specifies
            * a transparency value less than 255, so we unroll the pixels to create an image sMask
            */
                         } else if (total !== len) {
-  
+
                             var pixels = img.decodePixels(),
                                 alphaData = new Uint8Array(pixels.length),
                                 i = 0,
                                 len = pixels.length;
-  
+
                             for (; i < len; i++) {
                                 alphaData[i] = trans[pixels[i]];
-                            }smask = compressBytes(alphaData, img.width, 1);
+                            } smask = compressBytes(alphaData, img.width, 1);
                         }
                     }
                 }
-  
+
                 var predictor = getPredictorFromCompression(compression);
-  
-                if (decode === this.decode.FLATE_DECODE) dp = '/Predictor ' + predictor + ' /Colors ' + colors + ' /BitsPerComponent ' + bpc + ' /Columns ' + img.width;else
+
+                if (decode === this.decode.FLATE_DECODE) dp = '/Predictor ' + predictor + ' /Colors ' + colors + ' /BitsPerComponent ' + bpc + ' /Columns ' + img.width; else
                     //remove 'Predictor' as it applies to the type of png filter applied to its IDAT - we only apply with compression
                     dp = '/Colors ' + colors + ' /BitsPerComponent ' + bpc + ' /Columns ' + img.width;
-  
+
                 if (this.isArrayBuffer(imageData) || this.isArrayBufferView(imageData)) imageData = this.arrayBufferToBinaryString(imageData);
-  
+
                 if (smask && this.isArrayBuffer(smask) || this.isArrayBufferView(smask)) smask = this.arrayBufferToBinaryString(smask);
-  
+
                 return this.createImageInfo(imageData, img.width, img.height, colorSpace, bpc, decode, imageIndex, alias, dp, trns, pal, smask, predictor);
             }
-  
+
             throw new Error("Unsupported PNG image data, try using JPEG instead.");
         };
     })(jsPDF.API);
-  
+
     /**
      * jsPDF Autoprint Plugin
      *
      * Licensed under the MIT License.
      * http://opensource.org/licenses/mit-license
      */
-  
+
     (function (jsPDFAPI) {
-      'use strict';
-  
-      jsPDFAPI.autoPrint = function () {
         'use strict';
-  
-        var refAutoPrintTag;
-  
-        this.internal.events.subscribe('postPutResources', function () {
-          refAutoPrintTag = this.internal.newObject();
-          this.internal.write("<< /S/Named /Type/Action /N/Print >>", "endobj");
-        });
-  
-        this.internal.events.subscribe("putCatalog", function () {
-          this.internal.write("/OpenAction " + refAutoPrintTag + " 0" + " R");
-        });
-        return this;
-      };
+
+        jsPDFAPI.autoPrint = function () {
+            'use strict';
+
+            var refAutoPrintTag;
+
+            this.internal.events.subscribe('postPutResources', function () {
+                refAutoPrintTag = this.internal.newObject();
+                this.internal.write("<< /S/Named /Type/Action /N/Print >>", "endobj");
+            });
+
+            this.internal.events.subscribe("putCatalog", function () {
+                this.internal.write("/OpenAction " + refAutoPrintTag + " 0" + " R");
+            });
+            return this;
+        };
     })(jsPDF.API);
-  
+
     /** @preserve
      * jsPDF split_text_to_size plugin - MIT license.
      * Copyright (c) 2012 Willow Systems Corporation, willow-systems.com
@@ -4299,10 +4300,10 @@ define(['jquery'], function($) {
      * 
      * ====================================================================
      */
-  
-    ;(function (API) {
+
+    ; (function (API) {
         'use strict';
-  
+
         /**
      Returns an array of length matching length of the 'word' string, with each
      cell ocupied by the width of the char in that position.
@@ -4313,41 +4314,41 @@ define(['jquery'], function($) {
      @param kerning {Object}
      @returns {Array}
      */
-  
+
         var getCharWidthsArray = API.getCharWidthsArray = function (text, options) {
-  
+
             if (!options) {
                 options = {};
             }
-  
+
             var widths = options.widths ? options.widths : this.internal.getFont().metadata.Unicode.widths,
                 widthsFractionOf = widths.fof ? widths.fof : 1,
                 kerning = options.kerning ? options.kerning : this.internal.getFont().metadata.Unicode.kerning,
                 kerningFractionOf = kerning.fof ? kerning.fof : 1;
-  
+
             // console.log("widths, kergnings", widths, kerning)
-  
+
             var i,
                 l,
                 char_code,
                 prior_char_code = 0 // for kerning
-            ,
+                ,
                 default_char_width = widths[0] || widthsFractionOf,
                 output = [];
-  
+
             for (i = 0, l = text.length; i < l; i++) {
                 char_code = text.charCodeAt(i);
                 output.push((widths[char_code] || default_char_width) / widthsFractionOf + (kerning[char_code] && kerning[char_code][prior_char_code] || 0) / kerningFractionOf);
                 prior_char_code = char_code;
             }
-  
+
             return output;
         };
         var getArraySum = function getArraySum(array) {
             var i = array.length,
                 output = 0;
             while (i) {
-                ;i--;
+                ; i--;
                 output += array[i];
             }
             return output;
@@ -4369,23 +4370,23 @@ define(['jquery'], function($) {
         var getStringUnitWidth = API.getStringUnitWidth = function (text, options) {
             return getArraySum(getCharWidthsArray.call(this, text, options));
         };
-  
+
         /**
      returns array of lines
      */
         var splitLongWord = function splitLongWord(word, widths_array, firstLineMaxLen, maxLen) {
             var answer = [];
-  
+
             // 1st, chop off the piece that can fit on the hanging line.
             var i = 0,
                 l = word.length,
                 workingLen = 0;
             while (i !== l && workingLen + widths_array[i] < firstLineMaxLen) {
-                workingLen += widths_array[i];i++;
+                workingLen += widths_array[i]; i++;
             }
             // this is first line.
             answer.push(word.slice(0, i));
-  
+
             // 2nd. Split the rest into maxLen pieces.
             var startOfLine = i;
             workingLen = 0;
@@ -4395,25 +4396,25 @@ define(['jquery'], function($) {
                     workingLen = 0;
                     startOfLine = i;
                 }
-                workingLen += widths_array[i];i++;
+                workingLen += widths_array[i]; i++;
             }
             if (startOfLine !== i) {
                 answer.push(word.slice(startOfLine, i));
             }
-  
+
             return answer;
         };
-  
+
         // Note, all sizing inputs for this function must be in "font measurement units"
         // By default, for PDF, it's "point".
         var splitParagraphIntoLines = function splitParagraphIntoLines(text, maxlen, options) {
             // at this time works only on Western scripts, ones with space char
             // separating the words. Feel free to expand.
-  
+
             if (!options) {
                 options = {};
             }
-  
+
             var line = [],
                 lines = [line],
                 line_length = options.textIndent || 0,
@@ -4427,7 +4428,7 @@ define(['jquery'], function($) {
                 l,
                 tmp,
                 lineIndent;
-  
+
             if (options.lineIndent === -1) {
                 lineIndent = words[0].length + 2;
             } else {
@@ -4449,10 +4450,10 @@ define(['jquery'], function($) {
                 words = wrds;
                 lineIndent = getStringUnitWidth(pad, options);
             }
-  
+
             for (i = 0, l = words.length; i < l; i++) {
                 var force = 0;
-  
+
                 word = words[i];
                 if (lineIndent && word[0] == "\n") {
                     word = word.substr(1);
@@ -4460,7 +4461,7 @@ define(['jquery'], function($) {
                 }
                 widths_array = getCharWidthsArray(word, options);
                 current_word_length = getArraySum(widths_array);
-  
+
                 if (line_length + separator_length + current_word_length > maxlen || force) {
                     if (current_word_length > maxlen) {
                         // this happens when you have space-less long URLs for example.
@@ -4479,19 +4480,19 @@ define(['jquery'], function($) {
                         // just put it on a new line
                         line = [word];
                     }
-  
+
                     // now we attach new line to lines
                     lines.push(line);
                     line_length = current_word_length + lineIndent;
                     separator_length = spaceCharWidth;
                 } else {
                     line.push(word);
-  
+
                     line_length += separator_length + current_word_length;
                     separator_length = spaceCharWidth;
                 }
             }
-  
+
             if (lineIndent) {
                 var postProcess = function postProcess(ln, idx) {
                     return (idx ? pad : '') + ln.join(" ");
@@ -4501,10 +4502,10 @@ define(['jquery'], function($) {
                     return ln.join(" ");
                 };
             }
-  
+
             return lines.map(postProcess);
         };
-  
+
         /**
      Splits a given string into an array of strings. Uses 'size' value
      (in measurement units declared as default for the jsPDF instance)
@@ -4523,43 +4524,43 @@ define(['jquery'], function($) {
      */
         API.splitTextToSize = function (text, maxlen, options) {
             'use strict';
-  
+
             if (!options) {
                 options = {};
             }
-  
+
             var fsize = options.fontSize || this.internal.getFontSize(),
                 newOptions = function (options) {
-                var widths = { 0: 1 },
-                    kerning = {};
-  
-                if (!options.widths || !options.kerning) {
-                    var f = this.internal.getFont(options.fontName, options.fontStyle),
-                        encoding = 'Unicode';
-                    // NOT UTF8, NOT UTF16BE/LE, NOT UCS2BE/LE
-                    // Actual JavaScript-native String's 16bit char codes used.
-                    // no multi-byte logic here
-  
-                    if (f.metadata[encoding]) {
+                    var widths = { 0: 1 },
+                        kerning = {};
+
+                    if (!options.widths || !options.kerning) {
+                        var f = this.internal.getFont(options.fontName, options.fontStyle),
+                            encoding = 'Unicode';
+                        // NOT UTF8, NOT UTF16BE/LE, NOT UCS2BE/LE
+                        // Actual JavaScript-native String's 16bit char codes used.
+                        // no multi-byte logic here
+
+                        if (f.metadata[encoding]) {
+                            return {
+                                widths: f.metadata[encoding].widths || widths,
+                                kerning: f.metadata[encoding].kerning || kerning
+                            };
+                        }
+                    } else {
                         return {
-                            widths: f.metadata[encoding].widths || widths,
-                            kerning: f.metadata[encoding].kerning || kerning
+                            widths: options.widths,
+                            kerning: options.kerning
                         };
                     }
-                } else {
+
+                    // then use default values
                     return {
-                        widths: options.widths,
-                        kerning: options.kerning
+                        widths: widths,
+                        kerning: kerning
                     };
-                }
-  
-                // then use default values
-                return {
-                    widths: widths,
-                    kerning: kerning
-                };
-            }.call(this, options);
-  
+                }.call(this, options);
+
             // first we split on end-of-line chars
             var paragraphs;
             if (Array.isArray(text)) {
@@ -4567,7 +4568,7 @@ define(['jquery'], function($) {
             } else {
                 paragraphs = text.split(/\r?\n/);
             }
-  
+
             // now we convert size (max length of line) into "font size units"
             // at present time, the "font size unit" is always 'point'
             // 'proportional' means, "in proportion to font size"
@@ -4575,28 +4576,28 @@ define(['jquery'], function($) {
             // at this time, fsize is always in "points" regardless of the default measurement unit of the doc.
             // this may change in the future?
             // until then, proportional_maxlen is likely to be in 'points'
-  
+
             // If first line is to be indented (shorter or longer) than maxLen
             // we indicate that by using CSS-style "text-indent" option.
             // here it's in font units too (which is likely 'points')
             // it can be negative (which makes the first line longer than maxLen)
             newOptions.textIndent = options.textIndent ? options.textIndent * 1.0 * this.internal.scaleFactor / fsize : 0;
             newOptions.lineIndent = options.lineIndent;
-  
+
             var i,
                 l,
                 output = [];
             for (i = 0, l = paragraphs.length; i < l; i++) {
                 output = output.concat(splitParagraphIntoLines(paragraphs[i], fontUnit_maxLen, newOptions));
             }
-  
+
             return output;
         };
     })(jsPDF.API);
 
     (function (API) {
         'use strict';
-  
+
         /*
      # reference (Python) versions of 'compress' and 'uncompress'
      # only 'uncompress' function is featured lower as JavaScript
@@ -4724,7 +4725,7 @@ define(['jquery'], function($) {
          return output
      
      */
-  
+
         /**
      Uncompresses data compressed into custom, base16-like format. 
      @public
@@ -4732,42 +4733,42 @@ define(['jquery'], function($) {
      @param
      @returns {Type}
      */
-  
+
         var uncompress = function uncompress(data) {
-  
+
             var decoded = '0123456789abcdef',
                 encoded = 'klmnopqrstuvwxyz',
                 mapping = {};
-  
+
             for (var i = 0; i < encoded.length; i++) {
                 mapping[encoded[i]] = decoded[i];
             }
-  
+
             var undef,
                 output = {},
                 sign = 1,
                 stringparts // undef. will be [] in string mode
-  
-            ,
+
+                ,
                 activeobject = output,
                 parentchain = [],
                 parent_key_pair,
                 keyparts = '',
                 valueparts = '',
                 key // undef. will be Truthy when Key is resolved.
-            ,
+                ,
                 datalen = data.length - 1 // stripping ending }
-            ,
+                ,
                 ch;
-  
+
             i = 1; // stripping starting {
-  
+
             while (i != datalen) {
                 // - { } ' are special.
-  
+
                 ch = data[i];
                 i += 1;
-  
+
                 if (ch == "'") {
                     if (stringparts) {
                         // end of string mode
@@ -4816,15 +4817,15 @@ define(['jquery'], function($) {
                     }
                 }
             } // end while
-  
+
             return output;
         };
-  
+
         // encoding = 'Unicode' 
         // NOT UTF8, NOT UTF16BE/LE, NOT UCS2BE/LE. NO clever BOM behavior
         // Actual 16bit char codes used.
         // no multi-byte logic here
-  
+
         // Unicode characters to WinAnsiEncoding:
         // {402: 131, 8211: 150, 8212: 151, 8216: 145, 8217: 146, 8218: 130, 8220: 147, 8221: 148, 8222: 132, 8224: 134, 8225: 135, 8226: 149, 8230: 133, 8364: 128, 8240:137, 8249: 139, 8250: 155, 710: 136, 8482: 153, 338: 140, 339: 156, 732: 152, 352: 138, 353: 154, 376: 159, 381: 142, 382: 158}
         // as you can see, all Unicode chars are outside of 0-255 range. No char code conflicts.
@@ -4832,69 +4833,73 @@ define(['jquery'], function($) {
         // as well as give strings with some (supported by these fonts) Unicode characters and 
         // these will be mapped to win cp1252 
         // for example, you can send char code (cp1252) 0x80 or (unicode) 0x20AC, getting "Euro" glyph displayed in both cases.
-  
+
         var encodingBlock = {
             'codePages': ['WinAnsiEncoding'],
             'WinAnsiEncoding': uncompress("{19m8n201n9q201o9r201s9l201t9m201u8m201w9n201x9o201y8o202k8q202l8r202m9p202q8p20aw8k203k8t203t8v203u9v2cq8s212m9t15m8w15n9w2dw9s16k8u16l9u17s9z17x8y17y9y}")
         },
-            encodings = { 'Unicode': {
-                'Courier': encodingBlock,
-                'Courier-Bold': encodingBlock,
-                'Courier-BoldOblique': encodingBlock,
-                'Courier-Oblique': encodingBlock,
-                'Helvetica': encodingBlock,
-                'Helvetica-Bold': encodingBlock,
-                'Helvetica-BoldOblique': encodingBlock,
-                'Helvetica-Oblique': encodingBlock,
-                'Times-Roman': encodingBlock,
-                'Times-Bold': encodingBlock,
-                'Times-BoldItalic': encodingBlock,
-                'Times-Italic': encodingBlock
-                //	, 'Symbol'
-                //	, 'ZapfDingbats'
-            } }
-        /** 
-     Resources:
-     Font metrics data is reprocessed derivative of contents of
-     "Font Metrics for PDF Core 14 Fonts" package, which exhibits the following copyright and license:
-     
-     Copyright (c) 1989, 1990, 1991, 1992, 1993, 1997 Adobe Systems Incorporated. All Rights Reserved.
-     
-     This file and the 14 PostScript(R) AFM files it accompanies may be used,
-     copied, and distributed for any purpose and without charge, with or without
-     modification, provided that all copyright notices are retained; that the AFM
-     files are not distributed without this file; that all modifications to this
-     file or any of the AFM files are prominently noted in the modified file(s);
-     and that this paragraph is not modified. Adobe Systems has no responsibility
-     or obligation to support the use of the AFM files.
-     
-     */
-        ,
-            fontMetrics = { 'Unicode': {
-                // all sizing numbers are n/fontMetricsFractionOf = one font size unit
-                // this means that if fontMetricsFractionOf = 1000, and letter A's width is 476, it's
-                // width is 476/1000 or 47.6% of its height (regardless of font size)
-                // At this time this value applies to "widths" and "kerning" numbers.
-  
-                // char code 0 represents "default" (average) width - use it for chars missing in this table.
-                // key 'fof' represents the "fontMetricsFractionOf" value
-  
-                'Courier-Oblique': uncompress("{'widths'{k3w'fof'6o}'kerning'{'fof'-6o}}"),
-                'Times-BoldItalic': uncompress("{'widths'{k3o2q4ycx2r201n3m201o6o201s2l201t2l201u2l201w3m201x3m201y3m2k1t2l2r202m2n2n3m2o3m2p5n202q6o2r1w2s2l2t2l2u3m2v3t2w1t2x2l2y1t2z1w3k3m3l3m3m3m3n3m3o3m3p3m3q3m3r3m3s3m203t2l203u2l3v2l3w3t3x3t3y3t3z3m4k5n4l4m4m4m4n4m4o4s4p4m4q4m4r4s4s4y4t2r4u3m4v4m4w3x4x5t4y4s4z4s5k3x5l4s5m4m5n3r5o3x5p4s5q4m5r5t5s4m5t3x5u3x5v2l5w1w5x2l5y3t5z3m6k2l6l3m6m3m6n2w6o3m6p2w6q2l6r3m6s3r6t1w6u1w6v3m6w1w6x4y6y3r6z3m7k3m7l3m7m2r7n2r7o1w7p3r7q2w7r4m7s3m7t2w7u2r7v2n7w1q7x2n7y3t202l3mcl4mal2ram3man3mao3map3mar3mas2lat4uau1uav3maw3way4uaz2lbk2sbl3t'fof'6obo2lbp3tbq3mbr1tbs2lbu1ybv3mbz3mck4m202k3mcm4mcn4mco4mcp4mcq5ycr4mcs4mct4mcu4mcv4mcw2r2m3rcy2rcz2rdl4sdm4sdn4sdo4sdp4sdq4sds4sdt4sdu4sdv4sdw4sdz3mek3mel3mem3men3meo3mep3meq4ser2wes2wet2weu2wev2wew1wex1wey1wez1wfl3rfm3mfn3mfo3mfp3mfq3mfr3tfs3mft3rfu3rfv3rfw3rfz2w203k6o212m6o2dw2l2cq2l3t3m3u2l17s3x19m3m}'kerning'{cl{4qu5kt5qt5rs17ss5ts}201s{201ss}201t{cks4lscmscnscoscpscls2wu2yu201ts}201x{2wu2yu}2k{201ts}2w{4qx5kx5ou5qx5rs17su5tu}2x{17su5tu5ou}2y{4qx5kx5ou5qx5rs17ss5ts}'fof'-6ofn{17sw5tw5ou5qw5rs}7t{cksclscmscnscoscps4ls}3u{17su5tu5os5qs}3v{17su5tu5os5qs}7p{17su5tu}ck{4qu5kt5qt5rs17ss5ts}4l{4qu5kt5qt5rs17ss5ts}cm{4qu5kt5qt5rs17ss5ts}cn{4qu5kt5qt5rs17ss5ts}co{4qu5kt5qt5rs17ss5ts}cp{4qu5kt5qt5rs17ss5ts}6l{4qu5ou5qw5rt17su5tu}5q{ckuclucmucnucoucpu4lu}5r{ckuclucmucnucoucpu4lu}7q{cksclscmscnscoscps4ls}6p{4qu5ou5qw5rt17sw5tw}ek{4qu5ou5qw5rt17su5tu}el{4qu5ou5qw5rt17su5tu}em{4qu5ou5qw5rt17su5tu}en{4qu5ou5qw5rt17su5tu}eo{4qu5ou5qw5rt17su5tu}ep{4qu5ou5qw5rt17su5tu}es{17ss5ts5qs4qu}et{4qu5ou5qw5rt17sw5tw}eu{4qu5ou5qw5rt17ss5ts}ev{17ss5ts5qs4qu}6z{17sw5tw5ou5qw5rs}fm{17sw5tw5ou5qw5rs}7n{201ts}fo{17sw5tw5ou5qw5rs}fp{17sw5tw5ou5qw5rs}fq{17sw5tw5ou5qw5rs}7r{cksclscmscnscoscps4ls}fs{17sw5tw5ou5qw5rs}ft{17su5tu}fu{17su5tu}fv{17su5tu}fw{17su5tu}fz{cksclscmscnscoscps4ls}}}"),
-                'Helvetica-Bold': uncompress("{'widths'{k3s2q4scx1w201n3r201o6o201s1w201t1w201u1w201w3m201x3m201y3m2k1w2l2l202m2n2n3r2o3r2p5t202q6o2r1s2s2l2t2l2u2r2v3u2w1w2x2l2y1w2z1w3k3r3l3r3m3r3n3r3o3r3p3r3q3r3r3r3s3r203t2l203u2l3v2l3w3u3x3u3y3u3z3x4k6l4l4s4m4s4n4s4o4s4p4m4q3x4r4y4s4s4t1w4u3r4v4s4w3x4x5n4y4s4z4y5k4m5l4y5m4s5n4m5o3x5p4s5q4m5r5y5s4m5t4m5u3x5v2l5w1w5x2l5y3u5z3r6k2l6l3r6m3x6n3r6o3x6p3r6q2l6r3x6s3x6t1w6u1w6v3r6w1w6x5t6y3x6z3x7k3x7l3x7m2r7n3r7o2l7p3x7q3r7r4y7s3r7t3r7u3m7v2r7w1w7x2r7y3u202l3rcl4sal2lam3ran3rao3rap3rar3ras2lat4tau2pav3raw3uay4taz2lbk2sbl3u'fof'6obo2lbp3xbq3rbr1wbs2lbu2obv3rbz3xck4s202k3rcm4scn4sco4scp4scq6ocr4scs4mct4mcu4mcv4mcw1w2m2zcy1wcz1wdl4sdm4ydn4ydo4ydp4ydq4yds4ydt4sdu4sdv4sdw4sdz3xek3rel3rem3ren3reo3rep3req5ter3res3ret3reu3rev3rew1wex1wey1wez1wfl3xfm3xfn3xfo3xfp3xfq3xfr3ufs3xft3xfu3xfv3xfw3xfz3r203k6o212m6o2dw2l2cq2l3t3r3u2l17s4m19m3r}'kerning'{cl{4qs5ku5ot5qs17sv5tv}201t{2ww4wy2yw}201w{2ks}201x{2ww4wy2yw}2k{201ts201xs}2w{7qs4qu5kw5os5qw5rs17su5tu7tsfzs}2x{5ow5qs}2y{7qs4qu5kw5os5qw5rs17su5tu7tsfzs}'fof'-6o7p{17su5tu5ot}ck{4qs5ku5ot5qs17sv5tv}4l{4qs5ku5ot5qs17sv5tv}cm{4qs5ku5ot5qs17sv5tv}cn{4qs5ku5ot5qs17sv5tv}co{4qs5ku5ot5qs17sv5tv}cp{4qs5ku5ot5qs17sv5tv}6l{17st5tt5os}17s{2kwclvcmvcnvcovcpv4lv4wwckv}5o{2kucltcmtcntcotcpt4lt4wtckt}5q{2ksclscmscnscoscps4ls4wvcks}5r{2ks4ws}5t{2kwclvcmvcnvcovcpv4lv4wwckv}eo{17st5tt5os}fu{17su5tu5ot}6p{17ss5ts}ek{17st5tt5os}el{17st5tt5os}em{17st5tt5os}en{17st5tt5os}6o{201ts}ep{17st5tt5os}es{17ss5ts}et{17ss5ts}eu{17ss5ts}ev{17ss5ts}6z{17su5tu5os5qt}fm{17su5tu5os5qt}fn{17su5tu5os5qt}fo{17su5tu5os5qt}fp{17su5tu5os5qt}fq{17su5tu5os5qt}fs{17su5tu5os5qt}ft{17su5tu5ot}7m{5os}fv{17su5tu5ot}fw{17su5tu5ot}}}"),
-                'Courier': uncompress("{'widths'{k3w'fof'6o}'kerning'{'fof'-6o}}"),
-                'Courier-BoldOblique': uncompress("{'widths'{k3w'fof'6o}'kerning'{'fof'-6o}}"),
-                'Times-Bold': uncompress("{'widths'{k3q2q5ncx2r201n3m201o6o201s2l201t2l201u2l201w3m201x3m201y3m2k1t2l2l202m2n2n3m2o3m2p6o202q6o2r1w2s2l2t2l2u3m2v3t2w1t2x2l2y1t2z1w3k3m3l3m3m3m3n3m3o3m3p3m3q3m3r3m3s3m203t2l203u2l3v2l3w3t3x3t3y3t3z3m4k5x4l4s4m4m4n4s4o4s4p4m4q3x4r4y4s4y4t2r4u3m4v4y4w4m4x5y4y4s4z4y5k3x5l4y5m4s5n3r5o4m5p4s5q4s5r6o5s4s5t4s5u4m5v2l5w1w5x2l5y3u5z3m6k2l6l3m6m3r6n2w6o3r6p2w6q2l6r3m6s3r6t1w6u2l6v3r6w1w6x5n6y3r6z3m7k3r7l3r7m2w7n2r7o2l7p3r7q3m7r4s7s3m7t3m7u2w7v2r7w1q7x2r7y3o202l3mcl4sal2lam3man3mao3map3mar3mas2lat4uau1yav3maw3tay4uaz2lbk2sbl3t'fof'6obo2lbp3rbr1tbs2lbu2lbv3mbz3mck4s202k3mcm4scn4sco4scp4scq6ocr4scs4mct4mcu4mcv4mcw2r2m3rcy2rcz2rdl4sdm4ydn4ydo4ydp4ydq4yds4ydt4sdu4sdv4sdw4sdz3rek3mel3mem3men3meo3mep3meq4ser2wes2wet2weu2wev2wew1wex1wey1wez1wfl3rfm3mfn3mfo3mfp3mfq3mfr3tfs3mft3rfu3rfv3rfw3rfz3m203k6o212m6o2dw2l2cq2l3t3m3u2l17s4s19m3m}'kerning'{cl{4qt5ks5ot5qy5rw17sv5tv}201t{cks4lscmscnscoscpscls4wv}2k{201ts}2w{4qu5ku7mu5os5qx5ru17su5tu}2x{17su5tu5ou5qs}2y{4qv5kv7mu5ot5qz5ru17su5tu}'fof'-6o7t{cksclscmscnscoscps4ls}3u{17su5tu5os5qu}3v{17su5tu5os5qu}fu{17su5tu5ou5qu}7p{17su5tu5ou5qu}ck{4qt5ks5ot5qy5rw17sv5tv}4l{4qt5ks5ot5qy5rw17sv5tv}cm{4qt5ks5ot5qy5rw17sv5tv}cn{4qt5ks5ot5qy5rw17sv5tv}co{4qt5ks5ot5qy5rw17sv5tv}cp{4qt5ks5ot5qy5rw17sv5tv}6l{17st5tt5ou5qu}17s{ckuclucmucnucoucpu4lu4wu}5o{ckuclucmucnucoucpu4lu4wu}5q{ckzclzcmzcnzcozcpz4lz4wu}5r{ckxclxcmxcnxcoxcpx4lx4wu}5t{ckuclucmucnucoucpu4lu4wu}7q{ckuclucmucnucoucpu4lu}6p{17sw5tw5ou5qu}ek{17st5tt5qu}el{17st5tt5ou5qu}em{17st5tt5qu}en{17st5tt5qu}eo{17st5tt5qu}ep{17st5tt5ou5qu}es{17ss5ts5qu}et{17sw5tw5ou5qu}eu{17sw5tw5ou5qu}ev{17ss5ts5qu}6z{17sw5tw5ou5qu5rs}fm{17sw5tw5ou5qu5rs}fn{17sw5tw5ou5qu5rs}fo{17sw5tw5ou5qu5rs}fp{17sw5tw5ou5qu5rs}fq{17sw5tw5ou5qu5rs}7r{cktcltcmtcntcotcpt4lt5os}fs{17sw5tw5ou5qu5rs}ft{17su5tu5ou5qu}7m{5os}fv{17su5tu5ou5qu}fw{17su5tu5ou5qu}fz{cksclscmscnscoscps4ls}}}")
-                //, 'Symbol': uncompress("{'widths'{k3uaw4r19m3m2k1t2l2l202m2y2n3m2p5n202q6o3k3m2s2l2t2l2v3r2w1t3m3m2y1t2z1wbk2sbl3r'fof'6o3n3m3o3m3p3m3q3m3r3m3s3m3t3m3u1w3v1w3w3r3x3r3y3r3z2wbp3t3l3m5v2l5x2l5z3m2q4yfr3r7v3k7w1o7x3k}'kerning'{'fof'-6o}}")
-                , 'Helvetica': uncompress("{'widths'{k3p2q4mcx1w201n3r201o6o201s1q201t1q201u1q201w2l201x2l201y2l2k1w2l1w202m2n2n3r2o3r2p5t202q6o2r1n2s2l2t2l2u2r2v3u2w1w2x2l2y1w2z1w3k3r3l3r3m3r3n3r3o3r3p3r3q3r3r3r3s3r203t2l203u2l3v1w3w3u3x3u3y3u3z3r4k6p4l4m4m4m4n4s4o4s4p4m4q3x4r4y4s4s4t1w4u3m4v4m4w3r4x5n4y4s4z4y5k4m5l4y5m4s5n4m5o3x5p4s5q4m5r5y5s4m5t4m5u3x5v1w5w1w5x1w5y2z5z3r6k2l6l3r6m3r6n3m6o3r6p3r6q1w6r3r6s3r6t1q6u1q6v3m6w1q6x5n6y3r6z3r7k3r7l3r7m2l7n3m7o1w7p3r7q3m7r4s7s3m7t3m7u3m7v2l7w1u7x2l7y3u202l3rcl4mal2lam3ran3rao3rap3rar3ras2lat4tau2pav3raw3uay4taz2lbk2sbl3u'fof'6obo2lbp3rbr1wbs2lbu2obv3rbz3xck4m202k3rcm4mcn4mco4mcp4mcq6ocr4scs4mct4mcu4mcv4mcw1w2m2ncy1wcz1wdl4sdm4ydn4ydo4ydp4ydq4yds4ydt4sdu4sdv4sdw4sdz3xek3rel3rem3ren3reo3rep3req5ter3mes3ret3reu3rev3rew1wex1wey1wez1wfl3rfm3rfn3rfo3rfp3rfq3rfr3ufs3xft3rfu3rfv3rfw3rfz3m203k6o212m6o2dw2l2cq2l3t3r3u1w17s4m19m3r}'kerning'{5q{4wv}cl{4qs5kw5ow5qs17sv5tv}201t{2wu4w1k2yu}201x{2wu4wy2yu}17s{2ktclucmucnu4otcpu4lu4wycoucku}2w{7qs4qz5k1m17sy5ow5qx5rsfsu5ty7tufzu}2x{17sy5ty5oy5qs}2y{7qs4qz5k1m17sy5ow5qx5rsfsu5ty7tufzu}'fof'-6o7p{17sv5tv5ow}ck{4qs5kw5ow5qs17sv5tv}4l{4qs5kw5ow5qs17sv5tv}cm{4qs5kw5ow5qs17sv5tv}cn{4qs5kw5ow5qs17sv5tv}co{4qs5kw5ow5qs17sv5tv}cp{4qs5kw5ow5qs17sv5tv}6l{17sy5ty5ow}do{17st5tt}4z{17st5tt}7s{fst}dm{17st5tt}dn{17st5tt}5o{ckwclwcmwcnwcowcpw4lw4wv}dp{17st5tt}dq{17st5tt}7t{5ow}ds{17st5tt}5t{2ktclucmucnu4otcpu4lu4wycoucku}fu{17sv5tv5ow}6p{17sy5ty5ow5qs}ek{17sy5ty5ow}el{17sy5ty5ow}em{17sy5ty5ow}en{5ty}eo{17sy5ty5ow}ep{17sy5ty5ow}es{17sy5ty5qs}et{17sy5ty5ow5qs}eu{17sy5ty5ow5qs}ev{17sy5ty5ow5qs}6z{17sy5ty5ow5qs}fm{17sy5ty5ow5qs}fn{17sy5ty5ow5qs}fo{17sy5ty5ow5qs}fp{17sy5ty5qs}fq{17sy5ty5ow5qs}7r{5ow}fs{17sy5ty5ow5qs}ft{17sv5tv5ow}7m{5ow}fv{17sv5tv5ow}fw{17sv5tv5ow}}}"),
-                'Helvetica-BoldOblique': uncompress("{'widths'{k3s2q4scx1w201n3r201o6o201s1w201t1w201u1w201w3m201x3m201y3m2k1w2l2l202m2n2n3r2o3r2p5t202q6o2r1s2s2l2t2l2u2r2v3u2w1w2x2l2y1w2z1w3k3r3l3r3m3r3n3r3o3r3p3r3q3r3r3r3s3r203t2l203u2l3v2l3w3u3x3u3y3u3z3x4k6l4l4s4m4s4n4s4o4s4p4m4q3x4r4y4s4s4t1w4u3r4v4s4w3x4x5n4y4s4z4y5k4m5l4y5m4s5n4m5o3x5p4s5q4m5r5y5s4m5t4m5u3x5v2l5w1w5x2l5y3u5z3r6k2l6l3r6m3x6n3r6o3x6p3r6q2l6r3x6s3x6t1w6u1w6v3r6w1w6x5t6y3x6z3x7k3x7l3x7m2r7n3r7o2l7p3x7q3r7r4y7s3r7t3r7u3m7v2r7w1w7x2r7y3u202l3rcl4sal2lam3ran3rao3rap3rar3ras2lat4tau2pav3raw3uay4taz2lbk2sbl3u'fof'6obo2lbp3xbq3rbr1wbs2lbu2obv3rbz3xck4s202k3rcm4scn4sco4scp4scq6ocr4scs4mct4mcu4mcv4mcw1w2m2zcy1wcz1wdl4sdm4ydn4ydo4ydp4ydq4yds4ydt4sdu4sdv4sdw4sdz3xek3rel3rem3ren3reo3rep3req5ter3res3ret3reu3rev3rew1wex1wey1wez1wfl3xfm3xfn3xfo3xfp3xfq3xfr3ufs3xft3xfu3xfv3xfw3xfz3r203k6o212m6o2dw2l2cq2l3t3r3u2l17s4m19m3r}'kerning'{cl{4qs5ku5ot5qs17sv5tv}201t{2ww4wy2yw}201w{2ks}201x{2ww4wy2yw}2k{201ts201xs}2w{7qs4qu5kw5os5qw5rs17su5tu7tsfzs}2x{5ow5qs}2y{7qs4qu5kw5os5qw5rs17su5tu7tsfzs}'fof'-6o7p{17su5tu5ot}ck{4qs5ku5ot5qs17sv5tv}4l{4qs5ku5ot5qs17sv5tv}cm{4qs5ku5ot5qs17sv5tv}cn{4qs5ku5ot5qs17sv5tv}co{4qs5ku5ot5qs17sv5tv}cp{4qs5ku5ot5qs17sv5tv}6l{17st5tt5os}17s{2kwclvcmvcnvcovcpv4lv4wwckv}5o{2kucltcmtcntcotcpt4lt4wtckt}5q{2ksclscmscnscoscps4ls4wvcks}5r{2ks4ws}5t{2kwclvcmvcnvcovcpv4lv4wwckv}eo{17st5tt5os}fu{17su5tu5ot}6p{17ss5ts}ek{17st5tt5os}el{17st5tt5os}em{17st5tt5os}en{17st5tt5os}6o{201ts}ep{17st5tt5os}es{17ss5ts}et{17ss5ts}eu{17ss5ts}ev{17ss5ts}6z{17su5tu5os5qt}fm{17su5tu5os5qt}fn{17su5tu5os5qt}fo{17su5tu5os5qt}fp{17su5tu5os5qt}fq{17su5tu5os5qt}fs{17su5tu5os5qt}ft{17su5tu5ot}7m{5os}fv{17su5tu5ot}fw{17su5tu5ot}}}")
-                //, 'ZapfDingbats': uncompress("{'widths'{k4u2k1w'fof'6o}'kerning'{'fof'-6o}}")
-                , 'Courier-Bold': uncompress("{'widths'{k3w'fof'6o}'kerning'{'fof'-6o}}"),
-                'Times-Italic': uncompress("{'widths'{k3n2q4ycx2l201n3m201o5t201s2l201t2l201u2l201w3r201x3r201y3r2k1t2l2l202m2n2n3m2o3m2p5n202q5t2r1p2s2l2t2l2u3m2v4n2w1t2x2l2y1t2z1w3k3m3l3m3m3m3n3m3o3m3p3m3q3m3r3m3s3m203t2l203u2l3v2l3w4n3x4n3y4n3z3m4k5w4l3x4m3x4n4m4o4s4p3x4q3x4r4s4s4s4t2l4u2w4v4m4w3r4x5n4y4m4z4s5k3x5l4s5m3x5n3m5o3r5p4s5q3x5r5n5s3x5t3r5u3r5v2r5w1w5x2r5y2u5z3m6k2l6l3m6m3m6n2w6o3m6p2w6q1w6r3m6s3m6t1w6u1w6v2w6w1w6x4s6y3m6z3m7k3m7l3m7m2r7n2r7o1w7p3m7q2w7r4m7s2w7t2w7u2r7v2s7w1v7x2s7y3q202l3mcl3xal2ram3man3mao3map3mar3mas2lat4wau1vav3maw4nay4waz2lbk2sbl4n'fof'6obo2lbp3mbq3obr1tbs2lbu1zbv3mbz3mck3x202k3mcm3xcn3xco3xcp3xcq5tcr4mcs3xct3xcu3xcv3xcw2l2m2ucy2lcz2ldl4mdm4sdn4sdo4sdp4sdq4sds4sdt4sdu4sdv4sdw4sdz3mek3mel3mem3men3meo3mep3meq4mer2wes2wet2weu2wev2wew1wex1wey1wez1wfl3mfm3mfn3mfo3mfp3mfq3mfr4nfs3mft3mfu3mfv3mfw3mfz2w203k6o212m6m2dw2l2cq2l3t3m3u2l17s3r19m3m}'kerning'{cl{5kt4qw}201s{201sw}201t{201tw2wy2yy6q-t}201x{2wy2yy}2k{201tw}2w{7qs4qy7rs5ky7mw5os5qx5ru17su5tu}2x{17ss5ts5os}2y{7qs4qy7rs5ky7mw5os5qx5ru17su5tu}'fof'-6o6t{17ss5ts5qs}7t{5os}3v{5qs}7p{17su5tu5qs}ck{5kt4qw}4l{5kt4qw}cm{5kt4qw}cn{5kt4qw}co{5kt4qw}cp{5kt4qw}6l{4qs5ks5ou5qw5ru17su5tu}17s{2ks}5q{ckvclvcmvcnvcovcpv4lv}5r{ckuclucmucnucoucpu4lu}5t{2ks}6p{4qs5ks5ou5qw5ru17su5tu}ek{4qs5ks5ou5qw5ru17su5tu}el{4qs5ks5ou5qw5ru17su5tu}em{4qs5ks5ou5qw5ru17su5tu}en{4qs5ks5ou5qw5ru17su5tu}eo{4qs5ks5ou5qw5ru17su5tu}ep{4qs5ks5ou5qw5ru17su5tu}es{5ks5qs4qs}et{4qs5ks5ou5qw5ru17su5tu}eu{4qs5ks5qw5ru17su5tu}ev{5ks5qs4qs}ex{17ss5ts5qs}6z{4qv5ks5ou5qw5ru17su5tu}fm{4qv5ks5ou5qw5ru17su5tu}fn{4qv5ks5ou5qw5ru17su5tu}fo{4qv5ks5ou5qw5ru17su5tu}fp{4qv5ks5ou5qw5ru17su5tu}fq{4qv5ks5ou5qw5ru17su5tu}7r{5os}fs{4qv5ks5ou5qw5ru17su5tu}ft{17su5tu5qs}fu{17su5tu5qs}fv{17su5tu5qs}fw{17su5tu5qs}}}"),
-                'Times-Roman': uncompress("{'widths'{k3n2q4ycx2l201n3m201o6o201s2l201t2l201u2l201w2w201x2w201y2w2k1t2l2l202m2n2n3m2o3m2p5n202q6o2r1m2s2l2t2l2u3m2v3s2w1t2x2l2y1t2z1w3k3m3l3m3m3m3n3m3o3m3p3m3q3m3r3m3s3m203t2l203u2l3v1w3w3s3x3s3y3s3z2w4k5w4l4s4m4m4n4m4o4s4p3x4q3r4r4s4s4s4t2l4u2r4v4s4w3x4x5t4y4s4z4s5k3r5l4s5m4m5n3r5o3x5p4s5q4s5r5y5s4s5t4s5u3x5v2l5w1w5x2l5y2z5z3m6k2l6l2w6m3m6n2w6o3m6p2w6q2l6r3m6s3m6t1w6u1w6v3m6w1w6x4y6y3m6z3m7k3m7l3m7m2l7n2r7o1w7p3m7q3m7r4s7s3m7t3m7u2w7v3k7w1o7x3k7y3q202l3mcl4sal2lam3man3mao3map3mar3mas2lat4wau1vav3maw3say4waz2lbk2sbl3s'fof'6obo2lbp3mbq2xbr1tbs2lbu1zbv3mbz2wck4s202k3mcm4scn4sco4scp4scq5tcr4mcs3xct3xcu3xcv3xcw2l2m2tcy2lcz2ldl4sdm4sdn4sdo4sdp4sdq4sds4sdt4sdu4sdv4sdw4sdz3mek2wel2wem2wen2weo2wep2weq4mer2wes2wet2weu2wev2wew1wex1wey1wez1wfl3mfm3mfn3mfo3mfp3mfq3mfr3sfs3mft3mfu3mfv3mfw3mfz3m203k6o212m6m2dw2l2cq2l3t3m3u1w17s4s19m3m}'kerning'{cl{4qs5ku17sw5ou5qy5rw201ss5tw201ws}201s{201ss}201t{ckw4lwcmwcnwcowcpwclw4wu201ts}2k{201ts}2w{4qs5kw5os5qx5ru17sx5tx}2x{17sw5tw5ou5qu}2y{4qs5kw5os5qx5ru17sx5tx}'fof'-6o7t{ckuclucmucnucoucpu4lu5os5rs}3u{17su5tu5qs}3v{17su5tu5qs}7p{17sw5tw5qs}ck{4qs5ku17sw5ou5qy5rw201ss5tw201ws}4l{4qs5ku17sw5ou5qy5rw201ss5tw201ws}cm{4qs5ku17sw5ou5qy5rw201ss5tw201ws}cn{4qs5ku17sw5ou5qy5rw201ss5tw201ws}co{4qs5ku17sw5ou5qy5rw201ss5tw201ws}cp{4qs5ku17sw5ou5qy5rw201ss5tw201ws}6l{17su5tu5os5qw5rs}17s{2ktclvcmvcnvcovcpv4lv4wuckv}5o{ckwclwcmwcnwcowcpw4lw4wu}5q{ckyclycmycnycoycpy4ly4wu5ms}5r{cktcltcmtcntcotcpt4lt4ws}5t{2ktclvcmvcnvcovcpv4lv4wuckv}7q{cksclscmscnscoscps4ls}6p{17su5tu5qw5rs}ek{5qs5rs}el{17su5tu5os5qw5rs}em{17su5tu5os5qs5rs}en{17su5qs5rs}eo{5qs5rs}ep{17su5tu5os5qw5rs}es{5qs}et{17su5tu5qw5rs}eu{17su5tu5qs5rs}ev{5qs}6z{17sv5tv5os5qx5rs}fm{5os5qt5rs}fn{17sv5tv5os5qx5rs}fo{17sv5tv5os5qx5rs}fp{5os5qt5rs}fq{5os5qt5rs}7r{ckuclucmucnucoucpu4lu5os}fs{17sv5tv5os5qx5rs}ft{17ss5ts5qs}fu{17sw5tw5qs}fv{17sw5tw5qs}fw{17ss5ts5qs}fz{ckuclucmucnucoucpu4lu5os5rs}}}"),
-                'Helvetica-Oblique': uncompress("{'widths'{k3p2q4mcx1w201n3r201o6o201s1q201t1q201u1q201w2l201x2l201y2l2k1w2l1w202m2n2n3r2o3r2p5t202q6o2r1n2s2l2t2l2u2r2v3u2w1w2x2l2y1w2z1w3k3r3l3r3m3r3n3r3o3r3p3r3q3r3r3r3s3r203t2l203u2l3v1w3w3u3x3u3y3u3z3r4k6p4l4m4m4m4n4s4o4s4p4m4q3x4r4y4s4s4t1w4u3m4v4m4w3r4x5n4y4s4z4y5k4m5l4y5m4s5n4m5o3x5p4s5q4m5r5y5s4m5t4m5u3x5v1w5w1w5x1w5y2z5z3r6k2l6l3r6m3r6n3m6o3r6p3r6q1w6r3r6s3r6t1q6u1q6v3m6w1q6x5n6y3r6z3r7k3r7l3r7m2l7n3m7o1w7p3r7q3m7r4s7s3m7t3m7u3m7v2l7w1u7x2l7y3u202l3rcl4mal2lam3ran3rao3rap3rar3ras2lat4tau2pav3raw3uay4taz2lbk2sbl3u'fof'6obo2lbp3rbr1wbs2lbu2obv3rbz3xck4m202k3rcm4mcn4mco4mcp4mcq6ocr4scs4mct4mcu4mcv4mcw1w2m2ncy1wcz1wdl4sdm4ydn4ydo4ydp4ydq4yds4ydt4sdu4sdv4sdw4sdz3xek3rel3rem3ren3reo3rep3req5ter3mes3ret3reu3rev3rew1wex1wey1wez1wfl3rfm3rfn3rfo3rfp3rfq3rfr3ufs3xft3rfu3rfv3rfw3rfz3m203k6o212m6o2dw2l2cq2l3t3r3u1w17s4m19m3r}'kerning'{5q{4wv}cl{4qs5kw5ow5qs17sv5tv}201t{2wu4w1k2yu}201x{2wu4wy2yu}17s{2ktclucmucnu4otcpu4lu4wycoucku}2w{7qs4qz5k1m17sy5ow5qx5rsfsu5ty7tufzu}2x{17sy5ty5oy5qs}2y{7qs4qz5k1m17sy5ow5qx5rsfsu5ty7tufzu}'fof'-6o7p{17sv5tv5ow}ck{4qs5kw5ow5qs17sv5tv}4l{4qs5kw5ow5qs17sv5tv}cm{4qs5kw5ow5qs17sv5tv}cn{4qs5kw5ow5qs17sv5tv}co{4qs5kw5ow5qs17sv5tv}cp{4qs5kw5ow5qs17sv5tv}6l{17sy5ty5ow}do{17st5tt}4z{17st5tt}7s{fst}dm{17st5tt}dn{17st5tt}5o{ckwclwcmwcnwcowcpw4lw4wv}dp{17st5tt}dq{17st5tt}7t{5ow}ds{17st5tt}5t{2ktclucmucnu4otcpu4lu4wycoucku}fu{17sv5tv5ow}6p{17sy5ty5ow5qs}ek{17sy5ty5ow}el{17sy5ty5ow}em{17sy5ty5ow}en{5ty}eo{17sy5ty5ow}ep{17sy5ty5ow}es{17sy5ty5qs}et{17sy5ty5ow5qs}eu{17sy5ty5ow5qs}ev{17sy5ty5ow5qs}6z{17sy5ty5ow5qs}fm{17sy5ty5ow5qs}fn{17sy5ty5ow5qs}fo{17sy5ty5ow5qs}fp{17sy5ty5qs}fq{17sy5ty5ow5qs}7r{5ow}fs{17sy5ty5ow5qs}ft{17sv5tv5ow}7m{5ow}fv{17sv5tv5ow}fw{17sv5tv5ow}}}")
-            } };
-  
+            encodings = {
+                'Unicode': {
+                    'Courier': encodingBlock,
+                    'Courier-Bold': encodingBlock,
+                    'Courier-BoldOblique': encodingBlock,
+                    'Courier-Oblique': encodingBlock,
+                    'Helvetica': encodingBlock,
+                    'Helvetica-Bold': encodingBlock,
+                    'Helvetica-BoldOblique': encodingBlock,
+                    'Helvetica-Oblique': encodingBlock,
+                    'Times-Roman': encodingBlock,
+                    'Times-Bold': encodingBlock,
+                    'Times-BoldItalic': encodingBlock,
+                    'Times-Italic': encodingBlock
+                    //	, 'Symbol'
+                    //	, 'ZapfDingbats'
+                }
+            }
+            /** 
+         Resources:
+         Font metrics data is reprocessed derivative of contents of
+         "Font Metrics for PDF Core 14 Fonts" package, which exhibits the following copyright and license:
+         
+         Copyright (c) 1989, 1990, 1991, 1992, 1993, 1997 Adobe Systems Incorporated. All Rights Reserved.
+         
+         This file and the 14 PostScript(R) AFM files it accompanies may be used,
+         copied, and distributed for any purpose and without charge, with or without
+         modification, provided that all copyright notices are retained; that the AFM
+         files are not distributed without this file; that all modifications to this
+         file or any of the AFM files are prominently noted in the modified file(s);
+         and that this paragraph is not modified. Adobe Systems has no responsibility
+         or obligation to support the use of the AFM files.
+         
+         */
+            ,
+            fontMetrics = {
+                'Unicode': {
+                    // all sizing numbers are n/fontMetricsFractionOf = one font size unit
+                    // this means that if fontMetricsFractionOf = 1000, and letter A's width is 476, it's
+                    // width is 476/1000 or 47.6% of its height (regardless of font size)
+                    // At this time this value applies to "widths" and "kerning" numbers.
+
+                    // char code 0 represents "default" (average) width - use it for chars missing in this table.
+                    // key 'fof' represents the "fontMetricsFractionOf" value
+
+                    'Courier-Oblique': uncompress("{'widths'{k3w'fof'6o}'kerning'{'fof'-6o}}"),
+                    'Times-BoldItalic': uncompress("{'widths'{k3o2q4ycx2r201n3m201o6o201s2l201t2l201u2l201w3m201x3m201y3m2k1t2l2r202m2n2n3m2o3m2p5n202q6o2r1w2s2l2t2l2u3m2v3t2w1t2x2l2y1t2z1w3k3m3l3m3m3m3n3m3o3m3p3m3q3m3r3m3s3m203t2l203u2l3v2l3w3t3x3t3y3t3z3m4k5n4l4m4m4m4n4m4o4s4p4m4q4m4r4s4s4y4t2r4u3m4v4m4w3x4x5t4y4s4z4s5k3x5l4s5m4m5n3r5o3x5p4s5q4m5r5t5s4m5t3x5u3x5v2l5w1w5x2l5y3t5z3m6k2l6l3m6m3m6n2w6o3m6p2w6q2l6r3m6s3r6t1w6u1w6v3m6w1w6x4y6y3r6z3m7k3m7l3m7m2r7n2r7o1w7p3r7q2w7r4m7s3m7t2w7u2r7v2n7w1q7x2n7y3t202l3mcl4mal2ram3man3mao3map3mar3mas2lat4uau1uav3maw3way4uaz2lbk2sbl3t'fof'6obo2lbp3tbq3mbr1tbs2lbu1ybv3mbz3mck4m202k3mcm4mcn4mco4mcp4mcq5ycr4mcs4mct4mcu4mcv4mcw2r2m3rcy2rcz2rdl4sdm4sdn4sdo4sdp4sdq4sds4sdt4sdu4sdv4sdw4sdz3mek3mel3mem3men3meo3mep3meq4ser2wes2wet2weu2wev2wew1wex1wey1wez1wfl3rfm3mfn3mfo3mfp3mfq3mfr3tfs3mft3rfu3rfv3rfw3rfz2w203k6o212m6o2dw2l2cq2l3t3m3u2l17s3x19m3m}'kerning'{cl{4qu5kt5qt5rs17ss5ts}201s{201ss}201t{cks4lscmscnscoscpscls2wu2yu201ts}201x{2wu2yu}2k{201ts}2w{4qx5kx5ou5qx5rs17su5tu}2x{17su5tu5ou}2y{4qx5kx5ou5qx5rs17ss5ts}'fof'-6ofn{17sw5tw5ou5qw5rs}7t{cksclscmscnscoscps4ls}3u{17su5tu5os5qs}3v{17su5tu5os5qs}7p{17su5tu}ck{4qu5kt5qt5rs17ss5ts}4l{4qu5kt5qt5rs17ss5ts}cm{4qu5kt5qt5rs17ss5ts}cn{4qu5kt5qt5rs17ss5ts}co{4qu5kt5qt5rs17ss5ts}cp{4qu5kt5qt5rs17ss5ts}6l{4qu5ou5qw5rt17su5tu}5q{ckuclucmucnucoucpu4lu}5r{ckuclucmucnucoucpu4lu}7q{cksclscmscnscoscps4ls}6p{4qu5ou5qw5rt17sw5tw}ek{4qu5ou5qw5rt17su5tu}el{4qu5ou5qw5rt17su5tu}em{4qu5ou5qw5rt17su5tu}en{4qu5ou5qw5rt17su5tu}eo{4qu5ou5qw5rt17su5tu}ep{4qu5ou5qw5rt17su5tu}es{17ss5ts5qs4qu}et{4qu5ou5qw5rt17sw5tw}eu{4qu5ou5qw5rt17ss5ts}ev{17ss5ts5qs4qu}6z{17sw5tw5ou5qw5rs}fm{17sw5tw5ou5qw5rs}7n{201ts}fo{17sw5tw5ou5qw5rs}fp{17sw5tw5ou5qw5rs}fq{17sw5tw5ou5qw5rs}7r{cksclscmscnscoscps4ls}fs{17sw5tw5ou5qw5rs}ft{17su5tu}fu{17su5tu}fv{17su5tu}fw{17su5tu}fz{cksclscmscnscoscps4ls}}}"),
+                    'Helvetica-Bold': uncompress("{'widths'{k3s2q4scx1w201n3r201o6o201s1w201t1w201u1w201w3m201x3m201y3m2k1w2l2l202m2n2n3r2o3r2p5t202q6o2r1s2s2l2t2l2u2r2v3u2w1w2x2l2y1w2z1w3k3r3l3r3m3r3n3r3o3r3p3r3q3r3r3r3s3r203t2l203u2l3v2l3w3u3x3u3y3u3z3x4k6l4l4s4m4s4n4s4o4s4p4m4q3x4r4y4s4s4t1w4u3r4v4s4w3x4x5n4y4s4z4y5k4m5l4y5m4s5n4m5o3x5p4s5q4m5r5y5s4m5t4m5u3x5v2l5w1w5x2l5y3u5z3r6k2l6l3r6m3x6n3r6o3x6p3r6q2l6r3x6s3x6t1w6u1w6v3r6w1w6x5t6y3x6z3x7k3x7l3x7m2r7n3r7o2l7p3x7q3r7r4y7s3r7t3r7u3m7v2r7w1w7x2r7y3u202l3rcl4sal2lam3ran3rao3rap3rar3ras2lat4tau2pav3raw3uay4taz2lbk2sbl3u'fof'6obo2lbp3xbq3rbr1wbs2lbu2obv3rbz3xck4s202k3rcm4scn4sco4scp4scq6ocr4scs4mct4mcu4mcv4mcw1w2m2zcy1wcz1wdl4sdm4ydn4ydo4ydp4ydq4yds4ydt4sdu4sdv4sdw4sdz3xek3rel3rem3ren3reo3rep3req5ter3res3ret3reu3rev3rew1wex1wey1wez1wfl3xfm3xfn3xfo3xfp3xfq3xfr3ufs3xft3xfu3xfv3xfw3xfz3r203k6o212m6o2dw2l2cq2l3t3r3u2l17s4m19m3r}'kerning'{cl{4qs5ku5ot5qs17sv5tv}201t{2ww4wy2yw}201w{2ks}201x{2ww4wy2yw}2k{201ts201xs}2w{7qs4qu5kw5os5qw5rs17su5tu7tsfzs}2x{5ow5qs}2y{7qs4qu5kw5os5qw5rs17su5tu7tsfzs}'fof'-6o7p{17su5tu5ot}ck{4qs5ku5ot5qs17sv5tv}4l{4qs5ku5ot5qs17sv5tv}cm{4qs5ku5ot5qs17sv5tv}cn{4qs5ku5ot5qs17sv5tv}co{4qs5ku5ot5qs17sv5tv}cp{4qs5ku5ot5qs17sv5tv}6l{17st5tt5os}17s{2kwclvcmvcnvcovcpv4lv4wwckv}5o{2kucltcmtcntcotcpt4lt4wtckt}5q{2ksclscmscnscoscps4ls4wvcks}5r{2ks4ws}5t{2kwclvcmvcnvcovcpv4lv4wwckv}eo{17st5tt5os}fu{17su5tu5ot}6p{17ss5ts}ek{17st5tt5os}el{17st5tt5os}em{17st5tt5os}en{17st5tt5os}6o{201ts}ep{17st5tt5os}es{17ss5ts}et{17ss5ts}eu{17ss5ts}ev{17ss5ts}6z{17su5tu5os5qt}fm{17su5tu5os5qt}fn{17su5tu5os5qt}fo{17su5tu5os5qt}fp{17su5tu5os5qt}fq{17su5tu5os5qt}fs{17su5tu5os5qt}ft{17su5tu5ot}7m{5os}fv{17su5tu5ot}fw{17su5tu5ot}}}"),
+                    'Courier': uncompress("{'widths'{k3w'fof'6o}'kerning'{'fof'-6o}}"),
+                    'Courier-BoldOblique': uncompress("{'widths'{k3w'fof'6o}'kerning'{'fof'-6o}}"),
+                    'Times-Bold': uncompress("{'widths'{k3q2q5ncx2r201n3m201o6o201s2l201t2l201u2l201w3m201x3m201y3m2k1t2l2l202m2n2n3m2o3m2p6o202q6o2r1w2s2l2t2l2u3m2v3t2w1t2x2l2y1t2z1w3k3m3l3m3m3m3n3m3o3m3p3m3q3m3r3m3s3m203t2l203u2l3v2l3w3t3x3t3y3t3z3m4k5x4l4s4m4m4n4s4o4s4p4m4q3x4r4y4s4y4t2r4u3m4v4y4w4m4x5y4y4s4z4y5k3x5l4y5m4s5n3r5o4m5p4s5q4s5r6o5s4s5t4s5u4m5v2l5w1w5x2l5y3u5z3m6k2l6l3m6m3r6n2w6o3r6p2w6q2l6r3m6s3r6t1w6u2l6v3r6w1w6x5n6y3r6z3m7k3r7l3r7m2w7n2r7o2l7p3r7q3m7r4s7s3m7t3m7u2w7v2r7w1q7x2r7y3o202l3mcl4sal2lam3man3mao3map3mar3mas2lat4uau1yav3maw3tay4uaz2lbk2sbl3t'fof'6obo2lbp3rbr1tbs2lbu2lbv3mbz3mck4s202k3mcm4scn4sco4scp4scq6ocr4scs4mct4mcu4mcv4mcw2r2m3rcy2rcz2rdl4sdm4ydn4ydo4ydp4ydq4yds4ydt4sdu4sdv4sdw4sdz3rek3mel3mem3men3meo3mep3meq4ser2wes2wet2weu2wev2wew1wex1wey1wez1wfl3rfm3mfn3mfo3mfp3mfq3mfr3tfs3mft3rfu3rfv3rfw3rfz3m203k6o212m6o2dw2l2cq2l3t3m3u2l17s4s19m3m}'kerning'{cl{4qt5ks5ot5qy5rw17sv5tv}201t{cks4lscmscnscoscpscls4wv}2k{201ts}2w{4qu5ku7mu5os5qx5ru17su5tu}2x{17su5tu5ou5qs}2y{4qv5kv7mu5ot5qz5ru17su5tu}'fof'-6o7t{cksclscmscnscoscps4ls}3u{17su5tu5os5qu}3v{17su5tu5os5qu}fu{17su5tu5ou5qu}7p{17su5tu5ou5qu}ck{4qt5ks5ot5qy5rw17sv5tv}4l{4qt5ks5ot5qy5rw17sv5tv}cm{4qt5ks5ot5qy5rw17sv5tv}cn{4qt5ks5ot5qy5rw17sv5tv}co{4qt5ks5ot5qy5rw17sv5tv}cp{4qt5ks5ot5qy5rw17sv5tv}6l{17st5tt5ou5qu}17s{ckuclucmucnucoucpu4lu4wu}5o{ckuclucmucnucoucpu4lu4wu}5q{ckzclzcmzcnzcozcpz4lz4wu}5r{ckxclxcmxcnxcoxcpx4lx4wu}5t{ckuclucmucnucoucpu4lu4wu}7q{ckuclucmucnucoucpu4lu}6p{17sw5tw5ou5qu}ek{17st5tt5qu}el{17st5tt5ou5qu}em{17st5tt5qu}en{17st5tt5qu}eo{17st5tt5qu}ep{17st5tt5ou5qu}es{17ss5ts5qu}et{17sw5tw5ou5qu}eu{17sw5tw5ou5qu}ev{17ss5ts5qu}6z{17sw5tw5ou5qu5rs}fm{17sw5tw5ou5qu5rs}fn{17sw5tw5ou5qu5rs}fo{17sw5tw5ou5qu5rs}fp{17sw5tw5ou5qu5rs}fq{17sw5tw5ou5qu5rs}7r{cktcltcmtcntcotcpt4lt5os}fs{17sw5tw5ou5qu5rs}ft{17su5tu5ou5qu}7m{5os}fv{17su5tu5ou5qu}fw{17su5tu5ou5qu}fz{cksclscmscnscoscps4ls}}}")
+                    //, 'Symbol': uncompress("{'widths'{k3uaw4r19m3m2k1t2l2l202m2y2n3m2p5n202q6o3k3m2s2l2t2l2v3r2w1t3m3m2y1t2z1wbk2sbl3r'fof'6o3n3m3o3m3p3m3q3m3r3m3s3m3t3m3u1w3v1w3w3r3x3r3y3r3z2wbp3t3l3m5v2l5x2l5z3m2q4yfr3r7v3k7w1o7x3k}'kerning'{'fof'-6o}}")
+                    , 'Helvetica': uncompress("{'widths'{k3p2q4mcx1w201n3r201o6o201s1q201t1q201u1q201w2l201x2l201y2l2k1w2l1w202m2n2n3r2o3r2p5t202q6o2r1n2s2l2t2l2u2r2v3u2w1w2x2l2y1w2z1w3k3r3l3r3m3r3n3r3o3r3p3r3q3r3r3r3s3r203t2l203u2l3v1w3w3u3x3u3y3u3z3r4k6p4l4m4m4m4n4s4o4s4p4m4q3x4r4y4s4s4t1w4u3m4v4m4w3r4x5n4y4s4z4y5k4m5l4y5m4s5n4m5o3x5p4s5q4m5r5y5s4m5t4m5u3x5v1w5w1w5x1w5y2z5z3r6k2l6l3r6m3r6n3m6o3r6p3r6q1w6r3r6s3r6t1q6u1q6v3m6w1q6x5n6y3r6z3r7k3r7l3r7m2l7n3m7o1w7p3r7q3m7r4s7s3m7t3m7u3m7v2l7w1u7x2l7y3u202l3rcl4mal2lam3ran3rao3rap3rar3ras2lat4tau2pav3raw3uay4taz2lbk2sbl3u'fof'6obo2lbp3rbr1wbs2lbu2obv3rbz3xck4m202k3rcm4mcn4mco4mcp4mcq6ocr4scs4mct4mcu4mcv4mcw1w2m2ncy1wcz1wdl4sdm4ydn4ydo4ydp4ydq4yds4ydt4sdu4sdv4sdw4sdz3xek3rel3rem3ren3reo3rep3req5ter3mes3ret3reu3rev3rew1wex1wey1wez1wfl3rfm3rfn3rfo3rfp3rfq3rfr3ufs3xft3rfu3rfv3rfw3rfz3m203k6o212m6o2dw2l2cq2l3t3r3u1w17s4m19m3r}'kerning'{5q{4wv}cl{4qs5kw5ow5qs17sv5tv}201t{2wu4w1k2yu}201x{2wu4wy2yu}17s{2ktclucmucnu4otcpu4lu4wycoucku}2w{7qs4qz5k1m17sy5ow5qx5rsfsu5ty7tufzu}2x{17sy5ty5oy5qs}2y{7qs4qz5k1m17sy5ow5qx5rsfsu5ty7tufzu}'fof'-6o7p{17sv5tv5ow}ck{4qs5kw5ow5qs17sv5tv}4l{4qs5kw5ow5qs17sv5tv}cm{4qs5kw5ow5qs17sv5tv}cn{4qs5kw5ow5qs17sv5tv}co{4qs5kw5ow5qs17sv5tv}cp{4qs5kw5ow5qs17sv5tv}6l{17sy5ty5ow}do{17st5tt}4z{17st5tt}7s{fst}dm{17st5tt}dn{17st5tt}5o{ckwclwcmwcnwcowcpw4lw4wv}dp{17st5tt}dq{17st5tt}7t{5ow}ds{17st5tt}5t{2ktclucmucnu4otcpu4lu4wycoucku}fu{17sv5tv5ow}6p{17sy5ty5ow5qs}ek{17sy5ty5ow}el{17sy5ty5ow}em{17sy5ty5ow}en{5ty}eo{17sy5ty5ow}ep{17sy5ty5ow}es{17sy5ty5qs}et{17sy5ty5ow5qs}eu{17sy5ty5ow5qs}ev{17sy5ty5ow5qs}6z{17sy5ty5ow5qs}fm{17sy5ty5ow5qs}fn{17sy5ty5ow5qs}fo{17sy5ty5ow5qs}fp{17sy5ty5qs}fq{17sy5ty5ow5qs}7r{5ow}fs{17sy5ty5ow5qs}ft{17sv5tv5ow}7m{5ow}fv{17sv5tv5ow}fw{17sv5tv5ow}}}"),
+                    'Helvetica-BoldOblique': uncompress("{'widths'{k3s2q4scx1w201n3r201o6o201s1w201t1w201u1w201w3m201x3m201y3m2k1w2l2l202m2n2n3r2o3r2p5t202q6o2r1s2s2l2t2l2u2r2v3u2w1w2x2l2y1w2z1w3k3r3l3r3m3r3n3r3o3r3p3r3q3r3r3r3s3r203t2l203u2l3v2l3w3u3x3u3y3u3z3x4k6l4l4s4m4s4n4s4o4s4p4m4q3x4r4y4s4s4t1w4u3r4v4s4w3x4x5n4y4s4z4y5k4m5l4y5m4s5n4m5o3x5p4s5q4m5r5y5s4m5t4m5u3x5v2l5w1w5x2l5y3u5z3r6k2l6l3r6m3x6n3r6o3x6p3r6q2l6r3x6s3x6t1w6u1w6v3r6w1w6x5t6y3x6z3x7k3x7l3x7m2r7n3r7o2l7p3x7q3r7r4y7s3r7t3r7u3m7v2r7w1w7x2r7y3u202l3rcl4sal2lam3ran3rao3rap3rar3ras2lat4tau2pav3raw3uay4taz2lbk2sbl3u'fof'6obo2lbp3xbq3rbr1wbs2lbu2obv3rbz3xck4s202k3rcm4scn4sco4scp4scq6ocr4scs4mct4mcu4mcv4mcw1w2m2zcy1wcz1wdl4sdm4ydn4ydo4ydp4ydq4yds4ydt4sdu4sdv4sdw4sdz3xek3rel3rem3ren3reo3rep3req5ter3res3ret3reu3rev3rew1wex1wey1wez1wfl3xfm3xfn3xfo3xfp3xfq3xfr3ufs3xft3xfu3xfv3xfw3xfz3r203k6o212m6o2dw2l2cq2l3t3r3u2l17s4m19m3r}'kerning'{cl{4qs5ku5ot5qs17sv5tv}201t{2ww4wy2yw}201w{2ks}201x{2ww4wy2yw}2k{201ts201xs}2w{7qs4qu5kw5os5qw5rs17su5tu7tsfzs}2x{5ow5qs}2y{7qs4qu5kw5os5qw5rs17su5tu7tsfzs}'fof'-6o7p{17su5tu5ot}ck{4qs5ku5ot5qs17sv5tv}4l{4qs5ku5ot5qs17sv5tv}cm{4qs5ku5ot5qs17sv5tv}cn{4qs5ku5ot5qs17sv5tv}co{4qs5ku5ot5qs17sv5tv}cp{4qs5ku5ot5qs17sv5tv}6l{17st5tt5os}17s{2kwclvcmvcnvcovcpv4lv4wwckv}5o{2kucltcmtcntcotcpt4lt4wtckt}5q{2ksclscmscnscoscps4ls4wvcks}5r{2ks4ws}5t{2kwclvcmvcnvcovcpv4lv4wwckv}eo{17st5tt5os}fu{17su5tu5ot}6p{17ss5ts}ek{17st5tt5os}el{17st5tt5os}em{17st5tt5os}en{17st5tt5os}6o{201ts}ep{17st5tt5os}es{17ss5ts}et{17ss5ts}eu{17ss5ts}ev{17ss5ts}6z{17su5tu5os5qt}fm{17su5tu5os5qt}fn{17su5tu5os5qt}fo{17su5tu5os5qt}fp{17su5tu5os5qt}fq{17su5tu5os5qt}fs{17su5tu5os5qt}ft{17su5tu5ot}7m{5os}fv{17su5tu5ot}fw{17su5tu5ot}}}")
+                    //, 'ZapfDingbats': uncompress("{'widths'{k4u2k1w'fof'6o}'kerning'{'fof'-6o}}")
+                    , 'Courier-Bold': uncompress("{'widths'{k3w'fof'6o}'kerning'{'fof'-6o}}"),
+                    'Times-Italic': uncompress("{'widths'{k3n2q4ycx2l201n3m201o5t201s2l201t2l201u2l201w3r201x3r201y3r2k1t2l2l202m2n2n3m2o3m2p5n202q5t2r1p2s2l2t2l2u3m2v4n2w1t2x2l2y1t2z1w3k3m3l3m3m3m3n3m3o3m3p3m3q3m3r3m3s3m203t2l203u2l3v2l3w4n3x4n3y4n3z3m4k5w4l3x4m3x4n4m4o4s4p3x4q3x4r4s4s4s4t2l4u2w4v4m4w3r4x5n4y4m4z4s5k3x5l4s5m3x5n3m5o3r5p4s5q3x5r5n5s3x5t3r5u3r5v2r5w1w5x2r5y2u5z3m6k2l6l3m6m3m6n2w6o3m6p2w6q1w6r3m6s3m6t1w6u1w6v2w6w1w6x4s6y3m6z3m7k3m7l3m7m2r7n2r7o1w7p3m7q2w7r4m7s2w7t2w7u2r7v2s7w1v7x2s7y3q202l3mcl3xal2ram3man3mao3map3mar3mas2lat4wau1vav3maw4nay4waz2lbk2sbl4n'fof'6obo2lbp3mbq3obr1tbs2lbu1zbv3mbz3mck3x202k3mcm3xcn3xco3xcp3xcq5tcr4mcs3xct3xcu3xcv3xcw2l2m2ucy2lcz2ldl4mdm4sdn4sdo4sdp4sdq4sds4sdt4sdu4sdv4sdw4sdz3mek3mel3mem3men3meo3mep3meq4mer2wes2wet2weu2wev2wew1wex1wey1wez1wfl3mfm3mfn3mfo3mfp3mfq3mfr4nfs3mft3mfu3mfv3mfw3mfz2w203k6o212m6m2dw2l2cq2l3t3m3u2l17s3r19m3m}'kerning'{cl{5kt4qw}201s{201sw}201t{201tw2wy2yy6q-t}201x{2wy2yy}2k{201tw}2w{7qs4qy7rs5ky7mw5os5qx5ru17su5tu}2x{17ss5ts5os}2y{7qs4qy7rs5ky7mw5os5qx5ru17su5tu}'fof'-6o6t{17ss5ts5qs}7t{5os}3v{5qs}7p{17su5tu5qs}ck{5kt4qw}4l{5kt4qw}cm{5kt4qw}cn{5kt4qw}co{5kt4qw}cp{5kt4qw}6l{4qs5ks5ou5qw5ru17su5tu}17s{2ks}5q{ckvclvcmvcnvcovcpv4lv}5r{ckuclucmucnucoucpu4lu}5t{2ks}6p{4qs5ks5ou5qw5ru17su5tu}ek{4qs5ks5ou5qw5ru17su5tu}el{4qs5ks5ou5qw5ru17su5tu}em{4qs5ks5ou5qw5ru17su5tu}en{4qs5ks5ou5qw5ru17su5tu}eo{4qs5ks5ou5qw5ru17su5tu}ep{4qs5ks5ou5qw5ru17su5tu}es{5ks5qs4qs}et{4qs5ks5ou5qw5ru17su5tu}eu{4qs5ks5qw5ru17su5tu}ev{5ks5qs4qs}ex{17ss5ts5qs}6z{4qv5ks5ou5qw5ru17su5tu}fm{4qv5ks5ou5qw5ru17su5tu}fn{4qv5ks5ou5qw5ru17su5tu}fo{4qv5ks5ou5qw5ru17su5tu}fp{4qv5ks5ou5qw5ru17su5tu}fq{4qv5ks5ou5qw5ru17su5tu}7r{5os}fs{4qv5ks5ou5qw5ru17su5tu}ft{17su5tu5qs}fu{17su5tu5qs}fv{17su5tu5qs}fw{17su5tu5qs}}}"),
+                    'Times-Roman': uncompress("{'widths'{k3n2q4ycx2l201n3m201o6o201s2l201t2l201u2l201w2w201x2w201y2w2k1t2l2l202m2n2n3m2o3m2p5n202q6o2r1m2s2l2t2l2u3m2v3s2w1t2x2l2y1t2z1w3k3m3l3m3m3m3n3m3o3m3p3m3q3m3r3m3s3m203t2l203u2l3v1w3w3s3x3s3y3s3z2w4k5w4l4s4m4m4n4m4o4s4p3x4q3r4r4s4s4s4t2l4u2r4v4s4w3x4x5t4y4s4z4s5k3r5l4s5m4m5n3r5o3x5p4s5q4s5r5y5s4s5t4s5u3x5v2l5w1w5x2l5y2z5z3m6k2l6l2w6m3m6n2w6o3m6p2w6q2l6r3m6s3m6t1w6u1w6v3m6w1w6x4y6y3m6z3m7k3m7l3m7m2l7n2r7o1w7p3m7q3m7r4s7s3m7t3m7u2w7v3k7w1o7x3k7y3q202l3mcl4sal2lam3man3mao3map3mar3mas2lat4wau1vav3maw3say4waz2lbk2sbl3s'fof'6obo2lbp3mbq2xbr1tbs2lbu1zbv3mbz2wck4s202k3mcm4scn4sco4scp4scq5tcr4mcs3xct3xcu3xcv3xcw2l2m2tcy2lcz2ldl4sdm4sdn4sdo4sdp4sdq4sds4sdt4sdu4sdv4sdw4sdz3mek2wel2wem2wen2weo2wep2weq4mer2wes2wet2weu2wev2wew1wex1wey1wez1wfl3mfm3mfn3mfo3mfp3mfq3mfr3sfs3mft3mfu3mfv3mfw3mfz3m203k6o212m6m2dw2l2cq2l3t3m3u1w17s4s19m3m}'kerning'{cl{4qs5ku17sw5ou5qy5rw201ss5tw201ws}201s{201ss}201t{ckw4lwcmwcnwcowcpwclw4wu201ts}2k{201ts}2w{4qs5kw5os5qx5ru17sx5tx}2x{17sw5tw5ou5qu}2y{4qs5kw5os5qx5ru17sx5tx}'fof'-6o7t{ckuclucmucnucoucpu4lu5os5rs}3u{17su5tu5qs}3v{17su5tu5qs}7p{17sw5tw5qs}ck{4qs5ku17sw5ou5qy5rw201ss5tw201ws}4l{4qs5ku17sw5ou5qy5rw201ss5tw201ws}cm{4qs5ku17sw5ou5qy5rw201ss5tw201ws}cn{4qs5ku17sw5ou5qy5rw201ss5tw201ws}co{4qs5ku17sw5ou5qy5rw201ss5tw201ws}cp{4qs5ku17sw5ou5qy5rw201ss5tw201ws}6l{17su5tu5os5qw5rs}17s{2ktclvcmvcnvcovcpv4lv4wuckv}5o{ckwclwcmwcnwcowcpw4lw4wu}5q{ckyclycmycnycoycpy4ly4wu5ms}5r{cktcltcmtcntcotcpt4lt4ws}5t{2ktclvcmvcnvcovcpv4lv4wuckv}7q{cksclscmscnscoscps4ls}6p{17su5tu5qw5rs}ek{5qs5rs}el{17su5tu5os5qw5rs}em{17su5tu5os5qs5rs}en{17su5qs5rs}eo{5qs5rs}ep{17su5tu5os5qw5rs}es{5qs}et{17su5tu5qw5rs}eu{17su5tu5qs5rs}ev{5qs}6z{17sv5tv5os5qx5rs}fm{5os5qt5rs}fn{17sv5tv5os5qx5rs}fo{17sv5tv5os5qx5rs}fp{5os5qt5rs}fq{5os5qt5rs}7r{ckuclucmucnucoucpu4lu5os}fs{17sv5tv5os5qx5rs}ft{17ss5ts5qs}fu{17sw5tw5qs}fv{17sw5tw5qs}fw{17ss5ts5qs}fz{ckuclucmucnucoucpu4lu5os5rs}}}"),
+                    'Helvetica-Oblique': uncompress("{'widths'{k3p2q4mcx1w201n3r201o6o201s1q201t1q201u1q201w2l201x2l201y2l2k1w2l1w202m2n2n3r2o3r2p5t202q6o2r1n2s2l2t2l2u2r2v3u2w1w2x2l2y1w2z1w3k3r3l3r3m3r3n3r3o3r3p3r3q3r3r3r3s3r203t2l203u2l3v1w3w3u3x3u3y3u3z3r4k6p4l4m4m4m4n4s4o4s4p4m4q3x4r4y4s4s4t1w4u3m4v4m4w3r4x5n4y4s4z4y5k4m5l4y5m4s5n4m5o3x5p4s5q4m5r5y5s4m5t4m5u3x5v1w5w1w5x1w5y2z5z3r6k2l6l3r6m3r6n3m6o3r6p3r6q1w6r3r6s3r6t1q6u1q6v3m6w1q6x5n6y3r6z3r7k3r7l3r7m2l7n3m7o1w7p3r7q3m7r4s7s3m7t3m7u3m7v2l7w1u7x2l7y3u202l3rcl4mal2lam3ran3rao3rap3rar3ras2lat4tau2pav3raw3uay4taz2lbk2sbl3u'fof'6obo2lbp3rbr1wbs2lbu2obv3rbz3xck4m202k3rcm4mcn4mco4mcp4mcq6ocr4scs4mct4mcu4mcv4mcw1w2m2ncy1wcz1wdl4sdm4ydn4ydo4ydp4ydq4yds4ydt4sdu4sdv4sdw4sdz3xek3rel3rem3ren3reo3rep3req5ter3mes3ret3reu3rev3rew1wex1wey1wez1wfl3rfm3rfn3rfo3rfp3rfq3rfr3ufs3xft3rfu3rfv3rfw3rfz3m203k6o212m6o2dw2l2cq2l3t3r3u1w17s4m19m3r}'kerning'{5q{4wv}cl{4qs5kw5ow5qs17sv5tv}201t{2wu4w1k2yu}201x{2wu4wy2yu}17s{2ktclucmucnu4otcpu4lu4wycoucku}2w{7qs4qz5k1m17sy5ow5qx5rsfsu5ty7tufzu}2x{17sy5ty5oy5qs}2y{7qs4qz5k1m17sy5ow5qx5rsfsu5ty7tufzu}'fof'-6o7p{17sv5tv5ow}ck{4qs5kw5ow5qs17sv5tv}4l{4qs5kw5ow5qs17sv5tv}cm{4qs5kw5ow5qs17sv5tv}cn{4qs5kw5ow5qs17sv5tv}co{4qs5kw5ow5qs17sv5tv}cp{4qs5kw5ow5qs17sv5tv}6l{17sy5ty5ow}do{17st5tt}4z{17st5tt}7s{fst}dm{17st5tt}dn{17st5tt}5o{ckwclwcmwcnwcowcpw4lw4wv}dp{17st5tt}dq{17st5tt}7t{5ow}ds{17st5tt}5t{2ktclucmucnu4otcpu4lu4wycoucku}fu{17sv5tv5ow}6p{17sy5ty5ow5qs}ek{17sy5ty5ow}el{17sy5ty5ow}em{17sy5ty5ow}en{5ty}eo{17sy5ty5ow}ep{17sy5ty5ow}es{17sy5ty5qs}et{17sy5ty5ow5qs}eu{17sy5ty5ow5qs}ev{17sy5ty5ow5qs}6z{17sy5ty5ow5qs}fm{17sy5ty5ow5qs}fn{17sy5ty5ow5qs}fo{17sy5ty5ow5qs}fp{17sy5ty5qs}fq{17sy5ty5ow5qs}7r{5ow}fs{17sy5ty5ow5qs}ft{17sv5tv5ow}7m{5ow}fv{17sv5tv5ow}fw{17sv5tv5ow}}}")
+                }
+            };
+
         /*
      This event handler is fired when a new jsPDF object is initialized
      This event handler appends metrics data to standard fonts within
@@ -4906,13 +4911,13 @@ define(['jquery'], function($) {
      char codes to StandardEncoding character codes. The encoding table is to be used
      somewhere around "pdfEscape" call.
      */
-  
+
         API.events.push(['addFont', function (font) {
             var metrics,
                 unicode_section,
                 encoding = 'Unicode',
                 encodingBlock;
-  
+
             metrics = fontMetrics[encoding][font.PostScriptName];
             if (metrics) {
                 if (font.metadata[encoding]) {
@@ -4920,11 +4925,11 @@ define(['jquery'], function($) {
                 } else {
                     unicode_section = font.metadata[encoding] = {};
                 }
-  
+
                 unicode_section.widths = metrics.widths;
                 unicode_section.kerning = metrics.kerning;
             }
-  
+
             encodingBlock = encodings[encoding][font.PostScriptName];
             if (encodingBlock) {
                 if (font.metadata[encoding]) {
@@ -4932,7 +4937,7 @@ define(['jquery'], function($) {
                 } else {
                     unicode_section = font.metadata[encoding] = {};
                 }
-  
+
                 unicode_section.encoding = encodingBlock;
                 if (encodingBlock.codePages && encodingBlock.codePages.length) {
                     font.encoding = encodingBlock.codePages[0];
@@ -4941,43 +4946,43 @@ define(['jquery'], function($) {
         }]); // end of adding event handler
     })(jsPDF.API);
 
-        /* FileSaver.js
-     * A saveAs() FileSaver implementation.
-     * 1.1.20151003
-     *
-     * By Eli Grey, http://eligrey.com
-     * License: MIT
-     *   See https://github.com/eligrey/FileSaver.js/blob/master/LICENSE.md
-     */
-  
+    /* FileSaver.js
+ * A saveAs() FileSaver implementation.
+ * 1.1.20151003
+ *
+ * By Eli Grey, http://eligrey.com
+ * License: MIT
+ *   See https://github.com/eligrey/FileSaver.js/blob/master/LICENSE.md
+ */
+
     /*global self */
     /*jslint bitwise: true, indent: 4, laxbreak: true, laxcomma: true, smarttabs: true, plusplus: true */
-  
+
     /*! @source http://purl.eligrey.com/github/FileSaver.js/blob/master/FileSaver.js */
-  
-    var saveAs = saveAs || (function(view) {
+
+    var saveAs = saveAs || (function (view) {
         "use strict";
         // IE <10 is explicitly unsupported
         if (typeof navigator !== "undefined" && /MSIE [1-9]\./.test(navigator.userAgent)) {
             return;
         }
         var
-              doc = view.document
-              // only get URL when necessary in case Blob.js hasn't overridden it yet
-            , get_URL = function() {
+            doc = view.document
+            // only get URL when necessary in case Blob.js hasn't overridden it yet
+            , get_URL = function () {
                 return view.URL || view.webkitURL || view;
             }
             , save_link = doc.createElementNS("http://www.w3.org/1999/xhtml", "a")
             , can_use_save_link = "download" in save_link
-            , click = function(node) {
+            , click = function (node) {
                 var event = new MouseEvent("click");
                 node.dispatchEvent(event);
             }
             , is_safari = /Version\/[\d\.]+.*Safari/.test(navigator.userAgent)
             , webkit_req_fs = view.webkitRequestFileSystem
             , req_fs = view.requestFileSystem || webkit_req_fs || view.mozRequestFileSystem
-            , throw_outside = function(ex) {
-                (view.setImmediate || view.setTimeout)(function() {
+            , throw_outside = function (ex) {
+                (view.setImmediate || view.setTimeout)(function () {
                     throw ex;
                 }, 0);
             }
@@ -4987,8 +4992,8 @@ define(['jquery'], function($) {
             // https://github.com/eligrey/FileSaver.js/commit/485930a#commitcomment-8768047
             // for the reasoning behind the timeout and revocation flow
             , arbitrary_revoke_timeout = 500 // in ms
-            , revoke = function(file) {
-                var revoker = function() {
+            , revoke = function (file) {
+                var revoker = function () {
                     if (typeof file === "string") { // file is an object URL
                         get_URL().revokeObjectURL(file);
                     } else { // file is a File
@@ -5001,7 +5006,7 @@ define(['jquery'], function($) {
                     setTimeout(revoker, arbitrary_revoke_timeout);
                 }
             }
-            , dispatch = function(filesaver, event_types, event) {
+            , dispatch = function (filesaver, event_types, event) {
                 event_types = [].concat(event_types);
                 var i = event_types.length;
                 while (i--) {
@@ -5015,33 +5020,33 @@ define(['jquery'], function($) {
                     }
                 }
             }
-            , auto_bom = function(blob) {
+            , auto_bom = function (blob) {
                 // prepend BOM for UTF-8 XML and text/* types (including HTML)
                 if (/^\s*(?:text\/\S*|application\/xml|\S*\/\S*\+xml)\s*;.*charset\s*=\s*utf-8/i.test(blob.type)) {
-                    return new Blob(["\ufeff", blob], {type: blob.type});
+                    return new Blob(["\ufeff", blob], { type: blob.type });
                 }
                 return blob;
             }
-            , FileSaver = function(blob, name, no_auto_bom) {
+            , FileSaver = function (blob, name, no_auto_bom) {
                 if (!no_auto_bom) {
                     blob = auto_bom(blob);
                 }
                 // First try a.download, then web filesystem, then object URLs
                 var
-                      filesaver = this
+                    filesaver = this
                     , type = blob.type
                     , blob_changed = false
                     , object_url
                     , target_view
-                    , dispatch_all = function() {
+                    , dispatch_all = function () {
                         dispatch(filesaver, "writestart progress write writeend".split(" "));
                     }
                     // on any filesys errors revert to saving with object URLs
-                    , fs_error = function() {
+                    , fs_error = function () {
                         if (target_view && is_safari && typeof FileReader !== "undefined") {
                             // Safari doesn't allow downloading of blob urls
                             var reader = new FileReader();
-                            reader.onloadend = function() {
+                            reader.onloadend = function () {
                                 var base64Data = reader.result;
                                 target_view.location.href = "data:attachment/file" + base64Data.slice(base64Data.search(/[,;]/));
                                 filesaver.readyState = filesaver.DONE;
@@ -5068,23 +5073,23 @@ define(['jquery'], function($) {
                         dispatch_all();
                         revoke(object_url);
                     }
-                    , abortable = function(func) {
-                        return function() {
+                    , abortable = function (func) {
+                        return function () {
                             if (filesaver.readyState !== filesaver.DONE) {
                                 return func.apply(this, arguments);
                             }
                         };
                     }
-                    , create_if_not_found = {create: true, exclusive: false}
+                    , create_if_not_found = { create: true, exclusive: false }
                     , slice
-                ;
+                    ;
                 filesaver.readyState = filesaver.INIT;
                 if (!name) {
                     name = "download";
                 }
                 if (can_use_save_link) {
                     object_url = get_URL().createObjectURL(blob);
-                    setTimeout(function() {
+                    setTimeout(function () {
                         save_link.href = object_url;
                         save_link.download = name;
                         click(save_link);
@@ -5118,28 +5123,28 @@ define(['jquery'], function($) {
                     return;
                 }
                 fs_min_size += blob.size;
-                req_fs(view.TEMPORARY, fs_min_size, abortable(function(fs) {
-                    fs.root.getDirectory("saved", create_if_not_found, abortable(function(dir) {
-                        var save = function() {
-                            dir.getFile(name, create_if_not_found, abortable(function(file) {
-                                file.createWriter(abortable(function(writer) {
-                                    writer.onwriteend = function(event) {
+                req_fs(view.TEMPORARY, fs_min_size, abortable(function (fs) {
+                    fs.root.getDirectory("saved", create_if_not_found, abortable(function (dir) {
+                        var save = function () {
+                            dir.getFile(name, create_if_not_found, abortable(function (file) {
+                                file.createWriter(abortable(function (writer) {
+                                    writer.onwriteend = function (event) {
                                         target_view.location.href = file.toURL();
                                         filesaver.readyState = filesaver.DONE;
                                         dispatch(filesaver, "writeend", event);
                                         revoke(file);
                                     };
-                                    writer.onerror = function() {
+                                    writer.onerror = function () {
                                         var error = writer.error;
                                         if (error.code !== error.ABORT_ERR) {
                                             fs_error();
                                         }
                                     };
-                                    "writestart progress write abort".split(" ").forEach(function(event) {
+                                    "writestart progress write abort".split(" ").forEach(function (event) {
                                         writer["on" + event] = filesaver["on" + event];
                                     });
                                     writer.write(blob);
-                                    filesaver.abort = function() {
+                                    filesaver.abort = function () {
                                         writer.abort();
                                         filesaver.readyState = filesaver.DONE;
                                     };
@@ -5147,11 +5152,11 @@ define(['jquery'], function($) {
                                 }), fs_error);
                             }), fs_error);
                         };
-                        dir.getFile(name, {create: false}, abortable(function(file) {
+                        dir.getFile(name, { create: false }, abortable(function (file) {
                             // delete file if it already exists
                             file.remove();
                             save();
-                        }), abortable(function(ex) {
+                        }), abortable(function (ex) {
                             if (ex.code === ex.NOT_FOUND_ERR) {
                                 save();
                             } else {
@@ -5162,21 +5167,21 @@ define(['jquery'], function($) {
                 }), fs_error);
             }
             , FS_proto = FileSaver.prototype
-            , saveAs = function(blob, name, no_auto_bom) {
+            , saveAs = function (blob, name, no_auto_bom) {
                 return new FileSaver(blob, name, no_auto_bom);
             }
-        ;
+            ;
         // IE 10+ (native saveAs)
         if (typeof navigator !== "undefined" && navigator.msSaveOrOpenBlob) {
-            return function(blob, name, no_auto_bom) {
+            return function (blob, name, no_auto_bom) {
                 if (!no_auto_bom) {
                     blob = auto_bom(blob);
                 }
                 return navigator.msSaveOrOpenBlob(blob, name || "download");
             };
         }
-  
-        FS_proto.abort = function() {
+
+        FS_proto.abort = function () {
             var filesaver = this;
             filesaver.readyState = filesaver.DONE;
             dispatch(filesaver, "abort");
@@ -5184,26 +5189,26 @@ define(['jquery'], function($) {
         FS_proto.readyState = FS_proto.INIT = 0;
         FS_proto.WRITING = 1;
         FS_proto.DONE = 2;
-  
+
         FS_proto.error =
-        FS_proto.onwritestart =
-        FS_proto.onprogress =
-        FS_proto.onwrite =
-        FS_proto.onabort =
-        FS_proto.onerror =
-        FS_proto.onwriteend =
+            FS_proto.onwritestart =
+            FS_proto.onprogress =
+            FS_proto.onwrite =
+            FS_proto.onabort =
+            FS_proto.onerror =
+            FS_proto.onwriteend =
             null;
-  
+
         return saveAs;
     }(
-           typeof self !== "undefined" && self
+        typeof self !== "undefined" && self
         || typeof window !== "undefined" && window
         || undefined.content
     ));
     // `self` is undefined in Firefox for Android content script context
     // while `this` is nsIContentFrameMessageManager
     // with an attribute `content` that corresponds to the window
-  
+
     // if (typeof module !== "undefined" && module.exports) {
     //   module.exports.saveAs = saveAs;
     // } else if ((typeof define !== "undefined" && define !== null) && (define.amd != null)) {
@@ -5211,7 +5216,7 @@ define(['jquery'], function($) {
     //     return saveAs;
     //   });
     // }
-  
+
     /*
      * Copyright (c) 2012 chick307 <chick307@gmail.com>
      *
@@ -5226,164 +5231,164 @@ define(['jquery'], function($) {
      * Licensed under the MIT License.
      * http://opensource.org/licenses/mit-license
      */
-  
+
     /**
      * Usage CssColors('red');
      * Returns RGB hex color with '#' prefix
      */
-  
+
     var CssColors = {};
     CssColors._colorsTable = {
-        "aliceblue" : "#f0f8ff",
-        "antiquewhite" : "#faebd7",
-        "aqua" : "#00ffff",
-        "aquamarine" : "#7fffd4",
-        "azure" : "#f0ffff",
-        "beige" : "#f5f5dc",
-        "bisque" : "#ffe4c4",
-        "black" : "#000000",
-        "blanchedalmond" : "#ffebcd",
-        "blue" : "#0000ff",
-        "blueviolet" : "#8a2be2",
-        "brown" : "#a52a2a",
-        "burlywood" : "#deb887",
-        "cadetblue" : "#5f9ea0",
-        "chartreuse" : "#7fff00",
-        "chocolate" : "#d2691e",
-        "coral" : "#ff7f50",
-        "cornflowerblue" : "#6495ed",
-        "cornsilk" : "#fff8dc",
-        "crimson" : "#dc143c",
-        "cyan" : "#00ffff",
-        "darkblue" : "#00008b",
-        "darkcyan" : "#008b8b",
-        "darkgoldenrod" : "#b8860b",
-        "darkgray" : "#a9a9a9",
-        "darkgreen" : "#006400",
-        "darkkhaki" : "#bdb76b",
-        "darkmagenta" : "#8b008b",
-        "darkolivegreen" : "#556b2f",
-        "darkorange" : "#ff8c00",
-        "darkorchid" : "#9932cc",
-        "darkred" : "#8b0000",
-        "darksalmon" : "#e9967a",
-        "darkseagreen" : "#8fbc8f",
-        "darkslateblue" : "#483d8b",
-        "darkslategray" : "#2f4f4f",
-        "darkturquoise" : "#00ced1",
-        "darkviolet" : "#9400d3",
-        "deeppink" : "#ff1493",
-        "deepskyblue" : "#00bfff",
-        "dimgray" : "#696969",
-        "dodgerblue" : "#1e90ff",
-        "firebrick" : "#b22222",
-        "floralwhite" : "#fffaf0",
-        "forestgreen" : "#228b22",
-        "fuchsia" : "#ff00ff",
-        "gainsboro" : "#dcdcdc",
-        "ghostwhite" : "#f8f8ff",
-        "gold" : "#ffd700",
-        "goldenrod" : "#daa520",
-        "gray" : "#808080",
-        "green" : "#008000",
-        "greenyellow" : "#adff2f",
-        "honeydew" : "#f0fff0",
-        "hotpink" : "#ff69b4",
-        "indianred " : "#cd5c5c",
-        "indigo" : "#4b0082",
-        "ivory" : "#fffff0",
-        "khaki" : "#f0e68c",
-        "lavender" : "#e6e6fa",
-        "lavenderblush" : "#fff0f5",
-        "lawngreen" : "#7cfc00",
-        "lemonchiffon" : "#fffacd",
-        "lightblue" : "#add8e6",
-        "lightcoral" : "#f08080",
-        "lightcyan" : "#e0ffff",
-        "lightgoldenrodyellow" : "#fafad2",
-        "lightgrey" : "#d3d3d3",
-        "lightgreen" : "#90ee90",
-        "lightpink" : "#ffb6c1",
-        "lightsalmon" : "#ffa07a",
-        "lightseagreen" : "#20b2aa",
-        "lightskyblue" : "#87cefa",
-        "lightslategray" : "#778899",
-        "lightsteelblue" : "#b0c4de",
-        "lightyellow" : "#ffffe0",
-        "lime" : "#00ff00",
-        "limegreen" : "#32cd32",
-        "linen" : "#faf0e6",
-        "magenta" : "#ff00ff",
-        "maroon" : "#800000",
-        "mediumaquamarine" : "#66cdaa",
-        "mediumblue" : "#0000cd",
-        "mediumorchid" : "#ba55d3",
-        "mediumpurple" : "#9370d8",
-        "mediumseagreen" : "#3cb371",
-        "mediumslateblue" : "#7b68ee",
-        "mediumspringgreen" : "#00fa9a",
-        "mediumturquoise" : "#48d1cc",
-        "mediumvioletred" : "#c71585",
-        "midnightblue" : "#191970",
-        "mintcream" : "#f5fffa",
-        "mistyrose" : "#ffe4e1",
-        "moccasin" : "#ffe4b5",
-        "navajowhite" : "#ffdead",
-        "navy" : "#000080",
-        "oldlace" : "#fdf5e6",
-        "olive" : "#808000",
-        "olivedrab" : "#6b8e23",
-        "orange" : "#ffa500",
-        "orangered" : "#ff4500",
-        "orchid" : "#da70d6",
-        "palegoldenrod" : "#eee8aa",
-        "palegreen" : "#98fb98",
-        "paleturquoise" : "#afeeee",
-        "palevioletred" : "#d87093",
-        "papayawhip" : "#ffefd5",
-        "peachpuff" : "#ffdab9",
-        "peru" : "#cd853f",
-        "pink" : "#ffc0cb",
-        "plum" : "#dda0dd",
-        "powderblue" : "#b0e0e6",
-        "purple" : "#800080",
-        "red" : "#ff0000",
-        "rosybrown" : "#bc8f8f",
-        "royalblue" : "#4169e1",
-        "saddlebrown" : "#8b4513",
-        "salmon" : "#fa8072",
-        "sandybrown" : "#f4a460",
-        "seagreen" : "#2e8b57",
-        "seashell" : "#fff5ee",
-        "sienna" : "#a0522d",
-        "silver" : "#c0c0c0",
-        "skyblue" : "#87ceeb",
-        "slateblue" : "#6a5acd",
-        "slategray" : "#708090",
-        "snow" : "#fffafa",
-        "springgreen" : "#00ff7f",
-        "steelblue" : "#4682b4",
-        "tan" : "#d2b48c",
-        "teal" : "#008080",
-        "thistle" : "#d8bfd8",
-        "tomato" : "#ff6347",
-        "turquoise" : "#40e0d0",
-        "violet" : "#ee82ee",
-        "wheat" : "#f5deb3",
-        "white" : "#ffffff",
-        "whitesmoke" : "#f5f5f5",
-        "yellow" : "#ffff00",
-        "yellowgreen" : "#9acd32"
+        "aliceblue": "#f0f8ff",
+        "antiquewhite": "#faebd7",
+        "aqua": "#00ffff",
+        "aquamarine": "#7fffd4",
+        "azure": "#f0ffff",
+        "beige": "#f5f5dc",
+        "bisque": "#ffe4c4",
+        "black": "#000000",
+        "blanchedalmond": "#ffebcd",
+        "blue": "#0000ff",
+        "blueviolet": "#8a2be2",
+        "brown": "#a52a2a",
+        "burlywood": "#deb887",
+        "cadetblue": "#5f9ea0",
+        "chartreuse": "#7fff00",
+        "chocolate": "#d2691e",
+        "coral": "#ff7f50",
+        "cornflowerblue": "#6495ed",
+        "cornsilk": "#fff8dc",
+        "crimson": "#dc143c",
+        "cyan": "#00ffff",
+        "darkblue": "#00008b",
+        "darkcyan": "#008b8b",
+        "darkgoldenrod": "#b8860b",
+        "darkgray": "#a9a9a9",
+        "darkgreen": "#006400",
+        "darkkhaki": "#bdb76b",
+        "darkmagenta": "#8b008b",
+        "darkolivegreen": "#556b2f",
+        "darkorange": "#ff8c00",
+        "darkorchid": "#9932cc",
+        "darkred": "#8b0000",
+        "darksalmon": "#e9967a",
+        "darkseagreen": "#8fbc8f",
+        "darkslateblue": "#483d8b",
+        "darkslategray": "#2f4f4f",
+        "darkturquoise": "#00ced1",
+        "darkviolet": "#9400d3",
+        "deeppink": "#ff1493",
+        "deepskyblue": "#00bfff",
+        "dimgray": "#696969",
+        "dodgerblue": "#1e90ff",
+        "firebrick": "#b22222",
+        "floralwhite": "#fffaf0",
+        "forestgreen": "#228b22",
+        "fuchsia": "#ff00ff",
+        "gainsboro": "#dcdcdc",
+        "ghostwhite": "#f8f8ff",
+        "gold": "#ffd700",
+        "goldenrod": "#daa520",
+        "gray": "#808080",
+        "green": "#008000",
+        "greenyellow": "#adff2f",
+        "honeydew": "#f0fff0",
+        "hotpink": "#ff69b4",
+        "indianred ": "#cd5c5c",
+        "indigo": "#4b0082",
+        "ivory": "#fffff0",
+        "khaki": "#f0e68c",
+        "lavender": "#e6e6fa",
+        "lavenderblush": "#fff0f5",
+        "lawngreen": "#7cfc00",
+        "lemonchiffon": "#fffacd",
+        "lightblue": "#add8e6",
+        "lightcoral": "#f08080",
+        "lightcyan": "#e0ffff",
+        "lightgoldenrodyellow": "#fafad2",
+        "lightgrey": "#d3d3d3",
+        "lightgreen": "#90ee90",
+        "lightpink": "#ffb6c1",
+        "lightsalmon": "#ffa07a",
+        "lightseagreen": "#20b2aa",
+        "lightskyblue": "#87cefa",
+        "lightslategray": "#778899",
+        "lightsteelblue": "#b0c4de",
+        "lightyellow": "#ffffe0",
+        "lime": "#00ff00",
+        "limegreen": "#32cd32",
+        "linen": "#faf0e6",
+        "magenta": "#ff00ff",
+        "maroon": "#800000",
+        "mediumaquamarine": "#66cdaa",
+        "mediumblue": "#0000cd",
+        "mediumorchid": "#ba55d3",
+        "mediumpurple": "#9370d8",
+        "mediumseagreen": "#3cb371",
+        "mediumslateblue": "#7b68ee",
+        "mediumspringgreen": "#00fa9a",
+        "mediumturquoise": "#48d1cc",
+        "mediumvioletred": "#c71585",
+        "midnightblue": "#191970",
+        "mintcream": "#f5fffa",
+        "mistyrose": "#ffe4e1",
+        "moccasin": "#ffe4b5",
+        "navajowhite": "#ffdead",
+        "navy": "#000080",
+        "oldlace": "#fdf5e6",
+        "olive": "#808000",
+        "olivedrab": "#6b8e23",
+        "orange": "#ffa500",
+        "orangered": "#ff4500",
+        "orchid": "#da70d6",
+        "palegoldenrod": "#eee8aa",
+        "palegreen": "#98fb98",
+        "paleturquoise": "#afeeee",
+        "palevioletred": "#d87093",
+        "papayawhip": "#ffefd5",
+        "peachpuff": "#ffdab9",
+        "peru": "#cd853f",
+        "pink": "#ffc0cb",
+        "plum": "#dda0dd",
+        "powderblue": "#b0e0e6",
+        "purple": "#800080",
+        "red": "#ff0000",
+        "rosybrown": "#bc8f8f",
+        "royalblue": "#4169e1",
+        "saddlebrown": "#8b4513",
+        "salmon": "#fa8072",
+        "sandybrown": "#f4a460",
+        "seagreen": "#2e8b57",
+        "seashell": "#fff5ee",
+        "sienna": "#a0522d",
+        "silver": "#c0c0c0",
+        "skyblue": "#87ceeb",
+        "slateblue": "#6a5acd",
+        "slategray": "#708090",
+        "snow": "#fffafa",
+        "springgreen": "#00ff7f",
+        "steelblue": "#4682b4",
+        "tan": "#d2b48c",
+        "teal": "#008080",
+        "thistle": "#d8bfd8",
+        "tomato": "#ff6347",
+        "turquoise": "#40e0d0",
+        "violet": "#ee82ee",
+        "wheat": "#f5deb3",
+        "white": "#ffffff",
+        "whitesmoke": "#f5f5f5",
+        "yellow": "#ffff00",
+        "yellowgreen": "#9acd32"
     };
-  
-    CssColors.colorNameToHex = function(color) {
+
+    CssColors.colorNameToHex = function (color) {
         color = color.toLowerCase();
         if (typeof this._colorsTable[color] != 'undefined')
             return this._colorsTable[color];
-  
+
         return false;
     };
-  
+
     /*
      Deflate.js - https://github.com/gildas-lormeau/zip.js
      Copyright (c) 2013 Gildas Lormeau. All rights reserved.
@@ -5412,92 +5417,92 @@ define(['jquery'], function($) {
      NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
      EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
      */
-  
+
     /*
      * This program is based on JZlib 1.0.2 ymnk, JCraft,Inc.
      * JZlib is based on zlib-1.1.3, so all credit should go authors
      * Jean-loup Gailly(jloup@gzip.org) and Mark Adler(madler@alumni.caltech.edu)
      * and contributors of zlib.
      */
-  
-    var Deflater = (function(obj) {
-  
+
+    var Deflater = (function (obj) {
+
         // Global
-  
+
         var MAX_BITS = 15;
         var D_CODES = 30;
         var BL_CODES = 19;
-  
+
         var LENGTH_CODES = 29;
         var LITERALS = 256;
         var L_CODES = (LITERALS + 1 + LENGTH_CODES);
         var HEAP_SIZE = (2 * L_CODES + 1);
-  
+
         var END_BLOCK = 256;
-  
+
         // Bit length codes must not exceed MAX_BL_BITS bits
         var MAX_BL_BITS = 7;
-  
+
         // repeat previous bit length 3-6 times (2 bits of repeat count)
         var REP_3_6 = 16;
-  
+
         // repeat a zero length 3-10 times (3 bits of repeat count)
         var REPZ_3_10 = 17;
-  
+
         // repeat a zero length 11-138 times (7 bits of repeat count)
         var REPZ_11_138 = 18;
-  
+
         // The lengths of the bit length codes are sent in order of decreasing
         // probability, to avoid transmitting the lengths for unused bit
         // length codes.
-  
+
         var Buf_size = 8 * 2;
-  
+
         // JZlib version : "1.0.2"
         var Z_DEFAULT_COMPRESSION = -1;
-  
+
         // compression strategy
         var Z_FILTERED = 1;
         var Z_HUFFMAN_ONLY = 2;
         var Z_DEFAULT_STRATEGY = 0;
-  
+
         var Z_NO_FLUSH = 0;
         var Z_PARTIAL_FLUSH = 1;
         var Z_FULL_FLUSH = 3;
         var Z_FINISH = 4;
-  
+
         var Z_OK = 0;
         var Z_STREAM_END = 1;
         var Z_NEED_DICT = 2;
         var Z_STREAM_ERROR = -2;
         var Z_DATA_ERROR = -3;
         var Z_BUF_ERROR = -5;
-  
+
         // Tree
-  
+
         // see definition of array dist_code below
-        var _dist_code = [ 0, 1, 2, 3, 4, 4, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 9, 9, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
-                10, 10, 10, 10, 10, 10, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12,
-                12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,
-                13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14,
-                14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14,
-                14, 14, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
-                15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 0, 0, 16, 17, 18, 18, 19, 19,
-                20, 20, 20, 20, 21, 21, 21, 21, 22, 22, 22, 22, 22, 22, 22, 22, 23, 23, 23, 23, 23, 23, 23, 23, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24,
-                24, 24, 24, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26,
-                26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27,
-                27, 27, 27, 27, 27, 27, 27, 27, 27, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28,
-                28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 29,
-                29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29,
-                29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29 ];
-  
+        var _dist_code = [0, 1, 2, 3, 4, 4, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 9, 9, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
+            10, 10, 10, 10, 10, 10, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12,
+            12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,
+            13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14,
+            14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14,
+            14, 14, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
+            15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 0, 0, 16, 17, 18, 18, 19, 19,
+            20, 20, 20, 20, 21, 21, 21, 21, 22, 22, 22, 22, 22, 22, 22, 22, 23, 23, 23, 23, 23, 23, 23, 23, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24,
+            24, 24, 24, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26,
+            26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27,
+            27, 27, 27, 27, 27, 27, 27, 27, 27, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28,
+            28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 29,
+            29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29,
+            29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29];
+
         function Tree() {
             var that = this;
-  
+
             // dyn_tree; // the dynamic tree
             // max_code; // largest code with non zero frequency
             // stat_desc; // the corresponding static tree
-  
+
             // Compute the optimal bit lengths for a tree and update the total bit
             // length
             // for the current block.
@@ -5519,14 +5524,14 @@ define(['jquery'], function($) {
                 var xbits; // extra bits
                 var f; // frequency
                 var overflow = 0; // number of elements with bit length too large
-  
+
                 for (bits = 0; bits <= MAX_BITS; bits++)
                     s.bl_count[bits] = 0;
-  
+
                 // In a first pass, compute the optimal bit lengths (which may
                 // overflow in the case of the bit length tree).
                 tree[s.heap[s.heap_max] * 2 + 1] = 0; // root of the heap
-  
+
                 for (h = s.heap_max + 1; h < HEAP_SIZE; h++) {
                     n = s.heap[h];
                     bits = tree[tree[n * 2 + 1] * 2 + 1] + 1;
@@ -5536,10 +5541,10 @@ define(['jquery'], function($) {
                     }
                     tree[n * 2 + 1] = bits;
                     // We overwrite tree[n*2+1] which is no longer needed
-  
+
                     if (n > that.max_code)
                         continue; // not a leaf node
-  
+
                     s.bl_count[bits]++;
                     xbits = 0;
                     if (n >= base)
@@ -5551,7 +5556,7 @@ define(['jquery'], function($) {
                 }
                 if (overflow === 0)
                     return;
-  
+
                 // This happens for example on obj2 and pic of the Calgary corpus
                 // Find the first bit length which could increase:
                 do {
@@ -5565,7 +5570,7 @@ define(['jquery'], function($) {
                     // but this does not affect bl_count[max_length]
                     overflow -= 2;
                 } while (overflow > 0);
-  
+
                 for (bits = max_length; bits !== 0; bits--) {
                     n = s.bl_count[bits];
                     while (n !== 0) {
@@ -5580,13 +5585,13 @@ define(['jquery'], function($) {
                     }
                 }
             }
-  
+
             // Reverse the first len bits of a code, using straightforward code (a
             // faster
             // method would use a table)
             // IN assertion: 1 <= len <= 15
             function bi_reverse(code, // the value to invert
-            len // its bit length
+                len // its bit length
             ) {
                 var res = 0;
                 do {
@@ -5596,7 +5601,7 @@ define(['jquery'], function($) {
                 } while (--len > 0);
                 return res >>> 1;
             }
-  
+
             // Generate the codes for a given tree and bit counts (which need not be
             // optimal).
             // IN assertion: the array bl_count contains the bit length statistics for
@@ -5604,8 +5609,8 @@ define(['jquery'], function($) {
             // OUT assertion: the field code is set for all tree elements of non
             // zero code length.
             function gen_codes(tree, // the tree to decorate
-            max_code, // largest code with non zero frequency
-            bl_count // number of codes at each bit length
+                max_code, // largest code with non zero frequency
+                bl_count // number of codes at each bit length
             ) {
                 var next_code = []; // next code value for each
                 // bit length
@@ -5613,19 +5618,19 @@ define(['jquery'], function($) {
                 var bits; // bit index
                 var n; // code index
                 var len;
-  
+
                 // The distribution counts are first used to generate the code values
                 // without bit reversal.
                 for (bits = 1; bits <= MAX_BITS; bits++) {
                     next_code[bits] = code = ((code + bl_count[bits - 1]) << 1);
                 }
-  
+
                 // Check that the bit counts in bl_count are consistent. The last code
                 // must be all ones.
                 // Assert (code + bl_count[MAX_BITS]-1 == (1<<MAX_BITS)-1,
                 // "inconsistent bit counts");
                 // Tracev((stderr,"\ngen_codes: max_code %d ", max_code));
-  
+
                 for (n = 0; n <= max_code; n++) {
                     len = tree[n * 2 + 1];
                     if (len === 0)
@@ -5634,27 +5639,27 @@ define(['jquery'], function($) {
                     tree[n * 2] = bi_reverse(next_code[len]++, len);
                 }
             }
-  
+
             // Construct one Huffman tree and assigns the code bit strings and lengths.
             // Update the total bit length for the current block.
             // IN assertion: the field freq is set for all tree elements.
             // OUT assertions: the fields len and code are set to the optimal bit length
             // and corresponding code. The length opt_len is updated; static_len is
             // also updated if stree is not null. The field max_code is set.
-            that.build_tree = function(s) {
+            that.build_tree = function (s) {
                 var tree = that.dyn_tree;
                 var stree = that.stat_desc.static_tree;
                 var elems = that.stat_desc.elems;
                 var n, m; // iterate over heap elements
                 var max_code = -1; // largest code with non zero frequency
                 var node; // new node being created
-  
+
                 // Construct the initial heap, with least frequent element in
                 // heap[1]. The sons of heap[n] are heap[2*n] and heap[2*n+1].
                 // heap[0] is not used.
                 s.heap_len = 0;
                 s.heap_max = HEAP_SIZE;
-  
+
                 for (n = 0; n < elems; n++) {
                     if (tree[n * 2] !== 0) {
                         s.heap[++s.heap_len] = max_code = n;
@@ -5663,7 +5668,7 @@ define(['jquery'], function($) {
                         tree[n * 2 + 1] = 0;
                     }
                 }
-  
+
                 // The pkzip format requires that at least one distance code exists,
                 // and that at least one bit should be sent even if there is only one
                 // possible code. So to avoid special checks later on we force at least
@@ -5678,16 +5683,16 @@ define(['jquery'], function($) {
                     // node is 0 or 1 so it does not have extra bits
                 }
                 that.max_code = max_code;
-  
+
                 // The elements heap[heap_len/2+1 .. heap_len] are leaves of the tree,
                 // establish sub-heaps of increasing lengths:
-  
+
                 for (n = Math.floor(s.heap_len / 2); n >= 1; n--)
                     s.pqdownheap(tree, n);
-  
+
                 // Construct the Huffman tree by repeatedly combining the least two
                 // frequent nodes.
-  
+
                 node = elems; // next internal node of the tree
                 do {
                     // n = node of least frequency
@@ -5695,66 +5700,66 @@ define(['jquery'], function($) {
                     s.heap[1] = s.heap[s.heap_len--];
                     s.pqdownheap(tree, 1);
                     m = s.heap[1]; // m = node of next least frequency
-  
+
                     s.heap[--s.heap_max] = n; // keep the nodes sorted by frequency
                     s.heap[--s.heap_max] = m;
-  
+
                     // Create a new node father of n and m
                     tree[node * 2] = (tree[n * 2] + tree[m * 2]);
                     s.depth[node] = Math.max(s.depth[n], s.depth[m]) + 1;
                     tree[n * 2 + 1] = tree[m * 2 + 1] = node;
-  
+
                     // and insert the new node in the heap
                     s.heap[1] = node++;
                     s.pqdownheap(tree, 1);
                 } while (s.heap_len >= 2);
-  
+
                 s.heap[--s.heap_max] = s.heap[1];
-  
+
                 // At this point, the fields freq and dad are set. We can now
                 // generate the bit lengths.
-  
+
                 gen_bitlen(s);
-  
+
                 // The field len is now set, we can generate the bit codes
                 gen_codes(tree, that.max_code, s.bl_count);
             };
-  
+
         }
-  
-        Tree._length_code = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 12, 12, 13, 13, 13, 13, 14, 14, 14, 14, 15, 15, 15, 15, 16, 16, 16, 16,
-                16, 16, 16, 16, 17, 17, 17, 17, 17, 17, 17, 17, 18, 18, 18, 18, 18, 18, 18, 18, 19, 19, 19, 19, 19, 19, 19, 19, 20, 20, 20, 20, 20, 20, 20, 20, 20,
-                20, 20, 20, 20, 20, 20, 20, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22,
-                22, 22, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24,
-                24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25,
-                25, 25, 25, 25, 25, 25, 25, 25, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26,
-                26, 26, 26, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 28 ];
-  
-        Tree.base_length = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 14, 16, 20, 24, 28, 32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 0 ];
-  
-        Tree.base_dist = [ 0, 1, 2, 3, 4, 6, 8, 12, 16, 24, 32, 48, 64, 96, 128, 192, 256, 384, 512, 768, 1024, 1536, 2048, 3072, 4096, 6144, 8192, 12288, 16384,
-                24576 ];
-  
+
+        Tree._length_code = [0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 12, 12, 13, 13, 13, 13, 14, 14, 14, 14, 15, 15, 15, 15, 16, 16, 16, 16,
+            16, 16, 16, 16, 17, 17, 17, 17, 17, 17, 17, 17, 18, 18, 18, 18, 18, 18, 18, 18, 19, 19, 19, 19, 19, 19, 19, 19, 20, 20, 20, 20, 20, 20, 20, 20, 20,
+            20, 20, 20, 20, 20, 20, 20, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22,
+            22, 22, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24,
+            24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25,
+            25, 25, 25, 25, 25, 25, 25, 25, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26,
+            26, 26, 26, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 28];
+
+        Tree.base_length = [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 14, 16, 20, 24, 28, 32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 0];
+
+        Tree.base_dist = [0, 1, 2, 3, 4, 6, 8, 12, 16, 24, 32, 48, 64, 96, 128, 192, 256, 384, 512, 768, 1024, 1536, 2048, 3072, 4096, 6144, 8192, 12288, 16384,
+            24576];
+
         // Mapping from a distance to a distance code. dist is the distance - 1 and
         // must not have side effects. _dist_code[256] and _dist_code[257] are never
         // used.
-        Tree.d_code = function(dist) {
+        Tree.d_code = function (dist) {
             return ((dist) < 256 ? _dist_code[dist] : _dist_code[256 + ((dist) >>> 7)]);
         };
-  
+
         // extra bits for each length code
-        Tree.extra_lbits = [ 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 0 ];
-  
+        Tree.extra_lbits = [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 0];
+
         // extra bits for each distance code
-        Tree.extra_dbits = [ 0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13 ];
-  
+        Tree.extra_dbits = [0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13];
+
         // extra bits for each bit length code
-        Tree.extra_blbits = [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 3, 7 ];
-  
-        Tree.bl_order = [ 16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15 ];
-  
+        Tree.extra_blbits = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 3, 7];
+
+        Tree.bl_order = [16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15];
+
         // StaticTree
-  
+
         function StaticTree(static_tree, extra_bits, extra_base, elems, max_length) {
             var that = this;
             that.static_tree = static_tree;
@@ -5763,38 +5768,38 @@ define(['jquery'], function($) {
             that.elems = elems;
             that.max_length = max_length;
         }
-  
-        StaticTree.static_ltree = [ 12, 8, 140, 8, 76, 8, 204, 8, 44, 8, 172, 8, 108, 8, 236, 8, 28, 8, 156, 8, 92, 8, 220, 8, 60, 8, 188, 8, 124, 8, 252, 8, 2, 8,
-                130, 8, 66, 8, 194, 8, 34, 8, 162, 8, 98, 8, 226, 8, 18, 8, 146, 8, 82, 8, 210, 8, 50, 8, 178, 8, 114, 8, 242, 8, 10, 8, 138, 8, 74, 8, 202, 8, 42,
-                8, 170, 8, 106, 8, 234, 8, 26, 8, 154, 8, 90, 8, 218, 8, 58, 8, 186, 8, 122, 8, 250, 8, 6, 8, 134, 8, 70, 8, 198, 8, 38, 8, 166, 8, 102, 8, 230, 8,
-                22, 8, 150, 8, 86, 8, 214, 8, 54, 8, 182, 8, 118, 8, 246, 8, 14, 8, 142, 8, 78, 8, 206, 8, 46, 8, 174, 8, 110, 8, 238, 8, 30, 8, 158, 8, 94, 8,
-                222, 8, 62, 8, 190, 8, 126, 8, 254, 8, 1, 8, 129, 8, 65, 8, 193, 8, 33, 8, 161, 8, 97, 8, 225, 8, 17, 8, 145, 8, 81, 8, 209, 8, 49, 8, 177, 8, 113,
-                8, 241, 8, 9, 8, 137, 8, 73, 8, 201, 8, 41, 8, 169, 8, 105, 8, 233, 8, 25, 8, 153, 8, 89, 8, 217, 8, 57, 8, 185, 8, 121, 8, 249, 8, 5, 8, 133, 8,
-                69, 8, 197, 8, 37, 8, 165, 8, 101, 8, 229, 8, 21, 8, 149, 8, 85, 8, 213, 8, 53, 8, 181, 8, 117, 8, 245, 8, 13, 8, 141, 8, 77, 8, 205, 8, 45, 8,
-                173, 8, 109, 8, 237, 8, 29, 8, 157, 8, 93, 8, 221, 8, 61, 8, 189, 8, 125, 8, 253, 8, 19, 9, 275, 9, 147, 9, 403, 9, 83, 9, 339, 9, 211, 9, 467, 9,
-                51, 9, 307, 9, 179, 9, 435, 9, 115, 9, 371, 9, 243, 9, 499, 9, 11, 9, 267, 9, 139, 9, 395, 9, 75, 9, 331, 9, 203, 9, 459, 9, 43, 9, 299, 9, 171, 9,
-                427, 9, 107, 9, 363, 9, 235, 9, 491, 9, 27, 9, 283, 9, 155, 9, 411, 9, 91, 9, 347, 9, 219, 9, 475, 9, 59, 9, 315, 9, 187, 9, 443, 9, 123, 9, 379,
-                9, 251, 9, 507, 9, 7, 9, 263, 9, 135, 9, 391, 9, 71, 9, 327, 9, 199, 9, 455, 9, 39, 9, 295, 9, 167, 9, 423, 9, 103, 9, 359, 9, 231, 9, 487, 9, 23,
-                9, 279, 9, 151, 9, 407, 9, 87, 9, 343, 9, 215, 9, 471, 9, 55, 9, 311, 9, 183, 9, 439, 9, 119, 9, 375, 9, 247, 9, 503, 9, 15, 9, 271, 9, 143, 9,
-                399, 9, 79, 9, 335, 9, 207, 9, 463, 9, 47, 9, 303, 9, 175, 9, 431, 9, 111, 9, 367, 9, 239, 9, 495, 9, 31, 9, 287, 9, 159, 9, 415, 9, 95, 9, 351, 9,
-                223, 9, 479, 9, 63, 9, 319, 9, 191, 9, 447, 9, 127, 9, 383, 9, 255, 9, 511, 9, 0, 7, 64, 7, 32, 7, 96, 7, 16, 7, 80, 7, 48, 7, 112, 7, 8, 7, 72, 7,
-                40, 7, 104, 7, 24, 7, 88, 7, 56, 7, 120, 7, 4, 7, 68, 7, 36, 7, 100, 7, 20, 7, 84, 7, 52, 7, 116, 7, 3, 8, 131, 8, 67, 8, 195, 8, 35, 8, 163, 8,
-                99, 8, 227, 8 ];
-  
-        StaticTree.static_dtree = [ 0, 5, 16, 5, 8, 5, 24, 5, 4, 5, 20, 5, 12, 5, 28, 5, 2, 5, 18, 5, 10, 5, 26, 5, 6, 5, 22, 5, 14, 5, 30, 5, 1, 5, 17, 5, 9, 5,
-                25, 5, 5, 5, 21, 5, 13, 5, 29, 5, 3, 5, 19, 5, 11, 5, 27, 5, 7, 5, 23, 5 ];
-  
+
+        StaticTree.static_ltree = [12, 8, 140, 8, 76, 8, 204, 8, 44, 8, 172, 8, 108, 8, 236, 8, 28, 8, 156, 8, 92, 8, 220, 8, 60, 8, 188, 8, 124, 8, 252, 8, 2, 8,
+            130, 8, 66, 8, 194, 8, 34, 8, 162, 8, 98, 8, 226, 8, 18, 8, 146, 8, 82, 8, 210, 8, 50, 8, 178, 8, 114, 8, 242, 8, 10, 8, 138, 8, 74, 8, 202, 8, 42,
+            8, 170, 8, 106, 8, 234, 8, 26, 8, 154, 8, 90, 8, 218, 8, 58, 8, 186, 8, 122, 8, 250, 8, 6, 8, 134, 8, 70, 8, 198, 8, 38, 8, 166, 8, 102, 8, 230, 8,
+            22, 8, 150, 8, 86, 8, 214, 8, 54, 8, 182, 8, 118, 8, 246, 8, 14, 8, 142, 8, 78, 8, 206, 8, 46, 8, 174, 8, 110, 8, 238, 8, 30, 8, 158, 8, 94, 8,
+            222, 8, 62, 8, 190, 8, 126, 8, 254, 8, 1, 8, 129, 8, 65, 8, 193, 8, 33, 8, 161, 8, 97, 8, 225, 8, 17, 8, 145, 8, 81, 8, 209, 8, 49, 8, 177, 8, 113,
+            8, 241, 8, 9, 8, 137, 8, 73, 8, 201, 8, 41, 8, 169, 8, 105, 8, 233, 8, 25, 8, 153, 8, 89, 8, 217, 8, 57, 8, 185, 8, 121, 8, 249, 8, 5, 8, 133, 8,
+            69, 8, 197, 8, 37, 8, 165, 8, 101, 8, 229, 8, 21, 8, 149, 8, 85, 8, 213, 8, 53, 8, 181, 8, 117, 8, 245, 8, 13, 8, 141, 8, 77, 8, 205, 8, 45, 8,
+            173, 8, 109, 8, 237, 8, 29, 8, 157, 8, 93, 8, 221, 8, 61, 8, 189, 8, 125, 8, 253, 8, 19, 9, 275, 9, 147, 9, 403, 9, 83, 9, 339, 9, 211, 9, 467, 9,
+            51, 9, 307, 9, 179, 9, 435, 9, 115, 9, 371, 9, 243, 9, 499, 9, 11, 9, 267, 9, 139, 9, 395, 9, 75, 9, 331, 9, 203, 9, 459, 9, 43, 9, 299, 9, 171, 9,
+            427, 9, 107, 9, 363, 9, 235, 9, 491, 9, 27, 9, 283, 9, 155, 9, 411, 9, 91, 9, 347, 9, 219, 9, 475, 9, 59, 9, 315, 9, 187, 9, 443, 9, 123, 9, 379,
+            9, 251, 9, 507, 9, 7, 9, 263, 9, 135, 9, 391, 9, 71, 9, 327, 9, 199, 9, 455, 9, 39, 9, 295, 9, 167, 9, 423, 9, 103, 9, 359, 9, 231, 9, 487, 9, 23,
+            9, 279, 9, 151, 9, 407, 9, 87, 9, 343, 9, 215, 9, 471, 9, 55, 9, 311, 9, 183, 9, 439, 9, 119, 9, 375, 9, 247, 9, 503, 9, 15, 9, 271, 9, 143, 9,
+            399, 9, 79, 9, 335, 9, 207, 9, 463, 9, 47, 9, 303, 9, 175, 9, 431, 9, 111, 9, 367, 9, 239, 9, 495, 9, 31, 9, 287, 9, 159, 9, 415, 9, 95, 9, 351, 9,
+            223, 9, 479, 9, 63, 9, 319, 9, 191, 9, 447, 9, 127, 9, 383, 9, 255, 9, 511, 9, 0, 7, 64, 7, 32, 7, 96, 7, 16, 7, 80, 7, 48, 7, 112, 7, 8, 7, 72, 7,
+            40, 7, 104, 7, 24, 7, 88, 7, 56, 7, 120, 7, 4, 7, 68, 7, 36, 7, 100, 7, 20, 7, 84, 7, 52, 7, 116, 7, 3, 8, 131, 8, 67, 8, 195, 8, 35, 8, 163, 8,
+            99, 8, 227, 8];
+
+        StaticTree.static_dtree = [0, 5, 16, 5, 8, 5, 24, 5, 4, 5, 20, 5, 12, 5, 28, 5, 2, 5, 18, 5, 10, 5, 26, 5, 6, 5, 22, 5, 14, 5, 30, 5, 1, 5, 17, 5, 9, 5,
+            25, 5, 5, 5, 21, 5, 13, 5, 29, 5, 3, 5, 19, 5, 11, 5, 27, 5, 7, 5, 23, 5];
+
         StaticTree.static_l_desc = new StaticTree(StaticTree.static_ltree, Tree.extra_lbits, LITERALS + 1, L_CODES, MAX_BITS);
-  
+
         StaticTree.static_d_desc = new StaticTree(StaticTree.static_dtree, Tree.extra_dbits, 0, D_CODES, MAX_BITS);
-  
+
         StaticTree.static_bl_desc = new StaticTree(null, Tree.extra_blbits, 0, BL_CODES, MAX_BL_BITS);
-  
+
         // Deflate
-  
+
         var MAX_MEM_LEVEL = 9;
         var DEF_MEM_LEVEL = 8;
-  
+
         function Config(good_length, max_lazy, nice_length, max_chain, func) {
             var that = this;
             that.good_length = good_length;
@@ -5803,64 +5808,64 @@ define(['jquery'], function($) {
             that.max_chain = max_chain;
             that.func = func;
         }
-  
+
         var STORED = 0;
         var FAST = 1;
         var SLOW = 2;
-        var config_table = [ new Config(0, 0, 0, 0, STORED), new Config(4, 4, 8, 4, FAST), new Config(4, 5, 16, 8, FAST), new Config(4, 6, 32, 32, FAST),
-                new Config(4, 4, 16, 16, SLOW), new Config(8, 16, 32, 32, SLOW), new Config(8, 16, 128, 128, SLOW), new Config(8, 32, 128, 256, SLOW),
-                new Config(32, 128, 258, 1024, SLOW), new Config(32, 258, 258, 4096, SLOW) ];
-  
-        var z_errmsg = [ "need dictionary", // Z_NEED_DICT
-        // 2
-        "stream end", // Z_STREAM_END 1
-        "", // Z_OK 0
-        "", // Z_ERRNO (-1)
-        "stream error", // Z_STREAM_ERROR (-2)
-        "data error", // Z_DATA_ERROR (-3)
-        "", // Z_MEM_ERROR (-4)
-        "buffer error", // Z_BUF_ERROR (-5)
-        "",// Z_VERSION_ERROR (-6)
-        "" ];
-  
+        var config_table = [new Config(0, 0, 0, 0, STORED), new Config(4, 4, 8, 4, FAST), new Config(4, 5, 16, 8, FAST), new Config(4, 6, 32, 32, FAST),
+        new Config(4, 4, 16, 16, SLOW), new Config(8, 16, 32, 32, SLOW), new Config(8, 16, 128, 128, SLOW), new Config(8, 32, 128, 256, SLOW),
+        new Config(32, 128, 258, 1024, SLOW), new Config(32, 258, 258, 4096, SLOW)];
+
+        var z_errmsg = ["need dictionary", // Z_NEED_DICT
+            // 2
+            "stream end", // Z_STREAM_END 1
+            "", // Z_OK 0
+            "", // Z_ERRNO (-1)
+            "stream error", // Z_STREAM_ERROR (-2)
+            "data error", // Z_DATA_ERROR (-3)
+            "", // Z_MEM_ERROR (-4)
+            "buffer error", // Z_BUF_ERROR (-5)
+            "",// Z_VERSION_ERROR (-6)
+            ""];
+
         // block not completed, need more input or more output
         var NeedMore = 0;
-  
+
         // block flush performed
         var BlockDone = 1;
-  
+
         // finish started, need only more output at next deflate
         var FinishStarted = 2;
-  
+
         // finish done, accept no more input or output
         var FinishDone = 3;
-  
+
         // preset dictionary flag in zlib header
         var PRESET_DICT = 0x20;
-  
+
         var INIT_STATE = 42;
         var BUSY_STATE = 113;
         var FINISH_STATE = 666;
-  
+
         // The deflate compression method
         var Z_DEFLATED = 8;
-  
+
         var STORED_BLOCK = 0;
         var STATIC_TREES = 1;
         var DYN_TREES = 2;
-  
+
         var MIN_MATCH = 3;
         var MAX_MATCH = 258;
         var MIN_LOOKAHEAD = (MAX_MATCH + MIN_MATCH + 1);
-  
+
         function smaller(tree, n, m, depth) {
             var tn2 = tree[n * 2];
             var tm2 = tree[m * 2];
             return (tn2 < tm2 || (tn2 == tm2 && depth[n] <= depth[m]));
         }
-  
+
         function Deflate() {
-  
+
             var that = this;
             var strm; // pointer back to this zlib stream
             var status; // as the name implies
@@ -5870,11 +5875,11 @@ define(['jquery'], function($) {
             // pending; // nb of bytes in the pending buffer
             var method; // STORED (for zip only) or DEFLATED
             var last_flush; // value of flush param for previous deflate call
-  
+
             var w_size; // LZ77 window size (32K by default)
             var w_bits; // log2(w_size) (8..16)
             var w_mask; // w_size - 1
-  
+
             var window;
             // Sliding window. Input bytes are read into the second half of the window,
             // and move to the first half later to keep a dictionary of at least wSize
@@ -5883,85 +5888,85 @@ define(['jquery'], function($) {
             // performed with a length multiple of the block size. Also, it limits
             // the window size to 64K, which is quite useful on MSDOS.
             // To do: use the user input buffer as sliding window.
-  
+
             var window_size;
             // Actual size of window: 2*wSize, except when the user input buffer
             // is directly used as sliding window.
-  
+
             var prev;
             // Link to older string with same hash index. To limit the size of this
             // array to 64K, this link is maintained only for the last 32K strings.
             // An index in this array is thus a window index modulo 32K.
-  
+
             var head; // Heads of the hash chains or NIL.
-  
+
             var ins_h; // hash index of string to be inserted
             var hash_size; // number of elements in hash table
             var hash_bits; // log2(hash_size)
             var hash_mask; // hash_size-1
-  
+
             // Number of bits by which ins_h must be shifted at each input
             // step. It must be such that after MIN_MATCH steps, the oldest
             // byte no longer takes part in the hash key, that is:
             // hash_shift * MIN_MATCH >= hash_bits
             var hash_shift;
-  
+
             // Window position at the beginning of the current output block. Gets
             // negative when the window is moved backwards.
-  
+
             var block_start;
-  
+
             var match_length; // length of best match
             var prev_match; // previous match
             var match_available; // set if previous match exists
             var strstart; // start of string to insert
             var match_start; // start of matching string
             var lookahead; // number of valid bytes ahead in window
-  
+
             // Length of the best match at previous step. Matches not greater than this
             // are discarded. This is used in the lazy match evaluation.
             var prev_length;
-  
+
             // To speed up deflation, hash chains are never searched beyond this
             // length. A higher limit improves compression ratio but degrades the speed.
             var max_chain_length;
-  
+
             // Attempt to find a better match only when the current match is strictly
             // smaller than this value. This mechanism is used only for compression
             // levels >= 4.
             var max_lazy_match;
-  
+
             // Insert new strings in the hash table only if the match length is not
             // greater than this length. This saves time but degrades compression.
             // max_insert_length is used only for compression levels <= 3.
-  
+
             var level; // compression level (1..9)
             var strategy; // favor or force Huffman coding
-  
+
             // Use a faster search when the previous match is longer than this
             var good_match;
-  
+
             // Stop searching when current match exceeds this
             var nice_match;
-  
+
             var dyn_ltree; // literal and length tree
             var dyn_dtree; // distance tree
             var bl_tree; // Huffman tree for bit lengths
-  
+
             var l_desc = new Tree(); // desc for literal tree
             var d_desc = new Tree(); // desc for distance tree
             var bl_desc = new Tree(); // desc for bit length tree
-  
+
             // that.heap_len; // number of elements in the heap
             // that.heap_max; // element of largest frequency
             // The sons of heap[n] are heap[2*n] and heap[2*n+1]. heap[0] is not used.
             // The same heap array is used to build all trees.
-  
+
             // Depth of each subtree used as tie breaker for trees of equal frequency
             that.depth = [];
-  
+
             var l_buf; // index for literals or lengths */
-  
+
             // Size of match buffer for literals/lengths. There are 4 reasons for
             // limiting lit_bufsize to 64K:
             // - frequencies can be kept in 16 bit counters
@@ -5980,53 +5985,53 @@ define(['jquery'], function($) {
             // trees more frequently.
             // - I can't count above 4
             var lit_bufsize;
-  
+
             var last_lit; // running index in l_buf
-  
+
             // Buffer for distances. To simplify the code, d_buf and l_buf have
             // the same number of elements. To use different lengths, an extra flag
             // array would be necessary.
-  
+
             var d_buf; // index of pendig_buf
-  
+
             // that.opt_len; // bit length of current block with optimal trees
             // that.static_len; // bit length of current block with static trees
             var matches; // number of string matches in current block
             var last_eob_len; // bit length of EOB code for last block
-  
+
             // Output buffer. bits are inserted starting at the bottom (least
             // significant bits).
             var bi_buf;
-  
+
             // Number of valid bits in bi_buf. All bits above the last valid bit
             // are always zero.
             var bi_valid;
-  
+
             // number of codes at each bit length for an optimal tree
             that.bl_count = [];
-  
+
             // heap used to build the Huffman trees
             that.heap = [];
-  
+
             dyn_ltree = [];
             dyn_dtree = [];
             bl_tree = [];
-  
+
             function lm_init() {
                 var i;
                 window_size = 2 * w_size;
-  
+
                 head[hash_size - 1] = 0;
                 for (i = 0; i < hash_size - 1; i++) {
                     head[i] = 0;
                 }
-  
+
                 // Set the default configuration parameters:
                 max_lazy_match = config_table[level].max_lazy;
                 good_match = config_table[level].good_length;
                 nice_match = config_table[level].nice_length;
                 max_chain_length = config_table[level].max_chain;
-  
+
                 strstart = 0;
                 block_start = 0;
                 lookahead = 0;
@@ -6034,7 +6039,7 @@ define(['jquery'], function($) {
                 match_available = 0;
                 ins_h = 0;
             }
-  
+
             function init_block() {
                 var i;
                 // Initialize the trees.
@@ -6044,39 +6049,39 @@ define(['jquery'], function($) {
                     dyn_dtree[i * 2] = 0;
                 for (i = 0; i < BL_CODES; i++)
                     bl_tree[i * 2] = 0;
-  
+
                 dyn_ltree[END_BLOCK * 2] = 1;
                 that.opt_len = that.static_len = 0;
                 last_lit = matches = 0;
             }
-  
+
             // Initialize the tree data structures for a new zlib stream.
             function tr_init() {
-  
+
                 l_desc.dyn_tree = dyn_ltree;
                 l_desc.stat_desc = StaticTree.static_l_desc;
-  
+
                 d_desc.dyn_tree = dyn_dtree;
                 d_desc.stat_desc = StaticTree.static_d_desc;
-  
+
                 bl_desc.dyn_tree = bl_tree;
                 bl_desc.stat_desc = StaticTree.static_bl_desc;
-  
+
                 bi_buf = 0;
                 bi_valid = 0;
                 last_eob_len = 8; // enough lookahead for inflate
-  
+
                 // Initialize the first block of the first file:
                 init_block();
             }
-  
+
             // Restore the heap property by moving down the tree starting at node k,
             // exchanging a node with the smallest of its two sons if necessary,
             // stopping
             // when the heap property is re-established (each father smaller than its
             // two sons).
-            that.pqdownheap = function(tree, // the tree to restore
-            k // node to move down
+            that.pqdownheap = function (tree, // the tree to restore
+                k // node to move down
             ) {
                 var heap = that.heap;
                 var v = heap[k];
@@ -6089,7 +6094,7 @@ define(['jquery'], function($) {
                     // Exit if v is smaller than both sons
                     if (smaller(tree, v, heap[j], that.depth))
                         break;
-  
+
                     // Exchange v with the smallest son
                     heap[k] = heap[j];
                     k = j;
@@ -6098,11 +6103,11 @@ define(['jquery'], function($) {
                 }
                 heap[k] = v;
             };
-  
+
             // Scan a literal or distance tree to determine the frequencies of the codes
             // in the bit length tree.
             function scan_tree(tree,// the tree to be scanned
-            max_code // and its largest code of non zero frequency
+                max_code // and its largest code of non zero frequency
             ) {
                 var n; // iterates over all tree elements
                 var prevlen = -1; // last emitted length
@@ -6111,13 +6116,13 @@ define(['jquery'], function($) {
                 var count = 0; // repeat count of the current code
                 var max_count = 7; // max repeat count
                 var min_count = 4; // min repeat count
-  
+
                 if (nextlen === 0) {
                     max_count = 138;
                     min_count = 3;
                 }
                 tree[(max_code + 1) * 2 + 1] = 0xffff; // guard
-  
+
                 for (n = 0; n <= max_code; n++) {
                     curlen = nextlen;
                     nextlen = tree[(n + 1) * 2 + 1];
@@ -6148,22 +6153,22 @@ define(['jquery'], function($) {
                     }
                 }
             }
-  
+
             // Construct the Huffman tree for the bit lengths and return the index in
             // bl_order of the last bit length code to send.
             function build_bl_tree() {
                 var max_blindex; // index of last bit length code of non zero freq
-  
+
                 // Determine the bit length frequencies for literal and distance trees
                 scan_tree(dyn_ltree, l_desc.max_code);
                 scan_tree(dyn_dtree, d_desc.max_code);
-  
+
                 // Build the bit length tree:
                 bl_desc.build_tree(that);
                 // opt_len now includes the length of the tree representations, except
                 // the lengths of the bit lengths codes and the 5+5+4 bits for the
                 // counts.
-  
+
                 // Determine the number of bit length codes to send. The pkzip format
                 // requires that at least 4 bit length codes be sent. (appnote.txt says
                 // 3 but the actual value used is 4.)
@@ -6173,26 +6178,26 @@ define(['jquery'], function($) {
                 }
                 // Update opt_len to include the bit length tree and counts
                 that.opt_len += 3 * (max_blindex + 1) + 5 + 5 + 4;
-  
+
                 return max_blindex;
             }
-  
+
             // Output a byte on the stream.
             // IN assertion: there is enough room in pending_buf.
             function put_byte(p) {
                 that.pending_buf[that.pending++] = p;
             }
-  
+
             function put_short(w) {
                 put_byte(w & 0xff);
                 put_byte((w >>> 8) & 0xff);
             }
-  
+
             function putShortMSB(b) {
                 put_byte((b >> 8) & 0xff);
                 put_byte((b & 0xff) & 0xff);
             }
-  
+
             function send_bits(value, length) {
                 var val, len = length;
                 if (bi_valid > Buf_size - len) {
@@ -6208,16 +6213,16 @@ define(['jquery'], function($) {
                     bi_valid += len;
                 }
             }
-  
+
             function send_code(c, tree) {
                 var c2 = c * 2;
                 send_bits(tree[c2] & 0xffff, tree[c2 + 1] & 0xffff);
             }
-  
+
             // Send a literal or distance tree in compressed form, using the codes in
             // bl_tree.
             function send_tree(tree,// the tree to be sent
-            max_code // and its largest code of non zero frequency
+                max_code // and its largest code of non zero frequency
             ) {
                 var n; // iterates over all tree elements
                 var prevlen = -1; // last emitted length
@@ -6226,12 +6231,12 @@ define(['jquery'], function($) {
                 var count = 0; // repeat count of the current code
                 var max_count = 7; // max repeat count
                 var min_count = 4; // min repeat count
-  
+
                 if (nextlen === 0) {
                     max_count = 138;
                     min_count = 3;
                 }
-  
+
                 for (n = 0; n <= max_code; n++) {
                     curlen = nextlen;
                     nextlen = tree[(n + 1) * 2 + 1];
@@ -6269,13 +6274,13 @@ define(['jquery'], function($) {
                     }
                 }
             }
-  
+
             // Send the header for a block using dynamic Huffman trees: the counts, the
             // lengths of the bit length codes, the literal tree and the distance tree.
             // IN assertion: lcodes >= 257, dcodes >= 1, blcodes >= 4.
             function send_all_trees(lcodes, dcodes, blcodes) {
                 var rank; // index in bl_order
-  
+
                 send_bits(lcodes - 257, 5); // not +255 as stated in appnote.txt
                 send_bits(dcodes - 1, 5);
                 send_bits(blcodes - 4, 4); // not -3 as stated in appnote.txt
@@ -6285,7 +6290,7 @@ define(['jquery'], function($) {
                 send_tree(dyn_ltree, lcodes - 1); // literal tree
                 send_tree(dyn_dtree, dcodes - 1); // distance tree
             }
-  
+
             // Flush the bit buffer, keeping at most 7 bits in it.
             function bi_flush() {
                 if (bi_valid == 16) {
@@ -6298,7 +6303,7 @@ define(['jquery'], function($) {
                     bi_valid -= 8;
                 }
             }
-  
+
             // Send one empty static block to give enough lookahead for inflate.
             // This takes 10 bits, of which 7 may remain in the bit buffer.
             // The current inflate code requires 9 bits of lookahead. If the
@@ -6311,9 +6316,9 @@ define(['jquery'], function($) {
             function _tr_align() {
                 send_bits(STATIC_TREES << 1, 3);
                 send_code(END_BLOCK, StaticTree.static_ltree);
-  
+
                 bi_flush();
-  
+
                 // Of the 10 bits for the empty block, we have already sent
                 // (10 - bi_valid) bits. The lookahead for the last real code (before
                 // the EOB of the previous block) was thus at least one plus the length
@@ -6325,19 +6330,19 @@ define(['jquery'], function($) {
                 }
                 last_eob_len = 7;
             }
-  
+
             // Save the match info and tally the frequency counts. Return true if
             // the current block must be flushed.
             function _tr_tally(dist, // distance of matched string
-            lc // match length-MIN_MATCH or unmatched char (if dist==0)
+                lc // match length-MIN_MATCH or unmatched char (if dist==0)
             ) {
                 var out_length, in_length, dcode;
                 that.pending_buf[d_buf + last_lit * 2] = (dist >>> 8) & 0xff;
                 that.pending_buf[d_buf + last_lit * 2 + 1] = dist & 0xff;
-  
+
                 that.pending_buf[l_buf + last_lit] = lc & 0xff;
                 last_lit++;
-  
+
                 if (dist === 0) {
                     // lc is the unmatched char
                     dyn_ltree[lc * 2]++;
@@ -6348,7 +6353,7 @@ define(['jquery'], function($) {
                     dyn_ltree[(Tree._length_code[lc] + LITERALS + 1) * 2]++;
                     dyn_dtree[Tree.d_code(dist) * 2]++;
                 }
-  
+
                 if ((last_lit & 0x1fff) === 0 && level > 2) {
                     // Compute an upper bound for the compressed length
                     out_length = last_lit * 8;
@@ -6360,13 +6365,13 @@ define(['jquery'], function($) {
                     if ((matches < Math.floor(last_lit / 2)) && out_length < Math.floor(in_length / 2))
                         return true;
                 }
-  
+
                 return (last_lit == lit_bufsize - 1);
                 // We avoid equality with lit_bufsize because of wraparound at 64K
                 // on 16 bit machines and because stored blocks are restricted to
                 // 64K-1 bytes.
             }
-  
+
             // Send the block data compressed using the given Huffman trees
             function compress_block(ltree, dtree) {
                 var dist; // distance of matched string
@@ -6374,19 +6379,19 @@ define(['jquery'], function($) {
                 var lx = 0; // running index in l_buf
                 var code; // the code to send
                 var extra; // number of extra bits to send
-  
+
                 if (last_lit !== 0) {
                     do {
                         dist = ((that.pending_buf[d_buf + lx * 2] << 8) & 0xff00) | (that.pending_buf[d_buf + lx * 2 + 1] & 0xff);
                         lc = (that.pending_buf[l_buf + lx]) & 0xff;
                         lx++;
-  
+
                         if (dist === 0) {
                             send_code(lc, ltree); // send a literal byte
                         } else {
                             // Here, lc is the match length - MIN_MATCH
                             code = Tree._length_code[lc];
-  
+
                             send_code(code + LITERALS + 1, ltree); // send the length
                             // code
                             extra = Tree.extra_lbits[code];
@@ -6396,7 +6401,7 @@ define(['jquery'], function($) {
                             }
                             dist--; // dist is now the match distance - 1
                             code = Tree.d_code(dist);
-  
+
                             send_code(code, dtree); // send the distance code
                             extra = Tree.extra_dbits[code];
                             if (extra !== 0) {
@@ -6404,16 +6409,16 @@ define(['jquery'], function($) {
                                 send_bits(dist, extra); // send the extra distance bits
                             }
                         } // literal or match pair ?
-  
+
                         // Check that the overlay between pending_buf and d_buf+l_buf is
                         // ok:
                     } while (lx < last_lit);
                 }
-  
+
                 send_code(END_BLOCK, ltree);
                 last_eob_len = ltree[END_BLOCK * 2 + 1];
             }
-  
+
             // Flush the bit buffer and align the output on a byte boundary
             function bi_windup() {
                 if (bi_valid > 8) {
@@ -6424,70 +6429,70 @@ define(['jquery'], function($) {
                 bi_buf = 0;
                 bi_valid = 0;
             }
-  
+
             // Copy a stored block, storing first the length and its
             // one's complement if requested.
             function copy_block(buf, // the input data
-            len, // its length
-            header // true if block header must be written
+                len, // its length
+                header // true if block header must be written
             ) {
                 bi_windup(); // align on byte boundary
                 last_eob_len = 8; // enough lookahead for inflate
-  
+
                 if (header) {
                     put_short(len);
                     put_short(~len);
                 }
-  
+
                 that.pending_buf.set(window.subarray(buf, buf + len), that.pending);
                 that.pending += len;
             }
-  
+
             // Send a stored block
             function _tr_stored_block(buf, // input block
-            stored_len, // length of input block
-            eof // true if this is the last block for a file
+                stored_len, // length of input block
+                eof // true if this is the last block for a file
             ) {
                 send_bits((STORED_BLOCK << 1) + (eof ? 1 : 0), 3); // send block type
                 copy_block(buf, stored_len, true); // with header
             }
-  
+
             // Determine the best encoding for the current block: dynamic trees, static
             // trees or store, and output the encoded block to the zip file.
             function _tr_flush_block(buf, // input block, or NULL if too old
-            stored_len, // length of input block
-            eof // true if this is the last block for a file
+                stored_len, // length of input block
+                eof // true if this is the last block for a file
             ) {
                 var opt_lenb, static_lenb;// opt_len and static_len in bytes
                 var max_blindex = 0; // index of last bit length code of non zero freq
-  
+
                 // Build the Huffman trees unless a stored block is forced
                 if (level > 0) {
                     // Construct the literal and distance trees
                     l_desc.build_tree(that);
-  
+
                     d_desc.build_tree(that);
-  
+
                     // At this point, opt_len and static_len are the total bit lengths
                     // of
                     // the compressed block data, excluding the tree representations.
-  
+
                     // Build the bit length tree for the above two trees, and get the
                     // index
                     // in bl_order of the last bit length code to send.
                     max_blindex = build_bl_tree();
-  
+
                     // Determine the best encoding. Compute first the block length in
                     // bytes
                     opt_lenb = (that.opt_len + 3 + 7) >>> 3;
                     static_lenb = (that.static_len + 3 + 7) >>> 3;
-  
+
                     if (static_lenb <= opt_lenb)
                         opt_lenb = static_lenb;
                 } else {
                     opt_lenb = static_lenb = stored_len + 5; // force a stored block
                 }
-  
+
                 if ((stored_len + 4 <= opt_lenb) && buf != -1) {
                     // 4: two words for the lengths
                     // The test buf != NULL is only necessary if LIT_BUFSIZE > WSIZE.
@@ -6505,23 +6510,23 @@ define(['jquery'], function($) {
                     send_all_trees(l_desc.max_code + 1, d_desc.max_code + 1, max_blindex + 1);
                     compress_block(dyn_ltree, dyn_dtree);
                 }
-  
+
                 // The above check is made mod 2^32, for files larger than 512 MB
                 // and uLong implemented on 32 bits.
-  
+
                 init_block();
-  
+
                 if (eof) {
                     bi_windup();
                 }
             }
-  
+
             function flush_block_only(eof) {
                 _tr_flush_block(block_start >= 0 ? block_start : -1, strstart - block_start, eof);
                 block_start = strstart;
                 strm.flush_pending();
             }
-  
+
             // Fill the window when the lookahead becomes insufficient.
             // Updates strstart and lookahead.
             //
@@ -6534,10 +6539,10 @@ define(['jquery'], function($) {
                 var n, m;
                 var p;
                 var more; // Amount of free space at the end of the window.
-  
+
                 do {
                     more = (window_size - lookahead - strstart);
-  
+
                     // Deal with !@#$% 64K limit:
                     if (more === 0 && strstart === 0 && lookahead === 0) {
                         more = w_size;
@@ -6546,18 +6551,18 @@ define(['jquery'], function($) {
                         // 0
                         // and lookahead == 1 (input done one byte at time)
                         more--;
-  
+
                         // If the window is almost full and there is insufficient
                         // lookahead,
                         // move the upper half to the lower one to make room in the
                         // upper half.
                     } else if (strstart >= w_size + w_size - MIN_LOOKAHEAD) {
                         window.set(window.subarray(w_size, w_size + w_size), 0);
-  
+
                         match_start -= w_size;
                         strstart -= w_size; // we now have strstart >= MAX_DIST
                         block_start -= w_size;
-  
+
                         // Slide the hash table (could be avoided with 32 bit values
                         // at the expense of memory usage). We slide even when level ==
                         // 0
@@ -6565,14 +6570,14 @@ define(['jquery'], function($) {
                         // > 0
                         // later. (Using level 0 permanently is not an optimal usage of
                         // zlib, so we don't care about this pathological case.)
-  
+
                         n = hash_size;
                         p = n;
                         do {
                             m = (head[--p] & 0xffff);
                             head[p] = (m >= w_size ? m - w_size : 0);
                         } while (--n !== 0);
-  
+
                         n = w_size;
                         p = n;
                         do {
@@ -6583,10 +6588,10 @@ define(['jquery'], function($) {
                         } while (--n !== 0);
                         more += w_size;
                     }
-  
+
                     if (strm.avail_in === 0)
                         return;
-  
+
                     // If there was no sliding:
                     // strstart <= WSIZE+MAX_DIST-1 && lookahead <= MIN_LOOKAHEAD - 1 &&
                     // more == window_size - lookahead - strstart
@@ -6597,10 +6602,10 @@ define(['jquery'], function($) {
                     // strstart + s->lookahead <= input_size => more >= MIN_LOOKAHEAD.
                     // Otherwise, window_size == 2*WSIZE so more >= 2.
                     // If there was sliding, more >= WSIZE. So in all cases, more >= 2.
-  
+
                     n = strm.read_buf(window, strstart + lookahead, more);
                     lookahead += n;
-  
+
                     // Initialize the hash value now that we have some input:
                     if (lookahead >= MIN_MATCH) {
                         ins_h = window[strstart] & 0xff;
@@ -6612,7 +6617,7 @@ define(['jquery'], function($) {
                     // emitted.
                 } while (lookahead < MIN_LOOKAHEAD && strm.avail_in !== 0);
             }
-  
+
             // Copy without compression as much as possible from the input stream,
             // return
             // the current block state.
@@ -6624,14 +6629,14 @@ define(['jquery'], function($) {
             function deflate_stored(flush) {
                 // Stored blocks are limited to 0xffff bytes, pending_buf is limited
                 // to pending_buf_size, and each stored block has a 5 byte header:
-  
+
                 var max_block_size = 0xffff;
                 var max_start;
-  
+
                 if (max_block_size > pending_buf_size - 5) {
                     max_block_size = pending_buf_size - 5;
                 }
-  
+
                 // Copy as much as possible from input to output:
                 while (true) {
                     // Fill the window as much as possible:
@@ -6642,23 +6647,23 @@ define(['jquery'], function($) {
                         if (lookahead === 0)
                             break; // flush the current block
                     }
-  
+
                     strstart += lookahead;
                     lookahead = 0;
-  
+
                     // Emit a stored block if pending_buf will be full:
                     max_start = block_start + max_block_size;
                     if (strstart === 0 || strstart >= max_start) {
                         // strstart === 0 is possible when wraparound on 16-bit machine
                         lookahead = (strstart - max_start);
                         strstart = max_start;
-  
+
                         flush_block_only(false);
                         if (strm.avail_out === 0)
                             return NeedMore;
-  
+
                     }
-  
+
                     // Flush if we may have to slide, otherwise block_start may become
                     // negative and the data will be gone:
                     if (strstart - block_start >= w_size - MIN_LOOKAHEAD) {
@@ -6667,14 +6672,14 @@ define(['jquery'], function($) {
                             return NeedMore;
                     }
                 }
-  
+
                 flush_block_only(flush == Z_FINISH);
                 if (strm.avail_out === 0)
                     return (flush == Z_FINISH) ? FinishStarted : NeedMore;
-  
+
                 return flush == Z_FINISH ? FinishDone : BlockDone;
             }
-  
+
             function longest_match(cur_match) {
                 var chain_length = max_chain_length; // max hash chain length
                 var scan = strstart; // current string
@@ -6683,40 +6688,40 @@ define(['jquery'], function($) {
                 var best_len = prev_length; // best match length so far
                 var limit = strstart > (w_size - MIN_LOOKAHEAD) ? strstart - (w_size - MIN_LOOKAHEAD) : 0;
                 var _nice_match = nice_match;
-  
+
                 // Stop when cur_match becomes <= limit. To simplify the code,
                 // we prevent matches with the string of window index 0.
-  
+
                 var wmask = w_mask;
-  
+
                 var strend = strstart + MAX_MATCH;
                 var scan_end1 = window[scan + best_len - 1];
                 var scan_end = window[scan + best_len];
-  
+
                 // The code is optimized for HASH_BITS >= 8 and MAX_MATCH-2 multiple of
                 // 16.
                 // It is easy to get rid of this optimization if necessary.
-  
+
                 // Do not waste too much time if we already have a good match:
                 if (prev_length >= good_match) {
                     chain_length >>= 2;
                 }
-  
+
                 // Do not look for matches beyond the end of the input. This is
                 // necessary
                 // to make deflate deterministic.
                 if (_nice_match > lookahead)
                     _nice_match = lookahead;
-  
+
                 do {
                     match = cur_match;
-  
+
                     // Skip to next match if the match length cannot increase
                     // or if the match length is less than 2:
                     if (window[match + best_len] != scan_end || window[match + best_len - 1] != scan_end1 || window[match] != window[scan]
-                            || window[++match] != window[scan + 1])
+                        || window[++match] != window[scan + 1])
                         continue;
-  
+
                     // The check at best_len-1 can be removed because it will be made
                     // again later. (This heuristic is not always a win.)
                     // It is not necessary to compare scan[2] and match[2] since they
@@ -6724,17 +6729,17 @@ define(['jquery'], function($) {
                     // the hash keys are equal and that HASH_BITS >= 8.
                     scan += 2;
                     match++;
-  
+
                     // We check for insufficient lookahead only every 8th comparison;
                     // the 256th check will be made at strstart+258.
                     do {
                     } while (window[++scan] == window[++match] && window[++scan] == window[++match] && window[++scan] == window[++match]
-                            && window[++scan] == window[++match] && window[++scan] == window[++match] && window[++scan] == window[++match]
-                            && window[++scan] == window[++match] && window[++scan] == window[++match] && scan < strend);
-  
+                    && window[++scan] == window[++match] && window[++scan] == window[++match] && window[++scan] == window[++match]
+                    && window[++scan] == window[++match] && window[++scan] == window[++match] && scan < strend);
+
                     len = MAX_MATCH - (strend - scan);
                     scan = strend - MAX_MATCH;
-  
+
                     if (len > best_len) {
                         match_start = cur_match;
                         best_len = len;
@@ -6743,14 +6748,14 @@ define(['jquery'], function($) {
                         scan_end1 = window[scan + best_len - 1];
                         scan_end = window[scan + best_len];
                     }
-  
+
                 } while ((cur_match = (prev[cur_match & wmask] & 0xffff)) > limit && --chain_length !== 0);
-  
+
                 if (best_len <= lookahead)
                     return best_len;
                 return lookahead;
             }
-  
+
             // Compress as much as possible from the input stream, return the current
             // block state.
             // This function does not perform lazy evaluation of matches and inserts
@@ -6760,7 +6765,7 @@ define(['jquery'], function($) {
                 // short hash_head = 0; // head of the hash chain
                 var hash_head = 0; // head of the hash chain
                 var bflush; // set if current block must be flushed
-  
+
                 while (true) {
                     // Make sure that we always have enough lookahead, except
                     // at the end of the input file. We need MAX_MATCH bytes
@@ -6774,21 +6779,21 @@ define(['jquery'], function($) {
                         if (lookahead === 0)
                             break; // flush the current block
                     }
-  
+
                     // Insert the string window[strstart .. strstart+2] in the
                     // dictionary, and set hash_head to the head of the hash chain:
                     if (lookahead >= MIN_MATCH) {
                         ins_h = (((ins_h) << hash_shift) ^ (window[(strstart) + (MIN_MATCH - 1)] & 0xff)) & hash_mask;
-  
+
                         // prev[strstart&w_mask]=hash_head=head[ins_h];
                         hash_head = (head[ins_h] & 0xffff);
                         prev[strstart & w_mask] = head[ins_h];
                         head[ins_h] = strstart;
                     }
-  
+
                     // Find the longest match, discarding those <= prev_length.
                     // At this point we have always match_length < MIN_MATCH
-  
+
                     if (hash_head !== 0 && ((strstart - hash_head) & 0xffff) <= w_size - MIN_LOOKAHEAD) {
                         // To simplify the code, we prevent matches with the string
                         // of window index 0 (in particular we have to avoid a match
@@ -6800,24 +6805,24 @@ define(['jquery'], function($) {
                     }
                     if (match_length >= MIN_MATCH) {
                         // check_match(strstart, match_start, match_length);
-  
+
                         bflush = _tr_tally(strstart - match_start, match_length - MIN_MATCH);
-  
+
                         lookahead -= match_length;
-  
+
                         // Insert new strings in the hash table only if the match length
                         // is not too large. This saves time but degrades compression.
                         if (match_length <= max_lazy_match && lookahead >= MIN_MATCH) {
                             match_length--; // string at strstart already in hash table
                             do {
                                 strstart++;
-  
+
                                 ins_h = ((ins_h << hash_shift) ^ (window[(strstart) + (MIN_MATCH - 1)] & 0xff)) & hash_mask;
                                 // prev[strstart&w_mask]=hash_head=head[ins_h];
                                 hash_head = (head[ins_h] & 0xffff);
                                 prev[strstart & w_mask] = head[ins_h];
                                 head[ins_h] = strstart;
-  
+
                                 // strstart never exceeds WSIZE-MAX_MATCH, so there are
                                 // always MIN_MATCH bytes ahead.
                             } while (--match_length !== 0);
@@ -6826,7 +6831,7 @@ define(['jquery'], function($) {
                             strstart += match_length;
                             match_length = 0;
                             ins_h = window[strstart] & 0xff;
-  
+
                             ins_h = (((ins_h) << hash_shift) ^ (window[strstart + 1] & 0xff)) & hash_mask;
                             // If lookahead < MIN_MATCH, ins_h is garbage, but it does
                             // not
@@ -6834,19 +6839,19 @@ define(['jquery'], function($) {
                         }
                     } else {
                         // No match, output a literal byte
-  
+
                         bflush = _tr_tally(0, window[strstart] & 0xff);
                         lookahead--;
                         strstart++;
                     }
                     if (bflush) {
-  
+
                         flush_block_only(false);
                         if (strm.avail_out === 0)
                             return NeedMore;
                     }
                 }
-  
+
                 flush_block_only(flush == Z_FINISH);
                 if (strm.avail_out === 0) {
                     if (flush == Z_FINISH)
@@ -6856,7 +6861,7 @@ define(['jquery'], function($) {
                 }
                 return flush == Z_FINISH ? FinishDone : BlockDone;
             }
-  
+
             // Same as above, but achieves better compression. We use a lazy
             // evaluation for matches: a match is finally adopted only if there is
             // no better match at the next window position.
@@ -6865,14 +6870,14 @@ define(['jquery'], function($) {
                 var hash_head = 0; // head of hash chain
                 var bflush; // set if current block must be flushed
                 var max_insert;
-  
+
                 // Process the input block.
                 while (true) {
                     // Make sure that we always have enough lookahead, except
                     // at the end of the input file. We need MAX_MATCH bytes
                     // for the next match, plus MIN_MATCH bytes to insert the
                     // string following the next match.
-  
+
                     if (lookahead < MIN_LOOKAHEAD) {
                         fill_window();
                         if (lookahead < MIN_LOOKAHEAD && flush == Z_NO_FLUSH) {
@@ -6881,10 +6886,10 @@ define(['jquery'], function($) {
                         if (lookahead === 0)
                             break; // flush the current block
                     }
-  
+
                     // Insert the string window[strstart .. strstart+2] in the
                     // dictionary, and set hash_head to the head of the hash chain:
-  
+
                     if (lookahead >= MIN_MATCH) {
                         ins_h = (((ins_h) << hash_shift) ^ (window[(strstart) + (MIN_MATCH - 1)] & 0xff)) & hash_mask;
                         // prev[strstart&w_mask]=hash_head=head[ins_h];
@@ -6892,40 +6897,40 @@ define(['jquery'], function($) {
                         prev[strstart & w_mask] = head[ins_h];
                         head[ins_h] = strstart;
                     }
-  
+
                     // Find the longest match, discarding those <= prev_length.
                     prev_length = match_length;
                     prev_match = match_start;
                     match_length = MIN_MATCH - 1;
-  
+
                     if (hash_head !== 0 && prev_length < max_lazy_match && ((strstart - hash_head) & 0xffff) <= w_size - MIN_LOOKAHEAD) {
                         // To simplify the code, we prevent matches with the string
                         // of window index 0 (in particular we have to avoid a match
                         // of the string with itself at the start of the input file).
-  
+
                         if (strategy != Z_HUFFMAN_ONLY) {
                             match_length = longest_match(hash_head);
                         }
                         // longest_match() sets match_start
-  
+
                         if (match_length <= 5 && (strategy == Z_FILTERED || (match_length == MIN_MATCH && strstart - match_start > 4096))) {
-  
+
                             // If prev_match is also MIN_MATCH, match_start is garbage
                             // but we will ignore the current match anyway.
                             match_length = MIN_MATCH - 1;
                         }
                     }
-  
+
                     // If there was a match at the previous step and the current
                     // match is not better, output the previous match:
                     if (prev_length >= MIN_MATCH && match_length <= prev_length) {
                         max_insert = strstart + lookahead - MIN_MATCH;
                         // Do not insert strings in hash table beyond this.
-  
+
                         // check_match(strstart-1, prev_match, prev_length);
-  
+
                         bflush = _tr_tally(strstart - 1 - prev_match, prev_length - MIN_MATCH);
-  
+
                         // Insert in hash table all strings up to the end of the match.
                         // strstart-1 and strstart are already inserted. If there is not
                         // enough lookahead, the last two strings are not inserted in
@@ -6944,20 +6949,20 @@ define(['jquery'], function($) {
                         match_available = 0;
                         match_length = MIN_MATCH - 1;
                         strstart++;
-  
+
                         if (bflush) {
                             flush_block_only(false);
                             if (strm.avail_out === 0)
                                 return NeedMore;
                         }
                     } else if (match_available !== 0) {
-  
+
                         // If there was no match at the previous position, output a
                         // single literal. If there was a match but the current match
                         // is longer, truncate the previous match to a single literal.
-  
+
                         bflush = _tr_tally(0, window[strstart - 1] & 0xff);
-  
+
                         if (bflush) {
                             flush_block_only(false);
                         }
@@ -6968,105 +6973,105 @@ define(['jquery'], function($) {
                     } else {
                         // There is no previous match to compare with, wait for
                         // the next step to decide.
-  
+
                         match_available = 1;
                         strstart++;
                         lookahead--;
                     }
                 }
-  
+
                 if (match_available !== 0) {
                     bflush = _tr_tally(0, window[strstart - 1] & 0xff);
                     match_available = 0;
                 }
                 flush_block_only(flush == Z_FINISH);
-  
+
                 if (strm.avail_out === 0) {
                     if (flush == Z_FINISH)
                         return FinishStarted;
                     else
                         return NeedMore;
                 }
-  
+
                 return flush == Z_FINISH ? FinishDone : BlockDone;
             }
-  
+
             function deflateReset(strm) {
                 strm.total_in = strm.total_out = 0;
                 strm.msg = null; //
-                
+
                 that.pending = 0;
                 that.pending_out = 0;
-  
+
                 status = BUSY_STATE;
-  
+
                 last_flush = Z_NO_FLUSH;
-  
+
                 tr_init();
                 lm_init();
                 return Z_OK;
             }
-  
-            that.deflateInit = function(strm, _level, bits, _method, memLevel, _strategy) {
+
+            that.deflateInit = function (strm, _level, bits, _method, memLevel, _strategy) {
                 if (!_method)
                     _method = Z_DEFLATED;
                 if (!memLevel)
                     memLevel = DEF_MEM_LEVEL;
                 if (!_strategy)
                     _strategy = Z_DEFAULT_STRATEGY;
-  
+
                 // byte[] my_version=ZLIB_VERSION;
-  
+
                 //
                 // if (!version || version[0] != my_version[0]
                 // || stream_size != sizeof(z_stream)) {
                 // return Z_VERSION_ERROR;
                 // }
-  
+
                 strm.msg = null;
-  
+
                 if (_level == Z_DEFAULT_COMPRESSION)
                     _level = 6;
-  
+
                 if (memLevel < 1 || memLevel > MAX_MEM_LEVEL || _method != Z_DEFLATED || bits < 9 || bits > 15 || _level < 0 || _level > 9 || _strategy < 0
-                        || _strategy > Z_HUFFMAN_ONLY) {
+                    || _strategy > Z_HUFFMAN_ONLY) {
                     return Z_STREAM_ERROR;
                 }
-  
+
                 strm.dstate = that;
-  
+
                 w_bits = bits;
                 w_size = 1 << w_bits;
                 w_mask = w_size - 1;
-  
+
                 hash_bits = memLevel + 7;
                 hash_size = 1 << hash_bits;
                 hash_mask = hash_size - 1;
                 hash_shift = Math.floor((hash_bits + MIN_MATCH - 1) / MIN_MATCH);
-  
+
                 window = new Uint8Array(w_size * 2);
                 prev = [];
                 head = [];
-  
+
                 lit_bufsize = 1 << (memLevel + 6); // 16K elements by default
-  
+
                 // We overlay pending_buf and d_buf+l_buf. This works since the average
                 // output size for (length,distance) codes is <= 24 bits.
                 that.pending_buf = new Uint8Array(lit_bufsize * 4);
                 pending_buf_size = lit_bufsize * 4;
-  
+
                 d_buf = Math.floor(lit_bufsize / 2);
                 l_buf = (1 + 2) * lit_bufsize;
-  
+
                 level = _level;
-  
+
                 strategy = _strategy;
                 method = _method & 0xff;
-  
+
                 return deflateReset(strm);
             };
-  
-            that.deflateEnd = function() {
+
+            that.deflateEnd = function () {
                 if (status != INIT_STATE && status != BUSY_STATE && status != FINISH_STATE) {
                     return Z_STREAM_ERROR;
                 }
@@ -7079,22 +7084,22 @@ define(['jquery'], function($) {
                 that.dstate = null;
                 return status == BUSY_STATE ? Z_DATA_ERROR : Z_OK;
             };
-  
-            that.deflateParams = function(strm, _level, _strategy) {
+
+            that.deflateParams = function (strm, _level, _strategy) {
                 var err = Z_OK;
-  
+
                 if (_level == Z_DEFAULT_COMPRESSION) {
                     _level = 6;
                 }
                 if (_level < 0 || _level > 9 || _strategy < 0 || _strategy > Z_HUFFMAN_ONLY) {
                     return Z_STREAM_ERROR;
                 }
-  
+
                 if (config_table[level].func != config_table[_level].func && strm.total_in !== 0) {
                     // Flush the last buffer:
                     err = strm.deflate(Z_PARTIAL_FLUSH);
                 }
-  
+
                 if (level != _level) {
                     level = _level;
                     max_lazy_match = config_table[level].max_lazy;
@@ -7105,14 +7110,14 @@ define(['jquery'], function($) {
                 strategy = _strategy;
                 return err;
             };
-  
-            that.deflateSetDictionary = function(strm, dictionary, dictLength) {
+
+            that.deflateSetDictionary = function (strm, dictionary, dictLength) {
                 var length = dictLength;
                 var n, index = 0;
-  
+
                 if (!dictionary || status != INIT_STATE)
                     return Z_STREAM_ERROR;
-  
+
                 if (length < MIN_MATCH)
                     return Z_OK;
                 if (length > w_size - MIN_LOOKAHEAD) {
@@ -7120,17 +7125,17 @@ define(['jquery'], function($) {
                     index = dictLength - length; // use the tail of the dictionary
                 }
                 window.set(dictionary.subarray(index, index + length), 0);
-  
+
                 strstart = length;
                 block_start = length;
-  
+
                 // Insert all strings in the hash table (except for the last two bytes).
                 // s->lookahead stays null, so s->ins_h will be recomputed at the next
                 // call of fill_window.
-  
+
                 ins_h = window[0] & 0xff;
                 ins_h = (((ins_h) << hash_shift) ^ (window[1] & 0xff)) & hash_mask;
-  
+
                 for (n = 0; n <= length - MIN_MATCH; n++) {
                     ins_h = (((ins_h) << hash_shift) ^ (window[(n) + (MIN_MATCH - 1)] & 0xff)) & hash_mask;
                     prev[n & w_mask] = head[ins_h];
@@ -7138,14 +7143,14 @@ define(['jquery'], function($) {
                 }
                 return Z_OK;
             };
-  
-            that.deflate = function(_strm, flush) {
+
+            that.deflate = function (_strm, flush) {
                 var i, header, level_flags, old_flush, bstate;
-  
+
                 if (flush > Z_FINISH || flush < 0) {
                     return Z_STREAM_ERROR;
                 }
-  
+
                 if (!_strm.next_out || (!_strm.next_in && _strm.avail_in !== 0) || (status == FINISH_STATE && flush != Z_FINISH)) {
                     _strm.msg = z_errmsg[Z_NEED_DICT - (Z_STREAM_ERROR)];
                     return Z_STREAM_ERROR;
@@ -7154,27 +7159,27 @@ define(['jquery'], function($) {
                     _strm.msg = z_errmsg[Z_NEED_DICT - (Z_BUF_ERROR)];
                     return Z_BUF_ERROR;
                 }
-  
+
                 strm = _strm; // just in case
                 old_flush = last_flush;
                 last_flush = flush;
-  
+
                 // Write the zlib header
                 if (status == INIT_STATE) {
                     header = (Z_DEFLATED + ((w_bits - 8) << 4)) << 8;
                     level_flags = ((level - 1) & 0xff) >> 1;
-  
+
                     if (level_flags > 3)
                         level_flags = 3;
                     header |= (level_flags << 6);
                     if (strstart !== 0)
                         header |= PRESET_DICT;
                     header += 31 - (header % 31);
-  
+
                     status = BUSY_STATE;
                     putShortMSB(header);
                 }
-  
+
                 // Flush as much pending output as possible
                 if (that.pending !== 0) {
                     strm.flush_pending();
@@ -7188,7 +7193,7 @@ define(['jquery'], function($) {
                         last_flush = -1;
                         return Z_OK;
                     }
-  
+
                     // Make sure there is something to do and avoid duplicate
                     // consecutive
                     // flushes. For repeated and useless calls with Z_FINISH, we keep
@@ -7197,29 +7202,29 @@ define(['jquery'], function($) {
                     strm.msg = z_errmsg[Z_NEED_DICT - (Z_BUF_ERROR)];
                     return Z_BUF_ERROR;
                 }
-  
+
                 // User must not provide more input after the first FINISH:
                 if (status == FINISH_STATE && strm.avail_in !== 0) {
                     _strm.msg = z_errmsg[Z_NEED_DICT - (Z_BUF_ERROR)];
                     return Z_BUF_ERROR;
                 }
-  
+
                 // Start a new block or continue the current one.
                 if (strm.avail_in !== 0 || lookahead !== 0 || (flush != Z_NO_FLUSH && status != FINISH_STATE)) {
                     bstate = -1;
                     switch (config_table[level].func) {
-                    case STORED:
-                        bstate = deflate_stored(flush);
-                        break;
-                    case FAST:
-                        bstate = deflate_fast(flush);
-                        break;
-                    case SLOW:
-                        bstate = deflate_slow(flush);
-                        break;
-                    default:
+                        case STORED:
+                            bstate = deflate_stored(flush);
+                            break;
+                        case FAST:
+                            bstate = deflate_fast(flush);
+                            break;
+                        case SLOW:
+                            bstate = deflate_slow(flush);
+                            break;
+                        default:
                     }
-  
+
                     if (bstate == FinishStarted || bstate == FinishDone) {
                         status = FINISH_STATE;
                     }
@@ -7235,7 +7240,7 @@ define(['jquery'], function($) {
                         // ensures that for a very small output buffer, we emit at most
                         // one empty block.
                     }
-  
+
                     if (bstate == BlockDone) {
                         if (flush == Z_PARTIAL_FLUSH) {
                             _tr_align();
@@ -7257,15 +7262,15 @@ define(['jquery'], function($) {
                         }
                     }
                 }
-  
+
                 if (flush != Z_FINISH)
                     return Z_OK;
                 return Z_STREAM_END;
             };
         }
-  
+
         // ZStream
-  
+
         function ZStream() {
             var that = this;
             that.next_in_index = 0;
@@ -7279,25 +7284,25 @@ define(['jquery'], function($) {
             // that.msg;
             // that.dstate;
         }
-  
+
         ZStream.prototype = {
-            deflateInit : function(level, bits) {
+            deflateInit: function (level, bits) {
                 var that = this;
                 that.dstate = new Deflate();
                 if (!bits)
                     bits = MAX_BITS;
                 return that.dstate.deflateInit(that, level, bits);
             },
-  
-            deflate : function(flush) {
+
+            deflate: function (flush) {
                 var that = this;
                 if (!that.dstate) {
                     return Z_STREAM_ERROR;
                 }
                 return that.dstate.deflate(that, flush);
             },
-  
-            deflateEnd : function() {
+
+            deflateEnd: function () {
                 var that = this;
                 if (!that.dstate)
                     return Z_STREAM_ERROR;
@@ -7305,27 +7310,27 @@ define(['jquery'], function($) {
                 that.dstate = null;
                 return ret;
             },
-  
-            deflateParams : function(level, strategy) {
+
+            deflateParams: function (level, strategy) {
                 var that = this;
                 if (!that.dstate)
                     return Z_STREAM_ERROR;
                 return that.dstate.deflateParams(that, level, strategy);
             },
-  
-            deflateSetDictionary : function(dictionary, dictLength) {
+
+            deflateSetDictionary: function (dictionary, dictLength) {
                 var that = this;
                 if (!that.dstate)
                     return Z_STREAM_ERROR;
                 return that.dstate.deflateSetDictionary(that, dictionary, dictLength);
             },
-  
+
             // Read a new buffer from the current input stream, update the
             // total number of bytes read. All deflate() input goes through
             // this function so some applications may wish to modify it to avoid
             // allocating a large strm->next_in buffer and copying from it.
             // (See also flush_pending()).
-            read_buf : function(buf, start, size) {
+            read_buf: function (buf, start, size) {
                 var that = this;
                 var len = that.avail_in;
                 if (len > size)
@@ -7338,20 +7343,20 @@ define(['jquery'], function($) {
                 that.total_in += len;
                 return len;
             },
-  
+
             // Flush as much pending output as possible. All deflate() output goes
             // through this function so some applications may wish to modify it
             // to avoid allocating a large strm->next_out buffer and copying into it.
             // (See also read_buf()).
-            flush_pending : function() {
+            flush_pending: function () {
                 var that = this;
                 var len = that.dstate.pending;
-  
+
                 if (len > that.avail_out)
                     len = that.avail_out;
                 if (len === 0)
                     return;
-  
+
                 // if (that.dstate.pending_buf.length <= that.dstate.pending_out || that.next_out.length <= that.next_out_index
                 // || that.dstate.pending_buf.length < (that.dstate.pending_out + len) || that.next_out.length < (that.next_out_index +
                 // len)) {
@@ -7359,9 +7364,9 @@ define(['jquery'], function($) {
                 // that.next_out_index + ", " + len);
                 // console.log("avail_out=" + that.avail_out);
                 // }
-  
+
                 that.next_out.set(that.dstate.pending_buf.subarray(that.dstate.pending_out, that.dstate.pending_out + len), that.next_out_index);
-  
+
                 that.next_out_index += len;
                 that.dstate.pending_out += len;
                 that.total_out += len;
@@ -7372,22 +7377,22 @@ define(['jquery'], function($) {
                 }
             }
         };
-  
+
         // Deflater
-  
+
         return function Deflater(level) {
             var that = this;
             var z = new ZStream();
             var bufsize = 512;
             var flush = Z_NO_FLUSH;
             var buf = new Uint8Array(bufsize);
-  
+
             if (typeof level == "undefined")
                 level = Z_DEFAULT_COMPRESSION;
             z.deflateInit(level);
             z.next_out = buf;
-  
-            that.append = function(data, onprogress) {
+
+            that.append = function (data, onprogress) {
                 var err, buffers = [], lastIndex = 0, bufferIndex = 0, bufferSize = 0, array;
                 if (!data.length)
                     return;
@@ -7412,13 +7417,13 @@ define(['jquery'], function($) {
                     }
                 } while (z.avail_in > 0 || z.avail_out === 0);
                 array = new Uint8Array(bufferSize);
-                buffers.forEach(function(chunk) {
+                buffers.forEach(function (chunk) {
                     array.set(chunk, bufferIndex);
                     bufferIndex += chunk.length;
                 });
                 return array;
             };
-            that.flush = function() {
+            that.flush = function () {
                 var err, buffers = [], bufferIndex = 0, bufferSize = 0, array;
                 do {
                     z.next_out_index = 0;
@@ -7432,7 +7437,7 @@ define(['jquery'], function($) {
                 } while (z.avail_in > 0 || z.avail_out === 0);
                 z.deflateEnd();
                 array = new Uint8Array(bufferSize);
-                buffers.forEach(function(chunk) {
+                buffers.forEach(function (chunk) {
                     array.set(chunk, bufferIndex);
                     bufferIndex += chunk.length;
                 });
@@ -7440,17 +7445,17 @@ define(['jquery'], function($) {
             };
         };
     })(undefined);
-    
-  
+
+
     /*
       html2canvas 0.5.0-beta3 <http://html2canvas.hertzen.com>
       Copyright (c) 2016 Niklas von Hertzen
   
       Released under  License
     */
-  
+
     // Generated by CoffeeScript 1.4.0
-  
+
     /*
     # PNG.js
     # Copyright (c) 2011 Devon Govett
@@ -7458,454 +7463,454 @@ define(['jquery'], function($) {
     # 
     # 
     */
-  
-  
-    (function(global) {
-      var PNG;
-  
-      PNG = (function() {
-        var APNG_BLEND_OP_OVER, APNG_BLEND_OP_SOURCE, APNG_DISPOSE_OP_BACKGROUND, APNG_DISPOSE_OP_NONE, APNG_DISPOSE_OP_PREVIOUS, makeImage, scratchCanvas, scratchCtx;
-  
-        PNG.load = function(url, canvas, callback) {
-          var xhr,
-            _this = this;
-          if (typeof canvas === 'function') {
-            callback = canvas;
-          }
-          xhr = new XMLHttpRequest;
-          xhr.open("GET", url, true);
-          xhr.responseType = "arraybuffer";
-          xhr.onload = function() {
-            var data, png;
-            data = new Uint8Array(xhr.response || xhr.mozResponseArrayBuffer);
-            png = new PNG(data);
-            if (typeof (canvas != null ? canvas.getContext : void 0) === 'function') {
-              png.render(canvas);
-            }
-            return typeof callback === "function" ? callback(png) : void 0;
-          };
-          return xhr.send(null);
-        };
-  
-        APNG_DISPOSE_OP_NONE = 0;
-  
-        APNG_DISPOSE_OP_BACKGROUND = 1;
-  
-        APNG_DISPOSE_OP_PREVIOUS = 2;
-  
-        APNG_BLEND_OP_SOURCE = 0;
-  
-        APNG_BLEND_OP_OVER = 1;
-  
-        function PNG(data) {
-          var chunkSize, colors, palLen, delayDen, delayNum, frame, i, index, key, section, palShort, text, _i, _j, _ref;
-          this.data = data;
-          this.pos = 8;
-          this.palette = [];
-          this.imgData = [];
-          this.transparency = {};
-          this.animation = null;
-          this.text = {};
-          frame = null;
-          while (true) {
-            chunkSize = this.readUInt32();
-            section = ((function() {
-              var _i, _results;
-              _results = [];
-              for (i = _i = 0; _i < 4; i = ++_i) {
-                _results.push(String.fromCharCode(this.data[this.pos++]));
-              }
-              return _results;
-            }).call(this)).join('');
-            switch (section) {
-              case 'IHDR':
-                this.width = this.readUInt32();
-                this.height = this.readUInt32();
-                this.bits = this.data[this.pos++];
-                this.colorType = this.data[this.pos++];
-                this.compressionMethod = this.data[this.pos++];
-                this.filterMethod = this.data[this.pos++];
-                this.interlaceMethod = this.data[this.pos++];
-                break;
-              case 'acTL':
-                this.animation = {
-                  numFrames: this.readUInt32(),
-                  numPlays: this.readUInt32() || Infinity,
-                  frames: []
-                };
-                break;
-              case 'PLTE':
-                this.palette = this.read(chunkSize);
-                break;
-              case 'fcTL':
-                if (frame) {
-                  this.animation.frames.push(frame);
+
+
+    (function (global) {
+        var PNG;
+
+        PNG = (function () {
+            var APNG_BLEND_OP_OVER, APNG_BLEND_OP_SOURCE, APNG_DISPOSE_OP_BACKGROUND, APNG_DISPOSE_OP_NONE, APNG_DISPOSE_OP_PREVIOUS, makeImage, scratchCanvas, scratchCtx;
+
+            PNG.load = function (url, canvas, callback) {
+                var xhr,
+                    _this = this;
+                if (typeof canvas === 'function') {
+                    callback = canvas;
                 }
-                this.pos += 4;
-                frame = {
-                  width: this.readUInt32(),
-                  height: this.readUInt32(),
-                  xOffset: this.readUInt32(),
-                  yOffset: this.readUInt32()
-                };
-                delayNum = this.readUInt16();
-                delayDen = this.readUInt16() || 100;
-                frame.delay = 1000 * delayNum / delayDen;
-                frame.disposeOp = this.data[this.pos++];
-                frame.blendOp = this.data[this.pos++];
-                frame.data = [];
-                break;
-              case 'IDAT':
-              case 'fdAT':
-                if (section === 'fdAT') {
-                  this.pos += 4;
-                  chunkSize -= 4;
-                }
-                data = (frame != null ? frame.data : void 0) || this.imgData;
-                for (i = _i = 0; 0 <= chunkSize ? _i < chunkSize : _i > chunkSize; i = 0 <= chunkSize ? ++_i : --_i) {
-                  data.push(this.data[this.pos++]);
-                }
-                break;
-              case 'tRNS':
-                this.transparency = {};
-                switch (this.colorType) {
-                  case 3:
-                    palLen = this.palette.length/3;
-                    this.transparency.indexed = this.read(chunkSize);
-                    if(this.transparency.indexed.length > palLen)
-                        throw new Error('More transparent colors than palette size');
-                    /*
-                     * According to the PNG spec trns should be increased to the same size as palette if shorter
-                     */
-                    //palShort = 255 - this.transparency.indexed.length;
-                    palShort = palLen - this.transparency.indexed.length;
-                    if (palShort > 0) {
-                      for (i = _j = 0; 0 <= palShort ? _j < palShort : _j > palShort; i = 0 <= palShort ? ++_j : --_j) {
-                        this.transparency.indexed.push(255);
-                      }
+                xhr = new XMLHttpRequest;
+                xhr.open("GET", url, true);
+                xhr.responseType = "arraybuffer";
+                xhr.onload = function () {
+                    var data, png;
+                    data = new Uint8Array(xhr.response || xhr.mozResponseArrayBuffer);
+                    png = new PNG(data);
+                    if (typeof (canvas != null ? canvas.getContext : void 0) === 'function') {
+                        png.render(canvas);
                     }
-                    break;
-                  case 0:
-                    this.transparency.grayscale = this.read(chunkSize)[0];
-                    break;
-                  case 2:
-                    this.transparency.rgb = this.read(chunkSize);
+                    return typeof callback === "function" ? callback(png) : void 0;
+                };
+                return xhr.send(null);
+            };
+
+            APNG_DISPOSE_OP_NONE = 0;
+
+            APNG_DISPOSE_OP_BACKGROUND = 1;
+
+            APNG_DISPOSE_OP_PREVIOUS = 2;
+
+            APNG_BLEND_OP_SOURCE = 0;
+
+            APNG_BLEND_OP_OVER = 1;
+
+            function PNG(data) {
+                var chunkSize, colors, palLen, delayDen, delayNum, frame, i, index, key, section, palShort, text, _i, _j, _ref;
+                this.data = data;
+                this.pos = 8;
+                this.palette = [];
+                this.imgData = [];
+                this.transparency = {};
+                this.animation = null;
+                this.text = {};
+                frame = null;
+                while (true) {
+                    chunkSize = this.readUInt32();
+                    section = ((function () {
+                        var _i, _results;
+                        _results = [];
+                        for (i = _i = 0; _i < 4; i = ++_i) {
+                            _results.push(String.fromCharCode(this.data[this.pos++]));
+                        }
+                        return _results;
+                    }).call(this)).join('');
+                    switch (section) {
+                        case 'IHDR':
+                            this.width = this.readUInt32();
+                            this.height = this.readUInt32();
+                            this.bits = this.data[this.pos++];
+                            this.colorType = this.data[this.pos++];
+                            this.compressionMethod = this.data[this.pos++];
+                            this.filterMethod = this.data[this.pos++];
+                            this.interlaceMethod = this.data[this.pos++];
+                            break;
+                        case 'acTL':
+                            this.animation = {
+                                numFrames: this.readUInt32(),
+                                numPlays: this.readUInt32() || Infinity,
+                                frames: []
+                            };
+                            break;
+                        case 'PLTE':
+                            this.palette = this.read(chunkSize);
+                            break;
+                        case 'fcTL':
+                            if (frame) {
+                                this.animation.frames.push(frame);
+                            }
+                            this.pos += 4;
+                            frame = {
+                                width: this.readUInt32(),
+                                height: this.readUInt32(),
+                                xOffset: this.readUInt32(),
+                                yOffset: this.readUInt32()
+                            };
+                            delayNum = this.readUInt16();
+                            delayDen = this.readUInt16() || 100;
+                            frame.delay = 1000 * delayNum / delayDen;
+                            frame.disposeOp = this.data[this.pos++];
+                            frame.blendOp = this.data[this.pos++];
+                            frame.data = [];
+                            break;
+                        case 'IDAT':
+                        case 'fdAT':
+                            if (section === 'fdAT') {
+                                this.pos += 4;
+                                chunkSize -= 4;
+                            }
+                            data = (frame != null ? frame.data : void 0) || this.imgData;
+                            for (i = _i = 0; 0 <= chunkSize ? _i < chunkSize : _i > chunkSize; i = 0 <= chunkSize ? ++_i : --_i) {
+                                data.push(this.data[this.pos++]);
+                            }
+                            break;
+                        case 'tRNS':
+                            this.transparency = {};
+                            switch (this.colorType) {
+                                case 3:
+                                    palLen = this.palette.length / 3;
+                                    this.transparency.indexed = this.read(chunkSize);
+                                    if (this.transparency.indexed.length > palLen)
+                                        throw new Error('More transparent colors than palette size');
+                                    /*
+                                     * According to the PNG spec trns should be increased to the same size as palette if shorter
+                                     */
+                                    //palShort = 255 - this.transparency.indexed.length;
+                                    palShort = palLen - this.transparency.indexed.length;
+                                    if (palShort > 0) {
+                                        for (i = _j = 0; 0 <= palShort ? _j < palShort : _j > palShort; i = 0 <= palShort ? ++_j : --_j) {
+                                            this.transparency.indexed.push(255);
+                                        }
+                                    }
+                                    break;
+                                case 0:
+                                    this.transparency.grayscale = this.read(chunkSize)[0];
+                                    break;
+                                case 2:
+                                    this.transparency.rgb = this.read(chunkSize);
+                            }
+                            break;
+                        case 'tEXt':
+                            text = this.read(chunkSize);
+                            index = text.indexOf(0);
+                            key = String.fromCharCode.apply(String, text.slice(0, index));
+                            this.text[key] = String.fromCharCode.apply(String, text.slice(index + 1));
+                            break;
+                        case 'IEND':
+                            if (frame) {
+                                this.animation.frames.push(frame);
+                            }
+                            this.colors = (function () {
+                                switch (this.colorType) {
+                                    case 0:
+                                    case 3:
+                                    case 4:
+                                        return 1;
+                                    case 2:
+                                    case 6:
+                                        return 3;
+                                }
+                            }).call(this);
+                            this.hasAlphaChannel = (_ref = this.colorType) === 4 || _ref === 6;
+                            colors = this.colors + (this.hasAlphaChannel ? 1 : 0);
+                            this.pixelBitlength = this.bits * colors;
+                            this.colorSpace = (function () {
+                                switch (this.colors) {
+                                    case 1:
+                                        return 'DeviceGray';
+                                    case 3:
+                                        return 'DeviceRGB';
+                                }
+                            }).call(this);
+                            this.imgData = new Uint8Array(this.imgData);
+                            return;
+                        default:
+                            this.pos += chunkSize;
+                    }
+                    this.pos += 4;
+                    if (this.pos > this.data.length) {
+                        throw new Error("Incomplete or corrupt PNG file");
+                    }
                 }
-                break;
-              case 'tEXt':
-                text = this.read(chunkSize);
-                index = text.indexOf(0);
-                key = String.fromCharCode.apply(String, text.slice(0, index));
-                this.text[key] = String.fromCharCode.apply(String, text.slice(index + 1));
-                break;
-              case 'IEND':
-                if (frame) {
-                  this.animation.frames.push(frame);
-                }
-                this.colors = (function() {
-                  switch (this.colorType) {
-                    case 0:
-                    case 3:
-                    case 4:
-                      return 1;
-                    case 2:
-                    case 6:
-                      return 3;
-                  }
-                }).call(this);
-                this.hasAlphaChannel = (_ref = this.colorType) === 4 || _ref === 6;
-                colors = this.colors + (this.hasAlphaChannel ? 1 : 0);
-                this.pixelBitlength = this.bits * colors;
-                this.colorSpace = (function() {
-                  switch (this.colors) {
-                    case 1:
-                      return 'DeviceGray';
-                    case 3:
-                      return 'DeviceRGB';
-                  }
-                }).call(this);
-                this.imgData = new Uint8Array(this.imgData);
                 return;
-              default:
-                this.pos += chunkSize;
             }
-            this.pos += 4;
-            if (this.pos > this.data.length) {
-              throw new Error("Incomplete or corrupt PNG file");
-            }
-          }
-          return;
-        }
-  
-        PNG.prototype.read = function(bytes) {
-          var i, _i, _results;
-          _results = [];
-          for (i = _i = 0; 0 <= bytes ? _i < bytes : _i > bytes; i = 0 <= bytes ? ++_i : --_i) {
-            _results.push(this.data[this.pos++]);
-          }
-          return _results;
-        };
-  
-        PNG.prototype.readUInt32 = function() {
-          var b1, b2, b3, b4;
-          b1 = this.data[this.pos++] << 24;
-          b2 = this.data[this.pos++] << 16;
-          b3 = this.data[this.pos++] << 8;
-          b4 = this.data[this.pos++];
-          return b1 | b2 | b3 | b4;
-        };
-  
-        PNG.prototype.readUInt16 = function() {
-          var b1, b2;
-          b1 = this.data[this.pos++] << 8;
-          b2 = this.data[this.pos++];
-          return b1 | b2;
-        };
-  
-        PNG.prototype.decodePixels = function(data) {
-          var abyte, c, col, i, left, length, p, pa, paeth, pb, pc, pixelBytes, pixels, pos, row, scanlineLength, upper, upperLeft, _i, _j, _k, _l, _m;
-          if (data == null) {
-            data = this.imgData;
-          }
-          if (data.length === 0) {
-            return new Uint8Array(0);
-          }
-          data = new FlateStream(data);
-          data = data.getBytes();
-          pixelBytes = this.pixelBitlength / 8;
-          scanlineLength = pixelBytes * this.width;
-          pixels = new Uint8Array(scanlineLength * this.height);
-          length = data.length;
-          row = 0;
-          pos = 0;
-          c = 0;
-          while (pos < length) {
-            switch (data[pos++]) {
-              case 0:
-                for (i = _i = 0; _i < scanlineLength; i = _i += 1) {
-                  pixels[c++] = data[pos++];
+
+            PNG.prototype.read = function (bytes) {
+                var i, _i, _results;
+                _results = [];
+                for (i = _i = 0; 0 <= bytes ? _i < bytes : _i > bytes; i = 0 <= bytes ? ++_i : --_i) {
+                    _results.push(this.data[this.pos++]);
                 }
-                break;
-              case 1:
-                for (i = _j = 0; _j < scanlineLength; i = _j += 1) {
-                  abyte = data[pos++];
-                  left = i < pixelBytes ? 0 : pixels[c - pixelBytes];
-                  pixels[c++] = (abyte + left) % 256;
+                return _results;
+            };
+
+            PNG.prototype.readUInt32 = function () {
+                var b1, b2, b3, b4;
+                b1 = this.data[this.pos++] << 24;
+                b2 = this.data[this.pos++] << 16;
+                b3 = this.data[this.pos++] << 8;
+                b4 = this.data[this.pos++];
+                return b1 | b2 | b3 | b4;
+            };
+
+            PNG.prototype.readUInt16 = function () {
+                var b1, b2;
+                b1 = this.data[this.pos++] << 8;
+                b2 = this.data[this.pos++];
+                return b1 | b2;
+            };
+
+            PNG.prototype.decodePixels = function (data) {
+                var abyte, c, col, i, left, length, p, pa, paeth, pb, pc, pixelBytes, pixels, pos, row, scanlineLength, upper, upperLeft, _i, _j, _k, _l, _m;
+                if (data == null) {
+                    data = this.imgData;
                 }
-                break;
-              case 2:
-                for (i = _k = 0; _k < scanlineLength; i = _k += 1) {
-                  abyte = data[pos++];
-                  col = (i - (i % pixelBytes)) / pixelBytes;
-                  upper = row && pixels[(row - 1) * scanlineLength + col * pixelBytes + (i % pixelBytes)];
-                  pixels[c++] = (upper + abyte) % 256;
+                if (data.length === 0) {
+                    return new Uint8Array(0);
                 }
-                break;
-              case 3:
-                for (i = _l = 0; _l < scanlineLength; i = _l += 1) {
-                  abyte = data[pos++];
-                  col = (i - (i % pixelBytes)) / pixelBytes;
-                  left = i < pixelBytes ? 0 : pixels[c - pixelBytes];
-                  upper = row && pixels[(row - 1) * scanlineLength + col * pixelBytes + (i % pixelBytes)];
-                  pixels[c++] = (abyte + Math.floor((left + upper) / 2)) % 256;
+                data = new FlateStream(data);
+                data = data.getBytes();
+                pixelBytes = this.pixelBitlength / 8;
+                scanlineLength = pixelBytes * this.width;
+                pixels = new Uint8Array(scanlineLength * this.height);
+                length = data.length;
+                row = 0;
+                pos = 0;
+                c = 0;
+                while (pos < length) {
+                    switch (data[pos++]) {
+                        case 0:
+                            for (i = _i = 0; _i < scanlineLength; i = _i += 1) {
+                                pixels[c++] = data[pos++];
+                            }
+                            break;
+                        case 1:
+                            for (i = _j = 0; _j < scanlineLength; i = _j += 1) {
+                                abyte = data[pos++];
+                                left = i < pixelBytes ? 0 : pixels[c - pixelBytes];
+                                pixels[c++] = (abyte + left) % 256;
+                            }
+                            break;
+                        case 2:
+                            for (i = _k = 0; _k < scanlineLength; i = _k += 1) {
+                                abyte = data[pos++];
+                                col = (i - (i % pixelBytes)) / pixelBytes;
+                                upper = row && pixels[(row - 1) * scanlineLength + col * pixelBytes + (i % pixelBytes)];
+                                pixels[c++] = (upper + abyte) % 256;
+                            }
+                            break;
+                        case 3:
+                            for (i = _l = 0; _l < scanlineLength; i = _l += 1) {
+                                abyte = data[pos++];
+                                col = (i - (i % pixelBytes)) / pixelBytes;
+                                left = i < pixelBytes ? 0 : pixels[c - pixelBytes];
+                                upper = row && pixels[(row - 1) * scanlineLength + col * pixelBytes + (i % pixelBytes)];
+                                pixels[c++] = (abyte + Math.floor((left + upper) / 2)) % 256;
+                            }
+                            break;
+                        case 4:
+                            for (i = _m = 0; _m < scanlineLength; i = _m += 1) {
+                                abyte = data[pos++];
+                                col = (i - (i % pixelBytes)) / pixelBytes;
+                                left = i < pixelBytes ? 0 : pixels[c - pixelBytes];
+                                if (row === 0) {
+                                    upper = upperLeft = 0;
+                                } else {
+                                    upper = pixels[(row - 1) * scanlineLength + col * pixelBytes + (i % pixelBytes)];
+                                    upperLeft = col && pixels[(row - 1) * scanlineLength + (col - 1) * pixelBytes + (i % pixelBytes)];
+                                }
+                                p = left + upper - upperLeft;
+                                pa = Math.abs(p - left);
+                                pb = Math.abs(p - upper);
+                                pc = Math.abs(p - upperLeft);
+                                if (pa <= pb && pa <= pc) {
+                                    paeth = left;
+                                } else if (pb <= pc) {
+                                    paeth = upper;
+                                } else {
+                                    paeth = upperLeft;
+                                }
+                                pixels[c++] = (abyte + paeth) % 256;
+                            }
+                            break;
+                        default:
+                            throw new Error("Invalid filter algorithm: " + data[pos - 1]);
+                    }
+                    row++;
                 }
-                break;
-              case 4:
-                for (i = _m = 0; _m < scanlineLength; i = _m += 1) {
-                  abyte = data[pos++];
-                  col = (i - (i % pixelBytes)) / pixelBytes;
-                  left = i < pixelBytes ? 0 : pixels[c - pixelBytes];
-                  if (row === 0) {
-                    upper = upperLeft = 0;
-                  } else {
-                    upper = pixels[(row - 1) * scanlineLength + col * pixelBytes + (i % pixelBytes)];
-                    upperLeft = col && pixels[(row - 1) * scanlineLength + (col - 1) * pixelBytes + (i % pixelBytes)];
-                  }
-                  p = left + upper - upperLeft;
-                  pa = Math.abs(p - left);
-                  pb = Math.abs(p - upper);
-                  pc = Math.abs(p - upperLeft);
-                  if (pa <= pb && pa <= pc) {
-                    paeth = left;
-                  } else if (pb <= pc) {
-                    paeth = upper;
-                  } else {
-                    paeth = upperLeft;
-                  }
-                  pixels[c++] = (abyte + paeth) % 256;
+                return pixels;
+            };
+
+            PNG.prototype.decodePalette = function () {
+                var c, i, length, palette, pos, ret, transparency, _i, _ref, _ref1;
+                palette = this.palette;
+                transparency = this.transparency.indexed || [];
+                ret = new Uint8Array((transparency.length || 0) + palette.length);
+                pos = 0;
+                length = palette.length;
+                c = 0;
+                for (i = _i = 0, _ref = palette.length; _i < _ref; i = _i += 3) {
+                    ret[pos++] = palette[i];
+                    ret[pos++] = palette[i + 1];
+                    ret[pos++] = palette[i + 2];
+                    ret[pos++] = (_ref1 = transparency[c++]) != null ? _ref1 : 255;
                 }
-                break;
-              default:
-                throw new Error("Invalid filter algorithm: " + data[pos - 1]);
+                return ret;
+            };
+
+            PNG.prototype.copyToImageData = function (imageData, pixels) {
+                var alpha, colors, data, i, input, j, k, length, palette, v, _ref;
+                colors = this.colors;
+                palette = null;
+                alpha = this.hasAlphaChannel;
+                if (this.palette.length) {
+                    palette = (_ref = this._decodedPalette) != null ? _ref : this._decodedPalette = this.decodePalette();
+                    colors = 4;
+                    alpha = true;
+                }
+                data = imageData.data || imageData;
+                length = data.length;
+                input = palette || pixels;
+                i = j = 0;
+                if (colors === 1) {
+                    while (i < length) {
+                        k = palette ? pixels[i / 4] * 4 : j;
+                        v = input[k++];
+                        data[i++] = v;
+                        data[i++] = v;
+                        data[i++] = v;
+                        data[i++] = alpha ? input[k++] : 255;
+                        j = k;
+                    }
+                } else {
+                    while (i < length) {
+                        k = palette ? pixels[i / 4] * 4 : j;
+                        data[i++] = input[k++];
+                        data[i++] = input[k++];
+                        data[i++] = input[k++];
+                        data[i++] = alpha ? input[k++] : 255;
+                        j = k;
+                    }
+                }
+            };
+
+            PNG.prototype.decode = function () {
+                var ret;
+                ret = new Uint8Array(this.width * this.height * 4);
+                this.copyToImageData(ret, this.decodePixels());
+                return ret;
+            };
+
+            try {
+                scratchCanvas = global.document.createElement('canvas');
+                scratchCtx = scratchCanvas.getContext('2d');
+            } catch (e) {
+                return -1;
             }
-            row++;
-          }
-          return pixels;
-        };
-  
-        PNG.prototype.decodePalette = function() {
-          var c, i, length, palette, pos, ret, transparency, _i, _ref, _ref1;
-          palette = this.palette;
-          transparency = this.transparency.indexed || [];
-          ret = new Uint8Array((transparency.length || 0) + palette.length);
-          pos = 0;
-          length = palette.length;
-          c = 0;
-          for (i = _i = 0, _ref = palette.length; _i < _ref; i = _i += 3) {
-            ret[pos++] = palette[i];
-            ret[pos++] = palette[i + 1];
-            ret[pos++] = palette[i + 2];
-            ret[pos++] = (_ref1 = transparency[c++]) != null ? _ref1 : 255;
-          }
-          return ret;
-        };
-  
-        PNG.prototype.copyToImageData = function(imageData, pixels) {
-          var alpha, colors, data, i, input, j, k, length, palette, v, _ref;
-          colors = this.colors;
-          palette = null;
-          alpha = this.hasAlphaChannel;
-          if (this.palette.length) {
-            palette = (_ref = this._decodedPalette) != null ? _ref : this._decodedPalette = this.decodePalette();
-            colors = 4;
-            alpha = true;
-          }
-          data = imageData.data || imageData;
-          length = data.length;
-          input = palette || pixels;
-          i = j = 0;
-          if (colors === 1) {
-            while (i < length) {
-              k = palette ? pixels[i / 4] * 4 : j;
-              v = input[k++];
-              data[i++] = v;
-              data[i++] = v;
-              data[i++] = v;
-              data[i++] = alpha ? input[k++] : 255;
-              j = k;
-            }
-          } else {
-            while (i < length) {
-              k = palette ? pixels[i / 4] * 4 : j;
-              data[i++] = input[k++];
-              data[i++] = input[k++];
-              data[i++] = input[k++];
-              data[i++] = alpha ? input[k++] : 255;
-              j = k;
-            }
-          }
-        };
-  
-        PNG.prototype.decode = function() {
-          var ret;
-          ret = new Uint8Array(this.width * this.height * 4);
-          this.copyToImageData(ret, this.decodePixels());
-          return ret;
-        };
-  
-        try {
-            scratchCanvas = global.document.createElement('canvas');
-            scratchCtx = scratchCanvas.getContext('2d');
-        } catch(e) {
-            return -1;
-        }
-  
-        makeImage = function(imageData) {
-          var img;
-          scratchCtx.width = imageData.width;
-          scratchCtx.height = imageData.height;
-          scratchCtx.clearRect(0, 0, imageData.width, imageData.height);
-          scratchCtx.putImageData(imageData, 0, 0);
-          img = new Image;
-          img.src = scratchCanvas.toDataURL();
-          return img;
-        };
-  
-        PNG.prototype.decodeFrames = function(ctx) {
-          var frame, i, imageData, pixels, _i, _len, _ref, _results;
-          if (!this.animation) {
-            return;
-          }
-          _ref = this.animation.frames;
-          _results = [];
-          for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
-            frame = _ref[i];
-            imageData = ctx.createImageData(frame.width, frame.height);
-            pixels = this.decodePixels(new Uint8Array(frame.data));
-            this.copyToImageData(imageData, pixels);
-            frame.imageData = imageData;
-            _results.push(frame.image = makeImage(imageData));
-          }
-          return _results;
-        };
-  
-        PNG.prototype.renderFrame = function(ctx, number) {
-          var frame, frames, prev;
-          frames = this.animation.frames;
-          frame = frames[number];
-          prev = frames[number - 1];
-          if (number === 0) {
-            ctx.clearRect(0, 0, this.width, this.height);
-          }
-          if ((prev != null ? prev.disposeOp : void 0) === APNG_DISPOSE_OP_BACKGROUND) {
-            ctx.clearRect(prev.xOffset, prev.yOffset, prev.width, prev.height);
-          } else if ((prev != null ? prev.disposeOp : void 0) === APNG_DISPOSE_OP_PREVIOUS) {
-            ctx.putImageData(prev.imageData, prev.xOffset, prev.yOffset);
-          }
-          if (frame.blendOp === APNG_BLEND_OP_SOURCE) {
-            ctx.clearRect(frame.xOffset, frame.yOffset, frame.width, frame.height);
-          }
-          return ctx.drawImage(frame.image, frame.xOffset, frame.yOffset);
-        };
-  
-        PNG.prototype.animate = function(ctx) {
-          var doFrame, frameNumber, frames, numFrames, numPlays, _ref,
-            _this = this;
-          frameNumber = 0;
-          _ref = this.animation, numFrames = _ref.numFrames, frames = _ref.frames, numPlays = _ref.numPlays;
-          return (doFrame = function() {
-            var f, frame;
-            f = frameNumber++ % numFrames;
-            frame = frames[f];
-            _this.renderFrame(ctx, f);
-            if (numFrames > 1 && frameNumber / numFrames < numPlays) {
-              return _this.animation._timeout = setTimeout(doFrame, frame.delay);
-            }
-          })();
-        };
-  
-        PNG.prototype.stopAnimation = function() {
-          var _ref;
-          return clearTimeout((_ref = this.animation) != null ? _ref._timeout : void 0);
-        };
-  
-        PNG.prototype.render = function(canvas) {
-          var ctx, data;
-          if (canvas._png) {
-            canvas._png.stopAnimation();
-          }
-          canvas._png = this;
-          canvas.width = this.width;
-          canvas.height = this.height;
-          ctx = canvas.getContext("2d");
-          if (this.animation) {
-            this.decodeFrames(ctx);
-            return this.animate(ctx);
-          } else {
-            data = ctx.createImageData(this.width, this.height);
-            this.copyToImageData(data, this.decodePixels());
-            return ctx.putImageData(data, 0, 0);
-          }
-        };
-  
-        return PNG;
-  
-      })();
-  
-      global.PNG = PNG;
-  
+
+            makeImage = function (imageData) {
+                var img;
+                scratchCtx.width = imageData.width;
+                scratchCtx.height = imageData.height;
+                scratchCtx.clearRect(0, 0, imageData.width, imageData.height);
+                scratchCtx.putImageData(imageData, 0, 0);
+                img = new Image;
+                img.src = scratchCanvas.toDataURL();
+                return img;
+            };
+
+            PNG.prototype.decodeFrames = function (ctx) {
+                var frame, i, imageData, pixels, _i, _len, _ref, _results;
+                if (!this.animation) {
+                    return;
+                }
+                _ref = this.animation.frames;
+                _results = [];
+                for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
+                    frame = _ref[i];
+                    imageData = ctx.createImageData(frame.width, frame.height);
+                    pixels = this.decodePixels(new Uint8Array(frame.data));
+                    this.copyToImageData(imageData, pixels);
+                    frame.imageData = imageData;
+                    _results.push(frame.image = makeImage(imageData));
+                }
+                return _results;
+            };
+
+            PNG.prototype.renderFrame = function (ctx, number) {
+                var frame, frames, prev;
+                frames = this.animation.frames;
+                frame = frames[number];
+                prev = frames[number - 1];
+                if (number === 0) {
+                    ctx.clearRect(0, 0, this.width, this.height);
+                }
+                if ((prev != null ? prev.disposeOp : void 0) === APNG_DISPOSE_OP_BACKGROUND) {
+                    ctx.clearRect(prev.xOffset, prev.yOffset, prev.width, prev.height);
+                } else if ((prev != null ? prev.disposeOp : void 0) === APNG_DISPOSE_OP_PREVIOUS) {
+                    ctx.putImageData(prev.imageData, prev.xOffset, prev.yOffset);
+                }
+                if (frame.blendOp === APNG_BLEND_OP_SOURCE) {
+                    ctx.clearRect(frame.xOffset, frame.yOffset, frame.width, frame.height);
+                }
+                return ctx.drawImage(frame.image, frame.xOffset, frame.yOffset);
+            };
+
+            PNG.prototype.animate = function (ctx) {
+                var doFrame, frameNumber, frames, numFrames, numPlays, _ref,
+                    _this = this;
+                frameNumber = 0;
+                _ref = this.animation, numFrames = _ref.numFrames, frames = _ref.frames, numPlays = _ref.numPlays;
+                return (doFrame = function () {
+                    var f, frame;
+                    f = frameNumber++ % numFrames;
+                    frame = frames[f];
+                    _this.renderFrame(ctx, f);
+                    if (numFrames > 1 && frameNumber / numFrames < numPlays) {
+                        return _this.animation._timeout = setTimeout(doFrame, frame.delay);
+                    }
+                })();
+            };
+
+            PNG.prototype.stopAnimation = function () {
+                var _ref;
+                return clearTimeout((_ref = this.animation) != null ? _ref._timeout : void 0);
+            };
+
+            PNG.prototype.render = function (canvas) {
+                var ctx, data;
+                if (canvas._png) {
+                    canvas._png.stopAnimation();
+                }
+                canvas._png = this;
+                canvas.width = this.width;
+                canvas.height = this.height;
+                ctx = canvas.getContext("2d");
+                if (this.animation) {
+                    this.decodeFrames(ctx);
+                    return this.animate(ctx);
+                } else {
+                    data = ctx.createImageData(this.width, this.height);
+                    this.copyToImageData(data, this.decodePixels());
+                    return ctx.putImageData(data, 0, 0);
+                }
+            };
+
+            return PNG;
+
+        })();
+
+        global.PNG = PNG;
+
     })(typeof window !== "undefined" && window || undefined);
-  
+
     /*
      * Extracted from pdf.js
      * https://github.com/andreasgal/pdf.js
@@ -7921,454 +7926,454 @@ define(['jquery'], function($) {
      *
      * 
      */
-  
-    var DecodeStream = (function() {
-      function constructor() {
-        this.pos = 0;
-        this.bufferLength = 0;
-        this.eof = false;
-        this.buffer = null;
-      }
-  
-      constructor.prototype = {
-        ensureBuffer: function decodestream_ensureBuffer(requested) {
-          var buffer = this.buffer;
-          var current = buffer ? buffer.byteLength : 0;
-          if (requested < current)
-            return buffer;
-          var size = 512;
-          while (size < requested)
-            size <<= 1;
-          var buffer2 = new Uint8Array(size);
-          for (var i = 0; i < current; ++i)
-            buffer2[i] = buffer[i];
-          return this.buffer = buffer2;
-        },
-        getByte: function decodestream_getByte() {
-          var pos = this.pos;
-          while (this.bufferLength <= pos) {
-            if (this.eof)
-              return null;
-            this.readBlock();
-          }
-          return this.buffer[this.pos++];
-        },
-        getBytes: function decodestream_getBytes(length) {
-          var pos = this.pos;
-  
-          if (length) {
-            this.ensureBuffer(pos + length);
-            var end = pos + length;
-  
-            while (!this.eof && this.bufferLength < end)
-              this.readBlock();
-  
-            var bufEnd = this.bufferLength;
-            if (end > bufEnd)
-              end = bufEnd;
-          } else {
-            while (!this.eof)
-              this.readBlock();
-  
-            var end = this.bufferLength;
-          }
-  
-          this.pos = end;
-          return this.buffer.subarray(pos, end);
-        },
-        lookChar: function decodestream_lookChar() {
-          var pos = this.pos;
-          while (this.bufferLength <= pos) {
-            if (this.eof)
-              return null;
-            this.readBlock();
-          }
-          return String.fromCharCode(this.buffer[this.pos]);
-        },
-        getChar: function decodestream_getChar() {
-          var pos = this.pos;
-          while (this.bufferLength <= pos) {
-            if (this.eof)
-              return null;
-            this.readBlock();
-          }
-          return String.fromCharCode(this.buffer[this.pos++]);
-        },
-        makeSubStream: function decodestream_makeSubstream(start, length, dict) {
-          var end = start + length;
-          while (this.bufferLength <= end && !this.eof)
-            this.readBlock();
-          return new Stream(this.buffer, start, length, dict);
-        },
-        skip: function decodestream_skip(n) {
-          if (!n)
-            n = 1;
-          this.pos += n;
-        },
-        reset: function decodestream_reset() {
-          this.pos = 0;
+
+    var DecodeStream = (function () {
+        function constructor() {
+            this.pos = 0;
+            this.bufferLength = 0;
+            this.eof = false;
+            this.buffer = null;
         }
-      };
-  
-      return constructor;
+
+        constructor.prototype = {
+            ensureBuffer: function decodestream_ensureBuffer(requested) {
+                var buffer = this.buffer;
+                var current = buffer ? buffer.byteLength : 0;
+                if (requested < current)
+                    return buffer;
+                var size = 512;
+                while (size < requested)
+                    size <<= 1;
+                var buffer2 = new Uint8Array(size);
+                for (var i = 0; i < current; ++i)
+                    buffer2[i] = buffer[i];
+                return this.buffer = buffer2;
+            },
+            getByte: function decodestream_getByte() {
+                var pos = this.pos;
+                while (this.bufferLength <= pos) {
+                    if (this.eof)
+                        return null;
+                    this.readBlock();
+                }
+                return this.buffer[this.pos++];
+            },
+            getBytes: function decodestream_getBytes(length) {
+                var pos = this.pos;
+
+                if (length) {
+                    this.ensureBuffer(pos + length);
+                    var end = pos + length;
+
+                    while (!this.eof && this.bufferLength < end)
+                        this.readBlock();
+
+                    var bufEnd = this.bufferLength;
+                    if (end > bufEnd)
+                        end = bufEnd;
+                } else {
+                    while (!this.eof)
+                        this.readBlock();
+
+                    var end = this.bufferLength;
+                }
+
+                this.pos = end;
+                return this.buffer.subarray(pos, end);
+            },
+            lookChar: function decodestream_lookChar() {
+                var pos = this.pos;
+                while (this.bufferLength <= pos) {
+                    if (this.eof)
+                        return null;
+                    this.readBlock();
+                }
+                return String.fromCharCode(this.buffer[this.pos]);
+            },
+            getChar: function decodestream_getChar() {
+                var pos = this.pos;
+                while (this.bufferLength <= pos) {
+                    if (this.eof)
+                        return null;
+                    this.readBlock();
+                }
+                return String.fromCharCode(this.buffer[this.pos++]);
+            },
+            makeSubStream: function decodestream_makeSubstream(start, length, dict) {
+                var end = start + length;
+                while (this.bufferLength <= end && !this.eof)
+                    this.readBlock();
+                return new Stream(this.buffer, start, length, dict);
+            },
+            skip: function decodestream_skip(n) {
+                if (!n)
+                    n = 1;
+                this.pos += n;
+            },
+            reset: function decodestream_reset() {
+                this.pos = 0;
+            }
+        };
+
+        return constructor;
     })();
-  
-    var FlateStream = (function() {
-      if (typeof Uint32Array === 'undefined') {
-        return undefined;
-      }
-      var codeLenCodeMap = new Uint32Array([
-        16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15
-      ]);
-  
-      var lengthDecode = new Uint32Array([
-        0x00003, 0x00004, 0x00005, 0x00006, 0x00007, 0x00008, 0x00009, 0x0000a,
-        0x1000b, 0x1000d, 0x1000f, 0x10011, 0x20013, 0x20017, 0x2001b, 0x2001f,
-        0x30023, 0x3002b, 0x30033, 0x3003b, 0x40043, 0x40053, 0x40063, 0x40073,
-        0x50083, 0x500a3, 0x500c3, 0x500e3, 0x00102, 0x00102, 0x00102
-      ]);
-  
-      var distDecode = new Uint32Array([
-        0x00001, 0x00002, 0x00003, 0x00004, 0x10005, 0x10007, 0x20009, 0x2000d,
-        0x30011, 0x30019, 0x40021, 0x40031, 0x50041, 0x50061, 0x60081, 0x600c1,
-        0x70101, 0x70181, 0x80201, 0x80301, 0x90401, 0x90601, 0xa0801, 0xa0c01,
-        0xb1001, 0xb1801, 0xc2001, 0xc3001, 0xd4001, 0xd6001
-      ]);
-  
-      var fixedLitCodeTab = [new Uint32Array([
-        0x70100, 0x80050, 0x80010, 0x80118, 0x70110, 0x80070, 0x80030, 0x900c0,
-        0x70108, 0x80060, 0x80020, 0x900a0, 0x80000, 0x80080, 0x80040, 0x900e0,
-        0x70104, 0x80058, 0x80018, 0x90090, 0x70114, 0x80078, 0x80038, 0x900d0,
-        0x7010c, 0x80068, 0x80028, 0x900b0, 0x80008, 0x80088, 0x80048, 0x900f0,
-        0x70102, 0x80054, 0x80014, 0x8011c, 0x70112, 0x80074, 0x80034, 0x900c8,
-        0x7010a, 0x80064, 0x80024, 0x900a8, 0x80004, 0x80084, 0x80044, 0x900e8,
-        0x70106, 0x8005c, 0x8001c, 0x90098, 0x70116, 0x8007c, 0x8003c, 0x900d8,
-        0x7010e, 0x8006c, 0x8002c, 0x900b8, 0x8000c, 0x8008c, 0x8004c, 0x900f8,
-        0x70101, 0x80052, 0x80012, 0x8011a, 0x70111, 0x80072, 0x80032, 0x900c4,
-        0x70109, 0x80062, 0x80022, 0x900a4, 0x80002, 0x80082, 0x80042, 0x900e4,
-        0x70105, 0x8005a, 0x8001a, 0x90094, 0x70115, 0x8007a, 0x8003a, 0x900d4,
-        0x7010d, 0x8006a, 0x8002a, 0x900b4, 0x8000a, 0x8008a, 0x8004a, 0x900f4,
-        0x70103, 0x80056, 0x80016, 0x8011e, 0x70113, 0x80076, 0x80036, 0x900cc,
-        0x7010b, 0x80066, 0x80026, 0x900ac, 0x80006, 0x80086, 0x80046, 0x900ec,
-        0x70107, 0x8005e, 0x8001e, 0x9009c, 0x70117, 0x8007e, 0x8003e, 0x900dc,
-        0x7010f, 0x8006e, 0x8002e, 0x900bc, 0x8000e, 0x8008e, 0x8004e, 0x900fc,
-        0x70100, 0x80051, 0x80011, 0x80119, 0x70110, 0x80071, 0x80031, 0x900c2,
-        0x70108, 0x80061, 0x80021, 0x900a2, 0x80001, 0x80081, 0x80041, 0x900e2,
-        0x70104, 0x80059, 0x80019, 0x90092, 0x70114, 0x80079, 0x80039, 0x900d2,
-        0x7010c, 0x80069, 0x80029, 0x900b2, 0x80009, 0x80089, 0x80049, 0x900f2,
-        0x70102, 0x80055, 0x80015, 0x8011d, 0x70112, 0x80075, 0x80035, 0x900ca,
-        0x7010a, 0x80065, 0x80025, 0x900aa, 0x80005, 0x80085, 0x80045, 0x900ea,
-        0x70106, 0x8005d, 0x8001d, 0x9009a, 0x70116, 0x8007d, 0x8003d, 0x900da,
-        0x7010e, 0x8006d, 0x8002d, 0x900ba, 0x8000d, 0x8008d, 0x8004d, 0x900fa,
-        0x70101, 0x80053, 0x80013, 0x8011b, 0x70111, 0x80073, 0x80033, 0x900c6,
-        0x70109, 0x80063, 0x80023, 0x900a6, 0x80003, 0x80083, 0x80043, 0x900e6,
-        0x70105, 0x8005b, 0x8001b, 0x90096, 0x70115, 0x8007b, 0x8003b, 0x900d6,
-        0x7010d, 0x8006b, 0x8002b, 0x900b6, 0x8000b, 0x8008b, 0x8004b, 0x900f6,
-        0x70103, 0x80057, 0x80017, 0x8011f, 0x70113, 0x80077, 0x80037, 0x900ce,
-        0x7010b, 0x80067, 0x80027, 0x900ae, 0x80007, 0x80087, 0x80047, 0x900ee,
-        0x70107, 0x8005f, 0x8001f, 0x9009e, 0x70117, 0x8007f, 0x8003f, 0x900de,
-        0x7010f, 0x8006f, 0x8002f, 0x900be, 0x8000f, 0x8008f, 0x8004f, 0x900fe,
-        0x70100, 0x80050, 0x80010, 0x80118, 0x70110, 0x80070, 0x80030, 0x900c1,
-        0x70108, 0x80060, 0x80020, 0x900a1, 0x80000, 0x80080, 0x80040, 0x900e1,
-        0x70104, 0x80058, 0x80018, 0x90091, 0x70114, 0x80078, 0x80038, 0x900d1,
-        0x7010c, 0x80068, 0x80028, 0x900b1, 0x80008, 0x80088, 0x80048, 0x900f1,
-        0x70102, 0x80054, 0x80014, 0x8011c, 0x70112, 0x80074, 0x80034, 0x900c9,
-        0x7010a, 0x80064, 0x80024, 0x900a9, 0x80004, 0x80084, 0x80044, 0x900e9,
-        0x70106, 0x8005c, 0x8001c, 0x90099, 0x70116, 0x8007c, 0x8003c, 0x900d9,
-        0x7010e, 0x8006c, 0x8002c, 0x900b9, 0x8000c, 0x8008c, 0x8004c, 0x900f9,
-        0x70101, 0x80052, 0x80012, 0x8011a, 0x70111, 0x80072, 0x80032, 0x900c5,
-        0x70109, 0x80062, 0x80022, 0x900a5, 0x80002, 0x80082, 0x80042, 0x900e5,
-        0x70105, 0x8005a, 0x8001a, 0x90095, 0x70115, 0x8007a, 0x8003a, 0x900d5,
-        0x7010d, 0x8006a, 0x8002a, 0x900b5, 0x8000a, 0x8008a, 0x8004a, 0x900f5,
-        0x70103, 0x80056, 0x80016, 0x8011e, 0x70113, 0x80076, 0x80036, 0x900cd,
-        0x7010b, 0x80066, 0x80026, 0x900ad, 0x80006, 0x80086, 0x80046, 0x900ed,
-        0x70107, 0x8005e, 0x8001e, 0x9009d, 0x70117, 0x8007e, 0x8003e, 0x900dd,
-        0x7010f, 0x8006e, 0x8002e, 0x900bd, 0x8000e, 0x8008e, 0x8004e, 0x900fd,
-        0x70100, 0x80051, 0x80011, 0x80119, 0x70110, 0x80071, 0x80031, 0x900c3,
-        0x70108, 0x80061, 0x80021, 0x900a3, 0x80001, 0x80081, 0x80041, 0x900e3,
-        0x70104, 0x80059, 0x80019, 0x90093, 0x70114, 0x80079, 0x80039, 0x900d3,
-        0x7010c, 0x80069, 0x80029, 0x900b3, 0x80009, 0x80089, 0x80049, 0x900f3,
-        0x70102, 0x80055, 0x80015, 0x8011d, 0x70112, 0x80075, 0x80035, 0x900cb,
-        0x7010a, 0x80065, 0x80025, 0x900ab, 0x80005, 0x80085, 0x80045, 0x900eb,
-        0x70106, 0x8005d, 0x8001d, 0x9009b, 0x70116, 0x8007d, 0x8003d, 0x900db,
-        0x7010e, 0x8006d, 0x8002d, 0x900bb, 0x8000d, 0x8008d, 0x8004d, 0x900fb,
-        0x70101, 0x80053, 0x80013, 0x8011b, 0x70111, 0x80073, 0x80033, 0x900c7,
-        0x70109, 0x80063, 0x80023, 0x900a7, 0x80003, 0x80083, 0x80043, 0x900e7,
-        0x70105, 0x8005b, 0x8001b, 0x90097, 0x70115, 0x8007b, 0x8003b, 0x900d7,
-        0x7010d, 0x8006b, 0x8002b, 0x900b7, 0x8000b, 0x8008b, 0x8004b, 0x900f7,
-        0x70103, 0x80057, 0x80017, 0x8011f, 0x70113, 0x80077, 0x80037, 0x900cf,
-        0x7010b, 0x80067, 0x80027, 0x900af, 0x80007, 0x80087, 0x80047, 0x900ef,
-        0x70107, 0x8005f, 0x8001f, 0x9009f, 0x70117, 0x8007f, 0x8003f, 0x900df,
-        0x7010f, 0x8006f, 0x8002f, 0x900bf, 0x8000f, 0x8008f, 0x8004f, 0x900ff
-      ]), 9];
-  
-      var fixedDistCodeTab = [new Uint32Array([
-        0x50000, 0x50010, 0x50008, 0x50018, 0x50004, 0x50014, 0x5000c, 0x5001c,
-        0x50002, 0x50012, 0x5000a, 0x5001a, 0x50006, 0x50016, 0x5000e, 0x00000,
-        0x50001, 0x50011, 0x50009, 0x50019, 0x50005, 0x50015, 0x5000d, 0x5001d,
-        0x50003, 0x50013, 0x5000b, 0x5001b, 0x50007, 0x50017, 0x5000f, 0x00000
-      ]), 5];
-      
-      function error(e) {
-          throw new Error(e)
-      }
-  
-      function constructor(bytes) {
-        //var bytes = stream.getBytes();
-        var bytesPos = 0;
-  
-        var cmf = bytes[bytesPos++];
-        var flg = bytes[bytesPos++];
-        if (cmf == -1 || flg == -1)
-          error('Invalid header in flate stream');
-        if ((cmf & 0x0f) != 0x08)
-          error('Unknown compression method in flate stream');
-        if ((((cmf << 8) + flg) % 31) != 0)
-          error('Bad FCHECK in flate stream');
-        if (flg & 0x20)
-          error('FDICT bit set in flate stream');
-  
-        this.bytes = bytes;
-        this.bytesPos = bytesPos;
-  
-        this.codeSize = 0;
-        this.codeBuf = 0;
-  
-        DecodeStream.call(this);
-      }
-  
-      constructor.prototype = Object.create(DecodeStream.prototype);
-  
-      constructor.prototype.getBits = function(bits) {
-        var codeSize = this.codeSize;
-        var codeBuf = this.codeBuf;
-        var bytes = this.bytes;
-        var bytesPos = this.bytesPos;
-  
-        var b;
-        while (codeSize < bits) {
-          if (typeof (b = bytes[bytesPos++]) == 'undefined')
-            error('Bad encoding in flate stream');
-          codeBuf |= b << codeSize;
-          codeSize += 8;
+
+    var FlateStream = (function () {
+        if (typeof Uint32Array === 'undefined') {
+            return undefined;
         }
-        b = codeBuf & ((1 << bits) - 1);
-        this.codeBuf = codeBuf >> bits;
-        this.codeSize = codeSize -= bits;
-        this.bytesPos = bytesPos;
-        return b;
-      };
-  
-      constructor.prototype.getCode = function(table) {
-        var codes = table[0];
-        var maxLen = table[1];
-        var codeSize = this.codeSize;
-        var codeBuf = this.codeBuf;
-        var bytes = this.bytes;
-        var bytesPos = this.bytesPos;
-  
-        while (codeSize < maxLen) {
-          var b;
-          if (typeof (b = bytes[bytesPos++]) == 'undefined')
-            error('Bad encoding in flate stream');
-          codeBuf |= (b << codeSize);
-          codeSize += 8;
+        var codeLenCodeMap = new Uint32Array([
+            16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15
+        ]);
+
+        var lengthDecode = new Uint32Array([
+            0x00003, 0x00004, 0x00005, 0x00006, 0x00007, 0x00008, 0x00009, 0x0000a,
+            0x1000b, 0x1000d, 0x1000f, 0x10011, 0x20013, 0x20017, 0x2001b, 0x2001f,
+            0x30023, 0x3002b, 0x30033, 0x3003b, 0x40043, 0x40053, 0x40063, 0x40073,
+            0x50083, 0x500a3, 0x500c3, 0x500e3, 0x00102, 0x00102, 0x00102
+        ]);
+
+        var distDecode = new Uint32Array([
+            0x00001, 0x00002, 0x00003, 0x00004, 0x10005, 0x10007, 0x20009, 0x2000d,
+            0x30011, 0x30019, 0x40021, 0x40031, 0x50041, 0x50061, 0x60081, 0x600c1,
+            0x70101, 0x70181, 0x80201, 0x80301, 0x90401, 0x90601, 0xa0801, 0xa0c01,
+            0xb1001, 0xb1801, 0xc2001, 0xc3001, 0xd4001, 0xd6001
+        ]);
+
+        var fixedLitCodeTab = [new Uint32Array([
+            0x70100, 0x80050, 0x80010, 0x80118, 0x70110, 0x80070, 0x80030, 0x900c0,
+            0x70108, 0x80060, 0x80020, 0x900a0, 0x80000, 0x80080, 0x80040, 0x900e0,
+            0x70104, 0x80058, 0x80018, 0x90090, 0x70114, 0x80078, 0x80038, 0x900d0,
+            0x7010c, 0x80068, 0x80028, 0x900b0, 0x80008, 0x80088, 0x80048, 0x900f0,
+            0x70102, 0x80054, 0x80014, 0x8011c, 0x70112, 0x80074, 0x80034, 0x900c8,
+            0x7010a, 0x80064, 0x80024, 0x900a8, 0x80004, 0x80084, 0x80044, 0x900e8,
+            0x70106, 0x8005c, 0x8001c, 0x90098, 0x70116, 0x8007c, 0x8003c, 0x900d8,
+            0x7010e, 0x8006c, 0x8002c, 0x900b8, 0x8000c, 0x8008c, 0x8004c, 0x900f8,
+            0x70101, 0x80052, 0x80012, 0x8011a, 0x70111, 0x80072, 0x80032, 0x900c4,
+            0x70109, 0x80062, 0x80022, 0x900a4, 0x80002, 0x80082, 0x80042, 0x900e4,
+            0x70105, 0x8005a, 0x8001a, 0x90094, 0x70115, 0x8007a, 0x8003a, 0x900d4,
+            0x7010d, 0x8006a, 0x8002a, 0x900b4, 0x8000a, 0x8008a, 0x8004a, 0x900f4,
+            0x70103, 0x80056, 0x80016, 0x8011e, 0x70113, 0x80076, 0x80036, 0x900cc,
+            0x7010b, 0x80066, 0x80026, 0x900ac, 0x80006, 0x80086, 0x80046, 0x900ec,
+            0x70107, 0x8005e, 0x8001e, 0x9009c, 0x70117, 0x8007e, 0x8003e, 0x900dc,
+            0x7010f, 0x8006e, 0x8002e, 0x900bc, 0x8000e, 0x8008e, 0x8004e, 0x900fc,
+            0x70100, 0x80051, 0x80011, 0x80119, 0x70110, 0x80071, 0x80031, 0x900c2,
+            0x70108, 0x80061, 0x80021, 0x900a2, 0x80001, 0x80081, 0x80041, 0x900e2,
+            0x70104, 0x80059, 0x80019, 0x90092, 0x70114, 0x80079, 0x80039, 0x900d2,
+            0x7010c, 0x80069, 0x80029, 0x900b2, 0x80009, 0x80089, 0x80049, 0x900f2,
+            0x70102, 0x80055, 0x80015, 0x8011d, 0x70112, 0x80075, 0x80035, 0x900ca,
+            0x7010a, 0x80065, 0x80025, 0x900aa, 0x80005, 0x80085, 0x80045, 0x900ea,
+            0x70106, 0x8005d, 0x8001d, 0x9009a, 0x70116, 0x8007d, 0x8003d, 0x900da,
+            0x7010e, 0x8006d, 0x8002d, 0x900ba, 0x8000d, 0x8008d, 0x8004d, 0x900fa,
+            0x70101, 0x80053, 0x80013, 0x8011b, 0x70111, 0x80073, 0x80033, 0x900c6,
+            0x70109, 0x80063, 0x80023, 0x900a6, 0x80003, 0x80083, 0x80043, 0x900e6,
+            0x70105, 0x8005b, 0x8001b, 0x90096, 0x70115, 0x8007b, 0x8003b, 0x900d6,
+            0x7010d, 0x8006b, 0x8002b, 0x900b6, 0x8000b, 0x8008b, 0x8004b, 0x900f6,
+            0x70103, 0x80057, 0x80017, 0x8011f, 0x70113, 0x80077, 0x80037, 0x900ce,
+            0x7010b, 0x80067, 0x80027, 0x900ae, 0x80007, 0x80087, 0x80047, 0x900ee,
+            0x70107, 0x8005f, 0x8001f, 0x9009e, 0x70117, 0x8007f, 0x8003f, 0x900de,
+            0x7010f, 0x8006f, 0x8002f, 0x900be, 0x8000f, 0x8008f, 0x8004f, 0x900fe,
+            0x70100, 0x80050, 0x80010, 0x80118, 0x70110, 0x80070, 0x80030, 0x900c1,
+            0x70108, 0x80060, 0x80020, 0x900a1, 0x80000, 0x80080, 0x80040, 0x900e1,
+            0x70104, 0x80058, 0x80018, 0x90091, 0x70114, 0x80078, 0x80038, 0x900d1,
+            0x7010c, 0x80068, 0x80028, 0x900b1, 0x80008, 0x80088, 0x80048, 0x900f1,
+            0x70102, 0x80054, 0x80014, 0x8011c, 0x70112, 0x80074, 0x80034, 0x900c9,
+            0x7010a, 0x80064, 0x80024, 0x900a9, 0x80004, 0x80084, 0x80044, 0x900e9,
+            0x70106, 0x8005c, 0x8001c, 0x90099, 0x70116, 0x8007c, 0x8003c, 0x900d9,
+            0x7010e, 0x8006c, 0x8002c, 0x900b9, 0x8000c, 0x8008c, 0x8004c, 0x900f9,
+            0x70101, 0x80052, 0x80012, 0x8011a, 0x70111, 0x80072, 0x80032, 0x900c5,
+            0x70109, 0x80062, 0x80022, 0x900a5, 0x80002, 0x80082, 0x80042, 0x900e5,
+            0x70105, 0x8005a, 0x8001a, 0x90095, 0x70115, 0x8007a, 0x8003a, 0x900d5,
+            0x7010d, 0x8006a, 0x8002a, 0x900b5, 0x8000a, 0x8008a, 0x8004a, 0x900f5,
+            0x70103, 0x80056, 0x80016, 0x8011e, 0x70113, 0x80076, 0x80036, 0x900cd,
+            0x7010b, 0x80066, 0x80026, 0x900ad, 0x80006, 0x80086, 0x80046, 0x900ed,
+            0x70107, 0x8005e, 0x8001e, 0x9009d, 0x70117, 0x8007e, 0x8003e, 0x900dd,
+            0x7010f, 0x8006e, 0x8002e, 0x900bd, 0x8000e, 0x8008e, 0x8004e, 0x900fd,
+            0x70100, 0x80051, 0x80011, 0x80119, 0x70110, 0x80071, 0x80031, 0x900c3,
+            0x70108, 0x80061, 0x80021, 0x900a3, 0x80001, 0x80081, 0x80041, 0x900e3,
+            0x70104, 0x80059, 0x80019, 0x90093, 0x70114, 0x80079, 0x80039, 0x900d3,
+            0x7010c, 0x80069, 0x80029, 0x900b3, 0x80009, 0x80089, 0x80049, 0x900f3,
+            0x70102, 0x80055, 0x80015, 0x8011d, 0x70112, 0x80075, 0x80035, 0x900cb,
+            0x7010a, 0x80065, 0x80025, 0x900ab, 0x80005, 0x80085, 0x80045, 0x900eb,
+            0x70106, 0x8005d, 0x8001d, 0x9009b, 0x70116, 0x8007d, 0x8003d, 0x900db,
+            0x7010e, 0x8006d, 0x8002d, 0x900bb, 0x8000d, 0x8008d, 0x8004d, 0x900fb,
+            0x70101, 0x80053, 0x80013, 0x8011b, 0x70111, 0x80073, 0x80033, 0x900c7,
+            0x70109, 0x80063, 0x80023, 0x900a7, 0x80003, 0x80083, 0x80043, 0x900e7,
+            0x70105, 0x8005b, 0x8001b, 0x90097, 0x70115, 0x8007b, 0x8003b, 0x900d7,
+            0x7010d, 0x8006b, 0x8002b, 0x900b7, 0x8000b, 0x8008b, 0x8004b, 0x900f7,
+            0x70103, 0x80057, 0x80017, 0x8011f, 0x70113, 0x80077, 0x80037, 0x900cf,
+            0x7010b, 0x80067, 0x80027, 0x900af, 0x80007, 0x80087, 0x80047, 0x900ef,
+            0x70107, 0x8005f, 0x8001f, 0x9009f, 0x70117, 0x8007f, 0x8003f, 0x900df,
+            0x7010f, 0x8006f, 0x8002f, 0x900bf, 0x8000f, 0x8008f, 0x8004f, 0x900ff
+        ]), 9];
+
+        var fixedDistCodeTab = [new Uint32Array([
+            0x50000, 0x50010, 0x50008, 0x50018, 0x50004, 0x50014, 0x5000c, 0x5001c,
+            0x50002, 0x50012, 0x5000a, 0x5001a, 0x50006, 0x50016, 0x5000e, 0x00000,
+            0x50001, 0x50011, 0x50009, 0x50019, 0x50005, 0x50015, 0x5000d, 0x5001d,
+            0x50003, 0x50013, 0x5000b, 0x5001b, 0x50007, 0x50017, 0x5000f, 0x00000
+        ]), 5];
+
+        function error(e) {
+            throw new Error(e)
         }
-        var code = codes[codeBuf & ((1 << maxLen) - 1)];
-        var codeLen = code >> 16;
-        var codeVal = code & 0xffff;
-        if (codeSize == 0 || codeSize < codeLen || codeLen == 0)
-          error('Bad encoding in flate stream');
-        this.codeBuf = (codeBuf >> codeLen);
-        this.codeSize = (codeSize - codeLen);
-        this.bytesPos = bytesPos;
-        return codeVal;
-      };
-  
-      constructor.prototype.generateHuffmanTable = function(lengths) {
-        var n = lengths.length;
-  
-        // find max code length
-        var maxLen = 0;
-        for (var i = 0; i < n; ++i) {
-          if (lengths[i] > maxLen)
-            maxLen = lengths[i];
+
+        function constructor(bytes) {
+            //var bytes = stream.getBytes();
+            var bytesPos = 0;
+
+            var cmf = bytes[bytesPos++];
+            var flg = bytes[bytesPos++];
+            if (cmf == -1 || flg == -1)
+                error('Invalid header in flate stream');
+            if ((cmf & 0x0f) != 0x08)
+                error('Unknown compression method in flate stream');
+            if ((((cmf << 8) + flg) % 31) != 0)
+                error('Bad FCHECK in flate stream');
+            if (flg & 0x20)
+                error('FDICT bit set in flate stream');
+
+            this.bytes = bytes;
+            this.bytesPos = bytesPos;
+
+            this.codeSize = 0;
+            this.codeBuf = 0;
+
+            DecodeStream.call(this);
         }
-  
-        // build the table
-        var size = 1 << maxLen;
-        var codes = new Uint32Array(size);
-        for (var len = 1, code = 0, skip = 2;
-             len <= maxLen;
-             ++len, code <<= 1, skip <<= 1) {
-          for (var val = 0; val < n; ++val) {
-            if (lengths[val] == len) {
-              // bit-reverse the code
-              var code2 = 0;
-              var t = code;
-              for (var i = 0; i < len; ++i) {
-                code2 = (code2 << 1) | (t & 1);
-                t >>= 1;
-              }
-  
-              // fill the table entries
-              for (var i = code2; i < size; i += skip)
-                codes[i] = (len << 16) | val;
-  
-              ++code;
+
+        constructor.prototype = Object.create(DecodeStream.prototype);
+
+        constructor.prototype.getBits = function (bits) {
+            var codeSize = this.codeSize;
+            var codeBuf = this.codeBuf;
+            var bytes = this.bytes;
+            var bytesPos = this.bytesPos;
+
+            var b;
+            while (codeSize < bits) {
+                if (typeof (b = bytes[bytesPos++]) == 'undefined')
+                    error('Bad encoding in flate stream');
+                codeBuf |= b << codeSize;
+                codeSize += 8;
             }
-          }
-        }
-  
-        return [codes, maxLen];
-      };
-  
-      constructor.prototype.readBlock = function() {
-        function repeat(stream, array, len, offset, what) {
-          var repeat = stream.getBits(len) + offset;
-          while (repeat-- > 0)
-            array[i++] = what;
-        }
-  
-        // read block header
-        var hdr = this.getBits(3);
-        if (hdr & 1)
-          this.eof = true;
-        hdr >>= 1;
-  
-        if (hdr == 0) { // uncompressed block
-          var bytes = this.bytes;
-          var bytesPos = this.bytesPos;
-          var b;
-  
-          if (typeof (b = bytes[bytesPos++]) == 'undefined')
-            error('Bad block header in flate stream');
-          var blockLen = b;
-          if (typeof (b = bytes[bytesPos++]) == 'undefined')
-            error('Bad block header in flate stream');
-          blockLen |= (b << 8);
-          if (typeof (b = bytes[bytesPos++]) == 'undefined')
-            error('Bad block header in flate stream');
-          var check = b;
-          if (typeof (b = bytes[bytesPos++]) == 'undefined')
-            error('Bad block header in flate stream');
-          check |= (b << 8);
-          if (check != (~blockLen & 0xffff))
-            error('Bad uncompressed block length in flate stream');
-  
-          this.codeBuf = 0;
-          this.codeSize = 0;
-  
-          var bufferLength = this.bufferLength;
-          var buffer = this.ensureBuffer(bufferLength + blockLen);
-          var end = bufferLength + blockLen;
-          this.bufferLength = end;
-          for (var n = bufferLength; n < end; ++n) {
-            if (typeof (b = bytes[bytesPos++]) == 'undefined') {
-              this.eof = true;
-              break;
+            b = codeBuf & ((1 << bits) - 1);
+            this.codeBuf = codeBuf >> bits;
+            this.codeSize = codeSize -= bits;
+            this.bytesPos = bytesPos;
+            return b;
+        };
+
+        constructor.prototype.getCode = function (table) {
+            var codes = table[0];
+            var maxLen = table[1];
+            var codeSize = this.codeSize;
+            var codeBuf = this.codeBuf;
+            var bytes = this.bytes;
+            var bytesPos = this.bytesPos;
+
+            while (codeSize < maxLen) {
+                var b;
+                if (typeof (b = bytes[bytesPos++]) == 'undefined')
+                    error('Bad encoding in flate stream');
+                codeBuf |= (b << codeSize);
+                codeSize += 8;
             }
-            buffer[n] = b;
-          }
-          this.bytesPos = bytesPos;
-          return;
-        }
-  
-        var litCodeTable;
-        var distCodeTable;
-        if (hdr == 1) { // compressed block, fixed codes
-          litCodeTable = fixedLitCodeTab;
-          distCodeTable = fixedDistCodeTab;
-        } else if (hdr == 2) { // compressed block, dynamic codes
-          var numLitCodes = this.getBits(5) + 257;
-          var numDistCodes = this.getBits(5) + 1;
-          var numCodeLenCodes = this.getBits(4) + 4;
-  
-          // build the code lengths code table
-          var codeLenCodeLengths = Array(codeLenCodeMap.length);
-          var i = 0;
-          while (i < numCodeLenCodes)
-            codeLenCodeLengths[codeLenCodeMap[i++]] = this.getBits(3);
-          var codeLenCodeTab = this.generateHuffmanTable(codeLenCodeLengths);
-  
-          // build the literal and distance code tables
-          var len = 0;
-          var i = 0;
-          var codes = numLitCodes + numDistCodes;
-          var codeLengths = new Array(codes);
-          while (i < codes) {
-            var code = this.getCode(codeLenCodeTab);
-            if (code == 16) {
-              repeat(this, codeLengths, 2, 3, len);
-            } else if (code == 17) {
-              repeat(this, codeLengths, 3, 3, len = 0);
-            } else if (code == 18) {
-              repeat(this, codeLengths, 7, 11, len = 0);
+            var code = codes[codeBuf & ((1 << maxLen) - 1)];
+            var codeLen = code >> 16;
+            var codeVal = code & 0xffff;
+            if (codeSize == 0 || codeSize < codeLen || codeLen == 0)
+                error('Bad encoding in flate stream');
+            this.codeBuf = (codeBuf >> codeLen);
+            this.codeSize = (codeSize - codeLen);
+            this.bytesPos = bytesPos;
+            return codeVal;
+        };
+
+        constructor.prototype.generateHuffmanTable = function (lengths) {
+            var n = lengths.length;
+
+            // find max code length
+            var maxLen = 0;
+            for (var i = 0; i < n; ++i) {
+                if (lengths[i] > maxLen)
+                    maxLen = lengths[i];
+            }
+
+            // build the table
+            var size = 1 << maxLen;
+            var codes = new Uint32Array(size);
+            for (var len = 1, code = 0, skip = 2;
+                len <= maxLen;
+                ++len, code <<= 1, skip <<= 1) {
+                for (var val = 0; val < n; ++val) {
+                    if (lengths[val] == len) {
+                        // bit-reverse the code
+                        var code2 = 0;
+                        var t = code;
+                        for (var i = 0; i < len; ++i) {
+                            code2 = (code2 << 1) | (t & 1);
+                            t >>= 1;
+                        }
+
+                        // fill the table entries
+                        for (var i = code2; i < size; i += skip)
+                            codes[i] = (len << 16) | val;
+
+                        ++code;
+                    }
+                }
+            }
+
+            return [codes, maxLen];
+        };
+
+        constructor.prototype.readBlock = function () {
+            function repeat(stream, array, len, offset, what) {
+                var repeat = stream.getBits(len) + offset;
+                while (repeat-- > 0)
+                    array[i++] = what;
+            }
+
+            // read block header
+            var hdr = this.getBits(3);
+            if (hdr & 1)
+                this.eof = true;
+            hdr >>= 1;
+
+            if (hdr == 0) { // uncompressed block
+                var bytes = this.bytes;
+                var bytesPos = this.bytesPos;
+                var b;
+
+                if (typeof (b = bytes[bytesPos++]) == 'undefined')
+                    error('Bad block header in flate stream');
+                var blockLen = b;
+                if (typeof (b = bytes[bytesPos++]) == 'undefined')
+                    error('Bad block header in flate stream');
+                blockLen |= (b << 8);
+                if (typeof (b = bytes[bytesPos++]) == 'undefined')
+                    error('Bad block header in flate stream');
+                var check = b;
+                if (typeof (b = bytes[bytesPos++]) == 'undefined')
+                    error('Bad block header in flate stream');
+                check |= (b << 8);
+                if (check != (~blockLen & 0xffff))
+                    error('Bad uncompressed block length in flate stream');
+
+                this.codeBuf = 0;
+                this.codeSize = 0;
+
+                var bufferLength = this.bufferLength;
+                var buffer = this.ensureBuffer(bufferLength + blockLen);
+                var end = bufferLength + blockLen;
+                this.bufferLength = end;
+                for (var n = bufferLength; n < end; ++n) {
+                    if (typeof (b = bytes[bytesPos++]) == 'undefined') {
+                        this.eof = true;
+                        break;
+                    }
+                    buffer[n] = b;
+                }
+                this.bytesPos = bytesPos;
+                return;
+            }
+
+            var litCodeTable;
+            var distCodeTable;
+            if (hdr == 1) { // compressed block, fixed codes
+                litCodeTable = fixedLitCodeTab;
+                distCodeTable = fixedDistCodeTab;
+            } else if (hdr == 2) { // compressed block, dynamic codes
+                var numLitCodes = this.getBits(5) + 257;
+                var numDistCodes = this.getBits(5) + 1;
+                var numCodeLenCodes = this.getBits(4) + 4;
+
+                // build the code lengths code table
+                var codeLenCodeLengths = Array(codeLenCodeMap.length);
+                var i = 0;
+                while (i < numCodeLenCodes)
+                    codeLenCodeLengths[codeLenCodeMap[i++]] = this.getBits(3);
+                var codeLenCodeTab = this.generateHuffmanTable(codeLenCodeLengths);
+
+                // build the literal and distance code tables
+                var len = 0;
+                var i = 0;
+                var codes = numLitCodes + numDistCodes;
+                var codeLengths = new Array(codes);
+                while (i < codes) {
+                    var code = this.getCode(codeLenCodeTab);
+                    if (code == 16) {
+                        repeat(this, codeLengths, 2, 3, len);
+                    } else if (code == 17) {
+                        repeat(this, codeLengths, 3, 3, len = 0);
+                    } else if (code == 18) {
+                        repeat(this, codeLengths, 7, 11, len = 0);
+                    } else {
+                        codeLengths[i++] = len = code;
+                    }
+                }
+
+                litCodeTable =
+                    this.generateHuffmanTable(codeLengths.slice(0, numLitCodes));
+                distCodeTable =
+                    this.generateHuffmanTable(codeLengths.slice(numLitCodes, codes));
             } else {
-              codeLengths[i++] = len = code;
+                error('Unknown block type in flate stream');
             }
-          }
-  
-          litCodeTable =
-            this.generateHuffmanTable(codeLengths.slice(0, numLitCodes));
-          distCodeTable =
-            this.generateHuffmanTable(codeLengths.slice(numLitCodes, codes));
-        } else {
-          error('Unknown block type in flate stream');
-        }
-  
-        var buffer = this.buffer;
-        var limit = buffer ? buffer.length : 0;
-        var pos = this.bufferLength;
-        while (true) {
-          var code1 = this.getCode(litCodeTable);
-          if (code1 < 256) {
-            if (pos + 1 >= limit) {
-              buffer = this.ensureBuffer(pos + 1);
-              limit = buffer.length;
+
+            var buffer = this.buffer;
+            var limit = buffer ? buffer.length : 0;
+            var pos = this.bufferLength;
+            while (true) {
+                var code1 = this.getCode(litCodeTable);
+                if (code1 < 256) {
+                    if (pos + 1 >= limit) {
+                        buffer = this.ensureBuffer(pos + 1);
+                        limit = buffer.length;
+                    }
+                    buffer[pos++] = code1;
+                    continue;
+                }
+                if (code1 == 256) {
+                    this.bufferLength = pos;
+                    return;
+                }
+                code1 -= 257;
+                code1 = lengthDecode[code1];
+                var code2 = code1 >> 16;
+                if (code2 > 0)
+                    code2 = this.getBits(code2);
+                var len = (code1 & 0xffff) + code2;
+                code1 = this.getCode(distCodeTable);
+                code1 = distDecode[code1];
+                code2 = code1 >> 16;
+                if (code2 > 0)
+                    code2 = this.getBits(code2);
+                var dist = (code1 & 0xffff) + code2;
+                if (pos + len >= limit) {
+                    buffer = this.ensureBuffer(pos + len);
+                    limit = buffer.length;
+                }
+                for (var k = 0; k < len; ++k, ++pos)
+                    buffer[pos] = buffer[pos - dist];
             }
-            buffer[pos++] = code1;
-            continue;
-          }
-          if (code1 == 256) {
-            this.bufferLength = pos;
-            return;
-          }
-          code1 -= 257;
-          code1 = lengthDecode[code1];
-          var code2 = code1 >> 16;
-          if (code2 > 0)
-            code2 = this.getBits(code2);
-          var len = (code1 & 0xffff) + code2;
-          code1 = this.getCode(distCodeTable);
-          code1 = distDecode[code1];
-          code2 = code1 >> 16;
-          if (code2 > 0)
-            code2 = this.getBits(code2);
-          var dist = (code1 & 0xffff) + code2;
-          if (pos + len >= limit) {
-            buffer = this.ensureBuffer(pos + len);
-            limit = buffer.length;
-          }
-          for (var k = 0; k < len; ++k, ++pos)
-            buffer[pos] = buffer[pos - dist];
-        }
-      };
-  
-      return constructor;
+        };
+
+        return constructor;
     })();
-  
+
     /**
      * JavaScript Polyfill functions for jsPDF
      * Collected from public resources by
      * https://github.com/diegocr
      */
-  
+
     (function (global) {
         var b64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
-  
+
         if (typeof global.btoa === 'undefined') {
-            global.btoa = function(data) {
+            global.btoa = function (data) {
                 //  discuss at: http://phpjs.org/functions/base64_encode/
                 // original by: Tyler Akins (http://rumkin.com)
                 // improved by: Bayron Guevara
@@ -8379,39 +8384,39 @@ define(['jquery'], function($) {
                 // bugfixed by: Pellentesque Malesuada
                 //   example 1: base64_encode('Kevin van Zonneveld');
                 //   returns 1: 'S2V2aW4gdmFuIFpvbm5ldmVsZA=='
-  
-                var o1,o2,o3,h1,h2,h3,h4,bits,i = 0,ac = 0,enc = '',tmp_arr = [];
-  
+
+                var o1, o2, o3, h1, h2, h3, h4, bits, i = 0, ac = 0, enc = '', tmp_arr = [];
+
                 if (!data) {
                     return data;
                 }
-  
+
                 do { // pack three octets into four hexets
                     o1 = data.charCodeAt(i++);
                     o2 = data.charCodeAt(i++);
                     o3 = data.charCodeAt(i++);
-  
+
                     bits = o1 << 16 | o2 << 8 | o3;
-  
+
                     h1 = bits >> 18 & 0x3f;
                     h2 = bits >> 12 & 0x3f;
                     h3 = bits >> 6 & 0x3f;
                     h4 = bits & 0x3f;
-  
+
                     // use hexets to index into b64, and append result to encoded string
                     tmp_arr[ac++] = b64.charAt(h1) + b64.charAt(h2) + b64.charAt(h3) + b64.charAt(h4);
                 } while (i < data.length);
-  
+
                 enc = tmp_arr.join('');
-  
+
                 var r = data.length % 3;
-  
+
                 return (r ? enc.slice(0, r - 3) : enc) + '==='.slice(r || 3);
             };
         }
-  
+
         if (typeof global.atob === 'undefined') {
-            global.atob = function(data) {
+            global.atob = function (data) {
                 //  discuss at: http://phpjs.org/functions/base64_decode/
                 // original by: Tyler Akins (http://rumkin.com)
                 // improved by: Thunder.m
@@ -8424,27 +8429,27 @@ define(['jquery'], function($) {
                 // bugfixed by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
                 //   example 1: base64_decode('S2V2aW4gdmFuIFpvbm5ldmVsZA==');
                 //   returns 1: 'Kevin van Zonneveld'
-  
-                var o1,o2,o3,h1,h2,h3,h4,bits,i = 0,ac = 0,dec = '',tmp_arr = [];
-  
+
+                var o1, o2, o3, h1, h2, h3, h4, bits, i = 0, ac = 0, dec = '', tmp_arr = [];
+
                 if (!data) {
                     return data;
                 }
-  
+
                 data += '';
-  
+
                 do { // unpack four hexets into three octets using index points in b64
                     h1 = b64.indexOf(data.charAt(i++));
                     h2 = b64.indexOf(data.charAt(i++));
                     h3 = b64.indexOf(data.charAt(i++));
                     h4 = b64.indexOf(data.charAt(i++));
-  
+
                     bits = h1 << 18 | h2 << 12 | h3 << 6 | h4;
-  
+
                     o1 = bits >> 16 & 0xff;
                     o2 = bits >> 8 & 0xff;
                     o3 = bits & 0xff;
-  
+
                     if (h3 == 64) {
                         tmp_arr[ac++] = String.fromCharCode(o1);
                     } else if (h4 == 64) {
@@ -8453,18 +8458,18 @@ define(['jquery'], function($) {
                         tmp_arr[ac++] = String.fromCharCode(o1, o2, o3);
                     }
                 } while (i < data.length);
-  
+
                 dec = tmp_arr.join('');
-  
+
                 return dec;
             };
         }
-  
+
         if (!Array.prototype.map) {
-            Array.prototype.map = function(fun /*, thisArg */) {
+            Array.prototype.map = function (fun /*, thisArg */) {
                 if (this === void 0 || this === null || typeof fun !== "function")
                     throw new TypeError();
-  
+
                 var t = Object(this), len = t.length >>> 0, res = new Array(len);
                 var thisArg = arguments.length > 1 ? arguments[1] : void 0;
                 for (var i = 0; i < len; i++) {
@@ -8476,25 +8481,25 @@ define(['jquery'], function($) {
                     if (i in t)
                         res[i] = fun.call(thisArg, t[i], i, t);
                 }
-  
+
                 return res;
             };
         }
-  
-  
-        if(!Array.isArray) {
-            Array.isArray = function(arg) {
+
+
+        if (!Array.isArray) {
+            Array.isArray = function (arg) {
                 return Object.prototype.toString.call(arg) === '[object Array]';
             };
         }
-  
+
         if (!Array.prototype.forEach) {
-            Array.prototype.forEach = function(fun, thisArg) {
+            Array.prototype.forEach = function (fun, thisArg) {
                 "use strict";
-  
+
                 if (this === void 0 || this === null || typeof fun !== "function")
                     throw new TypeError();
-  
+
                 var t = Object(this), len = t.length >>> 0;
                 for (var i = 0; i < len; i++) {
                     if (i in t)
@@ -8502,29 +8507,29 @@ define(['jquery'], function($) {
                 }
             };
         }
-  
+
         if (!Object.keys) {
             Object.keys = (function () {
                 'use strict';
-  
+
                 var hasOwnProperty = Object.prototype.hasOwnProperty,
-                    hasDontEnumBug = !({toString: null}).propertyIsEnumerable('toString'),
-                    dontEnums = ['toString','toLocaleString','valueOf','hasOwnProperty',
-                        'isPrototypeOf','propertyIsEnumerable','constructor'],
+                    hasDontEnumBug = !({ toString: null }).propertyIsEnumerable('toString'),
+                    dontEnums = ['toString', 'toLocaleString', 'valueOf', 'hasOwnProperty',
+                        'isPrototypeOf', 'propertyIsEnumerable', 'constructor'],
                     dontEnumsLength = dontEnums.length;
-  
+
                 return function (obj) {
                     if (typeof obj !== 'object' && (typeof obj !== 'function' || obj === null)) {
                         throw new TypeError();
                     }
                     var result = [], prop, i;
-  
+
                     for (prop in obj) {
                         if (hasOwnProperty.call(obj, prop)) {
                             result.push(prop);
                         }
                     }
-  
+
                     if (hasDontEnumBug) {
                         for (i = 0; i < dontEnumsLength; i++) {
                             if (hasOwnProperty.call(obj, dontEnums[i])) {
@@ -8536,19 +8541,19 @@ define(['jquery'], function($) {
                 };
             }());
         }
-  
+
         if (!String.prototype.trim) {
             String.prototype.trim = function () {
                 return this.replace(/^\s+|\s+$/g, '');
             };
         }
         if (!String.prototype.trimLeft) {
-            String.prototype.trimLeft = function() {
+            String.prototype.trimLeft = function () {
                 return this.replace(/^\s+/g, "");
             };
         }
         if (!String.prototype.trimRight) {
-            String.prototype.trimRight = function() {
+            String.prototype.trimRight = function () {
                 return this.replace(/\s+$/g, "");
             };
         }

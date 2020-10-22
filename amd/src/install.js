@@ -1,5 +1,6 @@
+/* eslint-disable no-console */
 define(['jquery', 'core/ajax'], function($, ajax) {
-    var init = function () {
+    var init = function() {
         var getConfig = 'local_edwiserreports_get_plugin_config';
         var getPluginConfig = ajax.call([
             {
@@ -11,7 +12,7 @@ define(['jquery', 'core/ajax'], function($, ajax) {
             }
         ]);
 
-        getPluginConfig[0].done(function (response) {
+        getPluginConfig[0].done(function(response) {
             if (response.success) {
                 var completeInstallation = 'local_edwiserreports_complete_edwiserreports_installation';
                 var completePluginInstallation = ajax.call([
@@ -21,14 +22,14 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                     }
                 ]);
 
-                completePluginInstallation[0].done(function (response) {
+                completePluginInstallation[0].done(function(response) {
                     console.log(response);
                 });
             }
         });
 
         $(document).ready(function() {
-            $('#page-admin-setting-manageedwiserreportss #adminsettings [type="submit"]').on ('click', function(event) {
+            $('#page-admin-setting-manageedwiserreportss #adminsettings [type="submit"]').on('click', function(event) {
                 event.preventDefault();
                 var setConfig = 'local_edwiserreports_set_plugin_config';
                 var setPluginConfig = ajax.call([
@@ -39,12 +40,12 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                             configname: 'edwiserreportsinstallation'
                         }
                     }
-                ]); 
-                
+                ]);
+
                 setPluginConfig[0].done(function() {
                     $('#adminsettings').submit();
                 });
-            })
+            });
         });
 
         var positionSelector = 'select[id ^=id_s_local_edwiserreports][id $=position]';
@@ -83,9 +84,9 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                 currentVal.push($(val).val());
             });
         });
-    }
+    };
 
     return {
-        init : init
-    }
-})
+        init: init
+    };
+});

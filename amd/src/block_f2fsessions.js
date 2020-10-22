@@ -1,8 +1,17 @@
-define(['jquery', 'core/templates', 'local_edwiserreports/defaultconfig', 'local_edwiserreports/jquery.dataTables', 'local_edwiserreports/dataTables.bootstrap4'], function ($, templates, cfg) {
+/* eslint-disable no-console */
+define([
+    'jquery',
+    'core/templates',
+    'local_edwiserreports/defaultconfig',
+    'local_edwiserreports/jquery.dataTables',
+    'local_edwiserreports/dataTables.bootstrap4'
+], function($, templates, cfg) {
     var panel = cfg.getPanel("#f2fsessionsblock");
     var panelBody = cfg.getPanel("#f2fsessionsblock", "body");
-    var table = panelBody + " #f2fsessionstable";
 
+    /**
+     * Initialize
+     */
     function init() {
         $.ajax({
             url: cfg.requestUrl,
@@ -17,16 +26,17 @@ define(['jquery', 'core/templates', 'local_edwiserreports/defaultconfig', 'local
         })
         .done(function(response) {
             templates.render(cfg.getTemplate('f2fsessiontable'), response.data)
-            .then(function(html, js) {
-                $(panelBody).empty();
-                templates.appendNodeContents(panelBody, html, js);
-            }).fail(function(ex) {
-                console.log(ex);
-            });
+                .then(function(html, js) {
+                    $(panelBody).empty();
+                    templates.appendNodeContents(panelBody, html, js);
+                    return;
+                }).fail(function(ex) {
+                    console.log(ex);
+                });
         })
         .fail(function(error) {
             console.log(error);
-        })
+        });
     }
 
     // Must return the init function
