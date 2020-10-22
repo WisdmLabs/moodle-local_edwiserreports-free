@@ -263,7 +263,7 @@ class activeusersblock extends block_base {
 
     /**
      * Get active user, enrolment, completion
-     * @param  string $filter date filter to get data
+     * @param  object $params date filter to get data
      * @return stdClass active users graph data
      */
     public function get_data($params = false) {

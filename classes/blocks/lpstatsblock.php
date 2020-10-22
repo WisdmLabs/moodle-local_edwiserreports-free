@@ -64,6 +64,7 @@ class lpstatsblock extends block_base {
 
     /**
      * Get Learning program data
+     * @param Object $params Parameters
      */
     public function get_data($params = false) {
         $lpid = isset($params->lpid) ? $params->lpid : false;

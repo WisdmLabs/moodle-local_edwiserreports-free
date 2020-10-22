@@ -38,6 +38,7 @@ require_once($CFG->dirroot . '/local/edwiserreports/classes/block_base.php');
 class courseprogressblock extends block_base {
     /**
      * Get reports data for Course Progress block
+     * @param Object $params Parameters
      */
     public function get_data($params = false) {
         $courseid = isset($params->courseid) ? $params->courseid : false;

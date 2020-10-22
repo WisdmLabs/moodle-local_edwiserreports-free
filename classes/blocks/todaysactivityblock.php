@@ -64,6 +64,7 @@ class todaysactivityblock extends block_base {
 
     /**
      * Get todays activity data
+     * @param Object $params Parameters
      */
     public function get_data($params = false) {
         $date = isset($params->date) ? $params->date : false;

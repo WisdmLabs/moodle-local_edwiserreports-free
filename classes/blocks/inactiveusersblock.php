@@ -88,7 +88,7 @@ class inactiveusersblock extends block_base {
 
     /**
      * Get Inactive users data
-     * @param  [String] $filter Filter
+     * @param  [Object] $params Parameters
      * @return [object] response object
      */
     public function get_data($params = false) {
