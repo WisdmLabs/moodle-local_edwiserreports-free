@@ -27,13 +27,13 @@ use stdClass;
 use context_course;
 
 /**
- * Class Course Access Block
- * To get the data related to active users block
+ * Class Course Access Block. To get the data related to active users block.
  */
 class courseaccess_block extends utility {
     /**
      * Get Data for Course Access
-     * @return [object] Response for Course Access
+     * @param  int    $courseid Course id
+     * @return object           Response for Course Access
      */
     public static function get_data($courseid) {
         $response = new stdClass();
@@ -43,7 +43,8 @@ class courseaccess_block extends utility {
 
     /**
      * Get Course Access data
-     * @return [array] Array of users with course Access
+     * @param  int   $courseid Course id
+     * @return array           Array of users with course Access
      */
     public static function get_courseaccess_data($courseid) {
         global $DB;
@@ -68,17 +69,8 @@ class courseaccess_block extends utility {
             $completion = self::get_course_completion_info($course, $user->id);
 
             if (empty($completion)) {
-                $activitycompletion = "NA";
                 $progressper = "NA";
             } else {
-                $activitycompletion = get_string(
-                    'activitycompleted',
-                    'local_edwiserreports',
-                    array(
-                        "completed" => $completion["completedactivities"],
-                        "total" => $completion["totalactivities"]
-                    )
-                );
                 $progressper = $completion["progresspercentage"] . "%";
             }
 
@@ -87,7 +79,7 @@ class courseaccess_block extends utility {
             if (empty($visits)) {
                 $lastvisits = get_string("never");
             } else {
-                $lastvisits = format_time($timenow - array_values($visits)[0]->timecreated);
+                $lastvisits = format_time($timenow - array_values((array) $visits)[0]->timecreated);
             }
 
             $completioninfo = new stdClass();

@@ -36,13 +36,13 @@ use html_table_row;
 use moodle_url;
 
 /**
- * Class Course Engagement Block
- * To get the data related to course engagement block
+ * Class Course Engagement Block. To get the data related to course engagement block.
  */
 class courseengageblock extends utility {
-    /** Get data for course engagement block
-     * @return [object] Information about the course engage
-     * block
+    /**
+     * Get data for course engagement block
+     * @param  int    $cohortid Cohort id
+     * @return object           Response data
      */
     public static function get_data($cohortid) {
         $response = new stdClass();
@@ -53,7 +53,8 @@ class courseengageblock extends utility {
 
     /**
      * Get Course Engagement Data
-     * @return [array] Array of course engagement
+     * @param  int   $cohortid Cohort id
+     * @return array           Array of course engagement
      */
     public static function get_courseengage($cohortid) {
         global $DB;
@@ -132,11 +133,13 @@ class courseengageblock extends utility {
 
     /**
      * Get Course Engagement for a course
-     * @param [int] $courseid Courese ID to get course engagement
-     * @return [object]
+     * @param object $course   Course object
+     * @param int    $cohortid Cohort id
+     * @param array  $values   Values
+     * @return object          Engagement data
      */
     public static function get_engagement($course, $cohortid, $values) {
-        global $CFG, $DB;
+        global $CFG;
 
         // Create engagement object.
         $engagement = new stdClass();
@@ -200,8 +203,10 @@ class courseengageblock extends utility {
 
     /**
      * Get Engagement Attributes
-     * @param [object] $course Course Object
-     * @param [object] $user Users List
+     * @param  string $attrname Attribute name
+     * @param  object $course   Course object
+     * @param  string $val      Value for link
+     * @return string           HTML link
      */
     public static function get_course_engagement_link($attrname, $course, $val) {
         return html_writer::link("javascript:void(0)", $val,
@@ -216,9 +221,10 @@ class courseengageblock extends utility {
 
     /**
      * Get HTML table for userslist
-     * @param [int] $courseid Course Id
-     * @param [string] $action Action for users list
-     * @return [string] HTML table of users list
+     * @param  int    $courseid Course ID
+     * @param  string $action   Action to get Users Data
+     * @param  object $cohortid Cohort id
+     * @return array            Array of users list
      */
     public static function get_userslist_table($courseid, $action, $cohortid) {
         $table = new html_table();
@@ -228,7 +234,7 @@ class courseengageblock extends utility {
         );
 
         // Get userslist to display.
-        $data = self::get_userslist($courseid, $action, $cohortid);
+        $data = (object) self::get_userslist($courseid, $action, $cohortid);
 
         $table->head = $data->head;
         if (!empty($data->data)) {
@@ -239,9 +245,10 @@ class courseengageblock extends utility {
 
     /**
      * Get Users list
-     * @param [int] $courseid Course ID
-     * @param [string] $action Action to get Users Data
-     * @return [array] Users Data Array
+     * @param  int    $courseid Course ID
+     * @param  string $action   Action to get Users Data
+     * @param  object $cohortid Cohort id
+     * @return array            Array of users list
      */
     public static function get_userslist($courseid, $action, $cohortid) {
         $course = get_course($courseid);
@@ -270,11 +277,11 @@ class courseengageblock extends utility {
 
     /**
      * Get Enrolled users in a course
-     * @param [object] $course Course Object
-     * @return [array] Array of users list
+     * @param  object $course   Course Object
+     * @param  object $cohortid Cohort id
+     * @return array            Array of users list
      */
     public static function get_enrolled_users($course, $cohortid) {
-        $coursecontext = context_course::instance($course->id);
         $users = \local_edwiserreports\utility::get_enrolled_students($course->id);
 
         $usersdata = new stdClass();
@@ -303,9 +310,9 @@ class courseengageblock extends utility {
 
     /**
      * Get Visited users in a course
-     * @param [object] $course Course Object
-     * @param [object] $cohortid Cohort Id
-     * @return [array] Array of users list
+     * @param  object $course   Course Object
+     * @param  object $cohortid Cohort id
+     * @return array            Array of users list
      */
     public static function get_visited_users($course, $cohortid) {
         $users = self::get_course_visites($course->id, $cohortid);
@@ -336,11 +343,11 @@ class courseengageblock extends utility {
 
     /**
      * Get users who have completed an activity
-     * @param [object] $course Course Object
-     * @return [array] Array of users list
+     * @param  object $course   Course Object
+     * @param  object $cohortid Cohort id
+     * @return array            Array of users list
      */
     public static function get_users_started_an_activity($course, $cohortid) {
-        $coursecontext = context_course::instance($course->id);
         $enrolledusers = \local_edwiserreports\utility::get_enrolled_students($course->id);
         $users = self::users_completed_a_module($course, $enrolledusers, $cohortid);
         $usersdata = new stdClass();
@@ -369,11 +376,11 @@ class courseengageblock extends utility {
 
     /**
      * Get users who have completed half of the course
-     * @param [object] $course Course Object
-     * @return [array] Array of users list
+     * @param  object $course   Course Object
+     * @param  object $cohortid Cohort id
+     * @return array            Array of users list
      */
     public static function get_users_completed_half_courses($course, $cohortid) {
-        $coursecontext = context_course::instance($course->id);
         $enrolledusers = \local_edwiserreports\utility::get_enrolled_students($course->id);
 
         // Get completions.
@@ -409,11 +416,11 @@ class courseengageblock extends utility {
 
     /**
      * Get users who have completed the course
-     * @param [object] $course Course Object
-     * @return [array] Array of users list
+     * @param  object $course   Course Object
+     * @param  int    $cohortid Cohort id
+     * @return array            Array of users list
      */
     public static function get_users_completed_courses($course, $cohortid) {
-        $coursecontext = context_course::instance($course->id);
         $enrolledusers = \local_edwiserreports\utility::get_enrolled_students($course->id);
 
         // Get completions.
@@ -451,7 +458,7 @@ class courseengageblock extends utility {
 
     /**
      * Get Header for report
-     * @return [type] [description]
+     * @return array Header array
      */
     public static function get_header_report() {
         $header = array(
@@ -467,17 +474,16 @@ class courseengageblock extends utility {
 
     /**
      * Get Exportable data for Course Engage Page
-     * @param $filter [string] Filter to get data from specific range
-     * @return [array] Array of exportable data
+     * @return array Array of exportable data
      */
     public static function get_exportable_data_report() {
         $cohortid = optional_param("cohortid", 0, PARAM_INT);
         $export[] = self::get_header_report();
 
         $data = self::get_courseengage($cohortid);
-        foreach ($data as $key => $val) {
+        foreach ($data as $val) {
             $row = array();
-            foreach ($val as $k => $v) {
+            foreach ($val as $v) {
                 $row[] = strip_tags($v);
             }
             $export[] = $row;

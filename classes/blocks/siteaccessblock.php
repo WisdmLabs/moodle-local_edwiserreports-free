@@ -32,8 +32,7 @@ use stdClass;
 use cache;
 
 /**
- * Class Site Access Inforamtion Block
- * To get the data related to site access
+ * Class Site Access Inforamtion Block. To get the data related to site access.
  */
 class siteaccessblock extends block_base {
     /**
@@ -46,7 +45,6 @@ class siteaccessblock extends block_base {
      * Preapre layout for each block
      */
     public function get_layout() {
-        global $CFG;
 
         // Layout related data.
         $this->layout->id = 'siteaccessblock';
@@ -122,7 +120,8 @@ class siteaccessblock extends block_base {
 
     /**
      * Get Site access inforamtion data
-     * @return [object] Site access information
+     * @param  object $params Parameters
+     * @return object         Site access information
      */
     public function get_data($params = false) {
         $response = new stdClass();
@@ -170,7 +169,6 @@ class siteaccessblock extends block_base {
      * @return [object] Site Access Information
      */
     public function get_accessinfo($accesslog) {
-        global $DB;
 
         // Getting number of weeks to get access log.
         $timeduration = end($accesslog)->timecreated - $accesslog[0]->timecreated;

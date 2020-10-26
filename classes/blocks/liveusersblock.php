@@ -29,19 +29,17 @@ defined('MOODLE_INTERNAL') || die();
 use stdClass;
 use html_writer;
 use context_system;
-use core_user;
 use block_online_users\fetcher;
 
 /**
- * Class live users Block
- * To get the data of live users
+ * Class live users Block. To get the data of live users.
  */
 class liveusersblock extends block_base {
     /**
      * Preapre layout for active courses block
+     * @return object Layout object
      */
     public function get_layout() {
-        global $CFG;
 
         // Layout related data.
         $this->layout->id = 'liveusersblock';
@@ -59,6 +57,8 @@ class liveusersblock extends block_base {
 
     /**
      * Get blocks data
+     * @param  array $params Parameters
+     * @return object        Response
      */
     public function get_data($params = false) {
         $response = new stdClass();

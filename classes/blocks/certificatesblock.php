@@ -37,12 +37,12 @@ use moodle_url;
 require_once($CFG->dirroot.'/grade/report/grader/lib.php');
 
 /**
- * Class Certifictes Block
- * To get the data for certificates
+ * Class Certifictes Block. To get the data for certificates.
  */
 class certificatesblock extends block_base {
     /**
      * Preapre layout for each block
+     * @return object Layout object
      */
     public function get_layout() {
         global $CFG;
@@ -75,7 +75,8 @@ class certificatesblock extends block_base {
 
     /**
      * Get data for certificates block
-     * @return [object] Response object for Certificates Block
+     * @param  object $params Parameters
+     * @return object         Response object for Certificates Block
      */
     public function get_data($params = false) {
         $response = new stdClass();
@@ -159,7 +160,9 @@ class certificatesblock extends block_base {
 
     /**
      * Get a certificates details for certificate page
-     * @return [object] Certifcates details object
+     * @param  int    $certid   Certificate id
+     * @param  int    $cohortid Cohort id
+     * @return object           Certifcates details object
      */
     public static function get_issued_users($certid, $cohortid = false) {
         global $DB;
@@ -203,9 +206,9 @@ class certificatesblock extends block_base {
 
     /**
      * Get Certificate Information
-     * @param [object] $course stdClass object of course
-     * @param [object] $issued stdClass object of issued certificates
-     * @return [object] Certificate information
+     * @param  object $course stdClass object of course
+     * @param  object $issue  stdClass object of issued certificates
+     * @return object         Certificate information
      */
     public static function get_certinfo($course, $issue) {
         global $DB;
@@ -319,7 +322,8 @@ class certificatesblock extends block_base {
 
     /**
      * Get exportable data for certificates report
-     * @return [array] Array certificates information
+     * @param  int   $certid Certificate id
+     * @return array         Array certificates information
      */
     public static function get_exportable_data_report($certid) {
         $cohortid = optional_param("cohortid", 0, PARAM_INT);

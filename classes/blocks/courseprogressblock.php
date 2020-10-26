@@ -35,10 +35,14 @@ use core_user;
 
 require_once($CFG->dirroot . '/local/edwiserreports/classes/block_base.php');
 
+/**
+ * Course progress block.
+ */
 class courseprogressblock extends block_base {
     /**
      * Get reports data for Course Progress block
-     * @param Object $params Parameters
+     * @param  object $params Parameters
+     * @return object         Response object
      */
     public function get_data($params = false) {
         $courseid = isset($params->courseid) ? $params->courseid : false;
@@ -71,6 +75,7 @@ class courseprogressblock extends block_base {
 
     /**
      * Preapre layout for each block
+     * @return object Response object
      */
     public function get_layout() {
         global $CFG;
@@ -103,9 +108,10 @@ class courseprogressblock extends block_base {
     /**
      * Get completion with percentage
      * (0%, 20%, 40%, 60%, 80%, 100%)
-     * @param [object] $course Course Object
-     * @param [object] $users Users Object
-     * @return [array] Array of completion with percentage
+     * @param  object $course   Course Object
+     * @param  array  $users    Users Object
+     * @param  int    $cohortid Cohort id
+     * @return array            Array of completion with percentage
      */
     public static function get_completion_with_percentage($course, $users, $cohortid) {
         $completions = \local_edwiserreports\utility::get_course_completion($course->id);
@@ -117,7 +123,6 @@ class courseprogressblock extends block_base {
             LOCAL_SITEREPORT_PERCENTAGE_80 => 0,
             LOCAL_SITEREPORT_PERCENTAGE_100 => 0
         );
-        $count = 0;
         foreach ($users as $user) {
 
             /* If cohort filter is there then get only users from cohort */
@@ -197,8 +202,8 @@ class courseprogressblock extends block_base {
 
     /**
      * Get Course List
-     * @param [int] $cohort ID
-     * @return [object] Object of course list
+     * @param  int   $cohortid Cohort ID
+     * @return array           Object of course list
      */
     public function get_courselist($cohortid) {
         global $CFG;
@@ -223,8 +228,6 @@ class courseprogressblock extends block_base {
                 new moodle_url($CFG->wwwroot . "/course/view.php", array("id" => $course->id)),
                 $course->fullname
             );
-            // Get course context.
-            $coursecontext = context_course::instance($course->id);
 
             // Get only enrolled student.
             $enrolledstudents = \local_edwiserreports\utility::get_enrolled_students($course->id);
@@ -306,6 +309,14 @@ class courseprogressblock extends block_base {
 
     /**
      * Prepare userslistpopup link
+     *
+     * @param  int    $courseid   Course id
+     * @param  string $coursename Course name
+     * @param  string $value      Value for link
+     * @param  string $action     Action for link
+     * @param  int    $minval     Minimum value for popup
+     * @param  int    $maxval     Maximum value for popup
+     * @return string             HTML link content
      */
     public static function get_userlist_popup_link($courseid, $coursename, $value, $action, $minval, $maxval) {
         $url = new moodle_url('javascript:void(0)');
@@ -326,9 +337,11 @@ class courseprogressblock extends block_base {
 
     /**
      * Get Users List Table
-     * @param [int] $courseid Course ID
-     * @param [int] $minval Minimum Progress Value
-     * @param [int] $maxval Maximum Progress Value
+     * @param  int    $courseid Course ID
+     * @param  int    $minval   Minimum Progress Value
+     * @param  int    $maxval   Maximum Progress Value
+     * @param  int    $cohortid Cohort id
+     * @return string           HTML content
      */
     public static function get_userslist_table($courseid, $minval, $maxval, $cohortid) {
         $table = new html_table();
@@ -348,14 +361,14 @@ class courseprogressblock extends block_base {
 
     /**
      * Get Users list
-     * @param [int] $courseid Course ID
-     * @param [int] $minval Minimum Progress Value
-     * @param [int] $maxval Maximum Progress Value
-     * @return [array] Users Data Array
+     * @param  int   $courseid Course ID
+     * @param  int   $minval   Minimum Progress Value
+     * @param  int   $maxval   Maximum Progress Value
+     * @param  int   $cohortid Cohort id
+     * @return array           Users Data Array
      */
     public static function get_userslist($courseid, $minval, $maxval, $cohortid) {
         $course = get_course($courseid);
-        $coursecontext = context_course::instance($courseid);
         $enrolledstudents = \local_edwiserreports\utility::get_enrolled_students($course->id);
 
         // Get completions.
@@ -397,16 +410,15 @@ class courseprogressblock extends block_base {
 
     /**
      * Get Exportable data for Course Progress Block
-     * @param $filter [string] Filter to get data from specific range
-     * @return [array] Array of exportable data
+     * @param  string $filter Filter to get data from specific range
+     * @return array          Array of exportable data
      */
     public function get_exportable_data_block($filter) {
         $export = array();
         $export[] = self::get_header();
-        $coursecontext = context_course::instance($filter);
         $course = get_course($filter);
         $enrolledstudents = \local_edwiserreports\utility::get_enrolled_students($filter);
-        foreach ($enrolledstudents as $key => $student) {
+        foreach ($enrolledstudents as $student) {
             $completion = \local_edwiserreports\utility::get_course_completion_info($course, $student->id);
             $completed = $completion["completedactivities"] . "/" . $completion["totalactivities"];
             $export[] = array(
@@ -423,8 +435,8 @@ class courseprogressblock extends block_base {
 
     /**
      * Get Exportable data for Active Users Page
-     * @param $filter [string] Filter to get data from specific range
-     * @return [array] Array of exportable data
+     * @param  string $filter Filter to get data from specific range
+     * @return array          Array of exportable data
      */
     public static function get_exportable_data_report($filter) {
         $cohortid = optional_param("cohortid", 0, PARAM_INT);
@@ -440,7 +452,6 @@ class courseprogressblock extends block_base {
                 'cohortid' => $cohortid
             );
             $courseprogress = $blockobj->get_data($params);
-            $coursecontext = context_course::instance($course->id);
             $enrolledstudents = \local_edwiserreports\utility::get_enrolled_students($course->id);
             if ($cohortid) {
                 foreach ($enrolledstudents as $key => $user) {

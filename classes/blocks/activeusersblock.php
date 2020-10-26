@@ -33,24 +33,48 @@ use core_user;
 
 require_once($CFG->dirroot . '/local/edwiserreports/classes/block_base.php');
 
+/**
+ * Active users block.
+ */
 class activeusersblock extends block_base {
-    // Get the first site access data.
+    /**
+     * Get the first site access data.
+     *
+     * @var null
+     */
     public $firstaccess;
 
-    // Current time.
+    /**
+     * Current time
+     *
+     * @var int
+     */
     public $timenow;
 
-    // Active users block labels.
+    /**
+     * Active users block labels
+     *
+     * @var array
+     */
     public $labels;
 
-    // No. of labels for active users.
+    /**
+     * No. of labels for active users.
+     *
+     * @var int
+     */
     public $xlabelcount;
 
-    // Cache.
+    /**
+     * Cache
+     *
+     * @var object
+     */
     public $cache;
 
     /**
      * Preapre layout for each block
+     * @return object Layout
      */
     public function get_layout() {
         global $CFG;
@@ -177,7 +201,7 @@ class activeusersblock extends block_base {
 
     /**
      * Constructor
-     * @param [string] $filter Range selector
+     * @param string $filter Range selector
      */
     public function generate_labels($filter) {
         global $DB;
@@ -264,7 +288,7 @@ class activeusersblock extends block_base {
     /**
      * Get active user, enrolment, completion
      * @param  object $params date filter to get data
-     * @return stdClass active users graph data
+     * @return object         Active users graph data
      */
     public function get_data($params = false) {
         // Get data from params.
@@ -302,7 +326,7 @@ class activeusersblock extends block_base {
 
     /**
      * Get header for export data actvive users
-     * @return [array] Array of headers of exportable data
+     * @return array Array of headers of exportable data
      */
     public static function get_header() {
         $header = array(
@@ -317,7 +341,7 @@ class activeusersblock extends block_base {
 
     /**
      * Get header for export data actvive users individual page
-     * @return [array] Array of headers of exportable data
+     * @return array Array of headers of exportable data
      */
     public static function get_header_report() {
         $header = array(
@@ -333,8 +357,8 @@ class activeusersblock extends block_base {
 
     /**
      * Get popup modal header by action
-     * @param  [string] $action Action name
-     * @return [array] Table header
+     * @param  string $action Action name
+     * @return array          Table header
      */
     public static function get_modal_table_header($action) {
         switch($action) {
@@ -367,10 +391,10 @@ class activeusersblock extends block_base {
 
     /**
      * Create users list table for active users block
-     * @param [string] $filter Time filter to get users for this day
-     * @param [string] $action Get users list for this action
-     * @param [int] $cohortid Get users list for this action
-     * @return [array] Array of users data fields (Full Name, Email)
+     * @param  string $filter   Time filter to get users for this day
+     * @param  string $action   Get users list for this action
+     * @param  int    $cohortid Get users list for this action
+     * @return array            Array of users data fields (Full Name, Email)
      */
     public static function get_userslist_table($filter, $action, $cohortid) {
         // Make cache.
@@ -406,11 +430,11 @@ class activeusersblock extends block_base {
 
     /**
      * Get users list data for active users block
-     * @param [string] $filter Time filter to get users for this day
-     * @param [string] $action Get users list for this action
-     * @param [int] $cohortid Cohort Id
-     * @return [string] HTML table string of users list
      * Columns are (Full Name, Email)
+     * @param  string $filter   Time filter to get users for this day
+     * @param  string $action   Get users list for this action
+     * @param  int    $cohortid Cohort Id
+     * @return string           HTML table string of users list
      */
     public static function get_userslist($filter, $action, $cohortid = false) {
         global $DB;
@@ -479,9 +503,9 @@ class activeusersblock extends block_base {
 
     /**
      * Get all active users
-     * @param [string] $filter Duration String
-     * @param [int] $cohortid Cohort ID
-     * @return array Array of all active users based
+     * @param string $filter   Duration String
+     * @param int    $cohortid Cohort ID
+     * @return array           Array of all active users based
      */
     public function get_active_users($filter, $cohortid) {
         global $DB;
@@ -548,9 +572,9 @@ class activeusersblock extends block_base {
 
     /**
      * Get all Enrolments
-     * @param string $filter apply filter duration
-     * @param [int] $cohortid Cohort Id
-     * @return array Array of all active users based
+     * @param  string $filter   Apply filter duration
+     * @param  int    $cohortid Cohort Id
+     * @return array            Array of all active users based
      */
     public function get_enrolments($filter, $cohortid) {
         global $DB;
@@ -617,9 +641,9 @@ class activeusersblock extends block_base {
 
     /**
      * Get all Enrolments
-     * @param string $filter apply filter duration
-     * @param [int] $cohortid Cohort Id
-     * @return array Array of all active users based
+     * @param  string $filter   Apply filter duration
+     * @param  int    $cohortid Cohort Id
+     * @return array            Array of all active users based
      */
     public function get_course_completionrate($filter, $cohortid) {
         global $DB;
@@ -677,8 +701,8 @@ class activeusersblock extends block_base {
 
     /**
      * Get Exportable data for Active Users Block
-     * @param $filter [string] Filter to get data from specific range
-     * @return [array] Array of exportable data
+     * @param  string $filter Filter to get data from specific range
+     * @return array          Array of exportable data
      */
     public function get_exportable_data_block($filter) {
         $cohortid = optional_param("cohortid", 0, PARAM_INT);
@@ -714,8 +738,8 @@ class activeusersblock extends block_base {
 
     /**
      * Get Exportable data for Active Users Page
-     * @param $filter [string] Filter to get data from specific range
-     * @return [array] Array of exportable data
+     * @param  string $filter Filter to get data from specific range
+     * @return array          Array of exportable data
      */
     public static function get_exportable_data_report($filter) {
         // Make cache.
@@ -744,8 +768,9 @@ class activeusersblock extends block_base {
 
     /**
      * Get User Data for Active Users Block
-     * @param [string] $lable Date for lable
-     * @param [string] $action Action for getting data
+     * @param  string $lable  Date for lable
+     * @param  string $action Action for getting data
+     * @return array          User data
      */
     public static function get_usersdata($lable, $action) {
         $usersdata = array();

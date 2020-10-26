@@ -31,17 +31,15 @@ use cache;
 
 require_once($CFG->dirroot . "/local/edwiserreports/classes/constants.php");
 /**
- * Class Inacive Users Block
- * To get the data related to inactive users block
+ * Class Inacive Users Block. To get the data related to inactive users block.
  */
 class inactiveusersblock extends block_base {
 
     /**
      * Preapre layout for each block
+     * @return object Layout object
      */
     public function get_layout() {
-        global $CFG;
-
         // Layout related data.
         $this->layout->id = 'inactiveusersblock';
         $this->layout->name = get_string('inactiveusers', 'local_edwiserreports');
@@ -64,7 +62,7 @@ class inactiveusersblock extends block_base {
 
     /**
      * Prepare Inactive users filter
-     * @return [string] Filter HTML content
+     * @return string Filter HTML content
      */
     public function get_inactiveusers_filter() {
         $html = '<button type="button" class="btn btn-sm dropdown-toggle mt-3" data-toggle="dropdown"
@@ -88,8 +86,8 @@ class inactiveusersblock extends block_base {
 
     /**
      * Get Inactive users data
-     * @param  [Object] $params Parameters
-     * @return [object] response object
+     * @param  Object $params Parameters
+     * @return object         Response object
      */
     public function get_data($params = false) {
         $filter = isset($params->filter) ? $params->filter : false;
@@ -116,8 +114,9 @@ class inactiveusersblock extends block_base {
 
     /**
      * Get inactive users list
-     * @param  [String] $filter Filter
-     * @return [Array] Array of inactive users
+     * @param  string $filter Filter string
+     * @param  bool   $iscsv  True if user list is for csv
+     * @return array          Array of inactive users
      */
     public static function get_inactiveusers($filter = 'all', $iscsv = false) {
         global $DB;
@@ -180,7 +179,7 @@ class inactiveusersblock extends block_base {
 
     /**
      * Get headers for exportable data
-     * @return [type] [description]
+     * @return array Header array
      */
     private static function get_headers() {
         return array(
@@ -192,7 +191,8 @@ class inactiveusersblock extends block_base {
 
     /**
      * Get exportable data for inactive users
-     * @return [type] [description]
+     * @param  string $filter Filter string
+     * @return array          Inactive users array
      */
     public static function get_exportable_data_block($filter) {
         // Prepare inactive users data.

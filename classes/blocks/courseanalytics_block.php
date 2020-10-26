@@ -26,16 +26,16 @@ namespace local_edwiserreports;
 use stdClass;
 use context_course;
 use html_writer;
-use core_user;
 
 /**
- * Class Course Access Block
- * To get the data related to active users block
+ * Class Course Access Block. To get the data related to active users block.
  */
 class courseanalytics_block extends utility {
     /**
      * Get Data for Course Access
-     * @return [object] Response for Course Access
+     * @param  int    $courseid Course id
+     * @param  int    $cohortid Cohort id
+     * @return object           Response for Course Access
      */
     public static function get_data($courseid, $cohortid) {
         $response = new stdClass();
@@ -45,15 +45,15 @@ class courseanalytics_block extends utility {
 
     /**
      * Get Course Access data
-     * @return [array] Array of users with course Access
+     * @param  int   $courseid Course id
+     * @param  int   $cohortid Cohort id
+     * @return array           Array of users with course Access
      */
     public static function get_courseanalytics($courseid, $cohortid) {
-        global $DB;
 
         $coursecontext = context_course::instance($courseid);
         // Get only enrolled students.
         $enrolledstudents = \local_edwiserreports\utility::get_enrolled_students($courseid, $coursecontext);
-        $course = get_course($courseid);
 
         $courseanalytics = new stdClass();
         $courseanalytics->recentvisits = self::get_recentvisits($courseid, $enrolledstudents, $cohortid);
@@ -64,12 +64,12 @@ class courseanalytics_block extends utility {
 
     /**
      * Get Recent visits on a course
-     * @param [int] $courseid Course ID
-     * @param [int] $cohorid CohortId
-     * @return [array] Array of Recent visits
+     * @param  int   $courseid Course ID
+     * @param  array $users    Array of enrolled users
+     * @param  int   $cohortid  Cohort Id
+     * @return array           Array of Recent visits
      */
     public static function get_recentvisits($courseid, $users, $cohortid) {
-        $allvisits = self::get_course_visites($courseid, 0);
         $timenow = time();
 
         $visits = array();
@@ -88,7 +88,7 @@ class courseanalytics_block extends utility {
             if (empty($uservisits)) {
                 $userinfo[] = get_string("never");
             } else {
-                $timecreated = array_values($uservisits)[0]->timecreated;
+                $timecreated = array_values((array) $uservisits)[0]->timecreated;
                 $userinfo[] = html_writer::span("", $timecreated) . format_time($timenow - $timecreated);
             }
             $visits[] = $userinfo;
@@ -98,9 +98,10 @@ class courseanalytics_block extends utility {
 
     /**
      * Get Recent enrolements on a course
-     * @param [int] $courseid Course ID
-     * @param [array] $users Array of Enrolled Users
-     * @return [array] Array of Recent Enrolments
+     * @param  int   $courseid Course ID
+     * @param  array $users    Array of Enrolled Users
+     * @param  int   $cohortid Cohort id
+     * @return array           Array of Recent Enrolments
      */
     public static function get_recentenrolments($courseid, $users, $cohortid) {
         global $DB;
@@ -133,13 +134,13 @@ class courseanalytics_block extends utility {
 
     /**
      * Get Recent eCompletions on a course
-     * @param [int] $courseid Course ID
-     * @param [array] $users Array of Enrolled Users
-     * @return [array] Array of Recent Completions
+     * @param  int   $courseid Course ID
+     * @param  array $users    Array of Enrolled Users
+     * @param  int   $cohortid Cohort id
+     * @return array           Array of Recent Completions
      */
     public static function get_recentcompletions($courseid, $users, $cohortid) {
         global $DB;
-        $course = get_course($courseid);
 
         $recentcompletions = array();
         foreach ($users as $user) {
@@ -169,8 +170,8 @@ class courseanalytics_block extends utility {
 
     /**
      * Get Export Header
-     * @param  [string] $action header to get
-     * @return [array] Array of headers
+     * @param  string $action header to get
+     * @return array          Array of headers
      */
     public static function get_header_report($action) {
         switch($action) {
@@ -201,8 +202,8 @@ class courseanalytics_block extends utility {
     }
     /**
      * Get Exportable data Course Anaytics Report
-     * @param  [int] $courseid Course ID
-     * @return [array]
+     * @param  int   $courseid Course ID
+     * @return array           Export array
      */
     public static function get_exportable_data_report($courseid) {
         $cohortid = optional_param("cohortid", 0, PARAM_INT);

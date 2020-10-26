@@ -24,21 +24,17 @@
 
 namespace local_edwiserreports;
 use stdClass;
-use context_system;
 use context_course;
-use block_online_users\fetcher;
-use theme_remui\utility;
 
 /**
- * Class Acive Users Block
- * To get the data related to active users block
+ * Class Acive Users Block. To get the data related to active users block.
  */
 class todaysactivityblock extends block_base {
     /**
      * Preapre layout for each block
+     * @return object Layout object
      */
     public function get_layout() {
-        global $CFG;
 
         // Layout related data.
         $this->layout->id = 'todaysactivityblock';
@@ -92,7 +88,6 @@ class todaysactivityblock extends block_base {
 
         $todaysactivity = array();
         $total = 0;
-        $context = context_system::instance();
         // Enrolments.
         $enrollmentsql = "SELECT * FROM {user_enrolments}
             WHERE timecreated >= :starttime
