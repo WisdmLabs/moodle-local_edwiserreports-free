@@ -46,10 +46,12 @@ trait complete_edwiserreports_installation {
             array ()
         );
     }
+
     /**
-     * Delete Notification From Log
-     * @param Integer $logid Notification Log ID
-     **/
+     * Complete edwiser report installation
+     *
+     * @return object Configuration
+     */
     public static function complete_edwiserreports_installation() {
         $res = new stdClass();
 
