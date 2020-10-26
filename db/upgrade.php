@@ -26,6 +26,8 @@ defined('MOODLE_INTERNAL') || die();
 
 /**
  * Custom code to be run on upgrading the plugin.
+ * @param int $oldversion Plugin's old version
+ * @return bool True if upgrade successful
  */
 function xmldb_local_edwiserreports_upgrade($oldversion) {
     global $DB;
