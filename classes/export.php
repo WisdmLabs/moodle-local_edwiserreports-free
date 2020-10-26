@@ -21,7 +21,6 @@
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 namespace local_edwiserreports;
 
 defined('MOODLE_INTERNAL') || die();
@@ -35,42 +34,44 @@ require_once($CFG->dirroot."/local/edwiserreports/locallib.php");
 require_once($CFG->dirroot."/local/edwiserreports/classes/output/renderable.php");
 
 use csv_export_writer;
-use moodle_exception;
 use core_user;
 use context_course;
 use MoodleExcelWorkbook;
-use pdf;
 use html_table;
 use html_writer;
-use html_table_row;
-use html_table_cell;
-use file_storage;
 use stdClass;
 use moodle_url;
-use context_system;
 use context_user;
 use core_course_category;
 
+/**
+ * Class to export data.
+ */
 class export {
     /**
      * Export data in this format
+     * @var string
      */
     public $format = null;
 
     /**
      * Region to download reports
      * This may be block or report
+     * @var string
      */
     public $region = null;
 
     /**
      * Action to get data for specific block
+     * @var string
      */
     public $blockname = null;
 
     /**
      * Constructor to create export object
-     * @param $format type os export object
+     * @param string $format    Type os export object
+     * @param string $region    Region
+     * @param string $blockname Name of block
      */
     public function __construct($format, $region, $blockname) {
         $this->format = $format;
@@ -80,9 +81,8 @@ class export {
 
     /**
      * Export data
-     * @param $filenme file name to export data
-     * @param $data data to be export
-     * @return Return status after export the data
+     * @param string $filename File name to export data
+     * @param array  $data    Data to be export
      */
     public function data_export($filename, $data) {
         switch($this->format) {
@@ -106,16 +106,18 @@ class export {
 
     /**
      * Export data in CSV format
-     * @param $filenme file name to export data
-     * @param $data data to be export
-     * @return Return status after export the data
+     * @param string $filename File name to export data
+     * @param array  $data    Data to be export
      */
     public function data_export_csv($filename, $data) {
         csv_export_writer::download_array($filename, $data);
     }
 
     /**
-     * Prepare output for export data
+     * Data to to print in json ecoded format.
+     * @param array  $data    Data to be export
+     * @param string $message Message to print out
+     * @param bool   $status  Status for output
      */
     public function prepare_output($data, $message, $status) {
         $res = new stdClass();
@@ -129,9 +131,8 @@ class export {
 
     /**
      * Export data in Excel format
-     * @param $filenme file name to export data
-     * @param $data data to be export
-     * @return Return status after export the data
+     * @param string $filename File name to export data
+     * @param array  $data    Data to be export
      */
     public function data_export_excel($filename, $data) {
         // Creating a workbook.
@@ -154,9 +155,8 @@ class export {
 
     /**
      * Export data in Pdf format
-     * @param $filenme file name to export data
-     * @param $data data to be export
-     * @return Return status after export the data
+     * @param string $filename File name to export data
+     * @param array  $data    Data to be export
      */
     public function data_export_pdf($filename, $data) {
         $filename .= '.pdf';
@@ -213,15 +213,6 @@ class export {
 
         // Create file containing text 'hello world'.
         $file = $fs->create_file_from_string($fileinfo, $csvdata);
-        $fileurl = moodle_url::make_pluginfile_url(
-            $fileinfo['contextid'],
-            $fileinfo['component'],
-            $fileinfo['filearea'],
-            $fileinfo['itemid'],
-            $fileinfo['filepath'],
-            $fileinfo['filename'],
-            false
-        );
 
         // Copy content to temporary file.
         $filepath = $CFG->tempdir . '/' . $filename;
@@ -237,12 +228,11 @@ class export {
 
     /**
      * Export data email to user
-     * @param $filenme file name to export data
-     * @param $data data to be export
-     * @return Return status after export the data
+     * @param  string $filename File name to export data
+     * @param  array  $data     Data to be export
      */
     public function data_export_email($filename, $data) {
-        global $CFG, $USER;
+        global $USER;
         $recuser = $USER;
         $senduser = core_user::get_noreply_user();
 
@@ -250,35 +240,29 @@ class export {
         $filename .= ".csv";
         $filepath = $this->generate_csv_file($filename, $data);
 
-        //@codingStandardsIgnoreStart
-        // Generate PDF file
-        // $filename .= '.pdf';
-        // $filepath = $this->generate_pdf_file($filename, $data, "F");
-        //@codeingStandardsIgnoreEnd
-
-        // Get email data from submited form
+        // Get email data from submited form.
         $emailids = trim(optional_param("esrrecepient", false, PARAM_TEXT));
         $subject = trim(optional_param("esrsubject", false, PARAM_TEXT));
 
-        // Optional parameter causing issue because this is an array
+        // Optional parameter causing issue because this is an array.
         $contenttext = optional_param('esrmessage', '', PARAM_TEXT);
 
-        // If subject is not set the get default subject
+        // If subject is not set the get default subject.
         if (!$subject && $subject == '') {
             $subject = get_string($this->blockname . "exportheader", "local_edwiserreports");
         }
 
         // Send emails foreach email ids.
         if ($emailids && $emailids !== '') {
-            // process in background and dont show message in console.
+            // Process in background and dont show message in console.
             ob_start();
             $emailids = explode(";", $emailids);
-            foreach($emailids as $emailcommaids) {
-                foreach(explode(",", $emailcommaids) as $emailid) {
-                    // trim email id if white spaces are added
+            foreach ($emailids as $emailcommaids) {
+                foreach (explode(",", $emailcommaids) as $emailid) {
+                    // Trim email id if white spaces are added.
                     $recuser->email = trim($emailid);
 
-                    // Send email to user
+                    // Send email to user.
                     email_to_user(
                         $recuser,
                         $senduser,
@@ -292,27 +276,26 @@ class export {
             }
             ob_end_clean();
 
-            // If failed then return error
+            // If failed then return error.
             $res = new stdClass();
             $res->error = false;
             $res->errormsg = get_string('emailsent', 'local_edwiserreports');
             echo json_encode($res);
         } else {
-            // If failed then return error
+            // If failed then return error.
             $res = new stdClass();
             $res->error = true;
             $res->errormsg = get_string('emailnotsent', 'local_edwiserreports');
             echo json_encode($res);
         }
 
-        // Remove file after email sending process
+        // Remove file after email sending process.
         unlink($filepath);
     }
 
     /**
      * Save data scheduled email for users
-     * @param $filenme file name to export data
-     * @return Return status after save the scheduled email data
+     * @param string $filename file name to export data
      */
     public function data_export_emailscheduled($filename) {
         global $CFG, $DB;
@@ -343,17 +326,17 @@ class export {
             "href" => $CFG->wwwroot . $_SERVER["REQUEST_URI"]
         );
 
-        // Return data in json format
+        // Return data in json format.
         echo json_encode($response);
     }
 
     /**
      * Get scheduled email data
-     * @return [string] email data encoded object
+     * @param  string $emaildata Encoded email data
+     * @return array             Decoded email data
      */
     private function get_email_data($emaildata = false) {
-        global $DB;
-        // Generate default email information array
+        // Generate default email information array.
         $emailinfo = array(
             'esrname' => required_param("esrname", PARAM_TEXT),
             'esremailenable' => optional_param("esremailenable", false, PARAM_TEXT),
@@ -371,16 +354,19 @@ class export {
             )
         );
 
-        // Calculate Next Run
-        list($fequency, $nextrun) = local_edwiserreports_get_email_schedule_next_run($emailinfo["esrduration"], $emailinfo["esrtime"]);
+        // Calculate Next Run.
+        list($fequency, $nextrun) = local_edwiserreports_get_email_schedule_next_run(
+            $emailinfo["esrduration"],
+            $emailinfo["esrtime"]
+        );
 
         $emailinfo["esrnextrun"] = $nextrun;
         $emailinfo["esrfrequency"] = $fequency;
 
-        // Get previous data and update
+        // Get previous data and update.
         if (!$emaildata = json_decode($emaildata)) {
             $emaildata = array($emailinfo);
-        } else if (is_array($emaildata)){
+        } else if (is_array($emaildata)) {
             $esrid = optional_param("esrid", false, PARAM_INT);
             if ($esrid < 0) {
                 $emaildata[] = $emailinfo;
@@ -389,45 +375,29 @@ class export {
             }
         }
 
-        // Return array if of data and encoded email data
+        // Return array if of data and encoded email data.
         return array((count($emaildata) - 1), json_encode($emaildata));
     }
 
     /**
      * Generate PDF file to export
-     * @param [string] $filename File Name
-     * @param [array] $data Data to export
-     * @param [string] $destination location to create file
-     * @return [string] File Path
+     * @param  array  $data Data to export
+     * @return string       HTML content for pdf
      */
     public function generate_pdf_file($data) {
-        global $CFG;
-        // $pdf = new pdf();
 
-        // $pdf->setPrintHeader(false);
-        // $pdf->setPrintFooter(false);
-        // $pdf->SetAutoPageBreak(true, 72);
-
-        // $pdf->AddPage();
-
-        // Generate HTML to export
+        // Generate HTML to export.
         ob_start();
         $html = $this->get_html_for_pdf2($data);
         ob_clean();
-
-
-        //  Create proper HTML ro export in PDF
-        // $pdf->writeHTML($html);
-
-        // $pdf->Output($filepath, $dest);
 
         return $html;
     }
 
     /**
      * Get HTML Content to export
-     * @param  [array] $data Array of exportable Data
-     * @return [string] HTML String
+     * @param  array  $data Array of exportable Data
+     * @return string       HTML String
      */
     public function get_html_for_pdf($data) {
         $table = new html_table();
@@ -461,17 +431,17 @@ class export {
         }
 
         $html .= html_writer::table($table);
-        $html = str_replace("\n","", $html);
+        $html = str_replace("\n", "", $html);
         return $html;
     }
 
     /**
      * Get HTML Content to export
-     * @param  [array] $data Array of exportable Data
-     * @return [string] HTML String
+     * @param  array  $data Array of exportable Data
+     * @return string       HTML String
      */
     public function get_html_for_pdf2($data) {
-        // Generate HTML to export
+        // Generate HTML to export.
         $html = html_writer::tag("h1",
             get_string($this->blockname . "exportheader", "local_edwiserreports"),
             array(
@@ -495,26 +465,27 @@ class export {
                 foreach ($val as $v) {
                     $cols = count($val);
                     $width = 100 / $cols;
-                    $html .= "<th style='background-color: #ddd; width: " . $width . "%; display: block; word-break: break-word;'>".$v."</th>";
+                    $html .= "<th style='background-color: #ddd; width: " . $width
+                    . "%; display: block; word-break: break-word;'>" . $v . "</th>";
                 }
             } else {
                 foreach ($val as $v) {
-                    $html .= "<td style='background-color: #ddd; " . $width . "%; display: block; word-break: break-word;'>".$v."</td>";
+                    $html .= "<td style='background-color: #ddd; " . $width .
+                    "%; display: block; word-break: break-word;'>" . $v . "</td>";
                 }
             }
             $html .= "</tr>";
         }
 
         $html .= '</table>';
-        $html = str_replace("\n","", $html);
+        $html = str_replace("\n", "", $html);
         return $html;
     }
 
     /**
      * Get exportable data to export
-     * @param $filenme file name to export data
-     * @param $data data to be export
-     * @return Return status after export the data
+     * @param  array $filter Filter parameter
+     * @return array         Exported table data
      */
     public function get_exportable_data($filter) {
         $export = null;
@@ -533,14 +504,14 @@ class export {
 
     /**
      * Get exportable data for dashboard block
-     * @param [string] $blockname Block to get exportable data
-     * @param [string] $filter Filter to get data
-     * @return [array] Array of exportable data
+     * @param  string $blockname Block to get exportable data
+     * @param  string $filter    Filter to get data
+     * @return array             Array of exportable data
      */
     private function exportable_data_block($blockname, $filter) {
         global $CFG;
 
-        // Check if class file exist
+        // Check if class file exist.
         $classname = $blockname;
         $filepath = $CFG->dirroot . '/local/edwiserreports/classes/blocks/' . $classname . '.php';
         if (!file_exists($filepath)) {
@@ -556,9 +527,9 @@ class export {
 
     /**
      * Get exportable data for individual page
-     * @param [string] $blockname Block to get exportable data
-     * @param [string] $filter Filter to get data
-     * @return [array] Array of exportable data
+     * @param  string $blockname Block to get exportable data
+     * @param  string $filter    Filter to get data
+     * @return array             Array of exportable data
      */
     private function exportable_data_report($blockname, $filter) {
         global $CFG;
@@ -590,6 +561,7 @@ class export {
 
     /**
      * Set CSV header to download files in csv format
+     * @param string $filename Filename for csv
      */
     public function set_csv_header($filename) {
         header("Content-type: text/csv");
@@ -598,16 +570,9 @@ class export {
         header("Expires: 0");
     }
 
-
     /**
      * Export CSV for custom query report
-     * @param  [strinf] $fields              [Selected Fields]
-     * @param  [string] $lps                 [Selected learning programs]
-     * @param  [string] $courses             [Selected courses]
-     * @param  [string] $enrolstartdate      [Selected course enroll start date]
-     * @param  [string] $enrolenddate        [Selected course enroll end date]
-     * @param  [string] $completionstartdate [Selected course completion start date]
-     * @param  [string] $completionenddate   [Selected course completion end date]
+     * @param object $data Data to export
      */
     public function export_csv_customquery_report_data($data) {
         global $DB;
@@ -628,56 +593,54 @@ class export {
         $fields = $this->get_filter_based_fields($lps, $fields);
         $params = [];
 
-        //if enroldate not selected
+        // If enroldate not selected.
         if ($enrolenddate == "") {
             $enrolenddate = time();
         } else {
             $enrolenddate += 24 * 60 * 60 - 1;
         }
 
-        //if completiondate not selected
-        $completionsql =  '';
+        // If completiondate not selected.
+        $completionsql = '';
         if ($completionenddate !== "") {
             $completionenddate += 24 * 60 * 60 - 1;
-            // $completionsql =  ' AND ec.timecompleted >= :completionstartdate AND ec.timecompleted <= :completionenddate';
         }
-        // get selected fields in query format
-        list($customFields, $headers) =  $this->create_query_fields($fields);
+        // Get selected fields in query format.
+        list($customfields, $headers) = $this->create_query_fields($fields);
 
         $params = array();
-        // check courses
+        // Check courses.
         $courses = explode(',', $courses);
         $coursedb = '> 1';
         if (!in_array(0, $courses)) {
-            list($coursedb, $inparams) = $DB->get_in_or_equal($courses, SQL_PARAMS_NAMED, 'course', true,true);
+            list($coursedb, $inparams) = $DB->get_in_or_equal($courses, SQL_PARAMS_NAMED, 'course', true, true);
             $params = array_merge($params, $inparams);
         }
-        // check learning programs
+        // Check learning programs.
         $lpdb = '';
         $lpjoinquery = '';
         if ($lps !== "") {
             $lpdb = '> 0';
             $lps = explode(',', $lps);
-            // get lps in In query
+            // Get lps in In query.
             if (!in_array(0, $lps)) {
                 list($lpdb, $inparams) = $DB->get_in_or_equal($lps, SQL_PARAMS_NAMED, 'lps', true, true);
                 $params = array_merge($params, $inparams);
             }
             $tablename = 'lp_course_data';
-            $isChecked = $this->create_temp_table($tablename, $lpdb, $params);
             $lpjoinquery = 'JOIN {wdm_learning_program_enrol} lpe ON lpe.userid = u.id AND lpe.learningprogramid '.$lpdb.'
                 JOIN {wdm_learning_program} lp ON lp.id = lpe.learningprogramid
                 JOIN {lp_course_data} lcd ON lcd.courseid = c.id AND lcd.lpid = lp.id';
         }
 
-        // Check if learning hour plugin is available
+        // Check if learning hour plugin is available.
         $lhdb = '';
         if (local_edwiserreports_has_plugin('report', 'learning_hours')) {
             $lhdb = 'LEFT JOIN {edw_learning_hours} lh ON lh.courseid = c.id
                 LEFT JOIN {edw_users_learning_hours} ulh ON ulh.userid = u.id AND ulh.lhid = lh.id';
         }
 
-        // Check Cohorts
+        // Check Cohorts.
         $allusers = false;
         if ($cohortids === "0") {
             $cohorts = \local_edwiserreports\utility::get_cohort_users(array(0));
@@ -704,9 +667,8 @@ class export {
             $params = array_merge($params, $uparams);
         }
 
-        // Check for report type
+        // Check for report type.
         $activitytypejoin = '';
-        $activitytypedb = '';
         if ($reportlevel == 'activities') {
             $activitytype = $DB->get_record("modules", array("id" => $activitytype));
 
@@ -723,8 +685,8 @@ class export {
             }
         }
 
-        // Main query to execute the custom query reports
-        $sql = 'SELECT (@cnt := @cnt + 1) AS id, '.$customFields.' FROM {user} u
+        // Main query to execute the custom query reports.
+        $sql = 'SELECT (@cnt := @cnt + 1) AS id, '.$customfields.' FROM {user} u
                 CROSS JOIN (SELECT @cnt := 0) AS dummy
                 JOIN {role_assignments} ra ON ra.userid = u.id
                 JOIN {role} r ON r.id = ra.roleid
@@ -743,7 +705,7 @@ class export {
         $params['completionenddate'] = $completionenddate;
         $records = $DB->get_records_sql($sql, $params);
 
-        // drop lp and course relation temporary table after query execution
+        // Drop lp and course relation temporary table after query execution.
         if (isset($tablename)) {
             $this->drop_table($tablename);
         }
@@ -755,17 +717,19 @@ class export {
         echo implode(",", array_values((array)$headers)). "\n";
         foreach ($records as $record) {
             unset($record->id);
-            // Print export header
+            // Print export header.
             echo implode(",", array_values((array)$record)). "\n";
         }
     }
+
     /**
      * Get filter based results
-     * @param  [string] $lps               Learnig Programs
-     * @param  [array] $fields            Checkboxes fields
+     * @param  string $lps    Learnig Programs
+     * @param  array  $fields Checkboxes fields
+     * @return array          Filtered array
      */
     public function get_filter_based_fields($lps, $fields) {
-        // remove the lp fields if lp is not selected
+        // Remove the lp fields if lp is not selected.
         if ($lps == "") {
             $fields = array_filter((array) $fields, function ($string) {
                 return strpos($string, 'lp') === false;
@@ -773,21 +737,23 @@ class export {
         }
         return $fields;
     }
+
     /**
      * Temporary table for lp and courses relation
-     * @param  [string] $tablename [table name]
-     * @param  [string] $lpdb      [learning programs join query]
-     * @param  [array] $params    [params for learning programs join query]
+     * @param  string $tablename table name
+     * @param  string $lpdb      learning programs join query
+     * @param  array  $params    params for learning programs join query
+     * @return bool              true
      */
     public function create_temp_table($tablename, $lpdb, $params) {
-        global $DB, $CFG;
+        global $DB;
         $dbman = $DB->get_manager();
 
-        // create table schema
+        // Create table schema.
         $table = new \xmldb_table($tablename);
         $table->add_field('id', XMLDB_TYPE_INTEGER, 10, null, XMLDB_NOTNULL, XMLDB_SEQUENCE);
         $table->add_field('lpid', XMLDB_TYPE_INTEGER, 10, null, null, false);
-        $table->add_field('courseid', XMLDB_TYPE_INTEGER, 10,null, null, false);
+        $table->add_field('courseid', XMLDB_TYPE_INTEGER, 10, null, null, false);
         $table->add_key('id', XMLDB_KEY_PRIMARY, array('id'));
 
         if ($dbman->table_exists($tablename)) {
@@ -795,26 +761,27 @@ class export {
         }
 
         $dbman->create_temp_table($table);
-        // get courses from selected lps
+        // Get courses from selected lps.
         $sql = "SELECT id, courses FROM {wdm_learning_program} WHERE id ".$lpdb;
         $records = $DB->get_records_sql($sql, (array) $params);
-        $tempArray = array();
-        // iterate and add new entry in table for each course with respect to lp
-        array_map(function($value) use (&$tempArray) {
-            if ($value->courses != NULL) {
+        $temparray = array();
+        // Iterate and add new entry in table for each course with respect to lp.
+        array_map(function($value) use (&$temparray) {
+            if ($value->courses != null) {
                 $courseids = json_decode($value->courses);
                 foreach ($courseids as $id) {
-                    array_push($tempArray, array("lpid" => $value->id, "courseid" => $id));
+                    array_push($temparray, array("lpid" => $value->id, "courseid" => $id));
                 }
             }
         }, $records);
 
-        $DB->insert_records($tablename, $tempArray);
+        $DB->insert_records($tablename, $temparray);
         return true;
     }
+
     /**
      * Delete temporary created table
-     * @param  String $tablename Table name
+     * @param string $tablename Table name
      */
     public function drop_table($tablename) {
         global $DB;
@@ -830,66 +797,70 @@ class export {
 
     /**
      * Create Query Fields by Filters
-     * @param  [Array] $fields filtered fields
+     * @param  array $fields Filtered fields
+     * @return array         Fields array
      */
     public function create_query_fields($fields) {
-        // Get all the fields
-        $allFields = \local_edwiserreports\output\elucidreport_renderable::get_report_fields();
-        $allFields = array_values((array) $allFields);
-        $allFields = array_reduce($allFields, 'array_merge', array());
-        // sort fields according to selected fields
+        // Get all the fields.
+        $allfields = \local_edwiserreports\output\elucidreport_renderable::get_report_fields();
+        $allfields = array_values((array) $allfields);
+        $allfields = array_reduce($allfields, 'array_merge', array());
+        // Sort fields according to selected fields.
         $header = array();
-        $allFields = array_map(function($value) use ($fields, &$header) {
+        $allfields = array_map(function($value) use ($fields, &$header) {
             if (in_array($value['key'], (array) $fields) ) {
                 $header[] = $value['value'];
                 return $value['dbkey'].' as '.$value['key'];
             }
             return false;
-        }, $allFields);
-        // filter it and make a string
-        $allFields = array_filter( $allFields);
-        $allFields = implode(', ', $allFields);
-        return array($allFields, $header);
+        }, $allfields);
+        // Filter it and make a string.
+        $allfields = array_filter( $allfields);
+        $allfields = implode(', ', $allfields);
+        return array($allfields, $header);
     }
 
     /**
-     * Render csv
-     * @param  stdClass $data Filter object to get reports data
-     * @return stdClass       Status of reports
+     * Render csv data
+     *
+     * @param string $type      CSV report type
+     * @param array  $filters   Filter array
+     * @param int    $startdate Data start date
+     * @param int    $enddate   Data end date
      */
     public function export_csv_customreport_data($type, $filters, $startdate, $enddate) {
-        // Reports filename
+        // Reports filename.
         if ($type == 'lps') {
             $filename = 'Custom_Lp_Reports_';
         } else {
             $filename = 'Custom_Course_Reports_';
         }
 
-        // Default starttime
+        // Default starttime.
         if (!$startdate || $startdate == "") {
             $startdate = 0;
         } else {
             $filename .= date('d_m_Y', $startdate) . '_to_';
         }
 
-        // Default end time
+        // Default end time.
         if (!$enddate || $enddate == "") {
             $enddate = time();
         }
 
         $filename .= date('d_m_Y', $enddate) . '.csv';
 
-        // Set Csv headers
+        // Set Csv headers.
         $this->set_csv_header($filename);
 
         // Calculate end date by getting 23:59:59 time
-        // Added 23:59:59 to get end date
+        // Added 23:59:59 to get end date.
         $enddate += (24 * 60 * 60 - 1);
 
-        // Explode data filter
+        // Explode data filter.
         $filters = explode(",", $filters);
 
-        // According to datatype perform operation
+        // According to datatype perform operation.
         switch($type) {
             case "lps":
                 $export = $this->render_lps_report_exportable_data($filters, $startdate, $enddate);
@@ -905,10 +876,10 @@ class export {
      * @return array Report Header
      */
     private function render_course_report_exportable_header() {
-        // Plugin component
+        // Plugin component.
         $component = 'local_edwiserreports';
 
-        // Header for reports
+        // Header for reports.
         $head = array();
         $head['username'] = get_string('username', $component);
         $head['coursename'] = get_string('coursename', $component);
@@ -920,10 +891,10 @@ class export {
         $head['lastname'] = get_string('lastname', $component);
         $head['email'] = get_string('email', $component);
 
-        // Add custom fields header
+        // Add custom fields header.
         $this->inseart_custom_filed_header($head);
 
-        // Print export header
+        // Print export header.
         echo implode(",", array_values($head)). "\n";
 
         return $head;
@@ -934,10 +905,10 @@ class export {
      * @return array Learning Program header
      */
     private function render_lp_report_exportable_header() {
-        // Plugin component
+        // Plugin component.
         $component = 'local_edwiserreports';
 
-        // Header for reports
+        // Header for reports.
         $head = array();
         $head['username'] = get_string('username', $component);
         $head['lpname'] = get_string('lpname', $component);
@@ -948,10 +919,10 @@ class export {
         $head['email'] = get_string('email', $component);
         $head['activitycompleted'] = get_string('completedactivity', $component);
 
-        // Inseart custom fields as header
+        // Inseart custom fields as header.
         $this->inseart_custom_filed_header($head);
 
-        // Print export header
+        // Print export header.
         echo implode(",", array_values($head)). "\n";
 
         return $head;
@@ -959,31 +930,30 @@ class export {
 
     /**
      * Inseart custom field header in reports file
-     * @param  [type] &$head [description]
-     * @return [type]        [description]
+     * @param arry $head Header array
      */
     private function inseart_custom_filed_header(&$head) {
-        // Get all custom fields to add in header
+        // Get all custom fields to add in header.
         $customfields = profile_get_custom_fields();
 
-        // Add custom fields
-        foreach ($customfields as $key => $customfield) {
+        // Add custom fields.
+        foreach ($customfields as $customfield) {
             $head[$customfield->shortname] = $customfield->name;
         }
     }
 
     /**
      * Inseart custom field data in reports file
-     * @param  [type] &$data [description]
-     * @return [type]        [description]
+     * @param object $data  Data object
+     * @param int    $userid User id
      */
     private function inseart_custom_filed_data(&$data, $userid) {
         global $DB;
 
-        // Get customdata
+        // Get customdata.
         $customfieldsdata = profile_user_record($userid);
-        foreach($customfieldsdata as $key => $customdata) {
-            // Get field data
+        foreach ($customfieldsdata as $key => $customdata) {
+            // Get field data.
             $field = $DB->get_record('user_info_field', array(
                 'shortname' => $key
             ));
@@ -1007,46 +977,44 @@ class export {
 
     /**
      * Render course related exportable data
-     * @param  array $courseids       Course Ids
-     * @param  int $enrolstartdate    Enrolment Start Date
-     * @param  int $enrolenddate      Enrolment End Date
-     * @return array                  Array of exportable data
+     * @param  array $courseids      Course Ids
+     * @param  int   $enrolstartdate Enrolment Start Date
+     * @param  int   $enrolenddate   Enrolment End Date
+     * @return array                 Array of exportable data
      */
     private function render_courses_report_exportable_data($courseids, $enrolstartdate, $enrolenddate) {
-        global $DB;
 
-        // Render course exportable header
+        // Render course exportable header.
         $head = $this->render_course_report_exportable_header();
 
-        // Export course data from courses
+        // Export course data from courses.
         foreach ($courseids as $courseid) {
-            // Get course and course context
+            // Get course and course context.
             $course = get_course($courseid);
             $coursecontext = context_course::instance($course->id);
 
-            // Get only enrolled students
+            // Get only enrolled students.
             $users = courseprogressblock::rep_get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
 
-            // Prepare reports for each students
+            // Prepare reports for each students.
             foreach ($users as $user) {
-                // Get enrolment informations
+                // Get enrolment informations.
                 $enrolinfo = \local_edwiserreports\utility::get_course_enrolment_info($course->id, $user->id);
 
-                // If startdate is less then the selected start date
+                // If startdate is less then the selected start date.
                 if ($enrolinfo->timecreated < $enrolstartdate) {
                     continue;
                 }
 
-                // If end date is set then
+                // If end date is set then.
                 if ($enrolinfo->timeend && $enrolinfo->timeend > $enrolenddate) {
                     continue;
                 }
 
-
-                // Get category
+                // Get category.
                 $category = core_course_category::get($course->category);
 
-                // Prepare data object
+                // Prepare data object.
                 $data = new stdClass();
                 $data->firstname = $user->firstname;
                 $data->lastname = $user->lastname;
@@ -1056,7 +1024,7 @@ class export {
                 $data->coursename = $course->fullname;
                 $data->category = $category->get_formatted_name();
 
-                // Get completions data
+                // Get completions data.
                 $completion = (object) \local_edwiserreports\utility::get_course_completion_info($course, $user->id);
                 if ($completion && !empty($completion)) {
                     $data->completedactivities = '(' . $completion->completedactivities . '/' . $completion->totalactivities . ')';
@@ -1068,64 +1036,62 @@ class export {
 
                 $this->inseart_custom_filed_data($data, $user->id);
 
-                // Get appropreate data according to header
+                // Get appropreate data according to header.
                 $reportdata = $head;
-                foreach($head as $key => $cell)  {
+                foreach ($head as $key => $cell) {
                     $reportdata[$key] = $data->$key;
                 }
 
-                // Rnder the report data
+                // Rnder the report data.
                 echo implode(",", array_values($reportdata)) . "\n";
             }
         }
 
-        // Return true
         return true;
     }
 
     /**
      * Render learning program related exportable data
-     * @param  array $courseids       Course Ids
-     * @param  int $enrolstartdate    Enrolment Start Date
-     * @param  int $enrolenddate      Enrolment End Date
-     * @return array                  Array of exportable data
+     * @param  array $lpids          lp ids
+     * @param  int   $enrolstartdate Enrolment Start Date
+     * @param  int   $enrolenddate   Enrolment End Date
+     * @return array                 Array of exportable data
      */
     private function render_lps_report_exportable_data($lpids, $enrolstartdate, $enrolenddate) {
         global $DB;
-        $component = 'local_edwiserreports';
 
-        // Render reports header
+        // Render reports header.
         $head = $this->render_lp_report_exportable_header();
 
-        // Export course data from courses
+        // Export course data from courses.
         foreach ($lpids as $lpid) {
-            // Get course and course context
+            // Get course and course context.
             $table = 'wdm_learning_program';
             $lp = $DB->get_record($table, array("id" => $lpid, "visible" => true));
 
-            // Get only enrolled students
+            // Get only enrolled students.
             $enrolments = \local_edwiserreports\utility::get_lp_students($lpid);
 
-            // Prepare reports for each students
+            // Prepare reports for each students.
             foreach ($enrolments as $enrolment) {
 
-                // If startdate is less then the selected start date
+                // If startdate is less then the selected start date.
                 if ($enrolment->timeenroled < $enrolstartdate || $enrolment->timeenroled > $enrolenddate) {
                     continue;
                 }
 
-                // Get all course reports which is in learning program
+                // Get all course reports which is in learning program.
                 $completionavg = 0;
                 $coursecount = 0;
                 $completedactivities = 0;
                 $totalactivities = 0;
-                foreach(json_decode($lp->courses) as $courseid) {
-                    // If course is not there then return from here
+                foreach (json_decode($lp->courses) as $courseid) {
+                    // If course is not there then return from here.
                     if (!$course = $DB->get_record('course', array('id' => $courseid))) {
                         continue;
                     }
 
-                    // Get completions data
+                    // Get completions data.
                     $completion = \local_edwiserreports\utility::get_course_completion_info($course, $enrolment->userid);
 
                     if ($completion && !empty($completion)) {
@@ -1134,15 +1100,14 @@ class export {
                         $totalactivities += $completion['totalactivities'];
                     }
 
-                    // Increase course count
+                    // Increase course count.
                     $coursecount++;
                 }
 
-                // Add completion report to the export array
+                // Add completion report to the export array.
                 $user = core_user::get_user($enrolment->userid);
-                $customfieldsdata = profile_user_record($user->id);
 
-                // Prepare data object
+                // Prepare data object.
                 $data = new stdClass();
                 $data->firstname = $user->firstname;
                 $data->lastname = $user->lastname;
@@ -1153,21 +1118,21 @@ class export {
                 $data->average = number_format($completionavg / $coursecount, 2) . "%";
                 $data->activitycompleted = '(' . $completedactivities . '/' . $totalactivities . ')';
 
-                // Inseart custom field data
+                // Inseart custom field data.
                 $this->inseart_custom_filed_data($data, $user->id);
 
-                // Get appropreate data according to header
+                // Get appropreate data according to header.
                 $reportdata = $head;
-                foreach($head as $key => $cell)  {
+                foreach ($head as $key => $cell) {
                     $reportdata[$key] = $data->$key;
                 }
 
-                // Render the report data
+                // Render the report data.
                 echo implode(",", array_values($reportdata)) . "\n";
             }
         }
 
-        // Return status
+        // Return status.
         return true;
     }
 }

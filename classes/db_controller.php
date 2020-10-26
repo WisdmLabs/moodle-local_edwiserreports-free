@@ -118,8 +118,8 @@ class db_controller {
 
     /**
      * Get total course activities
-     * @param  stdClass $courseid Course Object
-     * @return array              Array of activities
+     * @param  stdClass $course Course Object
+     * @return array            Array of activities
      */
     public function get_completable_activities($course) {
         // Get course completion object.
