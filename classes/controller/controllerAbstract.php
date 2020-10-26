@@ -25,6 +25,7 @@ defined('MOODLE_INTERNAL') || die();
 
 /**
  * Controller Abstract.
+ *
  * Controllers handle requests.  Any methods that end with "_action"
  * can be routed to via the URL.  See the router for how this happens.
  *
@@ -36,8 +37,8 @@ abstract class controllerAbstract {
     /**
      * Generate a new URL to this page
      *
-     * @param array $params
-     * @return \moodle_url
+     * @param array $params Parameters
+     * @return string url
      */
     public function new_url($params = array()) {
         global $PAGE;
@@ -61,7 +62,6 @@ abstract class controllerAbstract {
     /**
      * Do any security checks needed for the passed action
      *
-     * @abstract
      * @param string $action
      */
     abstract public function require_capability($action);

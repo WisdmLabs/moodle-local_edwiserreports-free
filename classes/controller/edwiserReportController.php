@@ -22,9 +22,6 @@
 
 namespace local_edwiserreports\controller;
 
-use moodle_url;
-use context_course;
-
 defined('MOODLE_INTERNAL') || die();
 
 /**
@@ -44,73 +41,118 @@ class edwiserReportController extends controllerAbstract {
         $action = $action;
     }
 
+    /**
+     * Get active users graph data ajax action
+     */
     public function get_activeusers_graph_data_ajax_action() {
         $data = json_decode(required_param('data', PARAM_RAW));
         echo json_encode(\local_edwiserreports\utility::get_active_users_data($data));
     }
 
+    /**
+     * Get active courses data ajax action
+     */
     public function get_activecourses_data_ajax_action() {
         echo json_encode(\local_edwiserreports\utility::get_active_courses_data());
     }
 
+    /**
+     * Get course progress graph data ajax action
+     */
     public function get_courseprogress_graph_data_ajax_action() {
         $data = json_decode(required_param('data', PARAM_RAW));
         echo json_encode(\local_edwiserreports\utility::get_course_progress_data($data));
     }
 
+    /**
+     * Get certificates data ajax action
+     */
     public function get_certificates_data_ajax_action() {
         $data = json_decode(optional_param('data', false, PARAM_RAW));
         echo json_encode(\local_edwiserreports\utility::get_certificates_data($data));
     }
 
+    /**
+     * Get live users data ajax action
+     */
     public function get_liveusers_data_ajax_action() {
         echo json_encode(\local_edwiserreports\utility::get_liveusers_data());
     }
 
+    /**
+     * Get site access data ajax action
+     */
     public function get_siteaccess_data_ajax_action() {
         echo json_encode(\local_edwiserreports\utility::get_siteaccess_data());
     }
 
+    /**
+     * Get todays activity data ajax action
+     */
     public function get_todaysactivity_data_ajax_action() {
         $data = json_decode(required_param('data', PARAM_RAW));
         echo json_encode(\local_edwiserreports\utility::get_todaysactivity_data($data));
     }
 
+    /**
+     * Get inactive users data ajax action
+     */
     public function get_inactiveusers_data_ajax_action() {
         $data = json_decode(required_param('data', PARAM_RAW));
         echo json_encode(\local_edwiserreports\utility::get_inactiveusers_data($data));
     }
 
+    /**
+     * Get course engage data ajax action
+     */
     public function get_courseengage_data_ajax_action() {
         $cohortid = json_decode(optional_param('cohortid', 0, PARAM_RAW));
         echo json_encode(\local_edwiserreports\utility::get_courseengage_data($cohortid));
     }
 
+    /**
+     * Get completion data ajax action
+     */
     public function get_completion_data_ajax_action() {
         $data = json_decode(required_param('data', PARAM_RAW));
         echo json_encode(\local_edwiserreports\utility::get_completion_data($data));
     }
 
+    /**
+     * Get course analytics data ajax action
+     */
     public function get_courseanalytics_data_ajax_action() {
         $data = json_decode(required_param('data', PARAM_RAW));
         echo json_encode(\local_edwiserreports\utility::get_courseanalytics_data($data));
     }
 
+    /**
+     * Get scheduled emails ajax action
+     */
     public function get_scheduled_emails_ajax_action() {
         $data = json_decode(required_param('data', PARAM_RAW));
         echo json_encode(\local_edwiserreports\utility::get_scheduled_emails($data));
     }
 
+    /**
+     * Get scheduled email detail ajax action
+     */
     public function get_scheduled_email_detail_ajax_action() {
         $data = json_decode(required_param('data', PARAM_RAW));
         echo json_encode(\local_edwiserreports\utility::get_scheduled_email_details($data));
     }
 
+    /**
+     * Delete scheduled mail ajax action
+     */
     public function delete_scheduled_email_ajax_action() {
         $data = json_decode(required_param('data', PARAM_RAW));
         echo json_encode(\local_edwiserreports\utility::delete_scheduled_email($data));
     }
 
+    /**
+     * Change scheduled email status ajax action
+     */
     public function change_scheduled_email_status_ajax_action() {
         $data = json_decode(required_param('data', PARAM_RAW));
         echo json_encode(\local_edwiserreports\utility::change_scheduled_email_status($data));
@@ -118,7 +160,6 @@ class edwiserReportController extends controllerAbstract {
 
     /**
      * Get course reports selectors
-     * @return string selectors data
      */
     public function get_customreport_selectors_ajax_action() {
         // Get filters.
@@ -128,6 +169,11 @@ class edwiserReportController extends controllerAbstract {
         echo json_encode(\local_edwiserreports\utility::get_customreport_selectors($filter));
     }
 
+    /**
+     * Get custom query report data ajax action
+     *
+     * @return void
+     */
     public function get_customqueryreport_data_ajax_action() {
         // Get data.
         $data = json_decode(required_param('data', PARAM_RAW));

@@ -38,12 +38,14 @@ defined('MOODLE_INTERNAL') || die();
  */
 class edwiserReportKernel {
     /**
-     * @var router
+     * Router object
+     * @var edwiserReportRouter
      */
     public $router;
 
     /**
-     * @param router $router
+     * Contructor
+     * @param edwiserReportRouter $router Rounter object
      */
     public function __construct(edwiserReportRouter $router) {
         $this->router = $router;
@@ -66,7 +68,7 @@ class edwiserReportKernel {
      * In addition, send some extra variables to the controller
      * and initialize it.
      *
-     * @param string $action
+     * @param string $action Controller active
      * @return array
      */
     public function resolve_controller_callback($action) {
@@ -85,11 +87,10 @@ class edwiserReportKernel {
      * Automatically wraps non-empty responses with
      * header/footer, etc.
      *
-     * @param $callback
+     * @param string $callback Callback function name
      * @throws \coding_exception
      */
     public function execute_callback($callback) {
-        global $OUTPUT;
 
         ob_start();
         $response = call_user_func($callback);
