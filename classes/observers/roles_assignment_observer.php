@@ -13,7 +13,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
  * Local Course Progress Manager Plugin Events Onserver.
  *
@@ -42,7 +41,8 @@ require_once($CFG->dirroot . '/local/edwiserreports/classes/constants.php');
 trait roles_assignment_observer {
     /**
      * Get event data
-     * @return [type] [description]
+     * @param  object $event Event object
+     * @return object        Role assignment event data
      */
     protected static function get_roles_assignment_eventdata($event) {
         // Get event related data.
@@ -71,7 +71,7 @@ trait roles_assignment_observer {
 
     /**
      * Role assigned event
-     * @param  \core\event\role_assigned $event Event Data
+     * @param \core\event\role_assigned $event Event Data
      */
     public static function role_assigned(\core\event\role_assigned $event) {
         // If event data is there then create progress data.
@@ -86,7 +86,7 @@ trait roles_assignment_observer {
 
     /**
      * Role unassigned event
-     * @param  \core\event\role_assigned $event Event Data
+     * @param \core\event\role_unassigned $event Event Data
      */
     public static function role_unassigned(\core\event\role_unassigned $event) {
         // If event data is there then delet progress data.
