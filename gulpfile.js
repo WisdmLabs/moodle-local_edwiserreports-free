@@ -30,7 +30,7 @@ gulp.task('clean', function() {
     .pipe(clean({force: true}));
 });
 
-gulp.task('purge', shell.task('php ' + __dirname + '/../admin/cli/purge_caches.php'));
+gulp.task('purge', shell.task('php ' + __dirname + '/../../admin/cli/purge_caches.php'));
 
 gulp.task('uglify', function() {
     var task = gulp.src(sources)
@@ -52,4 +52,4 @@ gulp.task('watch', function(done) {
   done();
 });
 
-gulp.task('default', gulp.series('clean', 'uglify', 'watch'));
+gulp.task('default', gulp.series('clean', 'uglify', 'watch', 'purge'));
