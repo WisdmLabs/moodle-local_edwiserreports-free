@@ -107,24 +107,22 @@ class local_edwiserreports_email_dialog_form extends moodleform {
      * @param bool $editable
      * @param array $ajaxformdata Forms submitted via ajax, must pass their data here, instead of relying on _GET and _POST.
      */
-    //@codingStandardsIgnoreStart
     public function __construct(
-        $action=null,
-        $customdata=null,
-        $method='post',
-        $target='',
-        $attributes=null,
-        $editable=true,
-        $ajaxformdata=null
+        $action = null,
+        $customdata = null,
+        $method = 'post',
+        $target = '',
+        $attributes = null,
+        $editable = true,
+        $ajaxformdata = null
     ) {
         parent::__construct($action, $customdata, $method, $target, $attributes, $editable, $ajaxformdata);
     }
-    //@codingStandardsIgnoreEnd
 
-    // Add elements to form.
+    /**
+     * Add elements to form.
+     */
     public function definition() {
-        global $CFG;
-
         $mform = $this->_form;
         $customdata = $this->_customdata;
         $blockname = $customdata["blockname"];
@@ -303,9 +301,9 @@ function local_edwiserreports_pluginfile($course, $cm, $context, $filearea, $arg
 
 /**
  * Get for for blocks setting
+ * @param array $params Fragment parameters
  */
 function local_edwiserreports_output_fragment_get_blocksetting_form($params) {
-    global $PAGE;
     $blockname = isset($params['blockname']) ? $params['blockname'] : false;
     $component = 'local_edwiserreports';
 
@@ -384,6 +382,7 @@ function local_edwiserreports_output_fragment_get_blocksetting_form($params) {
 
 /**
  * Get for for blocks capabilty from
+ * @param array $block Fragment parameter data object
  */
 function local_edwiserreports_output_fragment_get_blockscap_form($block) {
     global $CFG, $PAGE;
@@ -437,9 +436,10 @@ function local_edwiserreports_output_fragment_get_blockscap_form($block) {
 
 /**
  * Render blocks capability view
+ * @param array $data Fragment parameter array
  */
 function local_edwiserreports_output_fragment_block_overview_display($data) {
-    global $CFG, $PAGE;
+    global $CFG;
 
     require_once($CFG->dirroot . '/admin/tool/capability/locallib.php');
 
@@ -543,7 +543,7 @@ function local_edwiserreports_extend_navigation(navigation_node $nav) {
         'completionreports',
         $icon
     );
-    $node->showinflatnavigation = true;  
+    $node->showinflatnavigation = true;
 }
 
 /**

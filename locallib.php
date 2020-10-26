@@ -29,9 +29,9 @@ require_once($CFG->dirroot . "/local/edwiserreports/classes/constants.php");
 
 /**
  * Get Export Link to export data from blocks and individual page
- * @param  [string] $url Url prifix to get export link
- * @param  [stdClass] $data Object for additional data
- * @return [string] moodle link detail
+ * @param  string $url  Url prifix to get export link
+ * @param  object $data Object for additional data
+ * @return string       Moodle link detail
  */
 function local_edwiserreports_get_block_exportlinks($url, $data) {
     $links = new stdClass();
@@ -70,12 +70,14 @@ function local_edwiserreports_get_block_exportlinks($url, $data) {
 
 /**
  * Get Export Link to export link array
- * @param  [string] $prifix Url url for export link
- * @param  [string] $region Region for export
- * @param  [string] $blockname Block to export
- * @param  [string] $filter Filter for data to export
- * @param  [string] $action Action of a page report
- * @return [array] Array of export link
+ * @param  string $url         Url url for export link
+ * @param  string $region      Region for export
+ * @param  string $blockname   Block to export
+ * @param  string $filter      Filter for data to export
+ * @param  int    $cohortid    Cohort id
+ * @param  string $action      Action of a page report
+ * @param  string $customclass Custom class
+ * @return array               Array of export link
  */
 function local_edwiserreports_get_exportlinks(
         $url,
@@ -111,10 +113,11 @@ function local_edwiserreports_get_exportlinks(
 
 /**
  * Get Export Link to export link array
- * @param  [string] $url Url for export link
- * @param  [string] $blockname Block to export
- * @param  [array] $params Prameters for link
- * @return [array] Array of export link
+ * @param  string $url       Url for export link
+ * @param  string $blockname Block to export
+ * @param  array  $params    Prameters for link
+ * @param  string $region    Block region
+ * @return array             Array of export link
  */
 function local_edwiserreports_get_exportlink_array($url, $blockname, $params, $region) {
     $context = context_system::instance();
@@ -171,10 +174,10 @@ function local_edwiserreports_get_exportlink_array($url, $blockname, $params, $r
 
 /**
  * Get Users Filter for filer the data
- * @param [boolean] $customfields Custom Fields
- * @param [boolean] $cohortfilter Cohort Filters
- * @param [boolean] $rangeselector Range Selector
- * @return [array] Array of filters
+ * @param  bool  $customfields  Custom Fields
+ * @param  bool  $cohortfilter  Cohort Filters
+ * @param  bool  $rangeselector Range Selector
+ * @return array                Array of filters
  */
 function local_edwiserreports_get_userfilters($customfields, $cohortfilter, $rangeselector) {
     $userfilters = new stdClass();
@@ -192,7 +195,7 @@ function local_edwiserreports_get_userfilters($customfields, $cohortfilter, $ran
 
 /**
  * Get Cohort filter Filter for filer the data
- * @return [array] Array of Cohort filters
+ * @return array Array of Cohort filters
  */
 function local_edwiserreports_get_cohort_filter() {
     global $DB;
@@ -219,7 +222,9 @@ function local_edwiserreports_get_cohort_filter() {
 
 /**
  * Create individual pageheader
- * @return [string] HTML header string
+ * @param  string  $blockname  Block name
+ * @param  string  $coursename Course name
+ * @return string              HTML header string
  */
 function local_edwiserreports_create_page_header($blockname, $coursename = false) {
     global $CFG;
@@ -262,8 +267,8 @@ function local_edwiserreports_create_page_header($blockname, $coursename = false
 
 /**
  * Create back button for each individual page
- * @param [object] $backurl Moodle Url Object
- * @return [string] Html string for back button
+ * @param  object $backurl Moodle Url Object
+ * @return string          Html string for back button
  */
 function local_edwiserreports_create_back_button($backurl) {
     $html = html_writer::div(
@@ -289,14 +294,14 @@ function local_edwiserreports_create_back_button($backurl) {
 
 /**
  * If the moodle has plugin then return true
- * @param [string] $plugintype Plugin Type
- * @param [string] $pluginname Plugin Name
- * @return [boolean] True|False based on plugin exist
+ * @param  string  $plugintype Plugin Type
+ * @param  string  $pluginname Plugin Name
+ * @return boolean             True|False based on plugin exist
  */
-function local_edwiserreports_has_plugin($plugintype, $puginname) {
+function local_edwiserreports_has_plugin($plugintype, $pluginname) {
     $plugins = core_plugin_manager::instance()->get_plugins_of_type($plugintype);
 
-    if (array_key_exists($puginname, $plugins)) {
+    if (array_key_exists($pluginname, $plugins)) {
         return true;
     }
 
@@ -305,8 +310,12 @@ function local_edwiserreports_has_plugin($plugintype, $puginname) {
 
 /**
  * Get Schedule Email form
- * @param [string] Url for submiting form
- * @return [string] HTML String of schedule form
+ *
+ * @param  int    $id         Unique scheduled email id
+ * @param  string $formaction Form action post/get
+ * @param  string $blockname  Block name
+ * @param  string $region     Block region
+ * @return string             HTML schedule email modal content
  */
 function local_edwiserreports_get_schedule_emailform($id, $formaction, $blockname, $region) {
     global $DB;
@@ -478,10 +487,10 @@ function local_edwiserreports_get_schedule_emailform($id, $formaction, $blocknam
 
 /**
  * Get email schedule header
- * @param  [type] $emailenable [description]
- * @param  [type] $duration    [description]
- * @param  [type] $time        [description]
- * @return [type]              [description]
+ * @param  bool   $emailenable Enable email
+ * @param  int    $duration    Email duration
+ * @param  int    $time        Time for email
+ * @return string              HTML content
  */
 function local_edwiserreports_get_email_schedule_header($emailenable, $duration, $time) {
     // Select which sropdown has to be select.
@@ -548,8 +557,9 @@ function local_edwiserreports_get_email_schedule_header($emailenable, $duration,
 
 /**
  * Get Times dropdown
- * @param  integer $time [description]
- * @return [type]        [description]
+ * @param  int     $time   Time in integer
+ * @param  bool    $active True to show dropdown
+ * @return string          HTML dropdown content
  */
 function local_edwiserreports_get_times_dropdown($time = 0, $active = false) {
     $dnone = '';
@@ -587,8 +597,9 @@ function local_edwiserreports_get_times_dropdown($time = 0, $active = false) {
 
 /**
  * Get weeks dropdown
- * @param  [type] $time [description]
- * @return [type]      [description]
+ * @param  int     $time   Time in integer
+ * @param  bool    $active True to show dropdown
+ * @return string          HTML dropdown content
  */
 function local_edwiserreports_get_weeks_dropdown($time = 0, $active = false) {
     $dnone = '';
@@ -626,8 +637,9 @@ function local_edwiserreports_get_weeks_dropdown($time = 0, $active = false) {
 
 /**
  * Get quaterly dropdown
- * @param  [int] $time Which quater is selected
- * @return [string] HTML string for quaterly dropdown
+ * @param  int     $time   Which quater is selected
+ * @param  bool    $active True to show dropdown
+ * @return string          HTML string for quaterly dropdown
  */
 function local_edwiserreports_get_monthly_dropdown($time = 0, $active = false) {
     $dnone = '';
@@ -665,8 +677,8 @@ function local_edwiserreports_get_monthly_dropdown($time = 0, $active = false) {
 
 /**
  * Get duration dropdown
- * @param  integer $duration [description]
- * @return [type]            [description]
+ * @param  int    $duration Duration in integer
+ * @return string           HTML dropdown button
  */
 function local_edwiserreports_get_duration_dropdown($duration = 0) {
     // Create count dropdown.
@@ -696,7 +708,7 @@ function local_edwiserreports_get_duration_dropdown($duration = 0) {
 
 /**
  * Get Scheduled email list
- * @return [type] [description]
+ * @return array Email list
  */
 function local_edwiserreports_get_schedule_emaillist() {
     global $DB;
@@ -740,8 +752,8 @@ function local_edwiserreports_get_schedule_emaillist() {
 
 /**
  * Create select icon for email list
- * @param  [bolean] $select True (If selected)
- * @return [string] Html string to render select
+ * @param  bool   $select True (If selected)
+ * @return string         Html string to render select
  */
 function local_edwiserreports_carete_select_icons_for_emaillist($select) {
     $selectparam = array(
@@ -762,7 +774,12 @@ function local_edwiserreports_carete_select_icons_for_emaillist($select) {
 
 /**
  * Create mange icons to manage email list
- * @return [string] Html manage icon string
+ *
+ * @param  int     $id        Unique email id
+ * @param  string  $blockname Block name
+ * @param  string  $region    Region of email
+ * @param  bool    $enable    True to enable email
+ * @return string             Html manage icon strin
  */
 function local_edwiserreports_create_manage_icons_for_emaillist($id, $blockname, $region, $enable) {
     $manage = html_writer::start_span("row esr-manage-scheduled-emails m-0 p-0 justify-content-center");
@@ -802,7 +819,13 @@ function local_edwiserreports_create_manage_icons_for_emaillist($id, $blockname,
 
 /**
  * Create toggle switch to enable disable emails
- * @return [string] Html string for toggle switch
+ *
+ * @param  int     $id          Unique id
+ * @param  bool    $emailenable True to enable email
+ * @param  string  $blockname   Block to schedule email
+ * @param  string  $region      Region for email
+ * @param  string  $customclass Custom class to show for toggle
+ * @return string               Html string for toggle switch
  */
 function local_edwiserreports_create_toggle_switch_for_emails($id, $emailenable, $blockname, $region, $customclass = '') {
     $toggleid = "esr-toggle-" . $blockname . "-" . $region . "-" . $id;
@@ -843,9 +866,9 @@ function local_edwiserreports_create_toggle_switch_for_emails($id, $emailenable,
 
 /**
  * Get email schedule duration time
- * @param  [int] $duration Duration
- * @param  [int] $time Time
- * @return [int] Run time
+ * @param  int $duration Duration
+ * @param  int $time     Time
+ * @return int           Run time
  */
 function local_edwiserreports_get_email_schedule_next_run($duration, $time) {
     $timenow = time();
@@ -910,12 +933,16 @@ function local_edwiserreports_get_email_schedule_next_run($duration, $time) {
 
 /**
  * Prepare export filename
- * @param [array] $param Params to prepare filename
+ * @param  array  $params Params to prepare filename
+ * @return string Filename
  */
 function local_edwiserreports_prepare_export_filename($params) {
     return "report_" . implode("_", $params);
 }
 
+/**
+ * Get required strings for js
+ */
 function local_edwiserreports_get_required_strings_for_js() {
     global $PAGE;
 
