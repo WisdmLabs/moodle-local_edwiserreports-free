@@ -33,15 +33,14 @@ use html_writer;
 require_once($CFG->dirroot . '/local/edwiserreports/classes/blocks/courseprogressblock.php');
 
 /**
- * Class Course Completion Block
- * To get the data related to active users block
+ * Class Course Completion Block. To get the data related to active users block.
  */
 class completionblock extends utility {
     /**
      * Get Data for Course Completion
-     * @param [int] $courseid Course Id
-     * @param [int] $cohortid Cohort Id
-     * @return [object] Response for Course Completion
+     * @param  int    $courseid Course Id
+     * @param  int    $cohortid Cohort Id
+     * @return object           Response for Course Completion
      */
     public static function get_data($courseid, $cohortid) {
         $response = new stdClass();
@@ -51,9 +50,9 @@ class completionblock extends utility {
 
     /**
      * Get Course Completion data
-     * @param [int] $courseid Course Id
-     * @param [int] $cohortid Cohort Id
-     * @return [array] Array of users with course Completion
+     * @param  int   $courseid Course Id
+     * @param  int   $cohortid Cohort Id
+     * @return array           Array of users with course Completion
      */
     public static function get_completions($courseid, $cohortid) {
         global $DB;
@@ -103,7 +102,7 @@ class completionblock extends utility {
             if (empty($visits)) {
                 $lastvisits = get_string("never");
             } else {
-                $lastvisits = format_time($timenow - array_values($visits)[0]->timecreated);
+                $lastvisits = format_time($timenow - array_values((array) $visits)[0]->timecreated);
             }
 
             $gradeval = 0;
@@ -126,9 +125,9 @@ class completionblock extends utility {
 
     /**
      * Get Course completion time by a user
-     * @param [int] $courseid Course Id
-     * @param [int] $userid User Id
-     * @return [string] date | not completed
+     * @param  int    $courseid Course Id
+     * @param  int    $userid   User Id
+     * @return string           Date | not completed
      */
     public static function get_timecompleted($courseid, $userid) {
         global $DB;
@@ -146,7 +145,7 @@ class completionblock extends utility {
 
     /**
      * Get export header string
-     * @return [type] [description]
+     * @return array Header array
      */
     public static function get_header() {
         return array(
@@ -163,7 +162,8 @@ class completionblock extends utility {
 
     /**
      * Get Exportable data for Course Completion Page
-     * @return [array] Array of LP Stats
+     * @param  int   $courseid Course id
+     * @return array           Array of LP Stats
      */
     public static function get_exportable_data_report($courseid) {
         global $DB;

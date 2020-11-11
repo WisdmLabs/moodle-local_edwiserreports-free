@@ -36,13 +36,13 @@ use html_table_row;
 use moodle_url;
 
 /**
- * Class Course Engagement Block
- * To get the data related to course engagement block
+ * Class Course Engagement Block. To get the data related to course engagement block.
  */
 class courseengageblock extends utility {
-    /** Get data for course engagement block
-     * @return [object] Information about the course engage
-     * block
+    /**
+     * Get data for course engagement block
+     * @param  int    $cohortid Cohort id
+     * @return object           Response data
      */
     public static function get_data($cohortid) {
         $response = new stdClass();
@@ -53,7 +53,8 @@ class courseengageblock extends utility {
 
     /**
      * Get Course Engagement Data
-     * @return [array] Array of course engagement
+     * @param  int   $cohortid Cohort id
+     * @return array           Array of course engagement
      */
     public static function get_courseengage($cohortid) {
         global $DB;
@@ -71,7 +72,7 @@ class courseengageblock extends utility {
         }
         $completionsql = "SELECT c.courseid, COUNT(c.userid) AS usercount,
             c.progress as completion
-            FROM {edw_course_progress} c
+            FROM {edwreports_course_progress} c
             JOIN {user} u ON u.id = c.userid "
             . $cohortjoin .
             " WHERE c.progress
@@ -82,7 +83,7 @@ class courseengageblock extends utility {
             " GROUP BY c.courseid";
         // Calculate atleast completed one modules.
         $completionmodulesql = "SELECT c.courseid, COUNT(c.userid) AS usercount
-            FROM {edw_course_progress} c
+            FROM {edwreports_course_progress} c
             JOIN {user} u ON u.id = c.userid "
             . $cohortjoin .
             " WHERE (LENGTH(completedmodules) -
@@ -132,11 +133,13 @@ class courseengageblock extends utility {
 
     /**
      * Get Course Engagement for a course
-     * @param [int] $courseid Courese ID to get course engagement
-     * @return [object]
+     * @param object $course   Course object
+     * @param int    $cohortid Cohort id
+     * @param array  $values   Values
+     * @return object          Engagement data
      */
     public static function get_engagement($course, $cohortid, $values) {
-        global $CFG, $DB;
+        global $CFG;
 
         // Create engagement object.
         $engagement = new stdClass();
@@ -200,8 +203,10 @@ class courseengageblock extends utility {
 
     /**
      * Get Engagement Attributes
-     * @param [object] $course Course Object
-     * @param [object] $user Users List
+     * @param  string $attrname Attribute name
+     * @param  object $course   Course object
+     * @param  string $val      Value for link
+     * @return string           HTML link
      */
     public static function get_course_engagement_link($attrname, $course, $val) {
         return html_writer::link("javascript:void(0)", $val,
@@ -216,9 +221,10 @@ class courseengageblock extends utility {
 
     /**
      * Get HTML table for userslist
-     * @param [int] $courseid Course Id
-     * @param [string] $action Action for users list
-     * @return [string] HTML table of users list
+     * @param  int    $courseid Course ID
+     * @param  string $action   Action to get Users Data
+     * @param  object $cohortid Cohort id
+     * @return array            Array of users list
      */
     public static function get_userslist_table($courseid, $action, $cohortid) {
         $table = new html_table();
@@ -228,7 +234,7 @@ class courseengageblock extends utility {
         );
 
         // Get userslist to display.
-        $data = self::get_userslist($courseid, $action, $cohortid);
+        $data = (object) self::get_userslist($courseid, $action, $cohortid);
 
         $table->head = $data->head;
         if (!empty($data->data)) {
@@ -239,9 +245,10 @@ class courseengageblock extends utility {
 
     /**
      * Get Users list
-     * @param [int] $courseid Course ID
-     * @param [string] $action Action to get Users Data
-     * @return [array] Users Data Array
+     * @param  int    $courseid Course ID
+     * @param  string $action   Action to get Users Data
+     * @param  object $cohortid Cohort id
+     * @return array            Array of users list
      */
     public static function get_userslist($courseid, $action, $cohortid) {
         $course = get_course($courseid);
@@ -270,20 +277,20 @@ class courseengageblock extends utility {
 
     /**
      * Get Enrolled users in a course
-     * @param [object] $course Course Object
-     * @return [array] Array of users list
+     * @param  object $course   Course Object
+     * @param  object $cohortid Cohort id
+     * @return array            Array of users list
      */
     public static function get_enrolled_users($course, $cohortid) {
-        $coursecontext = context_course::instance($course->id);
         $users = \local_edwiserreports\utility::get_enrolled_students($course->id);
 
         $usersdata = new stdClass();
-        $usresdata->head = array(
+        $usersdata->head = array(
             get_string("name", "local_edwiserreports"),
             get_string("email", "local_edwiserreports")
         );
 
-        $userdata->data = array();
+        $usersdata->data = array();
         foreach ($users as $user) {
             /* If cohort filter is there then get only users from cohort */
             if ($cohortid) {
@@ -293,29 +300,29 @@ class courseengageblock extends utility {
                 }
             }
 
-            $usresdata->data[] = array(
+            $usersdata->data[] = array(
                 fullname($user),
                 $user->email,
             );
         }
-        return $usresdata;
+        return $usersdata;
     }
 
     /**
      * Get Visited users in a course
-     * @param [object] $course Course Object
-     * @param [object] $cohortid Cohort Id
-     * @return [array] Array of users list
+     * @param  object $course   Course Object
+     * @param  object $cohortid Cohort id
+     * @return array            Array of users list
      */
     public static function get_visited_users($course, $cohortid) {
         $users = self::get_course_visites($course->id, $cohortid);
         $usersdata = new stdClass();
-        $userdata->head = array(
+        $usersdata->head = array(
             get_string("name", "local_edwiserreports"),
             get_string("email", "local_edwiserreports")
         );
 
-        $userdata->data = array();
+        $usersdata->data = array();
         foreach ($users as $user) {
             /* If cohort filter is there then get only users from cohort */
             if ($cohortid) {
@@ -326,30 +333,30 @@ class courseengageblock extends utility {
             }
 
             $user = core_user::get_user($user->userid);
-            $userdata->data[] = array(
+            $usersdata->data[] = array(
                 fullname($user),
                 $user->email,
             );
         }
-        return $userdata;
+        return $usersdata;
     }
 
     /**
      * Get users who have completed an activity
-     * @param [object] $course Course Object
-     * @return [array] Array of users list
+     * @param  object $course   Course Object
+     * @param  object $cohortid Cohort id
+     * @return array            Array of users list
      */
     public static function get_users_started_an_activity($course, $cohortid) {
-        $coursecontext = context_course::instance($course->id);
         $enrolledusers = \local_edwiserreports\utility::get_enrolled_students($course->id);
         $users = self::users_completed_a_module($course, $enrolledusers, $cohortid);
         $usersdata = new stdClass();
-        $userdata->head = array(
+        $usersdata->head = array(
             get_string("name", "local_edwiserreports"),
             get_string("email", "local_edwiserreports")
         );
 
-        $userdata->data = array();
+        $usersdata->data = array();
         foreach ($users as $user) {
             /* If cohort filter is there then get only users from cohort */
             if ($cohortid) {
@@ -359,21 +366,21 @@ class courseengageblock extends utility {
                 }
             }
 
-            $userdata->data[] = array(
+            $usersdata->data[] = array(
                 fullname($user),
                 $user->email,
             );
         }
-        return $userdata;
+        return $usersdata;
     }
 
     /**
      * Get users who have completed half of the course
-     * @param [object] $course Course Object
-     * @return [array] Array of users list
+     * @param  object $course   Course Object
+     * @param  object $cohortid Cohort id
+     * @return array            Array of users list
      */
     public static function get_users_completed_half_courses($course, $cohortid) {
-        $coursecontext = context_course::instance($course->id);
         $enrolledusers = \local_edwiserreports\utility::get_enrolled_students($course->id);
 
         // Get completions.
@@ -381,13 +388,13 @@ class courseengageblock extends utility {
         $completions = $compobj->get_course_completions($course->id);
 
         $usersdata = new stdClass();
-        $userdata->head = array(
+        $usersdata->head = array(
             get_string("name", "local_edwiserreports"),
             get_string("email", "local_edwiserreports")
         );
 
-        $userdata->data = array();
-        foreach ($users as $user) {
+        $usersdata->data = array();
+        foreach ($enrolledusers as $user) {
             /* If cohort filter is there then get only users from cohort */
             if ($cohortid) {
                 $cohorts = cohort_get_user_cohorts($user->id);
@@ -398,22 +405,22 @@ class courseengageblock extends utility {
 
             $progress = isset($completions[$user->id]->completion) ? $completions[$user->id]->completion : 0;
             if ($progress >= 50 && $progress < 100) {
-                $userdata->data[] = array(
+                $usersdata->data[] = array(
                     fullname($user),
                     $user->email,
                 );
             }
         }
-        return $userdata;
+        return $usersdata;
     }
 
     /**
      * Get users who have completed the course
-     * @param [object] $course Course Object
-     * @return [array] Array of users list
+     * @param  object $course   Course Object
+     * @param  int    $cohortid Cohort id
+     * @return array            Array of users list
      */
     public static function get_users_completed_courses($course, $cohortid) {
-        $coursecontext = context_course::instance($course->id);
         $enrolledusers = \local_edwiserreports\utility::get_enrolled_students($course->id);
 
         // Get completions.
@@ -421,12 +428,12 @@ class courseengageblock extends utility {
         $completions = $compobj->get_course_completions($course->id);
 
         $usersdata = new stdClass();
-        $userdata->head = array(
+        $usersdata->head = array(
             get_string("name", "local_edwiserreports"),
             get_string("email", "local_edwiserreports")
         );
 
-        $userdata->data = array();
+        $usersdata->data = array();
         foreach ($enrolledusers as $user) {
             /* If cohort filter is there then get only users from cohort */
             if ($cohortid) {
@@ -438,20 +445,20 @@ class courseengageblock extends utility {
 
             $progress = isset($completions[$user->id]->completion) ? $completions[$user->id]->completion : 0;
             if ($progress == 100) {
-                $userdata->data[] = array(
+                $usersdata->data[] = array(
                     fullname($user),
                     $user->email,
                 );
             }
         }
-        return $userdata;
+        return $usersdata;
     }
 
 
 
     /**
      * Get Header for report
-     * @return [type] [description]
+     * @return array Header array
      */
     public static function get_header_report() {
         $header = array(
@@ -467,17 +474,16 @@ class courseengageblock extends utility {
 
     /**
      * Get Exportable data for Course Engage Page
-     * @param $filter [string] Filter to get data from specific range
-     * @return [array] Array of exportable data
+     * @return array Array of exportable data
      */
     public static function get_exportable_data_report() {
         $cohortid = optional_param("cohortid", 0, PARAM_INT);
         $export[] = self::get_header_report();
 
         $data = self::get_courseengage($cohortid);
-        foreach ($data as $key => $val) {
+        foreach ($data as $val) {
             $row = array();
-            foreach ($val as $k => $v) {
+            foreach ($val as $v) {
                 $row[] = strip_tags($v);
             }
             $export[] = $row;

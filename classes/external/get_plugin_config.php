@@ -48,10 +48,14 @@ trait get_plugin_config {
             )
         );
     }
+
     /**
-     * Delete Notification From Log
-     * @param Integer $logid Notification Log ID
-     **/
+     * Get plugin config
+     *
+     * @param  string $pluginname Plugin name
+     * @param  string $configname Configuration name
+     * @return object             Configurations
+     */
     public static function get_plugin_config($pluginname, $configname) {
         // Get Plugin config.
         $config = get_config($pluginname, $configname);

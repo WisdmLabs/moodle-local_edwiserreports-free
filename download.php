@@ -76,10 +76,7 @@ if ($type = optional_param("type", false, PARAM_TEXT)) {
     // Get export object.
     $export = new export(null, null, null);
     // Check report type is query report.
-    if ($reporttype == 'lpdetailed') {
-        // Render csv data in csv file.
-        $export->export_lpdetailed_report_data($reporttype, $filters, $enrolstartdate, $enrolenddate);
-    } else if ($reporttype == 'queryReport') {
+    if ($reporttype == 'queryReport') {
         $data = array (
             'fields' => optional_param('checkedFields', null, PARAM_TEXT),
             'lps' => optional_param('lps', null, PARAM_TEXT),

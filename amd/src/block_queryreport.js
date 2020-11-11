@@ -1,10 +1,11 @@
+/* eslint-disable no-console */
 define([
     'jquery',
     'local_edwiserreports/defaultconfig',
     'core/templates',
     'local_edwiserreports/select2'
- ], function (
-    $, cfg,Templates
+], function(
+    $, cfg, Templates
 ) {
     $(document).ready(function() {
         /**
@@ -12,50 +13,50 @@ define([
          * @type {String}
          */
         var loader = '<span class="px-10 py-5 pull-right"><i class="fa fa-spinner fa-spin"></i></span>';
-        
+
         // Add select2 for the dropdowns
         $('#ed_rpm').select2({
-            multiple:true,
+            multiple: true,
             closeOnSelect: false,
             placeholder: "Reporting Managers"
         });
         $('#ed_lps').select2({
-            multiple:true,
+            multiple: true,
             closeOnSelect: false,
             placeholder: "Learning Programs"
         });
         $('#ed_courses').select2({
-            multiple:true,
+            multiple: true,
             closeOnSelect: false,
             placeholder: "Courses"
         });
         $('#ed_cohorts').select2({
-            multiple:true,
+            multiple: true,
             closeOnSelect: false,
             placeholder: "Cohorts"
         });
         $('#ed_users').select2({
-            multiple:true,
+            multiple: true,
             closeOnSelect: false,
             placeholder: "Users"
         });
         $('#ed_activitytype').select2({
-            maximumSelectionLength:1,
-            multiple:true,
+            maximumSelectionLength: 1,
+            multiple: true,
             closeOnSelect: true,
             placeholder: "Activity Type"
         });
 
 
         // Change Learning Programs and accordignly get courses
-        selectedLps = ["0"];
-        $('#ed_lps').on('change', function(event){
-            $( "div[class^='lp']" ).show();
+        var selectedLps = ["0"];
+        $('#ed_lps').on('change', function(event) {
+            $("div[class^='lp']").show();
 
             var values = [];
-            // copy all option values from selected
-            $(event.currentTarget).find("option:selected").each(function(i, selected){
-               values[i] = $(selected).val();
+            // Copy all option values from selected
+            $(event.currentTarget).find("option:selected").each(function(i, selected) {
+                values[i] = $(selected).val();
             });
 
             if (JSON.stringify(selectedLps) !== JSON.stringify(values)) {
@@ -64,10 +65,10 @@ define([
                     .find('.select2-selection')
                     .html(loader);
 
-                oldIndex = selectedLps.indexOf("0");
-                newIndex = values.indexOf("0");
+                var oldIndex = selectedLps.indexOf("0"),
+                    newIndex = values.indexOf("0");
 
-                switch(true) {
+                switch (true) {
                     case (oldIndex == -1 && newIndex > -1):
                         // Assign the selected courses
                         values = ["0"];
@@ -97,47 +98,49 @@ define([
                         })
                     },
                 })
-                .done(function(response) {
-                    $("#ed_courses").html('');
-                    var template = "local_edwiserreports/customquery_options";
-                    var context = {courses:response};
-                    Templates.render(template, context).then(function(html, js) {
-                            Templates.replaceNodeContents($("#ed_courses"), html , js);
-                        }
-                    );
-                })
-                .fail(function(error) {
-                    console.log(error);
-                }).always(function() {
-                    $("#ed_courses").select2({
-                        multiple:true,
-                        closeOnSelect: false,
-                        placeholder: "Courses"
+                    .done(function(response) {
+                        $("#ed_courses").html('');
+                        var template = "local_edwiserreports/customquery_options";
+                        var context = {courses: response};
+                        Templates.render(template, context).then(function(html, js) {
+                            Templates.replaceNodeContents($("#ed_courses"), html, js);
+                            return;
+                        }).fail(function(ex) {
+                            console.log(ex);
+                        });
+                    })
+                    .fail(function(error) {
+                        console.log(error);
+                    }).always(function() {
+                        $("#ed_courses").select2({
+                            multiple: true,
+                            closeOnSelect: false,
+                            placeholder: "Courses"
+                        });
                     });
-                });
 
-                // hide checkboxes of Learning programs if LP is not selected
+                // Hide checkboxes of Learning programs if LP is not selected
                 if (!values.length) {
-                    $( "div[class^='lp']" ).hide();
+                    $("div[class^='lp']").hide();
                 }
             }
         });
         // Reporting manager dropdown change
-        selectedRPM = ["0"];
-        $('#ed_rpm').on('change', function(event){
+        var selectedRPM = ["0"];
+        $('#ed_rpm').on('change', function(event) {
             var values = [];
-            // copy all option values from selected
-            $(event.currentTarget).find("option:selected").each(function(i, selected){
-               values[i] = $(selected).val();
+            // Copy all option values from selected
+            $(event.currentTarget).find("option:selected").each(function(i, selected) {
+                values[i] = $(selected).val();
             });
 
             var cohortids = [];
-            $("#ed_cohorts").find("option:selected").each(function(i, selected){
+            $("#ed_cohorts").find("option:selected").each(function(i, selected) {
                 cohortids[i] = $(selected).val();
             });
 
             if (JSON.stringify(selectedRPM) !== JSON.stringify(values)) {
-                $( "div[class^='rpm']" ).show();
+                $("div[class^='rpm']").show();
                 $("#ed_lps").html('')
                     .siblings('.select2-container')
                     .find('.select2-selection')
@@ -151,10 +154,10 @@ define([
                     .find('.select2-selection')
                     .html(loader);
 
-                oldIndex = selectedRPM.indexOf("0");
-                newIndex = values.indexOf("0");
+                var oldIndex = selectedRPM.indexOf("0");
+                var newIndex = values.indexOf("0");
 
-                switch(true) {
+                switch (true) {
                     case (oldIndex == -1 && newIndex > -1):
                         // Assign the selected courses
                         values = ["0"];
@@ -189,31 +192,37 @@ define([
                     $("#ed_lps").html('');
                     $("#ed_courses").html('');
                     var template = "local_edwiserreports/customquery_lpoptions";
-                    var context = {lps:response.lps};
+                    var context = {lps: response.lps};
                     if (response.lps.length > 0) {
                         Templates.render(template, context).then(function(html, js) {
-                                Templates.appendNodeContents($("#ed_lps"), html , js);
-                            }
-                        );
+                            Templates.appendNodeContents($("#ed_lps"), html, js);
+                            return;
+                        }).fail(function(ex) {
+                            console.log(ex);
+                        });
                     }
                     if (response.courses.length > 0) {
-                        var template = "local_edwiserreports/customquery_options";
-                        var context = {courses:response.courses};
+                        template = "local_edwiserreports/customquery_options";
+                        context = {courses: response.courses};
                         Templates.render(template, context).then(function(html, js) {
-                                Templates.appendNodeContents($("#ed_courses"), html , js);
-                            }
-                        );
+                            Templates.appendNodeContents($("#ed_courses"), html, js);
+                            return;
+                        }).fail(function(ex) {
+                            console.log(ex);
+                        });
                     }
 
                     // Render users
                     if (response.users.length > 0) {
-                        var template = "local_edwiserreports/customquery_lpoptions"; // Work same as lp filter
-                        var context = {lps:response.users}; // work same as lp filters
+                        template = "local_edwiserreports/customquery_lpoptions"; // Work same as lp filter
+                        context = {lps: response.users}; // Work same as lp filters
                         if (response.users.length > 0) {
                             Templates.render(template, context).then(function(html, js) {
-                                    Templates.appendNodeContents($("#ed_users"), html , js);
-                                }
-                            );
+                                Templates.appendNodeContents($("#ed_users"), html, js);
+                                return;
+                            }).fail(function(ex) {
+                                console.log(ex);
+                            });
                         }
                     }
                 })
@@ -221,44 +230,44 @@ define([
                     console.log(error);
                 }).always(function() {
                     $("#ed_lps").select2({
-                        multiple:true,
+                        multiple: true,
                         closeOnSelect: false,
                         placeholder: "Learning Programs"
                     });
                     $("#ed_courses").select2({
-                        multiple:true,
+                        multiple: true,
                         closeOnSelect: false,
                         placeholder: "Courses"
                     });
                     $("#ed_users").select2({
-                        multiple:true,
+                        multiple: true,
                         closeOnSelect: false,
                         placeholder: "Users"
                     });
                 });
 
-                // hide checkboxes of Learning programs if LP is not selected
+                // Hide checkboxes of Learning programs if LP is not selected
                 if (!values.length) {
-                    $( "div[class^='rpm']" ).hide();
-                    $( "div[class^='lp']" ).hide();
+                    $("div[class^='rpm']").hide();
+                    $("div[class^='lp']").hide();
                 }
             }
         });
         // Courses dropdown change
         var selectedCourses = ["0"];
-        $('#ed_courses').on('change', function(event){
+        $('#ed_courses').on('change', function(event) {
             var values = [];
 
             // Copy all option values from selected
-            $(event.currentTarget).find("option:selected").each(function(i, selected){
-               values[i] = $(selected).val();
+            $(event.currentTarget).find("option:selected").each(function(i, selected) {
+                values[i] = $(selected).val();
             });
 
             if (JSON.stringify(selectedCourses) !== JSON.stringify(values)) {
-                oldIndex = selectedCourses.indexOf("0");
-                newIndex = values.indexOf("0");
+                var oldIndex = selectedCourses.indexOf("0");
+                var newIndex = values.indexOf("0");
 
-                switch(true) {
+                switch (true) {
                     case (oldIndex == -1 && newIndex > -1):
                         // Assign the selected courses
                         values = ["0"];
@@ -280,17 +289,17 @@ define([
 
         // Cohort dropdown change
         var selectedCohort = ["0"];
-        $('#ed_cohorts').on('change', function(event){
+        $('#ed_cohorts').on('change', function(event) {
             var values = [];
 
             // Copy all option values from selected
-            $(event.currentTarget).find("option:selected").each(function(i, selected){
+            $(event.currentTarget).find("option:selected").each(function(i, selected) {
                 values[i] = $(selected).val();
             });
 
             var rpmids = [];
-            // copy all option values from selected
-            $("#ed_rpm").find("option:selected").each(function(i, selected){
+            // Copy all option values from selected
+            $("#ed_rpm").find("option:selected").each(function(i, selected) {
                 rpmids[i] = $(selected).val();
             });
 
@@ -300,10 +309,10 @@ define([
                     .find('.select2-selection')
                     .html(loader);
 
-                oldIndex = selectedCohort.indexOf("0");
-                newIndex = values.indexOf("0");
+                var oldIndex = selectedCohort.indexOf("0");
+                var newIndex = values.indexOf("0");
 
-                switch(true) {
+                switch (true) {
                     case (oldIndex == -1 && newIndex > -1):
                         // Assign the selected courses
                         values = ["0"];
@@ -335,43 +344,45 @@ define([
                         })
                     },
                 })
-                .done(function(response) {
-                    var template = "local_edwiserreports/customquery_lpoptions"; // Work same as lp filter
-                    var context = {lps:response.users}; // work same as lp filters
-                    if (response.users.length > 0) {
-                        Templates.render(template, context).then(function(html, js) {
-                                Templates.appendNodeContents($("#ed_users"), html , js);
-                            }
-                        );
-                    }
-                })
-                .fail(function(error) {
-                    console.log(error);
-                }).always(function() {
-                    $("#ed_users").select2({
-                        multiple:true,
-                        closeOnSelect: false,
-                        placeholder: "Users"
+                    .done(function(response) {
+                        var template = "local_edwiserreports/customquery_lpoptions"; // Work same as lp filter
+                        var context = {lps: response.users}; // Work same as lp filters
+                        if (response.users.length > 0) {
+                            Templates.render(template, context).then(function(html, js) {
+                                Templates.appendNodeContents($("#ed_users"), html, js);
+                                return;
+                            }).fail(function(ex) {
+                                console.log(ex);
+                            });
+                        }
+                    })
+                    .fail(function(error) {
+                        console.log(error);
+                    }).always(function() {
+                        $("#ed_users").select2({
+                            multiple: true,
+                            closeOnSelect: false,
+                            placeholder: "Users"
+                        });
                     });
-                });
             }
         });
 
         // Cohort dropdown change
         var selectedUsers = ["-1"];
-        $('#ed_users').on('change', function(event){
+        $('#ed_users').on('change', function(event) {
             var values = [];
 
             // Copy all option values from selected
-            $(event.currentTarget).find("option:selected").each(function(i, selected){
+            $(event.currentTarget).find("option:selected").each(function(i, selected) {
                 values[i] = $(selected).val();
             });
 
             if (JSON.stringify(selectedUsers) !== JSON.stringify(values)) {
-                oldIndex = selectedUsers.indexOf("0");
-                newIndex = values.indexOf("0");
+                var oldIndex = selectedUsers.indexOf("0");
+                var newIndex = values.indexOf("0");
 
-                switch(true) {
+                switch (true) {
                     case (oldIndex == -1 && newIndex > -1):
                         // Assign the selected courses
                         values = ["0"];
@@ -405,10 +416,10 @@ define([
 
         /**
          * Create flatpicker
-         * @param  {string} type      [description]
-         * @param  {string} startdate [description]
-         * @param  {string} enddate   [description]
-         * @return {[type]}           [description]
+         * @param  {String} selector  Selector id
+         * @param  {string} type      picker type
+         * @param  {string} startdate Start data
+         * @param  {string} maxdate   End date
          */
         const createFlatpicker = function(selector, type, startdate, maxdate) {
             $(panel).find(selector).flatpickr({
@@ -421,7 +432,7 @@ define([
                 onClose: getDateSelectorData,
                 onReady: getDateSelectorData
             });
-        }
+        };
 
         /*
          * Get custom report selectors
@@ -432,8 +443,8 @@ define([
             // Get selected time
             const time = selectedDates[0].getTime() / 1000;
 
-            // set values according to the selector
-            switch(true) {
+            // Set values according to the selector
+            switch (true) {
                 case $(instance.element).is('#customqueryenrollstart'):
                     reportForm.find('input[name=enrolstartdate]').val(time);
                     break;
@@ -450,7 +461,7 @@ define([
                     reportForm.find('input[name=completionenddate]').val(time);
                     break;
             }
-        }
+        };
 
         // Create selectors for flatpicker
         /**
@@ -465,46 +476,50 @@ define([
 
         // Clear search input text
         $(document).on('click', '#customqueryenrollstart ~ button.input-search-close', function() {
-            $('#customqueryenrollstart ~ input.form-control').val("")
+            $('#customqueryenrollstart ~ input.form-control').val("");
 
             // Set form value startdate
-            reportForm.find('input[name=enrolstartdate]').val("")
+            reportForm.find('input[name=enrolstartdate]').val("");
         });
 
         $(document).on('click', '#customqueryenrollend ~ button.input-search-close', function() {
-            $('#customqueryenrollend ~ input.form-control').val("")
+            $('#customqueryenrollend ~ input.form-control').val("");
 
             // Set form value enddate
-            reportForm.find('input[name=enrolenddate]').val("")
+            reportForm.find('input[name=enrolenddate]').val("");
         });
 
         // Clear search input text
         $(document).on('click', '#customquerycompletionstart ~ button.input-search-close', function() {
-            $('#customquerycompletionstart ~ input.form-control').val("")
+            $('#customquerycompletionstart ~ input.form-control').val("");
 
             // Set form value startdate
-            reportForm.find('input[name=completionenddate]').val("")
+            reportForm.find('input[name=completionenddate]').val("");
         });
 
         // Clear search input text
         $(document).on('click', '#customquerycompletionend ~ button.input-search-close', function() {
-            $('#customquerycompletionend ~ input.form-control').val("")
+            $('#customquerycompletionend ~ input.form-control').val("");
 
             // Set form value enddate
-            reportForm.find('input[name=completionstartdate]').val("")
+            reportForm.find('input[name=completionstartdate]').val("");
         });
 
-        // function ti get the selected fileds from checkboxes
+        /**
+         * Function ti get the selected fileds from checkboxes.
+         */
         function getSelectedFields() {
             var checkedFields = [];
-            $(panel).find("input[type=checkbox]:checked").each(function(key, value){
-                checkedFields.push( value.id );
+            $(panel).find("input[type=checkbox]:checked").each(function(key, value) {
+                checkedFields.push(value.id);
             });
             reportForm.find('input[name=reporttype]').val("queryReport");
             reportForm.find('input[name=checkedFields]').val(checkedFields);
         }
 
-        // function to get filtered values
+        /**
+         * Function to get filtered values.
+         */
         function getFilters() {
             // Get Selected Reporting Managers
             var rpms = [];
@@ -537,11 +552,11 @@ define([
 
         /**
          * Validate the custom report form
-         * @return {[type]} [description]
+         * @param {DOM} element Dom element
          */
         function validateCustomQueryReportForm(element) {
             // Get courses
-            const courses = jQuery("#ed_courses > option:selected").length;
+            const courses = $("#ed_courses > option:selected").length;
 
             // Formdata
             const formData = reportForm.serializeArray();
@@ -565,7 +580,7 @@ define([
                 (data.enrolstartdate !== "" && data.enrolenddate == "")
             ) {
                 $(".enroldatealert").show();
-                setTimeout(function(){
+                setTimeout(function() {
                     $(".enroldatealert").hide();
                 }, 3000);
                 element.preventDefault();
@@ -575,7 +590,7 @@ define([
                 (data.completionstartdate !== "" && data.completionenddate == "")
             ) {
                 $(".completiondatealert").show();
-                setTimeout(function(){
+                setTimeout(function() {
                     $(".completiondatealert").hide();
                 }, 3000);
                 element.preventDefault();
@@ -585,13 +600,13 @@ define([
             }
         }
 
-        // get selected fields and filter values on click of download reports
-        $("#customQueryReportDownload").click(function(element){
+        // Get selected fields and filter values on click of download reports
+        $("#customQueryReportDownload").click(function(element) {
             validateCustomQueryReportForm(element);
         });
 
-        // handle alert for course selection
-        $("[data-hide]").on("click", function(){
+        // Handle alert for course selection
+        $("[data-hide]").on("click", function() {
             $(this).closest("." + $(this).attr("data-hide")).hide();
         });
 

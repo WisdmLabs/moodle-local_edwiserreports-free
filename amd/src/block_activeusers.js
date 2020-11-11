@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 define([
     'jquery',
     'core/chartjs',
@@ -5,27 +6,31 @@ define([
     'local_edwiserreports/variables',
     './common',
     'local_edwiserreports/flatpickr'
-], function ($, Chart, defaultConfig, V, common) {
+], function($, Chart, defaultConfig, V, common) {
     /* Varible for active users block */
-    var cfg               = null;
-    var activeUsersGraph  = null;
-    var panel             = defaultConfig.getPanel("#activeusersblock");
-    var panelBody         = defaultConfig.getPanel("#activeusersblock", "body");
-    var panelTitle        = defaultConfig.getPanel("#activeusersblock", "title");
-    var panelFooter       = defaultConfig.getPanel("#activeusersblock", "footer");
-    var dropdownMenu      = panel + " .dropdown-menu[aria-labelledby='filter-dropdown']:not('custom')";
-    var dropdownItem      = dropdownMenu + " .dropdown-item";
-    var dropdownToggle    = panel + " #filter-dropdown.dropdown-toggle";
+    var cfg = null;
+    var activeUsersGraph = null;
+    var panel = defaultConfig.getPanel("#activeusersblock");
+    var panelBody = defaultConfig.getPanel("#activeusersblock", "body");
+    var panelTitle = defaultConfig.getPanel("#activeusersblock", "title");
+    var panelFooter = defaultConfig.getPanel("#activeusersblock", "footer");
+    var dropdownMenu = panel + " .dropdown-menu[aria-labelledby='filter-dropdown']:not('custom')";
+    var dropdownItem = dropdownMenu + " .dropdown-item";
+    var dropdownToggle = panel + " #filter-dropdown.dropdown-toggle";
     var flatpickrCalender = panel + " #flatpickrCalender";
-    var chart             = panelBody + " .ct-chart";
-    var loader            = panelBody + " .loader";
-    var dropdownButton    = panel + " button#filter-dropdown";
-    var refreshBtn        = panelTitle + " .refresh";
-    var exportUrlLink     = panel + V.exportUrlLink;
-    var filter            = null;
-    var dropdownInput     = panelTitle + " input.form-control.input";
-    var listner           = null;
+    var chart = panelBody + " .ct-chart";
+    var loader = panelBody + " .loader";
+    var dropdownButton = panel + " button#filter-dropdown";
+    var refreshBtn = panelTitle + " .refresh";
+    var exportUrlLink = panel + V.exportUrlLink;
+    var filter = null;
+    var dropdownInput = panelTitle + " input.form-control.input";
+    var listner = null;
 
+    /**
+     * Initialize
+     * @param {Function} notifyListner Callback function
+     */
     function init(notifyListner) {
         listner = notifyListner;
 
@@ -33,7 +38,7 @@ define([
         $(document).ready(function() {
             cfg = defaultConfig.getActiveUsersBlock();
 
-            // if course progress block is there
+            // If course progress block is there
             if (cfg) {
                 /* Show custom dropdown */
                 $(dropdownToggle).on("click", function() {
@@ -47,7 +52,7 @@ define([
                 });
 
                 /* Hide dropdown when click anywhere in the screen */
-                $(document).click(function(e){
+                $(document).click(function(e) {
                     if (!($(e.target).hasClass("dropdown-menu") ||
                         $(e.target).parents(".dropdown-menu").length)) {
                         $(dropdownMenu).removeClass('show');
@@ -77,7 +82,9 @@ define([
             }
         });
 
-        /* Create Calender in dropdown tp select range */
+        /**
+         * Create Calender in dropdown tp select range.
+         */
         function createDropdownCalendar() {
             /* Call function to initialize the active users block graph */
             activeUsersGraph = getActiveUsersBlockData();
@@ -89,7 +96,7 @@ define([
                 dateFormat: "Y-m-d",
                 maxDate: "today",
                 appendTo: document.getElementById("activeUser-calendar"),
-                onOpen: function(event) {
+                onOpen: function() {
                     $(dropdownMenu).addClass('withcalendar');
                 },
                 onClose: function() {
@@ -100,14 +107,16 @@ define([
             });
         }
 
-        /* After Select Custom date get active users details */
+        /**
+         * After Select Custom date get active users details.
+         */
         function selectedCustomDate() {
             filter = $(flatpickrCalender).val();
             var date = $(dropdownInput).val();
 
             /* If correct date is not selected then return false */
             if (!filter.includes("to")) {
-                return false;
+                return;
             }
 
             defaultConfig.changeExportUrl(filter, exportUrlLink, V.filterReplaceFlag);
@@ -116,7 +125,10 @@ define([
             getActiveUsersBlockData(filter);
         }
 
-        /* Get data for active users block */
+        /**
+         * Get data for active users block.
+         * @param {String} filter Filter string
+         */
         function getActiveUsersBlockData(filter) {
             $(chart).hide();
             $(loader).show();
@@ -147,7 +159,7 @@ define([
             }).always(function() {
                 activeUsersGraph = generateActiveUsersGraph();
                 // V.changeExportUrl(filter, exportUrlLink, V.filterReplaceFlag);
-                $(panelFooter).find('.download-links input[name="filter"]').val(filter)
+                $(panelFooter).find('.download-links input[name="filter"]').val(filter);
 
                 // Change graph variables
                 resetUpdateTime();
@@ -164,32 +176,44 @@ define([
             });
         }
 
-        /* Reset Update time in panel header */
+        /**
+         * Reset Update time in panel header.
+         */
         function resetUpdateTime() {
             $(panelTitle + " #updated-time > span.minute").html(0);
         }
 
-        /* Increament update time in panel header */
+        /**
+         * Increament update time in panel header.
+         */
         function inceamentUpdateTime() {
-            $(panelTitle + " #updated-time > span.minute").html(parseInt($(panelTitle + " #updated-time > span.minute").text()) + 1);
+            $(panelTitle + " #updated-time > span.minute")
+            .html(parseInt($(panelTitle + " #updated-time > span.minute").text()) + 1);
         }
 
-        /* Generate Active Users graph */
-        function generateActiveUsersGraph () {
-            if(activeUsersGraph) {
+        /**
+         * Generate Active Users graph.
+         * @returns {Object} Active users graph
+         */
+        function generateActiveUsersGraph() {
+            if (activeUsersGraph) {
                 activeUsersGraph.destroy();
             }
 
             Chart.defaults.global.defaultFontFamily = cfg.graph.fontFamily;
             Chart.defaults.global.defaultFontStyle = cfg.graph.fontStyle;
-            return activeUsersGraph = new Chart(cfg.ctx, {
+            activeUsersGraph = new Chart(cfg.ctx, {
                 type: cfg.graph.type,
                 data: getGraphData(),
                 options: cfg.graph.options
             });
+            return activeUsersGraph;
         }
 
-        /* Get graph data */
+        /**
+         * Get graph data.
+         * @return {Object}
+         */
         function getGraphData() {
             return {
                 labels: cfg.graph.labels,

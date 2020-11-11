@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 define([
     'jquery',
     'core/chartjs',
@@ -5,13 +6,16 @@ define([
     'local_edwiserreports/variables',
     './common',
     'local_edwiserreports/select2'
-], function ($, Chart, cfg, V, common) {
+], function($, Chart, cfg, V, common) {
+
+    /**
+     * Initialize
+     * @param {function} notifyListner Callback function
+     */
     function init(notifyListner) {
         var cpGraph = null;
         var panel = cfg.getPanel("#courseprogressblock");
-        var panelBody = cfg.getPanel("#courseprogressblock", "body")
-        var panelTitle = cfg.getPanel("#courseprogressblock", "header");
-        var panelFooter = cfg.getPanel("#courseprogressblock", "footer");
+        var panelBody = cfg.getPanel("#courseprogressblock", "body");
         var selectedCourse = panelBody + " #wdm-courseprogress-select";
         var chart = panelBody + " .ct-chart";
         var loader = panelBody + " .loader";
@@ -25,12 +29,12 @@ define([
         $(document).ready(function($) {
             cpBlockData = cfg.getCourseProgressBlock();
 
-            // if course progress block is there
+            // If course progress block is there
             if (cpBlockData) {
                 getCourseProgressData();
                 $(panelBody + ' .singleselect').select2();
 
-                $(selectedCourse).on("change", function () {
+                $(selectedCourse).on("change", function() {
                     $(chart).hide();
                     $(loader).show();
 
@@ -47,10 +51,6 @@ define([
          */
         function getCourseProgressData() {
             var courseId = $(selectedCourse).val();
-            cfg.changeExportUrl(courseId, exportUrlLink, V.filterReplaceFlag);
-
-            console.log(form.find('input[name="filter"]'));
-            console.log(form);
             form.find('input[name="filter"]').val(courseId);
 
             // If progress graph already exist then destroy
@@ -73,27 +73,28 @@ define([
                     })
                 },
             })
-            .done(function(response) {
-                cpBlockData.graph.data = response.data;
-            })
-            .fail(function(error) {
-                console.log(error);
-            })
-            .always(function() {
-                cpGraph = generateCourseProgressGraph();
-                $(loader).hide();
-                $(chart).fadeIn("slow");
+                .done(function(response) {
+                    cpBlockData.graph.data = response.data;
+                })
+                .fail(function(error) {
+                    console.log(error);
+                })
+                .always(function() {
+                    cpGraph = generateCourseProgressGraph();
+                    $(loader).hide();
+                    $(chart).fadeIn("slow");
 
-                /* Notify that this event is completed */
-                notifyListner("courseProgress");
+                    /* Notify that this event is completed */
+                    notifyListner("courseProgress");
 
-                // Hide loader.
-                common.loader.hide('#courseprogressblock');
-            });
+                    // Hide loader.
+                    common.loader.hide('#courseprogressblock');
+                });
         }
 
         /**
-         * Generate course progress graph
+         * Generate course progress graph.
+         * @returns {Object} chart object
          */
         function generateCourseProgressGraph() {
             // Create configuration data for course progress block

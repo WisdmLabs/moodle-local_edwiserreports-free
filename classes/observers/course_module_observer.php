@@ -13,7 +13,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
  * Local Course Progress Manager Plugin Events Onserver.
  *
@@ -39,7 +38,8 @@ require_once($CFG->dirroot . '/local/edwiserreports/classes/constants.php');
 trait course_module_observer {
     /**
      * Get event data
-     * @return [type] [description]
+     * @param  object $event Event data
+     * @return object        Course module event data
      */
     protected static function get_course_module_eventdata($event) {
         // Get event related data.
@@ -61,7 +61,7 @@ trait course_module_observer {
 
     /**
      * Course module create event
-     * @param  \core\event\role_assigned $event Event Data
+     * @param \core\event\course_module_created $event Event Data
      */
     public static function course_module_created(\core\event\course_module_created $event) {
         // If course module event data is present then
@@ -80,7 +80,7 @@ trait course_module_observer {
 
     /**
      * Course module create event
-     * @param  \core\event\role_assigned $event Event Data
+     * @param \core\event\course_module_deleted $event Event Data
      */
     public static function course_module_deleted(\core\event\course_module_deleted $event) {
         // If course module event data is present then
@@ -100,7 +100,7 @@ trait course_module_observer {
 
     /**
      * Course module updated event
-     * @param  \core\event\role_assigned $event Event Data
+     * @param \core\event\course_module_updated $event Event Data
      */
     public static function course_module_updated(\core\event\course_module_updated $event) {
         // If course module event data is present then

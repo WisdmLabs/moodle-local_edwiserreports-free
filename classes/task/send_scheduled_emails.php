@@ -124,7 +124,10 @@ class send_scheduled_emails extends \core\task\scheduled_task {
 
     /**
      * Send Shcedule Email
-     * @return [type] [description]
+     *
+     * @param  object $export    Export object
+     * @param  object $data      Data to export
+     * @param  object $emailinfo Email information
      */
     private function send_sceduled_email($export, $data, $emailinfo) {
         global $USER;
@@ -152,7 +155,7 @@ class send_scheduled_emails extends \core\task\scheduled_task {
         }
 
         // Get content text to send emails.
-        if (contenttext == '') {
+        if ($contenttext == '') {
             $contenttext = get_string($blockname . "exporthelp", "local_edwiserreports");
         }
 

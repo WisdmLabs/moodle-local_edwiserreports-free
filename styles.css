@@ -1,7 +1,7 @@
+/* stylelint-disable declaration-no-important */
 .clearfix {
     clear: both;
 }
-
 
 /* DataTables Custom CSS Start */
 /* #wdm-edwiserreports table thead tr th {
@@ -29,18 +29,18 @@
     padding: 10px 18px !important;
 } */
 
-#wdm-activeusers-individual .table-responsive>div.dataTables_wrapper>div.row:nth-child(2),
-#wdm-courseprogress-individual.table-responsive>div.dataTables_wrapper>div:nth-child(2),
-#wdm-courseengage-individual.table-responsive>div.dataTables_wrapper>div:nth-child(2),
-#wdm-lpstats-individual.table-responsive>div.dataTables_wrapper>div:nth-child(2),
-#wdm-certificates-individual.table-responsive>div.dataTables_wrapper>div:nth-child(2),
-#wdm-completion-individual.table-responsive>div.dataTables_wrapper>div:nth-child(2),
-#wdm-courseanalytics-individual.table-responsive>div.dataTables_wrapper>div:nth-child(2) {
+#wdm-activeusers-individual .table-responsive > div.dataTables_wrapper > div.row:nth-child(2),
+#wdm-courseprogress-individual.table-responsive > div.dataTables_wrapper > div:nth-child(2),
+#wdm-courseengage-individual.table-responsive > div.dataTables_wrapper > div:nth-child(2),
+#wdm-lpstats-individual.table-responsive > div.dataTables_wrapper > div:nth-child(2),
+#wdm-certificates-individual.table-responsive > div.dataTables_wrapper > div:nth-child(2),
+#wdm-completion-individual.table-responsive > div.dataTables_wrapper > div:nth-child(2),
+#wdm-courseanalytics-individual.table-responsive > div.dataTables_wrapper > div:nth-child(2) {
     clear: both;
     overflow-x: scroll;
 }
 
-.modal div.dataTables_wrapper>div.row:nth-child(2) {
+.modal div.dataTables_wrapper > div.row:nth-child(2) {
     overflow-x: scroll;
 }
 
@@ -125,7 +125,7 @@
 /* Media query for dashboard page */
 @media only screen and (min-width: 600px) {
     #wdm-edwiserreports #activeusersblock .dropdown-menu.withcalendar,
-    .path-local-edwiserreports .dropdown-menu.withcalendar{
+    .path-local-edwiserreports .dropdown-menu.withcalendar {
         width: 530px !important;
     }
     #wdm-edwiserreports #activeusersblock .dropdown-menu .dropdown-body,
@@ -168,7 +168,7 @@
 }
 
 #wdm-edwiserreports .panel {
-	box-shadow: unset;
+    box-shadow: unset;
 }
 
 /* Datatable css */
@@ -206,29 +206,29 @@
 /* width */
 .path-local-edwiserreports ::-webkit-scrollbar,
 .path-admin-report-edwiserReport ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-  border-radius: 0;
+    width: 10px;
+    height: 10px;
+    border-radius: 0;
 }
 
 /* Track */
 .path-local-edwiserreports ::-webkit-scrollbar-track,
 .path-admin-report-edwiserReport ::-webkit-scrollbar-track {
-   border-radius: 0;
-   background: #fff;
+    border-radius: 0;
+    background: #fff;
 }
 
 /* Handle */
 .path-local-edwiserreports ::-webkit-scrollbar-thumb,
 .path-admin-report-edwiserReport ::-webkit-scrollbar-thumb {
-   border-radius: 0;
-   background: #888;
+    border-radius: 0;
+    background: #888;
 }
 
 /* Handle on hover */
 .path-local-edwiserreports ::-webkit-scrollbar-thumb:hover,
 .path-admin-report-edwiserReport ::-webkit-scrollbar {
-   background: #555;
+    background: #555;
 }
 /* Custom Scrollbar Design End */
 
@@ -251,7 +251,6 @@
 
 #courseprogressblock .col-md-9,
 #lpstatsblock .col-md-9 {
-    display: -webkit-flex;
     display: flex;
     width: 100% !important;
     max-width: 100% !important;
@@ -327,32 +326,33 @@
 /* Bootstrap CSS Override Ended*/
 
 @-webkit-keyframes rotating /* Safari and Chrome */ {
-  from {
-    -webkit-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  to {
-    -webkit-transform: rotate(360deg);
-    -o-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
+    from {
+        -webkit-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
 }
+
 @keyframes rotating {
-  from {
-    -ms-transform: rotate(0deg);
-    -moz-transform: rotate(0deg);
-    -webkit-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  to {
-    -ms-transform: rotate(360deg);
-    -moz-transform: rotate(360deg);
-    -webkit-transform: rotate(360deg);
-    -o-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
+    from {
+        -ms-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    to {
+        -ms-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -webkit-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
 }
 
 #wdm-edwiserreports .refresh {
@@ -433,23 +433,23 @@
 
 #wdm-edwiserreports #siteaccesssblock td.empty-label.siteacess-time,
 #wdm-edwiserreports #siteaccesssblock #accessinfodesctable td.empty-label.color-label {
-    min-width:60px;
+    min-width: 60px;
 }
 
 #wdm-edwiserreports #siteaccesssblock #accessinfodesctable td.color-label-20 {
-    background-color: rgba(52,137,223,0.2) !important;
+    background-color: rgba(52, 137, 223, 0.2) !important;
 }
 #wdm-edwiserreports #siteaccesssblock #accessinfodesctable td.color-label-40 {
-    background-color: rgba(52,137,223,0.4) !important;
+    background-color: rgba(52, 137, 223, 0.4) !important;
 }
 #wdm-edwiserreports #siteaccesssblock #accessinfodesctable td.color-label-60 {
-    background-color: rgba(52,137,223,0.6) !important;
+    background-color: rgba(52, 137, 223, 0.6) !important;
 }
 #wdm-edwiserreports #siteaccesssblock #accessinfodesctable td.color-label-80 {
-    background-color: rgba(52,137,223,0.8) !important;
+    background-color: rgba(52, 137, 223, 0.8) !important;
 }
 #wdm-edwiserreports #siteaccesssblock #accessinfodesctable td.color-label-100 {
-    background-color: rgba(52,137,223,1) !important;
+    background-color: rgba(52, 137, 223, 1) !important;
 }
 
 #wdm-edwiserreports #siteaccesssblock #accessinfodesctable td.empty-label p {
@@ -481,7 +481,7 @@
     transition: background-color 0.2s linear;
 }
 
-.esr-switch input:checked+.switch-container .switch-lever {
+.esr-switch input:checked + .switch-container .switch-lever {
     left: 1rem;
 }
 .esr-switch .switch-container .switch-lever {
@@ -491,16 +491,16 @@
     border-radius: 50%;
     top: -.1rem;
     box-shadow: grey 0 0 1px 0;
-    transition: left 0.2s linear,background-color 0.2s linear;
+    transition: left 0.2s linear, background-color 0.2s linear;
 }
 
-.esr-switch input:not(:checked)+.switch-container .switch-background {
-    background-color: #000000!important;
+.esr-switch input:not(:checked) + .switch-container .switch-background {
+    background-color: #0000 !important;
 }
 
-.esr-switch input:not(:checked)+.switch-container .switch-lever {
+.esr-switch input:not(:checked) + .switch-container .switch-lever {
     left: 0;
-    background-color: white!important;
+    background-color: white !important;
 }
 
 /* Scheduled email table */
@@ -550,35 +550,48 @@ div[id^="wdm-"][id*="-individual"] table.table,
 
 /* Loader css */
 #cover-spin {
-    position:fixed;
-    width:100%;
-    left:0;right:0;top:0;bottom:0;
-    background-color: rgba(255,255,255,0.7);
-    z-index:9999;
-    display:none;
+    position: fixed;
+    width: 100%;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.7);
+    z-index: 9999;
+    display: none;
 }
 
 @-webkit-keyframes spin {
-    from {-webkit-transform:rotate(0deg);}
-    to {-webkit-transform:rotate(360deg);}
+    from {
+        -webkit-transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(360deg);
+    }
 }
 
 @keyframes spin {
-    from {transform:rotate(0deg);}
-    to {transform:rotate(360deg);}
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 #cover-spin::after {
-    content:'';
-    display:block;
-    position:absolute;
-    left:48%;top:40%;
-    width:40px;height:40px;
-    border-style:solid;
-    border-color:black;
-    border-top-color:transparent;
+    content: '';
+    display: block;
+    position: absolute;
+    left: 48%;
+    top: 40%;
+    width: 40px;
+    height: 40px;
+    border-style: solid;
+    border-color: black;
+    border-top-color: transparent;
     border-width: 4px;
-    border-radius:50%;
+    border-radius: 50%;
     -webkit-animation: spin .8s linear infinite;
     animation: spin .8s linear infinite;
 }
@@ -596,7 +609,7 @@ div[id^="wdm-"][id*="-individual"] table.table,
 
 /* Custom Report Block Table Style */
 .path-local-edwiserreports #customReportBlock table td {
-    padding: 10px 18px!important;
+    padding: 10px 18px !important;
 }
 /* Custom Query Report */
 .reportfields {
@@ -607,7 +620,7 @@ div[id^="wdm-"][id*="-individual"] table.table,
 }
 
 #customQueryReportBlock .input-search .input-search-close {
-    right: 0px !important;
+    right: 0 !important;
 }
 
 #customQueryReportBlock .select2-container--default .select2-selection--multiple .select2-selection__rendered {
@@ -620,7 +633,7 @@ div[id^="wdm-"][id*="-individual"] table.table,
 
 /** Blocks setting button */
 #wdm-edwiserreports .blocksetting {
-	position: absolute;
+    position: absolute;
     right: 0;
     top: 0;
     padding: 5px;
@@ -628,19 +641,19 @@ div[id^="wdm-"][id*="-individual"] table.table,
 
 #wdm-edwiserreports a[id^="blocksetting-"],
 #wdm-edwiserreports a[id^="blocksetting-"] .icon {
-	font-size: 20px;
-	text-decoration: none !important;
+    font-size: 20px;
+    text-decoration: none !important;
 }
 #wdm-edwiserreports a[id^="blocksetting-"]:after {
     margin: 0 !Important;
 }
 
 #wdm-edwiserreports .panel-title {
-	min-height: 60px;
+    min-height: 60px;
 }
 
 #wdm-edwiserreports .panel-body {
-	min-height: 400px;
+    min-height: 400px;
 }
 
 #wdm-edwiserreports input.dropdown-item {
@@ -649,8 +662,8 @@ div[id^="wdm-"][id*="-individual"] table.table,
 }
 
 #wdm-edwiserreports .loader {
-	height: 100%;
-	position: relative;
+    height: 100%;
+    position: relative;
 }
 
 #wdm-edwiserreports .loader img {
@@ -667,20 +680,20 @@ div[id^="wdm-"][id*="-individual"] table.table,
 }
 #wdm-edwiserreports .dataTables_wrapper .row
 #wdm-edwiserreports .dataTables_wrapper div[class^="col-"] {
-    margin: 0!important;
-    padding: 0!important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 #wdm-edwiserreports .edwiserReport-block > div {
     position: relative;
     height: 100%;
     padding: 1rem;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
 }
 
 #wdm-edwiserreports .edwiserReport-block > div:hover {
-    box-shadow: 0 8px 10px rgba(0,0,0,0.25), 0 3px 4px rgba(0,0,0,0.22);
+    box-shadow: 0 8px 10px rgba(0, 0, 0, 0.25), 0 3px 4px rgba(0, 0, 0, 0.22);
 }
 
 #wdm-edwiserreports .edwiserReport-block > div .panel {
@@ -717,7 +730,8 @@ div[id^="wdm-"][id*="-individual"] table.table,
     z-index: unset !important;
 }
 
-.modal .path-admin-tool-capability .comparisontable thead th div>a {
+.modal .path-admin-tool-capability .comparisontable thead th div > a {
+    transform: rotate(270deg);
     -webkit-transform: rotate(270deg);
     -moz-transform: rotate(270deg);
     -ms-transform: rotate(270deg);
@@ -725,11 +739,11 @@ div[id^="wdm-"][id*="-individual"] table.table,
 }
 
 .modal .menucapabilities {
-	max-width: 100%;
+    max-width: 100%;
 }
 .modal .comparisontable .switch-capability,
 .modal .comparisontable .switch-capability label {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 #wdm-certificates-individual .table .pie-progress {
@@ -741,7 +755,6 @@ div[id^="wdm-"][id*="-individual"] table.table,
     vertical-align: middle;
     right: 1.25rem;
     text-align: center;
-    /* margin-right: auto; */
     margin-left: auto;
     margin-bottom: 1.2rem;
     top: 28px;
@@ -794,10 +807,10 @@ table.dataTable td.dataTables_empty {
         text-align: center;
     }
     #wdm-edwiserreports #todaysactivityblock .card-block .row > div .summary {
-    	margin: auto !important;
+        margin: auto !important;
     }
     #wdm-edwiserreports #todaysactivityblock .card-block .row > div .todays-block div {
-    	width: 100%;
+        width: 100%;
     }
     #wdm-edwiserreports #todaysactivityblock .card-block .visual {
         margin-top: 1rem;
@@ -806,40 +819,40 @@ table.dataTable td.dataTables_empty {
 }
 
 @media (min-width: 768px) and (max-width: 830px) {
-	#wdm-edwiserreports .edwiserReport-block.col-md-6 #todaysactivityblock .card-block .row > div {
+    #wdm-edwiserreports .edwiserReport-block.col-md-6 #todaysactivityblock .card-block .row > div {
         width: 100%;
         max-width: 100%;
         flex: 0 0 100%;
         text-align: center;
     }
     #wdm-edwiserreports .edwiserReport-block.col-md-6 #todaysactivityblock .card-block .row > div .summary {
-    	margin: auto !important;
+        margin: auto !important;
     }
     #wdm-edwiserreports .edwiserReport-block.col-md-6 #todaysactivityblock .card-block .row > div .todays-block div {
-    	width: 100%;
+        width: 100%;
     }
     #wdm-edwiserreports .edwiserReport-block.col-md-6 #todaysactivityblock .card-block .visual {
-    	margin-top: 1rem;
-    	text-align: center;
+        margin-top: 1rem;
+        text-align: center;
     }
 }
 
 @media (min-width: 992px) and (max-width: 1200px) {
-	#wdm-edwiserreports .edwiserReport-block.col-lg-4 #todaysactivityblock .card-block .row > div {
+    #wdm-edwiserreports .edwiserReport-block.col-lg-4 #todaysactivityblock .card-block .row > div {
         width: 100%;
         max-width: 100%;
         flex: 0 0 100%;
         text-align: center;
     }
     #wdm-edwiserreports .edwiserReport-block.col-lg-4 #todaysactivityblock .card-block .row > div .summary {
-    	margin: auto !important;
+        margin: auto !important;
     }
     #wdm-edwiserreports .edwiserReport-block.col-lg-4 #todaysactivityblock .card-block .row > div .todays-block div {
-    	width: 100%;
+        width: 100%;
     }
     #wdm-edwiserreports .edwiserReport-block.col-lg-4 #todaysactivityblock .card-block .visual {
-    	margin-top: 1rem;
-    	text-align: center;
+        margin-top: 1rem;
+        text-align: center;
     }
 }
 
@@ -882,7 +895,10 @@ table.dataTable td.dataTables_empty {
 .pie-progress-number {
     font-size: 36px;
 }
-.pie-progress .pie-progress-icon, .pie-progress-content, .pie-progress-label, .pie-progress-number {
+.pie-progress .pie-progress-icon,
+.pie-progress-content,
+.pie-progress-label,
+.pie-progress-number {
     -webkit-transform: translateY(-50%);
     -moz-transform: translateY(-50%);
     -ms-transform: translateY(-50%);
@@ -894,12 +910,15 @@ table.dataTable td.dataTables_empty {
     width: 100%;
 }
 .font-size-14 {
-    font-size: 14px!important;
+    font-size: 14px !important;
 }
 .pie-progress-number {
     font-size: 36px;
 }
-.pie-progress .pie-progress-icon, .pie-progress-content, .pie-progress-label, .pie-progress-number {
+.pie-progress .pie-progress-icon,
+.pie-progress-content,
+.pie-progress-label,
+.pie-progress-number {
     -webkit-transform: translateY(-66%);
     -moz-transform: translateY(-66%);
     -ms-transform: translateY(-66%);
@@ -912,7 +931,7 @@ table.dataTable td.dataTables_empty {
 }
 
 .path-local-edwiserreports .modal-dialog:focus {
-	outline: -webkit-focus-ring-color auto 0px !important;
+    outline: -webkit-focus-ring-color auto 0 !important;
 }
 #page-local-edwiserreports-index .modal-dialog {
     min-height: auto;

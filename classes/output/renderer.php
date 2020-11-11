@@ -24,86 +24,77 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Edwiser report renderer
+ */
 class local_edwiserreports_renderer extends plugin_renderer_base {
     /**
      * Renders the couse bundle view page.
-     * @param  report_elucidreport $report  Object of elucid report renderable class
+     * @param  \local_edwiserreports\output\elucidreport_renderable $report Object of elucid report renderable class
      * @return string  Html Structure of the view page
      */
-    public function render_local_edwiserreports(\local_edwiserreports\elucidreport_renderable $report) {
+    public function render_local_edwiserreports(\local_edwiserreports\output\elucidreport_renderable $report) {
         $templatecontext = $report->export_for_template($this);
         return $this->render_from_template('local_sitelocal/edwiserreports', $templatecontext);
     }
 }
 
+/**
+ * Active users renderer
+ */
 class report_activeusers_renderer extends plugin_renderer_base {
     /**
      * Renders the couse bundle view page.
-     * @param  report_elucidreport $report  Object of elucid report renderable class
+     * @param  \local_edwiserreports\output\activeusers_renderable $activeusers Object of elucid report renderable class
      * @return string  Html Structure of the view page
      */
-    public function render_report_activeusers(\local_edwiserreports\activeusers_renderable $activeusers) {
-        $templatecontext = $report->export_for_template($this);
+    public function render_report_activeusers(\local_edwiserreports\output\activeusers_renderable $activeusers) {
+        $templatecontext = $activeusers->export_for_template($this);
         return $this->render_from_template('local_edwiserreports/activeusers', $templatecontext);
     }
 }
 
+/**
+ * Course report renderer
+ */
 class report_coursereport_renderer extends plugin_renderer_base {
     /**
      * Renders the couse bundle view page.
-     * @param  report_elucidreport $report  Object of elucid report renderable class
+     * @param  \local_edwiserreports\output\coursereport_renderable $coursereport Object of elucid report renderable class
      * @return string  Html Structure of the view page
      */
-    public function render_report_courseprogress(\local_edwiserreports\coursereport_renderable $coursereport) {
-        $templatecontext = $report->export_for_template($this);
+    public function render_report_courseprogress(\local_edwiserreports\output\coursereport_renderable $coursereport) {
+        $templatecontext = $coursereport->export_for_template($this);
         return $this->render_from_template('local_edwiserreports/coursereport', $templatecontext);
     }
 }
 
+/**
+ * Certificate renderer
+ */
 class report_certificates_renderer extends plugin_renderer_base {
     /**
      * Renders the couse bundle view page.
-     * @param  report_elucidreport $report  Object of elucid report renderable class
+     * @param  \local_edwiserreports\output\certificates_renderable $certificates Object of elucid report renderable class
      * @return string  Html Structure of the view page
      */
-    public function render_report_certificates(\local_edwiserreports\certificates_renderable $certificates) {
-        $templatecontext = $report->export_for_template($this);
+    public function render_report_certificates(\local_edwiserreports\output\certificates_renderable $certificates) {
+        $templatecontext = $certificates->export_for_template($this);
         return $this->render_from_template('local_edwiserreports/certificates', $templatecontext);
     }
 }
 
-class report_f2fsessions_renderer extends plugin_renderer_base {
-    /**
-     * Renders the couse bundle view page.
-     * @param  report_elucidreport $report  Object of elucid report renderable class
-     * @return string  Html Structure of the view page
-     */
-    public function render_report_f2fsessions(\local_edwiserreports\f2fsessions_renderable $f2fsessions) {
-        $templatecontext = $report->export_for_template($this);
-        return $this->render_from_template('local_edwiserreports/f2fsessions', $templatecontext);
-    }
-}
-
-class report_lpstats_renderer extends plugin_renderer_base {
-    /**
-     * Renders the couse bundle view page.
-     * @param  report_elucidreport $report  Object of elucid report renderable class
-     * @return string  Html Structure of the view page
-     */
-    public function render_report_lpstats(\local_edwiserreports\lpstats_renderable $f2fsessions) {
-        $templatecontext = $report->export_for_template($this);
-        return $this->render_from_template('local_edwiserreports/lpstats', $templatecontext);
-    }
-}
-
+/**
+ * Completion renderer.
+ */
 class report_completion_renderer extends plugin_renderer_base {
     /**
      * Renders the Completion report.
-     * @param  report_elucidreport $report  Object of completion renderable class
+     * @param  \local_edwiserreports\output\completion_renderable $completion Object of completion renderable class
      * @return string  Html Structure of the view page
      */
-    public function render_report_completion(\local_edwiserreports\completion_renderable $f2fsessions) {
-        $templatecontext = $report->export_for_template($this);
+    public function render_report_completion(\local_edwiserreports\output\completion_renderable $completion) {
+        $templatecontext = $completion->export_for_template($this);
         return $this->render_from_template('local_edwiserreports/completion', $templatecontext);
     }
 }

@@ -37,6 +37,9 @@ require_once($CFG->dirroot."/local/edwiserreports/lib.php");
 require_once($CFG->dirroot."/local/edwiserreports/classes/report_blocks.php");
 require_once($CFG->dirroot."/local/edwiserreports/locallib.php");
 
+/**
+ * Elucid report renderable.
+ */
 class elucidreport_renderable implements renderable, templatable {
     /**
      * Function to export the renderer data in a format that is suitable for a
@@ -47,9 +50,6 @@ class elucidreport_renderable implements renderable, templatable {
      */
     public function export_for_template(renderer_base $output) {
         global $CFG, $PAGE, $USER;
-
-        // Get system context.
-        $context = context_system::instance();
 
         $output = null;
         $export = new stdClass();
@@ -80,7 +80,7 @@ class elucidreport_renderable implements renderable, templatable {
 
     /**
      * Get all reports field to prepare sql query
-     * @return [Array] Array of all available field
+     * @return array Array of all available field
      */
     public static function get_report_fields() {
         $userfields = array(
@@ -233,7 +233,7 @@ class elucidreport_renderable implements renderable, templatable {
 }
 
 /**
- * Active users page renderables
+ * Active users page renderables.
  */
 class activeusers_renderable implements renderable, templatable {
     /**
@@ -250,7 +250,6 @@ class activeusers_renderable implements renderable, templatable {
         $output = new stdClass();
         $output->sesskey = sesskey();
 
-        $downloadurl = $CFG->wwwroot."/local/edwiserreports/download.php";
         $output->backurl = $CFG->wwwroot."/local/edwiserreports/index.php";
 
         if ($cohortfilter = local_edwiserreports_get_cohort_filter()) {
@@ -267,7 +266,7 @@ class activeusers_renderable implements renderable, templatable {
 }
 
 /**
- * Course report renderables
+ * Course report renderables.
  */
 class coursereport_renderable implements renderable, templatable {
     /**
@@ -305,7 +304,7 @@ class coursereport_renderable implements renderable, templatable {
 }
 
 /**
- * Certificate renderable
+ * Certificate renderable.
  */
 class certificates_renderable implements renderable, templatable {
     /**
@@ -345,56 +344,8 @@ class certificates_renderable implements renderable, templatable {
     }
 }
 
-class f2fsessions_renderable implements renderable, templatable {
-    /**
-     * Function to export the renderer data in a format that is suitable for a
-     * edit mustache template.
-     *
-     * @param renderer_base $output Used to do a final render of any components that need to be rendered for export.
-     * @return stdClass|array
-     */
-    public function export_for_template(renderer_base $output) {
-        global $CFG, $DB;
-
-        $output = new stdClass();
-        $output->sesskey = sesskey();
-        $downloadurl = $CFG->wwwroot."/local/edwiserreports/download.php";
-        $output->exportlink = local_edwiserreports_get_exportlinks($downloadurl, "report", "f2fsession", false, 0);
-        $output->userfilters = local_edwiserreports_get_userfilters(false, true, false);
-        $output->backurl = new moodle_url($CFG->wwwroot."/local/edwiserreports/index.php");
-        return $output;
-    }
-}
-
-class lpstats_renderable implements renderable, templatable {
-    /**
-     * Function to export the renderer data in a format that is suitable for a
-     * edit mustache template.
-     *
-     * @param renderer_base $output Used to do a final render of any components that need to be rendered for export.
-     * @return stdClass|array
-     */
-    public function export_for_template(renderer_base $output) {
-        global $CFG, $DB;
-
-        $output = new stdClass();
-        $output->sesskey = sesskey();
-        $output->lps = \local_edwiserreports\utility::get_lps();
-
-        if (!empty($output->lps)) {
-            $output->haslps = true;
-            $downloadurl = $CFG->wwwroot."/local/edwiserreports/download.php";
-            $output->exportlink = local_edwiserreports_get_exportlinks($downloadurl, "report", "lpstats", $output->lps[0]["id"], 0);
-            $output->userfilters = local_edwiserreports_get_userfilters(false, true, false);
-        }
-        $output->backurl = new moodle_url($CFG->wwwroot."/local/edwiserreports/index.php");
-        $output->lpexportdetailed = true;
-        return $output;
-    }
-}
-
 /**
- * Completion renderables
+ * Completion renderables.
  */
 class completion_renderable implements renderable, templatable {
     /**
@@ -405,7 +356,7 @@ class completion_renderable implements renderable, templatable {
      * @return stdClass|array
      */
     public function export_for_template(renderer_base $output) {
-        global $CFG, $DB;
+        global $CFG;
 
         $courseid = required_param("courseid", PARAM_INT);
         $output = new stdClass();

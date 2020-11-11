@@ -26,16 +26,15 @@ namespace local_edwiserreports;
 
 use stdClass;
 use context_course;
-use context_system;
 use cache;
 
 /**
- * Class Acive Users Block
- * To get the data related to active users block
+ * Class Acive Users Block. To get the data related to active users block.
  */
 class activecoursesblock extends block_base {
     /**
      * Preapre layout for active courses block
+     * @return object Layout object
      */
     public function get_layout() {
         global $CFG;
@@ -61,7 +60,8 @@ class activecoursesblock extends block_base {
 
     /**
      * Get Data for Active Courses
-     * @return [objext] Response for Active Courses
+     * @param  object $params Parameteres
+     * @return object         Response for Active Courses
      */
     public function get_data($params = false) {
         $id = isset($params->id) ? $params->id : false;
@@ -81,7 +81,7 @@ class activecoursesblock extends block_base {
 
     /**
      * Get headers for Active Courses Block
-     * @return [array] Array of header of course block
+     * @return array Array of header of course block
      */
     public static function get_header() {
         $header = array(
@@ -96,7 +96,7 @@ class activecoursesblock extends block_base {
 
     /**
      * Get Active Courses data
-     * @return [array] Array of course active records
+     * @return array Array of course active records
      */
     public static function get_course_data() {
         global $DB;
@@ -107,7 +107,7 @@ class activecoursesblock extends block_base {
         $response = array();
         // Calculate Completion Count for All Course.
         $sql = "SELECT courseid, COUNT(userid) AS users
-            FROM {edw_course_progress}
+            FROM {edwreports_course_progress}
             WHERE progress = :progress
             GROUP BY courseid";
         $params = array("progress" => 100);
@@ -154,9 +154,9 @@ class activecoursesblock extends block_base {
 
     /**
      * Get Course View Count by users
-     * @param  [int] $courseid Course Id
-     * @param  [array] $enrolledstudents Array of enrolled uesers
-     * @return [int] Number of course views by users
+     * @param  int   $courseid         Course Id
+     * @param  array $enrolledstudents Array of enrolled uesers
+     * @return int                     Number of course views by users
      */
     public static function get_courseview_count($courseid, $enrolledstudents) {
         global $DB;
@@ -178,7 +178,7 @@ class activecoursesblock extends block_base {
 
     /**
      * Get Exportable data for Active Courses Block
-     * @return [array] Array of exportable data
+     * @return array Array of exportable data
      */
     public static function get_exportable_data_block() {
         $export = array();

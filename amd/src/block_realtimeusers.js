@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 define([
     "jquery",
     "local_edwiserreports/defaultconfig",
@@ -12,13 +13,19 @@ define([
     var table = $(panelBody + " .table");
     var listner = null;
 
+    /**
+     * Initialize
+     * @param {function} notifyListner Callback function
+     */
     function init(notifyListner) {
         listner = notifyListner;
 
         getOnlineUsersData(); // Call first time
     }
 
-    /* Get online users data */
+    /**
+     * Get online users data
+     */
     function getOnlineUsersData() {
 
         // Show loader.
@@ -33,22 +40,25 @@ define([
                 sesskey: $(panel).data("sesskey")
             },
         })
-        .done(function(response) {
-            createRealtimeUsersBlock(response.data);
-        })
-        .fail(function(error) {
-            console.log(error);
-        }).always(function(){
-            listner("realTimeUsers");
-            setTimeout(getOnlineUsersData, 2 * 60 * 1000);
+            .done(function(response) {
+                createRealtimeUsersBlock(response.data);
+            })
+            .fail(function(error) {
+                console.log(error);
+            }).always(function() {
+                listner("realTimeUsers");
+                setTimeout(getOnlineUsersData, 2 * 60 * 1000);
 
-            // Hide loader.
-            common.loader.hide("#liveusersblock");
+                // Hide loader.
+                common.loader.hide("#liveusersblock");
 
-        });
+            });
     }
 
-    /* Create Datatable of the table */
+    /**
+     * Create Datatable of the table
+     * @param {Object} data Datatable data
+     */
     function createRealtimeUsersBlock(data) {
         if (liveUsersTable) {
             liveUsersTable.destroy();
@@ -59,7 +69,6 @@ define([
 
         liveUsersTable = table.DataTable({
             data: data,
-            // dom : '<"row rtblock-filter"<"pull-left"f>><t>',
             language: {
                 searchPlaceholder: "Search User"
             },
@@ -79,21 +88,13 @@ define([
                     "orderable": false
                 }
             ],
-            drawCallback: function () {
+            drawCallback: function() {
                 $('.dataTables_paginate > .pagination').addClass('pagination-sm pull-right');
                 $('.dataTables_filter').addClass('pagination-sm pull-right');
             },
-            // scrollY : "200px",
-            // scrollCollapse : true,
-            // fixedHeader: {
-            //     header: true,
-            //     headerOffset: 45
-            // },
-            // scrollX: true,
-            // paging: false,
-            bInfo : false,
+            bInfo: false,
             lengthChange: false,
-            initComplete : function() {
+            initComplete: function() {
                 var usersCount = '<small class="ml-auto my-auto font-weight-bold">LoggedIn Users : ' + data.length + '</small>';
                 $(document).find(".rtblock-filter").append(usersCount);
             }

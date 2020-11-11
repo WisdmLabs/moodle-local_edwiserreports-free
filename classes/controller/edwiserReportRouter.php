@@ -43,6 +43,9 @@ class edwiserReportRouter {
      */
     protected $controllers;
 
+    /**
+     * Contructor
+     */
     public function __construct() {
         $this->controllers = new \SplObjectStorage();
     }
@@ -53,7 +56,7 @@ class edwiserReportRouter {
      * The router routes actions to the controllers
      * by first come, first serve.
      *
-     * @param mixed $controller
+     * @param mixed $controller Controller object
      * @return $this
      */
     public function add_controller($controller) {
@@ -62,6 +65,7 @@ class edwiserReportRouter {
     }
 
     /**
+     * Controllers getter
      * @return \SplObjectStorage This is filled with instances of controller_interface
      */
     public function get_controllers() {
@@ -74,7 +78,7 @@ class edwiserReportRouter {
      * The router routes actions to the controllers
      * by first come, first serve.
      *
-     * @param $action
+     * @param  string                   $action Rounter action
      * @return string|void|boolean|null
      * @throws coding_exception
      */

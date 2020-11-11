@@ -30,6 +30,7 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir . '/completionlib.php');
 
+use moodle_exception;
 use completion_info;
 use context_course;
 use stdClass;
@@ -49,7 +50,7 @@ class db_controller {
      */
     public function __construct() {
         // Set Progress Table Name.
-        $this->progresstable = 'edw_course_progress';
+        $this->progresstable = 'edwreports_course_progress';
     }
 
     /**
@@ -90,7 +91,7 @@ class db_controller {
         $params->criteria = 1;
 
         // Update records in database.
-        return $DB->get_record($this->progresstable, $params);
+        return $DB->get_record($this->progresstable, (array) $params);
     }
 
     /**
@@ -117,8 +118,8 @@ class db_controller {
 
     /**
      * Get total course activities
-     * @param  stdClass $courseid Course Object
-     * @return array              Array of activities
+     * @param  stdClass $course Course Object
+     * @return array            Array of activities
      */
     public function get_completable_activities($course) {
         // Get course completion object.
@@ -331,7 +332,7 @@ class db_controller {
         global $DB;
 
         // If we update the pchange value then cron will automatically update the value.
-        return $DB->set_field($this->progresstable, 'pchange', '1', $params);
+        return $DB->set_field($this->progresstable, 'pchange', '1', (array) $params);
     }
 
     /**

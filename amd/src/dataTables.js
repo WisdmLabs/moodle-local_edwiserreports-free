@@ -1,3 +1,4 @@
+/* eslint-disable */
 /*!
  * WisdmLabs (www.wisdmlabs.com)
  * Copyright 2018 WisdmLabs

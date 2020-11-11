@@ -1,3 +1,4 @@
+/* eslint-disable */
 /**
 * jQuery asPieProgress v0.4.7
 * https://github.com/amazingSurge/jquery-asPieProgress

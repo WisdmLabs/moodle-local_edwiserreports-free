@@ -23,14 +23,12 @@
     padding: 0 0.3em;
     font-size: 9px;
     font-weight: 500;
-    position: absolute;
 }
 
 .fi:before {
     left: 0;
     top: 0;
     height: 100%;
-    left: 0;
     background-color: #007bff;
     right: 7px;
 }
@@ -45,7 +43,8 @@
     right: 0;
 }
 
-.fi:before, .fi:after {
+.fi:before,
+.fi:after {
     position: absolute;
     content: '';
     pointer-events: none;
@@ -66,7 +65,7 @@
     background-color: #3e78c7;
 }
 
-/** CSV css */ 
+/** CSV css */
 .fi-csv.fi:after {
     border-left-color: #7cd806;
 }

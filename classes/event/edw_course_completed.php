@@ -51,6 +51,6 @@ class edw_course_completed extends \core\event\base {
     protected function init() {
         $this->data['crud'] = 'u';
         $this->data['edulevel'] = self::LEVEL_PARTICIPATING;
-        $this->data['objecttable'] = 'edw_course_progress';
+        $this->data['objecttable'] = 'edwreports_course_progress';
     }
 }

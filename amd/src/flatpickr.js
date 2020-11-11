@@ -1,14 +1,15 @@
+/* eslint-disable */
 /* flatpickr v4.6.1,, @license MIT */
 define([], function () {
     "use strict";
     var e = function () {
-            return (e =
-                Object.assign ||
-                function (e) {
-                    for (var t, n = 1, a = arguments.length; n < a; n++) for (var i in (t = arguments[n])) Object.prototype.hasOwnProperty.call(t, i) && (e[i] = t[i]);
-                    return e;
-                }).apply(this, arguments);
-        },
+        return (e =
+            Object.assign ||
+            function (e) {
+                for (var t, n = 1, a = arguments.length; n < a; n++) for (var i in (t = arguments[n])) Object.prototype.hasOwnProperty.call(t, i) && (e[i] = t[i]);
+                return e;
+            }).apply(this, arguments);
+    },
         t = ["onChange", "onClose", "onDayCreate", "onDestroy", "onKeyDown", "onMonthChange", "onOpen", "onParseConfig", "onReady", "onValueUpdate", "onYearChange", "onPreCalendarPosition"],
         n = {
             _disable: [],
@@ -137,7 +138,7 @@ define([], function () {
         return (t = t || ""), (n = n || ""), (a.className = t), void 0 !== n && (a.textContent = n), a;
     }
     function s(e) {
-        for (; e.firstChild; ) e.removeChild(e.firstChild);
+        for (; e.firstChild;) e.removeChild(e.firstChild);
     }
     function u(e, t) {
         var n = d("div", "numInputWrapper"),
@@ -147,7 +148,7 @@ define([], function () {
         if ((-1 === navigator.userAgent.indexOf("MSIE 9.0") ? (a.type = "number") : ((a.type = "text"), (a.pattern = "\\d*")), void 0 !== t)) for (var r in t) a.setAttribute(r, t[r]);
         return n.appendChild(a), n.appendChild(i), n.appendChild(o), n;
     }
-    var f = function () {},
+    var f = function () { },
         m = function (e, t, n) {
             return n.months[t ? "shorthand" : "longhand"][e];
         },
@@ -324,11 +325,11 @@ define([], function () {
                 return void 0 !== i.formatDate
                     ? i.formatDate(e, t, a)
                     : t
-                          .split("")
-                          .map(function (t, n, o) {
-                              return h[t] && "\\" !== o[n - 1] ? h[t](e, a, i) : "\\" !== t ? t : "";
-                          })
-                          .join("");
+                        .split("")
+                        .map(function (t, n, o) {
+                            return h[t] && "\\" !== o[n - 1] ? h[t](e, a, i) : "\\" !== t ? t : "";
+                        })
+                        .join("");
             };
         },
         D = function (e) {
@@ -378,8 +379,8 @@ define([], function () {
         return void 0 === n && (n = !0), !1 !== n ? new Date(e.getTime()).setHours(0, 0, 0, 0) - new Date(t.getTime()).setHours(0, 0, 0, 0) : e.getTime() - t.getTime();
     }
     var C = function (e, t, n) {
-            return e > Math.min(t, n) && e < Math.max(t, n);
-        },
+        return e > Math.min(t, n) && e < Math.max(t, n);
+    },
         M = { DAY: 864e5 };
     "function" != typeof Object.assign &&
         (Object.assign = function (e) {
@@ -387,13 +388,13 @@ define([], function () {
             if (!e) throw TypeError("Cannot convert undefined or null to object");
             for (
                 var a = function (t) {
-                        t &&
-                            Object.keys(t).forEach(function (n) {
-                                return (e[n] = t[n]);
-                            });
-                    },
-                    i = 0,
-                    o = t;
+                    t &&
+                        Object.keys(t).forEach(function (n) {
+                            return (e[n] = t[n]);
+                        });
+                },
+                i = 0,
+                o = t;
                 i < o.length;
                 i++
             ) {
@@ -424,26 +425,26 @@ define([], function () {
         function T(e) {
             0 === h.selectedDates.length && ie(),
                 void 0 !== e &&
-                    "blur" !== e.type &&
-                    (function (e) {
-                        e.preventDefault();
-                        var t = "keydown" === e.type,
-                            n = e.target;
-                        void 0 !== h.amPM && e.target === h.amPM && (h.amPM.textContent = h.l10n.amPM[o(h.amPM.textContent === h.l10n.amPM[0])]);
-                        var a = parseFloat(n.getAttribute("min")),
-                            r = parseFloat(n.getAttribute("max")),
-                            l = parseFloat(n.getAttribute("step")),
-                            c = parseInt(n.value, 10),
-                            d = e.delta || (t ? (38 === e.which ? 1 : -1) : 0),
-                            s = c + l * d;
-                        if (void 0 !== n.value && 2 === n.value.length) {
-                            var u = n === h.hourElement,
-                                f = n === h.minuteElement;
-                            s < a ? ((s = r + s + o(!u) + (o(u) && o(!h.amPM))), f && j(void 0, -1, h.hourElement)) : s > r && ((s = n === h.hourElement ? s - r - o(!h.amPM) : a), f && j(void 0, 1, h.hourElement)),
-                                h.amPM && u && (1 === l ? s + c === 23 : Math.abs(s - c) > l) && (h.amPM.textContent = h.l10n.amPM[o(h.amPM.textContent === h.l10n.amPM[0])]),
-                                (n.value = i(s));
-                        }
-                    })(e);
+                "blur" !== e.type &&
+                (function (e) {
+                    e.preventDefault();
+                    var t = "keydown" === e.type,
+                        n = e.target;
+                    void 0 !== h.amPM && e.target === h.amPM && (h.amPM.textContent = h.l10n.amPM[o(h.amPM.textContent === h.l10n.amPM[0])]);
+                    var a = parseFloat(n.getAttribute("min")),
+                        r = parseFloat(n.getAttribute("max")),
+                        l = parseFloat(n.getAttribute("step")),
+                        c = parseInt(n.value, 10),
+                        d = e.delta || (t ? (38 === e.which ? 1 : -1) : 0),
+                        s = c + l * d;
+                    if (void 0 !== n.value && 2 === n.value.length) {
+                        var u = n === h.hourElement,
+                            f = n === h.minuteElement;
+                        s < a ? ((s = r + s + o(!u) + (o(u) && o(!h.amPM))), f && j(void 0, -1, h.hourElement)) : s > r && ((s = n === h.hourElement ? s - r - o(!h.amPM) : a), f && j(void 0, 1, h.hourElement)),
+                            h.amPM && u && (1 === l ? s + c === 23 : Math.abs(s - c) > l) && (h.amPM.textContent = h.l10n.amPM[o(h.amPM.textContent === h.l10n.amPM[0])]),
+                            (n.value = i(s));
+                    }
+                })(e);
             var t = h._input.value;
             k(), we(), h._input.value !== t && h._debouncedChange();
         }
@@ -490,9 +491,9 @@ define([], function () {
         function O(e, t, n) {
             void 0 !== h.latestSelectedDateObj && h.latestSelectedDateObj.setHours(e % 24, t, n || 0, 0),
                 h.hourElement &&
-                    h.minuteElement &&
-                    !h.isMobile &&
-                    ((h.hourElement.value = i(h.config.time_24hr ? e : ((12 + e) % 12) + 12 * o(e % 12 == 0))),
+                h.minuteElement &&
+                !h.isMobile &&
+                ((h.hourElement.value = i(h.config.time_24hr ? e : ((12 + e) % 12) + 12 * o(e % 12 == 0))),
                     (h.minuteElement.value = i(t)),
                     void 0 !== h.amPM && (h.amPM.textContent = h.l10n.amPM[o(e >= 12)]),
                     void 0 !== h.secondElement && (h.secondElement.value = i(n)));
@@ -504,13 +505,13 @@ define([], function () {
         function F(e, t, n, a) {
             return t instanceof Array
                 ? t.forEach(function (t) {
-                      return F(e, t, n, a);
-                  })
+                    return F(e, t, n, a);
+                })
                 : e instanceof Array
-                ? e.forEach(function (e) {
-                      return F(e, t, n, a);
-                  })
-                : (e.addEventListener(t, n, a), void h._handlers.push({ element: e, event: t, handler: n, options: a }));
+                    ? e.forEach(function (e) {
+                        return F(e, t, n, a);
+                    })
+                    : (e.addEventListener(t, n, a), void h._handlers.push({ element: e, event: t, handler: n, options: a }));
         }
         function N(e) {
             return function (t) {
@@ -550,18 +551,18 @@ define([], function () {
                 -1 === e.indexOf("hidden") && 0 === w(t, h.now) && ((h.todayDateElem = o), o.classList.add("today"), o.setAttribute("aria-current", "date")),
                 i
                     ? ((o.tabIndex = -1),
-                      he(t) &&
-                          (o.classList.add("selected"),
-                          (h.selectedDateElem = o),
-                          "range" === h.config.mode &&
-                              (c(o, "startRange", h.selectedDates[0] && 0 === w(t, h.selectedDates[0], !0)), c(o, "endRange", h.selectedDates[1] && 0 === w(t, h.selectedDates[1], !0)), "nextMonthDay" === e && o.classList.add("inRange"))))
+                        he(t) &&
+                        (o.classList.add("selected"),
+                            (h.selectedDateElem = o),
+                            "range" === h.config.mode &&
+                            (c(o, "startRange", h.selectedDates[0] && 0 === w(t, h.selectedDates[0], !0)), c(o, "endRange", h.selectedDates[1] && 0 === w(t, h.selectedDates[1], !0)), "nextMonthDay" === e && o.classList.add("inRange"))))
                     : o.classList.add("flatpickr-disabled"),
                 "range" === h.config.mode &&
-                    (function (e) {
-                        return !("range" !== h.config.mode || h.selectedDates.length < 2) && w(e, h.selectedDates[0]) >= 0 && w(e, h.selectedDates[1]) <= 0;
-                    })(t) &&
-                    !he(t) &&
-                    o.classList.add("inRange"),
+                (function (e) {
+                    return !("range" !== h.config.mode || h.selectedDates.length < 2) && w(e, h.selectedDates[0]) >= 0 && w(e, h.selectedDates[1]) <= 0;
+                })(t) &&
+                !he(t) &&
+                o.classList.add("inRange"),
                 h.weekNumbers && 1 === h.config.showMonths && "prevMonthDay" !== e && n % 7 == 1 && h.weekNumbers.insertAdjacentHTML("beforeend", "<span class='flatpickr-day'>" + h.config.getWeek(t) + "</span>"),
                 ge("onDayCreate", o),
                 o
@@ -583,27 +584,27 @@ define([], function () {
             return void 0 === a
                 ? h._input.focus()
                 : n
-                ? void (function (e, t) {
-                      for (var n = -1 === e.className.indexOf("Month") ? e.dateObj.getMonth() : h.currentMonth, a = t > 0 ? h.config.showMonths : -1, i = t > 0 ? 1 : -1, o = n - h.currentMonth; o != a; o += i)
-                          for (var r = h.daysContainer.children[o], l = n - h.currentMonth === o ? e.$i + t : t < 0 ? r.children.length - 1 : 0, c = r.children.length, d = l; d >= 0 && d < c && d != (t > 0 ? c : -1); d += i) {
-                              var s = r.children[d];
-                              if (-1 === s.className.indexOf("hidden") && X(s.dateObj) && Math.abs(e.$i - d) >= Math.abs(t)) return L(s);
-                          }
-                      h.changeMonth(i), R(W(i), 0);
-                  })(a, t)
-                : L(a);
+                    ? void (function (e, t) {
+                        for (var n = -1 === e.className.indexOf("Month") ? e.dateObj.getMonth() : h.currentMonth, a = t > 0 ? h.config.showMonths : -1, i = t > 0 ? 1 : -1, o = n - h.currentMonth; o != a; o += i)
+                            for (var r = h.daysContainer.children[o], l = n - h.currentMonth === o ? e.$i + t : t < 0 ? r.children.length - 1 : 0, c = r.children.length, d = l; d >= 0 && d < c && d != (t > 0 ? c : -1); d += i) {
+                                var s = r.children[d];
+                                if (-1 === s.className.indexOf("hidden") && X(s.dateObj) && Math.abs(e.$i - d) >= Math.abs(t)) return L(s);
+                            }
+                        h.changeMonth(i), R(W(i), 0);
+                    })(a, t)
+                    : L(a);
         }
         function B(e, t) {
             for (
                 var n = (new Date(e, t, 1).getDay() - h.l10n.firstDayOfWeek + 7) % 7,
-                    a = h.utils.getDaysInMonth((t - 1 + 12) % 12),
-                    i = h.utils.getDaysInMonth(t),
-                    o = window.document.createDocumentFragment(),
-                    r = h.config.showMonths > 1,
-                    l = r ? "prevMonthDay hidden" : "prevMonthDay",
-                    c = r ? "nextMonthDay hidden" : "nextMonthDay",
-                    s = a + 1 - n,
-                    u = 0;
+                a = h.utils.getDaysInMonth((t - 1 + 12) % 12),
+                i = h.utils.getDaysInMonth(t),
+                o = window.document.createDocumentFragment(),
+                r = h.config.showMonths > 1,
+                l = r ? "prevMonthDay hidden" : "prevMonthDay",
+                c = r ? "nextMonthDay hidden" : "nextMonthDay",
+                s = a + 1 - n,
+                u = 0;
                 s <= a;
                 s++, u++
             )
@@ -646,13 +647,13 @@ define([], function () {
             h.config.showMonths > 1
                 ? (e = d("span", "cur-month"))
                 : ((h.monthsDropdownContainer = d("select", "flatpickr-monthDropdown-months")),
-                  F(h.monthsDropdownContainer, "change", function (e) {
-                      var t = e.target,
-                          n = parseInt(t.value, 10);
-                      h.changeMonth(n - h.currentMonth), ge("onMonthChange");
-                  }),
-                  K(),
-                  (e = h.monthsDropdownContainer));
+                    F(h.monthsDropdownContainer, "change", function (e) {
+                        var t = e.target,
+                            n = parseInt(t.value, 10);
+                        h.changeMonth(n - h.currentMonth), ge("onMonthChange");
+                    }),
+                    K(),
+                    (e = h.monthsDropdownContainer));
             var a = u("cur-year", { tabindex: "-1" }),
                 i = a.getElementsByTagName("input")[0];
             i.setAttribute("aria-label", h.l10n.yearAriaLabel),
@@ -663,7 +664,7 @@ define([], function () {
         }
         function q() {
             s(h.monthNav), h.monthNav.appendChild(h.prevMonthNav), h.config.showMonths && ((h.yearElements = []), (h.monthElements = []));
-            for (var e = h.config.showMonths; e--; ) {
+            for (var e = h.config.showMonths; e--;) {
                 var t = U();
                 h.yearElements.push(t.yearElement), h.monthElements.push(t.monthElement), h.monthNav.appendChild(t.container);
             }
@@ -671,7 +672,7 @@ define([], function () {
         }
         function $() {
             h.weekdayContainer ? s(h.weekdayContainer) : (h.weekdayContainer = d("div", "flatpickr-weekdays"));
-            for (var e = h.config.showMonths; e--; ) {
+            for (var e = h.config.showMonths; e--;) {
                 var t = d("div", "flatpickr-weekdaycontainer");
                 h.weekdayContainer.appendChild(t);
             }
@@ -681,7 +682,7 @@ define([], function () {
             var e = h.l10n.firstDayOfWeek,
                 t = h.l10n.weekdays.shorthand.slice();
             e > 0 && e < t.length && (t = t.splice(e, t.length).concat(t.splice(0, e)));
-            for (var n = h.config.showMonths; n--; ) h.weekdayContainer.children[n].innerHTML = "\n      <span class='flatpickr-weekday'>\n        " + t.join("</span><span class='flatpickr-weekday'>") + "\n      </span>\n      ";
+            for (var n = h.config.showMonths; n--;) h.weekdayContainer.children[n].innerHTML = "\n      <span class='flatpickr-weekday'>\n        " + t.join("</span><span class='flatpickr-weekday'>") + "\n      </span>\n      ";
         }
         function G(e, t) {
             void 0 === t && (t = !0);
@@ -689,10 +690,10 @@ define([], function () {
             (n < 0 && !0 === h._hidePrevMonthArrow) ||
                 (n > 0 && !0 === h._hideNextMonthArrow) ||
                 ((h.currentMonth += n),
-                (h.currentMonth < 0 || h.currentMonth > 11) && ((h.currentYear += h.currentMonth > 11 ? 1 : -1), (h.currentMonth = (h.currentMonth + 12) % 12), ge("onYearChange"), K()),
-                J(),
-                ge("onMonthChange"),
-                ve());
+                    (h.currentMonth < 0 || h.currentMonth > 11) && ((h.currentYear += h.currentMonth > 11 ? 1 : -1), (h.currentMonth = (h.currentMonth + 12) % 12), ge("onYearChange"), K()),
+                    J(),
+                    ge("onMonthChange"),
+                    ve());
         }
         function V(e) {
             return !(!h.config.appendTo || !h.config.appendTo.contains(e)) || h.calendarContainer.contains(e);
@@ -779,14 +780,14 @@ define([], function () {
                                 ? (e.stopPropagation(), Q(h.currentYear - l), R(W(1), 0))
                                 : o || R(void 0, 7 * l)
                             : e.target === h.currentYearElement
-                            ? Q(h.currentYear - l)
-                            : h.config.enableTime && (!o && h.hourElement && h.hourElement.focus(), T(e), h._debouncedChange());
+                                ? Q(h.currentYear - l)
+                                : h.config.enableTime && (!o && h.hourElement && h.hourElement.focus(), T(e), h._debouncedChange());
                         break;
                     case 9:
                         if (o) {
                             var c = [h.hourElement, h.minuteElement, h.secondElement, h.amPM].concat(h.pluginElements).filter(function (e) {
-                                    return e;
-                                }),
+                                return e;
+                            }),
                                 d = c.indexOf(e.target);
                             if (-1 !== d) {
                                 var s = c[d + (e.shiftKey ? -1 : 1)];
@@ -811,13 +812,13 @@ define([], function () {
             if (1 === h.selectedDates.length && (!e || (e.classList.contains("flatpickr-day") && !e.classList.contains("flatpickr-disabled")))) {
                 for (
                     var t = e ? e.dateObj.getTime() : h.days.firstElementChild.dateObj.getTime(),
-                        n = h.parseDate(h.selectedDates[0], void 0, !0).getTime(),
-                        a = Math.min(t, h.selectedDates[0].getTime()),
-                        i = Math.max(t, h.selectedDates[0].getTime()),
-                        o = !1,
-                        r = 0,
-                        l = 0,
-                        c = a;
+                    n = h.parseDate(h.selectedDates[0], void 0, !0).getTime(),
+                    a = Math.min(t, h.selectedDates[0].getTime()),
+                    i = Math.max(t, h.selectedDates[0].getTime()),
+                    o = !1,
+                    r = 0,
+                    l = 0,
+                    c = a;
                     c < i;
                     c += M.DAY
                 )
@@ -825,30 +826,30 @@ define([], function () {
                 for (var d = 0; d < h.config.showMonths; d++)
                     for (
                         var s = h.daysContainer.children[d],
-                            u = function (a, i) {
-                                var c = s.children[a],
-                                    d = c.dateObj.getTime(),
-                                    u = (r > 0 && d < r) || (l > 0 && d > l);
-                                return u
-                                    ? (c.classList.add("notAllowed"),
-                                      ["inRange", "startRange", "endRange"].forEach(function (e) {
-                                          c.classList.remove(e);
-                                      }),
-                                      "continue")
-                                    : o && !u
+                        u = function (a, i) {
+                            var c = s.children[a],
+                                d = c.dateObj.getTime(),
+                                u = (r > 0 && d < r) || (l > 0 && d > l);
+                            return u
+                                ? (c.classList.add("notAllowed"),
+                                    ["inRange", "startRange", "endRange"].forEach(function (e) {
+                                        c.classList.remove(e);
+                                    }),
+                                    "continue")
+                                : o && !u
                                     ? "continue"
                                     : (["startRange", "inRange", "endRange", "notAllowed"].forEach(function (e) {
-                                          c.classList.remove(e);
-                                      }),
-                                      void (
-                                          void 0 !== e &&
-                                          (e.classList.add(t <= h.selectedDates[0].getTime() ? "startRange" : "endRange"),
-                                          n < t && d === n ? c.classList.add("startRange") : n > t && d === n && c.classList.add("endRange"),
-                                          d >= r && (0 === l || d <= l) && C(d, n, t) && c.classList.add("inRange"))
-                                      ));
-                            },
-                            f = 0,
-                            m = s.children.length;
+                                        c.classList.remove(e);
+                                    }),
+                                        void (
+                                            void 0 !== e &&
+                                            (e.classList.add(t <= h.selectedDates[0].getTime() ? "startRange" : "endRange"),
+                                                n < t && d === n ? c.classList.add("startRange") : n > t && d === n && c.classList.add("endRange"),
+                                                d >= r && (0 === l || d <= l) && C(d, n, t) && c.classList.add("inRange"))
+                                        ));
+                        },
+                        f = 0,
+                        m = s.children.length;
                         f < m;
                         f++
                     )
@@ -867,13 +868,13 @@ define([], function () {
                     a = h.config["_" + ("min" === e ? "max" : "min") + "Date"];
                 void 0 !== n && (h["min" === e ? "minDateHasTime" : "maxDateHasTime"] = n.getHours() > 0 || n.getMinutes() > 0 || n.getSeconds() > 0),
                     h.selectedDates &&
-                        ((h.selectedDates = h.selectedDates.filter(function (e) {
-                            return X(e);
-                        })),
+                    ((h.selectedDates = h.selectedDates.filter(function (e) {
+                        return X(e);
+                    })),
                         h.selectedDates.length || "min" !== e || I(n),
                         we()),
                     h.daysContainer &&
-                        (ce(), void 0 !== n ? (h.currentYearElement[e] = n.getFullYear().toString()) : h.currentYearElement.removeAttribute(e), (h.currentYearElement.disabled = !!a && void 0 !== n && a.getFullYear() === n.getFullYear()));
+                    (ce(), void 0 !== n ? (h.currentYearElement[e] = n.getFullYear().toString()) : h.currentYearElement.removeAttribute(e), (h.currentYearElement.disabled = !!a && void 0 !== n && a.getFullYear() === n.getFullYear()));
             };
         }
         function re() {
@@ -951,9 +952,9 @@ define([], function () {
                 } else
                     "range" === h.config.mode &&
                         (2 === h.selectedDates.length && h.clear(!1, !1),
-                        (h.latestSelectedDateObj = a),
-                        h.selectedDates.push(a),
-                        0 !== w(a, h.selectedDates[0], !0) &&
+                            (h.latestSelectedDateObj = a),
+                            h.selectedDates.push(a),
+                            0 !== w(a, h.selectedDates[0], !0) &&
                             h.selectedDates.sort(function (e, t) {
                                 return e.getTime() - t.getTime();
                             }));
@@ -963,15 +964,15 @@ define([], function () {
                 }
                 if (
                     (ve(),
-                    J(),
-                    we(),
-                    h.config.enableTime &&
+                        J(),
+                        we(),
+                        h.config.enableTime &&
                         setTimeout(function () {
                             return (h.showTimeInput = !0);
                         }, 50),
-                    i || "range" === h.config.mode || 1 !== h.config.showMonths ? void 0 !== h.selectedDateElem && void 0 === h.hourElement && h.selectedDateElem && h.selectedDateElem.focus() : L(n),
-                    void 0 !== h.hourElement && void 0 !== h.hourElement && h.hourElement.focus(),
-                    h.config.closeOnSelect)
+                        i || "range" === h.config.mode || 1 !== h.config.showMonths ? void 0 !== h.selectedDateElem && void 0 === h.hourElement && h.selectedDateElem && h.selectedDateElem.focus() : L(n),
+                        void 0 !== h.hourElement && void 0 !== h.hourElement && h.hourElement.focus(),
+                        h.config.closeOnSelect)
                 ) {
                     var l = "single" === h.config.mode && !h.config.enableTime,
                         c = "range" === h.config.mode && 2 === h.selectedDates.length && !h.config.enableTime;
@@ -1005,7 +1006,7 @@ define([], function () {
             (h._createElement = d),
             (h.destroy = function () {
                 void 0 !== h.config && ge("onDestroy");
-                for (var e = h._handlers.length; e--; ) {
+                for (var e = h._handlers.length; e--;) {
                     var t = h._handlers[e];
                     t.element.removeEventListener(t.event, t.handler, t.options);
                 }
@@ -1014,7 +1015,7 @@ define([], function () {
                     if (h.config.static && h.calendarContainer.parentNode) {
                         var n = h.calendarContainer.parentNode;
                         if ((n.lastChild && n.removeChild(n.lastChild), n.parentNode)) {
-                            for (; n.firstChild; ) n.parentNode.insertBefore(n.firstChild, n);
+                            for (; n.firstChild;) n.parentNode.insertBefore(n.firstChild, n);
                             n.parentNode.removeChild(n);
                         }
                     } else h.calendarContainer.parentNode.removeChild(h.calendarContainer);
@@ -1053,7 +1054,7 @@ define([], function () {
                 ].forEach(function (e) {
                     try {
                         delete h[e];
-                    } catch (e) {}
+                    } catch (e) { }
                 });
             }),
             (h.isEnabled = X),
@@ -1067,7 +1068,7 @@ define([], function () {
                 !0 === h.config.enableTime &&
                     !0 === h.config.noCalendar &&
                     (0 === h.selectedDates.length && ie(),
-                    !1 !== h.config.allowInput ||
+                        !1 !== h.config.allowInput ||
                         (void 0 !== e && h.timeContainer.contains(e.relatedTarget)) ||
                         setTimeout(function () {
                             return h.hourElement.select();
@@ -1085,8 +1086,8 @@ define([], function () {
                     (h.config[e] = n),
                         void 0 !== ue[e]
                             ? ue[e].forEach(function (e) {
-                                  return e();
-                              })
+                                return e();
+                            })
                             : t.indexOf(e) > -1 && (h.config[e] = l(n));
                 h.redraw(), we(!1);
             }),
@@ -1130,9 +1131,9 @@ define([], function () {
                 return e instanceof Date && X(e, !1);
             })),
                 "range" === h.config.mode &&
-                    h.selectedDates.sort(function (e, t) {
-                        return e.getTime() - t.getTime();
-                    });
+                h.selectedDates.sort(function (e, t) {
+                    return e.getTime() - t.getTime();
+                });
         }
         function me(e) {
             return e
@@ -1141,8 +1142,8 @@ define([], function () {
                     return "string" == typeof e || "number" == typeof e || e instanceof Date
                         ? h.parseDate(e, void 0, !0)
                         : e && "object" == typeof e && e.from && e.to
-                        ? { from: h.parseDate(e.from, void 0), to: h.parseDate(e.to, void 0) }
-                        : e;
+                            ? { from: h.parseDate(e.from, void 0), to: h.parseDate(e.to, void 0) }
+                            : e;
                 })
                 .filter(function (e) {
                     return e;
@@ -1173,8 +1174,8 @@ define([], function () {
                         h.config.showMonths > 1 ? (h.monthElements[t].textContent = m(n.getMonth(), h.config.shorthandCurrentMonth, h.l10n) + " ") : (h.monthsDropdownContainer.value = n.getMonth().toString()),
                         (e.value = n.getFullYear().toString());
                 }),
-                (h._hidePrevMonthArrow = void 0 !== h.config.minDate && (h.currentYear === h.config.minDate.getFullYear() ? h.currentMonth <= h.config.minDate.getMonth() : h.currentYear < h.config.minDate.getFullYear())),
-                (h._hideNextMonthArrow = void 0 !== h.config.maxDate && (h.currentYear === h.config.maxDate.getFullYear() ? h.currentMonth + 1 > h.config.maxDate.getMonth() : h.currentYear > h.config.maxDate.getFullYear())));
+                    (h._hidePrevMonthArrow = void 0 !== h.config.minDate && (h.currentYear === h.config.minDate.getFullYear() ? h.currentMonth <= h.config.minDate.getMonth() : h.currentYear < h.config.minDate.getFullYear())),
+                    (h._hideNextMonthArrow = void 0 !== h.config.maxDate && (h.currentYear === h.config.maxDate.getFullYear() ? h.currentMonth + 1 > h.config.maxDate.getMonth() : h.currentYear > h.config.maxDate.getFullYear())));
         }
         function De(e) {
             return h.selectedDates
@@ -1199,10 +1200,10 @@ define([], function () {
             t || n
                 ? G(t ? -1 : 1)
                 : h.yearElements.indexOf(e.target) >= 0
-                ? e.target.select()
-                : e.target.classList.contains("arrowUp")
-                ? h.changeYear(h.currentYear + 1)
-                : e.target.classList.contains("arrowDown") && h.changeYear(h.currentYear - 1);
+                    ? e.target.select()
+                    : e.target.classList.contains("arrowUp")
+                        ? h.changeYear(h.currentYear + 1)
+                        : e.target.classList.contains("arrowDown") && h.changeYear(h.currentYear - 1);
         }
         return (
             (function () {
@@ -1297,21 +1298,21 @@ define([], function () {
                     (h.input = h.config.wrap ? f.querySelector("[data-input]") : f),
                     h.input
                         ? ((h.input._type = h.input.type),
-                          (h.input.type = "text"),
-                          h.input.classList.add("flatpickr-input"),
-                          (h._input = h.input),
-                          h.config.altInput &&
-                              ((h.altInput = d(h.input.nodeName, h.config.altInputClass)),
-                              (h._input = h.altInput),
-                              (h.altInput.placeholder = h.input.placeholder),
-                              (h.altInput.disabled = h.input.disabled),
-                              (h.altInput.required = h.input.required),
-                              (h.altInput.tabIndex = h.input.tabIndex),
-                              (h.altInput.type = "text"),
-                              h.input.setAttribute("type", "hidden"),
-                              !h.config.static && h.input.parentNode && h.input.parentNode.insertBefore(h.altInput, h.input.nextSibling)),
-                          h.config.allowInput || h._input.setAttribute("readonly", "readonly"),
-                          (h._positionElement = h.config.positionElement || h._input))
+                            (h.input.type = "text"),
+                            h.input.classList.add("flatpickr-input"),
+                            (h._input = h.input),
+                            h.config.altInput &&
+                            ((h.altInput = d(h.input.nodeName, h.config.altInputClass)),
+                                (h._input = h.altInput),
+                                (h.altInput.placeholder = h.input.placeholder),
+                                (h.altInput.disabled = h.input.disabled),
+                                (h.altInput.required = h.input.required),
+                                (h.altInput.tabIndex = h.input.tabIndex),
+                                (h.altInput.type = "text"),
+                                h.input.setAttribute("type", "hidden"),
+                                !h.config.static && h.input.parentNode && h.input.parentNode.insertBefore(h.altInput, h.input.nextSibling)),
+                            h.config.allowInput || h._input.setAttribute("readonly", "readonly"),
+                            (h._positionElement = h.config.positionElement || h._input))
                         : h.config.errorHandler(new Error("Invalid input element specified")),
                     (function () {
                         (h.selectedDates = []), (h.now = h.parseDate(h.config.now) || new Date());
@@ -1321,10 +1322,10 @@ define([], function () {
                                 h.selectedDates.length > 0
                                     ? h.selectedDates[0]
                                     : h.config.minDate && h.config.minDate.getTime() > h.now.getTime()
-                                    ? h.config.minDate
-                                    : h.config.maxDate && h.config.maxDate.getTime() < h.now.getTime()
-                                    ? h.config.maxDate
-                                    : h.now),
+                                        ? h.config.minDate
+                                        : h.config.maxDate && h.config.maxDate.getTime() < h.now.getTime()
+                                            ? h.config.maxDate
+                                            : h.now),
                             (h.currentYear = h._initialDate.getFullYear()),
                             (h.currentMonth = h._initialDate.getMonth()),
                             h.selectedDates.length > 0 && (h.latestSelectedDateObj = h.selectedDates[0]),
@@ -1347,12 +1348,12 @@ define([], function () {
                         },
                     }),
                     h.isMobile ||
-                        (function () {
-                            var e = window.document.createDocumentFragment();
-                            if (((h.calendarContainer = d("div", "flatpickr-calendar")), (h.calendarContainer.tabIndex = -1), !h.config.noCalendar)) {
-                                if (
-                                    (e.appendChild(
-                                        ((h.monthNav = d("div", "flatpickr-months")),
+                    (function () {
+                        var e = window.document.createDocumentFragment();
+                        if (((h.calendarContainer = d("div", "flatpickr-calendar")), (h.calendarContainer.tabIndex = -1), !h.config.noCalendar)) {
+                            if (
+                                (e.appendChild(
+                                    ((h.monthNav = d("div", "flatpickr-months")),
                                         (h.yearElements = []),
                                         (h.monthElements = []),
                                         (h.prevMonthNav = d("span", "flatpickr-prev-month")),
@@ -1379,54 +1380,54 @@ define([], function () {
                                         (h.currentYearElement = h.yearElements[0]),
                                         ve(),
                                         h.monthNav)
-                                    ),
+                                ),
                                     (h.innerContainer = d("div", "flatpickr-innerContainer")),
                                     h.config.weekNumbers)
-                                ) {
-                                    var t = (function () {
-                                            h.calendarContainer.classList.add("hasWeeks");
-                                            var e = d("div", "flatpickr-weekwrapper");
-                                            e.appendChild(d("span", "flatpickr-weekday", h.l10n.weekAbbreviation));
-                                            var t = d("div", "flatpickr-weeks");
-                                            return e.appendChild(t), { weekWrapper: e, weekNumbers: t };
-                                        })(),
-                                        n = t.weekWrapper,
-                                        a = t.weekNumbers;
-                                    h.innerContainer.appendChild(n), (h.weekNumbers = a), (h.weekWrapper = n);
-                                }
-                                (h.rContainer = d("div", "flatpickr-rContainer")),
-                                    h.rContainer.appendChild($()),
-                                    h.daysContainer || ((h.daysContainer = d("div", "flatpickr-days")), (h.daysContainer.tabIndex = -1)),
-                                    J(),
-                                    h.rContainer.appendChild(h.daysContainer),
-                                    h.innerContainer.appendChild(h.rContainer),
-                                    e.appendChild(h.innerContainer);
+                            ) {
+                                var t = (function () {
+                                    h.calendarContainer.classList.add("hasWeeks");
+                                    var e = d("div", "flatpickr-weekwrapper");
+                                    e.appendChild(d("span", "flatpickr-weekday", h.l10n.weekAbbreviation));
+                                    var t = d("div", "flatpickr-weeks");
+                                    return e.appendChild(t), { weekWrapper: e, weekNumbers: t };
+                                })(),
+                                    n = t.weekWrapper,
+                                    a = t.weekNumbers;
+                                h.innerContainer.appendChild(n), (h.weekNumbers = a), (h.weekWrapper = n);
                             }
-                            h.config.enableTime &&
-                                e.appendChild(
-                                    (function () {
-                                        h.calendarContainer.classList.add("hasTime"), h.config.noCalendar && h.calendarContainer.classList.add("noCalendar"), (h.timeContainer = d("div", "flatpickr-time")), (h.timeContainer.tabIndex = -1);
-                                        var e = d("span", "flatpickr-time-separator", ":"),
-                                            t = u("flatpickr-hour");
-                                        h.hourElement = t.getElementsByTagName("input")[0];
-                                        var n = u("flatpickr-minute");
-                                        if (
-                                            ((h.minuteElement = n.getElementsByTagName("input")[0]),
+                            (h.rContainer = d("div", "flatpickr-rContainer")),
+                                h.rContainer.appendChild($()),
+                                h.daysContainer || ((h.daysContainer = d("div", "flatpickr-days")), (h.daysContainer.tabIndex = -1)),
+                                J(),
+                                h.rContainer.appendChild(h.daysContainer),
+                                h.innerContainer.appendChild(h.rContainer),
+                                e.appendChild(h.innerContainer);
+                        }
+                        h.config.enableTime &&
+                            e.appendChild(
+                                (function () {
+                                    h.calendarContainer.classList.add("hasTime"), h.config.noCalendar && h.calendarContainer.classList.add("noCalendar"), (h.timeContainer = d("div", "flatpickr-time")), (h.timeContainer.tabIndex = -1);
+                                    var e = d("span", "flatpickr-time-separator", ":"),
+                                        t = u("flatpickr-hour");
+                                    h.hourElement = t.getElementsByTagName("input")[0];
+                                    var n = u("flatpickr-minute");
+                                    if (
+                                        ((h.minuteElement = n.getElementsByTagName("input")[0]),
                                             (h.hourElement.tabIndex = h.minuteElement.tabIndex = -1),
                                             (h.hourElement.value = i(
                                                 h.latestSelectedDateObj
                                                     ? h.latestSelectedDateObj.getHours()
                                                     : h.config.time_24hr
-                                                    ? h.config.defaultHour
-                                                    : (function (e) {
-                                                          switch (e % 24) {
-                                                              case 0:
-                                                              case 12:
-                                                                  return 12;
-                                                              default:
-                                                                  return e % 12;
-                                                          }
-                                                      })(h.config.defaultHour)
+                                                        ? h.config.defaultHour
+                                                        : (function (e) {
+                                                            switch (e % 24) {
+                                                                case 0:
+                                                                case 12:
+                                                                    return 12;
+                                                                default:
+                                                                    return e % 12;
+                                                            }
+                                                        })(h.config.defaultHour)
                                             )),
                                             (h.minuteElement.value = i(h.latestSelectedDateObj ? h.latestSelectedDateObj.getMinutes() : h.config.defaultMinute)),
                                             h.hourElement.setAttribute("step", h.config.hourIncrement.toString()),
@@ -1440,44 +1441,44 @@ define([], function () {
                                             h.timeContainer.appendChild(n),
                                             h.config.time_24hr && h.timeContainer.classList.add("time24hr"),
                                             h.config.enableSeconds)
-                                        ) {
-                                            h.timeContainer.classList.add("hasSeconds");
-                                            var a = u("flatpickr-second");
-                                            (h.secondElement = a.getElementsByTagName("input")[0]),
-                                                (h.secondElement.value = i(h.latestSelectedDateObj ? h.latestSelectedDateObj.getSeconds() : h.config.defaultSeconds)),
-                                                h.secondElement.setAttribute("step", h.minuteElement.getAttribute("step")),
-                                                h.secondElement.setAttribute("min", "0"),
-                                                h.secondElement.setAttribute("max", "59"),
-                                                h.timeContainer.appendChild(d("span", "flatpickr-time-separator", ":")),
-                                                h.timeContainer.appendChild(a);
-                                        }
-                                        return (
-                                            h.config.time_24hr ||
-                                                ((h.amPM = d("span", "flatpickr-am-pm", h.l10n.amPM[o((h.latestSelectedDateObj ? h.hourElement.value : h.config.defaultHour) > 11)])),
-                                                (h.amPM.title = h.l10n.toggleTitle),
-                                                (h.amPM.tabIndex = -1),
-                                                h.timeContainer.appendChild(h.amPM)),
-                                            h.timeContainer
-                                        );
-                                    })()
-                                ),
-                                c(h.calendarContainer, "rangeMode", "range" === h.config.mode),
-                                c(h.calendarContainer, "animate", !0 === h.config.animate),
-                                c(h.calendarContainer, "multiMonth", h.config.showMonths > 1),
-                                h.calendarContainer.appendChild(e);
-                            var r = void 0 !== h.config.appendTo && void 0 !== h.config.appendTo.nodeType;
-                            if (
-                                (h.config.inline || h.config.static) &&
-                                (h.calendarContainer.classList.add(h.config.inline ? "inline" : "static"),
+                                    ) {
+                                        h.timeContainer.classList.add("hasSeconds");
+                                        var a = u("flatpickr-second");
+                                        (h.secondElement = a.getElementsByTagName("input")[0]),
+                                            (h.secondElement.value = i(h.latestSelectedDateObj ? h.latestSelectedDateObj.getSeconds() : h.config.defaultSeconds)),
+                                            h.secondElement.setAttribute("step", h.minuteElement.getAttribute("step")),
+                                            h.secondElement.setAttribute("min", "0"),
+                                            h.secondElement.setAttribute("max", "59"),
+                                            h.timeContainer.appendChild(d("span", "flatpickr-time-separator", ":")),
+                                            h.timeContainer.appendChild(a);
+                                    }
+                                    return (
+                                        h.config.time_24hr ||
+                                        ((h.amPM = d("span", "flatpickr-am-pm", h.l10n.amPM[o((h.latestSelectedDateObj ? h.hourElement.value : h.config.defaultHour) > 11)])),
+                                            (h.amPM.title = h.l10n.toggleTitle),
+                                            (h.amPM.tabIndex = -1),
+                                            h.timeContainer.appendChild(h.amPM)),
+                                        h.timeContainer
+                                    );
+                                })()
+                            ),
+                            c(h.calendarContainer, "rangeMode", "range" === h.config.mode),
+                            c(h.calendarContainer, "animate", !0 === h.config.animate),
+                            c(h.calendarContainer, "multiMonth", h.config.showMonths > 1),
+                            h.calendarContainer.appendChild(e);
+                        var r = void 0 !== h.config.appendTo && void 0 !== h.config.appendTo.nodeType;
+                        if (
+                            (h.config.inline || h.config.static) &&
+                            (h.calendarContainer.classList.add(h.config.inline ? "inline" : "static"),
                                 h.config.inline &&
-                                    (!r && h.element.parentNode ? h.element.parentNode.insertBefore(h.calendarContainer, h._input.nextSibling) : void 0 !== h.config.appendTo && h.config.appendTo.appendChild(h.calendarContainer)),
+                                (!r && h.element.parentNode ? h.element.parentNode.insertBefore(h.calendarContainer, h._input.nextSibling) : void 0 !== h.config.appendTo && h.config.appendTo.appendChild(h.calendarContainer)),
                                 h.config.static)
-                            ) {
-                                var l = d("div", "flatpickr-wrapper");
-                                h.element.parentNode && h.element.parentNode.insertBefore(l, h.element), l.appendChild(h.element), h.altInput && l.appendChild(h.altInput), l.appendChild(h.calendarContainer);
-                            }
-                            h.config.static || h.config.inline || (void 0 !== h.config.appendTo ? h.config.appendTo : window.document.body).appendChild(h.calendarContainer);
-                        })(),
+                        ) {
+                            var l = d("div", "flatpickr-wrapper");
+                            h.element.parentNode && h.element.parentNode.insertBefore(l, h.element), l.appendChild(h.element), h.altInput && l.appendChild(h.altInput), l.appendChild(h.calendarContainer);
+                        }
+                        h.config.static || h.config.inline || (void 0 !== h.config.appendTo ? h.config.appendTo : window.document.body).appendChild(h.calendarContainer);
+                    })(),
                     (function () {
                         if (
                             (h.config.wrap &&
@@ -1486,7 +1487,7 @@ define([], function () {
                                         return F(t, "click", h[e]);
                                     });
                                 }),
-                            h.isMobile)
+                                h.isMobile)
                         )
                             !(function () {
                                 var e = h.config.enableTime ? (h.config.noCalendar ? "time" : "datetime-local") : "date";
@@ -1505,7 +1506,7 @@ define([], function () {
                                     void 0 !== h.altInput && (h.altInput.type = "hidden");
                                 try {
                                     h.input.parentNode && h.input.parentNode.insertBefore(h.mobileInput, h.input.nextSibling);
-                                } catch (e) {}
+                                } catch (e) { }
                                 F(h.mobileInput, "change", function (e) {
                                     h.setDate(e.target.value, !1, h.mobileFormatStr), ge("onChange"), ge("onClose");
                                 });
@@ -1514,10 +1515,10 @@ define([], function () {
                             var e = r(ae, 50);
                             (h._debouncedChange = r(Y, b)),
                                 h.daysContainer &&
-                                    !/iPhone|iPad|iPod/i.test(navigator.userAgent) &&
-                                    F(h.daysContainer, "mouseover", function (e) {
-                                        "range" === h.config.mode && ne(e.target);
-                                    }),
+                                !/iPhone|iPad|iPod/i.test(navigator.userAgent) &&
+                                F(h.daysContainer, "mouseover", function (e) {
+                                    "range" === h.config.mode && ne(e.target);
+                                }),
                                 F(window.document.body, "keydown", te),
                                 h.config.inline || h.config.static || F(window, "resize", e),
                                 void 0 !== window.ontouchstart ? F(window.document, "touchstart", Z) : F(window.document, "mousedown", N(Z)),
@@ -1525,26 +1526,26 @@ define([], function () {
                                 !0 === h.config.clickOpens && (F(h._input, "focus", h.open), F(h._input, "mousedown", N(h.open))),
                                 void 0 !== h.daysContainer && (F(h.monthNav, "mousedown", N(Ce)), F(h.monthNav, ["keyup", "increment"], _), F(h.daysContainer, "mousedown", N(se))),
                                 void 0 !== h.timeContainer &&
-                                    void 0 !== h.minuteElement &&
-                                    void 0 !== h.hourElement &&
-                                    (F(h.timeContainer, ["increment"], T),
+                                void 0 !== h.minuteElement &&
+                                void 0 !== h.hourElement &&
+                                (F(h.timeContainer, ["increment"], T),
                                     F(h.timeContainer, "blur", T, { capture: !0 }),
                                     F(h.timeContainer, "mousedown", N(A)),
                                     F([h.hourElement, h.minuteElement], ["focus", "click"], function (e) {
                                         return e.target.select();
                                     }),
                                     void 0 !== h.secondElement &&
-                                        F(h.secondElement, "focus", function () {
-                                            return h.secondElement && h.secondElement.select();
-                                        }),
+                                    F(h.secondElement, "focus", function () {
+                                        return h.secondElement && h.secondElement.select();
+                                    }),
                                     void 0 !== h.amPM &&
-                                        F(
-                                            h.amPM,
-                                            "mousedown",
-                                            N(function (e) {
-                                                T(e), Y();
-                                            })
-                                        ));
+                                    F(
+                                        h.amPM,
+                                        "mousedown",
+                                        N(function (e) {
+                                            T(e), Y();
+                                        })
+                                    ));
                         }
                     })(),
                     (h.selectedDates.length || h.config.noCalendar) && (h.config.enableTime && I(h.config.noCalendar ? h.latestSelectedDateObj || h.config.minDate : void 0), we(!1)),
@@ -1559,10 +1560,10 @@ define([], function () {
     function x(e, t) {
         for (
             var n = Array.prototype.slice.call(e).filter(function (e) {
-                    return e instanceof HTMLElement;
-                }),
-                a = [],
-                i = 0;
+                return e instanceof HTMLElement;
+            }),
+            a = [],
+            i = 0;
             i < n.length;
             i++
         ) {
@@ -1582,9 +1583,9 @@ define([], function () {
         ((HTMLCollection.prototype.flatpickr = NodeList.prototype.flatpickr = function (e) {
             return x(this, e);
         }),
-        (HTMLElement.prototype.flatpickr = function (e) {
-            return x([this], e);
-        }));
+            (HTMLElement.prototype.flatpickr = function (e) {
+                return x([this], e);
+            }));
     var E = function (e, t) {
         return "string" == typeof e ? x(window.document.querySelectorAll(e), t) : e instanceof Node ? x([e], t) : x(e, t);
     };
@@ -1601,10 +1602,10 @@ define([], function () {
         (E.formatDate = v({})),
         (E.compareDates = w),
         "undefined" != typeof jQuery &&
-            void 0 !== jQuery.fn &&
-            (jQuery.fn.flatpickr = function (e) {
-                return x(this, e);
-            }),
+        void 0 !== jQuery.fn &&
+        (jQuery.fn.flatpickr = function (e) {
+            return x(this, e);
+        }),
         (Date.prototype.fp_incr = function (e) {
             return new Date(this.getFullYear(), this.getMonth(), this.getDate() + ("string" == typeof e ? parseInt(e, 10) : e));
         }),

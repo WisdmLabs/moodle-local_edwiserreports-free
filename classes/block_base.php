@@ -30,10 +30,16 @@ use context_system;
  * Abstract class for reports_block
  */
 class block_base {
-    /** Prepare layout */
+    /**
+     * Prepare layout
+     * @var object
+     */
     public $layout;
 
-    /** Prepare blocks data */
+    /**
+     * Block object
+     * @var object
+     */
     public $block;
 
     /**
@@ -54,6 +60,7 @@ class block_base {
 
     /**
      * Create blocks data
+     * @param array $params Parameters
      */
     public function get_data($params = false) {
         debugging('extend the reports_block class and add get_data function');
@@ -68,6 +75,9 @@ class block_base {
 
     /**
      * Create blocks data
+     * @param  string $templatename Template name to render
+     * @param  object $context      Context object
+     * @return string               HTML content
      */
     public function render_block($templatename, $context = array()) {
         // @codingStandardsIgnoreStart
@@ -80,6 +90,10 @@ class block_base {
 
     /**
      * Generate cache key for blocks
+     * @param  string $blockname Block name
+     * @param  int    $id        Id
+     * @param  int    $cohortid  Cohort id
+     * @return string            Cache key
      */
     public function generate_cache_key($blockname, $id, $cohortid = 0) {
         return $blockname . "-" . $id . "-" . $cohortid;
@@ -87,6 +101,7 @@ class block_base {
 
     /**
      * Set block size
+     * @param string $blockname Block name
      */
     public function set_block_size($blockname) {
         $sizes = array();
@@ -125,6 +140,7 @@ class block_base {
 
     /**
      * Get block position
+     * @param array $pref Preference
      */
     public function get_block_position($pref) {
         $position = $pref['position'];
@@ -132,6 +148,8 @@ class block_base {
 
     /**
      * Set block edit capabilities for each block
+     * @param  string $blockname Block name
+     * @return bool              false If not supported
      */
     public function set_block_edit_capabilities($blockname) {
         global $DB, $USER;

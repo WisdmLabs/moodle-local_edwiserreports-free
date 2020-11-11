@@ -27,7 +27,6 @@ namespace local_edwiserreports;
 use context_system;
 use context_course;
 use moodle_url;
-use context_helper;
 
 require_once(__DIR__ . '/../../config.php');
 require_once('classes/output/renderable.php');

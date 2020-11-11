@@ -26,16 +26,19 @@ namespace local_edwiserreports;
 use context_system;
 
 /**
- * Class to serve the report blocks
+ * Class to serve the report blocks.
  */
 class report_blocks {
     /**
      * Reports block
+     *
+     * @var array
      */
     protected $reportsblock;
 
     /**
      * Constructor to prepare all reports blocks
+     * @param array $blocks Blocks array
      */
     public function __construct($blocks) {
         global $CFG, $USER;
@@ -45,7 +48,7 @@ class report_blocks {
         $context = context_system::instance();
 
         // Prepare layout for each block.
-        foreach ($blocks as $key => $block) {
+        foreach ($blocks as $block) {
             // If user dont have capability to see the block.
             if (!has_capability('report/edwiserreports_' . $block->classname . ':view', $context)) {
                 continue;
@@ -84,6 +87,7 @@ class report_blocks {
 
     /**
      * Functions to get report blocks
+     * @return array Reports block
      */
     public function get_report_blocks() {
         return $this->reportsblock;

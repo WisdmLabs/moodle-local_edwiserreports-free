@@ -75,19 +75,6 @@ function local_edwiserreports_output_fragment_userslist($args) {
     return $response;
 }
 
-/**
- * Get Learning Program stats fragment
- * @param [array] $args Array of arguments
- * @return [string] HTML table
- */
-function local_edwiserreports_output_fragment_lpstats($args) {
-    global $DB;
-    $lpid = clean_param($args["lpid"], PARAM_TEXT);
-    $cohortid = clean_param($args["cohortid"], PARAM_TEXT);
-
-    return json_encode(\local_edwiserreports\lpstats_block::get_lpstats_usersdata($lpid, $cohortid));
-}
-
 require_once("$CFG->libdir/formslib.php");
 
 /**
@@ -120,24 +107,22 @@ class local_edwiserreports_email_dialog_form extends moodleform {
      * @param bool $editable
      * @param array $ajaxformdata Forms submitted via ajax, must pass their data here, instead of relying on _GET and _POST.
      */
-    //@codingStandardsIgnoreStart
     public function __construct(
-        $action=null,
-        $customdata=null,
-        $method='post',
-        $target='',
-        $attributes=null,
-        $editable=true,
-        $ajaxformdata=null
+        $action = null,
+        $customdata = null,
+        $method = 'post',
+        $target = '',
+        $attributes = null,
+        $editable = true,
+        $ajaxformdata = null
     ) {
         parent::__construct($action, $customdata, $method, $target, $attributes, $editable, $ajaxformdata);
     }
-    //@codingStandardsIgnoreEnd
 
-    // Add elements to form.
+    /**
+     * Add elements to form.
+     */
     public function definition() {
-        global $CFG;
-
         $mform = $this->_form;
         $customdata = $this->_customdata;
         $blockname = $customdata["blockname"];
@@ -316,9 +301,9 @@ function local_edwiserreports_pluginfile($course, $cm, $context, $filearea, $arg
 
 /**
  * Get for for blocks setting
+ * @param array $params Fragment parameters
  */
 function local_edwiserreports_output_fragment_get_blocksetting_form($params) {
-    global $PAGE;
     $blockname = isset($params['blockname']) ? $params['blockname'] : false;
     $component = 'local_edwiserreports';
 
@@ -397,6 +382,7 @@ function local_edwiserreports_output_fragment_get_blocksetting_form($params) {
 
 /**
  * Get for for blocks capabilty from
+ * @param array $block Fragment parameter data object
  */
 function local_edwiserreports_output_fragment_get_blockscap_form($block) {
     global $CFG, $PAGE;
@@ -450,9 +436,10 @@ function local_edwiserreports_output_fragment_get_blockscap_form($block) {
 
 /**
  * Render blocks capability view
+ * @param array $data Fragment parameter array
  */
 function local_edwiserreports_output_fragment_block_overview_display($data) {
-    global $CFG, $PAGE;
+    global $CFG;
 
     require_once($CFG->dirroot . '/admin/tool/capability/locallib.php');
 
@@ -525,11 +512,7 @@ function local_edwiserreports_extend_navigation(navigation_node $nav) {
     $PAGE->requires->js_call_amd('local_edwiserreports/install', 'init');
 
     if ($hasblocks) {
-        if ($PAGE->theme->resolve_image_location('icon', 'local_edwiserreports', null)) {
-            $icon = new pix_icon('icon', '', 'local_edwiserreports', array('class' => 'icon pluginicon'));
-        } else {
-            $icon = new pix_icon('i/stats', '');
-        }
+        $icon = new pix_icon('i/stats', '');
 
         $node = $nav->add(
             get_string('reportsandanalytics', 'local_edwiserreports'),
@@ -541,17 +524,16 @@ function local_edwiserreports_extend_navigation(navigation_node $nav) {
         );
         $node->showinflatnavigation = true;
     }
-
     $iscompletionpage = strpos($PAGE->url, '/local/edwiserreports/completion.php');
     if ($PAGE->pagelayout !== 'course' && $PAGE->pagelayout !== 'incourse' && !$iscompletionpage) {
         return true;
     }
 
-    if ($PAGE->theme->resolve_image_location('icon', 'local_edwiserreports', null)) {
-        $icon = new pix_icon('icon', '', 'local_edwiserreports', array('class' => 'icon pluginicon'));
-    } else {
-        $icon = new pix_icon('i/report', '');
+    if (!has_capability('moodle/course:viewhiddencourses', context_course::instance($COURSE->id))) {
+        return;
     }
+
+    $icon = new pix_icon('i/report', '');
 
     $node = $nav->add(
         get_string('completionreports', 'local_edwiserreports'),
@@ -562,12 +544,6 @@ function local_edwiserreports_extend_navigation(navigation_node $nav) {
         $icon
     );
     $node->showinflatnavigation = true;
-
-    if ($PAGE->theme->resolve_image_location('icon', 'local_edwiserreports', null)) {
-        $icon = new pix_icon('icon', '', 'local_edwiserreports', array('class' => 'icon pluginicon'));
-    } else {
-        $icon = new pix_icon('i/report', '');
-    }
 }
 
 /**

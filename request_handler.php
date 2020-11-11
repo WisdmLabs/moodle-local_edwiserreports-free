@@ -13,7 +13,13 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
+/**
+ * Ajax request handler
+ *
+ * @package     local_edwiserreports
+ * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 require('../../config.php');
 
 use local_edwiserreports\controller\edwiserReportKernel;
