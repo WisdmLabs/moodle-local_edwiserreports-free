@@ -506,6 +506,11 @@ function local_edwiserreports_output_fragment_block_overview_display($data) {
 function local_edwiserreports_extend_navigation(navigation_node $nav) {
     global $CFG, $PAGE, $COURSE;
 
+    // Check if users is logged in to extend navigation.
+    if (!isloggedin()) {
+        return;
+    }
+
     $hasblocks = is_block_present_indashboard();
 
     // During the installation save the capability.
