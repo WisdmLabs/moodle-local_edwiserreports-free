@@ -301,11 +301,7 @@ function local_edwiserreports_create_back_button($backurl) {
 function local_edwiserreports_has_plugin($plugintype, $pluginname) {
     $plugins = core_plugin_manager::instance()->get_plugins_of_type($plugintype);
 
-    if (array_key_exists($pluginname, $plugins)) {
-        return true;
-    }
-
-    return false;
+    return array_key_exists($pluginname, $plugins);
 }
 
 /**
