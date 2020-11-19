@@ -46,16 +46,11 @@ $PAGE->requires->js_call_amd('local_edwiserreports/courseengage', 'init', array(
 // Get page URL.
 $pageurl = new moodle_url($CFG->wwwroot . "/local/edwiserreports/coursereport.php");
 
-// Require CSS.
-$PAGE->requires->css('/local/edwiserreports/styles/loader.css');
+// Add CSS for edwiserreports.
+$PAGE->requires->css('/local/edwiserreports/styles/edwiserreports.min.css');
 
 // Set page context.
 $PAGE->set_context($context);
-
-// Require fixes for boost.
-if ($PAGE->theme->name == 'boost') {
-    $PAGE->requires->css('/local/edwiserreports/styles/datatable-fix.css');
-}
 
 // Set page url.
 $PAGE->set_url($pageurl);

@@ -47,19 +47,14 @@ local_edwiserreports_get_required_strings_for_js();
 // Get course context.
 $coursecontext = context_course::instance($courseid);
 
-// Require CSS.
-$PAGE->requires->css('/local/edwiserreports/styles/loader.css');
+// Add CSS for edwiserreports.
+$PAGE->requires->css('/local/edwiserreports/styles/edwiserreports.min.css');
 
 // Page URL.
 $pageurl = new moodle_url($CFG->wwwroot . "/local/edwiserreports/completion.php", array("courseid" => $courseid));
 
 // Set page context.
 $PAGE->set_context($coursecontext);
-
-// Require fixes for boost.
-if ($PAGE->theme->name == 'boost') {
-    $PAGE->requires->css('/local/edwiserreports/styles/datatable-fix.css');
-}
 
 // Set page layout.
 $PAGE->set_pagelayout('standard');

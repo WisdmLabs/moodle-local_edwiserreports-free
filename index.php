@@ -62,15 +62,10 @@ $pageurl = new moodle_url($CFG->wwwroot."/local/edwiserreports/index.php");
 $PAGE->requires->js_call_amd('local_edwiserreports/main', 'init');
 
 // Require CSS for index page.
-$PAGE->requires->css('/local/edwiserreports/styles/loader.css');
+$PAGE->requires->css('/local/edwiserreports/styles/edwiserreports.min.css');
 
 // Set page context.
 $PAGE->set_context($context);
-
-// Require fixes for boost.
-if ($PAGE->theme->name == 'boost') {
-    $PAGE->requires->css('/local/edwiserreports/styles/datatable-fix.css');
-}
 
 // Set page URL.
 $PAGE->set_url($pageurl);

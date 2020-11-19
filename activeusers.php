@@ -47,11 +47,8 @@ $PAGE->requires->js_call_amd(
     array($context->id)
 );
 
-// Set css for active usres page.
-$PAGE->requires->css('/local/edwiserreports/styles/flatpickr.min.css');
-
-// Require CSS.
-$PAGE->requires->css('/local/edwiserreports/styles/loader.css');
+// Add CSS for edwiserreports.
+$PAGE->requires->css('/local/edwiserreports/styles/edwiserreports.min.css');
 
 // Add js string for this page.
 $PAGE->requires->strings_for_js([
@@ -66,10 +63,6 @@ $pageurl = new moodle_url($CFG->wwwroot . "/local/edwiserreports/activeusers.php
 // Set page context.
 $PAGE->set_context($context);
 
-// Require fixes for boost.
-if ($PAGE->theme->name == 'boost') {
-    $PAGE->requires->css('/local/edwiserreports/styles/datatable-fix.css');
-}
 
 // Set page URL.
 $PAGE->set_url($pageurl);

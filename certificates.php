@@ -42,22 +42,14 @@ $component = "local_edwiserreports";
 // Require JS for certificates page.
 $PAGE->requires->js_call_amd('local_edwiserreports/certificates', 'init', array($context->id));
 
-// Require CSS for certificates page.
-$PAGE->requires->css('/local/edwiserreports/styles/select2.min.css');
-
-// Require CSS.
-$PAGE->requires->css('/local/edwiserreports/styles/loader.css');
+// Add CSS for edwiserreports.
+$PAGE->requires->css('/local/edwiserreports/styles/edwiserreports.min.css');
 
 // Page URL.
 $pageurl = new moodle_url($CFG->wwwroot . "/local/edwiserreports/certificates.php");
 
 // Set page context.
 $PAGE->set_context($context);
-
-// Require fixes for boost.
-if ($PAGE->theme->name == 'boost') {
-    $PAGE->requires->css('/local/edwiserreports/styles/datatable-fix.css');
-}
 
 // Set page URL.
 $PAGE->set_url($pageurl);
