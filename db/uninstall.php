@@ -33,7 +33,7 @@ function xmldb_local_edwiserreports_uninstall() {
 
     require_once($CFG->dirroot . '/local/edwiserreports/lib.php');
 
-    $blocks = get_default_block_settings();
+    $blocks = local_edwiserreports_get_default_block_settings();
 
     foreach (array_keys($blocks) as $blockid) {
         $DB->delete_records('user_preferences', array('name' => 'pref_' . $blockid . 'block'));

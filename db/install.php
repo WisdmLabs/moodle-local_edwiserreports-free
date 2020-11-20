@@ -33,7 +33,7 @@ function xmldb_local_edwiserreports_install() {
     set_config('edwiserreportsinstallation', true, 'local_edwiserreports');
 
     // All Default blocks.
-    $defaultblocks = get_default_block_settings();
+    $defaultblocks = local_edwiserreports_get_default_block_settings();
 
     // Create each block.
     $blocks = array();

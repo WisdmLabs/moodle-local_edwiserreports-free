@@ -554,8 +554,8 @@ function local_edwiserreports_extend_navigation(navigation_node $nav) {
 /**
  * Get default block settings
  */
-function get_default_block_settings() {
-    // Return defautl block settings.
+function local_edwiserreports_get_default_block_settings() {
+    // Return default block settings.
     return array(
         'activeusers' => array(
             'classname' => 'activeusersblock',
