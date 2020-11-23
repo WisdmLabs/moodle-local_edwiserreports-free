@@ -25,6 +25,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+require_once($CFG->dirroot . '/local/edwiserreports/lib.php');
+
 /**
  * Custom uninstallation procedure.
  */

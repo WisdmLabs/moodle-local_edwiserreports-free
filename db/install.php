@@ -24,6 +24,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+require_once($CFG->dirroot . '/local/edwiserreports/lib.php');
+
 /**
  * Custom code to be run on installing the plugin.
  */
