@@ -202,20 +202,19 @@ function local_edwiserreports_get_cohort_filter() {
 
     $syscontext = context_system::instance();
     $cohorts = cohort_get_cohorts($syscontext->id)["cohorts"];
-    $categories = $DB->get_records_select('course_categories', 'id');
+    $categories = $DB->get_records('course_categories', null, 'id');
 
     foreach ($categories as $category) {
         $catcontext = context_coursecat::instance($category->id);
         $cohorts = array_merge($cohorts, cohort_get_cohorts($catcontext->id)["cohorts"]);
     }
 
-    if (empty($cohorts)) {
-        return false;
+    $cohortfilter = false;
+    if (!empty($cohorts)) {
+        $cohortfilter = new stdClass();
+        $cohortfilter->text = get_string('cohorts', 'local_edwiserreports');
+        $cohortfilter->values = $cohorts;
     }
-
-    $cohortfilter = new stdClass();
-    $cohortfilter->text = get_string('cohorts', 'local_edwiserreports');
-    $cohortfilter->values = $cohorts;
     return $cohortfilter;
 }
 
