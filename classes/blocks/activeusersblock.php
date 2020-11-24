@@ -24,6 +24,7 @@
 namespace local_edwiserreports;
 
 defined('MOODLE_INTERNAL') or die;
+
 use stdClass;
 use moodle_url;
 use cache;
@@ -489,11 +490,13 @@ class activeusersblock extends block_base {
                 $params["action"] = 'viewed';
                 break;
             case "enrolments":
-                $sql = "SELECT l.id, l.userid, l.relateduserid, l.courseid
+                $fields = 'DISTINCT(CONCAT(l.courseid, \'-\', l.relateduserid )) as id, l.relateduserid, l.courseid';
+                $sql = "SELECT $fields
                    FROM {logstore_standard_log} l $sqlcohort
                    WHERE l.timecreated >= :starttime
                    AND l.timecreated < :endtime
-                   AND l.eventname = :eventname $cohortcondition";
+                   AND l.eventname = :eventname $cohortcondition
+                   GROUP BY l.relateduserid, l.courseid";
                 $params["eventname"] = '\core\event\user_enrolment_created';
                 break;
             case "completions";
