@@ -626,14 +626,16 @@ class activeusersblock extends block_base {
             $cohortcondition = "AND cm.cohortid = :cohortid";
             $params["cohortid"] = $cohortid;
         }
-        $sql = "SELECT
-                    l.timecreated/86400 as userdate,
-                    COUNT( l.relateduserid ) as usercount
-                FROM {logstore_standard_log} l "
-                . $cohortjoin .
-                " WHERE l.eventname = :eventname "
-                . $cohortcondition .
-                " AND l.action = :action
+
+        $fields = 'l.timecreated/86400 as userdate,
+                    COUNT(DISTINCT(CONCAT(l.courseid, \'-\', l.relateduserid )))
+                    as usercount';
+        $sql = "SELECT $fields
+                FROM {logstore_standard_log} l
+                $cohortjoin
+                WHERE l.eventname = :eventname
+                $cohortcondition
+                AND l.action = :action
                 AND l.timecreated >= :starttime
                 AND l.timecreated < :endtime
                 GROUP BY userdate";
