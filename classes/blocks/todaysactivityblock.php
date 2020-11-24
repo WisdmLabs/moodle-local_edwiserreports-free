@@ -65,8 +65,119 @@ class todaysactivityblock extends block_base {
     public function get_data($params = false) {
         $date = isset($params->date) ? $params->date : false;
         $response = new stdClass();
-        $response->data = self::get_todaysactivity($date);
+        $response->data = $this->get_todaysactivity($date);
         return $response;
+    }
+
+    /**
+     * Get todays enrolments
+     * @param  $starttime Integer  Start Time
+     * @param  $endtime   Integer  End Time
+     * @return            Integer  Todays Course Enrolment Count
+     */
+    public function count_user_enrolments($starttime, $endtime) {
+        global $DB;
+
+        $select = "timecreated >= $starttime AND timecreated < $endtime";
+        return $DB->count_records_select('user_enrolments', $select);
+    }
+
+    /**
+     * Get todays module completion count
+     * @param  $starttime Integer  Start Time
+     * @param  $endtime   Integer  End Time
+     * @return            Integer  Todays Module Completion Count
+     */
+    public function count_module_completions($starttime, $endtime) {
+        global $DB;
+
+        $select = "timemodified >= $starttime AND timemodified < $endtime";
+        return $DB->count_records_select('course_modules_completion', $select);
+    }
+
+    /**
+     * Get todays course completion count
+     * @param  $starttime Integer  Start Time
+     * @param  $endtime   Integer  End Time
+     * @return            Integer  Todays Course Completion Count
+     */
+    public function count_course_completions($starttime, $endtime) {
+        global $DB;
+
+        $select = "completiontime >= $starttime
+                   AND completiontime < $endtime
+                   AND progress = 100";
+        return $DB->count_records_select('edwreports_course_progress', $select);
+    }
+
+    /**
+     * Get todays registrations count
+     * @param  $starttime Integer  Start Time
+     * @param  $endtime   Integer  End Time
+     * @return            Integer  Todays Registration Count
+     */
+    public function count_registrations_completions($starttime, $endtime) {
+        global $DB;
+
+        $select = "timecreated >= $starttime
+                   AND timecreated < $endtime";
+        return $DB->count_records_select('user', $select);
+    }
+
+    /**
+     * Get todays site visit count
+     * @param  $starttime Integer  Start Time
+     * @param  $endtime   Integer  End Time
+     * @return            Integer  Todays Site Visits Count
+     */
+    public function count_site_visits($starttime, $endtime) {
+        global $DB;
+
+        $visitsssql = "SELECT DISTINCT userid
+            FROM {logstore_standard_log}
+            WHERE timecreated >= :starttime
+            AND timecreated < :endtime
+            AND userid < 1";
+        $params = array(
+            'starttime' => $starttime,
+            'endtime' => $endtime
+        );
+        $visits = $DB->get_records_sql($visitsssql, $params);
+
+        return count($visits);
+    }
+
+    /**
+     * Get visits in every hours
+     * @param  $starttime Integer  Start Time
+     * @param  $endtime   Integer  End Time
+     * @return            Integer  Get Visits in Every Hours
+     */
+    public function get_visits_in_hours($starttime, $endtime) {
+        global $DB;
+
+        $starttimehour = $starttime;
+        $endtimehour = $starttime + 60 * 60;
+
+        $visitsssql = "SELECT DISTINCT userid
+            FROM {logstore_standard_log}
+            WHERE timecreated >= :starttime
+            AND timecreated < :endtime";
+        $params = array(
+            'starttime' => $starttimehour,
+            'endtime' => $endtimehour
+        );
+
+        $visitshour = array();
+        do {
+            $visitshour[] = count($DB->get_records_sql($visitsssql, $params));
+            $starttimehour = $endtimehour;
+            $endtimehour = $endtimehour + 60 * 60;
+            $params['starttime'] = $starttimehour;
+            $params['endtime'] = $endtimehour;
+        } while ($starttimehour < $endtime);
+
+        return $visitshour;
     }
 
     /**
@@ -74,7 +185,7 @@ class todaysactivityblock extends block_base {
      * @param [string] $date Date filter in proprtdat format
      * @return [array] Array of todays activities information
      */
-    public static function get_todaysactivity($date) {
+    public function get_todaysactivity($date) {
         global $DB;
 
         // Set time according to the filter.
@@ -87,65 +198,12 @@ class todaysactivityblock extends block_base {
         }
 
         $todaysactivity = array();
-        $total = 0;
-        // Enrolments.
-        $enrollmentsql = "SELECT * FROM {user_enrolments}
-            WHERE timecreated >= :starttime
-            AND timecreated < :endtime";
-        $params['starttime'] = $starttime;
-        $params['endtime'] = $endtime;
-        $enrollments = $DB->get_records_sql($enrollmentsql, $params);
-        $todaysactivity["enrollments"] = count($enrollments);
-        $total += count($enrollments);
-
-        // Activity Completion.
-        $activitycompletionsql = "SELECT * FROM {course_modules_completion}
-            WHERE timemodified >= :starttime
-            AND timemodified < :endtime";
-        $activitycompletions = $DB->get_records_sql($activitycompletionsql, $params);
-        $todaysactivity["activitycompletions"] = count($activitycompletions);
-        $total += count($activitycompletions);
-
-        // Course Completion.
-        $coursecompletionsql = "SELECT * FROM {course_completions}
-            WHERE timecompleted >= :starttime
-            AND timecompleted < :endtime";
-        $coursecompletions = $DB->get_records_sql($coursecompletionsql, $params);
-        $todaysactivity["coursecompletions"] = count($coursecompletions);
-        $total += count($coursecompletions);
-
-        // Registration.
-        $registrationssql = "SELECT * FROM {user}
-            WHERE timecreated >= :starttime
-            AND timecreated < :endtime";
-        $registrations = $DB->get_records_sql($registrationssql, $params);
-        $todaysactivity["registrations"] = count($registrations);
-        $total += count($registrations);
-
-        // Visits.
-        $visitsssql = "SELECT DISTINCT userid
-            FROM {logstore_standard_log}
-            WHERE timecreated >= :starttime
-            AND timecreated < :endtime"; // Remove guest users.
-        $visits = $DB->get_records_sql($visitsssql, $params);
-        $todaysactivity["visits"] = count($visits);
-        $total += count($visits);
-
-        $starttimehour = $starttime;
-        $endtimehour = $starttime + 60 * 60;
-        $todaysactivity["visitshour"] = array();
-        $params = array();
-        $params['starttime'] = $starttimehour;
-        $params['endtime'] = $endtimehour;
-        do {
-            $visitshour = $DB->get_records_sql($visitsssql, $params);
-            $todaysactivity["visitshour"][] = count($visitshour);
-            $starttimehour = $endtimehour;
-            $endtimehour = $endtimehour + 60 * 60;
-            $params = array();
-            $params['starttime'] = $starttimehour;
-            $params['endtime'] = $endtimehour;
-        } while ($starttimehour < $endtime);
+        $todaysactivity["enrollments"] = $this->count_user_enrolments($starttime, $endtime);
+        $todaysactivity["activitycompletions"] = $this->count_module_completions($starttime, $endtime);
+        $todaysactivity["coursecompletions"] = $this->count_course_completions($starttime, $endtime);
+        $todaysactivity["registrations"] = $this->count_registrations_completions($starttime, $endtime);
+        $todaysactivity["visits"] = $this->count_site_visits($starttime, $endtime);
+        $todaysactivity["visitshour"] = $this->get_visits_in_hours($starttime, $endtime);
 
         $todaysactivity["onlinelearners"] = $todaysactivity["onlineteachers"] = 0;
 
@@ -154,6 +212,16 @@ class todaysactivityblock extends block_base {
 
         // Capability 'moodle/course:isincompletionreports' - is allowed to only students.
         $learnerscap = "moodle/course:isincompletionreports";
+
+        $visitsssql = "SELECT DISTINCT userid
+            FROM {logstore_standard_log}
+            WHERE timecreated >= :starttime
+            AND timecreated < :endtime";
+        $params = array(
+            'starttime' => $starttime,
+            'endtime' => $endtime
+        );
+        $visits = $DB->get_records_sql($visitsssql, $params);
         foreach ($visits as $user) {
             $isteacher = $islearner = false;
             $courses = enrol_get_users_courses($user->userid);
@@ -171,7 +239,6 @@ class todaysactivityblock extends block_base {
                 $todaysactivity["onlinelearners"]++;
             }
         }
-        $todaysactivity["totalusers"] = $total;
         return $todaysactivity;
     }
 }
