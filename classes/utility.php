@@ -38,6 +38,7 @@ require_once($CFG->dirroot . "/local/edwiserreports/classes/blocks/inactiveusers
 require_once($CFG->dirroot . "/local/edwiserreports/classes/blocks/courseengageblock.php");
 require_once($CFG->dirroot . "/local/edwiserreports/classes/blocks/completionblock.php");
 require_once($CFG->dirroot . "/local/edwiserreports/classes/blocks/courseanalytics_block.php");
+require_once($CFG->dirroot . "/local/edwiserreports/locallib.php");
 
 use stdClass;
 use completion_info;
