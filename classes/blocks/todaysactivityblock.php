@@ -43,10 +43,11 @@ class todaysactivityblock extends block_base {
         $this->layout->id = 'todaysactivityblock';
         $this->layout->name = get_string('todaysactivityheader', 'local_edwiserreports');
         $this->layout->info = get_string('todaysactivityblockhelp', 'local_edwiserreports');
-        $this->layout->filters = '<input class="btn btn-sm dropdown-toggle input-group-addon"';
+        $this->layout->filters = '<div class="flatpickr-wrapper">';
+        $this->layout->filters .= '<input class="btn btn-sm dropdown-toggle input-group-addon"';
         $this->layout->filters .= 'id="flatpickrCalender" placeholder="' .
         get_string('selectdate', 'local_edwiserreports') .
-        '" data-input/>';
+        '" data-input/></div>';
 
         // Block related data.
         $this->block = new stdClass();
