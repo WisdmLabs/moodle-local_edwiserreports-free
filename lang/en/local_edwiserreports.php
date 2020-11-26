@@ -149,6 +149,10 @@ $string['usersnotavailable'] = "No Users are available for this day";
 $string['activeusersmodaltitle'] = 'Users active on {$a->date}';
 $string['enrolmentsmodaltitle'] = 'Users enrolled into courses on {$a->date}';
 $string['completionsmodaltitle'] = 'Users who have completed a course on {$a->date}';
+$string['recordnotfound'] = 'Record not found';
+$string['jsondecodefailed'] = 'Json decode failed';
+$string['emaildataisnotasarray'] = 'Email data is not an array';
+$string['sceduledemailnotexist'] = 'Schedule email not exist';
 
 /* Course Progress Page */
 $string['coursename'] = "Course Name";

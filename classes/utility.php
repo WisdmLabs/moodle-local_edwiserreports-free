@@ -658,45 +658,28 @@ class utility {
     public static function get_scheduled_email_details($data) {
         global $DB;
 
-        // Get data from table.
-        $sql = "SELECT * FROM {edwreports_schedemails}
-            WHERE blockname = :blockname
-            AND component = :component";
         $params = array(
             "blockname" => $data->blockname,
             "component" => $data->region
         );
-
         $response = new stdClass();
-        if (!$rec = $DB->get_record_sql($sql, $params)) {
+        if (!$rec = $DB->get_record('edwreports_schedemails', $params)) {
             $response->error = true;
-            $response->errormsg = "Record not found";
-            return $response;
-        }
-
-        // If it dosent have email data.
-        if (!$emaildata = json_decode($rec->emaildata)) {
+            $response->errormsg = get_string('recordnotfound', 'local_edwisrreports');
+        } else if (!$emaildata = json_decode($rec->emaildata)) { // If it dosent have email data.
             $response->error = true;
-            $response->errormsg = "Json decode failed";
-            return $response;
-        }
-
-        // If dta is not an array.
-        if (!is_array($emaildata)) {
+            $response->errormsg = get_string('jsondecodefailed', 'local_edwisrreports');
+        } else if (!is_array($emaildata)) { // If dta is not an array.
             $response->error = true;
-            $response->errormsg = "Email data is not an array";
-            return $response;
-        }
-
-        if (!isset($emaildata[$data->id])) {
+            $response->errormsg = get_string('emaildataisnotasarray', 'local_edwisrreports');
+        } else if (!isset($emaildata[$data->id])) {
             $response->error = true;
-            $response->errormsg = "Schedule email not exist";
-            return $response;
+            $response->errormsg = get_string('sceduledemailnotexist', 'local_edwisrreports');
+        } else {
+            $response->error = false;
+            $emaildata[$data->id]->esrid = $data->id;
+            $response->data = $emaildata[$data->id];
         }
-
-        $response->error = false;
-        $emaildata[$data->id]->esrid = $data->id;
-        $response->data = $emaildata[$data->id];
         return $response;
     }
 
@@ -720,37 +703,23 @@ class utility {
         $response = new stdClass();
         if (!$rec = $DB->get_record_sql($sql, $params)) {
             $response->error = true;
-            $response->errormsg = "Record not found";
-            return $response;
-        }
-
-        // If it dosent have email data.
-        if (!$emaildata = json_decode($rec->emaildata)) {
+            $response->errormsg = get_string('recordnotfound', 'local_edwisrreports');
+        } else if (!$emaildata = json_decode($rec->emaildata)) { // If it dosent have email data.
             $response->error = true;
-            $response->errormsg = "Json decode failed";
-            return $response;
-        }
-
-        // If dta is not an array.
-        if (!is_array($emaildata)) {
+            $response->errormsg = get_string('jsondecodefailed', 'local_edwisrreports');
+        } else if (!is_array($emaildata)) { // If dta is not an array.
             $response->error = true;
-            $response->errormsg = "Email data is not an array";
-            return $response;
-        }
-
-        if (!isset($emaildata[$data->id])) {
+            $response->errormsg = get_string('emaildataisnotasarray', 'local_edwisrreports');
+        } else if (!isset($emaildata[$data->id])) {
             $response->error = true;
-            $response->errormsg = "Schedule email not exist";
-            return $response;
+            $response->errormsg = get_string('sceduledemailnotexist', 'local_edwisrreports');
+        } else {
+            $response->error = false;
+            unset($emaildata[$data->id]);
+            $rec->emaildata = json_encode(array_values($emaildata));
+            // Updating the record.
+            $DB->update_record($table, $rec);
         }
-
-        $response->error = false;
-        unset($emaildata[$data->id]);
-
-        $rec->emaildata = json_encode(array_values($emaildata));
-
-        // Updating the record.
-        $DB->update_record($table, $rec);
         return $response;
     }
 
@@ -774,43 +743,34 @@ class utility {
         $response = new stdClass();
         if (!$rec = $DB->get_record_sql($sql, $params)) {
             $response->error = true;
-            $response->errormsg = "Record not found";
+            $response->errormsg = get_string('recordnotfound', 'local_edwisrreports');
             return $response;
-        }
-
-        // If it dosent have email data.
-        if (!$emaildata = json_decode($rec->emaildata)) {
+        } else if (!$emaildata = json_decode($rec->emaildata)) { // If it dosent have email data.
             $response->error = true;
-            $response->errormsg = "Json decode failed";
+            $response->errormsg = get_string('jsondecodefailed', 'local_edwisrreports');
             return $response;
-        }
-
-        // If dta is not an array.
-        if (!is_array($emaildata)) {
+        } else if (!is_array($emaildata)) { // If dta is not an array.
             $response->error = true;
-            $response->errormsg = "Email data is not an array";
+            $response->errormsg = get_string('emaildataisnotasarray', 'local_edwisrreports');
             return $response;
-        }
-
-        if (!isset($emaildata[$data->id])) {
+        } else if (!isset($emaildata[$data->id])) {
             $response->error = true;
-            $response->errormsg = "Schedule email not exist";
+            $response->errormsg = get_string('sceduledemailnotexist', 'local_edwisrreports');
             return $response;
-        }
-
-        $response->error = false;
-        if ($status = $emaildata[$data->id]->esremailenable) {
-            $emaildata[$data->id]->esremailenable = false;
-            $response->successmsg = get_string('scheduledemaildisbled', 'local_edwiserreports');
         } else {
-            $emaildata[$data->id]->esremailenable = true;
-            $response->successmsg = get_string('scheduledemailenabled', 'local_edwiserreports');
+            $response->error = false;
+            if ($status = $emaildata[$data->id]->esremailenable) {
+                $emaildata[$data->id]->esremailenable = false;
+                $response->successmsg = get_string('scheduledemaildisbled', 'local_edwiserreports');
+            } else {
+                $emaildata[$data->id]->esremailenable = true;
+                $response->successmsg = get_string('scheduledemailenabled', 'local_edwiserreports');
+            }
+            $rec->emaildata = json_encode(array_values($emaildata));
+            // Updating the record.
+            $DB->update_record($table, $rec);
         }
 
-        $rec->emaildata = json_encode(array_values($emaildata));
-
-        // Updating the record.
-        $DB->update_record($table, $rec);
         return $response;
     }
 
