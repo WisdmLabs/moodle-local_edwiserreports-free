@@ -562,7 +562,7 @@ class activeusersblock extends block_base {
             $params["cohortid"] = $cohortid;
         }
         $sql = "SELECT
-                    l.timecreated/86400 as userdate,
+                    ROUND(l.timecreated/86400, 0) as userdate,
                     COUNT( DISTINCT l.userid ) as usercount
                 FROM {logstore_standard_log} l "
                 . $cohortjoin .
@@ -571,7 +571,7 @@ class activeusersblock extends block_base {
                 " AND l.timecreated >= :starttime
                 AND l.timecreated < :endtime
                 AND l.userid > 1
-                GROUP BY userdate";
+                GROUP BY ROUND(l.timecreated/86400, 0)";
 
         // Get active users data from cache.
         if (!$activeusers = $this->cache->get($cachekey)) {
@@ -613,7 +613,7 @@ class activeusersblock extends block_base {
             "starttime" => $starttime,
             "endtime" => $this->timenow,
             "eventname" => '\core\event\user_enrolment_created',
-            "action" => "created"
+            "actionname" => "created"
         );
 
         // Cache Key for enrolments.
@@ -627,18 +627,25 @@ class activeusersblock extends block_base {
             $params["cohortid"] = $cohortid;
         }
 
-        $fields = 'l.timecreated/86400 as userdate,
-                    COUNT(DISTINCT(CONCAT(l.courseid, \'-\', l.relateduserid )))
+        $fields = 'ROUND(l.timecreated/86400, 0) as userdate,
+                    COUNT(
+                        DISTINCT(
+                            CONCAT(
+                                CONCAT(l.courseid, \'-\')
+                                , l.relateduserid
+                            )
+                        )
+                    )
                     as usercount';
         $sql = "SELECT $fields
                 FROM {logstore_standard_log} l
                 $cohortjoin
                 WHERE l.eventname = :eventname
                 $cohortcondition
-                AND l.action = :action
+                AND l.action = :actionname
                 AND l.timecreated >= :starttime
                 AND l.timecreated < :endtime
-                GROUP BY userdate";
+                GROUP BY ROUND(l.timecreated/86400, 0)";
 
         // Get data from cache if exist.
         if (!$enrolments = $this->cache->get($cachekey)) {
@@ -688,14 +695,20 @@ class activeusersblock extends block_base {
             $cohortcondition = "AND cm.cohortid = :cohortid";
             $params["cohortid"] = $cohortid;
         }
-        $sql = "SELECT
-                    cc.completiontime/86400 as userdate,
-                    COUNT( CONCAT(cc.courseid, '-', cc.userid )) as usercount
-                FROM {edwreports_course_progress} cc "
-                . $cohortjoin .
-                " WHERE cc.completiontime IS NOT NULL "
-                . $cohortcondition .
-                " GROUP BY userdate";
+
+        $fields = 'cc.completiontime/86400 as userdate,
+                   COUNT(
+                       CONCAT(
+                            CONCAT(cc.courseid, \'-\'),
+                            cc.userid
+                        )
+                    ) as usercount';
+        $sql = "SELECT $fields
+                FROM {edwreports_course_progress} cc
+                $cohortjoin
+                WHERE cc.completiontime IS NOT NULL
+                $cohortcondition
+                GROUP BY cc.completiontime/86400";
         // Get data from cache if exist.
         if (!$completionrate = $this->cache->get($cachekey)) {
             $completionrate = array();
