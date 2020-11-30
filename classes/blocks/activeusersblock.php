@@ -490,7 +490,7 @@ class activeusersblock extends block_base {
                 $params["action"] = 'viewed';
                 break;
             case "enrolments":
-                $fields = 'DISTINCT(CONCAT(l.courseid, \'-\', l.relateduserid )) as id, l.relateduserid, l.courseid';
+                $fields = 'DISTINCT(CONCAT(CONCAT(l.courseid, \'-\'), l.relateduserid )) as id, l.relateduserid, l.courseid';
                 $sql = "SELECT $fields
                    FROM {logstore_standard_log} l $sqlcohort
                    WHERE l.timecreated >= :starttime
@@ -506,7 +506,7 @@ class activeusersblock extends block_base {
                            ON cm.userid = l.userid";
                     $params["cohortid"] = $cohortid;
                 }
-                $sql = "SELECT CONCAT(l.userid, '-', l.courseid) as id, l.userid as relateduserid, l.courseid as courseid
+                $sql = "SELECT CONCAT(CONCAT(l.userid, '-'), l.courseid) as id, l.userid as relateduserid, l.courseid as courseid
                    FROM {edwreports_course_progress} l $sqlcohort
                    WHERE l.completiontime IS NOT NULL
                    AND l.completiontime >= :starttime

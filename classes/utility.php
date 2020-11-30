@@ -273,7 +273,7 @@ class utility {
     public static function get_course_completions() {
         global $DB;
 
-        $sql = "SELECT CONCAT(mc.userid, '-', m.course),
+        $sql = "SELECT CONCAT(CONCAT(mc.userid, '-'), m.course),
             mc.userid, m.course,(COUNT(mc.userid)/
             (SELECT COUNT(*) FROM {course_modules}
             WHERE completion = m.completion
@@ -1017,7 +1017,7 @@ class utility {
         }
 
         // Get all users.
-        $sql = "SELECT DISTINCT(u.id), CONCAT(u.firstname, ' ', u.lastname) as fullname
+        $sql = "SELECT DISTINCT(u.id), CONCAT(CONCAT(u.firstname, ' '), u.lastname) as fullname
                 FROM {user} u
                 $cohortjoinsql
                 WHERE u.deleted = false
