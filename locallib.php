@@ -329,9 +329,11 @@ function local_edwiserreports_get_schedule_emailform($id, $formaction, $blocknam
 
     // Get data from table.
     $table = "edwreports_schedemails";
+    $blockcompare = $DB->sql_compare_text('blockname');
+    $componentcompare = $DB->sql_compare_text('component');
     $sql = "SELECT * FROM {edwreports_schedemails}
-        WHERE blockname = :blockname
-        AND component = :component";
+            WHERE $blockcompare LIKE :blockname
+            AND $componentcompare LIKE :component";
     $params = array(
         "blockname" => $blockname,
         "component" => $region

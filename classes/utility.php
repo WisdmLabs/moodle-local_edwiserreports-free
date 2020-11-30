@@ -625,8 +625,8 @@ class utility {
         $cmpcomponentsql = $DB->sql_compare_text('component');
 
         $sql = "SELECT * FROM {edwreports_schedemails}
-            WHERE $cmpblocknamesql = :blockname
-            AND $cmpcomponentsql = :component";
+            WHERE $cmpblocknamesql LIKE :blockname
+            AND $cmpcomponentsql LIKE :component";
 
         $rec = $DB->get_record_sql($sql, $params);
         // If data is not an array.
@@ -692,9 +692,11 @@ class utility {
 
         // Get data from table.
         $table = "edwreports_schedemails";
+        $blockcompare = $DB->sql_compare_text('blockname');
+        $componentcompare = $DB->sql_compare_text('component');
         $sql = "SELECT * FROM {edwreports_schedemails}
-            WHERE blockname = :blockname
-            AND component = :component";
+            WHERE $blockcompare LIKE :blockname
+            AND $componentcompare LIKE :component";
         $params = array(
             "blockname" => $data->blockname,
             "component" => $data->region
@@ -732,9 +734,11 @@ class utility {
 
         // Get data from table.
         $table = "edwreports_schedemails";
+        $blockcompare = $DB->sql_compare_text('blockname');
+        $componentcompare = $DB->sql_compare_text('component');
         $sql = "SELECT * FROM {edwreports_schedemails}
-            WHERE blockname = :blockname
-            AND component = :component";
+                WHERE $blockcompare LIKE :blockname
+                AND $componentcompare LIKE :component";
         $params = array(
             "blockname" => $data->blockname,
             "component" => $data->region
