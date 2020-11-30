@@ -307,9 +307,11 @@ class export {
         $data->component = $this->region;
 
         $table = "edwreports_schedemails";
+        $blockcompare = $DB->sql_compare_text('blockname');
+        $componentcompare = $DB->sql_compare_text('component');
         $sql = "SELECT id, emaildata FROM {edwreports_schedemails}
-            WHERE blockname = :blockname
-            AND component = :component";
+            WHERE $blockcompare LIKE :blockname
+            AND $componentcompare LIKE :component";
         if ($rec = $DB->get_record_sql($sql, (array)$data)) {
             $data->id = $rec->id;
             list($id, $data->emaildata) = $this->get_email_data($rec->emaildata);
