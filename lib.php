@@ -348,9 +348,9 @@ function local_edwiserreports_output_fragment_get_blockscap_form($block) {
 
 /**
  * Render blocks capability view
- * @param array $data Fragment parameter array
+ * @param array $value Fragment parameter array
  */
-function local_edwiserreports_output_fragment_block_overview_display($data) {
+function local_edwiserreports_output_fragment_block_overview_display($value) {
     global $CFG;
 
     require_once($CFG->dirroot . '/admin/tool/capability/locallib.php');
@@ -378,7 +378,7 @@ function local_edwiserreports_output_fragment_block_overview_display($data) {
 
     // Get capability context.
     $roles = role_fix_names(get_all_roles($context));
-    $capabilitycontext = tool_capability_calculate_role_data($data['capvalue'], $roles);
+    $capabilitycontext = tool_capability_calculate_role_data($value['capvalue'], $roles);
     foreach ($roles as $roleid => $role) {
         $output .= '<th><div><a href="javascript:void(0)">' . $role->localname . '</a></div></th>';
 
@@ -405,7 +405,7 @@ function local_edwiserreports_output_fragment_block_overview_display($data) {
 
     $output .= html_writer::end_tag('tr');
     $output .= html_writer::end_tag('thead');
-    $output .= $d;
+    $output .= $data;
     $output .= html_writer::end_tag('table');
 
     return $output;
