@@ -50,7 +50,9 @@ class report_blocks {
         // Prepare layout for each block.
         foreach ($blocks as $block) {
             // If user dont have capability to see the block.
-            if (!has_capability('report/edwiserreports_' . $block->classname . ':view', $context)) {
+            $capname = 'report/edwiserreports_' . $block->classname . ':view';
+            if (!has_capability($capname, $context) &&
+                !can_view_block($capname)) {
                 continue;
             }
 

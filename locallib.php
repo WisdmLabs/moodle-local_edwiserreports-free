@@ -981,11 +981,45 @@ function is_block_present_indashboard() {
     $hasblock = false;
     $blocks = \local_edwiserreports\utility::get_reports_block();
     foreach ($blocks as $key => $block) {
-        if (has_capability('report/edwiserreports_' . $block->classname . ':view', context_system::instance())) {
+        $capname = 'report/edwiserreports_' . $block->classname . ':view';
+        if (has_capability($capname, context_system::instance()) ||
+            can_view_block($capname)) {
             $hasblock = true;
             continue;
         }
     }
 
     return $hasblock;
+}
+
+/**
+ * Check if user has course level role in the system
+ * @param  [int]     $userid        Users Id
+ * @param  [string]  $roleshortname Role Short Name
+ * @return [boolean]                Status
+ */
+function has_user_role($userid, $roleshortname) {
+    global $DB;
+
+    $roleid = $DB->get_field('role', 'id', array('shortname' => $roleshortname));
+    return $DB->record_exists('role_assignments', ['userid' => $userid, 'roleid' => $roleid]);
+}
+
+/**
+ * Function to get the users role in any courses
+ * @param [string] $capability capability
+ */
+function can_view_block($capname) {
+    global $USER;
+
+    $canviewblocks = false;
+    $allowedrole = get_roles_with_capability($capname);
+    foreach ($allowedrole as $role) {
+        if (has_user_role($USER->id, $role->shortname)) {
+            $canviewblocks = true;
+            continue;
+        }
+    }
+
+    return $canviewblocks;
 }
