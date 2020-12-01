@@ -289,7 +289,7 @@ function local_edwiserreports_output_fragment_get_blocksetting_form($params) {
 
     $output .= html_writer::end_tag('form');
 
-    return $o;
+    return $output;
 }
 
 /**
@@ -343,7 +343,7 @@ function local_edwiserreports_output_fragment_get_blockscap_form($block) {
 
     $output .= html_writer::end_tag('form');
 
-    return $o;
+    return $output;
 }
 
 /**
@@ -408,7 +408,7 @@ function local_edwiserreports_output_fragment_block_overview_display($data) {
     $output .= $d;
     $output .= html_writer::end_tag('table');
 
-    return $o;
+    return $output;
 }
 
 /**
