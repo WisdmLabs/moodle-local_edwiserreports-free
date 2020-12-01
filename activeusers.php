@@ -63,6 +63,8 @@ $pageurl = new moodle_url($CFG->wwwroot . "/local/edwiserreports/activeusers.php
 // Set page context.
 $PAGE->set_context($context);
 
+// Set Page layout.
+$PAGE->set_pagelayout('standard');
 
 // Set page URL.
 $PAGE->set_url($pageurl);

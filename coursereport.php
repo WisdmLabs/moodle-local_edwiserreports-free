@@ -52,6 +52,9 @@ $PAGE->requires->css('/local/edwiserreports/styles/edwiserreports.min.css');
 // Set page context.
 $PAGE->set_context($context);
 
+// Set Page layout.
+$PAGE->set_pagelayout('standard');
+
 // Set page url.
 $PAGE->set_url($pageurl);
 
