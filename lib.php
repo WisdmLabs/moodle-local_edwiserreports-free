@@ -82,44 +82,6 @@ require_once("$CFG->libdir/formslib.php");
  */
 class local_edwiserreports_email_dialog_form extends moodleform {
     /**
-     * The constructor function calls the abstract function definition() and it will then
-     * process and clean and attempt to validate incoming data.
-     *
-     * It will call your custom validate method to validate data and will also check any rules
-     * you have specified in definition using addRule
-     *
-     * The name of the form (id attribute of the form) is automatically generated depending on
-     * the name you gave the class extending moodleform. You should call your class something
-     * like
-     *
-     * @param mixed $action the action attribute for the form. If empty defaults to auto detect the
-     *              current url. If a moodle_url object then outputs params as hidden variables.
-     * @param mixed $customdata if your form defintion method needs access to data such as $course
-     *              $cm, etc. to construct the form definition then pass it in this array. You can
-     *              use globals for somethings.
-     * @param string $method if you set this to anything other than 'post' then _GET and _POST will
-     *               be merged and used as incoming data to the form.
-     * @param string $target target frame for form submission. You will rarely use this. Don't use
-     *               it if you don't need to as the target attribute is deprecated in xhtml strict.
-     * @param mixed $attributes you can pass a string of html attributes here or an array.
-     *               Special attribute 'data-random-ids' will randomise generated elements ids. This
-     *               is necessary when there are several forms on the same page.
-     * @param bool $editable
-     * @param array $ajaxformdata Forms submitted via ajax, must pass their data here, instead of relying on _GET and _POST.
-     */
-    public function __construct(
-        $action = null,
-        $customdata = null,
-        $method = 'post',
-        $target = '',
-        $attributes = null,
-        $editable = true,
-        $ajaxformdata = null
-    ) {
-        parent::__construct($action, $customdata, $method, $target, $attributes, $editable, $ajaxformdata);
-    }
-
-    /**
      * Add elements to form.
      */
     public function definition() {
@@ -258,7 +220,8 @@ function local_edwiserreports_output_fragment_get_blocksetting_form($params) {
         }
         $output .= html_writer::start_tag('div', array('class' => 'form-group row fitem'));
         $output .= html_writer::start_tag('div', array('class' => 'col-md-6'));
-        $output .= html_writer::tag('label', $view['name'], array('class' => 'col-form-label d-inline', 'for' => 'id_' . $view['key']));
+        $labelparams = array('class' => 'col-form-label d-inline', 'for' => 'id_' . $view['key']);
+        $output .= html_writer::tag('label', $view['name'], $labelparams);
         $output .= html_writer::end_tag('label');
         $output .= html_writer::end_tag('div');
         $output .= html_writer::start_tag('div', array('class' => 'col-md-6'));
@@ -339,7 +302,8 @@ function local_edwiserreports_output_fragment_get_blockscap_form($block) {
     $data['capvalue'] = array_search($capvalues[0], $capabilities);
     $output .= local_edwiserreports_output_fragment_block_overview_display($data);
     $output .= html_writer::end_div();
-    $output .= html_writer::tag('button', 'Save', array('type' => 'submit', 'class' => 'btn btn-primary pull-right save-block-caps'));
+    $btnparams = array('type' => 'submit', 'class' => 'btn btn-primary pull-right save-block-caps');
+    $output .= html_writer::tag('button', 'Save', $btnparams);
 
     $output .= html_writer::end_tag('form');
 
