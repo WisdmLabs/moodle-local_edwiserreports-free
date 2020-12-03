@@ -48,3 +48,16 @@ table.dataTable {
 table.dataTable td.dataTables_empty {
     text-align: center;
 }
+
+.dataTables_wrapper table.dataTable thead>tr>th {
+	padding: 10px 30px 10px 10px;
+}
+
+.dataTables_wrapper .row div[class^='col-'] {
+	padding-right: 0;
+	padding-left: 0;
+}
+
+.dataTables_wrapper table.dataTable tr td {
+	background-color: #fff !important;
+}
