@@ -662,11 +662,18 @@ class utility {
             "blockname" => $data->blockname,
             "component" => $data->region
         );
+
         $response = new stdClass();
-        if (!$rec = $DB->get_record('edwreports_schedemails', $params)) {
+        $blockcompare = $DB->sql_compare_text('blockname');
+        $componentcompare = $DB->sql_compare_text('component');
+        $sql = "SELECT * FROM {edwreports_schedemails}
+            WHERE $blockcompare LIKE :blockname
+            AND $componentcompare LIKE :component";
+        $records = $DB->get_record_sql($sql, $params);
+        if (!$records) {
             $response->error = true;
             $response->errormsg = get_string('recordnotfound', 'local_edwisrreports');
-        } else if (!$emaildata = json_decode($rec->emaildata)) { // If it dosent have email data.
+        } else if (!$emaildata = json_decode($records->emaildata)) { // If it dosent have email data.
             $response->error = true;
             $response->errormsg = get_string('jsondecodefailed', 'local_edwisrreports');
         } else if (!is_array($emaildata)) { // If dta is not an array.
