@@ -12,8 +12,6 @@ var gulp = require('gulp'),
     mediaGroup = require('gulp-group-css-media-queries'),
     mediaMerge = require('gulp-merge-media-queries');
 
-var PRODUCTION = process.argv.includes('-production');
-
 var sources = [
     './amd/src/*.js'
 ];
@@ -26,9 +24,6 @@ var minifyOptions = {
     compress: true,
     noSource: true
 };
-if (PRODUCTION == false) {
-    minifyOptions.preserveComments = 'all';
-}
 
 gulp.task('clean', function() {
     return gulp.src('./amd/build/**/*', {read: false})
@@ -39,15 +34,13 @@ gulp.task('purge', shell.task('php ' + __dirname + '/../../admin/cli/purge_cache
 
 gulp.task('uglify', function() {
     var task = gulp.src(sources)
-    .pipe(extReplace('.js', '.min.js'));
-    if (PRODUCTION) {
-        task = task.pipe(sourcemaps.init())
-        .pipe(babel({
-            presets: [["@babel/preset-env"]]
-        }))
-        .pipe(minify(minifyOptions))
-        .pipe(sourcemaps.write('.'));
-    }
+    .pipe(extReplace('.js', '.min.js'))
+    .pipe(sourcemaps.init())
+    .pipe(babel({
+        presets: [["@babel/preset-env"]]
+    }))
+    .pipe(minify(minifyOptions))
+    .pipe(sourcemaps.write('.'));
     return task.pipe(gulp.dest('./amd/build/'));
 });
 
