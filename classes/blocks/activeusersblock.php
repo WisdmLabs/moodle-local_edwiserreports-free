@@ -696,7 +696,7 @@ class activeusersblock extends block_base {
             $params["cohortid"] = $cohortid;
         }
 
-        $fields = 'cc.completiontime/86400 as userdate,
+        $fields = 'ROUND(cc.completiontime/86400, 0) as userdate,
                    COUNT(
                        CONCAT(
                             CONCAT(cc.courseid, \'-\'),
@@ -708,7 +708,7 @@ class activeusersblock extends block_base {
                 $cohortjoin
                 WHERE cc.completiontime IS NOT NULL
                 $cohortcondition
-                GROUP BY cc.completiontime/86400";
+                GROUP BY ROUND(cc.completiontime/86400, 0)";
         // Get data from cache if exist.
         if (!$completionrate = $this->cache->get($cachekey)) {
             $completionrate = array();
