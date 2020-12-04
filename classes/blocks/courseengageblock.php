@@ -57,7 +57,7 @@ class courseengageblock extends utility {
      * @return array           Array of course engagement
      */
     public static function get_courseengage($cohortid) {
-        global $DB;
+        global $CFG, $DB;
 
         $engagedata = array();
         $courses = self::get_courses(true);
@@ -83,13 +83,20 @@ class courseengageblock extends utility {
 
         // Calculate atleast completed one modules.
         $fields = 'c.courseid, COUNT(c.userid) AS usercount';
+        if ($CFG->dbtype == 'sqlsrv') {
+            $where = "(LEN(completedmodules) -
+                        LEN(REPLACE(completedmodules, ',', '')) + 1
+                      ) >= :completedactivities";
+        } else {
+            $where = "(LENGTH(completedmodules) -
+                        LENGTH(REPLACE(completedmodules, ',', '')) + 1
+                      ) >= :completedactivities";
+        }
         $completionmodulesql = "SELECT $fields
             FROM {edwreports_course_progress} c
             JOIN {user} u ON u.id = c.userid
             $cohortjoin
-            WHERE (LENGTH(completedmodules) -
-                    LENGTH(REPLACE(completedmodules, ',', '')) + 1
-                ) >= :completedactivities
+            WHERE $where
             AND u.deleted = 0
             $cohortcondition
             GROUP BY c.courseid";
