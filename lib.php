@@ -278,7 +278,7 @@ function local_edwiserreports_output_fragment_get_blockscap_form($block) {
 
     // Get block capabilities.
     $capabilities = \local_edwiserreports\utility::get_blocks_capability($block);
-    $capvalues = array_values($capabilities);
+    $capvalue = 'report/edwiserreports_' . $blockname . ':view';
 
     // Prepare form for block editing.
     $output = html_writer::start_tag('form', array('class' => 'form block-cap-form'));
@@ -292,15 +292,14 @@ function local_edwiserreports_output_fragment_get_blockscap_form($block) {
     $output .= html_writer::end_tag('label');
     $output .= html_writer::end_tag('div');
     $output .= html_writer::start_tag('div', array('class' => 'col-md-9'));
-    $output .= html_writer::select($capabilities, 'capabilities', $capvalues[0], null);
+    $output .= $capabilities[$capvalue];
+    $output .= html_writer::select($capabilities, 'capabilities', $capvalue, null, array('class' => 'hidden'));
     $output .= html_writer::end_tag('label');
     $output .= html_writer::end_tag('div');
     $output .= html_writer::end_tag('div');
 
     $output .= html_writer::start_div('clearfix path-admin-tool-capability overflow-scroll col-12 cap-overview');
-    $data = array();
-    $data['capvalue'] = array_search($capvalues[0], $capabilities);
-    $output .= local_edwiserreports_output_fragment_block_overview_display($data);
+    $output .= local_edwiserreports_output_fragment_block_overview_display($capvalue);
     $output .= html_writer::end_div();
     $btnparams = array('type' => 'submit', 'class' => 'btn btn-primary pull-right save-block-caps');
     $output .= html_writer::tag('button', 'Save', $btnparams);
@@ -312,9 +311,9 @@ function local_edwiserreports_output_fragment_get_blockscap_form($block) {
 
 /**
  * Render blocks capability view
- * @param array $value Fragment parameter array
+ * @param array $capvalue Fragment parameter array
  */
-function local_edwiserreports_output_fragment_block_overview_display($value) {
+function local_edwiserreports_output_fragment_block_overview_display($capvalue) {
     global $CFG;
 
     require_once($CFG->dirroot . '/admin/tool/capability/locallib.php');
@@ -342,7 +341,7 @@ function local_edwiserreports_output_fragment_block_overview_display($value) {
 
     // Get capability context.
     $roles = role_fix_names(get_all_roles($context));
-    $capabilitycontext = tool_capability_calculate_role_data($value['capvalue'], $roles);
+    $capabilitycontext = tool_capability_calculate_role_data($capvalue, $roles);
     foreach ($roles as $roleid => $role) {
         $output .= '<th><div><a href="javascript:void(0)">' . $role->localname . '</a></div></th>';
 
