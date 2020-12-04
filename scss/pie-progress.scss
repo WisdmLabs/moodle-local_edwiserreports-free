@@ -1,19 +1,10 @@
 .pie-progress-sm {
 	max-width: 100px;
-	max-width: 100px;
 	.pie-progress-number {
-		font-size: 26px;
-		font-size: 26px;
+		font-size: 14px;
 	}
 }
 .pie-progress {
-	max-width: 150px;
-	margin: 0 auto;
-	position: relative;
-	margin-right: auto;
-	margin-left: auto;
-	text-align: center;
-	transform-style: preserve-3d;
 	max-width: 150px;
 	margin: 0 auto;
 	position: relative;
@@ -27,15 +18,6 @@
 		-ms-transform: translateY(-50%);
 		-o-transform: translateY(-50%);
 		transform: translateY(-50%);
-		position: absolute;
-		top: 50%;
-		left: 0;
-		width: 100%;
-		-webkit-transform: translateY(-66%);
-		-moz-transform: translateY(-66%);
-		-ms-transform: translateY(-66%);
-		-o-transform: translateY(-66%);
-		transform: translateY(-66%);
 		position: absolute;
 		top: 50%;
 		left: 0;
@@ -54,15 +36,6 @@
 	left: 0;
 	width: 100%;
 	font-size: 36px;
-	-webkit-transform: translateY(-66%);
-	-moz-transform: translateY(-66%);
-	-ms-transform: translateY(-66%);
-	-o-transform: translateY(-66%);
-	transform: translateY(-66%);
-	position: absolute;
-	top: 50%;
-	left: 0;
-	width: 100%;
 }
 .pie-progress-content {
 	-webkit-transform: translateY(-50%);
@@ -74,15 +47,6 @@
 	top: 50%;
 	left: 0;
 	width: 100%;
-	-webkit-transform: translateY(-66%);
-	-moz-transform: translateY(-66%);
-	-ms-transform: translateY(-66%);
-	-o-transform: translateY(-66%);
-	transform: translateY(-66%);
-	position: absolute;
-	top: 50%;
-	left: 0;
-	width: 100%;
 }
 .pie-progress-label {
 	-webkit-transform: translateY(-50%);
@@ -90,15 +54,6 @@
 	-ms-transform: translateY(-50%);
 	-o-transform: translateY(-50%);
 	transform: translateY(-50%);
-	position: absolute;
-	top: 50%;
-	left: 0;
-	width: 100%;
-	-webkit-transform: translateY(-66%);
-	-moz-transform: translateY(-66%);
-	-ms-transform: translateY(-66%);
-	-o-transform: translateY(-66%);
-	transform: translateY(-66%);
 	position: absolute;
 	top: 50%;
 	left: 0;
