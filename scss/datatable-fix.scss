@@ -4,14 +4,37 @@ table.dataTable {
         .sorting_asc:before,
         .sorting_desc:before,
         .sorting_asc_disabled:before,
-        .sorting_desc_disabled:before,
+        .sorting_desc_disabled:before {
+            margin-top: -5px;
+            content: "";
+            -webkit-transform: translateY(-50%);
+            -ms-transform: translateY(-50%);
+            -o-transform: translateY(-50%);
+            -moz-transform: translateY(-50%);
+            transform: translateY(-50%);
+            font-family: 'FontAwesome' !important;
+            position: absolute;
+            top: 50%;
+            right: 1em;
+            content: "";
+        }
         .sorting:after,
         .sorting_asc:after,
         .sorting_desc:after,
         .sorting_asc_disabled:after,
         .sorting_desc_disabled:after {
-            top: 50%;
+            margin-top: 5px;
+            content: "";
+            -webkit-transform: translateY(-50%);
+            -ms-transform: translateY(-50%);
+            -o-transform: translateY(-50%);
+            -moz-transform: translateY(-50%);
             transform: translateY(-50%);
+            font-family: 'FontAwesome' !important;
+            position: absolute;
+            top: 50%;
+            right: 1em;
+            content: "";
         }
     }
     tr, td {
