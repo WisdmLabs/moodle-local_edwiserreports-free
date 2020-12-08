@@ -55,6 +55,9 @@
             .dropdown-body {
                 @include calendar-dropdown-width;
             }
+            dropdown-item.custom {
+                background: #fff;
+            }
         }
         .dropdown-menu.withcalendar {
             width: 540px;
@@ -81,8 +84,25 @@
 }
 
 #wdm-activeusers-individual {
+    input.dropdown-item {
+		background-color: transparent;
+		color: inherit;
+    }
+    input.dropdown-item:hover {
+        cursor: pointer;
+        background-color: #f8f9fa;
+    }
+	input.dropdown-item.custom:focus {
+		-webkit-box-shadow: none;
+		box-shadow: none;
+	}
+    .dropdown-menu {
+        right: 0;
+        left: auto;
+    }
     .dropdown-menu.withcalendar {
         width: 540px;
+        display: flex;
         .dropdown-calendar {
             @include calendar-size;
             .flatpickr-calendar {

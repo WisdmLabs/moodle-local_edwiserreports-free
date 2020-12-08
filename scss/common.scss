@@ -110,6 +110,15 @@ tr[aria-expanded="true"] {
 	input.dropdown-item {
 		background-color: transparent;
 		color: inherit;
+		height: 22px;
+	}
+	input.dropdown-item:hover {
+		cursor: pointer;
+		background-color: #f8f9fa;
+	}
+	input.dropdown-item.custom:focus {
+		-webkit-box-shadow: none;
+		box-shadow: none;
 	}
 	.loader {
 		height: 100%;
