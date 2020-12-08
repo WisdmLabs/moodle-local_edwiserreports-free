@@ -140,7 +140,7 @@ class inactiveusersblock extends block_base {
         }
 
         // Query to get users who have not logged in.
-        $sql = "SELECT * FROM {user} WHERE lastlogin <= :lastlogin
+        $sql = "SELECT * FROM {user} WHERE lastaccess <= :lastlogin
                 AND deleted = 0 AND id > 1";
         $inparams['lastlogin'] = $lastlogin;
 
