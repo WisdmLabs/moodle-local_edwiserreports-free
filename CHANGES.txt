@@ -1,0 +1,17 @@
+v 1.0.1
+====================================================
+
+Feature - Added support for Oracle, MsSQL and PostgreSQL databases.
+Feature - Compatibility with Moodle 3.10+.
+Tweak - Code Optimization.
+Tweak - Converted CSS to SCSS.
+Tweak - Added function prefix in global context lib.php.
+Tweak - Removed unused functions from the converted.
+Tweak - Removed the edit advance select option in capability.
+Fix - Fixed the redirection issue for non logged in users at homepage.
+Fix - Fixed report blocks access permission related issues.
+
+v 1.0.0
+====================================================
+
+- Initial version
