@@ -24,6 +24,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+require_once($CFG->dirroot . '/local/edwiserreports/lib.php');
+
 /**
  * Custom code to be run on installing the plugin.
  */
@@ -33,7 +35,7 @@ function xmldb_local_edwiserreports_install() {
     set_config('edwiserreportsinstallation', true, 'local_edwiserreports');
 
     // All Default blocks.
-    $defaultblocks = get_default_block_settings();
+    $defaultblocks = local_edwiserreports_get_default_block_settings();
 
     // Create each block.
     $blocks = array();

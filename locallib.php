@@ -202,20 +202,19 @@ function local_edwiserreports_get_cohort_filter() {
 
     $syscontext = context_system::instance();
     $cohorts = cohort_get_cohorts($syscontext->id)["cohorts"];
-    $categories = $DB->get_records_select('course_categories', 'id');
+    $categories = $DB->get_records('course_categories', null, 'id');
 
     foreach ($categories as $category) {
         $catcontext = context_coursecat::instance($category->id);
         $cohorts = array_merge($cohorts, cohort_get_cohorts($catcontext->id)["cohorts"]);
     }
 
-    if (empty($cohorts)) {
-        return false;
+    $cohortfilter = false;
+    if (!empty($cohorts)) {
+        $cohortfilter = new stdClass();
+        $cohortfilter->text = get_string('cohorts', 'local_edwiserreports');
+        $cohortfilter->values = $cohorts;
     }
-
-    $cohortfilter = new stdClass();
-    $cohortfilter->text = get_string('cohorts', 'local_edwiserreports');
-    $cohortfilter->values = $cohorts;
     return $cohortfilter;
 }
 
@@ -301,11 +300,7 @@ function local_edwiserreports_create_back_button($backurl) {
 function local_edwiserreports_has_plugin($plugintype, $pluginname) {
     $plugins = core_plugin_manager::instance()->get_plugins_of_type($plugintype);
 
-    if (array_key_exists($pluginname, $plugins)) {
-        return true;
-    }
-
-    return false;
+    return array_key_exists($pluginname, $plugins);
 }
 
 /**
@@ -334,9 +329,11 @@ function local_edwiserreports_get_schedule_emailform($id, $formaction, $blocknam
 
     // Get data from table.
     $table = "edwreports_schedemails";
+    $blockcompare = $DB->sql_compare_text('blockname');
+    $componentcompare = $DB->sql_compare_text('component');
     $sql = "SELECT * FROM {edwreports_schedemails}
-        WHERE blockname = :blockname
-        AND component = :component";
+            WHERE $blockcompare LIKE :blockname
+            AND $componentcompare LIKE :component";
     $params = array(
         "blockname" => $blockname,
         "component" => $region
@@ -984,11 +981,45 @@ function is_block_present_indashboard() {
     $hasblock = false;
     $blocks = \local_edwiserreports\utility::get_reports_block();
     foreach ($blocks as $key => $block) {
-        if (has_capability('report/edwiserreports_' . $block->classname . ':view', context_system::instance())) {
+        $capname = 'report/edwiserreports_' . $block->classname . ':view';
+        if (has_capability($capname, context_system::instance()) ||
+            can_view_block($capname)) {
             $hasblock = true;
             continue;
         }
     }
 
     return $hasblock;
+}
+
+/**
+ * Check if user has course level role in the system
+ * @param  [int]     $userid        Users Id
+ * @param  [string]  $roleshortname Role Short Name
+ * @return [boolean]                Status
+ */
+function has_user_role($userid, $roleshortname) {
+    global $DB;
+
+    $roleid = $DB->get_field('role', 'id', array('shortname' => $roleshortname));
+    return $DB->record_exists('role_assignments', ['userid' => $userid, 'roleid' => $roleid]);
+}
+
+/**
+ * Function to get the users role in any courses
+ * @param [string] $capability capability
+ */
+function can_view_block($capname) {
+    global $USER;
+
+    $canviewblocks = false;
+    $allowedrole = get_roles_with_capability($capname);
+    foreach ($allowedrole as $role) {
+        if (has_user_role($USER->id, $role->shortname)) {
+            $canviewblocks = true;
+            continue;
+        }
+    }
+
+    return $canviewblocks;
 }

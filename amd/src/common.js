@@ -776,7 +776,6 @@ define([
         var region = data.region;
         var errorBox = root.find(".esr-form-error");
         errorBox.html(loader).show();
-        console.log(data);
 
         $.ajax({
             url: v.requestUrl,
@@ -839,7 +838,6 @@ define([
             }
         }).done(function(response) {
             response = JSON.parse(response);
-            console.log(response);
             if (!response.error) {
                 errorBox.html(response.successmsg);
                 errorBox.show();

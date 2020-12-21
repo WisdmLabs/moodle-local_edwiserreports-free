@@ -24,6 +24,7 @@
 namespace local_edwiserreports;
 
 defined('MOODLE_INTERNAL') or die;
+
 use stdClass;
 use moodle_url;
 use cache;
@@ -42,7 +43,7 @@ class activeusersblock extends block_base {
      *
      * @var null
      */
-    public $firstaccess;
+    public $firstsiteaccess;
 
     /**
      * Current time
@@ -200,35 +201,49 @@ class activeusersblock extends block_base {
     }
 
     /**
+     * Get the first log from the log table
+     * @return stdClass | bool firstlog
+     */
+    public function get_first_log() {
+        global $DB;
+        $cachekey = "activeusers-first-log";
+
+        // Get logs from cache.
+        if (!$firstlogs = $this->cache->get($cachekey)) {
+            $fields = 'id, userid, timecreated';
+            $firstlogs = $DB->get_record('logstore_standard_log', array(), $fields, IGNORE_MULTIPLE);
+
+            // Set cache if log is not available.
+            $this->cache->set($cachekey, $firstlogs);
+        }
+
+        return $firstlogs;
+    }
+
+    /**
      * Constructor
      * @param string $filter Range selector
      */
     public function generate_labels($filter) {
         global $DB;
 
+        // Cache key for active users block label.
+        $cachekey = "activeusers-labels-" . $filter;
+
         // Set current time.
         $this->timenow = time();
         // Set cache for active users block.
         $this->cache = cache::make('local_edwiserreports', 'activeusers');
-        // Get logs from cache.
-        if (!$record = $this->cache->get("activeusers-first-log")) {
-            $sql = "SELECT id, userid, timecreated
-                FROM {logstore_standard_log}
-                ORDER BY timecreated ASC LIMIT 1";
-            $record = $DB->get_record_sql($sql);
 
-            // Set cache if log is not available.
-            $this->cache->set("activeusers-first-log", $record);
-        }
-
-        $cachekey = "activeusers-labels-" . $filter;
-        if ($record) {
+        if ($firstlogs = $this->get_first_log()) {
             // Getting first access of the site.
-            $this->firstaccess = $record->timecreated;
+            $this->firstsiteaccess = $firstlogs->timecreated;
+
+            // Based on the filter select labels.
             switch ($filter) {
                 case LOCAL_SITEREPORT_ALL:
                     // Calculate the days for all active users data.
-                    $days = ceil(($this->timenow - $this->firstaccess) / LOCAL_SITEREPORT_ONEDAY);
+                    $days = ceil(($this->timenow - $this->firstsiteaccess) / LOCAL_SITEREPORT_ONEDAY);
                     $this->xlabelcount = $days;
                     break;
                 case LOCAL_SITEREPORT_MONTHLY:
@@ -262,7 +277,7 @@ class activeusersblock extends block_base {
             }
         } else {
             // If no record fonud then current time is first access time.
-            $this->firstaccess = $this->timenow;
+            $this->firstsiteaccess = $this->timenow;
         }
 
         // Get labels from cache if exist.
@@ -286,11 +301,32 @@ class activeusersblock extends block_base {
     }
 
     /**
+     * Generate cache key for blocks
+     * @param  string $blockname Block name
+     * @param  string    $filter    Filter
+     * @param  int    $cohortid  Cohort id
+     * @return string            Cache key
+     */
+    public function generate_cache_key($blockname, $filter, $cohortid = 0) {
+        $cachekey = $blockname . "-" . $filter . "-";
+
+        if ($cohortid) {
+            $cachekey .= $cohortid;
+        } else {
+            $cachekey .= "all";
+        }
+
+        return $cachekey;
+    }
+
+    /**
      * Get active user, enrolment, completion
      * @param  object $params date filter to get data
      * @return object         Active users graph data
      */
     public function get_data($params = false) {
+        ob_start();
+
         // Get data from params.
         $filter = isset($params->filter) ? $params->filter : false;
         $cohortid = isset($params->cohortid) ? $params->cohortid : false;
@@ -299,13 +335,7 @@ class activeusersblock extends block_base {
         $this->generate_labels($filter);
 
         // Get cache key.
-        $cachekey = "activeusers-response" . $filter . "-";
-
-        if ($cohortid) {
-            $cachekey .= $cohortid;
-        } else {
-            $cachekey .= "all";
-        }
+        $cachekey = $this->generate_cache_key("activeusers-response", $filter, $cohortid);
 
         // If response is in cache then return from cache.
         if (!$response = $this->cache->get($cachekey)) {
@@ -321,6 +351,7 @@ class activeusersblock extends block_base {
             $this->cache->set($cachekey, $response);
         }
 
+        ob_clean();
         return $response;
     }
 
@@ -459,11 +490,13 @@ class activeusersblock extends block_base {
                 $params["action"] = 'viewed';
                 break;
             case "enrolments":
-                $sql = "SELECT l.id, l.userid, l.relateduserid, l.courseid
+                $fields = 'DISTINCT(CONCAT(CONCAT(l.courseid, \'-\'), l.relateduserid )) as id, l.relateduserid, l.courseid';
+                $sql = "SELECT $fields
                    FROM {logstore_standard_log} l $sqlcohort
                    WHERE l.timecreated >= :starttime
                    AND l.timecreated < :endtime
-                   AND l.eventname = :eventname $cohortcondition";
+                   AND l.eventname = :eventname $cohortcondition
+                   GROUP BY l.relateduserid, l.courseid";
                 $params["eventname"] = '\core\event\user_enrolment_created';
                 break;
             case "completions";
@@ -473,7 +506,7 @@ class activeusersblock extends block_base {
                            ON cm.userid = l.userid";
                     $params["cohortid"] = $cohortid;
                 }
-                $sql = "SELECT CONCAT(l.userid, '-', l.courseid) as id, l.userid as relateduserid, l.courseid as courseid
+                $sql = "SELECT CONCAT(CONCAT(l.userid, '-'), l.courseid) as id, l.userid as relateduserid, l.courseid as courseid
                    FROM {edwreports_course_progress} l $sqlcohort
                    WHERE l.completiontime IS NOT NULL
                    AND l.completiontime >= :starttime
@@ -516,33 +549,29 @@ class activeusersblock extends block_base {
             "endtime" => $this->timenow,
             "action" => "viewed"
         );
+
+        // Get cache key.
+        $cachekey = $this->generate_cache_key("activeusers-activeusers", $filter, $cohortid);
+
         // Query to get activeusers from logs.
-        $cachekey = "activeusers-activeusers-" . $filter . "-all";
         $cohortjoin = "";
         $cohortcondition = "";
         if ($cohortid) {
-            $cachekey = "activeusers-activeusers-" . $filter . "-" . $cohortid;
             $cohortjoin = "JOIN {cohort_members} cm ON l.userid = cm.userid";
             $cohortcondition = "AND cm.cohortid = :cohortid";
             $params["cohortid"] = $cohortid;
         }
         $sql = "SELECT
-            CONCAT(
-                DAY(FROM_UNIXTIME(l.timecreated)), '-',
-                MONTH(FROM_UNIXTIME(l.timecreated)), '-',
-                YEAR(FROM_UNIXTIME(l.timecreated))
-            ) USERDATE,
-            COUNT( DISTINCT l.userid ) as usercount
-            FROM {logstore_standard_log} l "
-            . $cohortjoin .
-            " WHERE l.action = :action "
-            . $cohortcondition .
-            " AND l.timecreated >= :starttime
-            AND l.timecreated < :endtime
-            AND l.userid > 1
-            GROUP BY YEAR(FROM_UNIXTIME(l.timecreated)),
-            MONTH(FROM_UNIXTIME(l.timecreated)),
-            DAY(FROM_UNIXTIME(l.timecreated)), USERDATE";
+                    ROUND(l.timecreated/86400, 0) as userdate,
+                    COUNT( DISTINCT l.userid ) as usercount
+                FROM {logstore_standard_log} l "
+                . $cohortjoin .
+                " WHERE l.action = :action "
+                . $cohortcondition .
+                " AND l.timecreated >= :starttime
+                AND l.timecreated < :endtime
+                AND l.userid > 1
+                GROUP BY ROUND(l.timecreated/86400, 0)";
 
         // Get active users data from cache.
         if (!$activeusers = $this->cache->get($cachekey)) {
@@ -553,7 +582,7 @@ class activeusersblock extends block_base {
             // Get active users for every day.
             for ($i = 0; $i < $this->xlabelcount; $i++) {
                 $time = $this->timenow - $i * LOCAL_SITEREPORT_ONEDAY;
-                $logkey = date("j-n-Y", $time);
+                $logkey = $time / LOCAL_SITEREPORT_ONEDAY;
                 if (isset($logs[$logkey])) {
                     $activeusers[] = $logs[$logkey]->usercount;
                 } else {
@@ -584,45 +613,51 @@ class activeusersblock extends block_base {
             "starttime" => $starttime,
             "endtime" => $this->timenow,
             "eventname" => '\core\event\user_enrolment_created',
-            "action" => "created"
+            "actionname" => "created"
         );
 
-        $cachekey = "activeusers-enrolments-". $filter . "-all";
+        // Cache Key for enrolments.
+        $cachekey = $this->generate_cache_key('activeusers-enrolments', $filter, $cohortid);
+
         $cohortjoin = "";
         $cohortcondition = "";
         if ($cohortid) {
-            $cachekey = "activeusers-enrolments-" . $filter . "-" . $cohortid;
             $cohortjoin = "JOIN {cohort_members} cm ON l.relateduserid = cm.userid";
             $cohortcondition = "AND cm.cohortid = :cohortid";
             $params["cohortid"] = $cohortid;
         }
-        $sql = "SELECT
-            CONCAT(
-                DAY(FROM_UNIXTIME(l.timecreated)), '-',
-                MONTH(FROM_UNIXTIME(l.timecreated)), '-',
-                YEAR(FROM_UNIXTIME(l.timecreated))
-            ) USERDATE,
-            COUNT( l.relateduserid ) as usercount
-            FROM {logstore_standard_log} l "
-            . $cohortjoin .
-            " WHERE l.eventname = :eventname "
-            . $cohortcondition .
-            " AND l.action = :action
-            AND l.timecreated >= :starttime
-            AND l.timecreated < :endtime
-            GROUP BY YEAR(FROM_UNIXTIME(l.timecreated)),
-            MONTH(FROM_UNIXTIME(l.timecreated)),
-            DAY(FROM_UNIXTIME(l.timecreated)), USERDATE";
+
+        $fields = 'ROUND(l.timecreated/86400, 0) as userdate,
+                    COUNT(
+                        DISTINCT(
+                            CONCAT(
+                                CONCAT(l.courseid, \'-\')
+                                , l.relateduserid
+                            )
+                        )
+                    )
+                    as usercount';
+        $sql = "SELECT $fields
+                FROM {logstore_standard_log} l
+                $cohortjoin
+                WHERE l.eventname = :eventname
+                $cohortcondition
+                AND l.action = :actionname
+                AND l.timecreated >= :starttime
+                AND l.timecreated < :endtime
+                GROUP BY ROUND(l.timecreated/86400, 0)";
+
         // Get data from cache if exist.
         if (!$enrolments = $this->cache->get($cachekey)) {
             // Get enrolments log.
             $logs = $DB->get_records_sql($sql, $params);
+
             $enrolments = array();
 
             // Get enrolments from every day.
             for ($i = 0; $i < $this->xlabelcount; $i++) {
                 $time = $this->timenow - $i * LOCAL_SITEREPORT_ONEDAY;
-                $logkey = date("j-n-Y", $time);
+                $logkey = $time / LOCAL_SITEREPORT_ONEDAY;
 
                 if (isset($logs[$logkey])) {
                     $enrolments[] = $logs[$logkey]->usercount;
@@ -649,29 +684,31 @@ class activeusersblock extends block_base {
         global $DB;
 
         $params = array();
-        $cachekey = "activeusers-completionrate-" . $filter . "-all";
+
+        // Prepare cache key for completion rate.
+        $cachekey = $this->generate_cache_key('activeusers-completionrate', $filter, $cohortid);
+
         $cohortjoin = "";
         $cohortcondition = "";
         if ($cohortid) {
-            $cachekey = "activeusers-completionrate-" . $filter . "-" . $cohortid;
             $cohortjoin = "JOIN {cohort_members} cm ON cc.userid = cm.userid";
             $cohortcondition = "AND cm.cohortid = :cohortid";
             $params["cohortid"] = $cohortid;
         }
-        $sql = "SELECT
-            CONCAT(
-            DAY(FROM_UNIXTIME(cc.completiontime)), '-',
-            MONTH(FROM_UNIXTIME(cc.completiontime)), '-',
-            YEAR(FROM_UNIXTIME(cc.completiontime))
-            ) USERDATE,
-            COUNT( CONCAT(cc.courseid, '-', cc.userid )) as usercount
-            FROM {edwreports_course_progress} cc "
-            . $cohortjoin .
-            " WHERE cc.completiontime IS NOT NULL "
-            . $cohortcondition .
-            " GROUP BY YEAR(FROM_UNIXTIME(cc.completiontime)),
-            MONTH(FROM_UNIXTIME(cc.completiontime)),
-            DAY(FROM_UNIXTIME(cc.completiontime)), USERDATE";
+
+        $fields = 'ROUND(cc.completiontime/86400, 0) as userdate,
+                   COUNT(
+                       CONCAT(
+                            CONCAT(cc.courseid, \'-\'),
+                            cc.userid
+                        )
+                    ) as usercount';
+        $sql = "SELECT $fields
+                FROM {edwreports_course_progress} cc
+                $cohortjoin
+                WHERE cc.completiontime IS NOT NULL
+                $cohortcondition
+                GROUP BY ROUND(cc.completiontime/86400, 0)";
         // Get data from cache if exist.
         if (!$completionrate = $this->cache->get($cachekey)) {
             $completionrate = array();
@@ -680,7 +717,7 @@ class activeusersblock extends block_base {
             // Get completion for each day.
             for ($i = 0; $i < $this->xlabelcount; $i++) {
                 $time = $this->timenow - $i * LOCAL_SITEREPORT_ONEDAY;
-                $logkey = date("j-n-Y", $time);
+                $logkey = $time / LOCAL_SITEREPORT_ONEDAY;
 
                 if (isset($completions[$logkey])) {
                     $completionrate[] = $completions[$logkey]->usercount;

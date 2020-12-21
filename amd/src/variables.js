@@ -454,7 +454,7 @@ define(['jquery', 'local_edwiserreports/variables'], function($) {
                     modalHeader += "Active Users";
                     break;
                 case "activecourses":
-                    modalHeader += "Populer Courses";
+                    modalHeader += "Popular Courses";
                     break;
                 case "courseprogress":
                     modalHeader += "Course Progress";

@@ -24,6 +24,8 @@
 
 namespace local_edwiserreports;
 
+defined('MOODLE_INTERNAL') or die;
+
 use stdClass;
 use context_course;
 use cache;
@@ -145,7 +147,7 @@ class activecoursesblock extends block_base {
                 $completedusers = $coursecompletion[$course->id]->users;
             }
 
-            $res[] = self::get_courseview_count($course->id, $enrolledstudents);
+            $res[] = self::get_courseview_count($course->id, array_keys($enrolledstudents));
             $res[] = $completedusers;
             $response[] = $res;
         }
@@ -155,24 +157,26 @@ class activecoursesblock extends block_base {
     /**
      * Get Course View Count by users
      * @param  int   $courseid         Course Id
-     * @param  array $enrolledstudents Array of enrolled uesers
+     * @param  array $studentsids      Array of enrolled uesers id
      * @return int                     Number of course views by users
      */
-    public static function get_courseview_count($courseid, $enrolledstudents) {
+    public static function get_courseview_count($courseid, $studentsids) {
         global $DB;
-        $sqlcourseview = "SELECT COUNT(DISTINCT userid) as usercount
-            FROM {logstore_standard_log}
-            WHERE action = ? AND courseid = ?";
 
-        if (!empty($enrolledstudents)) {
-            $extsql = " AND userid IN (" . implode(",", array_keys($enrolledstudents)) . ")";
-            $sqlcourseview .= $extsql;
+        $extsql = '';
+        $params = array();
+        if (!empty($studentsids)) {
+            list($extsql, $params) = $DB->get_in_or_equal($studentsids, SQL_PARAMS_NAMED, 'user');
         }
 
-        $views = $DB->get_record_sql($sqlcourseview, array(
-            'viewed',
-            $courseid
-        ));
+        $sqlcourseview = "SELECT COUNT(DISTINCT userid) as usercount
+            FROM {logstore_standard_log}
+            WHERE action = :action
+            AND courseid = :courseid
+            AND userid $extsql";
+        $params['courseid'] = $courseid;
+        $params['action'] = 'viewed';
+        $views = $DB->get_record_sql($sqlcourseview, $params);
         return $views->usercount;
     }
 

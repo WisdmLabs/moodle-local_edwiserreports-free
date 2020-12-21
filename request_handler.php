@@ -34,12 +34,8 @@ if (!isset($action) || empty($action)) {
 // Only make ajax true if action has ajax in name.
 $actionpattern = '/_ajax$/i';
 
-// Include Moodle config
-// This code is to run or include file at developer end
-// It is because we use symlink for theme from local_gitrepo.
-if (!@include_once(__DIR__.'/../../config.php')) {
-    include_once('/var/www/html/elucid/v37/config.php');
-}
+// Include Moodle config.
+require_once(__DIR__.'/../../config.php');
 
 require_sesskey();
 

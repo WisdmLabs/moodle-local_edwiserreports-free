@@ -1,0 +1,29 @@
+.flatpickr-calendar.arrowTop:before,
+.flatpickr-calendar.arrowTop:after,
+.flatpickr-calendar.arrowBottom:before,
+.flatpickr-calendar.arrowBottom:after {
+    display: none;
+}
+
+.flatpickr-wrapper {
+    position: relative;
+    max-width: 150px;
+}
+
+.flatpickr-wrapper::before {
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-5px);
+    margin: 0 10px;
+    width: 0;
+    height: 0;
+    margin-left: .2431rem;
+    vertical-align: .2431rem;
+    content: "";
+    border-top: .286rem solid;
+    border-right: .286rem solid transparent;
+    border-bottom: 0;
+    border-left: .286rem solid transparent;
+    right: 0;
+}

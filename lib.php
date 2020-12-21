@@ -82,44 +82,6 @@ require_once("$CFG->libdir/formslib.php");
  */
 class local_edwiserreports_email_dialog_form extends moodleform {
     /**
-     * The constructor function calls the abstract function definition() and it will then
-     * process and clean and attempt to validate incoming data.
-     *
-     * It will call your custom validate method to validate data and will also check any rules
-     * you have specified in definition using addRule
-     *
-     * The name of the form (id attribute of the form) is automatically generated depending on
-     * the name you gave the class extending moodleform. You should call your class something
-     * like
-     *
-     * @param mixed $action the action attribute for the form. If empty defaults to auto detect the
-     *              current url. If a moodle_url object then outputs params as hidden variables.
-     * @param mixed $customdata if your form defintion method needs access to data such as $course
-     *              $cm, etc. to construct the form definition then pass it in this array. You can
-     *              use globals for somethings.
-     * @param string $method if you set this to anything other than 'post' then _GET and _POST will
-     *               be merged and used as incoming data to the form.
-     * @param string $target target frame for form submission. You will rarely use this. Don't use
-     *               it if you don't need to as the target attribute is deprecated in xhtml strict.
-     * @param mixed $attributes you can pass a string of html attributes here or an array.
-     *               Special attribute 'data-random-ids' will randomise generated elements ids. This
-     *               is necessary when there are several forms on the same page.
-     * @param bool $editable
-     * @param array $ajaxformdata Forms submitted via ajax, must pass their data here, instead of relying on _GET and _POST.
-     */
-    public function __construct(
-        $action = null,
-        $customdata = null,
-        $method = 'post',
-        $target = '',
-        $attributes = null,
-        $editable = true,
-        $ajaxformdata = null
-    ) {
-        parent::__construct($action, $customdata, $method, $target, $attributes, $editable, $ajaxformdata);
-    }
-
-    /**
      * Add elements to form.
      */
     public function definition() {
@@ -172,94 +134,6 @@ function local_edwiserreports_output_fragment_email_dialog($args) {
     ob_start();
     $form->display();
     return ob_get_clean();
-}
-
-/**
- * Create schedule email dialoge box
- * @param  [type] $args [description]
- * @return [type]       [description]
- */
-function local_edwiserreports_output_fragment_schedule_email_dialog($args) {
-    $formaction = clean_param($args["href"], PARAM_TEXT);
-    $blockname = clean_param($args["blockname"], PARAM_TEXT);
-    $region = clean_param($args["region"], PARAM_TEXT);
-
-    // Get existing email id.
-    $id = $args["id"];
-
-    $out = html_writer::start_div("nav-tabs-horizontal", array(
-        "data-plugin" => "tabs"
-    ));
-
-    $out .= html_writer::start_tag("ul", array(
-        "class" => "nav nav-tabs nav-tabs-line",
-        "role" => "tablist"
-    ));
-
-    // Tab 1.
-    $out .= html_writer::start_tag("li", array(
-        "class" => "nav-item",
-        "role" => "presentation"
-    ));
-    $out .= html_writer::link("#scheduletab",
-        get_string("schedule", "local_edwiserreports"),
-        array(
-            "class" => "nav-link active",
-            "data-toggle" => "tab",
-            "aria-controls" => "scheduletab",
-            "role" => "tab",
-            "aria-selected" => "true"
-        )
-    );
-    $out .= html_writer::end_tag("li");
-
-    // Tab 2.
-    $out .= html_writer::start_tag("li", array(
-        "class" => "nav-item",
-        "role" => "presentation"
-    ));
-    $out .= html_writer::link("#listemailstab",
-        get_string("scheduledlist", "local_edwiserreports"),
-        array(
-            "class" => "nav-link",
-            "data-toggle" => "tab",
-            "aria-controls" => "listemailstab",
-            "role" => "tab",
-            "aria-selected" => "true"
-        )
-    );
-    $out .= html_writer::end_tag("li");
-
-    $out .= html_writer::end_tag("ul");
-
-    // Tab Content.
-    $out .= html_writer::start_div("tab-content pt-20");
-
-    // Tab Content 1.
-    $out .= html_writer::div(local_edwiserreports_get_schedule_emailform($id, $formaction, $blockname, $region),
-        "tab-pane active",
-        array(
-            "id" => "scheduletab",
-            "role" => "tabpanel"
-        )
-    );
-    $out .= html_writer::div("", "tab-pane", array(
-        "id" => "schedule",
-        "role" => "tabpanel"
-    ));
-
-    // Tab Content 2.
-    $out .= html_writer::div(local_edwiserreports_get_schedule_emaillist(), "tab-pane", array(
-        "id" => "listemailstab",
-        "role" => "tabpanel"
-    ));
-    $out .= html_writer::div("", "tab-pane", array(
-        "id" => "listemails",
-        "role" => "tabpanel"
-    ));
-    $out .= html_writer::end_div();
-
-    return $out;
 }
 
 /**
@@ -322,7 +196,7 @@ function local_edwiserreports_output_fragment_get_blocksetting_form($params) {
     $preferences = \local_edwiserreports\utility::get_reportsblock_preferences($block);
 
     // Prepare form for block editing.
-    $o = html_writer::start_tag('form', array('class' => 'form block-settings-form'));
+    $output = html_writer::start_tag('form', array('class' => 'form block-settings-form'));
 
     // Prepare view string.
     $views = array(
@@ -344,40 +218,41 @@ function local_edwiserreports_output_fragment_get_blocksetting_form($params) {
         if (LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW == $key) {
             $voption[LOCAL_SITEREPORT_BLOCK_SMALL] = get_string('small', $component);
         }
-        $o .= html_writer::start_tag('div', array('class' => 'form-group row fitem'));
-        $o .= html_writer::start_tag('div', array('class' => 'col-md-6'));
-        $o .= html_writer::tag('label', $view['name'], array('class' => 'col-form-label d-inline', 'for' => 'id_' . $view['key']));
-        $o .= html_writer::end_tag('label');
-        $o .= html_writer::end_tag('div');
-        $o .= html_writer::start_tag('div', array('class' => 'col-md-6'));
-        $o .= html_writer::select($voption, $view['key'], $preferences[$key], null);
-        $o .= html_writer::end_tag('label');
-        $o .= html_writer::end_tag('div');
-        $o .= html_writer::end_tag('div');
+        $output .= html_writer::start_tag('div', array('class' => 'form-group row fitem'));
+        $output .= html_writer::start_tag('div', array('class' => 'col-md-6'));
+        $labelparams = array('class' => 'col-form-label d-inline', 'for' => 'id_' . $view['key']);
+        $output .= html_writer::tag('label', $view['name'], $labelparams);
+        $output .= html_writer::end_tag('label');
+        $output .= html_writer::end_tag('div');
+        $output .= html_writer::start_tag('div', array('class' => 'col-md-6'));
+        $output .= html_writer::select($voption, $view['key'], $preferences[$key], null);
+        $output .= html_writer::end_tag('label');
+        $output .= html_writer::end_tag('div');
+        $output .= html_writer::end_tag('div');
     }
 
     $blocks = \local_edwiserreports\utility::get_reports_block();
     $positions = range(1, count($blocks));
-    $o .= html_writer::start_tag('div', array('class' => 'form-group row fitem'));
-    $o .= html_writer::start_tag('div', array('class' => 'col-md-6'));
-    $o .= html_writer::tag('label', get_string('position', $component),
+    $output .= html_writer::start_tag('div', array('class' => 'form-group row fitem'));
+    $output .= html_writer::start_tag('div', array('class' => 'col-md-6'));
+    $output .= html_writer::tag('label', get_string('position', $component),
             array('class' => 'col-form-label d-inline', 'for' => 'id_position'));
-    $o .= html_writer::end_tag('label');
-    $o .= html_writer::end_tag('div');
-    $o .= html_writer::start_tag('div', array('class' => 'col-md-6'));
-    $o .= html_writer::select($positions, 'position', $preferences['position'], null);
-    $o .= html_writer::end_tag('label');
-    $o .= html_writer::end_tag('div');
-    $o .= html_writer::end_tag('div');
-    $o .= html_writer::tag(
+    $output .= html_writer::end_tag('label');
+    $output .= html_writer::end_tag('div');
+    $output .= html_writer::start_tag('div', array('class' => 'col-md-6'));
+    $output .= html_writer::select($positions, 'position', $preferences['position'], null);
+    $output .= html_writer::end_tag('label');
+    $output .= html_writer::end_tag('div');
+    $output .= html_writer::end_tag('div');
+    $output .= html_writer::tag(
         'button',
         'Save',
         array('type' => 'submit', 'class' => 'btn btn-primary pull-right save-block-settings')
     );
 
-    $o .= html_writer::end_tag('form');
+    $output .= html_writer::end_tag('form');
 
-    return $o;
+    return $output;
 }
 
 /**
@@ -403,42 +278,42 @@ function local_edwiserreports_output_fragment_get_blockscap_form($block) {
 
     // Get block capabilities.
     $capabilities = \local_edwiserreports\utility::get_blocks_capability($block);
-    $capvalues = array_values($capabilities);
+    $capvalue = 'report/edwiserreports_' . $blockname . ':view';
 
     // Prepare form for block editing.
-    $o = html_writer::start_tag('form', array('class' => 'form block-cap-form'));
+    $output = html_writer::start_tag('form', array('class' => 'form block-cap-form'));
 
-    $o .= html_writer::start_tag('div', array('class' => 'form-group row fitem'));
-    $o .= html_writer::start_tag('div', array('class' => 'col-md-3'));
-    $o .= html_writer::tag('label',
+    $output .= html_writer::start_tag('div', array('class' => 'form-group row fitem'));
+    $output .= html_writer::start_tag('div', array('class' => 'col-md-3'));
+    $output .= html_writer::tag('label',
         get_string('capabilties', $component),
         array('class' => 'col-form-label d-inline', 'for' => 'id_capabilities')
     );
-    $o .= html_writer::end_tag('label');
-    $o .= html_writer::end_tag('div');
-    $o .= html_writer::start_tag('div', array('class' => 'col-md-9'));
-    $o .= html_writer::select($capabilities, 'capabilities', $capvalues[0], null);
-    $o .= html_writer::end_tag('label');
-    $o .= html_writer::end_tag('div');
-    $o .= html_writer::end_tag('div');
+    $output .= html_writer::end_tag('label');
+    $output .= html_writer::end_tag('div');
+    $output .= html_writer::start_tag('div', array('class' => 'col-md-9'));
+    $output .= $capabilities[$capvalue];
+    $output .= html_writer::select($capabilities, 'capabilities', $capvalue, null, array('class' => 'hidden'));
+    $output .= html_writer::end_tag('label');
+    $output .= html_writer::end_tag('div');
+    $output .= html_writer::end_tag('div');
 
-    $o .= html_writer::start_div('clearfix path-admin-tool-capability overflow-scroll col-12 cap-overview');
-    $data = array();
-    $data['capvalue'] = array_search($capvalues[0], $capabilities);
-    $o .= local_edwiserreports_output_fragment_block_overview_display($data);
-    $o .= html_writer::end_div();
-    $o .= html_writer::tag('button', 'Save', array('type' => 'submit', 'class' => 'btn btn-primary pull-right save-block-caps'));
+    $output .= html_writer::start_div('clearfix path-admin-tool-capability overflow-scroll col-12 cap-overview');
+    $output .= local_edwiserreports_output_fragment_block_overview_display($capvalue);
+    $output .= html_writer::end_div();
+    $btnparams = array('type' => 'submit', 'class' => 'btn btn-primary pull-right save-block-caps');
+    $output .= html_writer::tag('button', 'Save', $btnparams);
 
-    $o .= html_writer::end_tag('form');
+    $output .= html_writer::end_tag('form');
 
-    return $o;
+    return $output;
 }
 
 /**
  * Render blocks capability view
- * @param array $data Fragment parameter array
+ * @param array $capvalue Fragment parameter array
  */
-function local_edwiserreports_output_fragment_block_overview_display($data) {
+function local_edwiserreports_output_fragment_block_overview_display($capvalue) {
     global $CFG;
 
     require_once($CFG->dirroot . '/admin/tool/capability/locallib.php');
@@ -457,46 +332,46 @@ function local_edwiserreports_output_fragment_block_overview_display($data) {
         CAP_PROHIBIT => 'prohibit',
     );
 
-    $o = html_writer::start_tag('table', array('class' => 'comparisontable w-full'));
-    $o .= html_writer::start_tag('thead');
-    $o .= html_writer::start_tag('tr');
+    $output = html_writer::start_tag('table', array('class' => 'comparisontable w-full'));
+    $output .= html_writer::start_tag('thead');
+    $output .= html_writer::start_tag('tr');
     // Prepare data in same loop.
-    $d = html_writer::start_tag('tbody');
-    $d .= html_writer::start_tag('tr');
+    $data = html_writer::start_tag('tbody');
+    $data .= html_writer::start_tag('tr');
 
     // Get capability context.
     $roles = role_fix_names(get_all_roles($context));
-    $capabilitycontext = tool_capability_calculate_role_data($data['capvalue'], $roles);
+    $capabilitycontext = tool_capability_calculate_role_data($capvalue, $roles);
     foreach ($roles as $roleid => $role) {
-        $o .= '<th><div><a href="javascript:void(0)">' . $role->localname . '</a></div></th>';
+        $output .= '<th><div><a href="javascript:void(0)">' . $role->localname . '</a></div></th>';
 
         $rolecap = $capabilitycontext[$context->id]->rolecapabilities[$role->id];
         $permission = isset($rolecap) ? $rolecap : CAP_INHERIT;
-        $d .= '<td class="switch-capability ' . $permissionclasses[$permission] . '" data-permission="' . $permission . '">';
-        $d .= '<label>' . $strpermissions[$permission] . '</label>';
+        $data .= '<td class="switch-capability ' . $permissionclasses[$permission] . '" data-permission="' . $permission . '">';
+        $data .= '<label>' . $strpermissions[$permission] . '</label>';
 
         foreach ($permissionclasses as $key => $class) {
             $checked = '';
             if ($key == $permission) {
                 $checked = 'checked';
             }
-            $d .= '<input class="d-none" type="radio" name="' . $role->shortname .'" ';
-            $d .= 'value="' . $class . '" data-strpermission="' . $strpermissions[$key] . '"';
-            $d .= 'data-permissionclass="' . $class . '"' . $checked . '>';
+            $data .= '<input class="d-none" type="radio" name="' . $role->shortname .'" ';
+            $data .= 'value="' . $class . '" data-strpermission="' . $strpermissions[$key] . '"';
+            $data .= 'data-permissionclass="' . $class . '"' . $checked . '>';
         }
 
-        $d .= '</td>';
+        $data .= '</td>';
     }
 
-    $d .= html_writer::end_tag('tr');
-    $d .= html_writer::end_tag('tbody');
+    $data .= html_writer::end_tag('tr');
+    $data .= html_writer::end_tag('tbody');
 
-    $o .= html_writer::end_tag('tr');
-    $o .= html_writer::end_tag('thead');
-    $o .= $d;
-    $o .= html_writer::end_tag('table');
+    $output .= html_writer::end_tag('tr');
+    $output .= html_writer::end_tag('thead');
+    $output .= $data;
+    $output .= html_writer::end_tag('table');
 
-    return $o;
+    return $output;
 }
 
 /**
@@ -505,6 +380,11 @@ function local_edwiserreports_output_fragment_block_overview_display($data) {
  */
 function local_edwiserreports_extend_navigation(navigation_node $nav) {
     global $CFG, $PAGE, $COURSE;
+
+    // Check if users is logged in to extend navigation.
+    if (!isloggedin()) {
+        return;
+    }
 
     $hasblocks = is_block_present_indashboard();
 
@@ -549,8 +429,8 @@ function local_edwiserreports_extend_navigation(navigation_node $nav) {
 /**
  * Get default block settings
  */
-function get_default_block_settings() {
-    // Return defautl block settings.
+function local_edwiserreports_get_default_block_settings() {
+    // Return default block settings.
     return array(
         'activeusers' => array(
             'classname' => 'activeusersblock',

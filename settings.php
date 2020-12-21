@@ -26,7 +26,7 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/local/edwiserreports/lib.php');
 
-$blocks = get_default_block_settings();
+$blocks = local_edwiserreports_get_default_block_settings();
 $roles = array_map(function ($role) {
     return $role->localname;
 }, role_fix_names(get_all_roles()));

@@ -1,0 +1,72 @@
+#wdm-edwiserreports {
+	#siteaccessblock {
+		#accessinfotable {
+			tr {
+				background-color: #e0e0e0;
+				td {
+					border-width: 3px;
+					width: 12.5%;
+					padding: 0;
+				}
+				td.empty-label {
+					background-color: #fff;
+				}
+				td.empty-label.siteacess-time {
+					min-width: 60px;
+				}
+				td.color-label-20 {
+					background-color: rgba(52, 137, 223, 0.2);
+				}
+				td.color-label-40 {
+					background-color: rgba(52, 137, 223, 0.4);
+				}
+				td.color-label-60 {
+					background-color: rgba(52, 137, 223, 0.6);
+				}
+				td.color-label-80 {
+					background-color: rgba(52, 137, 223, 0.8);
+				}
+				td.color-label-100 {
+					background-color: rgba(52, 137, 223, 1);
+				}
+			}
+		}
+		#accessinfodesctable {
+			tbody {
+				tr {
+					background-color: #e0e0e0;
+					td {
+						width: 16.67%;
+					}
+					td.empty-label {
+						background-color: #fff;
+						p {
+							left: -0.2rem;
+						}
+					}
+					td.empty-label.color-label {
+						min-width: 60px;
+					}
+					td.color-label-20 {
+						background-color: rgba(52, 137, 223, 0.2);
+					}
+					td.color-label-40 {
+						background-color: rgba(52, 137, 223, 0.4);
+					}
+					td.color-label-60 {
+						background-color: rgba(52, 137, 223, 0.6);
+					}
+					td.color-label-80 {
+						background-color: rgba(52, 137, 223, 0.8);
+					}
+					td.color-label-100 {
+						background-color: rgba(52, 137, 223, 1);
+					}
+				}
+			}
+		}
+		tr.siteaccess-tablerow {
+			background-color: #e0e0e0;
+		}
+	}
+}

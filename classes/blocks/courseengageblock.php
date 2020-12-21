@@ -57,7 +57,7 @@ class courseengageblock extends utility {
      * @return array           Array of course engagement
      */
     public static function get_courseengage($cohortid) {
-        global $DB;
+        global $CFG, $DB;
 
         $engagedata = array();
         $courses = self::get_courses(true);
@@ -70,32 +70,40 @@ class courseengageblock extends utility {
             $cohortcondition = 'AND cm.cohortid = :cohortid';
             $params["cohortid"] = $cohortid;
         }
-        $completionsql = "SELECT c.courseid, COUNT(c.userid) AS usercount,
-            c.progress as completion
+
+        $fields = 'c.courseid, COUNT(c.userid) AS usercount';
+        $completionsql = "SELECT $fields
             FROM {edwreports_course_progress} c
-            JOIN {user} u ON u.id = c.userid "
-            . $cohortjoin .
-            " WHERE c.progress
-            BETWEEN :completionstart
-            AND :completionend
-            AND u.deleted = 0 "
-            . $cohortcondition .
-            " GROUP BY c.courseid";
+            JOIN {user} u ON u.id = c.userid  $cohortjoin
+            WHERE c.progress >= :completionstart
+            AND c.progress <= :completionend
+            AND u.deleted = 0
+            $cohortcondition
+            GROUP BY c.courseid";
+
         // Calculate atleast completed one modules.
-        $completionmodulesql = "SELECT c.courseid, COUNT(c.userid) AS usercount
+        $fields = 'c.courseid, COUNT(c.userid) AS usercount';
+        if ($CFG->dbtype == 'sqlsrv') {
+            $where = "(LEN(completedmodules) -
+                        LEN(REPLACE(completedmodules, ',', '')) + 1
+                      ) >= :completedactivities";
+        } else {
+            $where = "(LENGTH(completedmodules) -
+                        LENGTH(REPLACE(completedmodules, ',', '')) + 1
+                      ) >= :completedactivities";
+        }
+        $completionmodulesql = "SELECT $fields
             FROM {edwreports_course_progress} c
-            JOIN {user} u ON u.id = c.userid "
-            . $cohortjoin .
-            " WHERE (LENGTH(completedmodules) -
-                    LENGTH(REPLACE(completedmodules, ',', '')) + 1
-                    ) >= :completedactivities
-            AND u.deleted = 0 "
-            . $cohortcondition .
-            " GROUP BY c.courseid";
+            JOIN {user} u ON u.id = c.userid
+            $cohortjoin
+            WHERE $where
+            AND u.deleted = 0
+            $cohortcondition
+            GROUP BY c.courseid";
 
         // Calculate 50% Completion Count for Courses.
-        $params["completionstart"] = 50.00;
-        $params["completionend"] = 99.99;
+        $params["completionstart"] = 50;
+        $params["completionend"] = 99;
         $completion50 = $DB->get_records_sql($completionsql, $params);
 
         // Calculate 100% Completion Count for Courses.
