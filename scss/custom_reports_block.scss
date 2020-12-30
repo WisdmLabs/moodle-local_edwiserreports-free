@@ -1,0 +1,22 @@
+.reports-preview-body,
+.reports-filter-body,
+.reports-list-body {
+    min-height: 300px;
+    .empty {
+        height: 300px;
+    }
+    .field-group {
+        cursor: pointer;
+    }
+}
+.field-group.open i {
+	transform: rotate(90deg);
+}
+.field-group i,
+.field {
+	transition-duration: 0.5s;
+    transition-property: transform;
+}
+.field:not(.show) {
+	display: none;
+}

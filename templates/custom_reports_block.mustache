@@ -1,0 +1,105 @@
+<div class="row mx-0">
+    <div class="col-md-9 col-sm-12 mb-3">
+        <div class="">
+            <div class="reports-preview-header">
+                <h4> {{#str}} reportspreview, local_edwiserreports {{/str}} </h4>
+            </div>
+            <div class="reports-preview-body">
+                <div class="border">
+                    {{#haspreview}}
+                    {{/haspreview}}
+                    {{^haspreview}}
+                        <div class="empty d-flex justify-content-center align-items-center">
+                            {{#str}} noreportspreview, local_edwiserreports {{/str}}
+                        </div>
+                    {{/haspreview}}
+                </div>
+            </div>
+            <div class="reports-preview-footer py-1">
+                <button class="btn btn-primary pull-right">
+                    {{#str}} save, local_edwiserreports {{/str}}
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-12 mb-3">
+        <div class="">
+            <div class="reports-filter-header">
+                <h4> {{#str}} reportsfilter, local_edwiserreports {{/str}} </h4>
+            </div>
+            <div class="reports-filter-body border">
+                <div>
+                    <div class="p-2">
+                        <div class="position-relative my-1">
+                            <select id="wdm-cohort-select" class="form-control singleselect w-full">
+                                <option value="0">{{#str}} allcohorts, local_edwiserreports {{/str}}</option>
+                                {{#cohorts}}
+                                <option value="{{id}}">{{name}}</option>
+                                {{/cohorts}}
+                            </select>
+                        </div>
+                        <div class="position-relative my-1">
+                            <select id="wdm-course-select" class="form-control singleselect w-full">
+                                <option value="0">{{#str}} allcourses, local_edwiserreports {{/str}}</option>
+                                {{#courses}}
+                                <option value="{{id}}">{{{fullname}}}</option>
+                                {{/courses}}
+                            </select>
+                        </div>
+                    </div>
+                    {{#fields}}
+                    <div id="{{key}}-field-group" class="field-group w-full bg-secondary p-2">
+                        {{title}}
+                        <i class="fa fa-angle-right pull-right p-1"></i>
+                    </div>
+                    <div class="field" aria-control="{{key}}-field-group">
+                        {{#fieldsarray}}
+                        <div class="{{id}} p-2">
+                            <div class="checkbox-custom checkbox-primary">
+                                <input type="checkbox" id="{{id}}">
+                                <label for="{{id}}" class="mb-0">{{text}}</label>
+                            </div>
+                        </div>
+                        {{/fieldsarray}}
+                    </div>
+                    {{/fields}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 mb-3">
+        <div class="">
+            <div class="reports-list-header">
+                <h4> {{#str}} reportslist, local_edwiserreports {{/str}} </h4>
+            </div>
+            <div class="reports-list-body border">
+                <div class="">
+                    {{#hasreportlist}}
+                    {{/hasreportlist}}
+                    {{^hasreportlist}}
+                        <div class="empty d-flex justify-content-center align-items-center">
+                            {{#str}} noreportslist, local_edwiserreports {{/str}}
+                        </div>
+                    {{/hasreportlist}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{#js}}
+require([
+    'jquery',
+    'local_edwiserreports/select2'
+], function ($) {
+    $('.singleselect').select2();
+
+    $(document).ready(function() {
+        $(document).on('click', '.field-group', function() {
+            var id = this.id;
+            $(this).toggleClass('open');
+            $("[aria-control='" + id + "']").toggleClass('show');
+        });
+    });
+});
+{{/js}}

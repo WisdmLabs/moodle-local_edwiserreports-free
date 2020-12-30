@@ -581,3 +581,17 @@ $string['edit'] = 'Edit';
 $string['delete'] = 'Delete';
 
 $string['report/edwiserreports_activeusersblock:editadvance'] = 'Edit Advance';
+
+/* Custom Reports block related strings */
+$string['customreportedit'] = 'Custom Reports Block Edit';
+$string['reportspreview'] = 'Reports Preview';
+$string['reportsfilter'] = 'Reports Filter';
+$string['noreportspreview'] = 'No Preview Available';
+$string['userfields'] = 'User Fields';
+$string['coursefields'] = 'Course Fields';
+$string['activityfields'] = 'Activity Fields';
+$string['reportslist'] = 'Reports List';
+$string['noreportslist'] = 'No Custom Reports';
+$string['allcohorts'] = 'All Cohorts';
+$string['allcourses'] = 'All Courses';
+$string['save'] = 'Save';
