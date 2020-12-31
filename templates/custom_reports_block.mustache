@@ -22,7 +22,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-3 col-sm-12 mb-3">
+    <div class="col-md-3 col-sm-12">
         <div class="">
             <div class="reports-filter-header">
                 <h4> {{#str}} reportsfilter, local_edwiserreports {{/str}} </h4>
@@ -67,7 +67,7 @@
             </div>
         </div>
     </div>
-    <div class="col-12 mb-3">
+    <div class="col-12">
         <div class="">
             <div class="reports-list-header">
                 <h4> {{#str}} reportslist, local_edwiserreports {{/str}} </h4>
@@ -90,9 +90,14 @@
 {{#js}}
 require([
     'jquery',
+    'local_edwiserreports/customtreportsblock',
     'local_edwiserreports/select2'
-], function ($) {
+], function (
+    $,
+    customreportsblock
+) {
     $('.singleselect').select2();
+    customreportsblock.init();
 
     $(document).ready(function() {
         $(document).on('click', '.field-group', function() {

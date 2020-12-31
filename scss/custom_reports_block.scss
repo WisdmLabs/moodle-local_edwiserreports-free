@@ -1,10 +1,12 @@
 .reports-preview-body,
-.reports-filter-body,
 .reports-list-body {
     min-height: 300px;
     .empty {
         height: 300px;
     }
+}
+.reports-filter-body {
+    min-height: 340px;
     .field-group {
         cursor: pointer;
     }
