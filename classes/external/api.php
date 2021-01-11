@@ -39,4 +39,5 @@ class api extends external_api {
     use complete_edwiserreports_installation;
     use get_plugin_config;
     use set_plugin_config;
+    use get_customreports_data;
 }

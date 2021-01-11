@@ -1,8 +1,17 @@
 .reports-preview-body,
 .reports-list-body {
-    min-height: 300px;
     .empty {
         height: 300px;
+    }
+    .reports-preview-content {
+        min-height: 300px;
+        & .loader {
+         .icon {
+                height: 36px;
+                width: 36px;
+                font-size: 36px;
+            }
+        }
     }
 }
 .reports-filter-body {

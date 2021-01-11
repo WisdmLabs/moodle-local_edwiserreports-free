@@ -5,14 +5,18 @@
                 <h4> {{#str}} reportspreview, local_edwiserreports {{/str}} </h4>
             </div>
             <div class="reports-preview-body">
-                <div class="border">
-                    {{#haspreview}}
-                    {{/haspreview}}
-                    {{^haspreview}}
-                        <div class="empty d-flex justify-content-center align-items-center">
-                            {{#str}} noreportspreview, local_edwiserreports {{/str}}
+                <div class="">
+                    <div class="border reports-preview-content loader d-none justify-content-center align-items-center">
+                        <div class="w-full text-center">
+                            {{# pix }} i/loading, core, {{#str}} loadinghelp, moodle {{/str}} {{/ pix }}
                         </div>
-                    {{/haspreview}}
+                    </div>
+                    <div class="reports-preview-content d-none justify-content-center align-items-center">
+                        <table id="cr-preview-table" class="datatable table"></table>
+                    </div>
+                    <div class="border reports-preview-content empty d-flex justify-content-center align-items-center">
+                        {{#str}} noreportspreview, local_edwiserreports {{/str}}
+                    </div>
                 </div>
             </div>
             <div class="reports-preview-footer py-1">
@@ -31,7 +35,7 @@
                 <div>
                     <div class="p-2">
                         <div class="position-relative my-1">
-                            <select id="wdm-cohort-select" class="form-control singleselect w-full">
+                            <select id="wdm-cohort-select" class="custom-field-select form-control singleselect w-full">
                                 <option value="0">{{#str}} allcohorts, local_edwiserreports {{/str}}</option>
                                 {{#cohorts}}
                                 <option value="{{id}}">{{name}}</option>
@@ -39,7 +43,7 @@
                             </select>
                         </div>
                         <div class="position-relative my-1">
-                            <select id="wdm-course-select" class="form-control singleselect w-full">
+                            <select id="wdm-course-select" class="custom-field-select form-control singleselect w-full">
                                 <option value="0">{{#str}} allcourses, local_edwiserreports {{/str}}</option>
                                 {{#courses}}
                                 <option value="{{id}}">{{{fullname}}}</option>
@@ -56,7 +60,7 @@
                         {{#fieldsarray}}
                         <div class="{{id}} p-2">
                             <div class="checkbox-custom checkbox-primary">
-                                <input type="checkbox" id="{{id}}">
+                                <input type="checkbox" id="{{id}}" class="custom-field-checkbox" value="{{id}}">
                                 <label for="{{id}}" class="mb-0">{{text}}</label>
                             </div>
                         </div>
@@ -90,7 +94,7 @@
 {{#js}}
 require([
     'jquery',
-    'local_edwiserreports/customtreportsblock',
+    'local_edwiserreports/customreportsblock',
     'local_edwiserreports/select2'
 ], function (
     $,

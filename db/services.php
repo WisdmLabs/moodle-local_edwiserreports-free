@@ -47,5 +47,13 @@ $functions = array(
         'description' => 'Set plugin config',
         'type' => 'write',
         'ajax' => true,
+    ),
+    'local_edwiserreports_get_customreports_data' => array(
+        'classname' => 'local_edwiserreports\external\api',
+        'methodname' => 'get_customreports_data',
+        'classpath' => '',
+        'description' => 'Get reports data',
+        'type' => 'write',
+        'ajax' => true,
     )
 );
