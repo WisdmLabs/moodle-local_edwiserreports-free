@@ -158,6 +158,7 @@ $string['sceduledemailnotexist'] = 'Schedule email not exist';
 $string['coursename'] = "Course Name";
 $string['enrolled'] = "Enrolled";
 $string['completed'] = "Completed";
+$string['inprogress'] = "In Progress";
 $string['per40-20'] = "20% - 40%";
 $string['per60-40'] = "40% - 60%";
 $string['per80-60'] = "60% - 80%";

@@ -51,7 +51,7 @@ class customreportsblock extends block_base {
         $cohort = $params->cohort;
 
         // Get selected fields in query format.
-        list($customfields, $header, $columns) = $this->create_query_fields($fields);
+        list($customfields, $header, $columns, $resultfunc) = $this->create_query_fields($fields);
 
         // Check courses.
         $coursedb = '> 1';
@@ -77,9 +77,8 @@ class customreportsblock extends block_base {
         }
 
         // Main query to execute the custom query reports.
-        $sql = 'SELECT (@cnt := @cnt + 1) AS id, u.id as userid, '.$customfields.'
+        $sql = 'SELECT u.id as userid, '.$customfields.'
                 FROM {user} u
-                CROSS JOIN (SELECT @cnt := 0) AS dummy
                 JOIN {role_assignments} ra ON ra.userid = u.id
                 JOIN {role} r ON r.id = ra.roleid
                 JOIN {context} ct ON ct.id = ra.contextid
@@ -88,10 +87,26 @@ class customreportsblock extends block_base {
                 JOIN {course_categories} ctg ON ctg.id = c.category
                 WHERE u.id '.$userdb.'
                 AND ct.contextlevel = '.CONTEXT_COURSE.'
-                AND r.archetype = "student"
-                AND u.deleted = false';
+                AND r.archetype = \'student\'
+                AND u.deleted = 0';
 
-        $records = $DB->get_records_sql($sql, $params);
+        $recordset = $DB->get_recordset_sql($sql, $params);
+        $records = array();
+        while ($recordset->key()) {
+            $record = $recordset->current();
+            if (!in_array($record, $records)) {
+                if (!empty($resultfunc)) {
+                    foreach ($resultfunc as $id => $func) {
+                        $record->$id = $func($record->$id);
+                    }
+                }
+                $records[] = $record;
+            }
+            $recordset->next();
+        }
+        // echo "<pre>";
+        // var_dump($records);
+        // die;
         $return = new stdClass();
         $return->columns = $columns;
         $return->reportsdata = array_values($records);
@@ -119,12 +134,16 @@ class customreportsblock extends block_base {
         // Sort fields according to selected fields.
         $header = array();
         $columns = array();
-        $allfields = array_map(function($value) use ($fields, &$header, &$columns) {
+        $resultfunc = array();
+        $allfields = array_map(function($value) use ($fields, &$header, &$columns, &$resultfunc) {
             if (in_array($value['id'], (array) $fields) ) {
                 $header[] = $value['text'];
                 $col = new stdClass();
                 $col->data = $value['id'];
                 $col->title = $value['text'];
+                if (isset($value["resultfunc"])) {
+                    $resultfunc[$value['id']] = $value['resultfunc'];
+                }
                 $columns[] = $col;
                 return $value['dbkey'].' as '.$value['id'];
             }
@@ -132,9 +151,9 @@ class customreportsblock extends block_base {
         }, $allfields);
 
         // Filter it and make a string.
-        $allfields = array_filter( $allfields);
+        $allfields = array_filter($allfields);
         $allfields = implode(', ', $allfields);
-        return array($allfields, $header, $columns);
+        return array($allfields, $header, $columns, $resultfunc);
     }
 
     /**

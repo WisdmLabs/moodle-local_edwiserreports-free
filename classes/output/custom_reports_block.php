@@ -112,7 +112,7 @@ class custom_reports_block implements renderable, templatable {
             array(
                 'id' => 'coursename',
                 'text' => get_string('course', 'local_edwiserreports'),
-                'dbkey' => 'CONCAT(\'"\', c.fullname, \'"\')',
+                'dbkey' => 'c.fullname',
                 'disbaled' => true
             ),
             array(
@@ -123,7 +123,10 @@ class custom_reports_block implements renderable, templatable {
             array(
                 'id' => 'courseenroldate',
                 'text' => get_string('courseenroldate', 'local_edwiserreports'),
-                'dbkey' => 'FROM_UNIXTIME(ra.timemodified, "%D %M %Y")'
+                'dbkey' => 'ra.timemodified',
+                'resultfunc' => function($value) {
+                    return $value ? date('d M Y', $value) : get_string('na', 'local_edwiserreports');
+                }
             ),
             array(
                 'id' => 'courseprogress',
@@ -133,17 +136,26 @@ class custom_reports_block implements renderable, templatable {
             array(
                 'id' => 'completionstatus',
                 'text' => get_string('course_completion_status', 'local_edwiserreports'),
-                'dbkey' => '(CASE ec.progress WHEN 100 THEN "Completed" ELSE "In Progress" END)'
+                'dbkey' => 'ec.progress',
+                'resultfunc' => function($value) {
+                    $ret = get_string('inprogress', 'local_edwiserreports');
+                    if ($value == 100) {
+                        $ret = get_string('completed', 'local_edwiserreports');
+                    }
+                    return $ret;
+                }
             ),
             array(
                 'id' => 'activitiescompleted',
                 'text' => get_string('activitiescompleted', 'local_edwiserreports'),
-                'dbkey' => 'LENGTH(ec.completedmodules) - LENGTH(REPLACE(ec.completedmodules, ",", "")) + 1'
-            ),
-            array(
-                'id' => 'incompletedactivities',
-                'text' => get_string('incompletedactivities', 'local_edwiserreports'),
-                'dbkey' => 'ec.totalmodules - (LENGTH(ec.completedmodules) - LENGTH(REPLACE(ec.completedmodules, ",", "")) + 1)'
+                'dbkey' => 'ec.completedmodules',
+                'resultfunc' => function($value) {
+                    $ret = 0;
+                    if ($value) {
+                        $ret = count(explode(',', $value));
+                    }
+                    return $ret;
+                }
             ),
             array(
                 'id' => 'totalactivities',
@@ -153,17 +165,26 @@ class custom_reports_block implements renderable, templatable {
             array(
                 'id' => 'completiontime',
                 'text' => get_string('completiontime', 'local_edwiserreports'),
-                'dbkey' => 'FROM_UNIXTIME(ec.completiontime, "%D %M %Y")'
+                'dbkey' => 'ec.completiontime',
+                'resultfunc' => function($value) {
+                    return $value ? date('d M Y', $value) : get_string('na', 'local_edwiserreports');
+                }
             ),
             array(
                 'id' => 'coursestartdate',
                 'text' => get_string('coursestartdate', 'local_edwiserreports'),
-                'dbkey' => 'FROM_UNIXTIME(c.startdate, "%D %M %Y")'
+                'dbkey' => 'c.startdate',
+                'resultfunc' => function($value) {
+                    return $value ? date('d M Y', $value) : get_string('na', 'local_edwiserreports');
+                }
             ),
             array(
                 'id' => 'courseenddate',
                 'text' => get_string('courseenddate', 'local_edwiserreports'),
-                'dbkey' => '(CASE c.enddate WHEN 0 THEN "Never" ELSE FROM_UNIXTIME(c.enddate, "%D %M %Y") END)'
+                'dbkey' => 'c.enddate',
+                'resultfunc' => function($value) {
+                    return $value ? date('d M Y', $value) : get_string('na', 'local_edwiserreports');
+                }
             ),
         );
         return $coursefields;

@@ -33,11 +33,13 @@ define([
 
         show : function() {
             $(this.selector + ':not(.loader)').removeClass('d-none').addClass('d-flex');
+            $(this.selector + '.empty').removeClass('d-flex').addClass('d-none');
             cfPreviewLoader.hide();
         },
 
         hide : function() {
             $(this.selector + ':not(.loader)').removeClass('d-flex').addClass('d-none');
+            $(this.selector + '.empty').removeClass('d-flex').addClass('d-none');
             cfPreviewLoader.show();
         },
 
