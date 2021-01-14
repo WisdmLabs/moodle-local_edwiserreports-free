@@ -46,5 +46,20 @@
                 <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
             </KEYS>
         </TABLE>
+        <TABLE
+            COMMENT="Information about the custom reports block"
+            NAME="edwreports_custom_reports">
+            <FIELDS>
+                <FIELD COMMENT="Custom Reports Id" NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD COMMENT="Custom Reports Short Name" NAME="shortname" TYPE="text" LENGTH="255" NOTNULL="true"/>
+                <FIELD COMMENT="Custom Reports Full Name" NAME="fullname" TYPE="text" LENGTH="255" NOTNULL="true"/>
+                <FIELD COMMENT="Custom Reports Data" NAME="data" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD COMMENT="Custom Reports Creation Time" NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+                <FIELD COMMENT="Custom Reports Modfied Time" NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" DEFAULT="0"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
     </TABLES>
 </XMLDB>
