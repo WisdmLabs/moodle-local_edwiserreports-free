@@ -46,6 +46,30 @@ function xmldb_local_edwiserreports_upgrade($oldversion) {
         }
     }
 
+    if (2020120909 >= $oldversion) {
+        $dbman = $DB->get_manager();
+
+        // Define table block_remuiblck_tasklist to be created.
+        $table = new xmldb_table('edwreports_custom_reports');
+
+        // Adding fields to table block_remuiblck_tasklist.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, 10, null, true, true);
+        $table->add_field('shortname', XMLDB_TYPE_CHAR, 255, null, true);
+        $table->add_field('fullname', XMLDB_TYPE_CHAR, 255, null, true);
+        $table->add_field('createdby', XMLDB_TYPE_INTEGER, 10, null, true);
+        $table->add_field('data', XMLDB_TYPE_CHAR, 1000);
+        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, 10, null, true);
+        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, 10, null, true);
+
+        // Adding keys to table block_remuiblck_taskslist.
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
+
+        // Conditionally launch create table for block_remuiblck_taskslist.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+    }
+
     // Return true.
     return true;
 }

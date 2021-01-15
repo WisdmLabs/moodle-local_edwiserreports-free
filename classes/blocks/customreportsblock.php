@@ -48,7 +48,7 @@ class customreportsblock extends block_base {
 
         $fields = $params->fields;
         $courses = $params->courses;
-        $cohort = $params->cohort;
+        $cohorts = $params->cohorts;
 
         // Get selected fields in query format.
         list($customfields, $header, $columns, $resultfunc) = $this->create_query_fields($fields);
@@ -63,8 +63,8 @@ class customreportsblock extends block_base {
 
         // Check Cohorts.
         $allusers = false;
-        if ($cohort) {
-            $cohorts = \local_edwiserreports\utility::get_cohort_users(array($cohort));
+        if (!in_array(0, $cohorts)) {
+            $cohorts = \local_edwiserreports\utility::get_cohort_users($cohorts);
             $userids = array_column($cohorts['users'], 'id');
         } else {
             $allusers = true;

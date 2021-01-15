@@ -40,4 +40,5 @@ class api extends external_api {
     use get_plugin_config;
     use set_plugin_config;
     use get_customreports_data;
+    use save_customreports_data;
 }

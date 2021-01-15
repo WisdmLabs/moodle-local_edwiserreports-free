@@ -1,0 +1,105 @@
+<form id="wdm-customreports-save-form" action="{{action}}" method="post">
+	<div style="display: none;">
+        <input type="hidden" name="id" value="0" />
+    </div>
+    <div id="fitem_id_crb_reportname" class="form-group row fitem">
+        <div class="col-md-3">
+            <span class="float-sm-right text-nowrap">
+                <abbr class="initialism text-danger"
+                      title="{{#str}} required, moodle {{/str}}">
+                    <i class="icon fa fa-exclamation-circle text-danger fa-fw "
+                       title="{{#str}} required, moodle {{/str}}"
+                       aria-label="{{#str}} required, moodle {{/str}}">
+                    </i>
+                </abbr>
+                <a class="btn btn-link p-0"
+                   role="button"
+                   data-container="body"
+                   data-toggle="popover"
+                   data-placement="right"
+                   data-content="{{content}}"
+                   data-html="true"
+                   tabindex="0"
+                   data-trigger="focus">
+                    <i class="icon fa fa-question-circle text-info fa-fw "
+                       title="{{}}"
+                       aria-label="{{}}">
+                    </i>
+                </a>
+            </span>
+            <label class="col-form-label d-inline" for="id_crb_reportname">
+                {{#str}} reportname, local_edwiserreports {{/str}}
+            </label>
+        </div>
+        <div class="col-md-9 form-inline felement" data-fieldtype="text">
+            <input type="text" class="form-control " name="reportname" id="id_crb_reportname" size="50" maxlength="254">
+            <div class="form-control-feedback invalid-feedback" id="id_error_crb_reportname"></div>
+        </div>
+    </div>
+    <div id="fitem_id_crb_reportshortname" class="form-group row fitem">
+        <div class="col-md-3">
+            <span class="float-sm-right text-nowrap">
+                <abbr class="initialism text-danger" title="{{#str}} required, moodle {{/str}}">
+                    <i class="icon fa fa-exclamation-circle text-danger fa-fw "
+                       title="{{#str}} required, moodle {{/str}}"
+                       aria-label="{{#str}} required, moodle {{/str}}">
+                    </i>
+                </abbr>
+                <a class="btn btn-link p-0"
+                   role="button"
+                   data-container="body"
+                   data-toggle="popover"
+                   data-placement="right"
+                   data-content="{{content}}"
+                   data-html="true"
+                   tabindex="0"
+                   data-trigger="focus">
+                    <i class="icon fa fa-question-circle text-info fa-fw "
+                       title="{{}}"
+                       aria-label="{{}}">
+                    </i>
+                </a>
+            </span>
+            <label class="col-form-label d-inline" for="id_crb_reportshortname">
+                {{#str}} reportshortname, local_edwiserreports {{/str}}
+            </label>
+        </div>
+        <div class="col-md-9 form-inline felement" data-fieldtype="text">
+            <input type="text" class="form-control " name="reportshortname" id="id_crb_reportshortname" size="50" maxlength="254">
+            <div class="form-control-feedback invalid-feedback" id="id_error_crb_reportshortname"></div>
+        </div>
+    </div>
+    <div id="crb_download_enable" class="form-group row fitem">
+        <div class="col-md-3">
+            <span class="float-sm-right text-nowrap">
+                <a class="btn btn-link p-0"
+                   role="button"
+                   data-container="body"
+                   data-toggle="popover"
+                   data-placement="right"
+                   data-content="{{content}}"
+                   data-html="true"
+                   tabindex="0"
+                   data-trigger="focus">
+                    <i class="icon fa fa-question-circle text-info fa-fw "
+                       title="{{}}"
+                       aria-label="{{}}">
+                    </i>
+                </a>
+            </span>
+            <label class="col-form-label d-inline" for="crb_download_enable">
+                {{#str}} downloadenable, local_edwiserreports {{/str}}
+            </label>
+        </div>
+        <div class="col-md-9 form-inline felement" data-fieldtype="select">
+            <select class="custom-select" name="downloadenable" id="id_crb_download_enable">
+                <option value="1" selected>
+                    {{#str}} yes, moodle {{/str}}
+                </option>
+                <option value="0">
+                    {{#str}} no, moodle {{/str}}
+                </option>
+            </select>
+        </div>
+    </div>
+</form>

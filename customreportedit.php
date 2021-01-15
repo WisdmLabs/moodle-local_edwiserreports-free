@@ -24,12 +24,15 @@
 
 require_once(__DIR__ .'/../../config.php');
 require_once($CFG->dirroot . '/local/edwiserreports/classes/output/custom_reports_block.php');
+require_once($CFG->dirroot . '/local/edwiserreports/locallib.php');
 
 // Set external page admin.
 $context = context_system::instance();
 $component = "local_edwiserreports";
 
 require_login();
+
+local_edwiserreports_get_required_strings_for_js();
 
 // Page URL.
 $pageurl = new moodle_url($CFG->wwwroot."/local/edwiserreports/customreportedit.php");
