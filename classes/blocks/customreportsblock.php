@@ -26,6 +26,7 @@ namespace local_edwiserreports;
 defined('MOODLE_INTERNAL') || die;
 
 use stdClass;
+use moodle_url;
 
 require_once($CFG->dirroot . '/local/edwiserreports/classes/block_base.php');
 
@@ -161,13 +162,21 @@ class customreportsblock extends block_base {
      * @return object Response object
      */
     public function get_layout() {
+        global $CFG, $DB;
+
+        $customreport = $DB->get_record('edwreports_custom_reports', array('id' => $this->blockid));
+        $reportsdata = json_decode($customreport->data);
+        $reportsdata->fields = $reportsdata->selectedfield;
+        unset($reportsdata->selectedfield);
+
         // Layout related data.
-        $this->layout->id = 'customreportsblock';
-        $this->layout->name = get_string('customreports', 'local_edwiserreports');
-        $this->layout->info = get_string('customreportsblockhelp', 'local_edwiserreports');
-        $this->layout->morelink = new moodle_url($CFG->wwwroot . "/local/edwiserreports/coursereport.php");
-        $this->layout->hasdownloadlink = true;
-        $this->layout->filters = '';
+        $this->layout->id = 'customreportsblock-' . $customreport->id;
+        $this->layout->name = $customreport->fullname;
+        $this->layout->info = $customreport->fullname;
+        $this->layout->hasdownloadlink = $reportsdata->downloadenable;
+        $this->layout->iscustomblock = true;
+        $this->layout->params = json_encode($reportsdata);
+
         // Return blocks layout.
         return $this->layout;
     }

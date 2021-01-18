@@ -25,6 +25,9 @@
                         <div class="loader w-full text-center">
                             {{# pix }} loader, local_edwiserreports{{/ pix }}
                         </div>
+                        {{#iscustomblock}}
+                            <table class="customreportdata w-full"></table>
+                        {{/iscustomblock}}
                     </div>
                     <div class="panel-footer row m-0">
                         {{# morelink }}
@@ -39,6 +42,47 @@
                 </div>
             </div>
         </div>
+        {{#iscustomblock}}
+            {{#js}}
+                require([
+                    'jquery',
+                    'core/ajax',
+                    'local_edwiserreports/customreportsblock'
+                ], function(
+                    $,
+                    ajax,
+                    customreportsblock
+                ) {
+                    var tableId = '#{{{id}}} table.customreportdata'
+
+                    $(document).ready(function() {
+                        var getCustomReportsData = ajax.call([{
+                            methodname: 'local_edwiserreports_get_customreports_data',
+                            args: {
+                                params: JSON.stringify({{{params}}})
+                            }
+                        }]);
+
+                        getCustomReportsData[0].done(function(response) {
+                            if (response.success) {
+                                var data = JSON.parse(response.data);
+                                console.log(tableId);
+                                $(tableId).DataTable({
+                                    columns: data.columns,
+                                    data: data.reportsdata,
+                                    bInfo: false,
+                                    lengthChange: false,
+                                    drawCallback: function() {
+                                        $('.dataTables_paginate > .pagination').addClass('pagination-sm pull-right');
+                                        $('.dataTables_filter').addClass('pagination-sm pull-right');
+                                    }
+                                });
+                            }
+                        });
+                    });
+                });
+            {{/js}}
+        {{/iscustomblock}}
     {{/ blocks }}
     {{# editing }}
         <div class="col-12">

@@ -1064,8 +1064,23 @@ class utility {
      */
     public static function get_reports_block() {
         global $DB;
+        $defaultreports = $DB->get_records('edwreports_blocks');
+        $customreports = $DB->get_records('edwreports_custom_reports', array('enabledesktop' => 1));
 
-        return $DB->get_records('edwreports_blocks');
+        foreach ($customreports as $customreport) {
+            $report = new stdClass();
+            $report->id = $customreport->id;
+            $report->classname = 'customreportsblock';
+            $report->blockname = $customreport->shortname;
+            $pref = new stdClass();
+            $pref->desktopview = LOCAL_SITEREPORT_BLOCK_LARGE;
+            $pref->tabletview = LOCAL_SITEREPORT_BLOCK_LARGE;
+            $pref->position = count($defaultreports) + (int) $customreport->id;
+            $report->blockdata = json_encode($pref);
+            $defaultreports[] = $report;
+        }
+
+        return $defaultreports;
     }
 
     /**
@@ -1113,11 +1128,9 @@ class utility {
         $newblocks = array();
         foreach ($blocks as $block) {
             $pref = self::get_reportsblock_preferences($block);
-
             while (isset($newblocks[$pref['position']])) {
                 $pref['position']++;
             }
-
             $newblocks[$pref['position']] = $block;
         }
 
@@ -1161,10 +1174,14 @@ class utility {
             $position = $blockdata['position'];
             $desktopview = $blockdata[LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW];
             $tabletview = $blockdata[LOCAL_SITEREPORT_BLOCK_TABLET_VIEW];
-        } else {
-            $position = get_config('local_edwiserreports', $block->blockname . 'position');
+        } else if ($position = get_config('local_edwiserreports', $block->blockname . 'position')) {
             $desktopview = get_config('local_edwiserreports', $block->blockname . 'desktopsize');
             $tabletview = get_config('local_edwiserreports', $block->blockname . 'tabletsize');
+        } else {
+            $blockdata = json_decode($block->blockdata, true);
+            $position = $blockdata['position'];
+            $desktopview = $blockdata['desktopview'];
+            $tabletview = $blockdata['tabletview'];
         }
 
         // Set default preference.

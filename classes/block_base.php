@@ -45,7 +45,7 @@ class block_base {
     /**
      * Constructor to prepate data
      */
-    public function __construct() {
+    public function __construct($blockid = false) {
         $context = context_system::instance();
 
         $this->layout = new stdClass();
@@ -54,8 +54,11 @@ class block_base {
         $this->layout->contextid = $context->id;
         $this->layout->caneditadv = false;
         $this->layout->region = 'block';
-
         $this->block = new stdClass();
+
+        if ($blockid) {
+            $this->blockid = $blockid;
+        }
     }
 
     /**
@@ -103,17 +106,21 @@ class block_base {
      * Set block size
      * @param string $blockname Block name
      */
-    public function set_block_size($blockname) {
+    public function set_block_size($block) {
         $sizes = array();
-        if ($prefrences = get_user_preferences('pref_' . $blockname . 'block')) {
+        if ($prefrences = get_user_preferences('pref_' . $block->blockname . 'block')) {
             $blockdata = json_decode($prefrences, true);
             $position = $blockdata['position'];
             $sizes[LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW] = $blockdata[LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW];
             $sizes[LOCAL_SITEREPORT_BLOCK_TABLET_VIEW] = $blockdata[LOCAL_SITEREPORT_BLOCK_TABLET_VIEW];
+        } else if ($position = get_config('local_edwiserreports', $block->blockname . 'position')) {
+            $sizes[LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW] = get_config('local_edwiserreports', $block->blockname . 'desktopsize');
+            $sizes[LOCAL_SITEREPORT_BLOCK_TABLET_VIEW] = get_config('local_edwiserreports', $block->blockname . 'tabletsize');
         } else {
-            $position = get_config('local_edwiserreports', $blockname . 'position');
-            $sizes[LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW] = get_config('local_edwiserreports', $blockname . 'desktopsize');
-            $sizes[LOCAL_SITEREPORT_BLOCK_TABLET_VIEW] = get_config('local_edwiserreports', $blockname . 'tabletsize');
+            $blockdata = json_decode($block->blockdata, true);
+            $position = $blockdata['position'];
+            $sizes[LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW] = $blockdata['desktopview'];
+            $sizes[LOCAL_SITEREPORT_BLOCK_TABLET_VIEW] = $blockdata['tabletview'];
         }
 
         $devicecolclass = array(
