@@ -66,20 +66,23 @@ trait save_customreports_data {
         );
 
         $customreports = new stdClass();
-        $customreports->fullname = $params->reportname;
-        $customreports->shortname = $params->reportshortname;
-        $customreports->createdby = $USER->id;
-        $params->querydata->downloadenable = $params->downloadenable;
+        if (!isset($params->action) || $params->action != 'enabledesktop') {
+            $customreports->fullname = $params->reportname;
+            $customreports->shortname = $params->reportshortname;
+            $customreports->createdby = $USER->id;
+            $params->querydata->downloadenable = $params->downloadenable;
+            $customreports->data = json_encode($params->querydata);
+        }
 
-        // Initially reports will not be displayed in the desktop.
-        $customreports->enabledesktop = 0;
-        $customreports->data = json_encode($params->querydata);
+        $customreports->enabledesktop = $params->enabledesktop;
 
         // If id is present then update the records.
-        if ($params->id) {
-            $reportsid = $customreports->id = $params->id;
+        if ($params->reportsid) {
+            $reportsid = $customreports->id = $params->reportsid;
             $customreports->timemodified = $timenow;
             $DB->update_record($table, $customreports);
+            $customreports = $DB->get_records($table, array('id' => $reportsid));
+            $params = json_decode($customreports->data);
         } else {
             if ($DB->record_exists($table, array('shortname' => $customreports->shortname))) {
                 $response["success"] = false;
@@ -93,9 +96,10 @@ trait save_customreports_data {
 
         $response["reportsdata"] = json_encode(array(
             'reportsid' => $reportsid,
-            'fullname' => $customreports->fullname,
-            'shortname' => $customreports->shortname,
-            'downloadenable' => $params->downloadenable ? true : false
+            'reportname' => $customreports->fullname,
+            'reportshortname' => $customreports->shortname,
+            'downloadenable' => $params->downloadenable ? true : false,
+            'enabledesktop' => $customreports->enabledesktop ? true : false
         ));
 
         return $response;

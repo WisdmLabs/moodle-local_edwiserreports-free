@@ -1,6 +1,6 @@
 <form id="wdm-customreports-save-form" action="{{action}}" method="post">
 	<div style="display: none;">
-        <input type="hidden" name="id" value="{{#reportsid}}{{.}}{{/reportsid}}{{^reportsid}}0{{/reportsid}}" />
+        <input type="hidden" name="reportsid" value="{{#reportsid}}{{.}}{{/reportsid}}{{^reportsid}}0{{/reportsid}}" />
     </div>
     <div id="fitem_id_crb_reportname" class="form-group row fitem">
         <div class="col-md-3">
@@ -32,7 +32,7 @@
             </label>
         </div>
         <div class="col-md-9 form-inline felement" data-fieldtype="text">
-            <input type="text" class="form-control " name="reportname" id="id_crb_reportname" size="50" maxlength="254" value="{{fullname}}">
+            <input type="text" class="form-control " name="reportname" id="id_crb_reportname" size="50" maxlength="254" value="{{reportname}}">
             <div class="form-control-feedback invalid-feedback" id="id_error_crb_reportname"></div>
         </div>
     </div>
@@ -65,7 +65,7 @@
             </label>
         </div>
         <div class="col-md-9 form-inline felement" data-fieldtype="text">
-            <input type="text" class="form-control " name="reportshortname" id="id_crb_reportshortname" size="50" maxlength="254"  value="{{shortname}}">
+            <input type="text" class="form-control " name="reportshortname" id="id_crb_reportshortname" size="50" maxlength="254"  value="{{reportshortname}}">
             <div class="form-control-feedback invalid-feedback" id="id_error_crb_reportshortname"></div>
         </div>
     </div>
@@ -97,6 +97,39 @@
                     {{#str}} yes, moodle {{/str}}
                 </option>
                 <option value="0" {{^downloadenable}}selected{{/downloadenable}}>
+                    {{#str}} no, moodle {{/str}}
+                </option>
+            </select>
+        </div>
+    </div>
+    <div id="crb_desktop_enable" class="form-group row fitem">
+        <div class="col-md-3">
+            <span class="float-sm-right text-nowrap">
+                <a class="btn btn-link p-0"
+                   role="button"
+                   data-container="body"
+                   data-toggle="popover"
+                   data-placement="right"
+                   data-content="{{content}}"
+                   data-html="true"
+                   tabindex="0"
+                   data-trigger="focus">
+                    <i class="icon fa fa-question-circle text-info fa-fw "
+                       title="{{}}"
+                       aria-label="{{}}">
+                    </i>
+                </a>
+            </span>
+            <label class="col-form-label d-inline" for="crb_desktop_enable">
+                {{#str}} enabledesktop, local_edwiserreports {{/str}}
+            </label>
+        </div>
+        <div class="col-md-9 form-inline felement" data-fieldtype="select">
+            <select class="custom-select" name="enabledesktop" id="id_crb_desktop_enable" value="{{#enabledesktop}}{{.}}{{/enabledesktop}}{{^enabledesktop}}1{{/enabledesktop}}">
+                <option value="1" {{#enabledesktop}}selected{{/enabledesktop}}>
+                    {{#str}} yes, moodle {{/str}}
+                </option>
+                <option value="0" {{^enabledesktop}}selected{{/enabledesktop}}>
                     {{#str}} no, moodle {{/str}}
                 </option>
             </select>

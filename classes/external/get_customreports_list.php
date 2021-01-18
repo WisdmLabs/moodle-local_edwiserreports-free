@@ -98,18 +98,22 @@ trait get_customreports_list {
             )
         );
 
+        $enabledesktop = $customreport->enabledesktop ? 'checked' : '';
         $querydata = json_decode($customreport->data);
         $html = '<div>
-            <span class="icon">
-                <input type="checkbox" id="enabledesktop-' . $customreport->id . '"
-                    class="custom-field-checkbox" value="enabledesktop">
+            <span class="checkbox-custom checkbox-primary">
+                <input type="checkbox" id="wdm-desktopenable-' . $customreport->id . '" class="position-absolute
+                custom-field-checkbox" ' . $enabledesktop . ' data-reportsid="' . $customreport->id . '">
+                <label for="wdm-desktopenable-' . $customreport->id . '" class="d-block mb-0"></label>
             </span>
-            <a href="' .$editurl. '">
-                <i class="icon fa fa-edit text-primary"></i>
-            </a>
-            <a href="#">
-                <i class="icon fa fa-trash text-danger"></i>
-            </a>
+            <span class="ml-30">
+                <a href="' .$editurl. '">
+                    <i class="icon fa fa-edit text-primary"></i>
+                </a>
+                <a href="#">
+                    <i class="icon fa fa-trash text-danger"></i>
+                </a>
+            </span>
         </div>';
         return $html;
     }

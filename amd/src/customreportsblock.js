@@ -28,6 +28,8 @@ define([
     var crPageFullname = '#wdm_custom_reports_fullname';
     var crPageShortname = '#wdm_custom_reports_shortname';
     var crPageDownloadEnable = '#wdm_custom_reports_downloadenable';
+    var crPageDesktopEnable = '#wdm_custom_reports_desktopenable';
+    var crDesktopEnableSwitch = '[id^="wdm-desktopenable-"]';
     var cfPreviewTable = null;
     var crListTable = null;
     var customReportSaveTitle = M.util.get_string('savecustomreport', 'local_edwiserreports');
@@ -216,35 +218,42 @@ define([
                         'courses': courses
                     }
 
-                    var saveCustomReportsData = ajax.call([{
-                        methodname: 'local_edwiserreports_save_customreports_data',
-                        args: {
-                            params: JSON.stringify(data)
-                        }
-                    }]);
-
-                    saveCustomReportsData[0].done(function(response) {
-                        if (response.success) {
-                            reportsData = JSON.parse(response.reportsdata);
-                            console.log(reportsData);
-                            $('#user-notifications .close').click();
-                            notif.addNotification({
-                                message: M.util.get_string('reportssavesuccess', 'local_edwiserreports'),
-                                type: "success"
-                            });
-                        } else {
-                            $('#user-notifications .close').click();
-                            notif.addNotification({
-                                message: response.errormsg,
-                                type: "error"
-                            });
-                        }
-                        $("html, body").animate({ scrollTop: 0 }, "slow");
-                        getCustomReportsList();
-                        modal.destroy();
-                    });
+                    saveCustomReportsDataService(data, modal);
                 }
             });
+        });
+    }
+
+    function saveCustomReportsDataService(data, modal) {
+        var saveCustomReportsData = ajax.call([{
+            methodname: 'local_edwiserreports_save_customreports_data',
+            args: {
+                params: JSON.stringify(data)
+            }
+        }]);
+
+        saveCustomReportsData[0].done(function(response) {
+            if (response.success) {
+                if (modal) {
+                    reportsData = JSON.parse(response.reportsdata);
+                }
+                $('#user-notifications .close').click();
+                notif.addNotification({
+                    message: M.util.get_string('reportssavesuccess', 'local_edwiserreports'),
+                    type: "success"
+                });
+            } else {
+                $('#user-notifications .close').click();
+                notif.addNotification({
+                    message: response.errormsg,
+                    type: "error"
+                });
+            }
+            if (modal) {
+                $("html, body").animate({ scrollTop: 0 }, "slow");
+                getCustomReportsList();
+                modal.destroy();
+            }
         });
     }
 
@@ -327,6 +336,15 @@ define([
             saveCustomReportsData();
         });
         getCustomReportsList();
+        $(document).on('change', crDesktopEnableSwitch, function () {
+            var updateData = {
+                reportsid: $(this).data('reportsid'),
+                enabledesktop: $(this).is(":checked") ? 1 : 0,
+                action: 'enabledesktop'
+            }
+
+            saveCustomReportsDataService(updateData, null);
+        });
     }
 
     return {
@@ -335,9 +353,10 @@ define([
                 customReportServiceInit();
                 if (reportsId = $(crPageId).val()) {
                     reportsData.reportsid = reportsId;
-                    reportsData.fullname = $(crPageFullname).val();
-                    reportsData.shortname = $(crPageShortname).val();
+                    reportsData.reportname = $(crPageFullname).val();
+                    reportsData.reportshortname = $(crPageShortname).val();
                     reportsData.downloadenable = $(crPageDownloadEnable).val();
+                    reportsData.enabledesktop = $(crPageDesktopEnable).val();
                     getCustomReportsData();
                 }
             });
