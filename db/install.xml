@@ -55,8 +55,9 @@
                 <FIELD COMMENT="Custom Reports Full Name" NAME="fullname" TYPE="text" LENGTH="255" NOTNULL="true"/>
                 <FIELD COMMENT="Created By User Id" NAME="createdby" TYPE="int" LENGTH="10" NOTNULL="true"/>
                 <FIELD COMMENT="Custom Reports Data" NAME="data" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD COMMENT="Desktop Enable" NAME="enabledesktop" TYPE="int" LENGTH="2" DEFAULT="0" NOTNULL="true" SEQUENCE="false"/>
                 <FIELD COMMENT="Custom Reports Creation Time" NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
-                <FIELD COMMENT="Custom Reports Modfied Time" NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" DEFAULT="0"/>
+                <FIELD COMMENT="Custom Reports Modfied Time" NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" DEFAULT="0"/>
             </FIELDS>
             <KEYS>
                 <KEY NAME="primary" TYPE="primary" FIELDS="id"/>

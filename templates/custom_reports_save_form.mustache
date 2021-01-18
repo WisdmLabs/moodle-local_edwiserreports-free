@@ -1,6 +1,6 @@
 <form id="wdm-customreports-save-form" action="{{action}}" method="post">
 	<div style="display: none;">
-        <input type="hidden" name="id" value="0" />
+        <input type="hidden" name="id" value="{{#reportsid}}{{.}}{{/reportsid}}{{^reportsid}}0{{/reportsid}}" />
     </div>
     <div id="fitem_id_crb_reportname" class="form-group row fitem">
         <div class="col-md-3">
@@ -32,7 +32,7 @@
             </label>
         </div>
         <div class="col-md-9 form-inline felement" data-fieldtype="text">
-            <input type="text" class="form-control " name="reportname" id="id_crb_reportname" size="50" maxlength="254">
+            <input type="text" class="form-control " name="reportname" id="id_crb_reportname" size="50" maxlength="254" value="{{fullname}}">
             <div class="form-control-feedback invalid-feedback" id="id_error_crb_reportname"></div>
         </div>
     </div>
@@ -65,7 +65,7 @@
             </label>
         </div>
         <div class="col-md-9 form-inline felement" data-fieldtype="text">
-            <input type="text" class="form-control " name="reportshortname" id="id_crb_reportshortname" size="50" maxlength="254">
+            <input type="text" class="form-control " name="reportshortname" id="id_crb_reportshortname" size="50" maxlength="254"  value="{{shortname}}">
             <div class="form-control-feedback invalid-feedback" id="id_error_crb_reportshortname"></div>
         </div>
     </div>
@@ -92,11 +92,11 @@
             </label>
         </div>
         <div class="col-md-9 form-inline felement" data-fieldtype="select">
-            <select class="custom-select" name="downloadenable" id="id_crb_download_enable">
-                <option value="1" selected>
+            <select class="custom-select" name="downloadenable" id="id_crb_download_enable" value="{{#downloadenable}}{{.}}{{/downloadenable}}{{^downloadenable}}1{{/downloadenable}}">
+                <option value="1" {{#downloadenable}}selected{{/downloadenable}}>
                     {{#str}} yes, moodle {{/str}}
                 </option>
-                <option value="0">
+                <option value="0" {{^downloadenable}}selected{{/downloadenable}}>
                     {{#str}} no, moodle {{/str}}
                 </option>
             </select>

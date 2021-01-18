@@ -30,6 +30,9 @@ define([
     var selectedFields = [];
     var courses = [];
     var cohorts = [];
+    var reportsData = {
+        downloadenable : true
+    };
 
     var cfPreviewLoader = {
         selector : '.reports-preview-body .reports-preview-content.loader',
@@ -181,7 +184,7 @@ define([
         modalFactory.create({
             title: customReportSaveTitle,
             type: modalFactory.types.SAVE_CANCEL,
-            body: templates.render('local_edwiserreports/custom_reports_save_form', {})
+            body: templates.render('local_edwiserreports/custom_reports_save_form', reportsData)
         }).done(function(modal) {
             var root = modal.getRoot();
             modal.show();
@@ -216,11 +219,15 @@ define([
 
                     saveCustomReportsData[0].done(function(response) {
                         if (response.success) {
+                            reportsData = JSON.parse(response.reportsdata);
+                            console.log(reportsData);
+                            $('#user-notifications .close').click();
                             notif.addNotification({
                                 message: M.util.get_string('reportssavesuccess', 'local_edwiserreports'),
                                 type: "success"
                             });
                         } else {
+                            $('#user-notifications .close').click();
                             notif.addNotification({
                                 message: response.errormsg,
                                 type: "error"

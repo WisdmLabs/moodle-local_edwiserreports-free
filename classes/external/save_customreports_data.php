@@ -72,25 +72,31 @@ trait save_customreports_data {
         $params->querydata->downloadenable = $params->downloadenable;
 
         // Initially reports will not be displayed in the desktop.
-        $params->querydata->enabledashboard = false;
+        $customreports->enabledesktop = 0;
         $customreports->data = json_encode($params->querydata);
 
-        if ($DB->record_exists($table, array('shortname' => $customreports->shortname))) {
-            $response["success"] = false;
-            $response["errormsg"] = get_string('shortnameexist', 'local_edwiserreports');
+        // If id is present then update the records.
+        if ($params->id) {
+            $reportsid = $customreports->id = $params->id;
+            $customreports->timemodified = $timenow;
+            $DB->update_record($table, $customreports);
         } else {
-            // If id is present then update the records.
-            if ($params->id) {
-                $reportsid = $customreports->id = $params->id;
-                $customreports->timemodified = $timenow;
-                $DB->update_record($table, $customreports);
+            if ($DB->record_exists($table, array('shortname' => $customreports->shortname))) {
+                $response["success"] = false;
+                $response["errormsg"] = get_string('shortnameexist', 'local_edwiserreports');
             } else {
                 $customreports->timecreated = $timenow;
                 $customreports->timemodified = 0;
                 $reportsid = $DB->insert_record($table, $customreports);
             }
-            $response["reportsid"] = $reportsid;
         }
+
+        $response["reportsdata"] = json_encode(array(
+            'reportsid' => $reportsid,
+            'fullname' => $customreports->fullname,
+            'shortname' => $customreports->shortname,
+            'downloadenable' => $params->downloadenable ? true : false
+        ));
 
         return $response;
     }
@@ -104,7 +110,7 @@ trait save_customreports_data {
         return new \external_single_structure(
             array(
                 'success' => new external_value(PARAM_BOOL, 'Status', null),
-                'reportsid' => new external_value(PARAM_INT, 'Custom Reports Id', 0),
+                'reportsdata' => new external_value(PARAM_RAW, 'Custom Reports Data', ''),
                 'errormsg' => new external_value(PARAM_TEXT, 'ERROR message if any', '')
             )
         );

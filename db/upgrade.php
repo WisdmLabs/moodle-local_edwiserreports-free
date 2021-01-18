@@ -46,7 +46,7 @@ function xmldb_local_edwiserreports_upgrade($oldversion) {
         }
     }
 
-    if (2020120909 >= $oldversion) {
+    if (2020120911 >= $oldversion) {
         $dbman = $DB->get_manager();
 
         // Define table block_remuiblck_tasklist to be created.
@@ -58,9 +58,9 @@ function xmldb_local_edwiserreports_upgrade($oldversion) {
         $table->add_field('fullname', XMLDB_TYPE_CHAR, 255, null, true);
         $table->add_field('createdby', XMLDB_TYPE_INTEGER, 10, null, true);
         $table->add_field('data', XMLDB_TYPE_CHAR, 1000);
-        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, 10, null, true);
+        $table->add_field('enabledesktop', XMLDB_TYPE_INTEGER, 2, null, true);
+        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, 10, null, true, false, 0);
         $table->add_field('timemodified', XMLDB_TYPE_INTEGER, 10, null, true);
-
         // Adding keys to table block_remuiblck_taskslist.
         $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
 
