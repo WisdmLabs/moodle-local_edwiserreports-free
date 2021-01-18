@@ -76,15 +76,19 @@
             <div class="reports-list-header">
                 <h4> {{#str}} reportslist, local_edwiserreports {{/str}} </h4>
             </div>
-            <div class="reports-list-body border">
+            <div class="reports-list-body">
                 <div class="">
-                    {{#hasreportlist}}
-                    {{/hasreportlist}}
-                    {{^hasreportlist}}
-                        <div class="empty d-flex justify-content-center align-items-center">
-                            {{#str}} noreportslist, local_edwiserreports {{/str}}
+                    <div class="border reports-list-content loader d-flex justify-content-center align-items-center">
+                        <div class="w-full text-center">
+                            {{# pix }} i/loading, core, {{#str}} loadinghelp, moodle {{/str}} {{/ pix }}
                         </div>
-                    {{/hasreportlist}}
+                    </div>
+                    <div class="reports-list-content d-none justify-content-center align-items-center">
+                        <table id="cr-list-table" class="datatable table"></table>
+                    </div>
+                    <div class="border reports-list-content empty d-none justify-content-center align-items-center">
+                        {{#str}} noreportslist, local_edwiserreports {{/str}}
+                    </div>
                 </div>
             </div>
         </div>

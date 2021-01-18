@@ -3,14 +3,14 @@
     .empty {
         height: 300px;
     }
-    .reports-preview-content {
+    .reports-preview-content, .reports-list-content {
         min-height: 300px;
-        & .loader {
-         .icon {
-                height: 36px;
-                width: 36px;
-                font-size: 36px;
-            }
+    }
+    .reports-preview-content.loader, .reports-list-content.loader {
+        .icon {
+            height: 36px;
+            width: 36px;
+            font-size: 36px;
         }
     }
 }
@@ -30,4 +30,7 @@
 }
 .field:not(.show) {
 	display: none;
+}
+#cr-list-table {
+    min-width: 100%;
 }

@@ -31,16 +31,16 @@ use stdClass;
 
 require_once($CFG->libdir.'/externallib.php');
 /**
- * Trait implementing the external function local_edwiserreports_save_customreports_data.
+ * Trait implementing the external function local_edwiserreports_get_customreports_data.
  */
-trait save_customreports_data {
+trait get_customreports_list {
 
     /**
      * Describes the structure of parameters for the function.
      *
      * @return external_function_parameters
      */
-    public static function save_customreports_data_parameters() {
+    public static function get_customreports_list_parameters() {
         return new external_function_parameters(
             array (
                 'params' => new external_value(PARAM_RAW, 'Prameters', 'local_edwiserreports')
@@ -49,50 +49,59 @@ trait save_customreports_data {
     }
 
     /**
-     * Save Custom Reports data
+     * Get Custom Reports data
      *
      * @param  string $params Plugin name
      * @return object             Configurations
      */
-    public static function save_customreports_data($params) {
-        global $DB, $USER;
-        $params = json_decode($params);
-        $timenow = time();
+    public static function get_customreports_list($params) {
+        global $DB;
         $table = 'edwreports_custom_reports';
-        $response = array(
-            "success" => true,
-            "reportsid" => 0,
-            "errormsg" => ''
-        );
+        $data = array();
+        $count = 0;
 
-        $customreports = new stdClass();
-        $customreports->fullname = $params->reportname;
-        $customreports->shortname = $params->reportshortname;
-        $customreports->createdby = $USER->id;
-        $params->querydata->downloadenable = $params->downloadenable;
-
-        // Initially reports will not be displayed in the desktop.
-        $params->querydata->enabledashboard = false;
-        $customreports->data = json_encode($params->querydata);
-
-        if ($DB->record_exists($table, array('shortname' => $customreports->shortname))) {
-            $response["success"] = false;
-            $response["errormsg"] = get_string('shortnameexist', 'local_edwiserreports');
-        } else {
-            // If id is present then update the records.
-            if ($params->id) {
-                $reportsid = $customreports->id = $params->id;
-                $customreports->timemodified = $timenow;
-                $DB->update_record($table, $customreports);
-            } else {
-                $customreports->timecreated = $timenow;
-                $customreports->timemodified = 0;
-                $reportsid = $DB->insert_record($table, $customreports);
-            }
-            $response["reportsid"] = $reportsid;
+        $sql = 'SELECT ecr.*, u.firstname, u.lastname
+                FROM {edwreports_custom_reports} ecr
+                JOIN {user} u
+                ON u.id = ecr.createdby';
+        $customreports = $DB->get_records_sql($sql);
+        foreach ($customreports as $customreport) {
+            $crdata = new stdClass();
+            $crdata->sno = ++$count;
+            $crdata->fullname = $customreport->fullname;
+            $crdata->shortname = $customreport->shortname;
+            $crdata->createdby = $customreport->firstname . ' ' . $customreport->lastname;
+            $crdata->datecreated = date('d/M/Y', $customreport->timecreated);
+            $crdata->managehtml = self::create_manage_html($customreport);
+            $data[] = $crdata;
         }
 
+        $response = array(
+            "success" => true,
+            "data" => json_encode($data)
+        );
+
         return $response;
+    }
+
+    /**
+     * Create manage HTML for custom reports.
+     */
+    private static function create_manage_html() {
+        $querydata = json_decode($customreport->data);
+        $html = '<div>
+            <span class="icon">
+                <input type="checkbox" id="enabledesktop-' . $customreport->id . '"
+                    class="custom-field-checkbox" value="enabledesktop">
+            </span>
+            <a href="#">
+                <i class="icon fa fa-cog text-primary"></i>
+            </a>
+            <a href="#">
+                <i class="icon fa fa-trash text-danger"></i>
+            </a>
+        </div>';
+        return $html;
     }
 
     /**
@@ -100,12 +109,11 @@ trait save_customreports_data {
      *
      * @return external_single_structure
      */
-    public static function save_customreports_data_returns() {
+    public static function get_customreports_list_returns() {
         return new \external_single_structure(
             array(
                 'success' => new external_value(PARAM_BOOL, 'Status', null),
-                'reportsid' => new external_value(PARAM_INT, 'Custom Reports Id', 0),
-                'errormsg' => new external_value(PARAM_TEXT, 'ERROR message if any', '')
+                'data' => new external_value(PARAM_RAW, 'Reports Data', 0)
             )
         );
     }

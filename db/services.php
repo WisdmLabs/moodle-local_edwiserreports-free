@@ -63,5 +63,13 @@ $functions = array(
         'description' => 'Save reports data',
         'type' => 'write',
         'ajax' => true,
+    ),
+    'local_edwiserreports_get_customreports_list' => array(
+        'classname' => 'local_edwiserreports\external\api',
+        'methodname' => 'get_customreports_list',
+        'classpath' => '',
+        'description' => 'Get custom reports list',
+        'type' => 'read',
+        'ajax' => true,
     )
 );
