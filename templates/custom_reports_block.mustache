@@ -1,8 +1,12 @@
 <div class="row mx-0">
+    <input class="hidden" id="wdm_custom_reports_id" value="{{reportsid}}">
+    <input class="hidden" id="wdm_custom_reports_fullname" value="{{fullname}}">
+    <input class="hidden" id="wdm_custom_reports_shortname" value="{{shortname}}">
+    <input class="hidden" id="wdm_custom_reports_downloadenable" value="{{downloadenable}}">
     <div class="col-md-9 col-sm-12 mb-3">
         <div class="">
             <div class="reports-preview-header">
-                <h4> {{#str}} reportspreview, local_edwiserreports {{/str}} </h4>
+                <h4> {{^fullname}}{{#str}} reportspreview, local_edwiserreports {{/str}}{{/fullname}} {{#fullname}}{{.}}{{/fullname}}</h4>
             </div>
             <div class="reports-preview-body">
                 <div class="">
@@ -44,9 +48,9 @@
                         </div>
                         <div class="position-relative my-1">
                             <select id="wdm-course-select" class="custom-field-select form-control singleselect w-full">
-                                <option value="0">{{#str}} allcourses, local_edwiserreports {{/str}}</option>
+                                <option value="0" {{#allcourses}}selected{{/allcourses}}>{{#str}} allcourses, local_edwiserreports {{/str}}</option>
                                 {{#courses}}
-                                <option value="{{id}}">{{{fullname}}}</option>
+                                <option value="{{id}}" {{#selected}}selected{{/selected}}>{{{fullname}}}</option>
                                 {{/courses}}
                             </select>
                         </div>
@@ -60,7 +64,7 @@
                         {{#fieldsarray}}
                         <div class="{{id}} p-2">
                             <div class="checkbox-custom checkbox-primary">
-                                <input type="checkbox" id="{{id}}" class="custom-field-checkbox" value="{{id}}">
+                                <input type="checkbox" id="{{id}}" class="custom-field-checkbox" value="{{id}}" {{#selected}}checked{{/selected}}>
                                 <label for="{{id}}" class="mb-0">{{text}}</label>
                             </div>
                         </div>

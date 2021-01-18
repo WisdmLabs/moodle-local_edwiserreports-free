@@ -28,6 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 use external_function_parameters;
 use external_value;
 use stdClass;
+use moodle_url;
 
 require_once($CFG->libdir.'/externallib.php');
 /**
@@ -86,16 +87,25 @@ trait get_customreports_list {
 
     /**
      * Create manage HTML for custom reports.
+     * @param [object] $customreport Custom Report Object
      */
-    private static function create_manage_html() {
+    private static function create_manage_html($customreport) {
+        global $CFG;
+        $editurl = new moodle_url(
+            $CFG->wwwroot . '/local/edwiserreports/customreportedit.php',
+            array(
+                'id' => $customreport->id
+            )
+        );
+
         $querydata = json_decode($customreport->data);
         $html = '<div>
             <span class="icon">
                 <input type="checkbox" id="enabledesktop-' . $customreport->id . '"
                     class="custom-field-checkbox" value="enabledesktop">
             </span>
-            <a href="#">
-                <i class="icon fa fa-cog text-primary"></i>
+            <a href="' .$editurl. '">
+                <i class="icon fa fa-edit text-primary"></i>
             </a>
             <a href="#">
                 <i class="icon fa fa-trash text-danger"></i>

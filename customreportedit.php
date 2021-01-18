@@ -32,6 +32,13 @@ $component = "local_edwiserreports";
 
 require_login();
 
+$reportsid = optional_param('id', 0, PARAM_INT);
+if ($reportsid) {
+    if (!$DB->record_exists('edwreports_custom_reports', array('id' => $reportsid))) {
+        throw new moodle_exception('customreportsidnotmatch', 'error');
+    }
+}
+
 local_edwiserreports_get_required_strings_for_js();
 
 // Page URL.
@@ -50,7 +57,7 @@ $PAGE->set_url($pageurl);
 $PAGE->set_pagelayout('standard');
 
 // Get renderable.
-$renderable = new \local_edwiserreports\output\custom_reports_block();
+$renderable = new \local_edwiserreports\output\custom_reports_block($reportsid);
 $output = $PAGE->get_renderer($component)->render($renderable);
 
 // Set page heading.

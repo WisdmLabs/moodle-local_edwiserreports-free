@@ -38,6 +38,14 @@ use context_coursecat;
  */
 class custom_reports_block implements renderable, templatable {
     /**
+     * Constructor to create custom reports edit page
+     * @param [int] $reportsid Reports ID
+     */
+    public function __construct($reportsid = 0) {
+        $this->reportsid = $reportsid;
+    }
+
+    /**
      * Function to export the renderer data in a format that is suitable for a
      * edit mustache template.
      *
@@ -52,6 +60,18 @@ class custom_reports_block implements renderable, templatable {
         $output = null;
         $export = new stdClass();
 
+        $selectedfield = array();
+        $selectedcourses = array();
+        if ($export->reportsid = $this->reportsid) {
+            $customreport = $DB->get_record('edwreports_custom_reports', array('id' => $this->reportsid));
+            $export->fullname = $customreport->fullname;
+            $export->shortname = $customreport->shortname;
+            $reportsdata = json_decode($customreport->data);
+            $export->downloadenable = $reportsdata->downloadenable;
+            $selectedfield = $reportsdata->selectedfield;
+            $selectedcourses = $reportsdata->courses;
+        }
+
         $syscontext = context_system::instance();
         $cohortobj = cohort_get_cohorts($syscontext->id);
         $cohorts = $cohortobj['cohorts'];
@@ -63,7 +83,16 @@ class custom_reports_block implements renderable, templatable {
             $cohorts = array_merge($cohorts, $cohortobj["cohorts"]);
         }
         $export->cohorts = $cohorts;
+
+        // Select courses.
         $courses = get_courses();
+        foreach ($selectedcourses as $courseid) {
+            if ($courseid == 0) {
+                $export->allcourses = true;
+            } else if (isset($courses[$courseid])) {
+                $courses[$courseid]->selected = true;
+            }
+        }
 
         // Remove system course.
         unset($courses[1]);
@@ -72,12 +101,12 @@ class custom_reports_block implements renderable, templatable {
             array (
                 'key' => 'user',
                 'title' => get_string('userfields', 'local_edwiserreports'),
-                'fieldsarray' => $this->get_custom_report_user_fields()
+                'fieldsarray' => $this->get_custom_report_user_fields($selectedfield)
             ),
             array (
                 'key' => 'course',
                 'title' => get_string('coursefields', 'local_edwiserreports'),
-                'fieldsarray' => $this->get_custom_report_course_fields()
+                'fieldsarray' => $this->get_custom_report_course_fields($selectedfield)
             )
         );
 
@@ -88,7 +117,7 @@ class custom_reports_block implements renderable, templatable {
      * Get custom reports users fields
      * @return array  Users Field for custom reports
      */
-    public function get_custom_report_user_fields() {
+    public function get_custom_report_user_fields($selectedfield = array()) {
         $userfields = array(
             array(
                 'id' => 'username',
@@ -96,9 +125,24 @@ class custom_reports_block implements renderable, templatable {
                 'dbkey' => 'u.username',
                 'disbaled' => true
             ),
-            array('id' => 'email', 'text' => get_string('useremail', 'local_edwiserreports'), 'dbkey' => 'u.email'),
-            array('id' => 'firstname', 'text' => get_string('firstname', 'local_edwiserreports'), 'dbkey' => 'u.firstname'),
-            array('id' => 'lastname', 'text' => get_string('lastname', 'local_edwiserreports'), 'dbkey' => 'u.lastname')
+            array(
+                'id' => 'email',
+                'text' => get_string('useremail', 'local_edwiserreports'),
+                'dbkey' => 'u.email',
+                'selected' => in_array('email', $selectedfield)
+            ),
+            array(
+                'id' => 'firstname',
+                'text' => get_string('firstname', 'local_edwiserreports'),
+                'dbkey' => 'u.firstname',
+                'selected' => in_array('firstname', $selectedfield)
+            ),
+            array(
+                'id' => 'lastname',
+                'text' => get_string('lastname', 'local_edwiserreports'),
+                'dbkey' => 'u.lastname',
+                'selected' => in_array('lastname', $selectedfield)
+            )
         );
         return $userfields;
     }
@@ -107,23 +151,26 @@ class custom_reports_block implements renderable, templatable {
      * Get custom reports course fields
      * @return array  Course Field for custom reports
      */
-    public function get_custom_report_course_fields() {
+    public function get_custom_report_course_fields($selectedfield = array()) {
         $coursefields = array(
             array(
                 'id' => 'coursename',
                 'text' => get_string('course', 'local_edwiserreports'),
                 'dbkey' => 'c.fullname',
-                'disbaled' => true
+                'disbaled' => true,
+                'selected' => in_array('coursename', $selectedfield)
             ),
             array(
                 'id' => 'coursecategory',
                 'text' => get_string('coursecategory', 'local_edwiserreports'),
-                'dbkey' => 'ctg.name'
+                'dbkey' => 'ctg.name',
+                'selected' => in_array('coursecategory', $selectedfield)
             ),
             array(
                 'id' => 'courseenroldate',
                 'text' => get_string('courseenroldate', 'local_edwiserreports'),
                 'dbkey' => 'ra.timemodified',
+                'selected' => in_array('courseenroldate', $selectedfield),
                 'resultfunc' => function($value) {
                     return $value ? date('d M Y', $value) : get_string('na', 'local_edwiserreports');
                 }
@@ -131,12 +178,14 @@ class custom_reports_block implements renderable, templatable {
             array(
                 'id' => 'courseprogress',
                 'text' => get_string('courseprogress', 'local_edwiserreports'),
-                'dbkey' => 'ec.progress'
+                'dbkey' => 'ec.progress',
+                'selected' => in_array('courseprogress', $selectedfield)
             ),
             array(
                 'id' => 'completionstatus',
                 'text' => get_string('course_completion_status', 'local_edwiserreports'),
                 'dbkey' => 'ec.progress',
+                'selected' => in_array('completionstatus', $selectedfield),
                 'resultfunc' => function($value) {
                     $ret = get_string('inprogress', 'local_edwiserreports');
                     if ($value == 100) {
@@ -149,6 +198,7 @@ class custom_reports_block implements renderable, templatable {
                 'id' => 'activitiescompleted',
                 'text' => get_string('activitiescompleted', 'local_edwiserreports'),
                 'dbkey' => 'ec.completedmodules',
+                'selected' => in_array('activitiescompleted', $selectedfield),
                 'resultfunc' => function($value) {
                     $ret = 0;
                     if ($value) {
@@ -160,12 +210,14 @@ class custom_reports_block implements renderable, templatable {
             array(
                 'id' => 'totalactivities',
                 'text' => get_string('totalactivities', 'local_edwiserreports'),
-                'dbkey' => 'ec.totalmodules'
+                'dbkey' => 'ec.totalmodules',
+                'selected' => in_array('totalactivities', $selectedfield)
             ),
             array(
                 'id' => 'completiontime',
                 'text' => get_string('completiontime', 'local_edwiserreports'),
                 'dbkey' => 'ec.completiontime',
+                'selected' => in_array('completiontime', $selectedfield),
                 'resultfunc' => function($value) {
                     return $value ? date('d M Y', $value) : get_string('na', 'local_edwiserreports');
                 }
@@ -174,6 +226,7 @@ class custom_reports_block implements renderable, templatable {
                 'id' => 'coursestartdate',
                 'text' => get_string('coursestartdate', 'local_edwiserreports'),
                 'dbkey' => 'c.startdate',
+                'selected' => in_array('coursestartdate', $selectedfield),
                 'resultfunc' => function($value) {
                     return $value ? date('d M Y', $value) : get_string('na', 'local_edwiserreports');
                 }
@@ -182,6 +235,7 @@ class custom_reports_block implements renderable, templatable {
                 'id' => 'courseenddate',
                 'text' => get_string('courseenddate', 'local_edwiserreports'),
                 'dbkey' => 'c.enddate',
+                'selected' => in_array('courseenddate', $selectedfield),
                 'resultfunc' => function($value) {
                     return $value ? date('d M Y', $value) : get_string('na', 'local_edwiserreports');
                 }

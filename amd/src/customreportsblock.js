@@ -24,12 +24,18 @@ define([
     var cfCourse = '#wdm-course-select';
     var cfSave = '#wdm-custom-reports-save';
     var cfSaveForm = '#wdm-customreports-save-form';
+    var crPageId = '#wdm_custom_reports_id';
+    var crPageFullname = '#wdm_custom_reports_fullname';
+    var crPageShortname = '#wdm_custom_reports_shortname';
+    var crPageDownloadEnable = '#wdm_custom_reports_downloadenable';
     var cfPreviewTable = null;
+    var crListTable = null;
     var customReportSaveTitle = M.util.get_string('savecustomreport', 'local_edwiserreports');
 
     var selectedFields = [];
     var courses = [];
     var cohorts = [];
+    var reportsId = 0;
     var reportsData = {
         downloadenable : true
     };
@@ -234,6 +240,7 @@ define([
                             });
                         }
                         $("html, body").animate({ scrollTop: 0 }, "slow");
+                        getCustomReportsList();
                         modal.destroy();
                     });
                 }
@@ -255,7 +262,12 @@ define([
                 if (data.length == 0) {
                     crList.empty();
                 } else {
-                    var crListTable = $('#cr-list-table').DataTable({
+                    if (crListTable) {
+                        crListTable.clear().destroy();
+                        $('#cr-list-table').html('');
+                    }
+
+                    crListTable = $('#cr-list-table').DataTable({
                         columns: [
                             {
                                 data: 'sno',
@@ -282,6 +294,7 @@ define([
                                 title: M.util.get_string('manage', 'local_edwiserreports')
                             }
                         ],
+                        order: [[2, 'asc']],
                         data: data,
                         bInfo: false,
                         bFilter: false,
@@ -292,6 +305,11 @@ define([
                             $('.dataTables_filter').addClass('pagination-sm pull-right');
                         }
                     });
+                    crListTable.on('order.dt search.dt', function() {
+                        crListTable.column(0, {search: 'applied', order: 'applied'}).nodes().each(function(cell, i) {
+                            cell.innerHTML = i + 1;
+                        });
+                    }).draw();
                     crList.show();
                 }
             }
@@ -315,6 +333,13 @@ define([
         init : function () {
             $(document).ready(function () {
                 customReportServiceInit();
+                if (reportsId = $(crPageId).val()) {
+                    reportsData.reportsid = reportsId;
+                    reportsData.fullname = $(crPageFullname).val();
+                    reportsData.shortname = $(crPageShortname).val();
+                    reportsData.downloadenable = $(crPageDownloadEnable).val();
+                    getCustomReportsData();
+                }
             });
         }
     }
