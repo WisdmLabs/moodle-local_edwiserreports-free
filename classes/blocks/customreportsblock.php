@@ -174,6 +174,9 @@ class customreportsblock extends block_base {
         $this->layout->iscustomblock = true;
         $this->layout->params = json_encode($reportsdata);
 
+        // Set block edit capabilities.
+        $this->set_block_edit_capabilities($this->layout->id);
+
         // Return blocks layout.
         return $this->layout;
     }

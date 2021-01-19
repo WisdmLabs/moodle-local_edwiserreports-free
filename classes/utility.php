@@ -1075,7 +1075,7 @@ class utility {
             $pref = new stdClass();
             $pref->desktopview = LOCAL_SITEREPORT_BLOCK_LARGE;
             $pref->tabletview = LOCAL_SITEREPORT_BLOCK_LARGE;
-            $pref->position = count($defaultreports) + (int) $customreport->id;
+            $pref->position = count($defaultreports);
             $report->blockdata = json_encode($pref);
             $defaultreports[] = $report;
         }
@@ -1097,9 +1097,15 @@ class utility {
 
         // For each blocks change preferences.
         foreach ($blocks as $key => $block) {
+            $blockname = '';
             $pref = self::get_reportsblock_preferences($block);
+            $prefname = 'pref_' . $block->classname;
+            if ($block->classname == 'customreportsblock') {
+                $blockname = 'customreportsblock-' . $block->id;
+                $prefname .= '-' . $block->id;
+            }
 
-            if ($block->classname == $data->blockname) {
+            if ($block->classname == $data->blockname || $blockname == $data->blockname) {
                 $pref = $data;
             } else if ($currentpref['position'] == $data->position) {
                 continue;
@@ -1112,7 +1118,7 @@ class utility {
             }
 
             // Set block Preference.
-            set_user_preference('pref_' . $block->classname, json_encode($pref));
+            set_user_preference($prefname, json_encode($pref));
         }
 
         return array(
@@ -1126,13 +1132,18 @@ class utility {
      */
     public static function rearrange_block_with_preferences(&$blocks) {
         $newblocks = array();
+        // echo "<pre>";
         foreach ($blocks as $block) {
             $pref = self::get_reportsblock_preferences($block);
             while (isset($newblocks[$pref['position']])) {
                 $pref['position']++;
             }
+            // var_dump($block->blockname);
+            // var_dump($pref['position']);
             $newblocks[$pref['position']] = $block;
         }
+        // var_dump($newblocks);
+        // die;
 
         ksort($newblocks);
         $blocks = $newblocks;
@@ -1161,7 +1172,38 @@ class utility {
     public static function get_reportsblock_by_name($blockname) {
         global $DB;
 
-        return $DB->get_record('edwreports_blocks', array('classname' => $blockname));
+        $block = new stdClass();
+        if (strpos($blockname, 'customreportsblock') !== false) {
+            $block = self::get_custom_report_block($blockname);
+        } else {
+            $block = $DB->get_record('edwreports_blocks', array('classname' => $blockname));
+        }
+
+        return $block;
+    }
+
+    /**
+     * Get custom report block
+     * @param [string] $blockname Block Name
+     */
+    public static function get_custom_report_block($blockname) {
+        global $DB;
+
+        $params = explode('-', $blockname);
+        $classname = isset($params[0]) ? $params[0] : '';
+        $blockid = isset($params[1]) ? $params[1] : '';
+
+        $block = $DB->get_record('edwreports_custom_reports', array('id' => $blockid));
+        $block->blockname = $block->shortname;
+        $pref = new stdClass();
+        $pref->desktopview = LOCAL_SITEREPORT_BLOCK_LARGE;
+        $pref->tabletview = LOCAL_SITEREPORT_BLOCK_LARGE;
+        $pref->mobileview = LOCAL_SITEREPORT_BLOCK_LARGE;
+        $pref->position = $DB->count_records('edwreports_blocks');
+        $block->blockdata = json_encode($pref);
+        $block->classname = 'customreportsblock';
+
+        return $block;
     }
 
     /**
@@ -1169,19 +1211,24 @@ class utility {
      * @param string $block Block
      */
     public static function get_reportsblock_preferences($block) {
-        if ($prefrences = get_user_preferences('pref_' . $block->classname)) {
+        $prefname = 'pref_' . $block->classname;
+        if ($block->classname == 'customreportsblock') {
+            $prefname .= '-' . $block->id;
+        }
+
+        if ($prefrences = get_user_preferences($prefname)) {
             $blockdata = json_decode($prefrences, true);
             $position = $blockdata['position'];
             $desktopview = $blockdata[LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW];
             $tabletview = $blockdata[LOCAL_SITEREPORT_BLOCK_TABLET_VIEW];
-        } else if ($position = get_config('local_edwiserreports', $block->blockname . 'position')) {
-            $desktopview = get_config('local_edwiserreports', $block->blockname . 'desktopsize');
-            $tabletview = get_config('local_edwiserreports', $block->blockname . 'tabletsize');
         } else {
             $blockdata = json_decode($block->blockdata, true);
-            $position = $blockdata['position'];
-            $desktopview = $blockdata['desktopview'];
-            $tabletview = $blockdata['tabletview'];
+            $position = get_config('local_edwiserreports', $block->blockname . 'position');
+            $position = $position ? $position : $blockdata['position'];
+            $desktopview = get_config('local_edwiserreports', $block->blockname . 'desktopsize');
+            $desktopview = $desktopview ? $desktopview : $blockdata['desktopview'];
+            $tabletview = get_config('local_edwiserreports', $block->blockname . 'tabletsize');
+            $tabletview = $tabletview ? $tabletview : $blockdata['tabletview'];
         }
 
         // Set default preference.
@@ -1190,6 +1237,7 @@ class utility {
         $preferences[LOCAL_SITEREPORT_BLOCK_TABLET_VIEW] = $tabletview;
         $preferences['position'] = $position;
         $preferences['hidden'] = isset($blockdata["hidden"]) ? $blockdata["hidden"] : 0;
+        if ($block->blockname == 'customreportsblock-12') { echo "<pre>"; var_dump($preferences); die; }
 
         return $preferences;
     }

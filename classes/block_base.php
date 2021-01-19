@@ -107,20 +107,25 @@ class block_base {
      * @param string $blockname Block name
      */
     public function set_block_size($block) {
+        $prefname = 'pref_' . $block->classname;
+        if ($block->classname == 'customreportsblock') {
+            $prefname .= '-' . $block->id;
+        }
+
         $sizes = array();
-        if ($prefrences = get_user_preferences('pref_' . $block->blockname . 'block')) {
+        if ($prefrences = get_user_preferences($prefname)) {
             $blockdata = json_decode($prefrences, true);
             $position = $blockdata['position'];
             $sizes[LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW] = $blockdata[LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW];
             $sizes[LOCAL_SITEREPORT_BLOCK_TABLET_VIEW] = $blockdata[LOCAL_SITEREPORT_BLOCK_TABLET_VIEW];
-        } else if ($position = get_config('local_edwiserreports', $block->blockname . 'position')) {
-            $sizes[LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW] = get_config('local_edwiserreports', $block->blockname . 'desktopsize');
-            $sizes[LOCAL_SITEREPORT_BLOCK_TABLET_VIEW] = get_config('local_edwiserreports', $block->blockname . 'tabletsize');
         } else {
             $blockdata = json_decode($block->blockdata, true);
-            $position = $blockdata['position'];
-            $sizes[LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW] = $blockdata['desktopview'];
-            $sizes[LOCAL_SITEREPORT_BLOCK_TABLET_VIEW] = $blockdata['tabletview'];
+            $position = get_config('local_edwiserreports', $block->blockname . 'position');
+            $position = $position ? $position : $blockdata['position'];
+            $desktopview = get_config('local_edwiserreports', $block->blockname . 'desktopsize');
+            $sizes[LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW] = $desktopview ? $desktopview : $blockdata['desktopview'];
+            $tabletview = get_config('local_edwiserreports', $block->blockname . 'tabletsize');
+            $sizes[LOCAL_SITEREPORT_BLOCK_TABLET_VIEW] = $tabletview ? $tabletview : $blockdata['tabletview'];
         }
 
         $devicecolclass = array(
@@ -179,11 +184,12 @@ class block_base {
 
         $this->layout->hidden = isset($pref["hidden"]) ? $pref["hidden"] : 0;
 
-        $context = context_system::instance();
-
-        // Based on capability show the edit button
-        // If user dont have capability to see the block.
-        $this->layout->caneditadv = has_capability('report/edwiserreports_' . $blockname . ':editadvance', $context);
+        if (strpos($blockname, 'customreportsblock') === false) {
+            // Based on capability show the edit button
+            // If user dont have capability to see the block.
+            $context = context_system::instance();
+            $this->layout->caneditadv = has_capability('report/edwiserreports_' . $blockname . ':editadvance', $context);
+        }
 
         // If have capability to edit.
         $this->layout->editopt = true;

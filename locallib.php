@@ -970,6 +970,13 @@ function reset_edwiserreports_page_default() {
         unset($USER->preference[$prefname]);
     }
 
+    $customreports = $DB->get_records('edwreports_custom_reports');
+    foreach ($customreports as $block) {
+        $prefname = 'pref_customreportsblock-' . $block->id;
+        $DB->delete_records('user_preferences', array('userid' => $USER->id, 'name' => $prefname));
+        unset($USER->preference[$prefname]);
+    }
+
     redirect($CFG->wwwroot . '/local/edwiserreports/index.php');
 }
 
