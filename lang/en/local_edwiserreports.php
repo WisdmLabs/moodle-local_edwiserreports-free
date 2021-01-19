@@ -610,3 +610,5 @@ $string['createdby'] = 'Created By';
 $string['sno'] = 'S. No.';
 $string['datecreated'] = 'Date Created';
 $string['enabledesktop'] = 'Desktop Enabled';
+$string['searchproviders'] = 'Search Providers';
+$string['noresult'] = 'No Result Found';

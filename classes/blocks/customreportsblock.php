@@ -78,7 +78,7 @@ class customreportsblock extends block_base {
         }
 
         // Main query to execute the custom query reports.
-        $sql = 'SELECT u.id as userid, '.$customfields.'
+        $sql = 'SELECT '.$customfields.'
                 FROM {user} u
                 JOIN {role_assignments} ra ON ra.userid = u.id
                 JOIN {role} r ON r.id = ra.roleid

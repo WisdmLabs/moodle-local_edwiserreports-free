@@ -72,6 +72,10 @@
                                     data: data.reportsdata,
                                     bInfo: false,
                                     lengthChange: false,
+                                    language: { 
+                                        searchPlaceholder: "{{#str}}searchproviders, local_edwiserreports{{/str}}",
+                                        emptyTable: "{{#str}}noresult, local_edwiserreports{{/str}}"
+                                    },
                                     drawCallback: function() {
                                         $('.dataTables_paginate > .pagination').addClass('pagination-sm pull-right');
                                         $('.dataTables_filter').addClass('pagination-sm pull-right');
