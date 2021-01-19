@@ -168,16 +168,21 @@ define([
         $(document).on("click", scheduledEmailDropdown, function(e) {
             e.preventDefault();
             var data = v.getScheduledEmailFormContext();
-
             var form = $(this).closest('form');
             var formData = form.serializeArray();
             $(formData).each(function($k, $d) {
                 data[$d.name] = $d.value;
             });
 
+            var modalTitle = M.util.get_string('scheduleemailfor', 'local_edwiserreports');
+            if (data.block.includes("customreportsblock")) {
+                modalTitle += ' ' + $('#' + data.block).data('blockname');
+            } else {
+                modalTitle += ' ' + M.util.get_string(data.block + 'exportheader', 'local_edwiserreports');
+            }
+
             ModalFactory.create({
-                title: M.util.get_string('scheduleemailfor', 'local_edwiserreports') +
-                ' ' + M.util.get_string(data.block + 'exportheader', 'local_edwiserreports'),
+                title: modalTitle,
                 body: Templates.render('local_edwiserreports/email_schedule_tabs', data)
             }, $(this))
                 .done(function(modal) {
