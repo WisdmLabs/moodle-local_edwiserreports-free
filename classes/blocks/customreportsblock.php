@@ -105,9 +105,6 @@ class customreportsblock extends block_base {
             }
             $recordset->next();
         }
-        // echo "<pre>";
-        // var_dump($records);
-        // die;
         $return = new stdClass();
         $return->columns = $columns;
         $return->reportsdata = array_values($records);
@@ -179,5 +176,25 @@ class customreportsblock extends block_base {
 
         // Return blocks layout.
         return $this->layout;
+    }
+
+    /**
+     * @param  [int]   $reportid Custom Reports Id
+     * @return [array]           Array of records
+     */
+    public function get_exportable_data_block($reportsid) {
+        global $DB;
+        $customreport = $DB->get_record('edwreports_custom_reports', array('id' => $reportsid));
+        $params = json_decode($customreport->data);
+        $params->fields = $params->selectedfield;
+        unset($params->selectedfield);
+
+        $records = $this->get_data($params);
+        $header = array_column($records->columns, 'title');
+        $data = array_map(function($record) {
+            return array_values((array) $record);
+        }, $records->reportsdata);
+
+        return array_merge(array($header), $data);
     }
 }
