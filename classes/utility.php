@@ -1132,18 +1132,13 @@ class utility {
      */
     public static function rearrange_block_with_preferences(&$blocks) {
         $newblocks = array();
-        // echo "<pre>";
         foreach ($blocks as $block) {
             $pref = self::get_reportsblock_preferences($block);
             while (isset($newblocks[$pref['position']])) {
                 $pref['position']++;
             }
-            // var_dump($block->blockname);
-            // var_dump($pref['position']);
             $newblocks[$pref['position']] = $block;
         }
-        // var_dump($newblocks);
-        // die;
 
         ksort($newblocks);
         $blocks = $newblocks;
@@ -1262,12 +1257,17 @@ class utility {
     public static function get_blocks_capability($block) {
         $context = context_system::instance();
 
-        // Prepare the list of capabilities to choose from.
         $capabilitychoices = array();
-        foreach ($context->get_capabilities() as $cap) {
-            if (strpos($cap->name, 'report/edwiserreports_' . $block->classname) !== false) {
-                $strkey = str_replace(array('report/edwiserreports_', ':'), array('', ''), $cap->name);
-                $capabilitychoices[$cap->name] = get_string($strkey, 'local_edwiserreports');
+        // Prepare the list of capabilities to choose from.
+        if ($block->classname == 'customreportsblock') {
+            $capname = 'report/edwiserreports_customreportsblock-' . $block->id . ':view';
+            $capabilitychoices[$capname] = $block->fullname;
+        } else {
+            foreach ($context->get_capabilities() as $cap) {
+                if (strpos($cap->name, 'report/edwiserreports_' . $block->classname) !== false) {
+                    $strkey = str_replace(array('report/edwiserreports_', ':'), array('', ''), $cap->name);
+                    $capabilitychoices[$cap->name] = get_string($strkey, 'local_edwiserreports');
+                }
             }
         }
 
@@ -1295,16 +1295,20 @@ class utility {
              'prohibit' => CAP_PROHIBIT
         );
 
-        if (!$config = get_config('local_edwiserreports', str_replace('block', 'roleallow', $blockname))) {
-            return array('success' => false);
+        $config = array();
+        if ($configstr = get_config('local_edwiserreports', str_replace('block', 'roleallow', $blockname))) {
+            $config = explode(',', $configstr);
         }
-        $config = explode(',', $config);
+
         foreach ($data as $rolename => $permission) {
             $role = $DB->get_record('role', array('shortname' => $rolename));
             if (!$role) {
                 continue;
             }
-            assign_capability($capability, $permissionconst[$permission], $role->id, $context->id, true);
+
+            if (strpos($blockname, 'customreportsblock') === false) {
+                assign_capability($capability, $permissionconst[$permission], $role->id, $context->id, true);
+            }
 
             if ($permissionconst[$permission] === CAP_ALLOW) {
                 if (!in_array($role->id, $config)) {
@@ -1352,5 +1356,36 @@ class utility {
         return array(
             "success" => true
         );
+    }
+
+    /**
+     * Get role capability from context
+     * @param  object $capcontext Capability Context
+     * @param  object $role       Role Object
+     * @return int
+     */
+    public static function get_rolecap_from_context($capcontext, $role, $blockname) {
+        global $CFG;
+
+        if (strpos($blockname, 'customreportsblock') !== false) {
+            $params = explode('-', $blockname);
+            $classname = isset($params[0]) ? $params[0] : '';
+            $blockid = isset($params[1]) ? $params[1] : '';
+            $configstr = get_config('local_edwiserreports', str_replace('block', 'roleallow' , $blockname));
+            if ($configstr) {
+                $config = explode(',', $configstr);
+                $rolecap = in_array($role->id, $config) ? CAP_ALLOW : CAP_INHERIT;
+            } else {
+                if ($role->archetype == 'manager' || $role->archetype == 'coursecreator') {
+                    $rolecap = CAP_ALLOW;
+                } else {
+                    $rolecap = CAP_INHERIT;
+                }
+            }
+        } else {
+            $rolecap = $capcontext->rolecapabilities[$role->id];
+        }
+
+        return $rolecap;
     }
 }

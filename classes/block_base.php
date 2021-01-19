@@ -189,6 +189,8 @@ class block_base {
             // If user dont have capability to see the block.
             $context = context_system::instance();
             $this->layout->caneditadv = has_capability('report/edwiserreports_' . $blockname . ':editadvance', $context);
+        } else {
+            $this->layout->caneditadv = true;
         }
 
         // If have capability to edit.

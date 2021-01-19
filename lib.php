@@ -299,7 +299,8 @@ function local_edwiserreports_output_fragment_get_blockscap_form($block) {
     $output .= html_writer::end_tag('div');
 
     $output .= html_writer::start_div('clearfix path-admin-tool-capability overflow-scroll col-12 cap-overview');
-    $output .= local_edwiserreports_output_fragment_block_overview_display($capvalue);
+    $blockname = $block->classname . '-' . $block->id;
+    $output .= local_edwiserreports_output_fragment_block_overview_display($capvalue, $blockname);
     $output .= html_writer::end_div();
     $btnparams = array('type' => 'submit', 'class' => 'btn btn-primary pull-right save-block-caps');
     $output .= html_writer::tag('button', 'Save', $btnparams);
@@ -313,7 +314,7 @@ function local_edwiserreports_output_fragment_get_blockscap_form($block) {
  * Render blocks capability view
  * @param array $capvalue Fragment parameter array
  */
-function local_edwiserreports_output_fragment_block_overview_display($capvalue) {
+function local_edwiserreports_output_fragment_block_overview_display($capvalue, $blockname = '') {
     global $CFG;
 
     require_once($CFG->dirroot . '/admin/tool/capability/locallib.php');
@@ -335,6 +336,7 @@ function local_edwiserreports_output_fragment_block_overview_display($capvalue) 
     $output = html_writer::start_tag('table', array('class' => 'comparisontable w-full'));
     $output .= html_writer::start_tag('thead');
     $output .= html_writer::start_tag('tr');
+
     // Prepare data in same loop.
     $data = html_writer::start_tag('tbody');
     $data .= html_writer::start_tag('tr');
@@ -345,11 +347,10 @@ function local_edwiserreports_output_fragment_block_overview_display($capvalue) 
     foreach ($roles as $roleid => $role) {
         $output .= '<th><div><a href="javascript:void(0)">' . $role->localname . '</a></div></th>';
 
-        $rolecap = $capabilitycontext[$context->id]->rolecapabilities[$role->id];
+        $rolecap = \local_edwiserreports\utility::get_rolecap_from_context($capabilitycontext[$context->id], $role, $blockname);
         $permission = isset($rolecap) ? $rolecap : CAP_INHERIT;
         $data .= '<td class="switch-capability ' . $permissionclasses[$permission] . '" data-permission="' . $permission . '">';
         $data .= '<label>' . $strpermissions[$permission] . '</label>';
-
         foreach ($permissionclasses as $key => $class) {
             $checked = '';
             if ($key == $permission) {

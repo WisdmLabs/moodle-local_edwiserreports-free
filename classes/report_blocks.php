@@ -56,6 +56,11 @@ class report_blocks {
                     !can_view_block($capname)) {
                     continue;
                 }
+            } else {
+                if (!is_siteadmin() &&
+                    !can_view_block('customreportsroleallow-' . $block->id)) {
+                    continue;
+                }
             }
 
             // Check if class file exist.

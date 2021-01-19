@@ -1021,10 +1021,26 @@ function has_user_role($userid, $roleshortname) {
  * @param [string] $capability capability
  */
 function can_view_block($capname) {
-    global $USER;
+    global $DB, $USER;
 
     $canviewblocks = false;
-    $allowedrole = get_roles_with_capability($capname);
+    if (strpos($capname, 'customreportsroleallow') !== false) {
+        $configstr = get_config('local_edwiserreports', $capname);
+        if ($configstr) {
+            $roleids = explode(',', $configstr);
+            list($insql, $inparams) = $DB->get_in_or_equal($roleids, SQL_PARAMS_NAMED);
+            $sql = 'SELECT * FROM {role} WHERE id ' . $insql;
+            $allowedrole = $DB->get_records_sql($sql, $inparams);
+        } else {
+            $allowedarchetype = array('mamnager', 'coursecreator');
+            list($insql, $inparams) = $DB->get_in_or_equal($allowedarchetype, SQL_PARAMS_NAMED);
+            $sql = 'SELECT * FROM {role} WHERE archetype ' . $insql;
+            $allowedrole = $DB->get_records_sql($sql, $inparams);
+        }
+    } else {
+        $allowedrole = get_roles_with_capability($capname);
+    }
+
     foreach ($allowedrole as $role) {
         if (has_user_role($USER->id, $role->shortname)) {
             $canviewblocks = true;
