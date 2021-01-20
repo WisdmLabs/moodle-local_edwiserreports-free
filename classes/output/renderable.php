@@ -74,6 +74,7 @@ class elucidreport_renderable implements renderable, templatable {
         }
 
         $export->editing = isset($USER->editing) ? $USER->editing : 0;
+        $export->customreportseditlink = new moodle_url($CFG->wwwroot."/local/edwiserreports/customreportedit.php");
 
         return $export;
     }
