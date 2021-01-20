@@ -198,6 +198,7 @@ define([
             body: templates.render('local_edwiserreports/custom_reports_save_form', reportsData)
         }).done(function(modal) {
             var root = modal.getRoot();
+            root.find('.modal-dialog').addClass('modal-lg');
             modal.show();
             root.on(modalEvents.save, function(e) {
                 // Stop the default save button behaviour which is to close the modal.
