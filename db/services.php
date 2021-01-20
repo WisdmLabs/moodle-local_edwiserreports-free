@@ -71,5 +71,13 @@ $functions = array(
         'description' => 'Get custom reports list',
         'type' => 'read',
         'ajax' => true,
+    ),
+    'local_edwiserreports_delete_custom_report' => array(
+        'classname' => 'local_edwiserreports\external\api',
+        'methodname' => 'delete_custom_report',
+        'classpath' => '',
+        'description' => 'Delete Custom Report',
+        'type' => 'write',
+        'ajax' => true,
     )
 );

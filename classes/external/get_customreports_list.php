@@ -100,17 +100,23 @@ trait get_customreports_list {
 
         $enabledesktop = $customreport->enabledesktop ? 'checked' : '';
         $querydata = json_decode($customreport->data);
+        $enabledesktopstr = get_string('enabledesktop', 'local_edwiserreports');
+        $disabledesktopstr = get_string('disabledesktop', 'local_edwiserreports');
+        $tooltipstr = $customreport->enabledesktop ? $disabledesktopstr : $enabledesktopstr;
         $html = '<div>
             <span class="checkbox-custom checkbox-primary">
                 <input type="checkbox" id="wdm-desktopenable-' . $customreport->id . '" class="position-absolute
-                custom-field-checkbox" ' . $enabledesktop . ' data-reportsid="' . $customreport->id . '">
+                custom-field-checkbox" ' . $enabledesktop . ' data-reportsid="' . $customreport->id . '"
+                data-toggle="tooltip" title="' . $tooltipstr . '">
                 <label for="wdm-desktopenable-' . $customreport->id . '" class="d-block mb-0"></label>
             </span>
             <span class="ml-30">
-                <a href="' .$editurl. '">
+                <a href="' .$editurl. '" data-toggle="tooltip"
+                title="' . get_string('editreports', 'local_edwiserreports') . '">
                     <i class="icon fa fa-edit text-primary"></i>
                 </a>
-                <a href="#">
+                <a href="#" data-toggle="tooltip" data-reportsid="' . $customreport->id . '"
+                title="' . get_string('deletereports', 'local_edwiserreports') . '" data-action="delete">
                     <i class="icon fa fa-trash text-danger"></i>
                 </a>
             </span>

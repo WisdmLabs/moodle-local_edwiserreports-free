@@ -5,6 +5,7 @@ define([
     'core/modal_events',
     'core/templates',
     'core/notification',
+    'core/str',
     'local_edwiserreports/jquery.dataTables',
     'local_edwiserreports/dataTables.bootstrap4'
 ], function (
@@ -13,7 +14,8 @@ define([
     modalFactory,
     modalEvents,
     templates,
-    notif
+    notif,
+    str
 ) {
     'use strict';
 
@@ -30,6 +32,7 @@ define([
     var crPageDownloadEnable = '#wdm_custom_reports_downloadenable';
     var crPageDesktopEnable = '#wdm_custom_reports_desktopenable';
     var crDesktopEnableSwitch = '[id^="wdm-desktopenable-"]';
+    var crDeleteBtn = '#cr-list-table a[data-action="delete"]';
     var cfPreviewTable = null;
     var crListTable = null;
     var customReportSaveTitle = M.util.get_string('savecustomreport', 'local_edwiserreports');
@@ -266,7 +269,6 @@ define([
         }]);
         getCustomReportsList[0].done(function(response) {
             var data = JSON.parse(response.data);
-            console.log(data);
             if (response.success) {
                 if (data.length == 0) {
                     crList.empty();
@@ -325,6 +327,31 @@ define([
         });
     }
 
+    function customReportDelete(reportsId) {
+        var deleteCustomReport = ajax.call([{
+            methodname: 'local_edwiserreports_delete_custom_report',
+            args: {
+                params: JSON.stringify({reportsid: reportsId})
+            }
+        }]);
+        deleteCustomReport[0].done(function(response) {
+            if (response.success) {
+                notif.addNotification({
+                    message: response.message,
+                    type: "success"
+                });
+            } else {
+                notif.addNotification({
+                    message: response.message,
+                    type: "error"
+                });
+            }
+        }).always(function() {
+            $("html, body").animate({ scrollTop: 0 }, "slow");
+            getCustomReportsList();
+        })
+    }
+
     function customReportServiceInit() {
         $(cfCheckbox).on('change', function () {
             getCustomReportsData();
@@ -344,6 +371,33 @@ define([
             }
 
             saveCustomReportsDataService(updateData, null);
+        });
+        $(document).on('click', crDeleteBtn, function (e) {
+            e.preventDefault();
+
+            var reportId = $(this).data('reportsid');
+            str.get_strings([
+                {
+                    key: 'deletecustomreportstitle',
+                    component: 'local_edwiserreports'
+                },
+                {
+                    key: 'deletecustomreportsquestion',
+                    component: 'local_edwiserreports'
+                },
+                {
+                    key: 'yes',
+                    component: 'moodle'
+                },
+                {
+                    key: 'no',
+                    component: 'moodle'
+                }
+            ]).done(function(s) {
+                notif.confirm(s[0], s[1], s[2], s[3], $.proxy(function() {
+                    customReportDelete(reportId);
+                }, e.currentTarget));
+            });
         });
     }
 

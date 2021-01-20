@@ -1232,7 +1232,6 @@ class utility {
         $preferences[LOCAL_SITEREPORT_BLOCK_TABLET_VIEW] = $tabletview;
         $preferences['position'] = $position;
         $preferences['hidden'] = isset($blockdata["hidden"]) ? $blockdata["hidden"] : 0;
-        if ($block->blockname == 'customreportsblock-12') { echo "<pre>"; var_dump($preferences); die; }
 
         return $preferences;
     }
