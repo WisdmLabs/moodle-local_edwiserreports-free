@@ -621,3 +621,4 @@ $string['deletefailed'] = 'Reports Delete Failed';
 $string['deletecustomreportstitle'] = 'Delete Custom Reports Title';
 $string['deletecustomreportsquestion'] = 'Do you really want to delete this custom reports?';
 $string['createcustomreports'] = 'Create Custom Reports Block';
+$string['searchreports'] = 'Search Reports';

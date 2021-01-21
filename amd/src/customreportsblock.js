@@ -306,11 +306,13 @@ define([
                                 title: M.util.get_string('manage', 'local_edwiserreports')
                             }
                         ],
+                        language: { 
+                            searchPlaceholder: M.util.get_string('searchreports', 'local_edwiserreports'),
+                            emptyTable: M.util.get_string('noresult', 'local_edwiserreports')
+                        },
                         order: [[2, 'asc']],
                         data: data,
                         bInfo: false,
-                        bFilter: false,
-                        searching: false,
                         lengthChange: false,
                         drawCallback: function() {
                             $('.dataTables_paginate > .pagination').addClass('pagination-sm pull-right');
