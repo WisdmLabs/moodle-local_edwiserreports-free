@@ -624,3 +624,5 @@ $string['deletecustomreportsquestion'] = 'Do you really want to delete this cust
 $string['createcustomreports'] = 'Create Custom Reports Block';
 $string['searchreports'] = 'Search Reports';
 $string['title'] = 'Title';
+$string['createreports'] = 'Create New Report';
+$string['updatereports'] = 'Update Report';

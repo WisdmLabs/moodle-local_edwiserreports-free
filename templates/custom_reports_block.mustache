@@ -7,7 +7,12 @@
     <div class="col-md-9 col-sm-12 mb-3">
         <div class="">
             <div class="reports-preview-header">
-                <h4> {{^fullname}}{{#str}} reportspreview, local_edwiserreports {{/str}}{{/fullname}} {{#fullname}}{{.}}{{/fullname}}</h4>
+                <h4 class="rp-header">
+                    {{#fullname}}{{.}}{{/fullname}}
+                    {{^fullname}}
+                        {{#str}} reportspreview, local_edwiserreports {{/str}}
+                    {{/fullname}}
+                </h4>
             </div>
             <div class="reports-preview-body">
                 <div class="">
@@ -26,7 +31,12 @@
             </div>
             <div class="reports-preview-footer py-1">
                 <button id="wdm-custom-reports-save" class="btn btn-primary pull-right" disabled>
-                    {{#str}} save, local_edwiserreports {{/str}}
+                    {{#isediting}}
+                        {{#str}} editreports, local_edwiserreports {{/str}}
+                    {{/isediting}}
+                    {{^isediting}}
+                        {{#str}} createreports, local_edwiserreports {{/str}}
+                    {{/isediting}}
                 </button>
             </div>
         </div>

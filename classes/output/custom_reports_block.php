@@ -84,6 +84,7 @@ class custom_reports_block implements renderable, templatable {
             $cohorts = array_merge($cohorts, $cohortobj["cohorts"]);
         }
         $export->cohorts = $cohorts;
+        $export->isediting = $this->reportsid ? true : false;
 
         // Select courses.
         $courses = get_courses();
@@ -156,7 +157,7 @@ class custom_reports_block implements renderable, templatable {
         $coursefields = array(
             array(
                 'id' => 'coursename',
-                'text' => get_string('course', 'local_edwiserreports'),
+                'text' => get_string('coursename', 'local_edwiserreports'),
                 'dbkey' => 'c.fullname',
                 'disbaled' => true,
                 'selected' => in_array('coursename', $selectedfield)

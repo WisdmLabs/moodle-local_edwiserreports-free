@@ -34,6 +34,7 @@ define([
     var crDesktopEnableSwitch = '[id^="wdm-desktopenable-"]';
     var crDeleteBtn = '#cr-list-table a[data-action="delete"]';
     var crHideBtn = '#cr-list-table a[data-action="hide"]';
+    var cpHeader = '.reports-preview-header .rp-header';
     var cfPreviewTable = null;
     var crListTable = null;
     var customReportSaveTitle = M.util.get_string('savecustomreport', 'local_edwiserreports');
@@ -241,6 +242,8 @@ define([
             if (response.success) {
                 if (modal) {
                     reportsData = JSON.parse(response.reportsdata);
+                    $(cpHeader).html(reportsData.reportname);
+                    $(cfSave).html(M.util.get_string('editreports', 'local_edwiserreports'));
                 }
                 $('#user-notifications .close').click();
                 notif.addNotification({
