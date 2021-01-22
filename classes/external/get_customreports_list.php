@@ -59,7 +59,6 @@ trait get_customreports_list {
         global $DB;
         $table = 'edwreports_custom_reports';
         $data = array();
-        $count = 0;
 
         $sql = 'SELECT ecr.*, u.firstname, u.lastname
                 FROM {edwreports_custom_reports} ecr
@@ -68,11 +67,10 @@ trait get_customreports_list {
         $customreports = $DB->get_records_sql($sql);
         foreach ($customreports as $customreport) {
             $crdata = new stdClass();
-            $crdata->sno = ++$count;
             $crdata->fullname = $customreport->fullname;
-            $crdata->shortname = $customreport->shortname;
             $crdata->createdby = $customreport->firstname . ' ' . $customreport->lastname;
-            $crdata->datecreated = date('d/M/Y', $customreport->timecreated);
+            $crdata->datecreated = date('d-m-Y', $customreport->timecreated);
+            $crdata->datemodified = $customreport->timemodified ? date('d-m-Y', $customreport->timemodified) : '-';
             $crdata->managehtml = self::create_manage_html($customreport);
             $data[] = $crdata;
         }
@@ -103,17 +101,24 @@ trait get_customreports_list {
         $enabledesktopstr = get_string('enabledesktop', 'local_edwiserreports');
         $disabledesktopstr = get_string('disabledesktop', 'local_edwiserreports');
         $tooltipstr = $customreport->enabledesktop ? $disabledesktopstr : $enabledesktopstr;
+        $eyeicon = $customreport->enabledesktop ? 'eye' : 'eye-slash';
         $html = '<div>
-            <span class="checkbox-custom checkbox-primary">
-                <input type="checkbox" id="wdm-desktopenable-' . $customreport->id . '" class="position-absolute
-                custom-field-checkbox" ' . $enabledesktop . ' data-reportsid="' . $customreport->id . '"
-                data-toggle="tooltip" title="' . $tooltipstr . '">
-                <label for="wdm-desktopenable-' . $customreport->id . '" class="d-block mb-0"></label>
-            </span>
             <span class="ml-30">
+                <input type="checkbox" id="wdm-desktopenable-' . $customreport->id . '" class="d-none
+                custom-field-checkbox" ' . $enabledesktop . ' data-reportsid="' . $customreport->id . '"
+                >
+                <a href="' .$editurl. '"
+                   data-toggle="tooltip" data-action="hide"
+                   title="' . $tooltipstr . '"
+                   data-titlehide="' . $enabledesktopstr . '"
+                   data-titleshow="' . $disabledesktopstr . '"
+                   data-value="' . $customreport->enabledesktop . '"
+                   data-target="#wdm-desktopenable-' . $customreport->id . '">
+                    <i class="icon fa fa-' . $eyeicon . ' text-dark"></i>
+                </a>
                 <a href="' .$editurl. '" data-toggle="tooltip"
                 title="' . get_string('editreports', 'local_edwiserreports') . '">
-                    <i class="icon fa fa-edit text-primary"></i>
+                    <i class="icon fa fa-pencil text-primary"></i>
                 </a>
                 <a href="#" data-toggle="tooltip" data-reportsid="' . $customreport->id . '"
                 title="' . get_string('deletereports', 'local_edwiserreports') . '" data-action="delete">

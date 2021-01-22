@@ -33,6 +33,7 @@ define([
     var crPageDesktopEnable = '#wdm_custom_reports_desktopenable';
     var crDesktopEnableSwitch = '[id^="wdm-desktopenable-"]';
     var crDeleteBtn = '#cr-list-table a[data-action="delete"]';
+    var crHideBtn = '#cr-list-table a[data-action="hide"]';
     var cfPreviewTable = null;
     var crListTable = null;
     var customReportSaveTitle = M.util.get_string('savecustomreport', 'local_edwiserreports');
@@ -282,16 +283,8 @@ define([
                     crListTable = $('#cr-list-table').DataTable({
                         columns: [
                             {
-                                data: 'sno',
-                                title: M.util.get_string('sno', 'local_edwiserreports')
-                            },
-                            {
                                 data: 'fullname',
-                                title: M.util.get_string('reportname', 'local_edwiserreports')
-                            },
-                            {
-                                data: 'shortname',
-                                title: M.util.get_string('reportshortname', 'local_edwiserreports')
+                                title: M.util.get_string('title', 'local_edwiserreports')
                             },
                             {
                                 data: 'createdby',
@@ -302,6 +295,10 @@ define([
                                 title: M.util.get_string('datecreated', 'local_edwiserreports')
                             },
                             {
+                                data: 'datemodified',
+                                title: M.util.get_string('datemodified', 'local_edwiserreports')
+                            },
+                            {
                                 data: 'managehtml',
                                 title: M.util.get_string('manage', 'local_edwiserreports')
                             }
@@ -310,7 +307,7 @@ define([
                             searchPlaceholder: M.util.get_string('searchreports', 'local_edwiserreports'),
                             emptyTable: M.util.get_string('noresult', 'local_edwiserreports')
                         },
-                        order: [[2, 'asc']],
+                        order: [[0, 'asc']],
                         data: data,
                         bInfo: false,
                         lengthChange: false,
@@ -319,11 +316,6 @@ define([
                             $('.dataTables_filter').addClass('pagination-sm pull-right');
                         }
                     });
-                    crListTable.on('order.dt search.dt', function() {
-                        crListTable.column(0, {search: 'applied', order: 'applied'}).nodes().each(function(cell, i) {
-                            cell.innerHTML = i + 1;
-                        });
-                    }).draw();
                     crList.show();
                 }
             }
@@ -401,6 +393,23 @@ define([
                     customReportDelete(reportId);
                 }, e.currentTarget));
             });
+        });
+        $(document).on('click', crHideBtn, function (e) {
+            e.preventDefault();
+
+            var checkboxId = $(this).data('target');
+            $(checkboxId).trigger('click');
+            if ($(this).data('value')) {
+                $(this).attr('title', $(this).data('titlehide'));
+                $(this).attr('data-original-title', $(this).data('titlehide'));
+                $(this).data('value', 0)
+            } else {
+                $(this).attr('title', $(this).data('titleshow'));
+                $(this).attr('data-original-title', $(this).data('titleshow'));
+                $(this).data('value', 1)
+            }
+            $(this).find('.icon').toggleClass('fa-eye');
+            $(this).find('.icon').toggleClass('fa-eye-slash');
         });
     }
 
