@@ -626,3 +626,6 @@ $string['searchreports'] = 'Search Reports';
 $string['title'] = 'Title';
 $string['createreports'] = 'Create New Report';
 $string['updatereports'] = 'Update Report';
+$string['courseformat'] = 'Course Format';
+$string['completionenable'] = 'Course Completion Enable';
+$string['guestaccess'] = 'Course Guest Access';

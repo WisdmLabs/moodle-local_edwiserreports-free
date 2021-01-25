@@ -242,6 +242,33 @@ class custom_reports_block implements renderable, templatable {
                     return $value ? date('d M Y', $value) : get_string('na', 'local_edwiserreports');
                 }
             ),
+            array(
+                'id' => 'courseformat',
+                'text' => get_string('courseformat', 'local_edwiserreports'),
+                'dbkey' => 'cfo.format',
+                'selected' => in_array('courseformat', $selectedfield),
+                'resultfunc' => function($value) {
+                    return get_string('pluginname', 'format_' . $value);
+                }
+            ),
+            array(
+                'id' => 'completionenable',
+                'text' => get_string('completionenable', 'local_edwiserreports'),
+                'dbkey' => 'ec.criteria',
+                'selected' => in_array('completionenable', $selectedfield),
+                'resultfunc' => function($value) {
+                    return $value ? get_string('yes', 'moodle') : get_string('no', 'moodle');
+                }
+            ),
+            array(
+                'id' => 'guestaccess',
+                'text' => get_string('guestaccess', 'local_edwiserreports'),
+                'dbkey' => 'e.enrol',
+                'selected' => in_array('guestaccess', $selectedfield),
+                'resultfunc' => function($value) {
+                    return $value == 'guest' ? get_string('yes', 'moodle') : get_string('no', 'moodle');
+                }
+            )
         );
         return $coursefields;
     }

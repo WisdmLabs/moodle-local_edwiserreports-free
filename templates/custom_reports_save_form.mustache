@@ -92,14 +92,11 @@
             </label>
         </div>
         <div class="col-md-9 form-inline felement" data-fieldtype="select">
-            <select class="custom-select" name="downloadenable" id="id_crb_download_enable" value="{{#downloadenable}}{{.}}{{/downloadenable}}{{^downloadenable}}1{{/downloadenable}}">
-                <option value="1" {{#downloadenable}}selected{{/downloadenable}}>
-                    {{#str}} yes, moodle {{/str}}
-                </option>
-                <option value="0" {{^downloadenable}}selected{{/downloadenable}}>
-                    {{#str}} no, moodle {{/str}}
-                </option>
-            </select>
+            <div class="checkbox-custom checkbox-primary">
+                <input type="checkbox" class="custom-field-checkbox" name="downloadenable" value="1"
+                id="id_crb_download_enable" {{#downloadenable}}checked{{/downloadenable}}>
+                <label for="id_crb_desktop_enable" class="mb-0">
+            </div>
         </div>
     </div>
     <div id="crb_desktop_enable" class="form-group row fitem">
@@ -124,15 +121,12 @@
                 {{#str}} enabledesktop, local_edwiserreports {{/str}}
             </label>
         </div>
-        <div class="col-md-9 form-inline felement" data-fieldtype="select">
-            <select class="custom-select" name="enabledesktop" id="id_crb_desktop_enable" value="{{#enabledesktop}}{{.}}{{/enabledesktop}}{{^enabledesktop}}1{{/enabledesktop}}">
-                <option value="1" {{#enabledesktop}}selected{{/enabledesktop}}>
-                    {{#str}} yes, moodle {{/str}}
-                </option>
-                <option value="0" {{^enabledesktop}}selected{{/enabledesktop}}>
-                    {{#str}} no, moodle {{/str}}
-                </option>
-            </select>
+        <div class="col-md-9 form-inline felement" data-fieldtype="checkbox">
+            <div class="checkbox-custom checkbox-primary">
+                <input type="checkbox" class="custom-field-checkbox" name="enabledesktop" value="1"
+                id="id_crb_desktop_enable" {{#enabledesktop}}checked{{/enabledesktop}}>
+                <label for="id_crb_desktop_enable" class="mb-0"></label>
+            </div>
         </div>
     </div>
 </form>

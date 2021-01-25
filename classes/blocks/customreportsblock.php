@@ -86,6 +86,8 @@ class customreportsblock extends block_base {
                 JOIN {course} c ON c.id = ct.instanceid
                 JOIN {edwreports_course_progress} ec ON ec.courseid = c.id AND ec.userid = u.id AND c.id '.$coursedb.'
                 JOIN {course_categories} ctg ON ctg.id = c.category
+                JOIN {course_format_options} cfo ON c.id = cfo.courseid
+                JOIN {enrol} e ON c.id = e.courseid AND e.status = 0
                 WHERE u.id '.$userdb.'
                 AND ct.contextlevel = '.CONTEXT_COURSE.'
                 AND r.archetype = \'student\'
@@ -95,16 +97,18 @@ class customreportsblock extends block_base {
         $records = array();
         while ($recordset->key()) {
             $record = $recordset->current();
-            if (!in_array($record, $records)) {
-                if (!empty($resultfunc)) {
-                    foreach ($resultfunc as $id => $func) {
-                        $record->$id = $func($record->$id);
-                    }
+            if (!empty($resultfunc)) {
+                foreach ($resultfunc as $id => $func) {
+                    $record->$id = $func($record->$id);
                 }
+            }
+
+            if (!in_array($record, $records)) {
                 $records[] = $record;
             }
             $recordset->next();
         }
+
         $return = new stdClass();
         $return->columns = $columns;
         $return->reportsdata = array_values($records);
