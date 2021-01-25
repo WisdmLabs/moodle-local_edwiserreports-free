@@ -67,8 +67,8 @@ class custom_reports_block implements renderable, templatable {
             $export->fullname = $customreport->fullname;
             $export->shortname = $customreport->shortname;
             $reportsdata = json_decode($customreport->data);
-            $export->downloadenable = $reportsdata->downloadenable;
-            $export->enabledesktop = $customreport->enabledesktop;
+            $export->downloadenable = $reportsdata->downloadenable ? true : false;
+            $export->enabledesktop = $customreport->enabledesktop ? true : false;
             $selectedfield = $reportsdata->selectedfield;
             $selectedcourses = $reportsdata->courses;
         }

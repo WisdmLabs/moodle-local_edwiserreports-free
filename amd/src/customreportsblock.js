@@ -368,7 +368,7 @@ define([
                 action: 'enabledesktop'
             }
 
-            saveCustomReportsDataService(updateData, null);
+            saveCustomReportsDataService(updateData, false);
         });
         $(document).on('click', crDeleteBtn, function (e) {
             e.preventDefault();
@@ -424,8 +424,19 @@ define([
                     reportsData.reportsid = reportsId;
                     reportsData.reportname = $(crPageFullname).val();
                     reportsData.reportshortname = $(crPageShortname).val();
-                    reportsData.downloadenable = $(crPageDownloadEnable).val();
-                    reportsData.enabledesktop = $(crPageDesktopEnable).val();
+
+                    if ($(crPageDownloadEnable).val() != 0) {
+                        reportsData.downloadenable = true;
+                    } else {
+                        reportsData.downloadenable = false;
+                    }
+
+                    if ($(crPageDesktopEnable).val() != 0) {
+                        reportsData.enabledesktop = true;
+                    } else {
+                        reportsData.enabledesktop = false;
+                    }
+
                     getCustomReportsData();
                 }
             });

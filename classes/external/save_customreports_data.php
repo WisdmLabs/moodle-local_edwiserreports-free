@@ -70,19 +70,18 @@ trait save_customreports_data {
             $customreports->fullname = $params->reportname;
             $customreports->shortname = $params->reportshortname;
             $customreports->createdby = $USER->id;
-            $params->querydata->downloadenable = $params->downloadenable;
+            $params->querydata->downloadenable = isset($params->downloadenable) ? $params->downloadenable : 0;
             $customreports->data = json_encode($params->querydata);
         }
-
-        $customreports->enabledesktop = $params->enabledesktop;
+        $customreports->enabledesktop = isset($params->enabledesktop) ? true : false;
 
         // If id is present then update the records.
         if ($params->reportsid) {
             $reportsid = $customreports->id = $params->reportsid;
             $customreports->timemodified = $timenow;
             $DB->update_record($table, $customreports);
-            $customreports = $DB->get_records($table, array('id' => $reportsid));
-            $params = json_decode($customreports->data);
+            $customreports = $DB->get_record($table, array('id' => $reportsid));
+            $customreports->data = json_decode($customreports->data);
         } else {
             if ($DB->record_exists($table, array('shortname' => $customreports->shortname))) {
                 $response["success"] = false;
@@ -98,7 +97,7 @@ trait save_customreports_data {
             'reportsid' => $reportsid,
             'reportname' => $customreports->fullname,
             'reportshortname' => $customreports->shortname,
-            'downloadenable' => $params->downloadenable ? true : false,
+            'downloadenable' => isset($params->querydata->downloadenable) ? $params->querydata->downloadenable : 0,
             'enabledesktop' => $customreports->enabledesktop ? true : false
         ));
 
