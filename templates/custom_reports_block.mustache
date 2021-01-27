@@ -121,7 +121,12 @@ require([
 ) {
     var value = ["0"];
 
-    $('.singleselect').select2({
+    var courseSelect = $('#wdm-course-select').select2({
+        multiple: true,
+        closeOnSelect: false
+    });
+
+    var cohortSelect = $('#wdm-cohort-select').select2({
         multiple: true,
         closeOnSelect: false
     });
@@ -153,6 +158,20 @@ require([
             selectedValues = values;
         }
     });
+
+    var courses = {{{selectedcourses}}};
+    courses.forEach(function(e){
+        if(!courseSelect.find('option:contains(' + e + ')').length) 
+        courseSelect.append($('<option>').text(e));
+    });
+    courseSelect.val(courses).trigger("change");
+
+    var cohorts = {{{selectedcohorts}}};
+    cohorts.forEach(function(e){
+        if(!cohortSelect.find('option:contains(' + e + ')').length) 
+        cohortSelect.append($('<option>').text(e));
+    });
+    cohortSelect.val(cohorts).trigger("change");
 
     customreportsblock.init();
 

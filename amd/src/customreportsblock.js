@@ -147,22 +147,26 @@ define([
                     }
 
                     var data = JSON.parse(response.data);
-                    cfPreviewTable = $('#cr-preview-table').DataTable({
-                        columns: data.columns,
-                        data: data.reportsdata,
-                        bInfo: false,
-                        bFilter: false,
-                        searching: false,
-                        lengthChange: false,
-                        drawCallback: function() {
-                            $('.dataTables_paginate > .pagination').addClass('pagination-sm pull-right');
-                            $('.dataTables_filter').addClass('pagination-sm pull-right');
-                        }
-                    });
+                    if (data.reportsdata.length == 0) {
+                        cfPreview.empty();
+                        $(cfSave).prop('disabled', true);
+                    } else {
+                        cfPreviewTable = $('#cr-preview-table').DataTable({
+                            columns: data.columns,
+                            data: data.reportsdata,
+                            bInfo: false,
+                            bFilter: false,
+                            searching: false,
+                            lengthChange: false,
+                            drawCallback: function() {
+                                $('.dataTables_paginate > .pagination').addClass('pagination-sm pull-right');
+                                $('.dataTables_filter').addClass('pagination-sm pull-right');
+                            }
+                        });
+                        cfPreview.show();
+                        $(cfSave).prop('disabled', false);
+                    }
                 }
-            }).always(function() {
-                cfPreview.show();
-                $(cfSave).prop('disabled', false);
             });
         }
     }

@@ -1031,8 +1031,8 @@ class utility {
         $sql = "SELECT DISTINCT(u.id), CONCAT(CONCAT(u.firstname, ' '), u.lastname) as fullname
                 FROM {user} u
                 $cohortjoinsql
-                WHERE u.deleted = false
-                AND u.confirmed = true
+                WHERE u.deleted = 0
+                AND u.confirmed = 1
                 AND u.id > 1 $insql
                 ORDER BY fullname ASC";
 

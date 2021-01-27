@@ -79,7 +79,7 @@ trait save_customreports_data {
         if ($params->reportsid) {
             $reportsid = $customreports->id = $params->reportsid;
             $customreports->timemodified = $timenow;
-            $DB->update_record($table, $customreports); die;
+            $DB->update_record($table, $customreports);
             $customreports = $DB->get_record($table, array('id' => $reportsid));
             $customreports->data = json_decode($customreports->data);
         } else {

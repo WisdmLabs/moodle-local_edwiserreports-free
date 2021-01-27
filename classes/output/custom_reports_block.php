@@ -71,6 +71,7 @@ class custom_reports_block implements renderable, templatable {
             $export->enabledesktop = $customreport->enabledesktop ? true : false;
             $selectedfield = $reportsdata->selectedfield;
             $selectedcourses = $reportsdata->courses;
+            $selectedcohorts = $reportsdata->cohorts;
         }
 
         $syscontext = context_system::instance();
@@ -86,15 +87,10 @@ class custom_reports_block implements renderable, templatable {
         $export->cohorts = $cohorts;
         $export->isediting = $this->reportsid ? true : false;
 
-        // Select courses.
+        // Select courses and cohorts.
         $courses = get_courses();
-        foreach ($selectedcourses as $courseid) {
-            if ($courseid == 0) {
-                $export->allcourses = true;
-            } else if (isset($courses[$courseid])) {
-                $courses[$courseid]->selected = true;
-            }
-        }
+        $export->selectedcourses = json_encode($selectedcourses);
+        $export->selectedcohorts = json_encode($selectedcohorts);
 
         // Remove system course.
         unset($courses[1]);
