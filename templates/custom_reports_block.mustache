@@ -131,6 +131,9 @@ require([
         closeOnSelect: false
     });
 
+    courseSelect.val({{{selectedcourses}}}).trigger("change");
+    cohortSelect.val({{{selectedcohorts}}}).trigger("change");
+
     selectedValues = ["0"];
     $('.singleselect').on('change', function(event) {
         var values = $(this).val();
@@ -158,20 +161,6 @@ require([
             selectedValues = values;
         }
     });
-
-    var courses = {{{selectedcourses}}};
-    courses.forEach(function(e){
-        if(!courseSelect.find('option:contains(' + e + ')').length) 
-        courseSelect.append($('<option>').text(e));
-    });
-    courseSelect.val(courses).trigger("change");
-
-    var cohorts = {{{selectedcohorts}}};
-    cohorts.forEach(function(e){
-        if(!cohortSelect.find('option:contains(' + e + ')').length) 
-        cohortSelect.append($('<option>').text(e));
-    });
-    cohortSelect.val(cohorts).trigger("change");
 
     customreportsblock.init();
 
