@@ -117,8 +117,8 @@ define([
 
     function getCustomReportsData() {
         selectedFields = []
-        cohorts = [$(cfCohort).val()];
-        courses = [$(cfCourse).val()];
+        cohorts = $(cfCohort).val();
+        courses = $(cfCourse).val();
         $(cfCheckbox + ":checked").each(function() {
             selectedFields.push($(this).val());
         });

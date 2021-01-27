@@ -1,11 +1,33 @@
-<div class="row mx-0">
+<div id="wdm-customreports-edit" class="row mx-0">
     <input class="hidden" id="wdm_custom_reports_id" value="{{reportsid}}">
     <input class="hidden" id="wdm_custom_reports_fullname" value="{{fullname}}">
     <input class="hidden" id="wdm_custom_reports_shortname" value="{{shortname}}">
     <input class="hidden" id="wdm_custom_reports_downloadenable" value="{{downloadenable}}">
     <input class="hidden" id="wdm_custom_reports_desktopenable" value="{{enabledesktop}}">
-    <div class="col-md-9 col-sm-12 mb-3">
+    <div class="customreports-block-section col-12  mb-5">
         <div class="">
+            <div class="reports-list-header">
+                <h4> {{#str}} reportslist, local_edwiserreports {{/str}} </h4>
+            </div>
+            <div class="reports-list-body">
+                <div class="">
+                    <div class="border reports-list-content loader d-flex justify-content-center align-items-center">
+                        <div class="w-full text-center">
+                            {{# pix }} i/loading, core, {{#str}} loadinghelp, moodle {{/str}} {{/ pix }}
+                        </div>
+                    </div>
+                    <div class="reports-list-content d-none justify-content-center align-items-center">
+                        <table id="cr-list-table" class="datatable table"></table>
+                    </div>
+                    <div class="border reports-list-content empty d-none justify-content-center align-items-center">
+                        {{#str}} noreportslist, local_edwiserreports {{/str}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="customreports-block-section col-md-9 col-sm-12">
+        <div class="h-auto mb-5">
             <div class="reports-preview-header">
                 <h4 class="rp-header">
                     {{#fullname}}{{.}}{{/fullname}}
@@ -29,8 +51,8 @@
                     </div>
                 </div>
             </div>
-            <div class="reports-preview-footer py-1">
-                <button id="wdm-custom-reports-save" class="btn btn-primary pull-right" disabled>
+            <div class="reports-preview-footer py-1 text-right">
+                <button id="wdm-custom-reports-save" class="btn btn-primary" disabled>
                     {{#isediting}}
                         {{#str}} editreports, local_edwiserreports {{/str}}
                     {{/isediting}}
@@ -41,14 +63,14 @@
             </div>
         </div>
     </div>
-    <div class="col-md-3 col-sm-12">
-        <div class="">
+    <div class="customreports-block-section col-md-3 col-sm-12">
+        <div class="h-auto mb-5">
             <div class="reports-filter-header">
                 <h4> {{#str}} reportsfilter, local_edwiserreports {{/str}} </h4>
             </div>
-            <div class="reports-filter-body border">
+            <div class="reports-filter-body">
                 <div>
-                    <div class="p-2">
+                    <div class="mb-2">
                         <div class="position-relative my-1">
                             <select id="wdm-cohort-select" class="custom-field-select form-control singleselect w-full">
                                 <option value="0">{{#str}} allcohorts, local_edwiserreports {{/str}}</option>
@@ -67,7 +89,7 @@
                         </div>
                     </div>
                     {{#fields}}
-                    <div id="{{key}}-field-group" class="field-group w-full bg-secondary p-2">
+                    <div id="{{key}}-field-group" class="field-group w-full p-3 border mb-1">
                         {{title}}
                         <i class="fa fa-angle-right pull-right p-1"></i>
                     </div>
@@ -86,28 +108,6 @@
             </div>
         </div>
     </div>
-    <div class="col-12">
-        <div class="">
-            <div class="reports-list-header">
-                <h4> {{#str}} reportslist, local_edwiserreports {{/str}} </h4>
-            </div>
-            <div class="reports-list-body">
-                <div class="">
-                    <div class="border reports-list-content loader d-flex justify-content-center align-items-center">
-                        <div class="w-full text-center">
-                            {{# pix }} i/loading, core, {{#str}} loadinghelp, moodle {{/str}} {{/ pix }}
-                        </div>
-                    </div>
-                    <div class="reports-list-content d-none justify-content-center align-items-center">
-                        <table id="cr-list-table" class="datatable table"></table>
-                    </div>
-                    <div class="border reports-list-content empty d-none justify-content-center align-items-center">
-                        {{#str}} noreportslist, local_edwiserreports {{/str}}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 
 {{#js}}
@@ -119,7 +119,41 @@ require([
     $,
     customreportsblock
 ) {
-    $('.singleselect').select2();
+    var value = ["0"];
+
+    $('.singleselect').select2({
+        multiple: true,
+        closeOnSelect: false
+    });
+
+    selectedValues = ["0"];
+    $('.singleselect').on('change', function(event) {
+        var values = $(this).val();
+
+        if (JSON.stringify(selectedValues) !== JSON.stringify(values)) {
+            oldIndex = selectedValues.indexOf("0");
+            newIndex = values.indexOf("0");
+
+            switch(true) {
+                case (oldIndex == -1 && newIndex > -1):
+                    // Assign the selected value
+                    values = ["0"];
+                    selectedValues = values;
+                    $(this).select2('val', values);
+                    break;
+                case (oldIndex > -1 && newIndex > -1):
+                    values.splice(newIndex, 1);
+
+                    // Assign the selected value
+                    selectedValues = values;
+                    $(this).select2('val', values);
+                    break;
+            }
+
+            selectedValues = values;
+        }
+    });
+
     customreportsblock.init();
 
     $(document).ready(function() {

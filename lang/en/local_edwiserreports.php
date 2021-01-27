@@ -584,7 +584,7 @@ $string['delete'] = 'Delete';
 $string['report/edwiserreports_activeusersblock:editadvance'] = 'Edit Advance';
 
 /* Custom Reports block related strings */
-$string['customreportedit'] = 'Custom Reports Block Edit';
+$string['customreportedit'] = 'Custom Reports Block Manage';
 $string['reportspreview'] = 'Reports Preview';
 $string['reportsfilter'] = 'Reports Filter';
 $string['noreportspreview'] = 'No Preview Available';
@@ -621,7 +621,7 @@ $string['deletesuccess'] = 'Reports Delete Successfully';
 $string['deletefailed'] = 'Reports Delete Failed';
 $string['deletecustomreportstitle'] = 'Delete Custom Reports Title';
 $string['deletecustomreportsquestion'] = 'Do you really want to delete this custom reports?';
-$string['createcustomreports'] = 'Create Custom Reports Block';
+$string['createcustomreports'] = 'Create/Manage Custom Reports Block';
 $string['searchreports'] = 'Search Reports';
 $string['title'] = 'Title';
 $string['createreports'] = 'Create New Report';
