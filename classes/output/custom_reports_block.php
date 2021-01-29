@@ -62,6 +62,7 @@ class custom_reports_block implements renderable, templatable {
 
         $selectedfield = array();
         $selectedcourses = array();
+        $selectedcohorts = array();
         if ($export->reportsid = $this->reportsid) {
             $customreport = $DB->get_record('edwreports_custom_reports', array('id' => $this->reportsid));
             $export->fullname = $customreport->fullname;
