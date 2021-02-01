@@ -254,7 +254,7 @@ define([
                 if (modal) {
                     reportsData = JSON.parse(response.reportsdata);
                     $(cpHeader).html(reportsData.reportname);
-                    $(cfSave).html(M.util.get_string('editreports', 'local_edwiserreports'));
+                    $(cfSave).html(M.util.get_string('updatereports', 'local_edwiserreports'));
                 }
                 $('#user-notifications .close').click();
                 notif.addNotification({
