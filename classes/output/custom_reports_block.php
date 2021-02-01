@@ -32,6 +32,7 @@ use stdClass;
 use templatable;
 use context_system;
 use context_coursecat;
+use moodle_url;
 
 /**
  * Elucid report renderable.
@@ -87,6 +88,8 @@ class custom_reports_block implements renderable, templatable {
         }
         $export->cohorts = $cohorts;
         $export->isediting = $this->reportsid ? true : false;
+        $url = '/local/edwiserreports/customreportedit.php';
+        $export->createnewlink = new moodle_url($url, array('create' => true));
 
         // Select courses and cohorts.
         $courses = get_courses();

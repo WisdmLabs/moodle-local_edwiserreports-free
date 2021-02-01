@@ -630,3 +630,4 @@ $string['completionenable'] = 'Course Completion Enable';
 $string['guestaccess'] = 'Course Guest Access';
 $string['selectcourses'] = 'Select Courses';
 $string['selectcohorts'] = 'Select Cohorts';
+$string['createnewcustomreports'] = 'Create new Report';

@@ -6,8 +6,13 @@
     <input class="hidden" id="wdm_custom_reports_desktopenable" value="{{enabledesktop}}">
     <div class="customreports-block-section col-12  mb-5">
         <div class="">
-            <div class="reports-list-header">
+            <div class="reports-list-header d-flex">
                 <h4> {{#str}} reportslist, local_edwiserreports {{/str}} </h4>
+                <div class="ml-auto mb-2">
+                    <a href="{{{createnewlink}}}" class="btn btn-primary">
+                        {{#str}} createnewcustomreports, local_edwiserreports {{/str}}
+                    </a>
+                </div>
             </div>
             <div class="reports-list-body">
                 <div class="">
@@ -25,6 +30,9 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div id="wdm-cr-create-header" class="col-12">
+        <h4> {{#str}} createcustomreports, local_edwiserreports {{/str}} </h4>
     </div>
     <div class="customreports-block-section col-md-9 col-sm-12">
         <div class="h-auto mb-5">
