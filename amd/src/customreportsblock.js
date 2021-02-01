@@ -366,9 +366,13 @@ define([
         });
         getCustomReportsList();
         $(document).on('change', crDesktopEnableSwitch, function () {
+            var enabledesktop = false;
+            if ($(this).is(":checked")) {
+                enabledesktop = true;
+            }
             var updateData = {
                 reportsid: $(this).data('reportsid'),
-                enabledesktop: $(this).is(":checked") ? 1 : 0,
+                enabledesktop: enabledesktop,
                 action: 'enabledesktop'
             }
 
@@ -405,7 +409,6 @@ define([
             e.preventDefault();
 
             var checkboxId = $(this).data('target');
-            $(checkboxId).trigger('click');
             if ($(this).data('value')) {
                 $(this).attr('title', $(this).data('titlehide'));
                 $(this).attr('data-original-title', $(this).data('titlehide'));
@@ -417,6 +420,7 @@ define([
             }
             $(this).find('.icon').toggleClass('fa-eye');
             $(this).find('.icon').toggleClass('fa-eye-slash');
+            $(checkboxId).trigger('click');
         });
     }
 

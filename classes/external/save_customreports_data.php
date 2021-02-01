@@ -73,7 +73,7 @@ trait save_customreports_data {
             $params->querydata->downloadenable = isset($params->downloadenable) ? $params->downloadenable : 0;
             $customreports->data = json_encode($params->querydata);
         }
-        $customreports->enabledesktop = isset($params->enabledesktop) ? true : false;
+        $customreports->enabledesktop = $params->enabledesktop ? true : false;
 
         // If id is present then update the records.
         if ($params->reportsid) {
