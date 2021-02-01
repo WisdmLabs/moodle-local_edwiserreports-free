@@ -178,7 +178,10 @@ class custom_reports_block implements renderable, templatable {
                 'id' => 'courseprogress',
                 'text' => get_string('courseprogress', 'local_edwiserreports'),
                 'dbkey' => 'ec.progress',
-                'selected' => in_array('courseprogress', $selectedfield)
+                'selected' => in_array('courseprogress', $selectedfield),
+                'resultfunc' => function($value) {
+                    return $value . '%';
+                }
             ),
             array(
                 'id' => 'completionstatus',
