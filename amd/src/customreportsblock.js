@@ -43,6 +43,7 @@ define([
     var courses = [];
     var cohorts = [];
     var reportsId = 0;
+    var reportsDataLoaded = true;
     var reportsData = {
         downloadenable : true
     };
@@ -116,58 +117,64 @@ define([
     }
 
     function getCustomReportsData() {
-        selectedFields = []
-        cohorts = $(cfCohort).val();
-        courses = $(cfCourse).val();
-        $(cfCheckbox + ":checked").each(function() {
-            selectedFields.push($(this).val());
-        });
-
-        var getCustomReportsData = ajax.call([{
-            methodname: 'local_edwiserreports_get_customreports_data',
-            args: {
-                params: JSON.stringify({
-                    fields : selectedFields,
-                    cohorts : cohorts,
-                    courses : courses
-                })
-            }
-        }]);
-
-        if (selectedFields.length == 0) {
-            cfPreview.empty();
-            $(cfSave).prop('disabled', true);
-        } else {
-            cfPreview.hide();
-            getCustomReportsData[0].done(function(response) {
-                if (response.success) {
-                    if (cfPreviewTable) {
-                        cfPreviewTable.clear().destroy();
-                        $('#cr-preview-table').html('');
-                    }
-
-                    var data = JSON.parse(response.data);
-                    if (data.reportsdata.length == 0) {
-                        cfPreview.empty();
-                        $(cfSave).prop('disabled', true);
-                    } else {
-                        cfPreviewTable = $('#cr-preview-table').DataTable({
-                            columns: data.columns,
-                            data: data.reportsdata,
-                            bInfo: false,
-                            bFilter: false,
-                            searching: false,
-                            lengthChange: false,
-                            drawCallback: function() {
-                                $('.dataTables_paginate > .pagination').addClass('pagination-sm pull-right');
-                                $('.dataTables_filter').addClass('pagination-sm pull-right');
-                            }
-                        });
-                        cfPreview.show();
-                        $(cfSave).prop('disabled', false);
-                    }
-                }
+        if (reportsDataLoaded) {
+            reportsDataLoaded = false;
+            selectedFields = []
+            cohorts = $(cfCohort).val();
+            courses = $(cfCourse).val();
+            $(cfCheckbox + ":checked").each(function() {
+                selectedFields.push($(this).val());
             });
+
+            var getCustomReportsDataAjax = ajax.call([{
+                methodname: 'local_edwiserreports_get_customreports_data',
+                args: {
+                    params: JSON.stringify({
+                        fields : selectedFields,
+                        cohorts : cohorts,
+                        courses : courses
+                    })
+                }
+            }]);
+
+            if (selectedFields.length == 0) {
+                cfPreview.empty();
+                $(cfSave).prop('disabled', true);
+                reportsDataLoaded = true;
+            } else {
+                cfPreview.hide();
+                getCustomReportsDataAjax[0].done(function(response) {
+                    if (response.success) {
+                        var data = JSON.parse(response.data);
+                        console.log(data.reportsdata.length);
+                        if (data.reportsdata.length == 0) {
+                            cfPreview.empty();
+                            $(cfSave).prop('disabled', true);
+                        } else {
+                            if (cfPreviewTable) {
+                                cfPreviewTable.clear().destroy();
+                                $('#cr-preview-table').html('');
+                            }
+                            cfPreview.show();
+                            cfPreviewTable = $('#cr-preview-table').DataTable({
+                                columns: data.columns,
+                                data: data.reportsdata,
+                                bInfo: false,
+                                bFilter: false,
+                                searching: false,
+                                lengthChange: false,
+                                drawCallback: function() {
+                                    $('.dataTables_paginate > .pagination').addClass('pagination-sm pull-right');
+                                    $('.dataTables_filter').addClass('pagination-sm pull-right');
+                                }
+                            });
+                            $(cfSave).prop('disabled', false);
+                        }
+                    }
+                }).always(function () {
+                    reportsDataLoaded = true;
+                });
+            }
         }
     }
 

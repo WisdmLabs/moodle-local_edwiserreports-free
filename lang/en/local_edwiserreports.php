@@ -629,3 +629,5 @@ $string['updatereports'] = 'Update Report';
 $string['courseformat'] = 'Course Format';
 $string['completionenable'] = 'Course Completion Enable';
 $string['guestaccess'] = 'Course Guest Access';
+$string['selectcourses'] = 'Select Courses';
+$string['selectcohorts'] = 'Select Cohorts';

@@ -123,12 +123,14 @@ require([
 
     var courseSelect = $('#wdm-course-select').select2({
         multiple: true,
-        closeOnSelect: false
+        closeOnSelect: false,
+        placeholder: "{{#str}} selectcourses, local_edwiserreports {{/str}}"
     });
 
     var cohortSelect = $('#wdm-cohort-select').select2({
         multiple: true,
-        closeOnSelect: false
+        closeOnSelect: false,
+        placeholder: "{{#str}} selectcohorts, local_edwiserreports {{/str}}"
     });
 
     courseSelect.val({{{selectedcourses}}}).trigger("change");
