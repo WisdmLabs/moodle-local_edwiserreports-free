@@ -611,7 +611,6 @@ $string['sno'] = 'S. No.';
 $string['datecreated'] = 'Date Created';
 $string['datemodified'] = 'Date Modified';
 $string['enabledesktop'] = 'Desktop Enabled';
-$string['searchproviders'] = 'Search Providers';
 $string['noresult'] = 'No Result Found';
 $string['enabledesktop'] = 'Add to Reports Dashboard';
 $string['disabledesktop'] = 'Remove from Reports Dashboard';
