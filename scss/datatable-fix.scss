@@ -1,4 +1,5 @@
 table.dataTable {
+    border-bottom: 0 !important;
     thead {
         .sorting:before,
         .sorting_asc:before,
@@ -42,6 +43,7 @@ table.dataTable {
     }
     th {
         vertical-align: middle;
+        border-bottom: 0 !important;
     }
 }
 
