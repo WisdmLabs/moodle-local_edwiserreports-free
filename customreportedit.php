@@ -39,6 +39,10 @@ if ($reportsid) {
     }
 }
 
+if (!has_capability('report/edwiserreports_customreports:manage', $context)) {
+    throw new moodle_exception('restrictaccess', 'error');
+}
+
 local_edwiserreports_get_required_strings_for_js();
 
 // Page URL.

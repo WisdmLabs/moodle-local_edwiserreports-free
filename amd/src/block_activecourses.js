@@ -19,20 +19,20 @@ define([
         var loader = panelBody + " .loader";
         var table = panelBody + " .table";
 
-        // Show loader.
-        common.loader.show('#activecoursesblock');
+        if ($(panel).length) {
+            // Show loader.
+            common.loader.show('#activecoursesblock');
 
-        /* Ajax request to get data for active courses table */
-        $.ajax({
-            url: cfg.requestUrl,
-            type: cfg.requestType,
-            dataType: cfg.requestDataType,
-            data: {
-                action: 'get_activecourses_data_ajax',
-                sesskey: $(panel).data("sesskey")
-            },
-        })
-            .done(function(response) {
+            /* Ajax request to get data for active courses table */
+            $.ajax({
+                url: cfg.requestUrl,
+                type: cfg.requestType,
+                dataType: cfg.requestDataType,
+                data: {
+                    action: 'get_activecourses_data_ajax',
+                    sesskey: $(panel).data("sesskey")
+                },
+            }).done(function(response) {
                 /* Create active course table */
                 createActiveCourseTable(response.data);
             })
@@ -62,6 +62,9 @@ define([
                 // Hide loader.
                 common.loader.hide('#activecoursesblock');
             });
+        } else {
+            notifyListner("activeCourses");
+        }
 
         /**
          * Create active course table.

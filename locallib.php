@@ -989,7 +989,9 @@ function is_block_present_indashboard() {
     $blocks = \local_edwiserreports\utility::get_reports_block();
     foreach ($blocks as $key => $block) {
         if ($block->classname == 'customreportsblock') {
-            $hasblock = true;
+            if (can_view_block('customreportsroleallow-' . $block->id)) {
+                $hasblock = true;
+            }
         } else {
             $capname = 'report/edwiserreports_' . $block->classname . ':view';
             if (has_capability($capname, context_system::instance()) ||

@@ -20,19 +20,20 @@ define([
         function hideLoader() {
             common.loader.hide('#certificatesblock');
         }
-        // Show loader.
-        common.loader.show('#certificatesblock');
 
-        $.ajax({
-            url: cfg.requestUrl,
-            type: cfg.requestType,
-            dataType: cfg.requestDataType,
-            data: {
-                action: 'get_certificates_data_ajax',
-                sesskey: $(panel).data("sesskey")
-            },
-        })
-            .done(function(response) {
+        if ($(panel).length) {
+            // Show loader.
+            common.loader.show('#certificatesblock');
+
+            $.ajax({
+                url: cfg.requestUrl,
+                type: cfg.requestType,
+                dataType: cfg.requestDataType,
+                data: {
+                    action: 'get_certificates_data_ajax',
+                    sesskey: $(panel).data("sesskey")
+                },
+            }).done(function(response) {
                 templates.render('local_edwiserreports/certificatestable', response.data)
                     .then(function(html, js) {
                         $(panelBody).empty();
@@ -55,6 +56,7 @@ define([
                 // Hide loader.
                 hideLoader();
             });
+        }
     }
 
     /**
