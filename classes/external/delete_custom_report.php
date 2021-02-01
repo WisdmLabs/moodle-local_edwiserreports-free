@@ -63,11 +63,14 @@ trait delete_custom_report {
 
         $ret = $DB->delete_records('edwreports_custom_reports', array('id' => $reportsid));
         if ($ret) {
-            $ret = $DB->delete_records('user_preferences', array('name' => $reportsname));
+            $reportscompare = $DB->sql_compare_text('name');
+            $cmpsql = $reportscompare . " LIKE '" . $reportsname . "'";
+            $DB->delete_records_select('user_preferences', $cmpsql);
+            $DB->delete_records_select('config_plugins', $cmpsql);
 
-            if ($ret) {
-                $ret = $DB->delete_records('config_plugins', array('name' => $reportsname));
-            }
+            $reportscompare = $DB->sql_compare_text('blockname');
+            $cmpsql = $reportscompare . " LIKE '" . $reportsname . "'";
+            $DB->delete_records_select('edwreports_schedemails', $cmpsql);
         }
 
         $successmsg = get_string('deletesuccess', 'local_edwiserreports');
