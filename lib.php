@@ -405,6 +405,12 @@ function local_edwiserreports_extend_navigation(navigation_node $nav) {
         );
         $node->showinflatnavigation = true;
     }
+
+    // If url is not set.
+    if (!$PAGE->has_set_url()) {
+        return true;
+    }
+
     $iscompletionpage = strpos($PAGE->url, '/local/edwiserreports/completion.php');
     if ($PAGE->pagelayout !== 'course' && $PAGE->pagelayout !== 'incourse' && !$iscompletionpage) {
         return true;
