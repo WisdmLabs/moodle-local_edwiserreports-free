@@ -1066,6 +1066,7 @@ class utility {
         global $DB;
         $defaultreports = $DB->get_records('edwreports_blocks');
         $customreports = $DB->get_records('edwreports_custom_reports', array('enabledesktop' => 1));
+        $cbposition = count($defaultreports);
 
         foreach ($customreports as $customreport) {
             $report = new stdClass();
@@ -1075,7 +1076,7 @@ class utility {
             $pref = new stdClass();
             $pref->desktopview = LOCAL_SITEREPORT_BLOCK_LARGE;
             $pref->tabletview = LOCAL_SITEREPORT_BLOCK_LARGE;
-            $pref->position = count($defaultreports);
+            $pref->position = $cbposition;
             $report->blockdata = json_encode($pref);
             $defaultreports[] = $report;
         }
@@ -1183,10 +1184,12 @@ class utility {
      */
     public static function get_custom_report_block($blockname) {
         global $DB;
+        $customreports = $DB->get_records('edwreports_custom_reports', array('enabledesktop' => 1), '', 'id');
 
         $params = explode('-', $blockname);
         $classname = isset($params[0]) ? $params[0] : '';
         $blockid = isset($params[1]) ? $params[1] : '';
+        $crcount = array_search($blockid, array_keys($customreports));
 
         $block = $DB->get_record('edwreports_custom_reports', array('id' => $blockid));
         $block->blockname = $block->shortname;
@@ -1194,7 +1197,7 @@ class utility {
         $pref->desktopview = LOCAL_SITEREPORT_BLOCK_LARGE;
         $pref->tabletview = LOCAL_SITEREPORT_BLOCK_LARGE;
         $pref->mobileview = LOCAL_SITEREPORT_BLOCK_LARGE;
-        $pref->position = $DB->count_records('edwreports_blocks');
+        $pref->position = $DB->count_records('edwreports_blocks') + $crcount;
         $block->blockdata = json_encode($pref);
         $block->classname = 'customreportsblock';
 
