@@ -280,14 +280,6 @@ class db_controller {
                         $completioninfo->completedmodules = implode(',', $completedmodules);
                     }
 
-                    // Check if pecentage is inconsistance due to the
-                    // cron issue then recalculate progress percentage.
-                    $progresstemp = floor(($completioninfo->completedmodulescount / $completioninfo->totalmodules) * 100);
-
-                    if ($percentage !== $progresstemp) {
-                        $completioninfo->progress = $progresstemp;
-                    }
-
                     // If completion is not 100% then remove completion time.
                     if ($completioninfo->progress != 100) {
                         $completioninfo->timecompleted = null;
