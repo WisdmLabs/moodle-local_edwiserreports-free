@@ -184,13 +184,13 @@ class block_base {
 
         $this->layout->hidden = isset($pref["hidden"]) ? $pref["hidden"] : 0;
 
+        $context = context_system::instance();
         if (strpos($blockname, 'customreportsblock') === false) {
             // Based on capability show the edit button
             // If user dont have capability to see the block.
-            $context = context_system::instance();
             $this->layout->caneditadv = has_capability('report/edwiserreports_' . $blockname . ':editadvance', $context);
         } else {
-            $this->layout->caneditadv = true;
+            $this->layout->caneditadv = has_capability('report/edwiserreports_customreports:manage', $context);
         }
 
         // If have capability to edit.
