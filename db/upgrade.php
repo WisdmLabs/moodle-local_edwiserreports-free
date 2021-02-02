@@ -68,6 +68,17 @@ function xmldb_local_edwiserreports_upgrade($oldversion) {
         if (!$dbman->table_exists($table)) {
             $dbman->create_table($table);
         }
+
+        // Update table entry for comletion.
+        $tablename = 'edwreports_course_progress';
+        // Get all tables.
+        $tables = $DB->get_tables();
+
+        // If table exist.
+        if (isset($tables[$tablename])) {
+            // Update table data.
+            $DB->set_field($tablename, 'pchange', true);
+        }
     }
 
     // Return true.
