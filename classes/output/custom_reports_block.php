@@ -125,7 +125,8 @@ class custom_reports_block implements renderable, templatable {
                 'id' => 'username',
                 'text' => get_string('username', 'local_edwiserreports'),
                 'dbkey' => 'u.username',
-                'disbaled' => true
+                'disbaled' => true,
+                'selected' => in_array('username', $selectedfield)
             ),
             array(
                 'id' => 'email',
