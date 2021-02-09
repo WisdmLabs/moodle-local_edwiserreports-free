@@ -287,8 +287,6 @@ class db_controller {
                 }
             }
         }
-        error_log(print_r("We got called - db_controller", 1));
-        error_log(print_r($completioninfo, 1));
         // Return completion information about course and user.
         return $completioninfo;
     }
