@@ -256,14 +256,14 @@ class db_controller {
                             continue;
                         }
 
-                        // Total modules.
-                        $completioninfo->totalmodules++;
-
                         // Get course module data.
                         $data = $completion->get_data($module, false, $userid);
                         // If completion status is set then increase
                         // Completion count.
                         if ($data->completionstate) {
+                            // Total modules.
+                            $completioninfo->totalmodules++;
+                            
                             $completedmodules[] = $module->id;
                             $completioninfo->completedmodulescount++;
 
@@ -287,7 +287,8 @@ class db_controller {
                 }
             }
         }
-
+        error_log(print_r("We got called - db_controller", 1));
+        error_log(print_r($completioninfo, 1));
         // Return completion information about course and user.
         return $completioninfo;
     }
