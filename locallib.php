@@ -198,23 +198,32 @@ function local_edwiserreports_get_userfilters($customfields, $cohortfilter, $ran
  * @return array Array of Cohort filters
  */
 function local_edwiserreports_get_cohort_filter() {
-    global $DB;
+    global $DB, $USER;
 
-    $syscontext = context_system::instance();
-    $cohorts = cohort_get_cohorts($syscontext->id)["cohorts"];
-    $categories = $DB->get_records('course_categories', null, 'id');
+    // Fetch all cohorts. 
+    // passing 0,0 -> page_number, number of record, 0 means
+    $allcohorts = cohort_get_all_cohorts(0, 0);  
 
-    foreach ($categories as $category) {
-        $catcontext = context_coursecat::instance($category->id);
-        $cohorts = array_merge($cohorts, cohort_get_cohorts($catcontext->id)["cohorts"]);
+    $usercontext = context_user::instance($USER->id);
+    
+    $cohorts = [];
+
+    // users visibility check.
+    foreach ($allcohorts['cohorts'] as $key => $value) {
+        if (cohort_can_view_cohort($key, $usercontext)) {
+            $cohorts[] = $value;
+        }
     }
 
-    $cohortfilter = false;
-    if (!empty($cohorts)) {
-        $cohortfilter = new stdClass();
-        $cohortfilter->text = get_string('cohorts', 'local_edwiserreports');
-        $cohortfilter->values = $cohorts;
+    if (empty($cohorts)) {
+        // returning false if no cohorts are present.
+        return false;
     }
+
+    $cohortfilter = new stdClass();
+    $cohortfilter->text = get_string('cohorts', 'local_edwiserreports');
+    $cohortfilter->values = $cohorts;
+  
     return $cohortfilter;
 }
 
