@@ -97,16 +97,15 @@
 		box-shadow: none;
 	}
     .dropdown-menu {
-        right: 0;
-        left: auto;
-    }
-    .dropdown-menu.withcalendar {
-        width: 540px;
-        display: flex;
-        .dropdown-calendar {
-            @include calendar-size;
-            .flatpickr-calendar {
-                @include calendar-position;
+        max-height: 400px;
+        &.withcalendar {
+            width: 540px;
+            display: flex;
+            .dropdown-calendar {
+                @include calendar-size;
+                .flatpickr-calendar {
+                    @include calendar-position;
+                }
             }
         }
     }
