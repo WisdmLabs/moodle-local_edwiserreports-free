@@ -97,15 +97,21 @@
 		box-shadow: none;
 	}
     .dropdown-menu {
-        max-height: 400px;
-        &.withcalendar {
-            width: 540px;
-            display: flex;
-            .dropdown-calendar {
-                @include calendar-size;
-                .flatpickr-calendar {
-                    @include calendar-position;
-                }
+        &[aria-labelledby="cohortfilter"] {
+            max-height: 400px;
+        }
+        &[aria-labelledby="filter-dropdown"] {
+            right: 0;
+            left: auto;
+        }
+    }
+    .dropdown-menu.withcalendar {
+        width: 540px;
+        display: flex;
+        .dropdown-calendar {
+            @include calendar-size;
+            .flatpickr-calendar {
+                @include calendar-position;
             }
         }
     }
