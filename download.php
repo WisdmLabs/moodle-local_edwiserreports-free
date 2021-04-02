@@ -35,6 +35,11 @@ require_login();
 // Get system context.
 $context = context_system::instance();
 
+// Check capability.
+if (!has_capability('report/local_edwiserreports:view', $context)) {
+    throw new moodle_exception(get_string('noaccess', 'local_edwiserreports'));
+}
+
 // Set page context.
 $PAGE->set_context($context);
 

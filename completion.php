@@ -27,6 +27,7 @@ namespace local_edwiserreports;
 use context_system;
 use context_course;
 use moodle_url;
+use moodle_exception;
 
 require_once(__DIR__ . '/../../config.php');
 require_once('classes/output/renderable.php');
@@ -46,6 +47,11 @@ local_edwiserreports_get_required_strings_for_js();
 
 // Get course context.
 $coursecontext = context_course::instance($courseid);
+
+// Check capability.
+if (!has_capability('report/local_edwiserreports:view', $context)) {
+    throw new moodle_exception(get_string('noaccess', 'local_edwiserreports'));
+}
 
 // Add CSS for edwiserreports.
 $PAGE->requires->css('/local/edwiserreports/styles/edwiserreports.min.css');

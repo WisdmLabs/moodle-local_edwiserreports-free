@@ -25,6 +25,7 @@
 namespace local_edwiserreports;
 
 use context_system;
+use moodle_exception;
 use moodle_url;
 
 require_once(__DIR__ . '/../../config.php');
@@ -39,6 +40,10 @@ local_edwiserreports_get_required_strings_for_js();
 $context = context_system::instance();
 $component = 'local_edwiserreports';
 
+// Check capability.
+if (!has_capability('report/local_edwiserreports:view', $context)) {
+    throw new moodle_exception(get_string('noaccess', 'local_edwiserreports'));
+}
 
 // Require JS for active users page.
 $PAGE->requires->js_call_amd(

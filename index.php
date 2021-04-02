@@ -38,6 +38,11 @@ $component = "local_edwiserreports";
 
 require_login();
 
+// Check capability.
+if (!has_capability('report/local_edwiserreports:view', $context)) {
+    throw new moodle_exception(get_string('noaccess', 'local_edwiserreports'));
+}
+
 // If use want to edit page.
 $edit = optional_param('edit', false, PARAM_BOOL);
 if ($edit !== false) {

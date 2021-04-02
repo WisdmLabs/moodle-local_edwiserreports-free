@@ -29,6 +29,7 @@ $string['reportsdashboard'] = 'Reports & Analytics Dashboard';
 $string['reportsandanalytics'] = "Reports & Analytics";
 $string['all'] = "All";
 $string['refresh'] = "Refresh";
+$string['noaccess'] = "Sorry. You don't have rights to access this page.";
 
 /* Blocks Name */
 $string['realtimeusers'] = 'Real Time Users';
