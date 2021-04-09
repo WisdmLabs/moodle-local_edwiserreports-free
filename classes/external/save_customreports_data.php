@@ -83,7 +83,12 @@ trait save_customreports_data {
             $customreports = $DB->get_record($table, array('id' => $reportsid));
             $customreports->data = json_decode($customreports->data);
         } else {
-            if ($DB->record_exists($table, array('shortname' => $customreports->shortname))) {
+            if ($DB->record_exists_sql(
+                "SELECT *
+                   FROM {" . $table . "}
+                  WHERE " . $DB->sql_compare_text('shortname') . " = :shortname",
+                array('shortname' => $customreports->shortname
+            ))) {
                 $response["success"] = false;
                 $response["errormsg"] = get_string('shortnameexist', 'local_edwiserreports');
             } else {

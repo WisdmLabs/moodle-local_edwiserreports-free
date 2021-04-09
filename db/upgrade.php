@@ -32,6 +32,8 @@ defined('MOODLE_INTERNAL') || die();
 function xmldb_local_edwiserreports_upgrade($oldversion) {
     global $DB;
 
+    $dbman = $DB->get_manager();
+
     // Check the old version.
     if (2020030400 <= $oldversion) {
         // Table name to be removed.
@@ -47,7 +49,6 @@ function xmldb_local_edwiserreports_upgrade($oldversion) {
     }
 
     if (2020120911 >= $oldversion) {
-        $dbman = $DB->get_manager();
 
         // Define table block_remuiblck_tasklist to be created.
         $table = new xmldb_table('edwreports_custom_reports');
@@ -57,7 +58,7 @@ function xmldb_local_edwiserreports_upgrade($oldversion) {
         $table->add_field('shortname', XMLDB_TYPE_CHAR, 255, null, true);
         $table->add_field('fullname', XMLDB_TYPE_CHAR, 255, null, true);
         $table->add_field('createdby', XMLDB_TYPE_INTEGER, 10, null, true);
-        $table->add_field('data', XMLDB_TYPE_CHAR, 1000);
+        $table->add_field('data', XMLDB_TYPE_TEXT);
         $table->add_field('enabledesktop', XMLDB_TYPE_INTEGER, 2, null, true);
         $table->add_field('timecreated', XMLDB_TYPE_INTEGER, 10, null, true, false, 0);
         $table->add_field('timemodified', XMLDB_TYPE_INTEGER, 10, null, true);
@@ -81,6 +82,14 @@ function xmldb_local_edwiserreports_upgrade($oldversion) {
         }
     }
 
-    // Return true.
+    if (2021040900 >= $oldversion) {
+
+        $table = new xmldb_table('edwreports_custom_reports');
+
+        // Change data field type to text.
+        $field = new xmldb_field('data', XMLDB_TYPE_TEXT);
+        $dbman->change_field_type($table, $field);
+    }
+
     return true;
 }
