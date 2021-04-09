@@ -435,8 +435,12 @@ class activeusersblock extends block_base {
                 $userdata->username = fullname($user);
                 $userdata->useremail = $user->email;
                 if ($action == "completions" || $action == "enrolments") {
-                    $course = get_course($record->courseid);
-                    $userdata->coursename = $course->fullname;
+                    if ($DB->record_exists('course', array('id' => $record->courseid))) {
+                        $course = get_course($record->courseid);
+                        $userdata->coursename = $course->fullname;
+                    } else {
+                        $userdata->coursename = get_string('eventcoursedeleted');
+                    }
                 }
                 $data[] = array_values((array)$userdata);
             }
