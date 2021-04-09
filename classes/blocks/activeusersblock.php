@@ -481,7 +481,7 @@ class activeusersblock extends block_base {
                     AND l.timecreated >= :starttime
                     AND l.timecreated < :endtime
                     AND l.userid > 1
-                    GROUP BY userdate";
+                    GROUP BY FLOOR(l.timecreated/86400)";
 
         // Get active users data from cache.
         if (!$activeusers = $this->cache->get($cachekey)) {
@@ -553,7 +553,7 @@ class activeusersblock extends block_base {
                 AND l.action = :actionname
                 AND l.timecreated >= :starttime
                 AND l.timecreated < :endtime
-                GROUP BY userdate";
+                GROUP BY FLOOR(l.timecreated/86400)";
 
         // Get data from cache if exist.
         if (!$enrolments = $this->cache->get($cachekey)) {
@@ -618,7 +618,7 @@ class activeusersblock extends block_base {
                     AND cc.completiontime >= :starttime
                     AND cc.completiontime < :endtime
                        $cohortcondition
-                 GROUP BY userdate";
+                 GROUP BY FLOOR(cc.completiontime/86400)";
         // Get data from cache if exist.
         if (!$completionrate = $this->cache->get($cachekey)) {
             $completionrate = $this->dates;
