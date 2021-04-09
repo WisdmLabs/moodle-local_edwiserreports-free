@@ -35,6 +35,16 @@ $capabilities = array(
             'manager' => CAP_ALLOW,
         ),
     ),
+    'report/local_edwiserreports_completion_reports:view' => array(
+        'riskbitmask' => RISK_CONFIG,
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => array(
+            'manager' => CAP_ALLOW,
+            'editingteacher' => CAP_ALLOW,
+            'teacher' => CAP_ALLOW,
+        ),
+    ),
     'report/edwiserreports_activeusersblock:view' => array(
         'riskbitmask' => RISK_SPAM,
         'captype' => 'read',
