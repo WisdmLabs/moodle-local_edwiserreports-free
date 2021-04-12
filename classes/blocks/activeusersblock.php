@@ -421,7 +421,7 @@ class activeusersblock extends block_base {
                         FROM {edwreports_course_progress} l $sqlcohort
                         WHERE l.completiontime IS NOT NULL
                         AND l.completiontime >= :starttime
-                        AND l.completiontime < :endtime";
+                        AND l.completiontime < :endtime $cohortcondition";
         }
 
         $params["starttime"] = $filter;
@@ -699,12 +699,16 @@ class activeusersblock extends block_base {
 
             $blockobj = new self();
             $export[] = self::get_header_report();
-            $activeusersdata = $blockobj->get_data((object) array("filter" => $filter));
+            $cohortid = optional_param('cohortid', 0, PARAM_INT);
+            $activeusersdata = $blockobj->get_data((object) array(
+                "filter" => $filter,
+                'cohortid' => $cohortid
+            ));
             foreach ($activeusersdata->labels as $lable) {
                 $export = array_merge($export,
-                    self::get_usersdata($lable, "activeusers"),
-                    self::get_usersdata($lable, "enrolments"),
-                    self::get_usersdata($lable, "completions")
+                    self::get_usersdata($lable, "activeusers", $cohortid),
+                    self::get_usersdata($lable, "enrolments", $cohortid),
+                    self::get_usersdata($lable, "completions", $cohortid)
                 );
             }
 
@@ -717,13 +721,14 @@ class activeusersblock extends block_base {
 
     /**
      * Get User Data for Active Users Block
-     * @param  string $lable  Date for lable
-     * @param  string $action Action for getting data
-     * @return array          User data
+     * @param  string $lable    Date for lable
+     * @param  string $action   Action for getting data
+     * @param  string $cohortid Cohortid
+     * @return array            User data
      */
-    public static function get_usersdata($lable, $action) {
+    public static function get_usersdata($lable, $action, $cohortid) {
         $usersdata = array();
-        $users = self::get_userslist(strtotime($lable), $action);
+        $users = self::get_userslist(strtotime($lable), $action, $cohortid);
 
         foreach ($users as $user) {
             $user = array_merge(
