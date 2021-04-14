@@ -35,11 +35,6 @@ require_login();
 // Get system context.
 $context = context_system::instance();
 
-// Check capability.
-if (!has_capability('report/local_edwiserreports:view', $context)) {
-    throw new moodle_exception(get_string('noaccess', 'local_edwiserreports'));
-}
-
 // Set page context.
 $PAGE->set_context($context);
 
@@ -49,6 +44,20 @@ if ($type = optional_param("type", false, PARAM_TEXT)) {
     $region = required_param("region", PARAM_TEXT);
     $blockname = required_param("block", PARAM_TEXT);
     $filter = optional_param("filter", false, PARAM_TEXT);
+
+    // If user dont have capability to download report.
+    if (strpos($blockname, 'customreports') === false) {
+        $capname = 'report/edwiserreports_' . $blockname . ':view';
+        if (!has_capability($capname, $context) &&
+            !can_view_block($capname)) {
+            throw new moodle_exception(get_string('noaccess', 'local_edwiserreports'));
+        }
+    } else {
+        if (!is_siteadmin() &&
+            !can_view_block(str_replace('customreportsblock', 'customreportsroleallow', $blockname))) {
+            throw new moodle_exception(get_string('noaccess', 'local_edwiserreports'));
+        }
+    }
 
     // Prepare export filname.
     $filename = local_edwiserreports_prepare_export_filename(array(
