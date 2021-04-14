@@ -77,7 +77,7 @@ class custom_reports_block implements renderable, templatable {
         }
 
         $syscontext = context_system::instance();
-        $cohortobj = cohort_get_cohorts($syscontext->id);
+        $cohortobj = cohort_get_all_cohorts(0, 0);
         $cohorts = $cohortobj['cohorts'];
 
         $categories = $DB->get_records('course_categories', null, 'id');
