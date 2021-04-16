@@ -1,3 +1,19 @@
+v 1.0.2
+====================================================
+Features
+- Added custom reports editing page.
+- Preview custom query reports
+
+Tweak
+- Improved Active Users graph and table data calculation
+- Improved security of data export and more details page.
+
+Fixes
+- Active users and Course Progress filter ui issue
+- Active users data export issue.
+- Custom report creation issue with Moodle 3.10
+- Cohort filter issue with custom report - It was showing only 20 cohorts
+
 v 1.0.1
 ====================================================
 

@@ -97,8 +97,13 @@
 		box-shadow: none;
 	}
     .dropdown-menu {
-        right: 0;
-        left: auto;
+        &[aria-labelledby="cohortfilter"] {
+            max-height: 400px;
+        }
+        &[aria-labelledby="filter-dropdown"] {
+            right: 0;
+            left: auto;
+        }
     }
     .dropdown-menu.withcalendar {
         width: 540px;

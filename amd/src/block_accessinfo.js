@@ -25,45 +25,49 @@ define([
          */
         function generateAccessInfoGraph() {
 
-            // Show loader.
-            common.loader.show('#siteaccessblock');
-            $.ajax({
-                url: cfg.requestUrl,
-                type: cfg.requestType,
-                dataType: cfg.requestDataType,
-                data: {
-                    action: 'get_siteaccess_data_ajax',
-                    sesskey: $(panel).data("sesskey")
-                },
-            })
-            .done(function(response) {
-                // eslint-disable-next-line promise/catch-or-return
-                templates.render(cfg.getTemplate("siteaccessblock"), response.data)
-                .then(function(html, js) {
-                    templates.replaceNodeContents(panelBody, html, js);
-                    return;
+            if ($(panel).length) {
+                // Show loader.
+                common.loader.show('#siteaccessblock');
+                $.ajax({
+                    url: cfg.requestUrl,
+                    type: cfg.requestType,
+                    dataType: cfg.requestDataType,
+                    data: {
+                        action: 'get_siteaccess_data_ajax',
+                        sesskey: $(panel).data("sesskey")
+                    },
                 })
-                .fail(function(ex) {
-                    console.log(ex);
+                .done(function(response) {
+                    // eslint-disable-next-line promise/catch-or-return
+                    templates.render(cfg.getTemplate("siteaccessblock"), response.data)
+                    .then(function(html, js) {
+                        templates.replaceNodeContents(panelBody, html, js);
+                        return;
+                    })
+                    .fail(function(ex) {
+                        console.log(ex);
+                    })
+                    .always(function() {
+                        $(accessDesc).show();
+                        $(loader).remove();
+                        $(table).removeClass("d-none");
+                        $(panel + ' [data-toggle="tooltip"]').tooltip();
+
+                        // Hide loader.
+                        common.loader.hide('#siteaccessblock');
+                    });
                 })
-                .always(function() {
-                    $(accessDesc).show();
-                    $(loader).remove();
-                    $(table).removeClass("d-none");
-                    $(panel + ' [data-toggle="tooltip"]').tooltip();
+                .fail(function(error) {
+                    console.log(error);
+                }).always(function() {
+                    notifyListner("accessInfo");
 
                     // Hide loader.
                     common.loader.hide('#siteaccessblock');
                 });
-            })
-            .fail(function(error) {
-                console.log(error);
-            }).always(function() {
+            } else {
                 notifyListner("accessInfo");
-
-                // Hide loader.
-                common.loader.hide('#siteaccessblock');
-            });
+            }
         }
     }
 

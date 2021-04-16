@@ -47,5 +47,37 @@ $functions = array(
         'description' => 'Set plugin config',
         'type' => 'write',
         'ajax' => true,
+    ),
+    'local_edwiserreports_get_customreports_data' => array(
+        'classname' => 'local_edwiserreports\external\api',
+        'methodname' => 'get_customreports_data',
+        'classpath' => '',
+        'description' => 'Get reports data',
+        'type' => 'write',
+        'ajax' => true,
+    ),
+    'local_edwiserreports_save_customreports_data' => array(
+        'classname' => 'local_edwiserreports\external\api',
+        'methodname' => 'save_customreports_data',
+        'classpath' => '',
+        'description' => 'Save reports data',
+        'type' => 'write',
+        'ajax' => true,
+    ),
+    'local_edwiserreports_get_customreports_list' => array(
+        'classname' => 'local_edwiserreports\external\api',
+        'methodname' => 'get_customreports_list',
+        'classpath' => '',
+        'description' => 'Get custom reports list',
+        'type' => 'read',
+        'ajax' => true,
+    ),
+    'local_edwiserreports_delete_custom_report' => array(
+        'classname' => 'local_edwiserreports\external\api',
+        'methodname' => 'delete_custom_report',
+        'classpath' => '',
+        'description' => 'Delete Custom Report',
+        'type' => 'write',
+        'ajax' => true,
     )
 );

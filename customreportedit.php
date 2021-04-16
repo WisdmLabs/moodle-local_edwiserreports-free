@@ -18,58 +18,61 @@
  *
  * @package     local_edwiserreports
  * @category    admin
- * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
+ * @copyright   2020 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_edwiserreports;
+require_once(__DIR__ .'/../../config.php');
+require_once($CFG->dirroot . '/local/edwiserreports/classes/output/custom_reports_block.php');
+require_once($CFG->dirroot . '/local/edwiserreports/locallib.php');
 
-use context_system;
-use moodle_url;
-use moodle_exception;
-
-require_once(__DIR__ . '/../../config.php');
-require_once('classes/output/renderable.php');
-
-// Required login.
-require_login();
-
-local_edwiserreports_get_required_strings_for_js();
-
-// System Context.
+// Set external page admin.
 $context = context_system::instance();
 $component = "local_edwiserreports";
+
+require_login();
 
 // Check capability.
 if (!has_capability('report/local_edwiserreports:view', $context)) {
     throw new moodle_exception(get_string('noaccess', 'local_edwiserreports'));
 }
 
-// Include JS for course report page.
-$PAGE->requires->js_call_amd('local_edwiserreports/courseprogress', 'init', array($context->id));
-$PAGE->requires->js_call_amd('local_edwiserreports/courseengage', 'init', array($context->id));
 
-// Get page URL.
-$pageurl = new moodle_url($CFG->wwwroot . "/local/edwiserreports/coursereport.php");
+$reportsid = optional_param('id', 0, PARAM_INT);
+if ($reportsid) {
+    if (!$DB->record_exists('edwreports_custom_reports', array('id' => $reportsid))) {
+        throw new moodle_exception('customreportsidnotmatch', 'error');
+    }
+}
 
-// Add CSS for edwiserreports.
+if (!has_capability('report/edwiserreports_customreports:manage', $context)) {
+    throw new moodle_exception('restrictaccess', 'error');
+}
+
+local_edwiserreports_get_required_strings_for_js();
+
+// Page URL.
+$pageurl = new moodle_url($CFG->wwwroot."/local/edwiserreports/customreportedit.php");
+
+// Require CSS for index page.
 $PAGE->requires->css('/local/edwiserreports/styles/edwiserreports.min.css');
 
 // Set page context.
 $PAGE->set_context($context);
 
+// Set page URL.
+$PAGE->set_url($pageurl);
+
 // Set Page layout.
 $PAGE->set_pagelayout('standard');
 
-// Set page url.
-$PAGE->set_url($pageurl);
-
 // Get renderable.
-$renderable = new \local_edwiserreports\output\coursereport_renderable();
+$renderable = new \local_edwiserreports\output\custom_reports_block($reportsid);
 $output = $PAGE->get_renderer($component)->render($renderable);
 
-$PAGE->set_heading(get_string("coursereportsheader", "local_edwiserreports"));
-$PAGE->set_title(get_string("coursereportsheader", "local_edwiserreports"));
+// Set page heading.
+$PAGE->set_heading(get_string("customreportedit", "local_edwiserreports"));
+$PAGE->set_title(get_string("customreportedit", "local_edwiserreports"));
 
 // Print output in page.
 echo $OUTPUT->header();

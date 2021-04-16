@@ -32,36 +32,40 @@ define([
         var inActiveUsersTable = null;
         var exportUrlLink = panel + " .dropdown-menu[aria-labelledby='export-dropdown'] .dropdown-item";
 
-        // Get inactive users data on load
-        getInactiveUsersData($(dropdown).data("value"));
+        if ($(panel).length) {
+            // Get inactive users data on load
+            getInactiveUsersData($(dropdown).data("value"));
 
-        /**
-         * On click of dropdown get inactive user list based on filter
-         */
-        $(dropdown).on("click", function() {
-            // Get filter
-            var filter = $(this).data("value");
-            $(panel).find('.download-links input[name="filter"]').val(filter);
+            /**
+             * On click of dropdown get inactive user list based on filter
+             */
+            $(dropdown).on("click", function() {
+                // Get filter
+                var filter = $(this).data("value");
+                $(panel).find('.download-links input[name="filter"]').val(filter);
 
-            // If table is already created then destroy the tablw
-            if (activeUsersTable) {
-                activeUsersTable.destroy();
-            }
+                // If table is already created then destroy the tablw
+                if (activeUsersTable) {
+                    activeUsersTable.destroy();
+                }
 
-            // Show load and remove table
-            $(loader).show();
-            $(table).hide();
-            $(tableWrapper).hide();
+                // Show load and remove table
+                $(loader).show();
+                $(table).hide();
+                $(tableWrapper).hide();
 
-            // Set dropdown button value
-            $(dropdownToggle).html($(this).html());
+                // Set dropdown button value
+                $(dropdownToggle).html($(this).html());
 
-            // Change export data url
-            cfg.changeExportUrl(filter, exportUrlLink, V.filterReplaceFlag);
+                // Change export data url
+                cfg.changeExportUrl(filter, exportUrlLink, V.filterReplaceFlag);
 
-            // Get inactive users
-            getInactiveUsersData($(this).data("value"));
-        });
+                // Get inactive users
+                getInactiveUsersData($(this).data("value"));
+            });
+        } else {
+            notifyListner("inActiveUsers");
+        }
 
         /**
          * Get inactive users list based on filter

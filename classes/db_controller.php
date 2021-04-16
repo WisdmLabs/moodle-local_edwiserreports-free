@@ -256,14 +256,14 @@ class db_controller {
                             continue;
                         }
 
-                        // Total modules.
-                        $completioninfo->totalmodules++;
-
                         // Get course module data.
                         $data = $completion->get_data($module, false, $userid);
                         // If completion status is set then increase
                         // Completion count.
                         if ($data->completionstate) {
+                            // Total modules.
+                            $completioninfo->totalmodules++;
+                            
                             $completedmodules[] = $module->id;
                             $completioninfo->completedmodulescount++;
 
@@ -280,14 +280,6 @@ class db_controller {
                         $completioninfo->completedmodules = implode(',', $completedmodules);
                     }
 
-                    // Check if pecentage is inconsistance due to the
-                    // cron issue then recalculate progress percentage.
-                    $progresstemp = floor(($completioninfo->completedmodulescount / $completioninfo->totalmodules) * 100);
-
-                    if ($percentage !== $progresstemp) {
-                        $completioninfo->progress = $progresstemp;
-                    }
-
                     // If completion is not 100% then remove completion time.
                     if ($completioninfo->progress != 100) {
                         $completioninfo->timecompleted = null;
@@ -295,7 +287,6 @@ class db_controller {
                 }
             }
         }
-
         // Return completion information about course and user.
         return $completioninfo;
     }

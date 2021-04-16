@@ -514,7 +514,13 @@ class export {
         global $CFG;
 
         // Check if class file exist.
-        $classname = $blockname;
+        if (strpos($blockname, 'customreportsblock') !== false) {
+            $params = explode('-', $blockname);
+            $classname = isset($params[0]) ? $params[0] : '';
+            $filter = isset($params[1]) ? $params[1] : '';
+        } else {
+            $classname = $blockname;
+        }
         $filepath = $CFG->dirroot . '/local/edwiserreports/classes/blocks/' . $classname . '.php';
         if (!file_exists($filepath)) {
             debugging('Class file dosn\'t exist ' . $classname);

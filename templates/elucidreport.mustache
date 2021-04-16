@@ -1,7 +1,7 @@
 <div id="wdm-edwiserreports" class="row m-0 d-none" data-editing="{{ editing }}">
     {{# blocks }}
         <div class="{{{extraclasses}}} mb-5 edwiserReport-block {{# hiddenblock }} block-hidden {{/ hiddenblock}}">
-            <div id="{{id}}" data-sesskey="{{sesskey}}">
+            <div id="{{id}}" data-sesskey="{{sesskey}}" data-blockname="{{name}}">
                 <div class="panel m-0">
                     <div class="panel-header d-flex">
                         <div class="panel-title px-0 col-10">
@@ -25,6 +25,9 @@
                         <div class="loader w-full text-center">
                             {{# pix }} loader, local_edwiserreports{{/ pix }}
                         </div>
+                        {{#iscustomblock}}
+                            <table class="table customreportdata w-full"></table>
+                        {{/iscustomblock}}
                     </div>
                     <div class="panel-footer row m-0">
                         {{# morelink }}
@@ -39,5 +42,57 @@
                 </div>
             </div>
         </div>
+        {{#iscustomblock}}
+            {{#js}}
+                require([
+                    'jquery',
+                    'core/ajax',
+                    'local_edwiserreports/customreportsblock'
+                ], function(
+                    $,
+                    ajax,
+                    customreportsblock
+                ) {
+                    var tableId = '#{{{id}}} table.customreportdata'
+
+                    $(document).ready(function() {
+                        var getCustomReportsData = ajax.call([{
+                            methodname: 'local_edwiserreports_get_customreports_data',
+                            args: {
+                                params: JSON.stringify({{{params}}})
+                            }
+                        }]);
+
+                        getCustomReportsData[0].done(function(response) {
+                            if (response.success) {
+                                var data = JSON.parse(response.data);
+                                $(tableId).DataTable({
+                                    columns: data.columns,
+                                    data: data.reportsdata,
+                                    bInfo: false,
+                                    lengthChange: false,
+                                    language: { 
+                                        searchPlaceholder: "{{#str}}searchreports, local_edwiserreports{{/str}}",
+                                        emptyTable: "{{#str}}noresult, local_edwiserreports{{/str}}"
+                                    },
+                                    drawCallback: function() {
+                                        $('.dataTables_paginate > .pagination').addClass('pagination-sm pull-right');
+                                        $('.dataTables_filter').addClass('pagination-sm pull-right');
+                                    }
+                                });
+                            }
+                        });
+                    });
+                });
+            {{/js}}
+        {{/iscustomblock}}
     {{/ blocks }}
+    {{# canmanagecustomreports }}
+        <div class="col-12">
+            <a href="{{customreportseditlink}}" class="btn btn-primary pull-right">
+                <i class="icon fa fa-plus fa-fw " aria-hidden="true"></i>
+                {{#str}} createcustomreports, local_edwiserreports {{/str}}
+            </a>
+        </div>
+    {{/ canmanagecustomreports }}
 </div>

@@ -13,7 +13,7 @@
                         <button type="button" class="btn dropdown-toggle" id="cohortfilter" data-toggle="dropdown" aria-expanded="false">
                             {{ text }}
                         </button>
-                        <div class="dropdown-menu" aria-labelledby="cohortfilter" role="menu" x-placement="bottom-start">
+                        <div class="dropdown-menu dropdown-scrollable dropdown-menu-right" aria-labelledby="cohortfilter" role="menu" x-placement="bottom-start">
                             <a class="dropdown-item" href="javascript:void(0)" data-cohortid="0" role="menuitem">
                                 {{# str }} all, local_edwiserreports {{/ str }}
                             </a>
@@ -29,7 +29,7 @@
                         <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" id="filter-dropdown" aria-expanded="false">
                             {{# str }} lastweek, local_edwiserreports {{/ str }}
                         </button>
-                        <div class="dropdown-menu" aria-labelledby="filter-dropdown" role="menu">
+                        <div class="dropdown-menu dropdown-scrollable dropdown-menu-right" aria-labelledby="filter-dropdown" role="menu">
                             <div id="activeUser-calendar" class="dropdown-calendar"></div>
                             <div class="dropdown-body">
                                 <a class="dropdown-item" href="javascript:void(0)" role="menuitem" value="weekly">

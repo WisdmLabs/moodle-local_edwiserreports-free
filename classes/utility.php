@@ -1031,8 +1031,8 @@ class utility {
         $sql = "SELECT DISTINCT(u.id), CONCAT(CONCAT(u.firstname, ' '), u.lastname) as fullname
                 FROM {user} u
                 $cohortjoinsql
-                WHERE u.deleted = false
-                AND u.confirmed = true
+                WHERE u.deleted = 0
+                AND u.confirmed = 1
                 AND u.id > 1 $insql
                 ORDER BY fullname ASC";
 
@@ -1064,8 +1064,24 @@ class utility {
      */
     public static function get_reports_block() {
         global $DB;
+        $defaultreports = $DB->get_records('edwreports_blocks');
+        $customreports = $DB->get_records('edwreports_custom_reports', array('enabledesktop' => 1));
+        $cbposition = count($defaultreports);
 
-        return $DB->get_records('edwreports_blocks');
+        foreach ($customreports as $customreport) {
+            $report = new stdClass();
+            $report->id = $customreport->id;
+            $report->classname = 'customreportsblock';
+            $report->blockname = $customreport->shortname;
+            $pref = new stdClass();
+            $pref->desktopview = LOCAL_SITEREPORT_BLOCK_LARGE;
+            $pref->tabletview = LOCAL_SITEREPORT_BLOCK_LARGE;
+            $pref->position = $cbposition;
+            $report->blockdata = json_encode($pref);
+            $defaultreports[] = $report;
+        }
+
+        return $defaultreports;
     }
 
     /**
@@ -1082,9 +1098,15 @@ class utility {
 
         // For each blocks change preferences.
         foreach ($blocks as $key => $block) {
+            $blockname = '';
             $pref = self::get_reportsblock_preferences($block);
+            $prefname = 'pref_' . $block->classname;
+            if ($block->classname == 'customreportsblock') {
+                $blockname = 'customreportsblock-' . $block->id;
+                $prefname .= '-' . $block->id;
+            }
 
-            if ($block->classname == $data->blockname) {
+            if ($block->classname == $data->blockname || $blockname == $data->blockname) {
                 $pref = $data;
             } else if ($currentpref['position'] == $data->position) {
                 continue;
@@ -1097,7 +1119,7 @@ class utility {
             }
 
             // Set block Preference.
-            set_user_preference('pref_' . $block->classname, json_encode($pref));
+            set_user_preference($prefname, json_encode($pref));
         }
 
         return array(
@@ -1113,11 +1135,9 @@ class utility {
         $newblocks = array();
         foreach ($blocks as $block) {
             $pref = self::get_reportsblock_preferences($block);
-
             while (isset($newblocks[$pref['position']])) {
                 $pref['position']++;
             }
-
             $newblocks[$pref['position']] = $block;
         }
 
@@ -1148,7 +1168,40 @@ class utility {
     public static function get_reportsblock_by_name($blockname) {
         global $DB;
 
-        return $DB->get_record('edwreports_blocks', array('classname' => $blockname));
+        $block = new stdClass();
+        if (strpos($blockname, 'customreportsblock') !== false) {
+            $block = self::get_custom_report_block($blockname);
+        } else {
+            $block = $DB->get_record('edwreports_blocks', array('classname' => $blockname));
+        }
+
+        return $block;
+    }
+
+    /**
+     * Get custom report block
+     * @param [string] $blockname Block Name
+     */
+    public static function get_custom_report_block($blockname) {
+        global $DB;
+        $customreports = $DB->get_records('edwreports_custom_reports', array('enabledesktop' => 1), '', 'id');
+
+        $params = explode('-', $blockname);
+        $classname = isset($params[0]) ? $params[0] : '';
+        $blockid = isset($params[1]) ? $params[1] : '';
+        $crcount = array_search($blockid, array_keys($customreports));
+
+        $block = $DB->get_record('edwreports_custom_reports', array('id' => $blockid));
+        $block->blockname = $block->shortname;
+        $pref = new stdClass();
+        $pref->desktopview = LOCAL_SITEREPORT_BLOCK_LARGE;
+        $pref->tabletview = LOCAL_SITEREPORT_BLOCK_LARGE;
+        $pref->mobileview = LOCAL_SITEREPORT_BLOCK_LARGE;
+        $pref->position = $DB->count_records('edwreports_blocks') + $crcount;
+        $block->blockdata = json_encode($pref);
+        $block->classname = 'customreportsblock';
+
+        return $block;
     }
 
     /**
@@ -1156,15 +1209,24 @@ class utility {
      * @param string $block Block
      */
     public static function get_reportsblock_preferences($block) {
-        if ($prefrences = get_user_preferences('pref_' . $block->classname)) {
+        $prefname = 'pref_' . $block->classname;
+        if ($block->classname == 'customreportsblock') {
+            $prefname .= '-' . $block->id;
+        }
+
+        if ($prefrences = get_user_preferences($prefname)) {
             $blockdata = json_decode($prefrences, true);
             $position = $blockdata['position'];
             $desktopview = $blockdata[LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW];
             $tabletview = $blockdata[LOCAL_SITEREPORT_BLOCK_TABLET_VIEW];
         } else {
+            $blockdata = json_decode($block->blockdata, true);
             $position = get_config('local_edwiserreports', $block->blockname . 'position');
+            $position = $position ? $position : $blockdata['position'];
             $desktopview = get_config('local_edwiserreports', $block->blockname . 'desktopsize');
+            $desktopview = $desktopview ? $desktopview : $blockdata['desktopview'];
             $tabletview = get_config('local_edwiserreports', $block->blockname . 'tabletsize');
+            $tabletview = $tabletview ? $tabletview : $blockdata['tabletview'];
         }
 
         // Set default preference.
@@ -1197,12 +1259,17 @@ class utility {
     public static function get_blocks_capability($block) {
         $context = context_system::instance();
 
-        // Prepare the list of capabilities to choose from.
         $capabilitychoices = array();
-        foreach ($context->get_capabilities() as $cap) {
-            if (strpos($cap->name, 'report/edwiserreports_' . $block->classname) !== false) {
-                $strkey = str_replace(array('report/edwiserreports_', ':'), array('', ''), $cap->name);
-                $capabilitychoices[$cap->name] = get_string($strkey, 'local_edwiserreports');
+        // Prepare the list of capabilities to choose from.
+        if ($block->classname == 'customreportsblock') {
+            $capname = 'report/edwiserreports_customreportsblock-' . $block->id . ':view';
+            $capabilitychoices[$capname] = $block->fullname;
+        } else {
+            foreach ($context->get_capabilities() as $cap) {
+                if (strpos($cap->name, 'report/edwiserreports_' . $block->classname) !== false) {
+                    $strkey = str_replace(array('report/edwiserreports_', ':'), array('', ''), $cap->name);
+                    $capabilitychoices[$cap->name] = get_string($strkey, 'local_edwiserreports');
+                }
             }
         }
 
@@ -1230,16 +1297,20 @@ class utility {
              'prohibit' => CAP_PROHIBIT
         );
 
-        if (!$config = get_config('local_edwiserreports', str_replace('block', 'roleallow', $blockname))) {
-            return array('success' => false);
+        $config = array();
+        if ($configstr = get_config('local_edwiserreports', str_replace('block', 'roleallow', $blockname))) {
+            $config = explode(',', $configstr);
         }
-        $config = explode(',', $config);
+
         foreach ($data as $rolename => $permission) {
             $role = $DB->get_record('role', array('shortname' => $rolename));
             if (!$role) {
                 continue;
             }
-            assign_capability($capability, $permissionconst[$permission], $role->id, $context->id, true);
+
+            if (strpos($blockname, 'customreportsblock') === false) {
+                assign_capability($capability, $permissionconst[$permission], $role->id, $context->id, true);
+            }
 
             if ($permissionconst[$permission] === CAP_ALLOW) {
                 if (!in_array($role->id, $config)) {
@@ -1287,5 +1358,36 @@ class utility {
         return array(
             "success" => true
         );
+    }
+
+    /**
+     * Get role capability from context
+     * @param  object $capcontext Capability Context
+     * @param  object $role       Role Object
+     * @return int
+     */
+    public static function get_rolecap_from_context($capcontext, $role, $blockname) {
+        global $CFG;
+
+        if (strpos($blockname, 'customreportsblock') !== false) {
+            $params = explode('-', $blockname);
+            $classname = isset($params[0]) ? $params[0] : '';
+            $blockid = isset($params[1]) ? $params[1] : '';
+            $configstr = get_config('local_edwiserreports', str_replace('block', 'roleallow' , $blockname));
+            if ($configstr) {
+                $config = explode(',', $configstr);
+                $rolecap = in_array($role->id, $config) ? CAP_ALLOW : CAP_INHERIT;
+            } else {
+                if ($role->archetype == 'manager' || $role->archetype == 'coursecreator') {
+                    $rolecap = CAP_ALLOW;
+                } else {
+                    $rolecap = CAP_INHERIT;
+                }
+            }
+        } else {
+            $rolecap = $capcontext->rolecapabilities[$role->id];
+        }
+
+        return $rolecap;
     }
 }

@@ -449,3 +449,8 @@ div[id^="wdm-"][id*="-individual"] {
 		}
 	}
 }
+
+#wdm-userfilter .dropdown-menu {
+	max-height: 400px;
+	overflow: auto;
+}

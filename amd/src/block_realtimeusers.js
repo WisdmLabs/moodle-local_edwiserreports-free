@@ -28,19 +28,19 @@ define([
      */
     function getOnlineUsersData() {
 
-        // Show loader.
-        common.loader.show("#liveusersblock");
+        if ($(panel).length) {
+            // Show loader.
+            common.loader.show("#liveusersblock");
 
-        $.ajax({
-            url: cfg.requestUrl,
-            type: cfg.requestType,
-            dataType: cfg.requestDataType,
-            data: {
-                action: 'get_liveusers_data_ajax',
-                sesskey: $(panel).data("sesskey")
-            },
-        })
-            .done(function(response) {
+            $.ajax({
+                url: cfg.requestUrl,
+                type: cfg.requestType,
+                dataType: cfg.requestDataType,
+                data: {
+                    action: 'get_liveusers_data_ajax',
+                    sesskey: $(panel).data("sesskey")
+                },
+            }).done(function(response) {
                 createRealtimeUsersBlock(response.data);
             })
             .fail(function(error) {
@@ -53,6 +53,9 @@ define([
                 common.loader.hide("#liveusersblock");
 
             });
+        } else {
+            listner("realTimeUsers");
+        }
     }
 
     /**

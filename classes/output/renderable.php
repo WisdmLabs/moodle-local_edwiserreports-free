@@ -53,6 +53,7 @@ class elucidreport_renderable implements renderable, templatable {
 
         $output = null;
         $export = new stdClass();
+        $context = context_system::instance();
 
         // Prepare reports blocks.
         $reportblocks = \local_edwiserreports\utility::get_reports_block();
@@ -74,6 +75,8 @@ class elucidreport_renderable implements renderable, templatable {
         }
 
         $export->editing = isset($USER->editing) ? $USER->editing : 0;
+        $export->canmanagecustomreports = has_capability('report/edwiserreports_customreports:manage', $context);
+        $export->customreportseditlink = new moodle_url($CFG->wwwroot."/local/edwiserreports/customreportedit.php");
 
         return $export;
     }

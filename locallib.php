@@ -198,23 +198,32 @@ function local_edwiserreports_get_userfilters($customfields, $cohortfilter, $ran
  * @return array Array of Cohort filters
  */
 function local_edwiserreports_get_cohort_filter() {
-    global $DB;
+    global $DB, $USER;
 
-    $syscontext = context_system::instance();
-    $cohorts = cohort_get_cohorts($syscontext->id)["cohorts"];
-    $categories = $DB->get_records('course_categories', null, 'id');
+    // Fetch all cohorts. 
+    // passing 0,0 -> page_number, number of record, 0 means
+    $allcohorts = cohort_get_all_cohorts(0, 0);  
 
-    foreach ($categories as $category) {
-        $catcontext = context_coursecat::instance($category->id);
-        $cohorts = array_merge($cohorts, cohort_get_cohorts($catcontext->id)["cohorts"]);
+    $usercontext = context_user::instance($USER->id);
+    
+    $cohorts = [];
+
+    // users visibility check.
+    foreach ($allcohorts['cohorts'] as $key => $value) {
+        if (cohort_can_view_cohort($key, $usercontext)) {
+            $cohorts[] = $value;
+        }
     }
 
-    $cohortfilter = false;
-    if (!empty($cohorts)) {
-        $cohortfilter = new stdClass();
-        $cohortfilter->text = get_string('cohorts', 'local_edwiserreports');
-        $cohortfilter->values = $cohorts;
+    if (empty($cohorts)) {
+        // returning false if no cohorts are present.
+        return false;
     }
+
+    $cohortfilter = new stdClass();
+    $cohortfilter->text = get_string('cohorts', 'local_edwiserreports');
+    $cohortfilter->values = $cohorts;
+  
     return $cohortfilter;
 }
 
@@ -970,6 +979,13 @@ function reset_edwiserreports_page_default() {
         unset($USER->preference[$prefname]);
     }
 
+    $customreports = $DB->get_records('edwreports_custom_reports');
+    foreach ($customreports as $block) {
+        $prefname = 'pref_customreportsblock-' . $block->id;
+        $DB->delete_records('user_preferences', array('userid' => $USER->id, 'name' => $prefname));
+        unset($USER->preference[$prefname]);
+    }
+
     redirect($CFG->wwwroot . '/local/edwiserreports/index.php');
 }
 
@@ -981,11 +997,17 @@ function is_block_present_indashboard() {
     $hasblock = false;
     $blocks = \local_edwiserreports\utility::get_reports_block();
     foreach ($blocks as $key => $block) {
-        $capname = 'report/edwiserreports_' . $block->classname . ':view';
-        if (has_capability($capname, context_system::instance()) ||
-            can_view_block($capname)) {
-            $hasblock = true;
-            continue;
+        if ($block->classname == 'customreportsblock') {
+            if (can_view_block('customreportsroleallow-' . $block->id)) {
+                $hasblock = true;
+            }
+        } else {
+            $capname = 'report/edwiserreports_' . $block->classname . ':view';
+            if (has_capability($capname, context_system::instance()) ||
+                can_view_block($capname)) {
+                $hasblock = true;
+                continue;
+            }
         }
     }
 
@@ -1010,10 +1032,26 @@ function has_user_role($userid, $roleshortname) {
  * @param [string] $capability capability
  */
 function can_view_block($capname) {
-    global $USER;
+    global $DB, $USER;
 
     $canviewblocks = false;
-    $allowedrole = get_roles_with_capability($capname);
+    if (strpos($capname, 'customreportsroleallow') !== false) {
+        $configstr = get_config('local_edwiserreports', $capname);
+        if ($configstr) {
+            $roleids = explode(',', $configstr);
+            list($insql, $inparams) = $DB->get_in_or_equal($roleids, SQL_PARAMS_NAMED);
+            $sql = 'SELECT * FROM {role} WHERE id ' . $insql;
+            $allowedrole = $DB->get_records_sql($sql, $inparams);
+        } else {
+            $allowedarchetype = array('mamnager', 'coursecreator');
+            list($insql, $inparams) = $DB->get_in_or_equal($allowedarchetype, SQL_PARAMS_NAMED);
+            $sql = 'SELECT * FROM {role} WHERE archetype ' . $insql;
+            $allowedrole = $DB->get_records_sql($sql, $inparams);
+        }
+    } else {
+        $allowedrole = get_roles_with_capability($capname);
+    }
+
     foreach ($allowedrole as $role) {
         if (has_user_role($USER->id, $role->shortname)) {
             $canviewblocks = true;
