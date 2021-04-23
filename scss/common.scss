@@ -144,6 +144,12 @@ tr[aria-expanded="true"] {
 			}
 		}
 	}
+	// Fixing header background glitch because of block configurable_rerport plugin.
+    .dataTable {
+        .sorting_asc, .sorting_desc, .sorting {
+            background-image: none !important;
+        }
+    }
 	.edwiserReport-block {
 		>div {
 			position: relative;
