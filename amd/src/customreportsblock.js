@@ -271,6 +271,7 @@ define([
             if (modal) {
                 $("html, body").animate({ scrollTop: 0 }, "slow");
                 getCustomReportsList();
+                modal.hide();
                 modal.destroy();
             }
         });
