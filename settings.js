@@ -1,4 +1,4 @@
-define('local_edwiserreports/settings', ['jquery'], function($){
+define('local_edwiserreports/settings', ['jquery'], function($) {
     return {
         init: function() {
             // Preventing reload notification

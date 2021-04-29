@@ -1,3 +1,24 @@
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+/**
+ * Plugin administration pages are defined here.
+ *
+ * @package     local_edwiserreports
+ * @copyright   2021 wisdmlabs <support@wisdmlabs.com>
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 define([
     'jquery',
     'core/ajax',
@@ -8,7 +29,7 @@ define([
     'core/str',
     'local_edwiserreports/jquery.dataTables',
     'local_edwiserreports/dataTables.bootstrap4'
-], function (
+], function(
     $,
     ajax,
     modalFactory,
@@ -45,81 +66,84 @@ define([
     var reportsId = 0;
     var reportsDataLoaded = true;
     var reportsData = {
-        downloadenable : true
+        downloadenable: true
     };
 
     var cfPreviewLoader = {
-        selector : '.reports-preview-body .reports-preview-content.loader',
+        selector: '.reports-preview-body .reports-preview-content.loader',
 
-        show : function() {
+        show: function() {
             $(this.selector).removeClass('d-none').addClass('d-flex');
         },
 
-        hide : function() {
+        hide: function() {
             $(this.selector).removeClass('d-flex').addClass('d-none');
         }
-    }
+    };
 
     var cfPreview = {
-        selector : '.reports-preview-body .reports-preview-content',
+        selector: '.reports-preview-body .reports-preview-content',
 
-        show : function() {
+        show: function() {
             $(this.selector + ':not(.loader)').removeClass('d-none').addClass('d-flex');
             $(this.selector + '.empty').removeClass('d-flex').addClass('d-none');
             cfPreviewLoader.hide();
         },
 
-        hide : function() {
+        hide: function() {
             $(this.selector + ':not(.loader)').removeClass('d-flex').addClass('d-none');
             $(this.selector + '.empty').removeClass('d-flex').addClass('d-none');
             cfPreviewLoader.show();
         },
 
-        empty : function() {
+        empty: function() {
             $(this.selector + '.empty').removeClass('d-none').addClass('d-flex');
             $(this.selector + ':not(.empty)').removeClass('d-flex').addClass('d-none');
             cfPreviewLoader.hide();
         }
-    }
+    };
 
     var crListLoader = {
-        selector : '.reports-list-body .reports-list-content.loader',
+        selector: '.reports-list-body .reports-list-content.loader',
 
-        show : function() {
+        show: function() {
             $(this.selector).removeClass('d-none').addClass('d-flex');
         },
 
-        hide : function() {
+        hide: function() {
             $(this.selector).removeClass('d-flex').addClass('d-none');
         }
-    }
+    };
 
     var crList = {
-        selector : '.reports-list-body .reports-list-content',
+        selector: '.reports-list-body .reports-list-content',
 
-        show : function() {
+        show: function() {
             $(this.selector + ':not(.loader)').removeClass('d-none').addClass('d-flex');
             $(this.selector + '.empty').removeClass('d-flex').addClass('d-none');
             crListLoader.hide();
         },
 
-        hide : function() {
+        hide: function() {
             $(this.selector + ':not(.loader)').removeClass('d-flex').addClass('d-none');
             $(this.selector + '.empty').removeClass('d-flex').addClass('d-none');
             crListLoader.show();
         },
 
-        empty : function() {
+        empty: function() {
             $(this.selector + '.empty').removeClass('d-none').addClass('d-flex');
             $(this.selector + ':not(.empty)').removeClass('d-flex').addClass('d-none');
             crListLoader.hide();
         }
-    }
+    };
 
+    /**
+     * Get custum reports data.
+     */
     function getCustomReportsData() {
         if (reportsDataLoaded) {
             reportsDataLoaded = false;
-            selectedFields = []
+            selectedFields = [];
             cohorts = $(cfCohort).val();
             courses = $(cfCourse).val();
             $(cfCheckbox + ":checked").each(function() {
@@ -130,9 +154,9 @@ define([
                 methodname: 'local_edwiserreports_get_customreports_data',
                 args: {
                     params: JSON.stringify({
-                        fields : selectedFields,
-                        cohorts : cohorts,
-                        courses : courses
+                        fields: selectedFields,
+                        cohorts: cohorts,
+                        courses: courses
                     })
                 }
             }]);
@@ -146,7 +170,6 @@ define([
                 getCustomReportsDataAjax[0].done(function(response) {
                     if (response.success) {
                         var data = JSON.parse(response.data);
-                        console.log(data.reportsdata.length);
                         if (data.reportsdata.length == 0) {
                             cfPreview.empty();
                             $(cfSave).prop('disabled', true);
@@ -171,13 +194,18 @@ define([
                             $(cfSave).prop('disabled', false);
                         }
                     }
-                }).always(function () {
+                }).always(function() {
                     reportsDataLoaded = true;
                 });
             }
         }
     }
 
+    /**
+     * Validate custom reports data to save.
+     * @param {Object} data Custom report data object
+     * @return {Boolean}
+     */
     function validateCustomReprtsSaveData(data) {
         var ret = true;
         if (data.reportname == '') {
@@ -194,6 +222,7 @@ define([
             ret = false;
         }
 
+        // eslint-disable-next-line no-useless-escape
         var format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
         if (format.test(data.reportshortname)) {
             $('#id_error_crb_reportshortname')
@@ -204,6 +233,9 @@ define([
         return ret;
     }
 
+    /**
+     * Save custom reports data confirmation module.
+     */
     function saveCustomReportsData() {
         modalFactory.create({
             title: customReportSaveTitle,
@@ -233,7 +265,7 @@ define([
                         'selectedfield': selectedFields,
                         'cohorts': cohorts,
                         'courses': courses
-                    }
+                    };
 
                     saveCustomReportsDataService(data, modal);
                 }
@@ -241,6 +273,11 @@ define([
         });
     }
 
+    /**
+     * Save customo report data to database.
+     * @param {Object} data Custom report data
+     * @param {Moodle_Factory} modal Modal object
+     */
     function saveCustomReportsDataService(data, modal) {
         var saveCustomReportsData = ajax.call([{
             methodname: 'local_edwiserreports_save_customreports_data',
@@ -269,13 +306,17 @@ define([
                 });
             }
             if (modal) {
-                $("html, body").animate({ scrollTop: 0 }, "slow");
+                $("html, body").animate({scrollTop: 0}, "slow");
                 getCustomReportsList();
+                modal.hide();
                 modal.destroy();
             }
         });
     }
 
+    /**
+     * Get reports list of custom reports.
+     */
     function getCustomReportsList() {
         var getCustomReportsList = ajax.call([{
             methodname: 'local_edwiserreports_get_customreports_list',
@@ -317,7 +358,7 @@ define([
                                 title: M.util.get_string('manage', 'local_edwiserreports')
                             }
                         ],
-                        language: { 
+                        language: {
                             searchPlaceholder: M.util.get_string('searchreports', 'local_edwiserreports'),
                             emptyTable: M.util.get_string('noresult', 'local_edwiserreports')
                         },
@@ -336,6 +377,10 @@ define([
         });
     }
 
+    /**
+     * Delete custom reports data.
+     * @param {Integer} reportsId Report id
+     */
     function customReportDelete(reportsId) {
         var deleteCustomReport = ajax.call([{
             methodname: 'local_edwiserreports_delete_custom_report',
@@ -356,23 +401,26 @@ define([
                 });
             }
         }).always(function() {
-            $("html, body").animate({ scrollTop: 0 }, "slow");
+            $("html, body").animate({scrollTop: 0}, "slow");
             getCustomReportsList();
-        })
+        });
     }
 
+    /**
+     * Initialise custom reports events.
+     */
     function customReportServiceInit() {
-        $(cfCheckbox).on('change', function () {
+        $(cfCheckbox).on('change', function() {
             getCustomReportsData();
         });
-        $(cfSelect).on('change', function () {
+        $(cfSelect).on('change', function() {
             getCustomReportsData();
         });
-        $(cfSave).on('click', function () {
+        $(cfSave).on('click', function() {
             saveCustomReportsData();
         });
         getCustomReportsList();
-        $(document).on('change', crDesktopEnableSwitch, function () {
+        $(document).on('change', crDesktopEnableSwitch, function() {
             var enabledesktop = false;
             if ($(this).is(":checked")) {
                 enabledesktop = true;
@@ -381,11 +429,11 @@ define([
                 reportsid: $(this).data('reportsid'),
                 enabledesktop: enabledesktop,
                 action: 'enabledesktop'
-            }
+            };
 
             saveCustomReportsDataService(updateData, false);
         });
-        $(document).on('click', crDeleteBtn, function (e) {
+        $(document).on('click', crDeleteBtn, function(e) {
             e.preventDefault();
 
             var reportId = $(this).data('reportsid');
@@ -412,18 +460,18 @@ define([
                 }, e.currentTarget));
             });
         });
-        $(document).on('click', crHideBtn, function (e) {
+        $(document).on('click', crHideBtn, function(e) {
             e.preventDefault();
 
             var checkboxId = $(this).data('target');
             if ($(this).data('value')) {
                 $(this).attr('title', $(this).data('titlehide'));
                 $(this).attr('data-original-title', $(this).data('titlehide'));
-                $(this).data('value', 0)
+                $(this).data('value', 0);
             } else {
                 $(this).attr('title', $(this).data('titleshow'));
                 $(this).attr('data-original-title', $(this).data('titleshow'));
-                $(this).data('value', 1)
+                $(this).data('value', 1);
             }
             $(this).find('.icon').toggleClass('fa-eye');
             $(this).find('.icon').toggleClass('fa-eye-slash');
@@ -432,10 +480,11 @@ define([
     }
 
     return {
-        init : function () {
-            $(document).ready(function () {
+        init: function() {
+            $(document).ready(function() {
                 customReportServiceInit();
-                if (reportsId = $(crPageId).val()) {
+                reportsId = $(crPageId).val();
+                if (reportsId !== 0) {
                     reportsData.reportsid = reportsId;
                     reportsData.reportname = $(crPageFullname).val();
                     reportsData.reportshortname = $(crPageShortname).val();
@@ -456,5 +505,5 @@ define([
                 }
             });
         }
-    }
+    };
 });

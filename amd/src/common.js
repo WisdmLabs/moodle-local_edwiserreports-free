@@ -1,5 +1,5 @@
+
 /* eslint-disable no-console */
-/* eslint-disable camelcase */
 define([
     'jquery',
     'core/notification',
@@ -194,14 +194,14 @@ define([
                         root.find("#esr-blockname").val(data.blockname);
                         root.find("#esr-region").val(data.region);
                         root.find("#esr-sesskey").val(data.sesskey);
-                        emailListTable = render_all_scheduled_emails(data, modal);
+                        emailListTable = renderAllScheduledEmails(data, modal);
                     });
 
                     root.on(ModalEvents.hidden, function() {
                         modal.destroy();
                     });
 
-                    email_schedule_form_init(data, root, modal);
+                    emailScheduleFormInit(data, root, modal);
                     modal.show();
                 });
         });
@@ -290,7 +290,7 @@ define([
                             });
 
                             // Set users preferences
-                            set_block_preference(blockname, data);
+                            setBlockPreference(blockname, data);
                         });
                     });
 
@@ -464,7 +464,7 @@ define([
      * @param {string} blockname Block name
      * @param {string} data Data for preference
      */
-    function set_block_preference(blockname, data) {
+    function setBlockPreference(blockname, data) {
         data.blockname = blockname;
         data = JSON.stringify(data);
         var sesskey = $('#' + blockname).data('sesskey');
@@ -495,7 +495,7 @@ define([
      * @param {Object} modal Modal object
      * @return {Object} Datatable object
      */
-    function render_all_scheduled_emails(data, modal) {
+    function renderAllScheduledEmails(data, modal) {
         var table = modal.getRoot().find("#esr-shceduled-emails");
 
         // Resize event to adjust datatable when click on the all list tab
@@ -558,7 +558,7 @@ define([
      * @param  {object} errorBox Box to show error
      * @return {boolean} Return form validation status
      */
-    function validate_email_scheduled_form(form, errorBox) {
+    function validateEmailScheduledForm(form, errorBox) {
         var esrname = form.find('[name="esrname"]').val();
         var esrrecepient = form.find('[name="esrrecepient"]').val();
         if (esrname == "" || esrrecepient == "") {
@@ -581,13 +581,13 @@ define([
      * @param {object} root Modal root object
      * @param {Object} modal Modal object
      */
-    function save_schedule_email_init(data, root, modal) {
+    function saveScheduleEmailInit(data, root, modal) {
         // On save perform operation
         root.on('click', '[data-action="save"]', function() {
             var errorBox = root.find(".esr-form-error");
             errorBox.html(loader).show();
 
-            if (validate_email_scheduled_form(root.find("form"), errorBox)) {
+            if (validateEmailScheduledForm(root.find("form"), errorBox)) {
                 var filter = data.filter;
                 var cohortid = data.cohortid;
                 var block = data.block;
@@ -610,7 +610,7 @@ define([
                         if (emailListTable) {
                             emailListTable.destroy();
                         }
-                        emailListTable = render_all_scheduled_emails(data, modal);
+                        emailListTable = renderAllScheduledEmails(data, modal);
                         errorBox.html(schedulesuccessmsg);
                     }
                 }).fail(function(error) {
@@ -633,7 +633,7 @@ define([
      * Update dropdown button text
      * @param  {object} _this click object
      */
-    function update_dropdown_btn_text(_this) {
+    function updateDropdownBtnText(_this) {
         var val = $(_this).data('value');
         var text = $(_this).text();
         var dropdownBtn = $(_this).closest(".dropdown").find(dropdownSelector);
@@ -648,7 +648,7 @@ define([
      * @param {object} _this click object
      * @param {Object} root Modal root obuject
      */
-    function duration_dropdown_init(_this, root) {
+    function durationDropdownInit(_this, root) {
         var val = $(_this).data('value');
 
         root.find(durationInput).val(val);
@@ -680,7 +680,7 @@ define([
      * @param {object} _this click object
      * @param {Object} root Modal root obuject
      */
-    function email_schedule_setting_init(_this, root) {
+    function emailScheduleSettingInit(_this, root) {
         var id = $(_this).data("id");
         var blockname = $(_this).data("blockname");
         var region = $(_this).data("region");
@@ -701,7 +701,7 @@ define([
         }).done(function(response) {
             response = JSON.parse(response);
             if (!response.error) {
-                set_email_shedule_form_values(response, _this, root);
+                setEmailSheduleFormValues(response, _this, root);
 
                 root.find(tabs).removeClass("active show");
                 root.find(formTab).addClass("active show");
@@ -719,7 +719,7 @@ define([
      * @param {object} _this click object
      * @param {Object} root Modal root obuject
      */
-    function set_email_shedule_form_values(response, _this, root) {
+    function setEmailSheduleFormValues(response, _this, root) {
         var esrDurationVal = null;
         var esrTimeVal = null;
 
@@ -775,7 +775,7 @@ define([
      * @param {object} root Modal root object
      * @param {Object} modal Modal object
      */
-    function email_schedule_delete_init(data, root, modal) {
+    function emailScheduleDeleteInit(data, root, modal) {
         var id = data.id;
         var blockname = data.block;
         var region = data.region;
@@ -800,7 +800,7 @@ define([
                 if (emailListTable) {
                     emailListTable.destroy();
                 }
-                emailListTable = render_all_scheduled_emails(data, modal);
+                emailListTable = renderAllScheduledEmails(data, modal);
                 errorBox.html(deletesuccessmsg);
             } else {
                 errorBox.html(deleteerrormsg);
@@ -813,15 +813,15 @@ define([
         });
     }
 
+    /* eslint-disable no-unused-vars */
     /**
      * Change scheduled email status
      * @param {Object} data Data for email
      * @param {object} root Modal root object
      * @param {Object} modal Modal object
      */
-    function change_scheduled_email_status_init(data, root, modal) {
-        // eslint-disable-next-line no-unused-vars
-        modal = null;
+    function changeScheduledEmailStatusInit(data, root, modal) {
+        /* eslint-enable no-unused-vars */
         var id = data.id;
         var blockname = data.block;
         var region = data.region;
@@ -861,15 +861,15 @@ define([
      * @param {object} root Modal root object
      * @param {Object} modal Modal object
      */
-    function email_schedule_form_init(data, root, modal) {
+    function emailScheduleFormInit(data, root, modal) {
         // If dropdown selected then update the button text
         root.on('click', dropdowns, function() {
-            update_dropdown_btn_text(this);
+            updateDropdownBtnText(this);
         });
 
         // Select duration for email schedule
         root.on('click', durationSelector, function() {
-            duration_dropdown_init(this, root);
+            durationDropdownInit(this, root);
         });
 
         // Select time for schedule
@@ -879,7 +879,7 @@ define([
 
         // When setting button clicked then
         root.on('click', settingBtn, function() {
-            email_schedule_setting_init(this, root);
+            emailScheduleSettingInit(this, root);
         });
 
         // When delete button clicked then
@@ -905,7 +905,7 @@ define([
                 }
             ]).done(function(s) {
                 notif.confirm(s[0], s[1], s[2], s[3], $.proxy(function() {
-                    email_schedule_delete_init(data, root, modal);
+                    emailScheduleDeleteInit(data, root, modal);
                 }, e.currentTarget));
             });
         });
@@ -913,7 +913,7 @@ define([
         // When toggle switch clicked then
         root.on('change', emailListToggleSwitch, function() {
             data.id = $(this).data("id");
-            change_scheduled_email_status_init(data, root, modal);
+            changeScheduledEmailStatusInit(data, root, modal);
         });
 
         // Send the notification immidiatly
@@ -922,7 +922,7 @@ define([
         });
 
         // On save perform operation
-        save_schedule_email_init(data, root, modal);
+        saveScheduleEmailInit(data, root, modal);
     }
 
     /**
