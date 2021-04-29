@@ -1,3 +1,33 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    Edwiser RemUI
+    @package   theme_remui
+    @copyright (c) 2020 WisdmLabs (https://wisdmlabs.com/)
+    @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+
+}}
+{{!
+    @template theme_remui/activity_navigation
+
+    Display the activity navigation for all activities in a course
+
+    Context variables required for this template:
+
+    Example context (json):
+    {
+    }
+}}
 <div class="nav-tabs-horizontal" data-plugin="tabs">
     <ul class="nav nav-tabs nav-tabs-line" role="tablist">
         <li class="nav-item" role="presentation">
@@ -13,13 +43,13 @@
     </ul>
     <div class="tab-content">
         <div class="tab-pane active show" id="scheduletab" role="tabpanel">
-            <form action="">
+            <form action="#">
                 <div id="region-main" class="col-12 border-0">
                     <div class="py-2 w-full">
                         {{! Name field }}
                         <div class="form-group row fitem">
                             <div class="col-12">
-                                <label class="col-form-label d-inline" for="id_desktopview">
+                                <label class="col-form-label d-inline">
                                     <i class="fa fa-calendar-o my-auto" aria-hidden="true"></i>
                                     {{# str }} name, local_edwiserreports {{/ str }}
                                 </label>
@@ -32,7 +62,7 @@
                         {{! Recepient field }}
                         <div class="form-group row fitem">
                             <div class="col-12">
-                                <label class="col-form-label d-inline" for="id_desktopview">
+                                <label class="col-form-label d-inline">
                                     <i class="fa fa-user my-auto" aria-hidden="true"></i>
                                     {{# str }} recipient, local_edwiserreports {{/ str }}
                                 </label>
@@ -45,7 +75,7 @@
                         {{! Subject fields }}
                         <div class="form-group row fitem">
                             <div class="col-12">
-                                <label class="col-form-label d-inline" for="id_desktopview">
+                                <label class="col-form-label d-inline">
                                     {{# str }} subject, local_edwiserreports {{/ str }}
                                 </label>
                             </div>
@@ -57,7 +87,7 @@
                         {{! Message Fields }}
                         <div class="form-group row fitem">
                             <div class="col-12">
-                                <label class="col-form-label d-inline" for="id_desktopview">
+                                <label class="col-form-label d-inline">
                                     {{# str }} message, local_edwiserreports {{/ str }}
                                 </label>
                             </div>
@@ -79,7 +109,7 @@
                         <span class="my-auto mx-1">
                             {{#str}} emailthisreport, local_edwiserreports {{/str}}
                         </span>
-                        <span class="duration-dropdown dropdown">
+                        <div class="duration-dropdown dropdown">
                             <button data-value="0"
                                 type="button"
                                 class="btn btn-default btn-sm dropdown-toggle"
@@ -108,11 +138,11 @@
                                     {{#str}} duration_2, local_edwiserreports {{/str}}
                                 </a>
                             </div>
-                        </span>
+                        </div>
                         <span class="my-auto mx-1">
                             on every
                         </span>
-                        <span class="weekly-dropdown dropdown">
+                        <div class="weekly-dropdown dropdown">
                             <button data-value="0"
                                 type="button"
                                 class="btn btn-default btn-sm dropdown-toggle mx-1"
@@ -169,8 +199,8 @@
                                     {{#str}} week_6, local_edwiserreports {{/str}}
                                 </a>
                             </div>
-                        </span>
-                        <span class="daily-dropdown dropdown">
+                        </div>
+                        <div class="daily-dropdown dropdown">
                             <button data-value="0"
                                 type="button"
                                 class="btn btn-default btn-sm dropdown-toggle mx-1"
@@ -193,8 +223,8 @@
                                 </a>
                                 {{/timesdropdown}}
                             </div>
-                        </span>
-                        <span class="monthly-dropdown dropdown">
+                        </div>
+                        <div class="monthly-dropdown dropdown">
                             <button data-value="1"
                                 type="button"
                                 class="btn btn-default btn-sm dropdown-toggle mx-1"
@@ -215,7 +245,7 @@
                                 </a>
                                 {{/daysdropdown}}
                             </div>
-                        </span>
+                        </div>
 
                         {{! Toggle switch }}
                         <div class="my-auto px-3">

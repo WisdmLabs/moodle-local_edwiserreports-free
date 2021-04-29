@@ -1,3 +1,34 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    Edwiser RemUI
+    @package   theme_remui
+    @copyright (c) 2020 WisdmLabs (https://wisdmlabs.com/)
+    @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+
+}}
+{{!
+    @template theme_remui/activity_navigation
+
+    Display the activity navigation for all activities in a course
+
+    Context variables required for this template:
+
+    Example context (json):
+    {
+        "downloadurl": "#"
+    }
+}}
 <div id="customReportBlock" data-sesskey="{{sesskey}}">
     <div class="panel h-auto mb-0">
         <div class="panel-header clearfix">
@@ -25,8 +56,7 @@
                         </button>
                         <div class="dropdown-menu"
                              aria-labelledby="customReportDrodown"
-                             role="menu"
-                             x-placement="top-start">
+                             role="menu">
                             <a class="dropdown-item" href="javascript:void(0)" role="menuitem" data-val="courses">
                                 {{#str}} courses, local_edwiserreports {{/str}}
                             </a>
@@ -74,50 +104,50 @@
                     {{! Course table }}
                     <table class="table course-table w-full">
                         <thead>
-                            <th class="bg-secondary">
-                                <span class="checkbox-custom"><input type="checkbox" name="selectAllCustom"><label class="selectAllCustomReports" for="selectAllCustom"></label></span>
-                            </th>
-                            <th class="bg-secondary">
-                                {{#str}} name , local_edwiserreports {{/str}}
-                            </th>
-                            <th class="bg-secondary">
-                                {{#str}} shortname , local_edwiserreports {{/str}}
-                            </th>
-                            <th class="bg-secondary">
-                                {{#str}} category , local_edwiserreports {{/str}}
-                            </th>
-                            <th class="bg-secondary">
-                                {{#str}} startdate , local_edwiserreports {{/str}}
-                            </th>
-                            <th class="bg-secondary">
-                                {{#str}} enddate , local_edwiserreports {{/str}}
-                            </th>
+                            <tr>
+                                <th class="bg-secondary">
+                                    <span class="checkbox-custom"><input type="checkbox" name="selectAllCustom"><label class="selectAllCustomReports" for="selectAllCustom"></label></span>
+                                </th>
+                                <th class="bg-secondary">
+                                    {{#str}} name , local_edwiserreports {{/str}}
+                                </th>
+                                <th class="bg-secondary">
+                                    {{#str}} shortname , local_edwiserreports {{/str}}
+                                </th>
+                                <th class="bg-secondary">
+                                    {{#str}} category , local_edwiserreports {{/str}}
+                                </th>
+                                <th class="bg-secondary">
+                                    {{#str}} startdate , local_edwiserreports {{/str}}
+                                </th>
+                                <th class="bg-secondary">
+                                    {{#str}} enddate , local_edwiserreports {{/str}}
+                                </th>
+                            </tr>
                         </thead>
                         <tbody></tbody>
                     </table>
 
                     {{! Leanring Program }}
                     <table class="table lp-table w-full">
-                        <thead>
-                            <th class="bg-secondary">
-                                <span class="checkbox-custom"><input type="checkbox" name="selectAllCustom"><label class="selectAllCustomReports" for="selectAllCustom"></label></span>
-                            </th>
-                            <th class="bg-secondary">
-                                {{#str}} name , local_edwiserreports {{/str}}
-                            </th>
-                            <th class="bg-secondary">
-                                {{#str}} shortname , local_edwiserreports {{/str}}
-                            </th>
-                            <th class="bg-secondary">
-                                {{#str}} startdate , local_edwiserreports {{/str}}
-                            </th>
-                            <th class="bg-secondary">
-                                {{#str}} enddate , local_edwiserreports {{/str}}
-                            </th>
-                            <th class="bg-secondary">
-                                {{#str}} duration , local_edwiserreports {{/str}}
-                            </th>
-                        </thead>
+                        <th class="bg-secondary">
+                            <span class="checkbox-custom"><input type="checkbox" name="selectAllCustom"><label class="selectAllCustomReports" for="selectAllCustom"></label></span>
+                        </th>
+                        <th class="bg-secondary">
+                            {{#str}} name , local_edwiserreports {{/str}}
+                        </th>
+                        <th class="bg-secondary">
+                            {{#str}} shortname , local_edwiserreports {{/str}}
+                        </th>
+                        <th class="bg-secondary">
+                            {{#str}} startdate , local_edwiserreports {{/str}}
+                        </th>
+                        <th class="bg-secondary">
+                            {{#str}} enddate , local_edwiserreports {{/str}}
+                        </th>
+                        <th class="bg-secondary">
+                            {{#str}} duration , local_edwiserreports {{/str}}
+                        </th>
                         <tbody></tbody>
                     </table>
                 </div>
@@ -141,7 +171,7 @@
 </div>
 
 {{#js}}
-require(['local_edwiserreports/block_customreports'], function () {
+require(['local_edwiserreports/block_customreports'], function() {
     // Breakpoints();
 });
 {{/js}}
