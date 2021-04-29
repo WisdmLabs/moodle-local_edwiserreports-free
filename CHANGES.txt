@@ -1,4 +1,8 @@
-v 1.0.2
+V 1.1.1
+====================================================
+Fixed moodle standard and listing issues
+
+v 1.1.0
 ====================================================
 Features
 - Added custom reports editing page.
@@ -7,6 +11,7 @@ Features
 Tweak
 - Improved Active Users graph and table data calculation
 - Improved security of data export and more details page.
+- Improved cappability and security system.
 
 Fixes
 - Active users and Course Progress filter ui issue

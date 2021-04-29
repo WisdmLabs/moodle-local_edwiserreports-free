@@ -1,3 +1,4 @@
+/* stylelint-disable declaration-no-important */
 table.dataTable {
     border-bottom: 0 !important;
     thead {
@@ -17,7 +18,6 @@ table.dataTable {
             position: absolute;
             top: 50%;
             right: 1em;
-            content: "";
         }
         .sorting:after,
         .sorting_asc:after,
@@ -35,10 +35,10 @@ table.dataTable {
             position: absolute;
             top: 50%;
             right: 1em;
-            content: "";
         }
     }
-    tr, td {
+    tr,
+    td {
         background-color: unset;
     }
     th {
@@ -65,7 +65,7 @@ table.dataTable {
 }
 
 .dataTables_filter {
-    >.form-control[type="search"] {
+    > .form-control[type="search"] {
         margin-left: 0;
     }
 }
@@ -74,15 +74,15 @@ table.dataTable td.dataTables_empty {
     text-align: center;
 }
 
-.dataTables_wrapper table.dataTable thead>tr>th {
-	padding: 10px 30px 10px 10px;
+.dataTables_wrapper table.dataTable thead > tr > th {
+    padding: 10px 30px 10px 10px;
 }
 
 .dataTables_wrapper .row div[class^='col-'] {
-	padding-right: 0;
-	padding-left: 0;
+    padding-right: 0;
+    padding-left: 0;
 }
 
 .dataTables_wrapper table.dataTable tr td {
-	background-color: #fff !important;
+    background-color: #fff !important;
 }

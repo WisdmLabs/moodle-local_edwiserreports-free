@@ -1,3 +1,4 @@
+/* stylelint-disable declaration-no-important */
 @mixin calendar-size {
     height: 300px;
     width: 308px;
@@ -55,7 +56,7 @@
             .dropdown-body {
                 @include calendar-dropdown-width;
             }
-            dropdown-item.custom {
+            .dropdown-item.custom {
                 background: #fff;
             }
         }
@@ -85,17 +86,17 @@
 
 #wdm-activeusers-individual {
     input.dropdown-item {
-		background-color: transparent;
-		color: inherit;
+        background-color: transparent;
+        color: inherit;
     }
     input.dropdown-item:hover {
         cursor: pointer;
         background-color: #f8f9fa;
     }
-	input.dropdown-item.custom:focus {
-		-webkit-box-shadow: none;
-		box-shadow: none;
-	}
+    input.dropdown-item.custom:focus {
+        -webkit-box-shadow: none;
+        box-shadow: none;
+    }
     .dropdown-menu {
         &[aria-labelledby="cohortfilter"] {
             max-height: 400px;
@@ -113,6 +114,14 @@
             .flatpickr-calendar {
                 @include calendar-position;
             }
+        }
+    }
+    // Fixing header background glitch because of block configurable_rerport plugin.
+    .dataTable {
+        .sorting_asc,
+        .sorting_desc,
+        .sorting {
+            background-image: none !important;
         }
     }
 }

@@ -6,11 +6,12 @@ var gulp = require('gulp'),
     babel = require('gulp-babel'),
     minify = require('gulp-minify'),
     sass = require('gulp-sass'),
-    rename = require('gulp-rename'),
     concat = require('gulp-concat'),
     extReplace = require('gulp-ext-replace'),
-    mediaGroup = require('gulp-group-css-media-queries'),
-    mediaMerge = require('gulp-merge-media-queries');
+    stripCssComments = require('gulp-strip-css-comments'),
+    header = require('gulp-header');
+
+var PRODUCTION = process.argv.includes('-production');
 
 var sources = [
     './amd/src/*.js'
@@ -34,13 +35,15 @@ gulp.task('purge', shell.task('php ' + __dirname + '/../../admin/cli/purge_cache
 
 gulp.task('uglify', function() {
     var task = gulp.src(sources)
-    .pipe(extReplace('.js', '.min.js'))
-    .pipe(sourcemaps.init())
-    .pipe(babel({
-        presets: [["@babel/preset-env"]]
-    }))
-    .pipe(minify(minifyOptions))
-    .pipe(sourcemaps.write('.'));
+    .pipe(extReplace('.js', '.min.js'));
+    if (PRODUCTION) {
+        task = task.pipe(sourcemaps.init())
+        .pipe(babel({
+            presets: [["@babel/preset-env"]]
+        }))
+        .pipe(minify(minifyOptions))
+        .pipe(sourcemaps.write('.'));
+    }
     return task.pipe(gulp.dest('./amd/build/'));
 });
 
@@ -58,18 +61,21 @@ gulp.task('sass', function() {
     .pipe(clean({force: true}));
 
     return gulp.src(['scss/**/*.scss', 'scss/**/*.css'])
+    .pipe(stripCssComments())
     .pipe(sass({
-        outputStyle: 'compressed'
+        indentWidth: 4,
+        outputStyle: 'expanded'
     }))
     .pipe(concat('edwiserreports.min.css'))
+    .pipe(header('/* stylelint-disable */\n'))
     .pipe(gulp.dest('./styles/'));
 });
 
 gulp.task('watch', function(done) {
   gulp.watch('./amd/src/*.js', gulp.series('uglify', 'purge'));
-  gulp.watch(['../lang/**/*', '../styles/*', '../styles.css'], gulp.series('purge'));
+  gulp.watch(['./lang/**/*', './styles/**/*', './templates/**/*'], gulp.series('purge'));
   gulp.watch(['scss/**/*.scss'], gulp.series('sass', 'purge'));
   done();
 });
 
-gulp.task('default', gulp.series('clean', 'uglify', 'watch', 'purge'));
+gulp.task('default', gulp.series('clean', 'sass', 'uglify', 'watch', 'purge'));
