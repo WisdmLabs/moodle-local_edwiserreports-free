@@ -263,7 +263,7 @@ class db_controller {
                         if ($data->completionstate) {
                             // Total modules.
                             $completioninfo->totalmodules++;
-                            
+
                             $completedmodules[] = $module->id;
                             $completioninfo->completedmodulescount++;
 

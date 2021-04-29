@@ -186,12 +186,12 @@ class export {
 
         // Prepare file record object.
         $fileinfo = array(
-            'contextid' => $context->id, // ID of context
-            'component' => 'local_edwiserreports',     // usually = table name
-            'filearea' => 'downloadreport',     // usually = table name
-            'itemid' => 0,               // usually = ID of row in table
-            'filepath' => '/',           // any path beginning and ending in /
-            'filename' => $filename); // any filename.
+            'contextid' => $context->id, // ID of context.
+            'component' => 'local_edwiserreports',     // Usually = table name.
+            'filearea' => 'downloadreport',     // Usually = table name.
+            'itemid' => 0,               // Usually = ID of row in table.
+            'filepath' => '/',           // Any path beginning and ending in /.
+            'filename' => $filename); // Any filename..
 
         // Create csv data.
         $csvdata = csv_export_writer::print_array($data, 'comma', '"', true);

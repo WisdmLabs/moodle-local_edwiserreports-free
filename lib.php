@@ -312,7 +312,8 @@ function local_edwiserreports_output_fragment_get_blockscap_form($block) {
 
 /**
  * Render blocks capability view
- * @param array $capvalue Fragment parameter array
+ * @param Array $capvalue  Fragment parameter array
+ * @param Array $blockname Block name
  */
 function local_edwiserreports_output_fragment_block_overview_display($capvalue, $blockname = '') {
     global $CFG;

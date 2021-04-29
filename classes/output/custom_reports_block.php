@@ -40,7 +40,7 @@ use moodle_url;
 class custom_reports_block implements renderable, templatable {
     /**
      * Constructor to create custom reports edit page
-     * @param [int] $reportsid Reports ID
+     * @param Integer $reportsid Reports ID
      */
     public function __construct($reportsid = 0) {
         $this->reportsid = $reportsid;
@@ -117,7 +117,8 @@ class custom_reports_block implements renderable, templatable {
 
     /**
      * Get custom reports users fields
-     * @return array  Users Field for custom reports
+     * @param  Array $selectedfield Selected report fields
+     * @return Array                Users Field for custom reports
      */
     public function get_custom_report_user_fields($selectedfield = array()) {
         $userfields = array(
@@ -152,7 +153,8 @@ class custom_reports_block implements renderable, templatable {
 
     /**
      * Get custom reports course fields
-     * @return array  Course Field for custom reports
+     * @param  Array $selectedfield Selected report fields
+     * @return Array                Course Field for custom reports
      */
     public function get_custom_report_course_fields($selectedfield = array()) {
         $coursefields = array(
@@ -279,7 +281,7 @@ class custom_reports_block implements renderable, templatable {
 
     /**
      * Get custom reports users fields
-     * @return array  Users Field for custom reports
+     * @return Array Users Field for custom reports
      */
     public function get_custom_report_activity_fields() {
         $activityfields = array(

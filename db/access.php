@@ -35,7 +35,7 @@ $capabilities = array(
             'manager' => CAP_ALLOW,
         ),
     ),
-    'report/local_edwiserreports_completion_reports:view' => array(
+    'report/edwiserreports_completionblock:view' => array(
         'riskbitmask' => RISK_CONFIG,
         'captype' => 'read',
         'contextlevel' => CONTEXT_SYSTEM,

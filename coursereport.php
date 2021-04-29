@@ -41,7 +41,9 @@ $context = context_system::instance();
 $component = "local_edwiserreports";
 
 // Check capability.
-if (!has_capability('report/local_edwiserreports:view', $context)) {
+$capname = 'report/edwiserreports_courseprogressblock:view';
+if (!has_capability($capname, $context) &&
+    !can_view_block($capname)) {
     throw new moodle_exception(get_string('noaccess', 'local_edwiserreports'));
 }
 

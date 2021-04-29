@@ -57,7 +57,8 @@ use context_system;
 class utility {
     /**
      * Get active users data for active users blocks
-     * @param [object] $data Data Object
+     * @param  Object $data Data Object
+     * @return Array        Active users data
      */
     public static function get_active_users_data($data) {
         global $CFG;
@@ -71,8 +72,8 @@ class utility {
 
     /**
      * Get Course Progress data for Course Progress Page
-     * @param  object $data Consist of filters
-     * @return array        Course Progress array
+     * @param  Object $data Consist of filters
+     * @return Array        Course Progress array
      */
     public static function get_course_progress_data($data) {
         global $CFG;
@@ -91,7 +92,7 @@ class utility {
     /**
      * Get active courses data
      *
-     * @return array
+     * @return Array
      */
     public static function get_active_courses_data() {
         global $CFG;
@@ -105,8 +106,8 @@ class utility {
     /**
      * Get certificates data
      *
-     * @param  object $data Filter data
-     * @return array
+     * @param  Object $data Filter data
+     * @return Array
      */
     public static function get_certificates_data($data) {
         global $CFG;
@@ -123,7 +124,7 @@ class utility {
     /**
      * Get live users data
      *
-     * @return array
+     * @return Array
      */
     public static function get_liveusers_data() {
         global $CFG;
@@ -136,7 +137,7 @@ class utility {
     /**
      * Get site access data
      *
-     * @return array
+     * @return Array
      */
     public static function get_siteaccess_data() {
         global $CFG;
@@ -149,8 +150,8 @@ class utility {
     /**
      * Get todays activity data
      *
-     * @param  object $data Filter data
-     * @return array
+     * @param  Object $data Filter data
+     * @return Array
      */
     public static function get_todaysactivity_data($data) {
         global $CFG;
@@ -163,8 +164,8 @@ class utility {
     /**
      * Get course engage data
      *
-     * @param  object $cohortid Cohort id
-     * @return array
+     * @param  Object $cohortid Cohort id
+     * @return Array
      */
     public static function get_courseengage_data($cohortid) {
         return \local_edwiserreports\courseengageblock::get_data($cohortid);
@@ -173,8 +174,8 @@ class utility {
     /**
      * Get inactive users data
      *
-     * @param  object $data Filter data
-     * @return array
+     * @param  Object $data Filter data
+     * @return Array
      */
     public static function get_inactiveusers_data($data) {
         global $CFG;
@@ -186,8 +187,8 @@ class utility {
 
     /**
      * Get Course Completion Data
-     * @param string $data Data to get Course Completion detail
-     * @return object
+     * @param  String $data Data to get Course Completion detail
+     * @return Object
      */
     public static function get_completion_data($data) {
         if ($data->cohortid) {
@@ -201,8 +202,8 @@ class utility {
     /**
      * Get course analytics data
      *
-     * @param  object $data Data object
-     * @return object
+     * @param  Object $data Data object
+     * @return Object
      */
     public static function get_courseanalytics_data($data) {
         if (isset($data->cohortid)) {
@@ -214,8 +215,8 @@ class utility {
     }
 
     /** Generate Course Filter for course progress block
-     * @param  bool  $all Get course with no enrolment as well
-     * @return array      Array of courses
+     * @param  Bool  $all Get course with no enrolment as well
+     * @return Array      Array of courses
      */
     public static function get_courses($all = false) {
         global $DB;
@@ -233,7 +234,7 @@ class utility {
 
     /**
      * Generate Learning Program Filter for course progress block
-     * @return string HTML form with select and search box
+     * @return String HTML form with select and search box
      */
     public static function get_lps() {
         global $DB;
@@ -268,7 +269,7 @@ class utility {
 
     /**
      * Get All Course Completion
-     * @return [type] [description]
+     * @return Array Course completions records
      */
     public static function get_course_completions() {
         global $DB;
@@ -293,8 +294,8 @@ class utility {
 
     /**
      * Get Course Completions by users
-     * @param  int   $courseid Course Id
-     * @return array           Array of course completion
+     * @param  Int   $courseid Course Id
+     * @return Array           Array of course completion
      */
     public static function get_course_completion($courseid) {
         global $DB;
@@ -306,9 +307,9 @@ class utility {
 
     /**
      * Get Course Completion Information about a course
-     * @param [object] $course Course Object
-     * @param [int] $userid User Id
-     * @return [array] Array of completion information
+     * @param  Object  $course Course Object
+     * @param  Integer $userid User Id
+     * @return Array           Array of completion information
      */
     public static function get_course_completion_info($course = false, $userid = false) {
         global $COURSE, $USER;
@@ -362,9 +363,9 @@ class utility {
 
     /**
      * Get Course Completion Time For Users
-     * @param  [int] $courseid Course Id
-     * @param  [int] $userid User Id
-     * @return [int] Completion Time
+     * @param  Integer $courseid Course Id
+     * @param  Integer $userid   User Id
+     * @return Integer           Completion Time
      */
     public static function get_time_completion($courseid = false, $userid = false) {
         global $COURSE, $DB, $USER;
@@ -394,9 +395,9 @@ class utility {
 
     /**
      * Get Course Grade of a user
-     * @param  [int] $courseid Course Id
-     * @param  [int] $userid User Id
-     * @return [object] Grade Report
+     * @param  Integer $courseid Course Id
+     * @param  Integer $userid   User Id
+     * @return Object            Grade Report
      */
     public static function get_grades($courseid = false, $userid = false) {
         global $COURSE, $DB, $USER;
@@ -425,9 +426,9 @@ class utility {
 
     /**
      * Get Users who visited the Course
-     * @param  int    $courseid Course ID to get all visits
-     * @param  int    $cohortid Cohort id
-     * @return array            Array of Users ID who visited the course
+     * @param  Integer $courseid Course ID to get all visits
+     * @param  Integer $cohortid Cohort id
+     * @return Array             Array of Users ID who visited the course
      */
     public static function get_course_visites($courseid, $cohortid) {
         global $DB;
@@ -463,10 +464,10 @@ class utility {
 
     /**
      * Get Users Who have complted atleast one activity in a course
-     * @param  object $course   Course
-     * @param  array  $users    Enrolled Users
-     * @param  int    $cohortid Cohort id
-     * @return array            Array of Users ID who have completed a activity
+     * @param  Object $course   Course
+     * @param  Array  $users    Enrolled Users
+     * @param  Int    $cohortid Cohort id
+     * @return Array            Array of Users ID who have completed a activity
      */
     public static function users_completed_a_module($course, $users, $cohortid) {
         $records = array();
@@ -491,10 +492,10 @@ class utility {
 
     /**
      * Get Users Who have complted half activities in a course
-     * @param  object $course   Course
-     * @param  array  $users    Enrolled Users
-     * @param  int    $cohortid Cohort id
-     * @return array            Array of Users ID who have completed half activities
+     * @param  Object $course   Course
+     * @param  Array  $users    Enrolled Users
+     * @param  Int    $cohortid Cohort id
+     * @return Array            Array of Users ID who have completed half activities
      */
     public static function users_completed_half_modules($course, $users, $cohortid) {
         global $DB;
@@ -536,10 +537,10 @@ class utility {
 
     /**
      * Get Users Who have complted all activities in a course
-     * @param  object $course   Course
-     * @param  array  $users    Enrolled Users
-     * @param  int    $cohortid Cohort id
-     * @return array            Array of Users ID who have completed all activities
+     * @param  Object $course   Course
+     * @param  Array  $users    Enrolled Users
+     * @param  Int    $cohortid Cohort id
+     * @return Array            Array of Users ID who have completed all activities
      */
     public static function users_completed_all_module($course, $users, $cohortid) {
         $records = array();
@@ -563,9 +564,9 @@ class utility {
 
     /**
      * Get Course visited by a users
-     * @param [int] $courseid Course ID
-     * @param [string] $userid User ID
-     * @return [int] Count of visits by this users
+     * @param  Integer $courseid Course ID
+     * @param  String  $userid   User ID
+     * @return Integer           Count of visits by this users
      */
     public static function get_visits_by_users($courseid, $userid) {
         global $DB;
@@ -585,8 +586,8 @@ class utility {
     /**
      * Get Scheduled emails Tabs
      *
-     * @param  object $data Mail data
-     * @return object       Response
+     * @param  Object $data Mail data
+     * @return Object       Response
      */
     public static function get_scheduled_emails($data) {
         $response = new stdClass();
@@ -614,8 +615,8 @@ class utility {
 
     /**
      * Get Scheduled email list
-     * @param  array $params Parameters
-     * @return array Emails
+     * @param  Array $params Parameters
+     * @return Array         Emails
      */
     public static function local_edwiserreports_get_schedule_emaillist($params) {
         global $DB;
@@ -652,8 +653,8 @@ class utility {
 
     /**
      * Get Shceduled email details by id
-     * @param  object $data Data for email
-     * @return object       Response
+     * @param  Object $data Data for email
+     * @return Object       Response
      */
     public static function get_scheduled_email_details($data) {
         global $DB;
@@ -734,7 +735,8 @@ class utility {
 
     /**
      * Change Shceduled emails
-     * @param  [object] $data paramters to delete scheduled emails
+     * @param  Object $data paramters to delete scheduled emails
+     * @return Object
      */
     public static function change_scheduled_email_status($data) {
         global $DB;
@@ -787,8 +789,8 @@ class utility {
 
     /**
      * Get custom report selectors
-     * @param  [type] $filter [description]
-     * @return [type]         [description]
+     * @param  Object $filter Filter parameter
+     * @return Object
      */
     public static function get_customreport_selectors($filter) {
         global $DB;
@@ -810,7 +812,7 @@ class utility {
 
     /**
      * Get custom selectors for lps
-     * @return array Learning program array
+     * @return Array Learning program array
      */
     private static function get_customreport_lp_selectors() {
         global $DB;
@@ -875,7 +877,7 @@ class utility {
 
     /**
      * Get custom course selectors
-     * @return array Courses Array
+     * @return Array Courses Array
      */
     private static function get_customreport_course_selectors() {
         // Get all courses.
@@ -935,9 +937,9 @@ class utility {
 
     /**
      * Get course enrolment information
-     * @param  int $courseid Course Id
-     * @param  int $userid User Id
-     * @return stdClass|false enrolment information
+     * @param  Integer        $courseid Course Id
+     * @param  Integer        $userid   User Id
+     * @return stdClass|false           enrolment information
      */
     public static function get_course_enrolment_info($courseid, $userid) {
         global $DB;
@@ -948,8 +950,8 @@ class utility {
     }
     /**
      * Get lp courses
-     * @param  array $lpids lp ids
-     * @return array        Courses
+     * @param  Array $lpids lp ids
+     * @return Array        Courses
      */
     public static function get_lp_courses($lpids) {
         global $DB;
@@ -980,8 +982,8 @@ class utility {
 
     /**
      * Get learning program students
-     * @param  int   $lpid Lp Id
-     * @return array       Array of users
+     * @param  Int   $lpid Lp Id
+     * @return Array       Array of users
      */
     public static function get_lp_students($lpid) {
         global $DB;
@@ -1003,8 +1005,8 @@ class utility {
 
     /**
      * Get all cohort based users
-     * @param  array    $cohortids  Cohort Ids
-     * @return array                Users array
+     * @param  Array $cohortids Cohort Ids
+     * @return Array            Users array
      */
     public static function get_cohort_users($cohortids) {
         global $DB;
@@ -1043,7 +1045,7 @@ class utility {
 
     /**
      * Get all available modules for reports
-     * @return array Modules array
+     * @return Array Modules array
      */
     public static function get_available_reports_modules () {
         global $DB;
@@ -1060,7 +1062,7 @@ class utility {
 
     /**
      * Get all available modules for reports
-     * @return array Modules array
+     * @return Array Modules array
      */
     public static function get_reports_block() {
         global $DB;
@@ -1086,7 +1088,8 @@ class utility {
 
     /**
      * Set block preferences
-     * @param [object] $data Data
+     * @param  Object $data Data
+     * @return Array
      */
     public static function set_block_preferences($data) {
         // Get all blocks.
@@ -1129,7 +1132,7 @@ class utility {
 
     /**
      * Rearrage block with preferences.
-     * @param array $blocks Blocks
+     * @param Array $blocks Blocks
      */
     public static function rearrange_block_with_preferences(&$blocks) {
         $newblocks = array();
@@ -1147,9 +1150,9 @@ class utility {
 
     /**
      * Get enrolled students in course
-     * @param  int         $courseid Course Id
-     * @param  object|bool $context  Context
-     * @return array                 Array of users
+     * @param  Integer     $courseid Course Id
+     * @param  Object|Bool $context  Context
+     * @return Array                 Array of users
      */
     public static function get_enrolled_students($courseid, $context = false) {
         if (!$context) {
@@ -1163,7 +1166,7 @@ class utility {
 
     /**
      * Get reports blocks detailed by it name
-     * @param [string] $blockname Block Name
+     * @param String $blockname Block Name
      */
     public static function get_reportsblock_by_name($blockname) {
         global $DB;
@@ -1180,7 +1183,7 @@ class utility {
 
     /**
      * Get custom report block
-     * @param [string] $blockname Block Name
+     * @param String $blockname Block Name
      */
     public static function get_custom_report_block($blockname) {
         global $DB;
@@ -1206,7 +1209,7 @@ class utility {
 
     /**
      * Get reports blocks detailed by it name
-     * @param string $block Block
+     * @param String $block Block
      */
     public static function get_reportsblock_preferences($block) {
         $prefname = 'pref_' . $block->classname;
@@ -1253,8 +1256,8 @@ class utility {
 
     /**
      * Get blocks capabilities
-     * @param  object $block Block Data
-     * @return array
+     * @param  Object $block Block Data
+     * @return Array
      */
     public static function get_blocks_capability($block) {
         $context = context_system::instance();
@@ -1278,8 +1281,8 @@ class utility {
 
     /**
      * Set blocks capabilities
-     * @param  object $data Block Data
-     * @return array
+     * @param  Object $data Block Data
+     * @return Array
      */
     public static function set_block_capability($data) {
         global $DB;
@@ -1333,8 +1336,8 @@ class utility {
 
     /**
      * Set blocks capabilities
-     * @param  object $data Block Data
-     * @return array
+     * @param  Object $data Block Data
+     * @return Array
      */
     public static function toggle_hide_block($data) {
         $blockname = $data->blockname;
@@ -1362,9 +1365,10 @@ class utility {
 
     /**
      * Get role capability from context
-     * @param  object $capcontext Capability Context
-     * @param  object $role       Role Object
-     * @return int
+     * @param  Object $capcontext Capability Context
+     * @param  Object $role       Role Object
+     * @param  String $blockname  Block name
+     * @return Int
      */
     public static function get_rolecap_from_context($capcontext, $role, $blockname) {
         global $CFG;

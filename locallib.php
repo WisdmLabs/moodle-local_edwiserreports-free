@@ -200,15 +200,15 @@ function local_edwiserreports_get_userfilters($customfields, $cohortfilter, $ran
 function local_edwiserreports_get_cohort_filter() {
     global $DB, $USER;
 
-    // Fetch all cohorts. 
-    // passing 0,0 -> page_number, number of record, 0 means
-    $allcohorts = cohort_get_all_cohorts(0, 0);  
+    // Fetch all cohorts
+    // passing 0,0 -> page_number, number of record, 0 means.
+    $allcohorts = cohort_get_all_cohorts(0, 0);
 
     $usercontext = context_user::instance($USER->id);
-    
+
     $cohorts = [];
 
-    // users visibility check.
+    // Users visibility check.
     foreach ($allcohorts['cohorts'] as $key => $value) {
         if (cohort_can_view_cohort($key, $usercontext)) {
             $cohorts[] = $value;
@@ -216,14 +216,14 @@ function local_edwiserreports_get_cohort_filter() {
     }
 
     if (empty($cohorts)) {
-        // returning false if no cohorts are present.
+        // Returning false if no cohorts are present.
         return false;
     }
 
     $cohortfilter = new stdClass();
     $cohortfilter->text = get_string('cohorts', 'local_edwiserreports');
     $cohortfilter->values = $cohorts;
-  
+
     return $cohortfilter;
 }
 
@@ -1029,7 +1029,7 @@ function has_user_role($userid, $roleshortname) {
 
 /**
  * Function to get the users role in any courses
- * @param [string] $capability capability
+ * @param String $capname Capability name
  */
 function can_view_block($capname) {
     global $DB, $USER;

@@ -48,7 +48,16 @@ $filter = optional_param("filter", false, PARAM_TEXT);
 
 // If user dont have capability to download report.
 if (strpos($blockname, 'customreports') === false) {
+
+    if ($blockname == 'completionblock') {
+        $context = context_course::instance($filter);
+    }
+
     $capname = 'report/edwiserreports_' . $blockname . ':view';
+    if ($blockname == 'courseengageblock') {
+        $capname = 'report/edwiserreports_courseprogressblock:view';
+    }
+
     if (!has_capability($capname, $context) &&
         !can_view_block($capname)) {
         throw new moodle_exception(get_string('noaccess', 'local_edwiserreports'));

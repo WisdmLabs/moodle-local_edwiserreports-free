@@ -36,6 +36,8 @@ require_once($CFG->dirroot . '/local/edwiserreports/classes/block_base.php');
 class customreportsblock extends block_base {
     /**
      * Layout variable to prepare layout
+     *
+     * @var String
      */
     public $layout;
 
@@ -186,8 +188,9 @@ class customreportsblock extends block_base {
     }
 
     /**
-     * @param  [int]   $reportid Custom Reports Id
-     * @return [array]           Array of records
+     * Get exportable data block.
+     * @param  Integer $reportsid Custom Reports Id
+     * @return Array              Array of records
      */
     public function get_exportable_data_block($reportsid) {
         global $DB;

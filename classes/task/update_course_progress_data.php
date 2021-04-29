@@ -98,8 +98,8 @@ class update_course_progress_data extends \core\task\scheduled_task {
                 // If criteria is set and course progress in 100%
                 // then trigger edw_course_completion event.
                 if (
-                    $data->criteria == 1 && // If completion criteria is set
-                    $data->progress == 100 && // If progress in 100%
+                    $data->criteria == 1 && // If completion criteria is set.
+                    $data->progress == 100 && // If progress in 100%.
                     $oldprogress != $data->progress // If progress is changed.
                 ) {
                     // Create a course completion event.

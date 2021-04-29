@@ -49,7 +49,7 @@ local_edwiserreports_get_required_strings_for_js();
 $coursecontext = context_course::instance($courseid);
 
 // Check capability.
-if (!has_capability('report/local_edwiserreports_completion_reports:view', $coursecontext)) {
+if (!has_capability('report/edwiserreports_completionblock:view', $coursecontext)) {
     throw new moodle_exception(get_string('noaccess', 'local_edwiserreports'));
 }
 

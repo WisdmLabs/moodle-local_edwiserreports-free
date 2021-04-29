@@ -32,18 +32,19 @@ use context_system;
 class block_base {
     /**
      * Prepare layout
-     * @var object
+     * @var Object
      */
     public $layout;
 
     /**
      * Block object
-     * @var object
+     * @var Object
      */
     public $block;
 
     /**
      * Constructor to prepate data
+     * @param Integer $blockid Block id
      */
     public function __construct($blockid = false) {
         $context = context_system::instance();
@@ -63,7 +64,7 @@ class block_base {
 
     /**
      * Create blocks data
-     * @param array $params Parameters
+     * @param Array $params Parameters
      */
     public function get_data($params = false) {
         debugging('extend the reports_block class and add get_data function');
@@ -78,9 +79,9 @@ class block_base {
 
     /**
      * Create blocks data
-     * @param  string $templatename Template name to render
-     * @param  object $context      Context object
-     * @return string               HTML content
+     * @param  String $templatename Template name to render
+     * @param  Object $context      Context object
+     * @return String               HTML content
      */
     public function render_block($templatename, $context = array()) {
         // @codingStandardsIgnoreStart
@@ -93,10 +94,10 @@ class block_base {
 
     /**
      * Generate cache key for blocks
-     * @param  string $blockname Block name
-     * @param  int    $id        Id
-     * @param  int    $cohortid  Cohort id
-     * @return string            Cache key
+     * @param  String $blockname Block name
+     * @param  Int    $id        Id
+     * @param  Int    $cohortid  Cohort id
+     * @return String            Cache key
      */
     public function generate_cache_key($blockname, $id, $cohortid = 0) {
         return $blockname . "-" . $id . "-" . $cohortid;
@@ -104,7 +105,7 @@ class block_base {
 
     /**
      * Set block size
-     * @param string $blockname Block name
+     * @param String $block Block name
      */
     public function set_block_size($block) {
         $prefname = 'pref_' . $block->classname;
@@ -152,7 +153,7 @@ class block_base {
 
     /**
      * Get block position
-     * @param array $pref Preference
+     * @param Array $pref Preference
      */
     public function get_block_position($pref) {
         $position = $pref['position'];
@@ -160,8 +161,8 @@ class block_base {
 
     /**
      * Set block edit capabilities for each block
-     * @param  string $blockname Block name
-     * @return bool              false If not supported
+     * @param  String $blockname Block name
+     * @return Bool              false If not supported
      */
     public function set_block_edit_capabilities($blockname) {
         global $DB, $USER;

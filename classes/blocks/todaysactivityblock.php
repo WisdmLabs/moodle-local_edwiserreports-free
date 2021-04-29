@@ -35,7 +35,7 @@ use context_course;
 class todaysactivityblock extends block_base {
     /**
      * Preapre layout for each block
-     * @return object Layout object
+     * @return Object Layout object
      */
     public function get_layout() {
 
@@ -75,9 +75,9 @@ class todaysactivityblock extends block_base {
 
     /**
      * Get todays enrolments
-     * @param  $starttime Integer  Start Time
-     * @param  $endtime   Integer  End Time
-     * @return            Integer  Todays Course Enrolment Count
+     * @param  Integer $starttime Start Time
+     * @param  Integer $endtime   End Time
+     * @return Integer            Todays Course Enrolment Count
      */
     public function count_user_enrolments($starttime, $endtime) {
         global $DB;
@@ -88,9 +88,9 @@ class todaysactivityblock extends block_base {
 
     /**
      * Get todays module completion count
-     * @param  $starttime Integer  Start Time
-     * @param  $endtime   Integer  End Time
-     * @return            Integer  Todays Module Completion Count
+     * @param  Integer $starttime Start Time
+     * @param  Integer $endtime   End Time
+     * @return Integer            Todays Module Completion Count
      */
     public function count_module_completions($starttime, $endtime) {
         global $DB;
@@ -101,9 +101,9 @@ class todaysactivityblock extends block_base {
 
     /**
      * Get todays course completion count
-     * @param  $starttime Integer  Start Time
-     * @param  $endtime   Integer  End Time
-     * @return            Integer  Todays Course Completion Count
+     * @param  Integer $starttime Start Time
+     * @param  Integer $endtime   End Time
+     * @return Integer            Todays Course Completion Count
      */
     public function count_course_completions($starttime, $endtime) {
         global $DB;
@@ -116,9 +116,9 @@ class todaysactivityblock extends block_base {
 
     /**
      * Get todays registrations count
-     * @param  $starttime Integer  Start Time
-     * @param  $endtime   Integer  End Time
-     * @return            Integer  Todays Registration Count
+     * @param  Integer $starttime Start Time
+     * @param  Integer $endtime   End Time
+     * @return Integer            Todays Registration Count
      */
     public function count_registrations_completions($starttime, $endtime) {
         global $DB;
@@ -130,9 +130,9 @@ class todaysactivityblock extends block_base {
 
     /**
      * Get todays site visit count
-     * @param  $starttime Integer  Start Time
-     * @param  $endtime   Integer  End Time
-     * @return            Integer  Todays Site Visits Count
+     * @param  Integer $starttime Start Time
+     * @param  Integer $endtime   End Time
+     * @return Integer            Todays Site Visits Count
      */
     public function count_site_visits($starttime, $endtime) {
         global $DB;
@@ -153,9 +153,9 @@ class todaysactivityblock extends block_base {
 
     /**
      * Get visits in every hours
-     * @param  $starttime Integer  Start Time
-     * @param  $endtime   Integer  End Time
-     * @return            Integer  Get Visits in Every Hours
+     * @param  Integer $starttime Start Time
+     * @param  Integer $endtime   End Time
+     * @return Integer            Get Visits in Every Hours
      */
     public function get_visits_in_hours($starttime, $endtime) {
         global $DB;
@@ -186,8 +186,8 @@ class todaysactivityblock extends block_base {
 
     /**
      * Get Todays Activity information
-     * @param [string] $date Date filter in proprtdat format
-     * @return [array] Array of todays activities information
+     * @param  String $date Date filter in proprtdat format
+     * @return Array        Array of todays activities information
      */
     public function get_todaysactivity($date) {
         global $DB;
