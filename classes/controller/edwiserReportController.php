@@ -234,19 +234,6 @@ class edwiserReportController extends controllerAbstract {
     }
 
     /**
-     * Get table data for student engagement table.
-     */
-    public function get_studentengagement_table_data_ajax_action() {
-        // Get data.
-        $data = json_decode(required_param('data', PARAM_RAW));
-
-        $studentengagement = new \local_edwiserreports\studentengagement();
-
-        // Response for ajax action.
-        echo json_encode($studentengagement->get_table_data($data->filter));
-    }
-
-    /**
      * Get graph data for courseprogress on course graph of learner block.
      */
     public function get_learnercourseprogress_graph_data_ajax_action() {
@@ -273,19 +260,6 @@ class edwiserReportController extends controllerAbstract {
     }
 
     /**
-     * Get table data for learner table.
-     */
-    public function get_learner_table_data_ajax_action() {
-        // Get data.
-        $data = json_decode(required_param('data', PARAM_RAW));
-
-        $learner = new \local_edwiserreports\learner();
-
-        // Response for ajax action.
-        echo json_encode($learner->get_table_data($data->filter));
-    }
-
-    /**
      * Check if plugin is installed.
      *
      * @return boolean
@@ -307,17 +281,6 @@ class edwiserReportController extends controllerAbstract {
 
         // Response for ajax action.
         echo json_encode(\local_edwiserreports\utility::get_grade_graph_data($data));
-    }
-
-    /**
-     * Get table data for grade table.
-     */
-    public function get_grade_table_data_ajax_action() {
-        // Get data.
-        $data = json_decode(required_param('data', PARAM_RAW));
-
-        // Response for ajax action.
-        echo json_encode(\local_edwiserreports\utility::get_grade_table_data($data));
     }
 
     /**
@@ -385,19 +348,4 @@ class edwiserReportController extends controllerAbstract {
         echo json_encode($insight->get_card_context($data->id));
     }
 
-    /**
-     * Get insight card data to render insight.
-     */
-    public function get_insight_card_data_ajax_action() {
-        // Get data.
-        $data = json_decode(required_param('data', PARAM_RAW));
-
-        $insight = new \local_edwiserreports\insights\insight();
-
-        // Response for ajax action.
-        echo json_encode($insight->get_card_data(
-            $data->id,
-            $data->filter
-        ));
-    }
 }

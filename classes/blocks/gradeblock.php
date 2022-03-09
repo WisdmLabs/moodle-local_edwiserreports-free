@@ -102,7 +102,6 @@ class gradeblock extends block_base {
         $this->layout->id = 'gradeblock';
         $this->layout->name = get_string('gradeheader', 'local_edwiserreports');
         $this->layout->info = get_string('gradeblockhelp', 'local_edwiserreports');
-        $this->layout->morelink = new moodle_url($CFG->wwwroot . "/local/edwiserreports/grade.php");
         $this->layout->filters = $this->get_grade_filter();
         $this->layout->downloadlinks = $this->get_block_download_links();
         $this->layout->filter = '0-0';

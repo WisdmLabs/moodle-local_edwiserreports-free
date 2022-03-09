@@ -101,7 +101,6 @@ class timespentonsiteblock extends block_base {
         $this->layout->info = get_string('timespentonsiteblockhelp', 'local_edwiserreports');
         $this->layout->filters = $this->get_filter();
         $this->layout->filter = 'weekly-0';
-        $this->layout->morelink = new moodle_url($CFG->wwwroot . "/local/edwiserreports/studentengagement.php");
         $this->layout->pro = $this->image_icon('lock');
 
         // To add export links.
