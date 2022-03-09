@@ -1,0 +1,58 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    Edwiser RemUI
+    @package   theme_remui
+    @copyright (c) 2020 WisdmLabs (https://wisdmlabs.com/)
+    @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+
+}}
+{{!
+    @template theme_remui/activity_navigation
+
+    Display the activity navigation for all activities in a course
+
+    Context variables required for this template:
+
+    Example context (json):
+    {
+        "downloadurl": "#"
+    }
+}}
+<form action="{{{ downloadurl }}}" target="_blank" method="post" class="download-links row m-0 ml-auto">
+    <input type="hidden" name="block" value="{{id}}" />
+    <input type="hidden" name="filter" value="{{filter}}" />
+    <input type="hidden" name="cohortid" value="{{cohortid}}" />
+    <input type="hidden" name="region" value="{{region}}" />
+    <input type="hidden" name="sesskey" value="{{sesskey}}">
+    <button type="submit" class="a border-0 bg-white fi fi-csv" name="type" value="csv">
+        <span class="fi-content">
+            <strong>csv</strong>
+        </span>
+    </button>
+    <button type="submit" class="a border-0 bg-white fi fi-excel" name="type" value="excel">
+        <span class="fi-content">
+            <strong>excel</strong>
+        </span>
+    </button>
+    <button type="submit" class="a border-0 bg-white fi fi-pdf" name="type" value="pdf">
+        <span class="fi-content">
+            <strong>pdf</strong>
+        </span>
+    </button>
+    <button type="submit" class="a border-0 bg-white fi fi-email" name="type" value="email">
+        <span class="fi-content">
+            <strong>email</strong>
+        </span>
+    </button>
+</form>

@@ -1,0 +1,95 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    Edwiser RemUI
+    @package   theme_remui
+    @copyright (c) 2020 WisdmLabs (https://wisdmlabs.com/)
+    @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+
+}}
+{{!
+    @template theme_remui/activity_navigation
+
+    Display the activity navigation for all activities in a course
+
+    Context variables required for this template:
+
+    Example context (json):
+    {
+    }
+}}
+<div id="wdm-courseanalytics-individual" class="row" data-sesskey="{{sesskey}}" style="display: none;">
+    <div class="recent-visits table-responsive col-lg-4 col-md-6 col-sm-12">
+        <h4 class="panel-title px-0">
+            {{#str}} recentvisits , local_edwiserreports{{/str}}
+        </h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="text-nowrap bg-image-none no-sorting-arrow border-bottom-0">
+                        {{#str}} name, local_edwiserreports {{/str}}
+                    </th>
+                    <th class="text-center bg-image-none no-sorting-arrow text-nowrap border-bottom-0">
+                        {{#str}} lastvisit, local_edwiserreports {{/str}}
+                    </th>
+                    <!-- <th class="text-center text-nowrap border-bottom-0">
+                        {{#str}} spenttime, local_edwiserreports {{/str}}
+                    </th> -->
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <div class="recent-enrolment table-responsive col-lg-4 col-md-6 col-sm-12">
+        <h4 class="panel-title px-0">
+            {{#str}} recentenrolment , local_edwiserreports{{/str}}
+        </h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="text-nowrap bg-image-none no-sorting-arrow border-bottom-0">
+                        {{#str}} name, local_edwiserreports {{/str}}
+                    </th>
+                    <th class="text-center bg-image-none no-sorting-arrow text-nowrap border-bottom-0">
+                        {{#str}} enrolledon, local_edwiserreports {{/str}}
+                    </th>
+                    <!-- <th class="text-center text-nowrap border-bottom-0">
+                        {{#str}} time, local_edwiserreports {{/str}}
+                    </th> -->
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <div class="recent-completion table-responsive col-lg-4 col-md-6 col-sm-12">
+        <h4 class="panel-title px-0">
+            {{#str}} recentcompletion , local_edwiserreports{{/str}}
+        </h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="text-nowrap bg-image-none no-sorting-arrow bg-image-none no-sorting-arrow border-bottom-0">
+                        {{#str}} name, local_edwiserreports {{/str}}
+                    </th>
+                    <th class="text-center bg-image-none no-sorting-arrow text-nowrap border-bottom-0">
+                        {{#str}} completedon, local_edwiserreports {{/str}}
+                    </th>
+                    <!-- <th class="text-center text-nowrap border-bottom-0">
+                        {{#str}} time, local_edwiserreports {{/str}}
+                    </th> -->
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,120 @@
+.fi {
+    width: 20px;
+    height: 24px;
+    padding: 10px 0 0;
+    position: relative;
+    margin: 0 .35rem;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    box-sizing: border-box;
+    font-family: sans-serif;
+    text-decoration: none;
+    display: block;
+}
+
+.fi-content {
+    background-color: #007bff;
+    top: 7px;
+    color: #fff;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    padding: 0 0.3em;
+    font-size: 9px;
+    font-weight: 500;
+}
+
+.fi:before {
+    left: 0;
+    top: 0;
+    height: 100%;
+    background-color: #007bff;
+    right: 7px;
+}
+
+.fi:after {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 7px 0 0 7px;
+    border-color: transparent transparent transparent #66b0ff;
+    top: 0;
+    right: 0;
+}
+
+.fi:before,
+.fi:after {
+    position: absolute;
+    content: '';
+    pointer-events: none;
+}
+
+.fi:hover {
+    transform: scale(1.1);
+}
+
+.fi-content strong {
+    margin-right: -2px;
+    margin-left: -2px;
+    right: 0;
+    left: 0;
+    position: absolute;
+    align-items: center;
+    text-align: center;
+    background-color: #3e78c7;
+}
+
+/** CSV css */
+.fi-csv.fi:after {
+    border-left-color: #7cd806;
+}
+
+.fi-csv.fi:before {
+    background-color: #579704;
+}
+
+.fi-csv.fi .fi-content {
+    background-color: #579704;
+    color: #fff;
+}
+
+.fi-csv.fi .fi-content strong {
+    background-color: #008000;
+}
+
+/** Excel css */
+.fi-excel.fi:after {
+    border-left-color: #579704;
+}
+
+.fi-excel.fi:before {
+    background-color: #008000;
+}
+
+.fi-excel.fi .fi-content {
+    background-color: #008000;
+    color: #fff;
+}
+
+.fi-excel.fi .fi-content strong {
+    background-color: #60a903;
+}
+
+/** PDF css */
+.fi-pdf.fi:before {
+    background-color: #f88e21;
+}
+
+.fi-pdf.fi .fi-content {
+    background-color: #f88e21;
+    color: #fff;
+}
+
+.fi-pdf.fi:after {
+    border-left-color: #faaf61;
+}
+
+.fi-pdf.fi .fi-content strong {
+    background-color: #fb6d62;
+}

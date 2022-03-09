@@ -1,0 +1,12 @@
+/* stylelint-disable declaration-no-important */
+#page-local-edwiserreports-index {
+    .modal-dialog {
+        min-height: auto;
+    }
+}
+
+.path-local-edwiserreports {
+    .modal-dialog:focus {
+        outline: -webkit-focus-ring-color auto 0 !important;
+    }
+}

@@ -1,0 +1,18 @@
+<div class="row m-0 p-0">
+    <div class="filter-selector position-relative mr-1 mb-1">
+        <button type="button" class="btn dropdown-toggle text-left w-100 learnertimespentonsite-calendar" data-toggle="dropdown" aria-expanded="false">
+            {{#str}} lastweek, local_edwiserreports {{/str}}
+        </button>
+        <div class="dropdown-menu" aria-labelledby="filter-dropdown" role="menu">
+            <div class="dropdown-calendar"></div>
+            <div class="dropdown-body">
+                <a class="dropdown-item active" role="menuitem" data-value="weekly" href="javascript:void(0)">{{#str}} lastweek, local_edwiserreports {{/str}}</a>
+                <a class="dropdown-item" role="menuitem" data-value="monthly" href="javascript:void(0)">{{#str}} lastmonth, local_edwiserreports {{/str}}</a>
+                <a class="dropdown-item" role="menuitem" data-value="yearly" href="javascript:void(0)">{{#str}} lastyear, local_edwiserreports {{/str}}</a>
+                <a class="dropdown-item custom" role="menuitem" href="javascript:void(0)">
+                    <input class="border-0 p-0 bg-transparent flatpickr" placeholder="{{#str}} custom, local_edwiserreports {{/str}}" 0="data-input" />
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

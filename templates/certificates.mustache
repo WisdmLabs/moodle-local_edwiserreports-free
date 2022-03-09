@@ -1,0 +1,43 @@
+
+<div id="wdm-certificates-individual" data-sesskey="{{sesskey}}">
+    <div id="wdm-userfilter" class="h-auto my-10">
+        <div class="row m-0">
+            <div class="filters col-12 d-flex mb-1">
+                <div class="backbutton">
+                    <a href="{{backurl}}" class="btn btn-secondary">
+                        <i class="icon fa fa-arrow-left"></i>
+                    </a>
+                </div>
+                <div class="d-flex ml-auto">
+                    {{#hascertificates}}
+                        <div id="wdm-certificates-dropdown" class="">
+                            <select id="wdm-certificates-select" class="form-control singleselect" name="state" style="width: 250px;">
+                                {{#certificates}}
+                                <option value="{{id}}">{{coursename}}: {{name}}</option>
+                                {{/certificates}}
+                            </select>
+                        </div>
+                    {{/hascertificates}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <table class="table w-100" class="table-responsive">
+        <thead>
+            <tr>
+                <th>{{#str}} username, local_edwiserreports {{/str}}</th>
+                <th>{{#str}} useremail, local_edwiserreports {{/str}}</th>
+                <th>{{#str}} dateofissue, local_edwiserreports {{/str}}</th>
+                <th>{{#str}} dateofenrol, local_edwiserreports {{/str}}</th>
+                <th>{{#str}} grade, local_edwiserreports {{/str}}</th>
+                <th>{{#str}} courseprogress, local_edwiserreports {{/str}}</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+{{# certexport }}
+<div class="pull-right px-5">
+    {{> local_edwiserreports/exportreports }}
+</div>
+{{/ certexport }}

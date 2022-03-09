@@ -1,0 +1,23 @@
+<div class="insight col-3 p-5" data-id="{{id}}">
+    <div class="insight-wrapper p-4">
+        <div class="insight-image">
+            {{{icon}}}
+        </div>
+        <h5 class="insight-title mt-2 mb-0">{{ title }}</h5>
+        <div class="insight-content">
+        </div>
+        {{# editing }}
+            <div class="card-editing btn-group d-flex">
+                <button class="btn bg-secondary move-left" data-id="{{id}}">
+                    <i class="fa fa-arrow-left"></i>
+                </button>
+                <button class="btn bg-secondary move-right" data-id="{{id}}">
+                    <i class="fa fa-arrow-right"></i>
+                </button>
+                <button class="btn bg-secondary edit-hide" data-id="{{id}}">
+                    <i class="fa fa-eye"></i>
+                </button>
+            </div>
+        {{/ editing }}
+    </div>
+</div>

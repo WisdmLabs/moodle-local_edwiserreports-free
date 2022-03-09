@@ -1,0 +1,27 @@
+#wdm-edwiserreports {
+    #siteaccessblock {
+        .apexcharts-heatmap-series rect {
+            stroke: rgb(0, 0, 0);
+            stroke-width: 1px;
+            stroke-opacity: 0.2;
+            rx: 0;
+        }
+        .siteaccess-values-shade {
+            position: relative;
+            height: 2.5rem;
+            margin: 0 3.5rem 3rem 5rem;
+            .siteaccess-quiest,
+            .siteaccess-busiest {
+                position: absolute;
+                bottom: 0;
+                transform: translateY(150%);
+            }
+            .siteaccess-quiest {
+                left: 0;
+            }
+            .siteaccess-busiest {
+                right: 0;
+            }
+        }
+    }
+}

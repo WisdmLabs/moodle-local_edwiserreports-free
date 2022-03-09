@@ -1,0 +1,27 @@
+/* width */
+.path-local-edwiserreports ::-webkit-scrollbar,
+.path-admin-report-edwiserReport ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+    border-radius: 0;
+}
+
+/* Track */
+.path-local-edwiserreports ::-webkit-scrollbar-track,
+.path-admin-report-edwiserReport ::-webkit-scrollbar-track {
+    border-radius: 0;
+    background: #fff;
+}
+
+/* Handle */
+.path-local-edwiserreports ::-webkit-scrollbar-thumb,
+.path-admin-report-edwiserReport ::-webkit-scrollbar-thumb {
+    border-radius: 0;
+    background: #888;
+}
+
+/* Handle on hover */
+.path-local-edwiserreports ::-webkit-scrollbar-thumb:hover,
+.path-admin-report-edwiserReport ::-webkit-scrollbar {
+    background: #555;
+}

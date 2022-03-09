@@ -1,0 +1,35 @@
+{
+  "name": "build",
+  "version": "1.0.0",
+  "description": "",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/preset-env": "^7.13.15",
+    "grunt": "^1.4.0",
+    "grunt-load-gruntfile": "0.0.2",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
+    "gulp-clean": "^0.4.0",
+    "gulp-ext-replace": "^0.3.0",
+    "gulp-header": "^2.0.9",
+    "gulp-minify": "^3.1.0",
+    "gulp-rename": "^2.0.0",
+    "gulp-shell": "^0.8.0",
+    "gulp-sourcemaps": "^2.6.5",
+    "gulp-strip-css-comments": "^2.0.0",
+    "gulp-uglify-es": "^2.0.0"
+  },
+  "dependencies": {
+    "@babel/core": "^7.12.3",
+    "apexcharts": "^3.27.3",
+    "gulp-concat": "^2.6.1",
+    "gulp-group-css-media-queries": "^1.2.2",
+    "gulp-merge-media-queries": "^0.2.1",
+    "gulp-sass": "^4.1.0"
+  }
+}

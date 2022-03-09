@@ -1,0 +1,18 @@
+// This file contains theme dependent css.
+#page-local-edwiserreports-index {
+    // Theme RemUI styling fixes.
+    &.theme_remui {
+        #page {
+            #region-main>.card {
+                background: transparent;
+                padding: 0;
+            }
+            & > .container {
+                max-width: none;
+            }
+            #region-main {
+                padding: 0;
+            }
+        }
+    }
+}

@@ -1,0 +1,163 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    Edwiser RemUI
+    @package   theme_remui
+    @copyright (c) 2020 WisdmLabs (https://wisdmlabs.com/)
+    @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+
+}}
+{{!
+    @template theme_remui/activity_navigation
+
+    Display the activity navigation for all activities in a course
+
+    Context variables required for this template:
+
+    Example context (json):
+    {
+        "action": "#"
+    }
+}}
+<form id="wdm-customreports-save-form" action="{{action}}" method="post">
+	<div style="display: none;">
+        <input type="hidden" name="reportsid" value="{{#reportsid}}{{.}}{{/reportsid}}{{^reportsid}}0{{/reportsid}}" />
+    </div>
+    <div id="fitem_id_crb_reportname" class="form-group row fitem">
+        <div class="col-md-3">
+            <span class="float-sm-right text-nowrap">
+                <abbr class="initialism text-danger"
+                      title="{{#str}} required, moodle {{/str}}">
+                    <i class="icon fa fa-exclamation-circle text-danger fa-fw "
+                       title="{{#str}} required, moodle {{/str}}"
+                       aria-label="{{#str}} required, moodle {{/str}}">
+                    </i>
+                </abbr>
+                <a class="btn btn-link p-0"
+                   role="button"
+                   data-container="body"
+                   data-toggle="popover"
+                   data-placement="right"
+                   data-content="{{content}}"
+                   data-html="true"
+                   tabindex="0"
+                   data-trigger="focus">
+                    <i class="icon fa fa-question-circle text-info fa-fw "
+                       title="{{#str}} reportname, local_edwiserreports {{/str}}"
+                       aria-label="{{#str}} reportname, local_edwiserreports {{/str}}">
+                    </i>
+                </a>
+            </span>
+            <label class="col-form-label d-inline" for="id_crb_reportname">
+                {{#str}} reportname, local_edwiserreports {{/str}}
+            </label>
+        </div>
+        <div class="col-md-9 form-inline felement" data-fieldtype="text">
+            <input type="text" class="form-control " name="reportname" id="id_crb_reportname" size="50" maxlength="254" value="{{reportname}}">
+            <div class="form-control-feedback invalid-feedback" id="id_error_crb_reportname"></div>
+        </div>
+    </div>
+    <div id="fitem_id_crb_reportshortname" class="form-group row fitem">
+        <div class="col-md-3">
+            <span class="float-sm-right text-nowrap">
+                <abbr class="initialism text-danger" title="{{#str}} required, moodle {{/str}}">
+                    <i class="icon fa fa-exclamation-circle text-danger fa-fw "
+                       title="{{#str}} required, moodle {{/str}}"
+                       aria-label="{{#str}} required, moodle {{/str}}">
+                    </i>
+                </abbr>
+                <a class="btn btn-link p-0"
+                   role="button"
+                   data-container="body"
+                   data-toggle="popover"
+                   data-placement="right"
+                   data-content="{{content}}"
+                   data-html="true"
+                   tabindex="0"
+                   data-trigger="focus">
+                    <i class="icon fa fa-question-circle text-info fa-fw "
+                       title="{{#str}} reportshortname, local_edwiserreports {{/str}}"
+                       aria-label="{{#str}} reportshortname, local_edwiserreports {{/str}}">
+                    </i>
+                </a>
+            </span>
+            <label class="col-form-label d-inline" for="id_crb_reportshortname">
+                {{#str}} reportshortname, local_edwiserreports {{/str}}
+            </label>
+        </div>
+        <div class="col-md-9 form-inline felement" data-fieldtype="text">
+            <input type="text" class="form-control " name="reportshortname" id="id_crb_reportshortname" size="50" maxlength="254"  value="{{reportshortname}}">
+            <div class="form-control-feedback invalid-feedback" id="id_error_crb_reportshortname"></div>
+        </div>
+    </div>
+    <div id="crb_download_enable" class="form-group row fitem">
+        <div class="col-md-3">
+            <span class="float-sm-right text-nowrap">
+                <a class="btn btn-link p-0"
+                   role="button"
+                   data-container="body"
+                   data-toggle="popover"
+                   data-placement="right"
+                   data-content="{{content}}"
+                   data-html="true"
+                   tabindex="0"
+                   data-trigger="focus">
+                    <i class="icon fa fa-question-circle text-info fa-fw "
+                       title="{{#str}} downloadenable, local_edwiserreports {{/str}}"
+                       aria-label="{{#str}} downloadenable, local_edwiserreports {{/str}}">
+                    </i>
+                </a>
+            </span>
+            <label class="col-form-label d-inline" for="crb_download_enable">
+                {{#str}} downloadenable, local_edwiserreports {{/str}}
+            </label>
+        </div>
+        <div class="col-md-9 form-inline felement" data-fieldtype="select">
+            <div class="checkbox-custom checkbox-primary">
+                <input type="checkbox" class="custom-field-checkbox" name="downloadenable" value="1"
+                id="id_crb_download_enable" {{#downloadenable}}checked{{/downloadenable}}>
+                <label for="id_crb_desktop_enable" class="mb-0"></label>
+            </div>
+        </div>
+    </div>
+    <div id="crb_desktop_enable" class="form-group row fitem">
+        <div class="col-md-3">
+            <span class="float-sm-right text-nowrap">
+                <a class="btn btn-link p-0"
+                   role="button"
+                   data-container="body"
+                   data-toggle="popover"
+                   data-placement="right"
+                   data-content="{{content}}"
+                   data-html="true"
+                   tabindex="0"
+                   data-trigger="focus">
+                    <i class="icon fa fa-question-circle text-info fa-fw "
+                       title="{{#str}} enabledesktop, local_edwiserreports {{/str}}"
+                       aria-label="{{#str}} enabledesktop, local_edwiserreports {{/str}}">
+                    </i>
+                </a>
+            </span>
+            <label class="col-form-label d-inline" for="crb_desktop_enable">
+                {{#str}} enabledesktop, local_edwiserreports {{/str}}
+            </label>
+        </div>
+        <div class="col-md-9 form-inline felement" data-fieldtype="checkbox">
+            <div class="checkbox-custom checkbox-primary">
+                <input type="checkbox" class="custom-field-checkbox" name="enabledesktop" value="1"
+                id="id_crb_desktop_enable" {{#enabledesktop}}checked{{/enabledesktop}}>
+                <label for="id_crb_desktop_enable" class="mb-0"></label>
+            </div>
+        </div>
+    </div>
+</form>

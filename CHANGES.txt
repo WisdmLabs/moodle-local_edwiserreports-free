@@ -1,0 +1,22 @@
+v 1.1.0
+====================================================
+
+Features
+- New graph: Course activity status block which shows daily Assignment submission and activities completion.
+- New block: Grade block shows Student, Course, and Activity grade categories.
+
+Tweaks
+- Improved time logging. Now will be logged when the user leaves the page within Time-Frequency.
+- Improved date labeling of the x-axis for Active users, Student Engagement, and Learner block.
+- Improved UI of all blocks.
+- Improved data calculation based on date selection.
+- Changed line chart to Area chart.
+
+Fixes
+- Fixed total activity count of custom reports.
+- Fixed course progress block partitioning issue.
+
+V 1.0.0
+====================================================
+
+- Initial version

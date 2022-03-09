@@ -1,0 +1,114 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    Edwiser RemUI
+    @package   theme_remui
+    @copyright (c) 2020 WisdmLabs (https://wisdmlabs.com/)
+    @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+
+}}
+{{!
+    @template theme_remui/activity_navigation
+
+    Display the activity navigation for all activities in a course
+
+    Context variables required for this template:
+
+    Example context (json):
+    {
+    }
+}}
+<div class="table-reponsive overflow-scroll">
+    <table id="f2fsessionstable" class="table border-bottom-0">
+        <thead class="bg-secondary">
+            <tr>
+                <th class="bg-secondary border-bottom-0">
+                    {{#str}} name, local_edwiserreports{{/str}}
+                </th>
+                <th class="bg-secondary border-bottom-0">
+                    {{#str}} course, local_edwiserreports {{/str}}
+                </th>
+                <th class="bg-secondary border-bottom-0">
+                    {{#str}} signups, local_edwiserreports {{/str}}
+                </th>
+                <th class="bg-secondary border-bottom-0">
+                    {{#str}} attendees, local_edwiserreports {{/str}}
+                </th>
+                <th class="bg-secondary border-bottom-0 w-50">
+                    {{#str}} f2fmore, local_edwiserreports {{/str}}
+                </th>
+            </tr>
+        </thead>
+        <tbody> 
+            {{#f2fmodules}}
+            <tr data-toggle="collapse" data-target="#accordion-{{id}}" class="clickable">
+                <td>
+                    {{name}}
+                </td>
+                <td>
+                    {{coursename}}
+                </td>
+                <td class="text-center">
+                    {{overallsignups}}
+                </td>
+                <td data-value="1" class="text-center">
+                    {{overallattendend}}
+                </td>
+                <td class="footable-last-column">
+                    <i class="icon accordion-arrow pull-right fa fa-angle-down text-center"></i>
+                </td>
+            </tr>
+            <tr>
+                <td class="border-0 py-0 pl-30" colspan="5">
+                    <div  id="accordion-{{id}}" class="collapse">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="bg-secondary bg-image-none no-sorting-arrow border-bottom-0">{{#str}} date, local_edwiserreports {{/str}}</th>
+                                    <th class="bg-secondary bg-image-none no-sorting-arrow border-bottom-0">{{#str}} time, local_edwiserreports {{/str}}</th>
+                                    <th class="bg-secondary bg-image-none no-sorting-arrow border-bottom-0">{{#str}} venue, local_edwiserreports {{/str}}</th>
+                                    <th class="bg-secondary bg-image-none no-sorting-arrow border-bottom-0">{{#str}} signups, local_edwiserreports {{/str}}</th>
+                                    <th class="bg-secondary bg-image-none no-sorting-arrow border-bottom-0">{{#str}} attendees, local_edwiserreports {{/str}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#sessions}}
+                                <tr>
+                                    <td>{{date}}</td>
+                                    <td>{{time}}</td>
+                                    <td>{{signupvenue}}</td>
+                                    <td class="text-center">{{signups}}</td>
+                                    <td class="text-center">{{attendend}}</td>
+                                </tr>
+                                {{/sessions}}
+                                {{^sessions}}
+                                    <tr>
+                                        <td class="text-center" colspan="5">
+                                            {{#str}} nof2fsession, local_edwiserreports {{/str}}
+                                        </td>
+                                    </tr>
+                                {{/sessions}}
+                            </tbody>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+            {{/f2fmodules}}
+            {{^f2fmodules}}
+            <tr>
+                <td class="text-center" colspan="4">{{#str}} nof2fmodule, local_edwiserreports {{/str}}</td>
+            </tr>
+            {{/f2fmodules}}
+        </tbody>
+    </table>
+</div>

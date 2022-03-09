@@ -1,0 +1,204 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    Edwiser RemUI
+    @package   theme_remui
+    @copyright (c) 2020 WisdmLabs (https://wisdmlabs.com/)
+    @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+
+}}
+{{!
+    @template theme_remui/activity_navigation
+
+    Display the activity navigation for all activities in a course
+
+    Context variables required for this template:
+
+    Example context (json):
+    {
+    }
+}}
+<div id="wdm-customreports-edit" class="row mx-0">
+    <input class="hidden" id="wdm_custom_reports_id" value="{{reportsid}}">
+    <input class="hidden" id="wdm_custom_reports_fullname" value="{{fullname}}">
+    <input class="hidden" id="wdm_custom_reports_shortname" value="{{shortname}}">
+    <input class="hidden" id="wdm_custom_reports_downloadenable" value="{{downloadenable}}">
+    <input class="hidden" id="wdm_custom_reports_desktopenable" value="{{enabledesktop}}">
+    <div class="customreports-block-section col-12  mb-5">
+        <div class="">
+            <div class="reports-list-header d-flex">
+                <h4 class="font-weight-bold"> {{#str}} reportslist, local_edwiserreports {{/str}} </h4>
+                <div class="ml-auto mb-2">
+                    <a href="{{{createnewlink}}}" class="btn palette-primary-bg text-white">
+                        {{#str}} createnewcustomreports, local_edwiserreports {{/str}}
+                    </a>
+                </div>
+            </div>
+            <div class="reports-list-body">
+                <div class="pt-4">
+                    <div class="border reports-list-content loader d-flex justify-content-center align-items-center">
+                        <div class="w-full text-center">
+                            {{# pix }} i/loading, core, {{#str}} loadinghelp, moodle {{/str}} {{/ pix }}
+                        </div>
+                    </div>
+                    <div class="reports-list-content d-none justify-content-center align-items-center">
+                        <table id="cr-list-table" class="datatable table"></table>
+                    </div>
+                    <div class="border reports-list-content empty d-none justify-content-center align-items-center">
+                        {{#str}} noreportslist, local_edwiserreports {{/str}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="wdm-cr-create-header" class="col-12">
+        <h4 class="font-weight-bold"> {{#str}} createcustomreports, local_edwiserreports {{/str}} </h4>
+    </div>
+    <div class="customreports-block-section col-12">
+        <div class="h-auto mb-5">
+            <div class="reports-filter-header">
+                <h4> {{#str}} reportsfilter, local_edwiserreports {{/str}} </h4>
+            </div>
+            <div class="reports-filter-body row">
+                <div class="col-3">
+                    <select id="wdm-cohort-select" class="custom-field-select form-control singleselect w-full">
+                        <option value="0">{{#str}} allcohorts, local_edwiserreports {{/str}}</option>
+                        {{#cohorts}}
+                        <option value="{{id}}">{{name}}</option>
+                        {{/cohorts}}
+                    </select>
+                </div>
+                <div class="col-3">
+                    <select id="wdm-course-select" class="custom-field-select form-control singleselect w-full">
+                        <option value="0" {{#allcourses}}selected{{/allcourses}}>{{#str}} fulllistofcourses {{/str}}</option>
+                        {{#courses}}
+                        <option value="{{id}}" {{#selected}}selected{{/selected}}>{{{fullname}}}</option>
+                        {{/courses}}
+                    </select>
+                </div>
+                {{#fields}}
+                <div class="col-3 field-group-wrap" data-key="{{key}}">
+                    <div id="{{key}}-field-group" class="field-group w-full p-2 border mb-1">
+                        {{title}}
+                        <i class="fa fa-angle-right pull-right p-1"></i>
+                    </div>
+                    <div class="field ml-3 mr-3" aria-control="{{key}}-field-group">
+                        {{#fieldsarray}}
+                        <div class="{{id}} p-2">
+                            <div class="checkbox-custom checkbox-primary">
+                                <input type="checkbox" id="{{id}}" class="custom-field-checkbox" value="{{id}}" {{#selected}}checked{{/selected}}>
+                                <label for="{{id}}" class="mb-0">{{text}}</label>
+                            </div>
+                        </div>
+                        {{/fieldsarray}}
+                    </div>
+                </div>
+                {{/fields}}
+            </div>
+        </div>
+    </div>
+    <div class="customreports-block-section col-12">
+        <div class="h-auto mb-5">
+            <div class="reports-preview-header">
+                <h4 class="rp-header">
+                    {{#fullname}}{{.}}{{/fullname}}
+                    {{^fullname}}
+                        {{#str}} reportspreview, local_edwiserreports {{/str}}
+                    {{/fullname}}
+                </h4>
+            </div>
+            <div class="reports-preview-body">
+                <div class="">
+                    <div class="border reports-preview-content loader d-none justify-content-center align-items-center">
+                        <div class="w-full text-center">
+                            {{# pix }} i/loading, core, {{#str}} loadinghelp, moodle {{/str}} {{/ pix }}
+                        </div>
+                    </div>
+                    <div class="reports-preview-content d-none justify-content-center align-items-center">
+                        <table id="cr-preview-table" class="datatable table"></table>
+                    </div>
+                    <div class="border reports-preview-content empty d-flex justify-content-center align-items-center">
+                        {{#str}} noreportspreview, local_edwiserreports {{/str}}
+                    </div>
+                </div>
+            </div>
+            <div class="reports-preview-footer py-1 text-right">
+                <button id="wdm-custom-reports-save" class="btn palette-primary-bg text-white" disabled>
+                    {{#isediting}}
+                        {{#str}} updatereports, local_edwiserreports {{/str}}
+                    {{/isediting}}
+                    {{^isediting}}
+                        {{#str}} createreports, local_edwiserreports {{/str}}
+                    {{/isediting}}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{#js}}
+require([
+    'jquery',
+    'local_edwiserreports/customreportsblock',
+    'local_edwiserreports/select2'
+], function(
+    $,
+    customreportsblock
+) {
+
+    var courseSelect = $('#wdm-course-select').select2({
+        multiple: true,
+        closeOnSelect: false,
+        placeholder: "{{#str}} selectcourses, local_edwiserreports {{/str}}"
+    });
+
+    var cohortSelect = $('#wdm-cohort-select').select2({
+        multiple: true,
+        closeOnSelect: false,
+        placeholder: "{{#str}} selectcohorts, local_edwiserreports {{/str}}"
+    });
+
+    courseSelect.val({{{selectedcourses}}}).trigger("change");
+    cohortSelect.val({{{selectedcohorts}}}).trigger("change");
+
+    var selectedValues = ["0"];
+    $('.singleselect').on('change', function() {
+        var values = $(this).val();
+
+        if (JSON.stringify(selectedValues) !== JSON.stringify(values)) {
+            var oldIndex = selectedValues.indexOf("0");
+            var newIndex = values.indexOf("0");
+
+            switch (true) {
+                case (oldIndex == -1 && newIndex > -1):
+                    // Assign the selected value
+                    values = ["0"];
+                    selectedValues = values;
+                    $(this).select2('val', values);
+                    break;
+                case (oldIndex > -1 && newIndex > -1):
+                    values.splice(newIndex, 1);
+
+                    // Assign the selected value
+                    selectedValues = values;
+                    $(this).select2('val', values);
+                    break;
+            }
+
+            selectedValues = values;
+        }
+    });
+
+    customreportsblock.init();
+});
+{{/js}}

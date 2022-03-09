@@ -1,0 +1,108 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    Edwiser RemUI
+    @package   theme_remui
+    @copyright (c) 2020 WisdmLabs (https://wisdmlabs.com/)
+    @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+
+}}
+{{!
+    @template theme_remui/activity_navigation
+
+    Display the activity navigation for all activities in a course
+
+    Context variables required for this template:
+
+    Example context (json):
+    {
+    }
+}}
+<div id="wdm-courseprogress-individual" class="table-responsive mt-1" data-sesskey="{{sesskey}}">
+    <table class="table admintable w-100" style="display: none;">
+        <thead>
+            <tr>
+                <th class="text-nowrap bg-image-none no-sorting-arrow">
+                    {{#str}} coursename, local_edwiserreports {{/str}}
+                </th>
+                <th class="text-nowrap bg-image-none no-sorting-arrow">
+                    {{#str}} enrolled, local_edwiserreports {{/str}}
+                </th>
+                <th class="text-nowrap bg-image-none no-sorting-arrow">
+                    {{#str}} completed, local_edwiserreports {{/str}}
+                </th>
+                <th class="text-nowrap bg-image-none no-sorting-arrow">
+                    81% - 100%
+                </th>
+                <th class="text-nowrap bg-image-none no-sorting-arrow">
+                    61% - 80%
+                </th>
+                <th class="text-nowrap bg-image-none no-sorting-arrow">
+                    41% - 60%
+                </th>
+                <th class="text-nowrap bg-image-none no-sorting-arrow">
+                    21% - 40%
+                </th>
+                <th class="text-nowrap bg-image-none no-sorting-arrow">
+                    0% - 20%
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#courseprogress}}
+            <tr>
+                <td>
+                    <a href="{{courseurl}}" class="w-full text-dark">
+                        {{{fullname}}}
+                    </a>
+                </td>
+                <td>
+                    <a href="javascript:void(0)" class="w-full text-dark modal-trigger" data-action="enrolments" data-minvalue="-1" data-maxvalue="100" data-courseid="{{id}}" data-coursename="{{fullname}}">
+                        {{enrolments}}
+                    </a>
+                </td>
+                <td>
+                	<a href="javascript:void(0)" class="w-full text-dark modal-trigger" data-action="completed" data-minvalue="99" data-maxvalue="100" data-courseid="{{id}}" data-coursename="{{fullname}}">
+                		{{completed100}}
+                	</a>
+                </td>
+                <td>
+                    <a href="javascript:void(0)" class="w-full text-dark modal-trigger" data-action="completed80" data-minvalue="80" data-maxvalue="99" data-courseid="{{id}}" data-coursename="{{fullname}}">
+                        {{completed80}}
+                    </a>
+                </td>
+                <td>
+                    <a href="javascript:void(0)" class="w-full text-dark modal-trigger" data-action="completed60" data-minvalue="60" data-maxvalue="80" data-courseid="{{id}}" data-coursename="{{fullname}}">
+                        {{completed60}}
+                    </a>
+                </td>
+                <td>
+                    <a href="javascript:void(0)" class="w-full text-dark modal-trigger" data-action="completed40" data-minvalue="40" data-maxvalue="60" data-courseid="{{id}}" data-coursename="{{fullname}}">
+                        {{completed40}}
+                    </a>
+                </td>
+                <td>
+                    <a href="javascript:void(0)" class="w-full text-dark modal-trigger" data-action="completed20" data-minvalue="20" data-maxvalue="40" data-courseid="{{id}}" data-coursename="{{fullname}}">
+                        {{completed20}}
+                    </a>
+                </td>
+                <td>
+                    <a href="javascript:void(0)" class="w-full text-dark modal-trigger" data-action="incompleted" data-minvalue="-1" data-maxvalue="20" data-courseid="{{id}}" data-coursename="{{fullname}}">
+                        {{completed00}}
+                    </a>
+                </td>
+            </tr>
+            {{/courseprogress}}
+        </tbody>
+    </table>
+</div>

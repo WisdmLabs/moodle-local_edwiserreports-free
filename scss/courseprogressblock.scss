@@ -1,0 +1,32 @@
+/* stylelint-disable declaration-no-important */
+#wdm-edwiserreports {
+    #courseprogressblock {
+        .col-md-3 {
+            display: none;
+        }
+        .col-md-9 {
+            display: flex;
+            width: 100% !important;
+            max-width: 100% !important;
+            flex: 0 0 100%;
+            padding-left: 0;
+            padding-right: 0;
+            .form-autocomplete-selection[role="list"] {
+                order: 3;
+                -webkit-order: 3;
+                margin: 0;
+                width: 100%;
+                span[role="listitem"] {
+                    border-radius: 0;
+                    background-color: #fff;
+                    color: #526069;
+                    font-size: 1rem;
+                    font-weight: 500;
+                    line-height: unset;
+                    text-align: unset;
+                    white-space: unset;
+                }
+            }
+        }
+    }
+}

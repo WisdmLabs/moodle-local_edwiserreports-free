@@ -1,0 +1,177 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    Edwiser RemUI
+    @package   theme_remui
+    @copyright (c) 2020 WisdmLabs (https://wisdmlabs.com/)
+    @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+
+}}
+{{!
+    @template theme_remui/activity_navigation
+
+    Display the activity navigation for all activities in a course
+
+    Context variables required for this template:
+
+    Example context (json):
+    {
+        "downloadurl": "#"
+    }
+}}
+<div id="customReportBlock" data-sesskey="{{sesskey}}">
+    <div class="panel h-auto mb-0">
+        <div class="panel-header clearfix">
+            <div class="panel-title px-0">
+                <strong>
+                    {{#str}} downloadcustomtreport, local_edwiserreports {{/str}}
+                </strong>
+            </div>
+        </div>
+        <div class="panel-body p-0">
+            <table class="wdmCustomReportsFilters">
+                <tr>
+                    <td>
+                        <b>{{#str}} selectreporttype, local_edwiserreports {{/str}} :</b>
+                    </td>
+                    {{! Dropdown to get reports type }}
+                    <td class="dropdown">
+                        <button type="button"
+                                class="btn btn-default dropdown-toggle mb-5"
+                                id="customReportDrodown"
+                                data-toggle="dropdown"
+                                aria-expanded="true"
+                                data-val="course">
+                                {{#str}} selectreporttype, local_edwiserreports {{/str}}
+                        </button>
+                        <div class="dropdown-menu"
+                             aria-labelledby="customReportDrodown"
+                             role="menu">
+                            <a class="dropdown-item" href="javascript:void(0)" role="menuitem" data-val="courses">
+                                {{#str}} courses, local_edwiserreports {{/str}}
+                            </a>
+                            {{#haslppluign}}
+                            <a class="dropdown-item" href="javascript:void(0)" role="menuitem" data-val="lps">
+                                {{#str}} learningprograms, local_edwiserreports {{/str}}
+                            </a>
+                            {{/haslppluign}}
+                        </div>
+                    </td>
+                </tr>
+                <tr class="enrol-selector" style="display: none;">
+                    <td>
+                        <b>{{#str}} enrolmentstartdate, local_edwiserreports {{/str}} :</b>
+                    </td>
+                    <td>
+                        {{! Flatpicker to start date }}
+                        <div class="form-group mb-0">
+                            <div class="input-search input-search-dark">
+                                <input type="text" id="wdmCustomReportEnrolStart" placeholder="{{#str}} enrolmentstartdate, local_edwiserreports{{/str}}" class="custom-flatpicker form-control rounded w-200" data-input/>
+                                <button type="button" class="input-search-close icon wb-close" aria-label="Close"></button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="enrol-selector" style="display: none;">
+                    <td>
+                        <b>{{#str}} enrolmentenddate, local_edwiserreports {{/str}} :</b>
+                    </td>
+                    <td>
+                        {{! Flatpicker to end date }}
+                        <div class="form-group mb-0">
+                            <div class="input-search input-search-dark">
+                                <input type="text" id="wdmCustomReportEnrolEnd" placeholder="{{#str}} enrolmentenddate, local_edwiserreports{{/str}}" class="custom-flatpicker form-control rounded w-200" data-input/>
+                                <button type="button" class="input-search-close icon wb-close" aria-label="Close"></button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+            {{! Actual panel body }}
+            <div class="rootContainer" style="display: none;">
+                <div class="customReportSelectors mt-10">
+                    {{! Course table }}
+                    <table class="table course-table w-100">
+                        <thead>
+                            <tr>
+                                <th class="bg-secondary">
+                                    <span class="checkbox-custom"><input type="checkbox" name="selectAllCustom"><label class="selectAllCustomReports" for="selectAllCustom"></label></span>
+                                </th>
+                                <th class="bg-secondary">
+                                    {{#str}} name , local_edwiserreports {{/str}}
+                                </th>
+                                <th class="bg-secondary">
+                                    {{#str}} shortname , local_edwiserreports {{/str}}
+                                </th>
+                                <th class="bg-secondary">
+                                    {{#str}} category , local_edwiserreports {{/str}}
+                                </th>
+                                <th class="bg-secondary">
+                                    {{#str}} startdate , local_edwiserreports {{/str}}
+                                </th>
+                                <th class="bg-secondary">
+                                    {{#str}} enddate , local_edwiserreports {{/str}}
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+
+                    {{! Leanring Program }}
+                    <table class="table lp-table w-100">
+                        <th class="bg-secondary">
+                            <span class="checkbox-custom"><input type="checkbox" name="selectAllCustom"><label class="selectAllCustomReports" for="selectAllCustom"></label></span>
+                        </th>
+                        <th class="bg-secondary">
+                            {{#str}} name , local_edwiserreports {{/str}}
+                        </th>
+                        <th class="bg-secondary">
+                            {{#str}} shortname , local_edwiserreports {{/str}}
+                        </th>
+                        <th class="bg-secondary">
+                            {{#str}} startdate , local_edwiserreports {{/str}}
+                        </th>
+                        <th class="bg-secondary">
+                            {{#str}} enddate , local_edwiserreports {{/str}}
+                        </th>
+                        <th class="bg-secondary">
+                            {{#str}} duration , local_edwiserreports {{/str}}
+                        </th>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div class="text-right mt-30">
+                    <form action="{{downloadurl}}" target="_blank" method="post" id="customReportsForm">
+                        <input type="hidden" name="enrolstartdate"/>
+                        <input type="hidden" name="enrolenddate"/>
+                        <input type="hidden" name="reporttype"/>
+                        <input type="hidden" name="filters"/>
+                        <button type="submit" id="customReportDownload" class="btn btn-secondary">
+                            {{#str}} downloadreportincsv , local_edwiserreports {{/str}}
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div id="errorMsg" class="alert alert-danger fade hide mt-10" role="alert">
+                {{#str}} customreportselectfailed, local_edwiserreports {{/str}}
+            </div>
+        </div>
+    </div>
+</div>
+
+{{#js}}
+require(['local_edwiserreports/block_customreports'], function() {
+    // Breakpoints();
+});
+{{/js}}

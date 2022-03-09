@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="local/edwiserreports/db" VERSION="2019091100" COMMENT="XMLDB file for eLucid Site Reports"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd">
+    <TABLES>
+        <TABLE NAME="edwreports_blocks" COMMENT="This table saves course completion infomation.">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="blockname" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Course ID for completion."/>
+                <FIELD NAME="classname" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="User ID for completion."/>
+                <FIELD NAME="blocktype" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Block Type custom or default"/>
+                <FIELD NAME="blockdata" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT="Block related data"/>
+                <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Block Creation time"/>
+                <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" DEFAULT="0" COMMENT="Block Updation time"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="The unique id for this report_completion instance."/>
+            </KEYS>
+        </TABLE>
+        <TABLE NAME="edwreports_schedemails" COMMENT="This table saves scheduled emails inforamtion.">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="blockname" TYPE="text" LENGTH="255" COMMENT="Block name."/>
+                <FIELD NAME="component" TYPE="text" LENGTH="255" COMMENT="Report component for the block (block/ individual)."/>
+                <FIELD NAME="emaildata" TYPE="text" LENGTH="big" COMMENT="Email data in json stringif format."/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="The unique id for this scheduledemail instance."/>
+            </KEYS>
+        </TABLE>
+        <TABLE
+            COMMENT="Information about the course progress by all users"
+            NAME="edwreports_course_progress">
+            <FIELDS>
+                <FIELD COMMENT="Course Progress Id" NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD COMMENT="Course Id" NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD COMMENT="User Id" NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD COMMENT="Completed Modules" NAME="completedmodules" TYPE="text" LENGTH="500" NOTNULL="false" SEQUENCE="false"/>
+                <FIELD COMMENT="Total Modules" NAME="totalmodules" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+                <FIELD COMMENT="Completable Modules" NAME="completablemods" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+                <FIELD COMMENT="Course Progress" NAME="progress" TYPE="int" LENGTH="5" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+                <FIELD COMMENT="Course Completion Time" NAME="completiontime" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+                <FIELD COMMENT="Is Progress Change" NAME="pchange" TYPE="int" LENGTH="2" DEFAULT="1" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD COMMENT="Course Completion Criteria" NAME="criteria" TYPE="int" LENGTH="2" DEFAULT="0" NOTNULL="true" SEQUENCE="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
+        <TABLE
+            COMMENT="Information about the custom reports block"
+            NAME="edwreports_custom_reports">
+            <FIELDS>
+                <FIELD COMMENT="Custom Reports Id" NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD COMMENT="Custom Reports Short Name" NAME="shortname" TYPE="text" LENGTH="255" NOTNULL="true"/>
+                <FIELD COMMENT="Custom Reports Full Name" NAME="fullname" TYPE="text" LENGTH="255" NOTNULL="true"/>
+                <FIELD COMMENT="Created By User Id" NAME="createdby" TYPE="int" LENGTH="10" NOTNULL="true"/>
+                <FIELD COMMENT="Custom Reports Data" NAME="data" TYPE="text" LENGTH="1000" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD COMMENT="Desktop Enable" NAME="enabledesktop" TYPE="int" LENGTH="2" DEFAULT="0" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD COMMENT="Custom Reports Creation Time" NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+                <FIELD COMMENT="Custom Reports Modfied Time" NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" DEFAULT="0"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
+        <TABLE
+            COMMENT="Keeps secret keys for user authentication"
+            NAME="edwreports_authentication">
+            <FIELDS>
+                <FIELD COMMENT="Id" NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD COMMENT="User id" NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true"/>
+                <FIELD COMMENT="Secret key" NAME="secret" TYPE="text" LENGTH="10" NOTNULL="true"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+                <KEY NAME="unique" TYPE="unique" FIELDS="userid"/>
+            </KEYS>
+        </TABLE>
+        <TABLE
+            COMMENT="Maintain time logs of activities"
+            NAME="edwreports_activity_log">
+            <FIELDS>
+                <FIELD COMMENT="Log Id" NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD COMMENT="Date" NAME="datecreated" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD COMMENT="User Id" NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD COMMENT="Course Id" NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD COMMENT="Activity Id" NAME="activity" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" DEFAULT="0"/>
+                <FIELD COMMENT="Activity start time" NAME="timestart" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD COMMENT="Time spent on activity" NAME="timespent" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD COMMENT="Time to complete activity" NAME="timetocomplete" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
+        <TABLE
+            COMMENT="Calculate and store summary from log table"
+            NAME="edwreports_summary">
+            <FIELDS>
+                <FIELD COMMENT="Summary Id" NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD COMMENT="Course Id" NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD COMMENT="Summary key" NAME="datakey" TYPE="text" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD COMMENT="Summary value" NAME="datavalue" TYPE="text" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
+        <TABLE
+            COMMENT="Calculate and store detailed summary from log table"
+            NAME="edwreports_summary_detailed">
+            <FIELDS>
+                <FIELD COMMENT="Summary Id" NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD COMMENT="Date" NAME="datecreated" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD COMMENT="Course Id" NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD COMMENT="Summary key" NAME="datakey" TYPE="text" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD COMMENT="Summary value" NAME="datavalue" TYPE="text" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
+    </TABLES>
+</XMLDB>

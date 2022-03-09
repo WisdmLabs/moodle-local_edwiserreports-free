@@ -1,0 +1,26 @@
+<div class="top-insights position-relative col-12 mb-3 {{# editing }} editing {{/ editing }}">
+    <div class="row">
+    {{# visible }}
+            {{# internal }}
+                {{> local_edwiserreports/insights/insight }}
+            {{/ internal }}
+    {{/ visible }}
+    {{# editing }}
+        <div class="insight add-insight col-3 p-5">
+            <div class="insight-wrapper">
+                <div class="dropdown add-new-insight">
+                    <button class="dropdown-toggle bg-transparent border-0" type="button" id="additional-insight" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="icon fa fa-plus"></i>
+                        <span class="sr-only">{{#str}}add{{/str}}</span>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="additional-insight">
+                        {{# additional }}
+                            <a class="dropdown-item" href="#" data-id="{{id}}">{{ title }}</a>
+                        {{/ additional }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{/ editing }}
+    </div>
+</div>

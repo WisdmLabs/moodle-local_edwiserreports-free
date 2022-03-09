@@ -1,0 +1,141 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    Edwiser RemUI
+    @package   theme_remui
+    @copyright (c) 2020 WisdmLabs (https://wisdmlabs.com/)
+    @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+
+}}
+{{!
+    @template theme_remui/activity_navigation
+
+    Display the activity navigation for all activities in a course
+
+    Context variables required for this template:
+
+    Example context (json):
+    {
+    }
+}}
+<div class="card bg-transparent">
+    <div class="card-block">
+        <div class="row mx-0">
+            <div class="col-5">
+                <div class="bold mb-1">
+                    {{#str}} todayslogin, local_edwiserreports {{/str}}
+                </div>
+                <div class="mx-0 text-center text-white">
+                    <div class="d-flex w-100 todays-block palette-2-bg">
+                        <div class="m-auto">
+                            <div id="todays-onlinelearners" class=" font-size-30 font-weight-600 w-full">
+                                <div class="data">0</div>
+                            </div>
+                            <label class="font-weight-400 font-3">
+                                {{#str}} learners, local_edwiserreports {{/str}}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="d-flex w-100 todays-block palette-2-bg">
+                        <div class="m-auto">
+                            <div id="todays-onlineteachers" class=" font-size-30 font-weight-600 w-full">
+                                <div class="data">0</div>
+                            </div>
+                            <label class="font-weight-400 font-3">
+                                {{#str}} teachers, local_edwiserreports {{/str}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-7">
+                <table class="summary ml-auto">
+                    <thead class="border-bottom">
+                        <tr>
+                            <th class="text-left">
+                                {{#str}} eventtoday, local_edwiserreports {{/str}}
+                            </th>
+                            <th class="text-right ">
+                                {{#str}} count, local_edwiserreports {{/str}}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-left">
+                                {{#str}} enrollment, local_edwiserreports {{/str}}
+                            </td>
+                            <td class="text-right" id="todays-enrollments">
+                                <span class="data">0</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">
+                                {{#str}} activitycompletion, local_edwiserreports {{/str}}
+                            </td>
+                            <td class="text-right" id="todays-activitycompletions">
+                                <span class="data">0</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">
+                                {{#str}} coursecompletion, local_edwiserreports {{/str}}
+                            </td>
+                            <td class="text-right" id="todays-coursecompletions">
+                                <span class="data">0</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">
+                                {{#str}} newregistration, local_edwiserreports {{/str}}
+                            </td>
+                            <td class="text-right" id="todays-registrations">
+                                <span class="data">0</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">
+                                {{#str}} visits, local_edwiserreports {{/str}}
+                            </td>
+                            <td class="text-right" id="todays-visits">
+                                <span class="data">0</span>
+                            </td>
+                        </tr>
+                        <tr class="d-none">
+                            <td class="text-left">
+                                {{#str}} timespent, local_edwiserreports {{/str}}
+                            </td>
+                            <td class="text-right" id="todays-timespend">
+                                <span class="data">00:00:00</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="visual col-12">
+            <p class="visual-head bold">
+                {{#str}} sitevisits, local_edwiserreports {{/str}}
+            </p>
+            <div class="visual-body">
+                <div id="apex-chart-todays-activity"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{#js}}
+require(['jquery'], function($) {
+    $('#todaysactivityblock .loader').hide();
+})
+{{/js}}

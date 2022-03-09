@@ -1,0 +1,102 @@
+/* stylelint-disable declaration-no-important */
+
+.top-insights {
+    &.editing {
+        .insight {
+            &:first-child {
+                .card-editing .move-left {
+                    display: none;
+                }
+                &:nth-last-child(2) {
+                    .card-editing .edit-hide {
+                        display: none;
+                    }
+                }
+            }
+            &:nth-last-child(2) {
+                .card-editing .move-right {
+                    display: none;
+                }
+            }
+            &:nth-child(n+5) {
+                display: none;
+            }
+        }
+    }
+    .insight {
+        &:first-child {
+            margin-left: auto;
+        }
+        &:last-child {
+            margin-right: auto;
+        }
+        &.add-insight {
+            .insight-wrapper {
+                height: 100%;
+                background: transparent;
+                box-shadow: none;
+                border: 1px dashed rgba(0, 0, 0, 0.5);
+                .dropdown {
+                    height: 100%;
+                    .dropdown-toggle {
+                        height: 100%;
+                        width: 100%;
+                        &:after {
+                            display: none;
+                        }
+                        .fa {
+                            font-size: 2rem;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .insight-wrapper {
+        box-shadow: 0 7px 14px 0 rgba(59, 65, 94, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.07);
+        background: white;
+        height: 100%;
+        .insight-image {
+            .icon {
+                width: 3rem;
+                height: 3rem;
+            }
+        }
+        .insight-title {
+            text-transform: uppercase;
+        }
+        position: relative;
+        .card-editing {
+            position: absolute;
+            top: 0;
+            right: 0;
+            transform: translateY(-100%);
+            z-index: 1;
+        }
+        .insight-value {
+            font-size: 2rem;
+            margin: 0 0 -1rem 0;
+            font-weight: 600;
+            line-height: 2.2rem;
+        }
+        .insight-direction {
+            font-size: 1.7rem;
+            vertical-align: bottom;
+            .value {
+                position: relative;
+                font-size: 1.2rem;
+                font-weight: 600;
+                border: 1px solid grey;
+                border-radius: 2rem;
+                padding: 0rem 0.5rem 0 2rem;
+                .fa {
+                    position: absolute;
+                    left: -1px;
+                    top: calc(50% + 1px);
+                    transform: translateY(-50%);
+                    font-size: 1.8rem;
+                }
+            }
+        }
+    }
+}

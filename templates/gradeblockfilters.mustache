@@ -1,0 +1,12 @@
+<div class="row m-0 p-0">
+    <div class="filter-selector mx-1">
+        <select class="course-select form-control singleselect" name="courses-select">
+            {{#courses}}
+                <option value="{{id}}">{{fullname}}</option>
+            {{/courses}}
+        </select>
+    </div>
+    <div class="filter-selector mx-1">
+        {{> local_edwiserreports/studentengagement/students_filter }}
+    </div>
+</div>

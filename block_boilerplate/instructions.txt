@@ -1,0 +1,53 @@
+Following are instructions to create new block:
+1. Copy file to respective folders and rename.
+2. In main.js file
+    a. Import the block js
+    b. Add block object in function parameter
+    c. Add block object in blocks array
+3. In block.js file
+3. In lib.php in local_edwiserreports_get_default_block_settings add following array in $block
+    'sample' => array(
+        'classname' => 'sampleblock',
+        'position' => $index++,
+        LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW => LOCAL_SITEREPORT_BLOCK_MEDIUM,
+        LOCAL_SITEREPORT_BLOCK_TABLET_VIEW => LOCAL_SITEREPORT_BLOCK_LARGE
+    ),
+4. In db/access.php add following array in $capabilities array
+    'report/edwiserreports_sampleblock:view' => array(
+        'riskbitmask' => RISK_SPAM,
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => array(
+            // Following capabilities are subject to requirement.
+            'coursecreator' => CAP_ALLOW,
+            'manager' => CAP_ALLOW,
+            'teacher' => CAP_ALLOW,
+            'editingteacher' => CAP_ALLOW
+        ),
+    ),
+    'report/edwiserreports_sampleblock:editadvance' => array(
+        'riskbitmask' => RISK_SPAM,
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => array(
+            'coursecreator' => CAP_ALLOW,
+            'manager' => CAP_ALLOW
+        ),
+    ),
+5. If caching is required then add caching details in db/cache.php file.
+6. Add following strings in lang/en/local_edwiserreports.php
+    $string['sampleheader'] = 'Sample block';
+    $string['sampleblockhelp'] = 'This block will show the sample block.';
+    $string['sampleblockview'] = 'Sample Block View';
+    $string['sampleblockedit'] = 'Sample Block Edit';
+    $string['samplerolesetting'] = 'Sample block allowed roles';
+    $string['sampledesktopsize'] = 'Sample block size in Desktop';
+    $string['sampletabletsize'] = 'Sample block size in Tablet';
+    $string['sampleposition'] = 'Sample block\'s Position';
+
+    If you are exporting data then add following strings
+    $string['sampleblockexportheader'] = 'Sample block Report';
+    $string['sampleblockexporthelp'] = 'This report will show the sample block exported data.';
+
+    if you have editadvance capability then add following strings
+    $string['sampleblockeditadvance'] = 'Sample Block Advance Edit';

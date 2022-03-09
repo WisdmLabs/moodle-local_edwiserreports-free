@@ -1,0 +1,93 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    Edwiser RemUI
+    @package   theme_remui
+    @copyright (c) 2020 WisdmLabs (https://wisdmlabs.com/)
+    @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+
+}}
+{{!
+    @template theme_remui/activity_navigation
+
+    Display the activity navigation for all activities in a course
+
+    Context variables required for this template:
+
+    Example context (json):
+    {
+    }
+}}
+<div id="wdm-completion-individual" class="table-responsive" data-sesskey="{{sesskey}}">
+    <div id="wdm-userfilter" class="h-auto my-10">
+        <div class="row mx-0">
+            <div class="">
+                <div class="filters col-12 d-flex mb-1 py-1">
+                    {{# cohortfilters }}
+                    <div class="dropdown mr-1">
+                        <button type="button" class="btn dropdown-toggle" id="cohortfilter" data-toggle="dropdown" aria-expanded="false">
+                            {{ text }}
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="cohortfilter" role="menu" x-placement="bottom-start">
+                            <a class="dropdown-item" href="javascript:void(0)" data-cohortid="0" role="menuitem">
+                                {{# str }} all, local_edwiserreports {{/ str }}
+                            </a>
+                            {{# values }}
+                            <a class="dropdown-item" href="javascript:void(0)" data-cohortid="{{ id }}" role="menuitem">
+                                {{ name }}
+                            </a>
+                            {{/ values }}
+                        </div>
+                    </div>
+                    {{/ cohortfilters }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <table class="table w-100" style="display: none;">
+        <thead>
+            <tr>
+                <th class="text-nowrap bg-image-none no-sorting-arrow border-bottom-0">
+                    {{#str}} fullname, local_edwiserreports {{/str}}
+                </th>
+                <th class="text-center bg-image-none no-sorting-arrow text-nowrap border-bottom-0">
+                    {{#str}} enrolledon, local_edwiserreports {{/str}}
+                </th>
+                <th class="text-center bg-image-none no-sorting-arrow text-nowrap border-bottom-0">
+                    {{#str}} enrolltype, local_edwiserreports {{/str}}
+                </th>
+                <th class="text-center bg-image-none no-sorting-arrow text-nowrap border-bottom-0">
+                    {{#str}} noofvisits, local_edwiserreports {{/str}}
+                </th>
+                <th class="text-center bg-image-none no-sorting-arrow text-nowrap border-bottom-0">
+                    {{#str}} coursecompletion, local_edwiserreports {{/str}}
+                </th>
+                <th class="text-center bg-image-none no-sorting-arrow text-nowrap border-bottom-0">
+                    {{#str}} completiontime, local_edwiserreports {{/str}}
+                </th>
+                <th class="text-center bg-image-none no-sorting-arrow text-nowrap border-bottom-0">
+                    {{#str}} grade, local_edwiserreports {{/str}}
+                </th>
+                <th class="text-center bg-image-none no-sorting-arrow text-nowrap border-bottom-0">
+                    {{#str}} lastaccess, local_edwiserreports {{/str}}
+                </th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    {{# completionexport }}
+    <div class="pull-right px-5">
+        {{> local_edwiserreports/exportreports }}
+    </div>
+    {{/ completionexport }}
+</div>

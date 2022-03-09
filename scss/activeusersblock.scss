@@ -1,0 +1,51 @@
+/* stylelint-disable declaration-no-important */
+
+#wdm-edwiserreports {
+    #activeusersblock {
+        .dropdown-menu {
+            .dropdown-item.custom {
+                background: #fff;
+            }
+        }
+        .refresh {
+            cursor: pointer;
+        }
+        .refresh.refresh-spin {
+            cursor: pointer;
+            -webkit-animation: rotating 2s linear infinite;
+            -moz-animation: rotating 2s linear infinite;
+            -ms-animation: rotating 2s linear infinite;
+            -o-animation: rotating 2s linear infinite;
+            animation: rotating 2s linear infinite;
+        }
+    }
+}
+
+#wdm-activeusers-individual {
+    input.dropdown-item {
+        background-color: transparent;
+        color: inherit;
+    }
+    input.dropdown-item:hover {
+        cursor: pointer;
+        background-color: #f8f9fa;
+    }
+    input.dropdown-item.custom:focus {
+        -webkit-box-shadow: none;
+        box-shadow: none;
+    }
+    .dropdown-menu {
+        &[aria-labelledby="filter-dropdown"] {
+            right: 0;
+            left: auto;
+        }
+    }
+    // Fixing header background glitch because of block configurable_rerport plugin.
+    .dataTable {
+        .sorting_asc,
+        .sorting_desc,
+        .sorting {
+            background-image: none !important;
+        }
+    }
+}

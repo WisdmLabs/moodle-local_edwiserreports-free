@@ -1,0 +1,114 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    Edwiser RemUI
+    @package   theme_remui
+    @copyright (c) 2020 WisdmLabs (https://wisdmlabs.com/)
+    @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+
+}}
+{{!
+    @template theme_remui/activity_navigation
+
+    Display the activity navigation for all activities in a course
+
+    Context variables required for this template:
+
+    Example context (json):
+    {
+    }
+}}
+<div id="wdm-userfilter" class="h-auto my-10">
+    <div class="row">
+        <div class="col-md-6 col-12 d-flex mb-5">
+            {{#customfields}}
+            <div class="dropdown px-10">
+                <button type="button" class="btn btn-default dropdown-toggle" id="customfields" data-toggle="dropdown">
+                    {{text}}
+                </button>
+                <div class="dropdown-menu" aria-labelledby="customfields" role="menu">
+                    {{#values}}
+                    <a class="dropdown-item" href="javascript:void(0)" role="menuitem">
+                        {{.}}
+                    </a>
+                    {{/values}}
+                </div>
+            </div>
+            {{/customfields}}
+            {{#customfieldvalue}}
+            <div class="dropdown px-10">
+                <button type="button" class="btn btn-default dropdown-toggle" id="customfields" data-toggle="dropdown">
+                    {{text}}
+                </button>
+                <div class="dropdown-menu" aria-labelledby="customfieldvalue" role="menu">
+                    {{#values}}
+                    <a class="dropdown-item" href="javascript:void(0)" role="menuitem">
+                        {{.}}
+                    </a>
+                    {{/values}}
+                </div>
+            </div>
+            {{/customfieldvalue}}
+        </div>
+        <div class="col-md-6 col-12 d-md-flex mb-5">
+            {{#lpexportdetailed}}
+            <div class="ml-auto mr-5 mb-5">
+                <button id="wdm-export-detail-lpsreports" class="btn btn-sm input-group-addon">
+                    {{#str}} exportlpdetailedreports, local_edwiserreports {{/str}}
+                </button>
+            </div>
+            {{/lpexportdetailed}}
+            <div class="filters d-flex justify-content-sm-end mb-5">
+                {{#cohortfilter}}
+                <div class="dropdown">
+                    <button type="button" class="btn btn-sm dropdown-toggle input-group-addon" id="cohortfilter" data-toggle="dropdown">
+                        {{text}}
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="cohortfilter" role="menu">
+                        <a class="dropdown-item" href="javascript:void(0)" data-cohortid="0" role="menuitem">
+                            {{#str}} all, local_edwiserreports {{/str}}
+                        </a>
+                        {{#values}}
+                        <a class="dropdown-item" href="javascript:void(0)" data-cohortid="{{id}}" role="menuitem">
+                            {{name}}
+                        </a>
+                        {{/values}}
+                    </div>
+                </div>
+                {{/cohortfilter}}
+                {{#rangeselector}}
+                <div class="dropdown px-5">
+                    <button type="button" class="btn btn-sm dropdown-toggle input-group-addon" data-toggle="dropdown" id="filter-dropdown" aria-expanded="false">
+                        {{#str}} lastweek, local_edwiserreports {{/str}}
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="filter-dropdown" role="menu">
+                        <div id="activeUser-calendar" class="dropdown-calendar"></div>
+                        <div class="dropdown-body">
+                            <a class="dropdown-item" href="javascript:void(0)" role="menuitem" value="weekly">
+                                {{#str}} lastweek, local_edwiserreports {{/str}}
+                            </a>
+                            <a class="dropdown-item" href="javascript:void(0)" role="menuitem" value="monthly">
+                                {{#str}} lastmonth, local_edwiserreports {{/str}}
+                            </a>
+                            <a class="dropdown-item" href="javascript:void(0)" role="menuitem" value="yearly">
+                                {{#str}} lastyear, local_edwiserreports {{/str}}
+                            </a>
+                            <input class="dropdown-item border-0 custom" id="flatpickrCalender" placeholder="{{#str}} custom, local_edwiserreports{{/str}}"  data-input/>
+                        </div>
+                    </div>
+                </div>
+                {{/rangeselector}}
+            </div>
+        </div>
+    </div>
+</div>

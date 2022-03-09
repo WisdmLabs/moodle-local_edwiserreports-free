@@ -1,0 +1,10 @@
+<div class="row m-0 p-0">
+    <!-- Add as many filters you want. -->
+    <div class="filter-selector mx-1">
+        <select id="new-block-selector-select" class="form-control singleselect w-full" name="state">
+            {{#selector}}
+            <option value="{{id}}">{{fullname}}</option>
+            {{/selector}}
+        </select>
+    </div>
+</div>

@@ -1,0 +1,159 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    Edwiser RemUI
+    @package   theme_remui
+    @copyright (c) 2020 WisdmLabs (https://wisdmlabs.com/)
+    @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+
+}}
+{{!
+    @template theme_remui/activity_navigation
+
+    Display the activity navigation for all activities in a course
+
+    Context variables required for this template:
+
+    Example context (json):
+    {
+    }
+}}
+{{#userfilters}}
+    {{> local_edwiserreports/userfilters }}
+{{/userfilters}}
+
+<div id="wdm-f2fsessions-individual" class="overflow-scroll" data-sesskey="{{sesskey}}">
+    <div class="table-reponsive">
+        <div class="loader w-full text-center py-110 my-50">
+            {{# pix }} loader, local_edwiserreports{{/ pix }}
+        </div>
+        <table id="f2fsessionstable" class="table dataTable no-footer clickable" style="display: none;">
+            <thead>
+                <tr>
+                    <th class="text-nowrap bg-image-none no-sorting-arrow">
+                        {{#str}} date, local_edwiserreports {{/str}}
+                    </th>
+                    <th class="text-nowrap bg-image-none no-sorting-arrow">
+                        {{#str}} time, local_edwiserreports {{/str}}
+                    </th>
+                    <th class="text-nowrap bg-image-none no-sorting-arrow">
+                        {{#str}} name, local_edwiserreports{{/str}}
+                    </th>
+                    <th class="text-nowrap bg-image-none no-sorting-arrow">
+                        {{#str}} course, local_edwiserreports {{/str}}
+                    </th>
+                    <th class="text-nowrap bg-image-none no-sorting-arrow">
+                        {{#str}} venue, local_edwiserreports {{/str}}
+                    </th>
+                    <th class="text-nowrap bg-image-none no-sorting-arrow">
+                        {{#str}} signups, local_edwiserreports {{/str}}
+                    </th>
+                    <th class="text-nowrap bg-image-none no-sorting-arrow">
+                        {{#str}} confirmed, local_edwiserreports {{/str}}
+                    </th>
+                    <th class="text-nowrap bg-image-none no-sorting-arrow">
+                        {{#str}} attendees, local_edwiserreports {{/str}}
+                    </th>
+                    <th class="text-nowrap bg-image-none no-sorting-arrow">
+                        {{#str}} waitlist, local_edwiserreports {{/str}}
+                    </th>
+                    <th class="text-nowrap bg-image-none no-sorting-arrow">
+                        {{#str}} declined, local_edwiserreports {{/str}}
+                    </th>
+                    <th class="text-nowrap bg-image-none no-sorting-arrow">
+                        {{#str}} canceled, local_edwiserreports {{/str}}
+                    </th>
+                    <th>
+                        {{#str}} download, local_edwiserreports {{/str}}
+                    </th>
+                    <th>
+                        {{#str}} f2fmore, local_edwiserreports {{/str}}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#f2fmodules}}
+                {{#sessions}}
+                <tr class="text-nowrap" data-toggle="collapse" data-target="#accordion-{{sessionid}}" class="clickable">
+                    <td class="pb-10">{{date}}</td>
+                    <td class="pb-10">{{time}}</td>
+                    <td class="pb-10">{{name}}</td>
+                    <td class="pb-10">{{coursename}}</td>
+                    <td class="pb-10">{{signupvenue}}</td>
+                    <td class="text-center pb-10">{{signups}}</td>
+                    <td class="text-center pb-10">{{confirmed}}</td>
+                    <td class="text-center pb-10">{{attendend}}</td>
+                    <td class="text-center pb-10">{{waitlisted}}</td>
+                    <td class="text-center pb-10">{{declined}}</td>
+                    <td class="text-center pb-10">{{canceled}}</td>
+                    <td class="text-center">
+                        <i class="icon accordion-arrow fa fa-angle-down my-auto"></i>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="border-0 collapse-td py-0 pl-30" colspan="12">
+                        <div  id="accordion-{{sessionid}}" class="collapse">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="text-nowrap">
+                                            {{#str}} username, local_edwiserreports {{/str}}
+                                        </th>
+                                        <th class="text-nowrap">
+                                            {{#str}} status, local_edwiserreports {{/str}}
+                                        </th>
+                                        <th class="text-nowrap">
+                                            {{#str}} reason, local_edwiserreports {{/str}}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#users}}
+                                    <tr>
+                                        <td>{{firstname}} {{lastname}}</td>
+                                        <td>{{{status}}}</td>
+                                        <td>{{reason}}</td>
+                                    </tr>
+                                    {{/users}}
+                                    {{^users}}
+                                    <tr>
+                                        <td class="text-center" colspan="3">
+                                            {{#str}} nosignups, local_edwiserreports{{/str}}
+                                        </td>
+                                    </tr>
+                                    {{/users}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+                {{/sessions}}
+                {{^sessions}}
+                <tr>
+                    <td class="text-center" colspan="12">
+                        {{#str}} nosessions, local_edwiserreports{{/str}}
+                    </td>
+                </tr>
+                {{/sessions}}
+                {{/f2fmodules}}
+                {{^f2fmodules}}
+                <tr>
+                    <td class="text-center" colspan="12">
+                        {{#str}} nosessions, local_edwiserreports{{/str}}
+                    </td>
+                </tr>
+                {{/f2fmodules}}
+            </tbody>
+        </table>
+    </div>
+</div>

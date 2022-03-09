@@ -1,0 +1,103 @@
+#wdm-edwiserreports {
+    &[data-editing="1"] {
+        #studentengagementblock {
+            .graph-header-background {
+                display: none;
+            }
+        }
+    }
+    &[data-editing="0"] {
+        #studentengagementblock {
+            background: white;
+            border-radius: 0.25rem;
+            background: transparent;
+            box-shadow: none;
+            border: none;
+            .panel-header {
+                display: none !important;
+            }
+            .panel {
+                background: transparent;
+                padding: 0 !important;
+            }
+            .studentengagement-graphs {
+                .graph-container {
+                    box-shadow: 0 7px 14px 0 rgba(59, 65, 94, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.07);
+                    background: white;
+                    border-radius: .25rem;
+                    height: 100%;
+                }
+                >div {
+                    margin-bottom: 2rem;
+                }
+            }
+        }
+        [data-block="studentengagementblock"] {
+            padding: 0 !important;
+            margin: -1.5rem 0 0 0!important;
+        }
+    }
+    @media (min-width: 992px) {
+        .col-lg-4,
+        .col-lg-6 {
+            #studentengagementblock {
+                [class*="-graphs"] {
+                    .col-md-6 {
+                        width: 100%;
+                        flex: 0 0 100%;
+                        max-width: 100%;
+                    }
+                }
+            }
+        }
+    }
+    @media (max-width: 992px) {
+        #studentengagementblock {
+            [class*="-graphs"] {
+                .col-md-6 {
+                    width: 100%;
+                    flex: 0 0 100%;
+                    max-width: 100%;
+                }
+            }
+        }
+    }
+    #studentengagementblock {
+        .graph-header {
+            position: relative;
+            .graph-header-background {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                opacity: 0.15;
+            }
+        }
+        .timespentoncourse,
+        .timespentonlms {
+            .apexcharts-tooltip {
+                max-width: 300px;
+                white-space: normal;
+            }
+        }
+        .studentengagement-graphs {
+            .graph {
+                min-height: 370px;
+            }
+            .timespentoncourse {
+                .export-urls {
+                    position: absolute;
+                    right: 0;
+                    z-index: 1;
+                }
+            }
+        }
+        #studentengagement-calendar {
+            color: #76838f;
+            &::after {
+                color: #76838f;
+            }
+        }
+    }
+}
