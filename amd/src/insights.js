@@ -75,27 +75,6 @@ define([
                     })
                 },
             });
-        },
-
-        /**
-         * Get insight card data to render insight details.
-         * @param {String} id Insight id
-         * @return {Promise}
-         */
-        GET_INSIGHT_CARD_DATA: function(id) {
-            return $.ajax({
-                url: CFG.requestUrl,
-                type: CFG.requestType,
-                dataType: CFG.requestDataType,
-                data: {
-                    action: 'get_insight_card_data_ajax',
-                    secret: M.local_edwiserreports.secret,
-                    data: JSON.stringify({
-                        id: id,
-                        filter: filter
-                    })
-                },
-            });
         }
     };
 
@@ -113,42 +92,9 @@ define([
     }
 
     /**
-     * Update insight card details.
-     * @param {String} id Insight id
-     */
-    function updateInsight(id) {
-        common.loader.show(SELECTOR.CONTAINER + ' [data-id="' + id + '"] .insight-wrapper');
-        PROMISE.GET_INSIGHT_CARD_DATA(id, filter)
-            .done(function(response) {
-                switch (id) {
-                    case 'timespentoncourses':
-                    case 'timespentonsite':
-                        response.value = common.timeFormatter(response.value, {
-                            dataPointIndex: 0,
-                            short: true
-                        }).replaceAll(', ', ' ');
-                        break;
-                }
-                Templates.render('local_edwiserreports/insights/content', response)
-                    .done(function(html, js) {
-                        Templates.replaceNode($(SELECTOR.INSIGHT + '[data-id="' + id + '"]')
-                            .find(SELECTOR.INSIGHT_CONTENT), html, js);
-                        common.loader.hide(SELECTOR.CONTAINER + ' [data-id="' + id + '"] .insight-wrapper');
-                    });
-            });
-    }
-
-    /**
      * Initialize events.
      */
     function initEvents() {
-        // Date selector listener.
-        common.dateChange(function(date) {
-            filter = date;
-            $(SELECTOR.ONLYINSIGHT).each(function(index, insight) {
-                updateInsight($(insight).data('id'));
-            });
-        });
 
         // Move left.
         $('body').on('click', SELECTOR.MOVELEFT, function() {
@@ -185,7 +131,6 @@ define([
                         Templates.runTemplateJS(js);
                         $(SELECTOR.INSIGHT_ITEM + '[data-id="' + id + '"]').remove();
                         updateOrder();
-                        updateInsight(id);
                     });
                 }
             });
@@ -198,9 +143,6 @@ define([
     function init() {
         $(document).ready(function() {
             initEvents();
-            $(SELECTOR.ONLYINSIGHT).each(function(index, insight) {
-                updateInsight($(insight).data('id'));
-            });
         });
     }
     return {

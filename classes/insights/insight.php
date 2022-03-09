@@ -25,27 +25,11 @@
 namespace local_edwiserreports\insights;
 
 use context_system;
-use context_helper;
-use cache;
-use local_edwiserreports\block_base;
 
 /**
  * Class for insight details
  */
 class insight {
-
-    // Using all traits.
-    use newregistrations;
-    use courseenrolments;
-    use coursecompletions;
-    use activeusers;
-    use activitycompletions;
-    use timespentoncourses;
-    use totalcoursesenrolled;
-    use coursecompleted;
-    use activitiescompleted;
-    use timespentonsite;
-
     /**
      * @var array $insight Insights list.
      */
@@ -144,6 +128,7 @@ class insight {
         if ($preference = json_decode($preference)) {
             foreach ($preference as $key) {
                 if (isset($insights[$key])) {
+                    $insights[$key]['lock'] = $this->image_icon('lock');
                     $visible[] = $insights[$key];
                     unset($insights[$key]);
                 }
@@ -152,6 +137,7 @@ class insight {
         } else {
             foreach ($insights as $key => $insight) {
                 if (count($visible) <= 4) {
+                    $insight['lock'] = $this->image_icon('lock');
                     $visible[] = $insight;
                 } else {
                     $additional[] = $insight;
@@ -177,148 +163,12 @@ class insight {
         if (isset($this->insights[$id])) {
             $insight = $this->insights[$id];
             $insight['id'] = $id;
+            $insight['lock'] = $this->image_icon('lock');
             $insight['present'] = true;
             return $insight;
         }
         return [
             'present' => false
         ];
-    }
-
-    /**
-     * Generate labels and dates array for graph
-     *
-     * @param string $timeperiod Filter time period Weekly/Monthly/Yearly or custom dates.
-     *
-     * @return array
-     */
-    private function generate_dates($timeperiod) {
-        $enddate = floor(time() / 86400 + 1) * 86400 - 1;
-        switch ($timeperiod) {
-            case 'weekly':
-                // Monthly days.
-                $days = LOCAL_SITEREPORT_WEEKLY_DAYS;
-                break;
-            case 'monthly':
-                // Yearly days.
-                $days = LOCAL_SITEREPORT_MONTHLY_DAYS;
-                break;
-            case 'yearly':
-                // Weekly days.
-                $days = LOCAL_SITEREPORT_YEARLY_DAYS;
-                break;
-            default:
-                // Explode dates from custom date filter.
-                $dates = explode(" to ", $timeperiod);
-                if (count($dates) == 2) {
-                    $startdate = strtotime($dates[0]." 00:00:00");
-                    $enddate = strtotime($dates[1]." 23:59:59");
-                }
-                // If it has correct startdat and end date then count xlabel.
-                if (isset($startdate) && isset($enddate)) {
-                    $days = round(($enddate - $startdate) / LOCAL_SITEREPORT_ONEDAY);
-                    $enddate = $enddate;
-                } else {
-                    $days = LOCAL_SITEREPORT_WEEKLY_DAYS;
-                }
-                break;
-        }
-
-        $startdate = (round($enddate / 86400) - $days) * 86400;
-
-        $timedifference = $enddate - $startdate;
-        $oldenddate = $startdate - 1;
-        $oldstartdate = $oldenddate - $timedifference;
-
-        return [
-            $startdate,
-            $enddate,
-            $oldstartdate,
-            $oldenddate,
-        ];
-    }
-
-    /**
-     * Get students courses.
-     *
-     * @return array
-     */
-    private function get_students_courses() {
-        $blockbase = new block_base();
-        $userid = $blockbase->get_current_user();
-        // Admin or Manager.
-        if (is_siteadmin($userid) || has_capability('moodle/site:configview', context_system::instance(), $userid)) {
-            return get_courses();
-        }
-
-        $courses = enrol_get_all_users_courses($userid);
-
-        // Preload contexts and check visibility.
-        foreach ($courses as $id=>$course) {
-            context_helper::preload_from_record($course);
-            if (!$course->visible) {
-                unset($courses[$id]);
-                continue;
-            }
-        }
-        return $courses;
-    }
-
-    /**
-     * Get insight card data to show insight details.
-     *
-     * @param string $id     Insight card id
-     * @param string $filter Date filter
-     *
-     * @return array
-     */
-    public function get_card_data($id, $filter) {
-        $cache = cache::make('local_edwiserreports', 'insight');
-        if ($data = $cache->get($id . '-' . $filter)) {
-            return $data;
-        }
-        $insight = $this->insights[$id];
-        list(
-            $startdate,
-            $enddate,
-            $oldstartdate,
-            $oldenddate
-        ) = $this->generate_dates($filter);
-        if ($insight['internal']) {
-            $method = 'get_' . $id . '_data';
-            list($currentdata, $olddata) = $this->$method(
-                $startdate,
-                $enddate,
-                $oldstartdate,
-                $oldenddate
-            );
-            $difference = $currentdata - $olddata;
-
-            if ($difference == 0) {
-                $data = [
-                    'value' => $currentdata
-                ];
-            } else if ($difference > 0) {
-                $data = [
-                    'value' => $currentdata,
-                    'difference' => [
-                        'direction' => true,
-                        'value' => floor($difference / $currentdata * 100)
-                    ]
-                ];
-            } else {
-                $data = [
-                    'value' => $currentdata,
-                    'difference' => [
-                        'direction' => false,
-                        'value' => floor($difference / $olddata * -100)
-                    ]
-                ];
-            }
-
-            $cache->set($id . '-' . $filter, $data);
-
-            return $data;
-        }
     }
 }

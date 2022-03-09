@@ -53,7 +53,13 @@
         }
     }
     .insight-wrapper {
-        box-shadow: 0 7px 14px 0 rgba(59, 65, 94, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.07);
+        .pro-lock {
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+        }
+        box-shadow: 0 7px 14px 0 rgba(59, 65, 94, 0.1),
+        0 3px 6px 0 rgba(0, 0, 0, 0.07);
         background: white;
         height: 100%;
         .insight-image {
