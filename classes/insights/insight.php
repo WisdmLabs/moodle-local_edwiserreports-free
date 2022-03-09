@@ -136,7 +136,7 @@ class insight {
             $additional = array_values($insights);
         } else {
             foreach ($insights as $key => $insight) {
-                if (count($visible) <= 4) {
+                if (count($visible) <= 3) {
                     $insight['lock'] = $this->image_icon('lock');
                     $visible[] = $insight;
                 } else {
