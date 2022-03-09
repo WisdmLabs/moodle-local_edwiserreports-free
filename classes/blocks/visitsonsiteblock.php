@@ -190,91 +190,20 @@ class visitsonsiteblock extends block_base {
 
     /**
      * Calculate insight data for active users block.
-     *
-     * @param object $filter      Filter
-     * @param string $coursetable Temporary Course table name
-     * @param object $data        Response data
-     *
      * @return object
      */
-    public function calculate_insight($filter, $coursetable, $data) {
-        global $DB;
-        $totalvisits = 0;
-        $count = 0;
-        foreach ($data['visits'] as $visits) {
-            $totalvisits += $visits;
-            $count ++;
-        }
-
-        $averagevisits = $totalvisits == 0 ? 0 : floor($totalvisits / $count);
-
+    public function calculate_insight() {
         $insight = [
             'insight' => [
                 'title' => get_string('averagesitevisits', 'local_edwiserreports'),
-                'value' => $averagevisits
+                'value' => '??'
             ],
             'details' => [
                 'data' => [[
                     'title' => get_string('totalsitevisits', 'local_edwiserreports'),
-                    'value' => $totalvisits
+                    'value' => '??'
                 ]]
             ]
-        ];
-        $userid = $filter->student;
-        $startdate = $this->startdate;
-        $enddate = $this->enddate;
-        $timedifference = $enddate - $startdate;
-        $this->startdate = $startdate - $timedifference;
-        $this->enddate = $enddate - $timedifference;
-        $days = round($timedifference / 86400);
-        $dates = [];
-        foreach ($this->dates as $key => $value) {
-            $dates[$key - $days] = $value;
-        }
-
-        $params = [
-            'startdate' => floor($this->startdate / 86400),
-            'enddate' => floor($this->enddate / 86400)
-        ];
-
-        $wheresql = " JOIN {{$coursetable}} ct ON al.course = ct.tempid
-                        WHERE al.datecreated >= :startdate
-                        AND al.datecreated <= :enddate
-                        AND al.userid <> 0";
-
-        if ($userid !== 0) { // User is selected in dropdown.
-            $params['userid'] = $userid;
-            $wheresql .= ' AND al.userid = :userid ';
-        }
-
-        $sql = "SELECT al.datecreated, count(al.id) visits
-                FROM {edwreports_activity_log} al
-                $wheresql
-                GROUP BY al.datecreated";
-
-        $logs = $DB->get_records_sql($sql, $params);
-        foreach ($logs as $log) {
-            if (!isset($dates[$log->datecreated])) {
-                continue;
-            }
-            $dates[$log->datecreated] = $log->visits;
-        }
-        $oldvisits = array_sum($dates);
-        $oldaveragevisits = $oldvisits == 0 ? 0 : floor($oldvisits / $count);
-        $difference = $averagevisits - $oldaveragevisits;
-        if ($difference == 0) {
-            return $insight;
-        }
-        if ($difference > 0) {
-            $insight['insight']['difference'] = [
-                'direction' => true,
-                'value' => floor($difference / $averagevisits * 100)
-            ];
-            return $insight;
-        }
-        $insight['insight']['difference'] = [
-            'direction' => false,
-            'value' => floor($difference / -$oldaveragevisits * 100)
         ];
         return $insight;
     }
@@ -346,7 +275,7 @@ class visitsonsiteblock extends block_base {
                 'labels' => $this->labels
             ];
 
-            $response['insight'] = $this->calculate_insight($filter, $coursetable, $response);
+            $response['insight'] = $this->calculate_insight();
 
             utility::drop_temp_table($coursetable);
 

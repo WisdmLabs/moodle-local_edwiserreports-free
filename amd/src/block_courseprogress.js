@@ -136,9 +136,10 @@ define([
                 .always(function() {
                     common.insight('#courseprogressblock .insight', {
                         'insight': {
-                            'value': pieChart.average + '%',
+                            'value': '??',
                             'title': M.util.get_string('averagecourseprogress', 'local_edwiserreports')
-                        }
+                        },
+                        'pro': true
                     });
                     cpGraph = generateCourseProgressGraph();
                     $(loader).hide();

@@ -157,7 +157,7 @@ define([
                 $(SELECTOR.PANEL).find(SELECTOR.GRAPHLABEL).text(response.header);
                 common.insight('#gradeblock .insight', {
                     'insight': {
-                        'value': response.average == 0 ? 0 : response.average.toPrecision(2) + '%',
+                        'value': '??',
                         'title': M.util.get_string('averagegrade', 'local_edwiserreports')
                     }
                 });

@@ -250,114 +250,20 @@ class timespentoncourseblock extends block_base {
 
     /**
      * Calculate insight data for active users block.
-     *
-     * @param object $filter      Filter
-     * @param object $data        Response data
-     *
      * @return object
      */
-    public function calculate_insight($filter, $data) {
-        global $DB;
-        $totaltimespent = 0;
-        $count = 0;
-        foreach ($data['timespent'] as $timespent) {
-            $totaltimespent += $timespent;
-            $count ++;
-        }
-
-        $averagetimespent = $totaltimespent == 0 ? 0 : floor($totaltimespent / $count);
-
+    public function calculate_insight() {
         $insight = [
             'insight' => [
                 'title' => get_string('averagetimespent', 'local_edwiserreports'),
-                'value' => $averagetimespent
+                'value' => '??'
             ],
             'details' => [
                 'data' => [[
                     'title' => get_string('totaltimespent', 'local_edwiserreports'),
-                    'value' => $totaltimespent
+                    'value' => '??'
                 ]]
             ]
-        ];
-        $userid = $filter->student;
-        $course = $filter->course;
-        $timedifference = $this->enddate - $this->startdate;
-        $startdate = $this->startdate - $timedifference;
-        $enddate = $this->enddate - $timedifference;
-        $days = round($timedifference / 86400);
-
-        $params = [
-            'startdate' => floor($startdate / 86400),
-            'enddate' => floor($enddate / 86400)
-        ];
-        $wheresql = 'WHERE datecreated >= :startdate
-        AND datecreated <= :enddate';
-        if ($userid !== 0) { // User is selected in dropdown.
-            $params['userid'] = $userid;
-            $wheresql .= ' AND userid = :userid ';
-        }
-        if ($course !== 0) { // Course is selected in dropdown.
-            $params['course'] = $course;
-            $wheresql .= ' AND course = :course ';
-
-            $sql = "SELECT datecreated, sum(" . $DB->sql_cast_char2int("timespent") . ") timespent
-                    FROM {edwreports_activity_log}
-                    $wheresql
-                    GROUP BY datecreated";
-
-        } else {
-            $sql = "SELECT course, sum(" . $DB->sql_cast_char2int("timespent") . ") timespent
-                    FROM {edwreports_activity_log}
-                    $wheresql
-                    GROUP BY course";
-        }
-
-        $logs = $DB->get_records_sql($sql, $params);
-
-        if ($course !== 0) { // Course is selected in dropdown.
-            $dates = [];
-            foreach ($this->dates as $key => $value) {
-                $dates[$key - $days] = $value;
-            }
-
-            foreach ($logs as $log) {
-                if (!isset($dates[$log->datecreated])) {
-                    continue;
-                }
-                $dates[$log->datecreated] = $log->timespent;
-            }
-            $timespent = $dates;
-        } else {
-            $courses = [];
-            foreach ($this->courses as $key => $value) {
-                $courses[$key] = 0;
-            }
-            foreach ($logs as $log) {
-                if (!isset($courses[$log->course])) {
-                    continue;
-                }
-                $courses[$log->course] = $log->timespent;
-            }
-            $timespent = $courses;
-
-        }
-
-        $oldtimespent = array_sum($timespent);
-        $oldaveragetimespent = $oldtimespent == 0 ? 0 : floor($oldtimespent / $count);
-        $difference = $averagetimespent - $oldaveragetimespent;
-        if ($difference == 0) {
-            return $insight;
-        }
-        if ($difference > 0) {
-            $insight['insight']['difference'] = [
-                'direction' => true,
-                'value' => round($difference / $averagetimespent * 100, 2)
-            ];
-            return $insight;
-        }
-        $insight['insight']['difference'] = [
-            'direction' => false,
-            'value' => round($difference / -$oldaveragetimespent * 100, 2)
         ];
         return $insight;
     }
@@ -470,7 +376,7 @@ class timespentoncourseblock extends block_base {
                 ];
             }
 
-            $response['insight'] = $this->calculate_insight($filter, $response);
+            $response['insight'] = $this->calculate_insight();
 
             // Set response in cache.
             $this->sessioncache->set($cachekey, $response);

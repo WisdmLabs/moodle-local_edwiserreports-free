@@ -251,64 +251,27 @@ class activeusersblock extends block_base {
     /**
      * Calculate insight data for active users block.
      *
-     * @param object $data   Response data
-     *
      * @return object
      */
-    public function calculate_insight($data) {
-        $totalactiveusers = 0;
-        $count = 0;
-        foreach ($data->data->activeUsers as $active) {
-            $totalactiveusers += $active;
-            $count ++;
-        }
-
-        $averageactiveusers = $totalactiveusers == 0 ? 0 : floor($totalactiveusers / $count);
-
+    public function calculate_insight() {
         $insight = [
             'insight' => [
                 'title' => get_string('averageactiveusers', 'local_edwiserreports'),
-                'value' => $averageactiveusers
+                'value' => '??'
             ],
             'details' => [
                 'data' => [[
                     'title' => get_string('totalactiveusers', 'local_edwiserreports'),
-                    'value' => $totalactiveusers
+                    'value' => '??'
                 ], [
                     'title' => get_string('totalcourseenrolments', 'local_edwiserreports'),
-                    'value' => array_sum($data->data->enrolments)
+                    'value' => '??'
                 ], [
                     'title' => get_string('totalcoursecompletions', 'local_edwiserreports'),
-                    'value' => array_sum($data->data->completionRate)
+                    'value' => '??'
                 ]]
-            ]
-        ];
-        $startdate = $this->startdate;
-        $enddate = $this->enddate;
-        $timedifference = $enddate - $startdate;
-        $this->startdate = $startdate - $timedifference;
-        $this->enddate = $enddate - $timedifference;
-        $days = round($timedifference / 86400);
-        foreach ($this->dates as $key => $value) {
-            unset($this->dates[$key]);
-            $this->dates[$key - $days] = $value;
-        }
-        $oldactiveusers = array_sum($this->get_active_users());
-        $oldaverageactiveusers = $oldactiveusers == 0 ? 0 : floor($oldactiveusers / $count);
-        $difference = $averageactiveusers - $oldaverageactiveusers;
-        if ($difference == 0) {
-            return $insight;
-        }
-        if ($difference > 0) {
-            $insight['insight']['difference'] = [
-                'direction' => true,
-                'value' => floor($difference / $averageactiveusers * 100)
-            ];
-            return $insight;
-        }
-        $insight['insight']['difference'] = [
-            'direction' => false,
-            'value' => floor($difference / -$oldaverageactiveusers * 100)
+            ],
+            'pro' => true
         ];
         return $insight;
     }
@@ -361,7 +324,7 @@ class activeusersblock extends block_base {
             $response->data->enrolments = $this->get_enrolments();
             $response->data->completionRate = $this->get_course_completionrate();
             $response->labels = $this->labels;
-            $response->insight = $this->calculate_insight($response);
+            $response->insight = $this->calculate_insight();
             // Set response in cache.
             $this->cache->set($cachekey, $response);
         }

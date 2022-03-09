@@ -202,94 +202,23 @@ class courseactivitystatusblock extends block_base {
 
     /**
      * Calculate insight data for active users block.
-     *
-     * @param object $filter      Filter
-     * @param string $coursetable Temporary Course table name
-     * @param object $data        Response data
-     *
      * @return object
      */
-    public function calculate_insight($filter, $coursetable, $data) {
-        global $DB;
-        $totalcompletion = 0;
-        $count = 0;
-        foreach ($data['completions'] as $completion) {
-            $totalcompletion += $completion;
-            $count ++;
-        }
-
-        $averagecompletions = $totalcompletion == 0 ? 0 : floor($totalcompletion / $count);
-
+    public function calculate_insight() {
         $insight = [
             'insight' => [
                 'title' => get_string('averagecompletion', 'local_edwiserreports'),
-                'value' => $averagecompletions
+                'value' => '??'
             ],
             'details' => [
                 'data' => [[
                     'title' => get_string('totalassignment', 'local_edwiserreports'),
-                    'value' => array_sum($data['submissions'])
+                    'value' => '??'
                 ], [
                     'title' => get_string('totalcompletion', 'local_edwiserreports'),
-                    'value' => $totalcompletion
+                    'value' => '??'
                 ]]
             ]
-        ];
-
-        $userid = $filter->student;
-        $timedifference = $this->enddate - $this->startdate;
-        $startdate = $this->startdate - $timedifference;
-        $enddate = $this->enddate - $timedifference;
-        $days = round($timedifference / 86400);
-
-        $dates = [];
-        foreach ($this->dates as $key => $value) {
-            $dates[$key - $days] = 0;
-        }
-
-        $params = [
-            'startdate' => $startdate,
-            'enddate' => $enddate
-        ];
-
-        $sql = "SELECT floor(cmc.timemodified / 86400) datecreated, count(cmc.id) completed
-                  FROM {{$coursetable}} ct
-                  JOIN {course_modules} cm ON ct.tempid = cm.course
-                  JOIN {course_modules_completion} cmc ON cm.id = cmc.coursemoduleid
-                 WHERE cmc.completionstate <> 0
-                   AND cmc.timemodified >= :startdate
-                  AND cmc.timemodified <= :enddate";
-        if ($userid !== 0) { // User is selected in dropdown.
-            $sql .= ' AND cmc.userid = :userid ';
-            $params['userid'] = $userid;
-        }
-        $sql .= " GROUP BY floor(cmc.timemodified / 86400)";
-
-        $logs = $DB->get_records_sql($sql, $params);
-
-        foreach ($logs as $log) {
-            if (!isset($dates[$log->datecreated])) {
-                continue;
-            }
-            $dates[$log->datecreated] = $log->completed;
-        }
-        $oldcompletions = array_sum($dates);
-        $oldaveragecompletions = $oldcompletions == 0 ? 0 : ($count == 0 ? : floor($oldcompletions / $count));
-        $difference = $averagecompletions - $oldaveragecompletions;
-
-        if ($difference == 0) {
-            return $insight;
-        }
-        if ($difference > 0) {
-            $insight['insight']['difference'] = [
-                'direction' => true,
-                'value' => round($difference / $averagecompletions * 100, 2)
-            ];
-            return $insight;
-        }
-        $insight['insight']['difference'] = [
-            'direction' => false,
-            'value' => round($difference / -$oldaveragecompletions * 100, 2)
         ];
         return $insight;
     }
@@ -405,7 +334,7 @@ class courseactivitystatusblock extends block_base {
                 'labels' => $this->labels
             ];
 
-            $response['insight'] = $this->calculate_insight($filter, $coursetable, $response);
+            $response['insight'] = $this->calculate_insight();
             utility::drop_temp_table($coursetable);
 
             // Set response in cache.

@@ -689,6 +689,11 @@ div[id^="wdm-"][id*="-individual"] {
     position: relative;
     display: flex;
     box-shadow: 0 10px 15px 0 rgba(59, 65, 94, 0.1), 0 0 30px 0 rgba(0, 0, 0, 0.07);
+    .pro-lock {
+        position: absolute;
+        right: 1rem;
+        top: 1rem;
+    }
     .insight-body {
         display: flex;
         align-items: center;

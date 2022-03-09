@@ -295,13 +295,6 @@ define([
                 data.tooltip.y.title.formatter = () => {
                     return M.util.get_string('time', 'local_edwiserreports') + ': ';
                 }
-                response.insight.insight.value = common.timeFormatter(response.insight.insight.value, {
-                    dataPointIndex: 0,
-                    short: true
-                }).replaceAll(',', '<br>');
-                response.insight.details.data[0].value = common.timeFormatter(response.insight.details.data[0].value, {
-                    dataPointIndex: 0
-                });
                 common.insight(SELECTOR.INSIGHT, response.insight);
                 renderGraph($(SELECTOR.PANEL).find(SELECTOR.GRAPH), data);
             }).fail(function(exception) {
