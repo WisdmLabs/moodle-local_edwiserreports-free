@@ -237,13 +237,10 @@ class edwiserReportController extends controllerAbstract {
      * Get graph data for courseprogress on course graph of learner block.
      */
     public function get_learnercourseprogress_graph_data_ajax_action() {
-        // Get data.
-        $parameters = json_decode(required_param('data', PARAM_RAW));
-
         $learnercourseprogress = new \local_edwiserreports\learnercourseprogressblock();
 
         // Response for ajax action.
-        echo json_encode($learnercourseprogress->get_data($parameters->filter));
+        echo json_encode($learnercourseprogress->get_data());
     }
 
     /**
@@ -276,11 +273,9 @@ class edwiserReportController extends controllerAbstract {
      * @return void
      */
     public function get_grade_graph_data_ajax_action() {
-        // Get data.
-        $data = json_decode(required_param('data', PARAM_RAW));
-
+        $grade = new \local_edwiserreports\gradeblock();
         // Response for ajax action.
-        echo json_encode(\local_edwiserreports\utility::get_grade_graph_data($data));
+        echo json_encode($grade->get_graph_data());
     }
 
     /**
@@ -326,13 +321,10 @@ class edwiserReportController extends controllerAbstract {
      * Get table data for Course activity status graph.
      */
     public function get_courseactivitystatus_graph_data_ajax_action() {
-        // Get data.
-        $parameters = json_decode(required_param('data', PARAM_RAW));
-
         $courseactivitystatus = new \local_edwiserreports\courseactivitystatusblock();
 
         // Response for ajax action.
-        echo json_encode($courseactivitystatus->get_data($parameters->filter));
+        echo json_encode($courseactivitystatus->get_data());
     }
 
     /**

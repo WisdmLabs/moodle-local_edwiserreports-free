@@ -43,14 +43,6 @@ define([
     var chart = null;
 
     /**
-     * Filter for ajax.
-     */
-    var filter = {
-        course: 0,
-        student: 0
-    };
-
-    /**
      * Pie chart default config.
      */
     const pieChartDefault = {
@@ -76,33 +68,14 @@ define([
      */
     var SELECTOR = {
         PANEL: '#gradeblock',
-        COURSE: '.course-select',
-        STUDENT: '.student-select',
         GRAPH: '.graph',
         GRAPHLABEL: '.graph-label',
-        FORMFILTER: '.download-links [name="filter"]',
-        FILTERS: '.filters'
     };
 
     /**
      * All promises.
      */
     var PROMISE = {
-        /**
-         * Get students using course id.
-         *
-         * @param {Integer} courseid Course id
-         * @returns {PROMISE}
-         */
-        GET_STUDENTS: function(courseid) {
-            return Ajax.call([{
-                methodname: 'local_edwiserreports_get_students_of_course',
-                args: {
-                    courseid: courseid
-                }
-            }], false)[0];
-        },
-
         /**
          * Get graph data using filters.
          * @returns {PROMISE}
@@ -114,10 +87,7 @@ define([
                 dataType: CFG.requestDataType,
                 data: {
                     action: 'get_grade_graph_data_ajax',
-                    secret: M.local_edwiserreports.secret,
-                    data: JSON.stringify({
-                        filter: filter
-                    })
+                    secret: M.local_edwiserreports.secret
                 },
             });
         }
@@ -129,10 +99,6 @@ define([
     function loadGraph() {
         let data;
         common.loader.show(SELECTOR.PANEL);
-
-        // Set export filter to download link.
-        let exportFilter = Object.keys(filter).map(key => filter[key]).join("-");
-        $(SELECTOR.PANEL).find(SELECTOR.FORMFILTER).val(exportFilter);
 
         /**
          * Render graph.
@@ -157,48 +123,13 @@ define([
                 $(SELECTOR.PANEL).find(SELECTOR.GRAPHLABEL).text(response.header);
                 common.insight('#gradeblock .insight', {
                     'insight': {
-                        'value': '??',
+                        'value': response.average + '%',
                         'title': M.util.get_string('averagegrade', 'local_edwiserreports')
                     }
                 });
                 renderGraph($(SELECTOR.PANEL).find(SELECTOR.GRAPH), data);
             });
         common.loader.hide(SELECTOR.PANEL);
-    }
-
-    /**
-     * Initialize event listeners.
-     */
-    function initEvents() {
-
-        // Course selector listener.
-        $('body').on('change', `${SELECTOR.PANEL} ${SELECTOR.COURSE}`, function() {
-            courseid = parseInt($(this).val());
-            filter.course = courseid;
-            filter.student = 0;
-
-            PROMISE.GET_STUDENTS(courseid)
-                .done(function(response) {
-                    // Destroy student selector select2 instance.
-                    $(SELECTOR.PANEL).find(SELECTOR.STUDENT).select2('destroy');
-                    Templates.render('local_edwiserreports/studentengagement/students_filter', { 'students': response })
-                        .done(function(html, js) {
-                            Templates.replaceNode($(SELECTOR.PANEL).find(SELECTOR.STUDENT), html, js);
-
-                            // Reinitialize student selector select2 instance.
-                            $(SELECTOR.PANEL).find(SELECTOR.STUDENT).select2();
-                        });
-                });
-            // Load graph data.
-            loadGraph();
-        });
-
-        // Student selector listener.
-        $('body').on('change', `${SELECTOR.PANEL} ${SELECTOR.STUDENT}`, function() {
-            filter.student = parseInt($(this).val());
-            // Load graph data.
-            loadGraph();
-        });
     }
 
     /**
@@ -210,7 +141,6 @@ define([
             return;
         }
         $(SELECTOR.PANEL).find('.singleselect').select2();
-        initEvents();
         loadGraph();
     }
     return {

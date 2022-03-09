@@ -35,20 +35,6 @@ use moodle_url;
 class courseactivitystatusblock extends block_base {
 
     /**
-     * Get the first site access data.
-     *
-     * @var null
-     */
-    public $firstsiteaccess;
-
-    /**
-     * Current time
-     *
-     * @var int
-     */
-    public $enddate;
-
-    /**
      * Active users block labels
      *
      * @var array
@@ -62,12 +48,6 @@ class courseactivitystatusblock extends block_base {
      */
     public $xlabelcount;
 
-    /**
-     * Cache
-     *
-     * @var object
-     */
-    public $cache;
 
     /**
      * Dates main array.
@@ -75,18 +55,6 @@ class courseactivitystatusblock extends block_base {
      * @var array
      */
     public $dates = [];
-
-    /**
-     * Instantiate object
-     *
-     * @param int $blockid Block id
-     */
-    public function __construct($blockid = false) {
-        parent::__construct($blockid);
-        // Set cache for student engagement block.
-        $this->sessioncache = cache::make('local_edwiserreports', 'courseactivitystatus');
-        $this->precalculated = get_config('local_edwiserreports', 'precalculated');
-    }
 
     /**
      * Preapre layout for Visits on site
@@ -100,11 +68,7 @@ class courseactivitystatusblock extends block_base {
         $this->layout->name = get_string('courseactivitystatusheader', 'local_edwiserreports');
         $this->layout->info = get_string('courseactivitystatusblockhelp', 'local_edwiserreports');
         $this->layout->filters = $this->get_filter();
-        $this->layout->filter = 'weekly-0';
         $this->layout->pro = $this->image_icon('lock');
-
-        // To add export links.
-        $this->layout->downloadlinks = $this->get_block_download_links();
 
         // Add block view in layout.
         $this->layout->blockview = $this->render_block('courseactivitystatusblock', $this->block);
@@ -122,27 +86,34 @@ class courseactivitystatusblock extends block_base {
      * @return array filters array
      */
     public function get_filter($onlycourses = false) {
-        global $OUTPUT, $USER, $COURSE, $USER, $DB;
+        global $OUTPUT;
 
-        $courses = $this->get_courses_of_user($USER->id);
-
-        unset($courses[$COURSE->id]);
-
-        $users = $this->get_users_of_courses($USER->id, $courses);
-
-        array_unshift($users, (object)[
+        $users = [[
             'id' => 0,
             'fullname' => get_string('allusers', 'search')
-        ]);
+        ]];
 
-        array_unshift($courses, (object)[
+        $courses = [[
             'id' => 0,
             'fullname' => get_string('fulllistofcourses')
-        ]);
+        ]];
 
-        // Return only courses array if $onlycourses is true.
-        if ($onlycourses == true) {
-            return $courses;
+        for ($i = 1; $i <= 5; $i++) {
+            $users[] = [
+                'id' => $i,
+                'fullname' => get_string('user') . ' ' . $i
+            ];
+            $courses[] = [
+                'id' => $i,
+                'fullname' => get_string('course') . ' ' . $i
+            ];
+        }
+
+        for ($i = 5; $i <= 100; $i++) {
+            $users[] = [
+                'id' => $i,
+                'fullname' => 'User ' . $i
+            ];
         }
 
         return $OUTPUT->render_from_template('local_edwiserreports/courseactivitystatusblockfilters', [
@@ -153,70 +124,47 @@ class courseactivitystatusblock extends block_base {
 
     /**
      * Generate labels and dates array for graph
-     *
-     * @param string $timeperiod Filter time period Weekly/Monthly/Yearly or custom dates.
+     * @param int $days Days
      */
-    private function generate_labels($timeperiod) {
-        $this->dates = [];
+    private function generate_labels($days) {
         $this->labels = [];
+        $this->xlabelcount = $days;
         $this->enddate = floor(time() / 86400 + 1) * 86400 - 1;
-        switch ($timeperiod) {
-            case 'weekly':
-                // Monthly days.
-                $this->xlabelcount = LOCAL_SITEREPORT_WEEKLY_DAYS;
-                break;
-            case 'monthly':
-                // Yearly days.
-                $this->xlabelcount = LOCAL_SITEREPORT_MONTHLY_DAYS;
-                break;
-            case 'yearly':
-                // Weekly days.
-                $this->xlabelcount = LOCAL_SITEREPORT_YEARLY_DAYS;
-                break;
-            default:
-                // Explode dates from custom date filter.
-                $dates = explode(" to ", $timeperiod);
-                if (count($dates) == 2) {
-                    $startdate = strtotime($dates[0]." 00:00:00");
-                    $enddate = strtotime($dates[1]." 23:59:59");
-                }
-                // If it has correct startdat and end date then count xlabel.
-                if (isset($startdate) && isset($enddate)) {
-                    $days = round(($enddate - $startdate) / LOCAL_SITEREPORT_ONEDAY);
-                    $this->xlabelcount = $days;
-                    $this->enddate = $enddate;
-                } else {
-                    $this->xlabelcount = LOCAL_SITEREPORT_WEEKLY_DAYS; // Default one week.
-                }
-                break;
-        }
         $this->startdate = (round($this->enddate / 86400) - $this->xlabelcount) * 86400;
 
         // Get all lables.
         for ($i = $this->xlabelcount - 1; $i >= 0; $i--) {
             $time = $this->enddate - $i * LOCAL_SITEREPORT_ONEDAY;
-            $this->dates[floor($time / LOCAL_SITEREPORT_ONEDAY)] = 0;
             $this->labels[] = $time * 1000;
         }
     }
 
     /**
      * Calculate insight data for active users block.
+     * @param array $submissions Submissions array
+     * @param array $completions Completions array
+     * @param int   $days        Days
      * @return object
      */
-    public function calculate_insight() {
+    public function calculate_insight($submissions, $completions, $days) {
+        $totalsubmission = array_sum($submissions);
+        $totalcompletion = array_sum($completions);
         $insight = [
             'insight' => [
                 'title' => get_string('averagecompletion', 'local_edwiserreports'),
-                'value' => '??'
+                'value' => floor($totalcompletion / $days),
+                'difference' => [
+                    'direction' => 1,
+                    'value' => '41.5'
+                ]
             ],
             'details' => [
                 'data' => [[
                     'title' => get_string('totalassignment', 'local_edwiserreports'),
-                    'value' => '??'
+                    'value' => $totalsubmission
                 ], [
                     'title' => get_string('totalcompletion', 'local_edwiserreports'),
-                    'value' => '??'
+                    'value' => $totalcompletion
                 ]]
             ]
         ];
@@ -230,116 +178,86 @@ class courseactivitystatusblock extends block_base {
      * @return object         Response
      */
     public function get_data($filter = false) {
-        global $DB;
-        $userid = $filter->student;
-        $course = $filter->course;
-        $timeperiod = $filter->date;
-        $cachekey = $this->generate_cache_key('studentengagement', 'courseactivitystatus-' . $timeperiod . '-' . $userid);
 
-        if (!$response = $this->sessioncache->get($cachekey)) {
-            $this->generate_labels($timeperiod);
-            $params = [
-                'startdate' => $this->startdate,
-                'enddate' => $this->enddate
-            ];
+        $submissions = [
+            336,
+            314,
+            356,
+            343,
+            355,
+            336,
+            375,
+            390,
+            304,
+            363,
+            399,
+            317,
+            393,
+            388,
+            393,
+            334,
+            312,
+            369,
+            362,
+            364,
+            335,
+            395,
+            306,
+            300,
+            389,
+            325,
+            385,
+            379,
+            358,
+            388,
+            301
+        ];
 
-            if ($course == 0) {
-                $courses = $this->get_courses_of_user($this->get_current_user());
-            } else {
-                $courses = [$course => 'Dummy'];
-            }
-            // Temporary course table.
-            $coursetable = 'tmp_stengage_courses';
-            // Creating temporary table.
-            utility::create_temp_table($coursetable, array_keys($courses));
-            switch ($timeperiod . '-' . $course . '-' . $userid . '-' . $this->precalculated) {
-                case 'weekly-0-0-1':
-                case 'monthly-0-0-1':
-                case 'yearly-0-0-1':
-                    $subsql = "SELECT esd.datecreated subdate, sum(" . $DB->sql_cast_char2int("esd.datavalue", true) . ") submission
-                                 FROM {{$coursetable}} ct
-                                 JOIN {edwreports_summary_detailed} esd ON ct.tempid = esd.course
-                                WHERE " . $DB->sql_compare_text('datakey', 255) . " = " . $DB->sql_compare_text(':subdatakey', 255) . "
-                                GROUP BY esd.datecreated";
-                    $params['subdatakey'] = 'studentengagement-courseactivity-submissions';
+        $completions = [
+            255,
+            251,
+            259,
+            273,
+            274,
+            272,
+            282,
+            290,
+            264,
+            265,
+            269,
+            277,
+            262,
+            284,
+            262,
+            284,
+            299,
+            259,
+            266,
+            279,
+            257,
+            257,
+            255,
+            296,
+            295,
+            300,
+            250,
+            255,
+            251,
+            299,
+            281
+        ];
 
-                    $comsql = "SELECT esd.datecreated subdate, sum(" . $DB->sql_cast_char2int("esd.datavalue", true) . ") completed
-                                 FROM {{$coursetable}} ct
-                                 JOIN {edwreports_summary_detailed} esd ON ct.tempid = esd.course
-                                WHERE " . $DB->sql_compare_text('esd.datakey', 255) . " = " . $DB->sql_compare_text(':comdatakey', 255) . "
-                                GROUP BY esd.datecreated";
-                    $params['comdatakey'] = 'studentengagement-courseactivity-completions';
-                    break;
-                default:
-                    $subsql = "SELECT floor(asub.timecreated / 86400) subdate, count(asub.id) submission
-                              FROM {{$coursetable}} ct
-                              JOIN {assign} a ON ct.tempid = a.course
-                              JOIN {assign_submission} asub ON a.id = asub.assignment
-                             WHERE asub.timecreated >= :startdate
-                               AND asub.timecreated <= :enddate ";
-                    $comsql = "SELECT floor(cmc.timemodified / 86400) comdate, count(cmc.id) completed
-                                 FROM {{$coursetable}} ct
-                                 JOIN {course_modules} cm ON ct.tempid = cm.course
-                                 JOIN {course_modules_completion} cmc ON cm.id = cmc.coursemoduleid
-                                WHERE cmc.completionstate <> 0
-                                  AND cmc.timemodified >= :startdate
-                                  AND cmc.timemodified <= :enddate ";
-                    if ($userid !== 0) { // User is selected in dropdown.
-                        $subsql .= ' AND asub.userid = :userid ';
-                        $comsql .= ' AND cmc.userid = :userid ';
-                        $params['userid'] = $userid;
-                    }
-                    $subsql .= " GROUP BY floor(asub.timecreated / 86400)";
-                    $comsql .= " GROUP BY floor(cmc.timemodified / 86400)";
-                    break;
-            }
-            $sublogs = $DB->get_records_sql($subsql, $params);
-            $comlogs = $DB->get_records_sql($comsql, $params);
+        $days = count($submissions);
 
-            $completions = $submissions = $this->dates;
-            $hasdata = false;
-            foreach ($sublogs as $date => $log) {
-                if (isset($submissions[$date])) {
-                    $submissions[$date] = $log->submission;
-                    if ($log->submission > 0) {
-                        $hasdata = true;
-                    }
-                }
-            }
-            if ($hasdata == false) {
-                $submissions = [];
-            }
+        $this->generate_labels($days);
 
-            $hasdata = false;
-            foreach ($comlogs as $date => $log) {
-                if (isset($completions[$date])) {
-                    $completions[$date] = $log->completed;
-                    if ($log->completed > 0) {
-                        $hasdata = true;
-                    }
-                }
-            }
+        $response = [
+            'submissions' => array_values($submissions),
+            'completions' => array_values($completions),
+            'labels' => $this->labels,
+            'insight' => $this->calculate_insight($submissions, $completions, $days)
+        ];
 
-            if ($hasdata == false) {
-                $completions = [];
-            }
-
-            if (empty($submissions) && empty($completions)) {
-                $this->labels = [];
-            }
-
-            $response = [
-                'submissions' => array_values($submissions),
-                'completions' => array_values($completions),
-                'labels' => $this->labels
-            ];
-
-            $response['insight'] = $this->calculate_insight();
-            utility::drop_temp_table($coursetable);
-
-            // Set response in cache.
-            $this->sessioncache->set($cachekey, $response);
-        }
         return $response;
     }
 

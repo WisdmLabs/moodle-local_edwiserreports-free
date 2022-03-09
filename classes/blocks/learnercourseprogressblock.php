@@ -46,7 +46,6 @@ class learnercourseprogressblock extends block_base {
         $this->layout->name = get_string('learnercourseprogressheader', 'local_edwiserreports');
         $this->layout->info = get_string('learnercourseprogressblockhelp', 'local_edwiserreports');
         $this->layout->filters = $this->get_filter();
-        $this->layout->filter = '0';
         $this->layout->pro = $this->image_icon('lock');
 
         // Add block view in layout.
@@ -64,78 +63,21 @@ class learnercourseprogressblock extends block_base {
      * @return array filters array
      */
     public function get_filter() {
-        global $OUTPUT, $USER, $COURSE, $USER, $DB;
-
-        if (is_siteadmin() || has_capability('moodle/site:configview', context_system::instance())) {
-            $courses = get_courses();
-        } else {
-            $courses = enrol_get_users_courses($USER->id);
-        }
-        unset($courses[$COURSE->id]);
-
-        // Temporary course table.
-        $coursetable = 'tmp_learner_courses';
-        // Creating temporary table.
-        utility::create_temp_table($coursetable, array_keys($courses));
-        $sql = "SELECT c.id
-                  FROM {{$coursetable}} ct
-                  JOIN {course} c ON ct.tempid = c.id
-                 WHERE c.enablecompletion <> 0";
-        $records = $DB->get_records_sql($sql);
-
-        // Droppping course table.
-        utility::drop_temp_table($coursetable);
-        $filtercourses = [
-            0 => [
-                'id' => 0,
-                'fullname' => get_string('fulllistofcourses')
-            ]
-        ];
-
-        if (!empty($records)) {
-            foreach ($records as $record) {
-                $filtercourses[] = [
-                    'id' => $record->id,
-                    'fullname' => $courses[$record->id]->fullname
-                ];
-            }
-        }
-
-        $sql = 'SELECT id, firstname, lastname
-                  FROM {user}
-                 WHERE confirmed = 1
-              ORDER BY firstname asc';
-        $recordset = $DB->get_recordset_sql($sql);
-        $users = [[
+        global $OUTPUT;
+        $courses = [[
             'id' => 0,
-            'name' => get_string('allusers', 'search')
+            'fullname' => get_string('fulllistofcourses')
         ]];
-        foreach ($recordset as $user) {
-            $users[] = [
-                'id' => $user->id,
-                'name' => $user->firstname . ' ' . $user->lastname
+
+        for ($i = 1; $i <= 5; $i++) {
+            $courses[] = [
+                'id' => $i,
+                'fullname' => get_string('course') . ' ' . $i
             ];
         }
         return $OUTPUT->render_from_template('local_edwiserreports/learnercourseprogressblockfilters', [
-            'courses' => $filtercourses
+            'courses' => $courses
         ]);
-    }
-
-    /**
-     * Get user using secret key or global $USER
-     *
-     * @return int
-     */
-    private function get_user() {
-        global $USER;
-        $secret = optional_param('secret', null, PARAM_TEXT);
-        if ($secret !== null) {
-            $authentication = new \local_edwiserreports\controller\authentication();
-            $userid = $authentication->get_user($secret);
-        } else {
-            $userid = $USER->id;
-        }
-        return $userid;
     }
 
     /**
@@ -145,73 +87,17 @@ class learnercourseprogressblock extends block_base {
      * @return object         Response
      */
     public function get_data($filter = false) {
-        global $DB, $COURSE;
-        $course = $filter->course;
-        $userid = $this->get_user();
         $labels = [];
-        $progress = [];
-        if ($course === 0) { // Course is selected in dropdown.
-            if (is_siteadmin($userid) || has_capability('moodle/site:configview', context_system::instance(), $userid)) {
-                $courses = get_courses();
-            } else {
-                $courses = enrol_get_users_courses($userid);
-            }
-            unset($courses[$COURSE->id]);
+        $progress = [
+            80,
+            64,
+            88,
+            97,
+            59
+        ];
 
-            // Temporary course table.
-            $coursetable = 'tmp_learner_courses';
-            // Creating temporary table.
-            utility::create_temp_table($coursetable, array_keys($courses));
-
-            $sql = "SELECT c.id
-                  FROM {{$coursetable}} ct
-                  JOIN {course} c ON ct.tempid = c.id
-                 WHERE c.enablecompletion <> 0";
-            $filteredcourses = $DB->get_records_sql($sql);
-
-            $sql = "SELECT cp.courseid id, cp.progress
-                      FROM {{$coursetable}} ct
-                      JOIN {edwreports_course_progress} cp ON ct.tempid = cp.courseid
-                      JOIN {course} c ON cp.courseid = c.id
-                     WHERE cp.userid = :userid
-                       AND c.enablecompletion <> 0";
-            $params = ['userid' => $userid];
-            $records = $DB->get_records_sql($sql, $params);
-            // Droppping course table.
-            utility::drop_temp_table($coursetable);
-            $hasdata = false;
-            if (!empty($records)) {
-                foreach ($filteredcourses as $record) {
-                    $labels[] = $courses[$record->id]->fullname;
-                    $prog = isset($records[$record->id]) ? (int)$records[$record->id]->progress : 0;
-                    if ($prog > 0) {
-                        $hasdata = true;
-                    }
-                    $progress[] = $prog;
-                }
-                if (!$hasdata) {
-                    $progress = [];
-                }
-            }
-        } else {
-            $sql = "SELECT cp.courseid, cp.totalmodules total, count(cm.id) modules
-                      FROM {course_modules} cm
-                      JOIN {edwreports_course_progress} cp ON cm.course = cp.courseid
-                     WHERE cp.userid = :userid
-                       AND cm.course = :courseid
-                       AND cm.completion <> 0
-                     GROUP BY cp.courseid, cp.totalmodules";
-            $params = ['userid' => $userid, 'courseid' => $course];
-            $record = $DB->get_record_sql($sql, $params);
-            if (!empty($record)) {
-                // Completed.
-                $labels[] = get_string('completion-y', 'core_completion');
-                $progress[] = (int)$record->total;
-
-                // Incomplete.
-                $labels[] = get_string('completion-n', 'core_completion');
-                $progress[] = (int)$record->modules - (int)$record->total;
-            }
+        for ($i = 1; $i <= 5; $i++) {
+            $labels[] = get_string('course') . ' ' . $i;
         }
 
         return [
