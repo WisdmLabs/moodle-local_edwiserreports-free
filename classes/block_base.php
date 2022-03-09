@@ -57,6 +57,7 @@ class block_base {
         $this->layout->contextid = $context->id;
         $this->layout->caneditadv = false;
         $this->layout->region = 'block';
+        $this->layout->upgradelink = UPGRADE_URL;
         $this->block = new stdClass();
 
         if ($blockid) {
@@ -370,5 +371,16 @@ class block_base {
             'name' => 'email',
             'label' => get_string('sendoveremail', 'local_edwiserreports')
         ]];
+    }
+
+    /**
+     * Get svg content.
+     *
+     * @return string
+     */
+    public function image_icon($type) {
+        global $CFG;
+        $image = file_get_contents($CFG->dirroot . '/local/edwiserreports/pix/' . $type . '.svg');
+        return $image;
     }
 }

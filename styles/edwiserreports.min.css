@@ -280,18 +280,29 @@ tr[aria-expanded="true"] .accordion-arrow.icon {
     height: 100%;
 }
 
-#wdm-edwiserreports .edwiserReport-block > div .panel .panel-header {
-    position: relative;
-}
-
-#wdm-edwiserreports .edwiserReport-block > div .panel .panel-header .panel-background {
+#wdm-edwiserreports .edwiserReport-block > div .panel .upgrade-to-pro {
     position: absolute;
     left: 0;
+    right: 0;
+    bottom: 0;
     top: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0.15;
-    z-index: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 2;
+}
+
+#wdm-edwiserreports .edwiserReport-block > div .panel .upgrade-to-pro .upgrade-notice {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#wdm-edwiserreports .edwiserReport-block > div .panel:not(:hover) .upgrade-to-pro {
+    display: none;
+}
+
+#wdm-edwiserreports .edwiserReport-block > div .panel .panel-header {
+    position: relative;
 }
 
 #wdm-edwiserreports .edwiserReport-block > div .panel .panel-header .panel-title {

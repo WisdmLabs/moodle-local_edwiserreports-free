@@ -86,3 +86,5 @@ define('LOCAL_EDWISERREPORTS_COLOR_PALETTES', [
     ['#AC0034', '#142458', '#DFC11C', '#333333', '#999999'],
     ['#ED553B', '#20639B', '#92CD53', '#222222', '#888888']
 ]);
+
+define('UPGRADE_URL', 'https://edwiser.org/reports/#pricing');

@@ -107,6 +107,7 @@ class gradeblock extends block_base {
         $this->layout->downloadlinks = $this->get_block_download_links();
         $this->layout->filter = '0-0';
         $this->layout->cohortid = 0;
+        $this->layout->pro = $this->image_icon('lock');
 
         // Add block view in layout.
         $this->layout->blockview = $this->render_block('gradeblock', $this->block);

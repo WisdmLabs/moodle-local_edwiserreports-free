@@ -48,6 +48,7 @@ class learnercourseprogressblock extends block_base {
         $this->layout->filters = $this->get_filter();
         $this->layout->filter = '0';
         $this->layout->morelink = new moodle_url($CFG->wwwroot . "/local/edwiserreports/learner.php");
+        $this->layout->pro = $this->image_icon('lock');
 
         // Add block view in layout.
         $this->layout->blockview = $this->render_block('learnercourseprogressblock', $this->block);
