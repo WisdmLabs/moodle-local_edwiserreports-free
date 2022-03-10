@@ -97,21 +97,5 @@ $functions = array(
         'type' => 'write',
         'ajax' => true,
         'loginrequired' => false
-    ),
-    'local_edwiserreports_get_students_of_course' => array(
-        'classname' => 'local_edwiserreports\external\api',
-        'methodname' => 'get_students_of_course',
-        'classpath' => '',
-        'description' => 'Get students enrolled in course',
-        'type' => 'read',
-        'ajax' => true
-    ),
-    'local_edwiserreports_get_activities_of_course' => array(
-        'classname' => 'local_edwiserreports\external\api',
-        'methodname' => 'get_activities_of_course',
-        'classpath' => '',
-        'description' => 'Get activities of course',
-        'type' => 'read',
-        'ajax' => true
     )
 );

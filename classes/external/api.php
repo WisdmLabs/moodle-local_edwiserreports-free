@@ -45,6 +45,4 @@ class api extends external_api {
     use delete_custom_report;
     use get_tracking_details;
     use keep_alive;
-    use get_students_of_course;
-    use get_activities_of_course;
 }
