@@ -38,137 +38,31 @@ define([
     let SELECTOR = {
         PANEL: '#timespentoncourseblock',
         INSIGHT: '#timespentoncourseblock .insight',
-        FORMFILTER: '.download-links [name="filter"]',
         GRAPH: '#apex-chart-timespentoncourse-block',
-        STUDENT: '#timespentoncourse-student-select',
-        COURSE: '#timespentoncourse-course-select'
     };
 
     let PROMISE = {
         /**
-         * Get timespent on site using filters.
-         * @param {Object} filter Filter data
+         * Get timespent on course
          * @returns {PROMISE}
          */
-        GET_TIMESPENTONCOURSE: function(filter) {
+        GET_TIMESPENTONCOURSE: function() {
             return $.ajax({
                 url: CFG.requestUrl,
                 type: CFG.requestType,
                 dataType: CFG.requestDataType,
                 data: {
                     action: 'get_timespentoncourse_graph_data_ajax',
-                    secret: M.local_edwiserreports.secret,
-                    data: JSON.stringify({
-                        filter: filter
-                    })
+                    secret: M.local_edwiserreports.secret
                 },
             });
         }
     };
 
     /**
-     * Filter for ajax.
-     */
-    let filter = {
-        date: 'weekly',
-        course: 0,
-        student: 0
-    };
-
-    /**
      * Chart object.
      */
     let chart = null;
-
-    /**
-     * Line chart default config.
-     */
-    const lineChartDefault = {
-        series: [],
-        chart: {
-            type: 'area',
-            height: 350,
-            dropShadow: {
-                enabled: true,
-                color: '#000',
-                top: 18,
-                left: 7,
-                blur: 10,
-                opacity: 0.2
-            },
-            toolbar: {
-                show: false,
-                tools: {
-                    download: false,
-                    reset: '<i class="fa fa-refresh"></i>'
-                }
-            },
-            zoom: {
-                enabled: false
-            }
-        },
-        tooltip: {
-            enabled: true,
-            enabledOnSeries: undefined,
-            shared: true,
-            followCursor: false,
-            intersect: false,
-            inverseOrder: false,
-            fillSeriesColor: false,
-            onDatasetHover: {
-                highlightDataSeries: false,
-            },
-            y: {
-                formatter: undefined,
-                title: {},
-            },
-            items: {
-                display: 'flex'
-            },
-            fixed: {
-                enabled: false,
-                position: 'topRight',
-                offsetX: 0,
-                offsetY: 0,
-            },
-        },
-        stroke: {
-            curve: 'smooth'
-        },
-        grid: {
-            borderColor: '#e7e7e7'
-        },
-        markers: {
-            size: 1
-        },
-        xaxis: {
-            categories: null,
-            type: 'datetime',
-            labels: {
-                hideOverlappingLabels: true,
-                datetimeFormatter: {
-                    year: 'yyyy',
-                    month: 'MMM \'yy',
-                    day: 'dd MMM',
-                    hour: ''
-                }
-            },
-            tooltip: {
-                enabled: false
-            }
-        },
-        legend: {
-            position: 'top',
-            floating: true
-        },
-        dataLabels: {
-            enabled: false
-        },
-        colors: [CFG.getColorPalette()[2]],
-        noData: {
-            text: M.util.get_string('nographdata', 'local_edwiserreports')
-        }
-    };
 
     /**
      * Bar chart default config.
@@ -250,10 +144,6 @@ define([
     function loadGraph(invalidUser) {
         common.loader.show(SELECTOR.PANEL);
 
-        // Set export filter to download link.
-        let exportFilter = Object.keys(filter).map(key => filter[key]).join("-");
-        $(SELECTOR.PANEL).find(SELECTOR.FORMFILTER).val(exportFilter);
-
         /**
          * Render graph.
          * @param {DOM} graph Graph element
@@ -270,14 +160,10 @@ define([
             }, 1000);
         }
 
-        PROMISE.GET_TIMESPENTONCOURSE(filter)
+        PROMISE.GET_TIMESPENTONCOURSE()
             .done(function(response) {
-                let data;
-                if (filter.course == 0) {
-                    data = Object.assign({}, barChartDefault);
-                } else {
-                    data = Object.assign({}, lineChartDefault);
-                }
+                let data = Object.assign({}, barChartDefault);
+
                 data.series = [{
                     name: M.util.get_string('timespentoncourse', 'local_edwiserreports'),
                     data: response.timespent,
@@ -295,6 +181,13 @@ define([
                 data.tooltip.y.title.formatter = () => {
                     return M.util.get_string('time', 'local_edwiserreports') + ': ';
                 }
+                response.insight.insight.value = common.timeFormatter(response.insight.insight.value, {
+                    dataPointIndex: 0,
+                    short: true
+                }).replaceAll(',', '<br>');
+                response.insight.details.data[0].value = common.timeFormatter(response.insight.details.data[0].value, {
+                    dataPointIndex: 0
+                });
                 common.insight(SELECTOR.INSIGHT, response.insight);
                 renderGraph($(SELECTOR.PANEL).find(SELECTOR.GRAPH), data);
             }).fail(function(exception) {
@@ -303,61 +196,15 @@ define([
     }
 
     /**
-     * Initialize events.
-     */
-    function initEvents() {
-        // Date selector listener.
-        common.dateChange(function(date) {
-            filter.date = date;
-            loadGraph();
-        });
-
-        // Student selector listener.
-        $('body').on('change', `${SELECTOR.PANEL} ${SELECTOR.STUDENT}`, function() {
-            filter.student = parseInt($(this).val());
-
-            // Load graph data.
-            loadGraph();
-        });
-
-        // Course selector listener.
-        $('body').on('change', `${SELECTOR.PANEL} ${SELECTOR.COURSE}`, function() {
-            filter.course = parseInt($(this).val());
-
-            // Load graph data.
-            loadGraph();
-        });
-    }
-
-    /**
      * Initialize
      * @param {function} invalidUser Callback function
      */
     function init(invalidUser) {
-
         if (!$(SELECTOR.PANEL).length) {
             return;
         }
 
         loadGraph(invalidUser);
-
-        initEvents();
-
-        flatpickr = $(SELECTOR.PANEL).find(SELECTOR.DATEPICKERINPUT).flatpickr({
-            mode: 'range',
-            altInput: true,
-            altFormat: "d/m/Y",
-            dateFormat: "Y-m-d",
-            maxDate: "today",
-            appendTo: $(SELECTOR.PANEL).find(SELECTOR.DATEPICKER).get(0),
-            onOpen: function() {
-                $(SELECTOR.PANEL).find(SELECTOR.DATEMENU).addClass('withcalendar');
-            },
-            onClose: function() {
-                $(SELECTOR.PANEL).find(SELECTOR.DATEMENU).removeClass('withcalendar');
-                customDateSelected();
-            }
-        });
 
         $(SELECTOR.PANEL).find('.singleselect').select2();
     }

@@ -38,39 +38,25 @@ define([
     let SELECTOR = {
         PANEL: '#visitsonsiteblock',
         INSIGHT: '#visitsonsiteblock .insight',
-        FORMFILTER: '.download-links [name="filter"]',
         GRAPH: '#apex-chart-visitsonsite-block',
-        STUDENT: '#visitsonsite-student-select'
     };
 
     let PROMISE = {
         /**
-         * Get visits on lms using filters.
-         * @param {Object} filter Filter data
+         * Get visits on site.
          * @returns {PROMISE}
          */
-        GET_VISITSONSITE: function(filter) {
+        GET_VISITSONSITE: function() {
             return $.ajax({
                 url: CFG.requestUrl,
                 type: CFG.requestType,
                 dataType: CFG.requestDataType,
                 data: {
                     action: 'get_visitsonsite_graph_data_ajax',
-                    secret: M.local_edwiserreports.secret,
-                    data: JSON.stringify({
-                        filter: filter
-                    })
+                    secret: M.local_edwiserreports.secret
                 },
             });
         }
-    };
-
-    /**
-     * Filter for ajax.
-     */
-    let filter = {
-        date: 'weekly',
-        student: 0
     };
 
     /**
@@ -174,10 +160,6 @@ define([
     function loadGraph(invalidUser) {
         common.loader.show(SELECTOR.PANEL);
 
-        // Set export filter to download link.
-        let exportFilter = Object.keys(filter).map(key => filter[key]).join("-");
-        $(SELECTOR.PANEL).find(SELECTOR.FORMFILTER).val(exportFilter);
-
         /**
          * Render graph.
          * @param {DOM} graph Graph element
@@ -194,7 +176,7 @@ define([
             }, 1000);
         }
 
-        PROMISE.GET_VISITSONSITE(filter)
+        PROMISE.GET_VISITSONSITE()
             .done(function(response) {
                 if (response.error === true && response.exception.errorcode === 'invalidsecretkey') {
                     invalidUser('visitsonsiteblock', response);
@@ -219,25 +201,6 @@ define([
     }
 
     /**
-     * Initialize events.
-     */
-    function initEvents() {
-        // Date selector listener.
-        common.dateChange(function(date) {
-            filter.date = date;
-            loadGraph();
-        });
-
-        // Student selector listener.
-        $('body').on('change', `${SELECTOR.PANEL} ${SELECTOR.STUDENT}`, function() {
-            filter.student = parseInt($(this).val());
-
-            // Load graph data.
-            loadGraph();
-        });
-    }
-
-    /**
      * Initialize
      * @param {function} invalidUser Callback function
      */
@@ -248,8 +211,6 @@ define([
         }
 
         loadGraph(invalidUser);
-
-        initEvents();
 
         $(SELECTOR.PANEL).find('.singleselect').select2();
     }

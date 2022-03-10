@@ -128,6 +128,7 @@ define([
                     }
                     pieChart.data = response.data;
                     pieChart.average = response.average == 0 ? 0 : response.average.toPrecision(2);
+                    pieChart.pro = response.pro;
                 })
                 .fail(function(error) {
                     // console.log(error);
@@ -139,7 +140,7 @@ define([
                             'value': '??',
                             'title': M.util.get_string('averagecourseprogress', 'local_edwiserreports')
                         },
-                        'pro': true
+                        'pro': pieChart.pro
                     });
                     cpGraph = generateCourseProgressGraph();
                     $(loader).hide();
