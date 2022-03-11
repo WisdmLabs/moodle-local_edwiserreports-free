@@ -43,6 +43,4 @@ class api extends external_api {
     use save_customreports_data;
     use get_customreports_list;
     use delete_custom_report;
-    use get_tracking_details;
-    use keep_alive;
 }

@@ -89,7 +89,6 @@ class activeusersblock extends block_base {
         parent::__construct($blockid);
         // Set cache for active users block.
         $this->cache = cache::make('local_edwiserreports', 'activeusers');
-        $this->precalculated = get_config('local_edwiserreports', 'precalculated');
     }
 
     /**
@@ -271,7 +270,7 @@ class activeusersblock extends block_base {
                     'value' => '??'
                 ]]
             ],
-            'pro' => true
+            'pro' => $this->image_icon('lock')
         ];
         return $insight;
     }
@@ -291,26 +290,6 @@ class activeusersblock extends block_base {
 
         // Generate active users data label.
         $this->generate_labels($this->filter);
-
-        // Check pre calculated data.
-        if ($this->precalculated) {
-            $data = get_config('local_edwiserreports', 'activeusersdata');
-            $data = json_decode($data, true);
-            if ($data !== null && isset($data[$this->filter])) {
-                $response = new stdClass();
-                $response->data = new stdClass();
-
-                $response->data->activeUsers = $data[$this->filter]['activeusers'];
-                $response->data->enrolments = $data[$this->filter]['enrolments'];
-                $response->data->completionRate = $data[$this->filter]['completionrate'];
-                if (isset($data[$this->filter]['insight'])) {
-                    $response->insight = $data[$this->filter]['insight'];
-                }
-                $response->labels = $this->labels;
-
-                return $response;
-            }
-        }
 
         // Get cache key.
         $cachekey = $this->generate_cache_key("activeusers-response", $this->filter . '-' . $this->graphajax, $this->cohortid);

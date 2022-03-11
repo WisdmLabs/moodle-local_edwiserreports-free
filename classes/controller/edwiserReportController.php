@@ -247,13 +247,10 @@ class edwiserReportController extends controllerAbstract {
      * Get graph data for courseprogress on course graph of learner block.
      */
     public function get_learnertimespentonsite_graph_data_ajax_action() {
-        // Get data.
-        $parameters = json_decode(required_param('data', PARAM_RAW));
-
         $learnertimespentonsite = new \local_edwiserreports\learnertimespentonsiteblock();
 
         // Response for ajax action.
-        echo json_encode($learnertimespentonsite->get_data($parameters->filter));
+        echo json_encode($learnertimespentonsite->get_data());
     }
 
     /**
@@ -282,39 +279,31 @@ class edwiserReportController extends controllerAbstract {
      * Get table data for Visits on Site graph.
      */
     public function get_visitsonsite_graph_data_ajax_action() {
-        // Get data.
-        $parameters = json_decode(required_param('data', PARAM_RAW));
-
         $visitsonsite = new \local_edwiserreports\visitsonsiteblock();
 
         // Response for ajax action.
-        echo json_encode($visitsonsite->get_data($parameters->filter));
+        echo json_encode($visitsonsite->get_data());
     }
 
     /**
      * Get table data for Timespent on site graph.
      */
     public function get_timespentonsite_graph_data_ajax_action() {
-        // Get data.
-        $parameters = json_decode(required_param('data', PARAM_RAW));
 
         $timespentonsite = new \local_edwiserreports\timespentonsiteblock();
 
         // Response for ajax action.
-        echo json_encode($timespentonsite->get_data($parameters->filter));
+        echo json_encode($timespentonsite->get_data());
     }
 
     /**
      * Get table data for Timespent on Course graph.
      */
     public function get_timespentoncourse_graph_data_ajax_action() {
-        // Get data.
-        $parameters = json_decode(required_param('data', PARAM_RAW));
-
         $timespentoncourse = new \local_edwiserreports\timespentoncourseblock();
 
         // Response for ajax action.
-        echo json_encode($timespentoncourse->get_data($parameters->filter));
+        echo json_encode($timespentoncourse->get_data());
     }
 
     /**
@@ -339,5 +328,4 @@ class edwiserReportController extends controllerAbstract {
         // Response for ajax action.
         echo json_encode($insight->get_card_context($data->id));
     }
-
 }

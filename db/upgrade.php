@@ -109,56 +109,6 @@ function xmldb_local_edwiserreports_upgrade($oldversion) {
         $dbman->create_table($table);
     }
 
-    // Maintain time logs of activities.
-    $table = new xmldb_table('edwreports_activity_log');
-    if (!$dbman->table_exists($table)) {
-        $table->add_field('id', XMLDB_TYPE_INTEGER, 10, null, true, true);
-        $table->add_field('datecreated', XMLDB_TYPE_INTEGER, 10, null, true, false);
-        $table->add_field('userid', XMLDB_TYPE_INTEGER, 10, null, true, false);
-        $table->add_field('course', XMLDB_TYPE_INTEGER, 10, null, true, false);
-        $table->add_field('activity', XMLDB_TYPE_INTEGER, 10, null, true, false, 0);
-        $table->add_field('timestart', XMLDB_TYPE_INTEGER, 10, null, true, false);
-        $table->add_field('timespent', XMLDB_TYPE_INTEGER, 10, null, true, false);
-        $table->add_field('timetocomplete', XMLDB_TYPE_INTEGER, 10, null, true, false);
-
-        // Table keys.
-        $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
-
-        // Create the table.
-        $dbman->create_table($table);
-    }
-
-    // Calculate and store summary from log table.
-    $table = new xmldb_table('edwreports_summary');
-    if (!$dbman->table_exists($table)) {
-        $table->add_field('id', XMLDB_TYPE_INTEGER, 10, null, true, true);
-        $table->add_field('course', XMLDB_TYPE_INTEGER, 10, null, true, false);
-        $table->add_field('datakey', XMLDB_TYPE_TEXT, 10, null, true, false);
-        $table->add_field('datavalue', XMLDB_TYPE_TEXT, 10, null, true, false);
-
-        // Table keys.
-        $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
-
-        // Create the table.
-        $dbman->create_table($table);
-    }
-
-    // Calculate and store details summary.
-    $table = new xmldb_table('edwreports_summary_detailed');
-    if (!$dbman->table_exists($table)) {
-        $table->add_field('id', XMLDB_TYPE_INTEGER, 10, null, true, true);
-        $table->add_field('datecreated', XMLDB_TYPE_INTEGER, 10, null, true, false);
-        $table->add_field('course', XMLDB_TYPE_INTEGER, 10, null, true, false);
-        $table->add_field('datakey', XMLDB_TYPE_TEXT, 10, null, true, false);
-        $table->add_field('datavalue', XMLDB_TYPE_TEXT, 10, null, true, false);
-
-        // Table keys.
-        $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
-
-        // Create the table.
-        $dbman->create_table($table);
-    }
-
     // Adding new column in course progress table for storing completable activities.
     $table = new xmldb_table('edwreports_course_progress');
 

@@ -49,33 +49,5 @@ $definitions = array(
     'inactiveusers' => array(
         'mode' => cache_store::MODE_APPLICATION,
         'ttl' => 24 * 60 * 60
-    ),
-    'studentengagement_session' => array(
-        'mode' => cache_store::MODE_SESSION,
-        'ttl' => 24 * 60 * 60
-    ),
-    'visitsonsite' => array(
-        'mode' => cache_store::MODE_SESSION,
-        'ttl' => 24 * 60 * 60
-    ),
-    'timespentonsite' => array(
-        'mode' => cache_store::MODE_SESSION,
-        'ttl' => 24 * 60 * 60
-    ),
-    'timespentoncourse' => array(
-        'mode' => cache_store::MODE_SESSION,
-        'ttl' => 24 * 60 * 60
-    ),
-    'courseactivitystatus' => array(
-        'mode' => cache_store::MODE_SESSION,
-        'ttl' => 24 * 60 * 60
-    ),
-    'grade_session' => array(
-        'mode' => cache_store::MODE_SESSION,
-        'ttl' => 24 * 60 * 60
-    ),
-    'insight' => array(
-        'mode' => cache_store::MODE_SESSION,
-        'ttl' => 24 * 60 * 60
     )
 );

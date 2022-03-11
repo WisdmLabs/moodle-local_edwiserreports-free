@@ -79,23 +79,5 @@ $functions = array(
         'description' => 'Delete Custom Report',
         'type' => 'write',
         'ajax' => true,
-    ),
-    'local_edwiserreports_get_tracking_details' => array(
-        'classname' => 'local_edwiserreports\external\api',
-        'methodname' => 'get_tracking_details',
-        'classpath' => '',
-        'description' => 'Get tracking details for keep alive requests',
-        'type' => 'write',
-        'ajax' => true,
-        'loginrequired' => false
-    ),
-    'local_edwiserreports_keep_alive' => array(
-        'classname' => 'local_edwiserreports\external\api',
-        'methodname' => 'keep_alive',
-        'classpath' => '',
-        'description' => 'Update user time in table',
-        'type' => 'write',
-        'ajax' => true,
-        'loginrequired' => false
     )
 );

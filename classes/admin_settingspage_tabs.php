@@ -101,21 +101,6 @@ class local_edwiserreports_admin_settingspage_tabs extends admin_settingpage {
             );
         }
 
-        // Add license and about Edwiserreports tabs.
-        // License tab content.
-        ob_start();
-        include_once($CFG->dirroot . '/local/edwiserreports/classes/edwiserreports_license.php');
-        $licensecontent = ob_get_clean();
-
-        // License tab.
-        $context['tabs'][] = array(
-                'name' => 'local_edwiserreports_license_status',
-                'displayname' => get_string('licensestatus', 'local_edwiserreports'),
-                'html' => $licensecontent,
-                'active' => $activetab == 'local_edwiserreports_license_status',
-                'customclass' => 'edwiserreportstab edwiserreportstab-license'
-            );
-
         if (empty($context['tabs'])) {
             return '';
         }

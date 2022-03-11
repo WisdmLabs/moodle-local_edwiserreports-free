@@ -645,10 +645,10 @@ $string['time'] = 'Time';
 // Settings.
 $string['generalsettings'] = 'General Settings';
 $string['blockssettings'] = 'Block\'s Settings';
-$string['trackfrequency'] = 'Time Log update frequency';
+$string['trackfrequency'] = 'Time Log update frequency <strong>(PRO)</strong>';
 $string['trackfrequencyhelp'] = 'This setting helps you to set the frequency of updating the user time log (detailed sequence of user activities with a time stamp) in the database.
 ';
-$string['precalculated'] = 'Show pre calculated data ';
+$string['precalculated'] = 'Show pre calculated data <strong>(PRO)</strong>';
 $string['precalculatedhelp'] = 'If enabled, it loads weekly, monthly and yearly reports quicker. They are continuously pre calculated, processed and stored in the background for faster loading of reports.
 
 If disabled, this process of report generation stops running in the background. This way the reporting dashboard will pull, process and calculate the required data at that instant, only when requested, that is, when you filter reports, increasing the load time of reports.

@@ -170,6 +170,11 @@ tr[aria-expanded="true"] {
 }
 
 #wdm-edwiserreports {
+    &[data-editing="1"] {
+        .panel-header .blocksetting {
+            z-index: 2;
+        }
+    }
     .panel {
         box-shadow: unset;
     }

@@ -33,7 +33,6 @@ use stdClass;
 use templatable;
 use context_system;
 use local_edwiserreports\controller\authentication;
-use local_edwiserreports\controller\license;
 
 $files = scandir($CFG->dirroot . "/local/edwiserreports/classes/blocks/");
 unset($files[0]);
@@ -65,7 +64,6 @@ class elucidreport_renderable implements renderable, templatable {
         $output = null;
         $export = new stdClass();
         $authentication = new authentication();
-        $license = new license();
 
         $export->secret = $authentication->get_secret_key($USER->id);
         $context = context_system::instance();
@@ -81,7 +79,6 @@ class elucidreport_renderable implements renderable, templatable {
         $export->sesskey = sesskey();
         $export->timenow = date("Y-m-d", time());
         $export->courses = \local_edwiserreports\utility::get_courses();
-        $export->notice = $license->get_license_notice();
 
         $export->hascustomcertpluign = local_edwiserreports_has_plugin("mod", "customcert");
 

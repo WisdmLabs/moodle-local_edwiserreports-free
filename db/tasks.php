@@ -66,13 +66,5 @@ $tasks = [
         'day' => '*',
         'month' => '*',
         'dayofweek' => '*'
-    ], [
-        'classname' => '\local_edwiserreports\task\studentengagement_data',
-        'blocking' => 0,
-        'minute' => '0',
-        'hour' => '*',
-        'day' => '*',
-        'month' => '*',
-        'dayofweek' => '*'
     ]
 ];

@@ -48,13 +48,15 @@
 }}
 <div class="insight-card my-3">
     {{#pro}}
-        {{#pix}} lock, local_edwiserreport {{/pix}}
+        <div class="pro-lock">
+            {{{pro}}}
+        </div>
     {{/pro}}
     {{#insight}}
     <div class="insight-body p-3">
         <div class="body-wrap">
             <div class="insight-wrap">
-                <label class="insight-value pr-2 h3">{{{value}}}</label>
+                <label class="insight-value {{^pro}} palette-primary-text {{/pro}} pr-2 h3">{{{value}}}</label>
                 {{#difference}}
                     <span class="insight-direction pr-6 text-{{#direction}}success{{/direction}}{{^direction}}danger{{/direction}}">
                         <span class="value">

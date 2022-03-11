@@ -73,6 +73,7 @@ class courseprogressblock extends block_base {
             list($progress, $average) = $this->get_completion_with_percentage($course, $enrolledstudents, $cohortid, $returncompleted);
             $response->data = $progress;
             $response->average = $average;
+            $response->pro = $this->image_icon('lock');
 
             // Set cache to get data for course progress.
             $cache->set($cachekey, $response);

@@ -63,26 +63,6 @@ $capabilities = array(
             'manager' => CAP_ALLOW
         ),
     ),
-    'report/edwiserreports_studentengagement:view' => array(
-        'riskbitmask' => RISK_SPAM,
-        'captype' => 'read',
-        'contextlevel' => CONTEXT_SYSTEM,
-        'archetypes' => array(
-            'coursecreator' => CAP_ALLOW,
-            'manager' => CAP_ALLOW,
-            'teacher' => CAP_ALLOW,
-            'editingteacher' => CAP_ALLOW
-        ),
-    ),
-    'report/edwiserreports_studentengagement:editadvance' => array(
-        'riskbitmask' => RISK_SPAM,
-        'captype' => 'read',
-        'contextlevel' => CONTEXT_SYSTEM,
-        'archetypes' => array(
-            'coursecreator' => CAP_ALLOW,
-            'manager' => CAP_ALLOW
-        ),
-    ),
     'report/edwiserreports_activecoursesblock:view' => array(
         'riskbitmask' => RISK_SPAM,
         'captype' => 'read',
@@ -210,25 +190,6 @@ $capabilities = array(
         ),
     ),
     'report/edwiserreports_customreports:manage' => array(
-        'riskbitmask' => RISK_SPAM,
-        'captype' => 'read',
-        'contextlevel' => CONTEXT_SYSTEM,
-        'archetypes' => array(
-            'coursecreator' => CAP_ALLOW,
-            'manager' => CAP_ALLOW
-        ),
-    ),
-    'report/edwiserreports_learner:view' => array(
-        'riskbitmask' => RISK_SPAM,
-        'captype' => 'read',
-        'contextlevel' => CONTEXT_SYSTEM,
-        'archetypes' => array(
-            'coursecreator' => CAP_ALLOW,
-            'manager' => CAP_ALLOW,
-            'student' => CAP_ALLOW
-        ),
-    ),
-    'report/edwiserreports_learner:editadvance' => array(
         'riskbitmask' => RISK_SPAM,
         'captype' => 'read',
         'contextlevel' => CONTEXT_SYSTEM,

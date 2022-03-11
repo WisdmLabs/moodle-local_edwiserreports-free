@@ -28,13 +28,6 @@ require_once($CFG->dirroot . '/local/edwiserreports/lib.php');
 
 require_once($CFG->dirroot . '/local/edwiserreports/classes/constants.php');
 
-// License activation and deactivation handling.
-if (optional_param('section', '', PARAM_TEXT) == 'local_edwiserreports') {
-    // Handle license status change on form submit.
-    $license = new \local_edwiserreports\controller\license();
-    $license->serve_license_data();
-}
-
 $ADMIN->add('modules', new admin_category('edwiserreports', new lang_string("pluginname", "local_edwiserreports")));
 
 // Fetch old data page link.
@@ -71,7 +64,7 @@ $page->add(new admin_setting_configduration(
     'local_edwiserreports/trackfrequency',
     new lang_string('trackfrequency', 'local_edwiserreports'),
     new lang_string('trackfrequencyhelp', 'local_edwiserreports'),
-    defined('DEFAULT_FREQUENCY') ? DEFAULT_FREQUENCY : 300,
+    300,
     1
 ));
 
@@ -88,11 +81,16 @@ $help = "<table class='table-color-palette'><tbody>";
 $palettes = [];
 foreach (LOCAL_EDWISERREPORTS_COLOR_PALETTES as $key => $palette) {
     $label = get_string('palette', 'local_edwiserreports') . ' ' . ($key + 1);
+    $disabled = '';
+    if ($key > 0) {
+        $label .= ' <strong>(PRO)</strong>';
+        $disabled = 'disabled';
+    }
     $palettes[] = $label;
     $help .= "<tr>";
     $help .= "<td style='font-weight: 700; color: #222;'>";
-    $help .= "<div class='form-check'>
-                <input class='form-check-input' name='palette-radio' type='radio' id='palette-radio-$key' value='$key'>
+    $help .= "<div class='form-check $disabled'>
+                <input class='form-check-input' name='palette-radio' type='radio' id='palette-radio-$key' value='$key' $disabled>
                 <label class='form-check-label' for='palette-radio-$key'>
                     $label
                 </label>
@@ -111,6 +109,12 @@ foreach (LOCAL_EDWISERREPORTS_COLOR_PALETTES as $key => $palette) {
     $help .= "</tr>";
 }
 $help .= "</tbody></table>";
+$help .= "<div class='text-left my-3'>";
+$help .= "<a href='" . UPGRADE_URL . "' class='btn btn-warning text-white' target='_blank'>";
+$help .= get_string('upgradetopro', 'local_edwiserreports');
+$help .= "</a>";
+$help .= "</div>";
+
 $page->add(new admin_setting_configselect(
     'local_edwiserreports/palette',
     new lang_string('colorpalette', 'local_edwiserreports'),

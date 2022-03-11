@@ -223,18 +223,6 @@ class utility {
         return $grade->get_graph_data($data->filter);
     }
 
-    /**
-     * Get learner table data.
-     *
-     * @param Object $data Data object
-     *
-     * @return Object
-     */
-    public static function get_grade_table_data($data) {
-        $grade = new \local_edwiserreports\gradeblock();
-        return $grade->get_table_data($data->filter);
-    }
-
     /** Generate Course Filter for course progress block
      * @param  Bool  $all Get course with no enrolment as well
      * @return Array      Array of courses
@@ -1457,11 +1445,12 @@ class utility {
         }
     }
 
+    /**
+     * Get active palette.
+     *
+     * @return int
+     */
     public static function get_active_palette() {
-        $palette = get_config('local_edwiserreports', 'palette');
-        if (isset(LOCAL_EDWISERREPORTS_COLOR_PALETTES[$palette])) {
-            return $palette;
-        }
         return 0;
     }
 
