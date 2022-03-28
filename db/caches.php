@@ -49,5 +49,9 @@ $definitions = array(
     'inactiveusers' => array(
         'mode' => cache_store::MODE_APPLICATION,
         'ttl' => 24 * 60 * 60
+    ),
+    'insight' => array(
+        'mode' => cache_store::MODE_SESSION,
+        'ttl' => 24 * 60 * 60
     )
 );

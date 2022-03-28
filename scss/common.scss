@@ -528,6 +528,12 @@ div[id^="wdm-"][id*="-individual"] {
 }
 
 #page-local-edwiserreports-index {
+    .insight-danger {
+        color: #DC0000;
+    }
+    .insight-success {
+        color: #1AB900;
+    }
     #page-header {
         #editing-btn {
             vertical-align: middle;

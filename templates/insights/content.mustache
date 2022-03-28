@@ -1,10 +1,16 @@
 <div class="insight-content">
-    <label class="insight-value pr-2 palette-primary-text h3">??</label>
+    <label class="insight-value pr-2 palette-primary-text h3">{{{value}}}</label>
     {{#difference}}
-        <span class="insight-direction d-inline-block pr-6 text-{{#direction}}success{{/direction}}{{^direction}}danger{{/direction}}">
+        <span class="insight-direction d-inline-block pr-6 insight-{{#direction}}success{{/direction}}{{^direction}}danger{{/direction}}">
             <span class="value">
                 <i class="fa fa-arrow-circle-{{#direction}}up{{/direction}}{{^direction}}down{{/direction}}"></i>
-                ??
+                {{value}}%
+                {{#direction}}
+                    <span>{{#str}} up {{/str}}</span>
+                {{/direction}}
+                {{^direction}}
+                    <span>{{#str}} down {{/str}}</span>
+                {{/direction}}
             </span>
         </span>
     {{/difference}}

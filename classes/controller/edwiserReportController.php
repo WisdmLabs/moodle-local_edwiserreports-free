@@ -328,4 +328,20 @@ class edwiserReportController extends controllerAbstract {
         // Response for ajax action.
         echo json_encode($insight->get_card_context($data->id));
     }
+
+    /**
+     * Get insight card data to render insight.
+     */
+    public function get_insight_card_data_ajax_action() {
+        // Get data.
+        $data = json_decode(required_param('data', PARAM_RAW));
+
+        $insight = new \local_edwiserreports\insights\insight();
+
+        // Response for ajax action.
+        echo json_encode($insight->get_card_data(
+            $data->id,
+            $data->filter
+        ));
+    }
 }

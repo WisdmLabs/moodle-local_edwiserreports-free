@@ -1,22 +1,10 @@
-<div class="insight col-3 p-5" data-id="{{id}}">
+<div class="insight col-12 col-md-6 col-lg-3" data-id="{{id}}">
     <div class="insight-wrapper p-4">
-        <div class="pro-lock">
-            {{{lock}}}
-        </div>
         <div class="insight-image">
             {{{icon}}}
         </div>
         <h5 class="insight-title mt-2 mb-0">{{ title }}</h5>
         <div class="insight-content">
-            <label class="insight-value pr-2 h3">??</label>
-            {{#difference}}
-                <span class="insight-direction d-inline-block pr-6 text-{{#direction}}success{{/direction}}{{^direction}}danger{{/direction}}">
-                    <span class="value">
-                        <i class="fa fa-arrow-circle-{{#direction}}up{{/direction}}{{^direction}}down{{/direction}}"></i>
-                        ??
-                    </span>
-                </span>
-            {{/difference}}
         </div>
         {{# editing }}
             <div class="card-editing btn-group d-flex">
