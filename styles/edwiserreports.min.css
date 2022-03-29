@@ -494,6 +494,7 @@ tr[aria-expanded="true"] .accordion-arrow.icon {
 
 #wdm-edwiserreports .edwiserReport-block > div .panel .panel-header .dropdown.blockoptions .dropdown-menu {
     overflow: visible !important;
+    min-width: 10rem;
 }
 
 #wdm-edwiserreports .edwiserReport-block > div .panel .panel-header .dropdown.blockoptions .dropdown-menu::after, #wdm-edwiserreports .edwiserReport-block > div .panel .panel-header .dropdown.blockoptions .dropdown-menu::before {
