@@ -1,0 +1,126 @@
+/* Filter selector */
+
+.filter-selector .dropdown-menu {
+    .dropdown-item {
+        input {
+            height: auto;
+        }
+        &.active,
+        &:not(.custom):hover {
+            text-decoration: underline;
+        }
+        &.active,
+        &.active input,
+        &:hover {
+            background: white !important;
+        }
+    }
+    .custom {
+        input {
+            &::-webkit-input-placeholder {
+                color: inherit;
+            }
+            &:-moz-placeholder {
+                color: inherit;
+            }
+            &::-moz-placeholder {
+                color: inherit;
+            }
+            &:-ms-input-placeholder {
+                color: inherit;
+            }
+            &::-ms-input-placeholder {
+                color: inherit;
+            }
+            &::placeholder {
+                color: inherit;
+            }
+        }
+        &:hover input {
+            &::-webkit-input-placeholder {
+                background: white !important;
+                text-decoration: underline;
+            }
+            &:-moz-placeholder {
+                background: white !important;
+                text-decoration: underline;
+            }
+            &::-moz-placeholder {
+                background: white !important;
+                text-decoration: underline;
+            }
+            &:-ms-input-placeholder {
+                background: white !important;
+                text-decoration: underline;
+            }
+            &::-ms-input-placeholder {
+                background: white !important;
+                text-decoration: underline;
+            }
+            &::placeholder {
+                background: white !important;
+                text-decoration: underline;
+            }
+        }
+    }
+}
+
+
+/* Panel header */
+
+.panel-header .dropdown-menu .dropdown-item:not(.disabled):hover {
+    background: white !important;
+    text-decoration: underline;
+}
+
+
+/* Block filter */
+
+.block-filters .dropdown-menu .dropdown-item:hover {
+    background: white !important;
+    text-decoration: underline;
+}
+
+
+/* Block filter */
+
+.filters .dropdown-menu .dropdown-item:hover {
+    background: white !important;
+    text-decoration: underline;
+}
+
+
+/* Email tab dropdown */
+
+#scheduletab {
+    .date-filters {
+        .dropdown {
+            .dropdown-item {
+                &:hover {
+                    background: white;
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+}
+
+
+/* Select2 */
+
+.select2-results__option--highlighted,
+.select2-results__option[aria-selected='true'] {
+    background-color: white !important;
+    text-decoration: underline;
+}
+
+
+/* Table UI */
+
+.edwiserreports-table .dataTables_length select option {
+    background: white;
+    color: inherit;
+    &:hover {
+        background: white !important;
+    }
+}

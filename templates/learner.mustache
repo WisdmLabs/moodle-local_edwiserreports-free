@@ -28,15 +28,15 @@
     {
     }
 }}
+{{> local_edwiserreports/report-page-header }}
 <div id="learner" class="table-responsive" data-sesskey="{{sesskey}}">
-    <div id="userfilter" class="h-auto my-10">
-        <div class="row mx-0">
-            <div class="filters col-12 d-flex mb-1 p-0">
-                <div class="backbutton">
-                    <a href="{{backurl}}" class="btn btn-secondary">
-                        <i class="icon fa fa-arrow-left"></i>
-                    </a>
-                </div>
+    <div id="userfilter" class="h-auto mt-2">
+        <div class="row">
+            <div class="filter-selector col-12 col-md-3 mb-1">
+                {{> local_edwiserreports/datatable/search }}
+            </div>
+            <div class="filter-selector col-12 col-md-3 mb-1 ml-auto">
+                {{> local_edwiserreports/datatable/length }}
             </div>
         </div>
     </div>

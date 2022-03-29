@@ -38,24 +38,16 @@
         <div class="">
             <div class="reports-list-header d-flex">
                 <h4 class="font-weight-bold"> {{#str}} reportslist, local_edwiserreports {{/str}} </h4>
-                <div class="ml-auto mb-2">
-                    <a href="{{{createnewlink}}}" class="btn theme-primary-bg text-white">
-                        {{#str}} createnewcustomreports, local_edwiserreports {{/str}}
-                    </a>
-                </div>
             </div>
             <div class="reports-list-body">
                 <div class="pt-4">
-                    <div class="border reports-list-content loader d-flex justify-content-center align-items-center">
-                        <div class="w-full text-center">
-                            {{# pix }} i/loading, core, {{#str}} loadinghelp, moodle {{/str}} {{/ pix }}
+                    <div class="row pb-3">
+                        <div class="filter-selector col-12 col-md-3 mb-1">
+                            {{> local_edwiserreports/datatable/search }}
                         </div>
                     </div>
                     <div class="reports-list-content d-none justify-content-center align-items-center">
                         <table id="cr-list-table" class="datatable table"></table>
-                    </div>
-                    <div class="border reports-list-content empty d-none justify-content-center align-items-center">
-                        {{#str}} noreportslist, local_edwiserreports {{/str}}
                     </div>
                 </div>
             </div>
@@ -95,8 +87,9 @@
                     <div class="field ml-3 mr-3" aria-control="{{key}}-field-group">
                         {{#fieldsarray}}
                         <div class="{{id}} p-2">
-                            <div class="checkbox-custom checkbox-primary">
+                            <div class="checkbox-edwiserreports">
                                 <input type="checkbox" id="{{id}}" class="custom-field-checkbox" value="{{id}}" {{#selected}}checked{{/selected}}>
+                                <label for="{{id}}" class="checkmark"></label>
                                 <label for="{{id}}" class="mb-0">{{text}}</label>
                             </div>
                         </div>
@@ -141,6 +134,9 @@
                         {{#str}} createreports, local_edwiserreports {{/str}}
                     {{/isediting}}
                 </button>
+                <a href="{{{createnewlink}}}" class="btn theme-primary-text theme-primary-border">
+                    {{#str}} reset, moodle {{/str}}
+                </a>
             </div>
         </div>
     </div>

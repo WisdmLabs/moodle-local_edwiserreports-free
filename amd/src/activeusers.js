@@ -45,14 +45,17 @@ define([
         var dropdownToggle = "#filter-dropdown.dropdown-toggle";
         var dropdownMenu = ".dropdown-menu[aria-labelledby='filter-dropdown']";
         var dropdownItem = dropdownMenu + " .dropdown-item";
-        var flatpickrCalender = "#flatpickrCalender";
+        var flatpickrCalender = "#flatpickrCalender-activeusers";
         var dropdownButton = "button#filter-dropdown";
         var cohortFilter = '.cohort-select';
         var filter = 'weekly';
         var cohortId = 0;
-        var dropdownInput = "#wdm-userfilter input.form-control.input";
+        var dropdownInput = "#userfilter input.form-control.input";
         var sesskey = null;
         var DataTable = null;
+        var modalTable = null;
+        var searchTable = PageId + " .table-search-input input";
+        var lengthSelect = PageId + " .table-length-input select";
 
         // Initialize select2.
         $(PageId).find('.singleselect').select2();
@@ -62,6 +65,9 @@ define([
 
         // Var tableDom = '<"row"f><"row"t><"row"<"d-none"i><p>>';
         $(document).ready(function() {
+
+            common.handleSearchInput();
+
             /* Show custom dropdown */
             $(dropdownToggle).on("click", function() {
                 $(dropdownMenu).addClass("show");
@@ -115,7 +121,7 @@ define([
                 var ModalRoot = null;
 
                 // eslint-disable-next-line no-eval
-                var titleDate = V.formatDate(new Date(eval(filter * 1000)), "d MMM yyyy");
+                var titleDate = V.formatDate(new Date(eval(filter * 86400 * 1000)), "d MMM yyyy");
 
                 if (action == "activeusers") {
                     title = M.util.get_string('activeusersmodaltitle', V.component, {
@@ -160,16 +166,18 @@ define([
                         }
 
                         // Create dataTable for userslist
-                        ModalRoot.find(".modal-table").DataTable({
-                            dom: '<"edwiserreports-table"<"table-filter d-flex"f><t><"table-pagination"p>>',
+                        modalTable = ModalRoot.find(".modal-table").DataTable({
+                            dom: '<"edwiserreports-table"<"p-2"i><t><"table-pagination"p>>',
                             language: {
-                                searchPlaceholder: "Search User",
                                 emptyTable: "There are no users"
                             },
                             drawCallback: function() {
                                 common.stylePaginationButton(this);
-                            },
-                            bInfo: false
+                            }
+                        });
+
+                        ModalRoot.find('.table-search-input input').on('input', function() {
+                            modalTable.search(this.value).draw();
                         });
                     });
                     return;
@@ -187,7 +195,7 @@ define([
                 altFormat: "d/m/Y",
                 dateFormat: "Y-m-d",
                 maxDate: "today",
-                appendTo: document.getElementById("activeUser-calendar"),
+                appendTo: $(dropdownButton).next().find('.dropdown-calendar').get(0),
                 onOpen: function() {
                     $(dropdownMenu).addClass('withcalendar');
                 },
@@ -252,7 +260,7 @@ define([
                 $.each(response.labels, function(idx, val) {
                     ActiveUsers[idx] = {
                         date: val,
-                        filter: parseInt((new Date(val).getTime() / 1000)),
+                        filter: response.dates[idx],
                         activeusers: response.data.activeUsers[idx],
                         courseenrolment: response.data.enrolments[idx],
                         coursecompletion: response.data.completionRate[idx]
@@ -274,7 +282,7 @@ define([
                     }).always(function() {
                         DataTable = $(ActiveUsersTable).DataTable({
                             responsive: true,
-                            dom: '<"edwiserreports-table"<"table-filter d-flex"fl><"p-2"i><t><"table-pagination"p>>',
+                            dom: '<"edwiserreports-table"<"p-2"i><t><"table-pagination"p>>',
                             order: [
                                 [0, 'desc']
                             ],
@@ -307,6 +315,15 @@ define([
                 common.loader.hide("#wdm-activeusers-individual");
             });
         }
+        // Observer length change.
+        $(lengthSelect).on('change', function() {
+            DataTable.page.len(this.value).draw();
+        });
+
+        // Search in table.
+        $(searchTable).on('input', function() {
+            DataTable.column(0).search(this.value).draw();
+        });
     }
     return {
         init: init

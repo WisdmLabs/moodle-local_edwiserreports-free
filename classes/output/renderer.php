@@ -30,12 +30,12 @@ defined('MOODLE_INTERNAL') || die();
 class local_edwiserreports_renderer extends plugin_renderer_base {
     /**
      * Renders the couse bundle view page.
-     * @param  \local_edwiserreports\output\elucidreport_renderable $report Object of elucid report renderable class
+     * @param  \local_edwiserreports\output\edwiserreports_renderable $report Object of Edwiser Reports renderable class
      * @return string  Html Structure of the view page
      */
-    public function render_local_edwiserreports(\local_edwiserreports\output\elucidreport_renderable $report) {
+    public function render_local_edwiserreports(\local_edwiserreports\output\edwiserreports_renderable $report) {
         $templatecontext = $report->export_for_template($this);
-        return $this->render_from_template('local_sitelocal/edwiserreports', $templatecontext);
+        return $this->render_from_template('local_edwiserreports/index', $templatecontext);
     }
 }
 
@@ -45,7 +45,7 @@ class local_edwiserreports_renderer extends plugin_renderer_base {
 class report_activeusers_renderer extends plugin_renderer_base {
     /**
      * Renders the couse bundle view page.
-     * @param  \local_edwiserreports\output\activeusers_renderable $activeusers Object of elucid report renderable class
+     * @param  \local_edwiserreports\output\activeusers_renderable $activeusers Object of Edwiser Reports renderable class
      * @return string  Html Structure of the view page
      */
     public function render_report_activeusers(\local_edwiserreports\output\activeusers_renderable $activeusers) {
@@ -60,7 +60,7 @@ class report_activeusers_renderer extends plugin_renderer_base {
 class report_coursereport_renderer extends plugin_renderer_base {
     /**
      * Renders the couse bundle view page.
-     * @param  \local_edwiserreports\output\coursereport_renderable $coursereport Object of elucid report renderable class
+     * @param  \local_edwiserreports\output\coursereport_renderable $coursereport Object of Edwiser Reports renderable class
      * @return string  Html Structure of the view page
      */
     public function render_report_courseprogress(\local_edwiserreports\output\coursereport_renderable $coursereport) {
@@ -75,7 +75,7 @@ class report_coursereport_renderer extends plugin_renderer_base {
 class report_certificates_renderer extends plugin_renderer_base {
     /**
      * Renders the couse bundle view page.
-     * @param  \local_edwiserreports\output\certificates_renderable $certificates Object of elucid report renderable class
+     * @param  \local_edwiserreports\output\certificates_renderable $certificates Object of Edwiser Reports renderable class
      * @return string  Html Structure of the view page
      */
     public function render_report_certificates(\local_edwiserreports\output\certificates_renderable $certificates) {

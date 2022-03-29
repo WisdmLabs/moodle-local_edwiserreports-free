@@ -7,11 +7,70 @@
                 background: transparent;
                 padding: 0;
             }
-            & > .container {
+            &>.container {
                 max-width: none;
             }
             #region-main {
                 padding: 0;
+            }
+        }
+    }
+    &.theme_moove {
+        .card {
+            background: transparent;
+            border: none;
+        }
+    }
+    &.theme_move,
+    &.theme_boost {
+        .filter-selector {
+            button.dropdown-toggle {
+                background: #fff;
+                border: 1px solid #e4eaec;
+                padding: .4rem .75rem;
+                border-radius: .215rem;
+            }
+        }
+    }
+}
+
+#page-local-edwiserreports-studentengagement,
+#page-local-edwiserreports-grade,
+#page-local-edwiserreports-certificates,
+#page-local-edwiserreports-coursereport,
+#page-local-edwiserreports-activeusers,
+#page-local-edwiserreports-learner {
+    &.theme_remui {
+        .card-body {
+            background: transparent;
+            padding: 0;
+        }
+    }
+    &.theme_moove {
+        #page-header {
+            display: none;
+        }
+        .card {
+            background: transparent;
+            border: none;
+        }
+    }
+    &.theme_boost {
+        #page-header {
+            display: none;
+        }
+        #region-main {
+            border: none;
+        }
+    }
+    &.theme_move,
+    &.theme_boost {
+        .filter-selector {
+            button.dropdown-toggle {
+                background: #fff;
+                border: 1px solid #e4eaec;
+                padding: .4rem .75rem;
+                border-radius: .215rem;
             }
         }
     }

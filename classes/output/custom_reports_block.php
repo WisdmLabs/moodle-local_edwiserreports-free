@@ -112,6 +112,10 @@ class custom_reports_block implements renderable, templatable {
             )
         );
 
+        $export->searchicon = \local_edwiserreports\utility::image_icon('actions/search');
+        $export->placeholder = get_string('searchtitle', 'local_edwiserreports');
+        $export->length = [10, 25, 50, 100];
+
         return $export;
     }
 

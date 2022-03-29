@@ -22,10 +22,6 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use context_system;
-use moodle_exception;
-use moodle_url;
-
 require_once(__DIR__ . '/../../config.php');
 require_once('classes/output/renderable.php');
 
@@ -74,6 +70,9 @@ $PAGE->set_context($context);
 // Set Page layout.
 $PAGE->set_pagelayout('standard');
 
+// Add theme class to body.
+$PAGE->add_body_classes(array('theme_' . $PAGE->theme->name));
+
 // Set page URL.
 $PAGE->set_url($pageurl);
 
@@ -81,7 +80,7 @@ $PAGE->set_url($pageurl);
 $renderable = new \local_edwiserreports\output\activeusers_renderable();
 $output = $PAGE->get_renderer($component)->render($renderable);
 
-$PAGE->set_heading(get_string("activeusersheader", "local_edwiserreports"));
+$PAGE->set_heading('');
 $PAGE->set_title(get_string("activeusersheader", "local_edwiserreports"));
 
 // Print output in the page.

@@ -28,7 +28,17 @@
     {
     }
 }}
-<div id="wdm-courseprogress-individual" class="table-responsive mt-1" data-sesskey="{{sesskey}}">
+<div id="wdm-courseprogress-individual" class="table-responsive" data-sesskey="{{sesskey}}">
+    <div id="userfilter">
+        <div class="row mt-2">
+            <div class="filter-selector col-12 col-md-3 mb-1">
+                {{> local_edwiserreports/datatable/search }}
+            </div>
+            <div class="filter-selector col-12 col-md-3 mb-1 ml-auto">
+                {{> local_edwiserreports/datatable/length }}
+            </div>
+        </div>
+    </div>
     <table class="table admintable w-100" style="display: none;">
         <thead>
             <tr>

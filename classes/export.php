@@ -845,7 +845,7 @@ class export {
      */
     public function create_query_fields($fields) {
         // Get all the fields.
-        $allfields = \local_edwiserreports\output\elucidreport_renderable::get_report_fields();
+        $allfields = \local_edwiserreports\output\edwiserreports_renderable::get_report_fields();
         $allfields = array_values((array) $allfields);
         $allfields = array_reduce($allfields, 'array_merge', array());
         // Sort fields according to selected fields.

@@ -37,7 +37,6 @@ if (!has_capability('report/local_edwiserreports:view', $context)) {
     throw new moodle_exception(get_string('noaccess', 'local_edwiserreports'));
 }
 
-
 $reportsid = optional_param('id', 0, PARAM_INT);
 if ($reportsid) {
     if (!$DB->record_exists('edwreports_custom_reports', array('id' => $reportsid))) {

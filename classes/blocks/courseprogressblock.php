@@ -436,6 +436,13 @@ class courseprogressblock extends block_base {
      * @return string           HTML content
      */
     public static function get_userslist_table($courseid, $minval, $maxval, $cohortid) {
+        global $OUTPUT;
+        $context = new stdClass;
+        $context->searchicon = \local_edwiserreports\utility::image_icon('actions/search');
+        $context->placeholder = get_string('searchuser', 'local_edwiserreports');
+        $context->length = [10, 25, 50, 100];
+        $filter = $OUTPUT->render_from_template('local_edwiserreports/common-table-search-filter', $context);
+
         $table = new html_table();
         $table->head = array(
             get_string("fullname", "local_edwiserreports"),
@@ -448,7 +455,7 @@ class courseprogressblock extends block_base {
         if (!empty($data)) {
             $table->data = $data;
         }
-        return html_writer::table($table);
+        return $filter . html_writer::table($table);
     }
 
     /**

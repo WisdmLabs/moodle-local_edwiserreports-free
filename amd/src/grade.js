@@ -39,7 +39,9 @@ define([
         TABLE: '#grade table',
         COURSE: '#grade .course-select',
         FORMFILTER: '#grade .download-links [name="filter"]',
-        COHORT: '#grade .cohort-select'
+        COHORT: '#grade .cohort-select',
+        SEARCHTABLE: '#grade .table-search-input input',
+        LENGTH: '#grade .table-length-input select'
     };
 
     /**
@@ -82,7 +84,6 @@ define([
             serverSide: true,
             rowId: 'DT_RowId',
             deferRendering: true,
-            scrollY: "400px",
             scrollX: true,
             scrollCollapse: true,
             autoWidth: true,
@@ -92,7 +93,7 @@ define([
                 { data: "activity", sortable: false },
                 { data: "grade" }
             ],
-            dom: '<"edwiserreports-table"<"table-filter d-flex"fl>i<t><"table-pagination"p>>',
+            dom: '<"edwiserreports-table"i<t><"table-pagination"p>>',
             language: {
                 searchPlaceholder: M.util.get_string('searchuser', 'local_edwiserreports'),
                 emptyTable: M.util.get_string('emptytable', 'local_edwiserreports')
@@ -153,8 +154,24 @@ define([
             dataTable.ajax.reload();
         });
 
-        initializeDatatable();
+        // Search in table.
+        $('body').on('input', SELECTOR.SEARCHTABLE, function() {
+            dataTable.search(this.value).draw();
+        });
 
+        // Observer length change.
+        $(SELECTOR.LENGTH).on('change', function() {
+            if (dataTable === null) {
+                initializeDatatable();
+                return;
+            }
+            console.log(this.value);
+            dataTable.page.len(this.value);
+            dataTable.ajax.reload();
+        });
+
+        initializeDatatable();
+        common.handleSearchInput();
     }
 
     return {

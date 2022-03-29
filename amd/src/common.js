@@ -17,7 +17,7 @@ define([
 ], function(
     $,
     notif,
-    fragment,
+    Fragment,
     ModalFactory,
     ModalEvents,
     Templates,
@@ -55,7 +55,7 @@ define([
     // For email schedule setting
     var settingBtn = "#listemailstab .esr-email-sched-setting";
     var deleteBtn = "#listemailstab .esr-email-sched-delete";
-    var emailListToggleSwitch = "#listemailstab [id^='esr-toggle-']";
+    var emailListToggleSwitch = "#listemailstab .esr-switch";
 
     // Messaged for email schedule
     var schedulerrormsg = M.util.get_string('scheduleerrormsg', 'local_edwiserreports');
@@ -79,6 +79,7 @@ define([
     let SELECTOR = {
         TABLE: '.edwiserreports-table',
         FILTER: '.table-filter',
+        SEARCHTABLE: '.table-search-input input',
         PAGINATION: '.table-pagination',
         PAGINATIONITEM: '.paginate_button'
     };
@@ -118,6 +119,19 @@ define([
     };
 
     /**
+     * Validate comma separated emails.
+     * @param {string} emails Comma separated emails
+     */
+    function validateEmails(emails) {
+        var valid = true;
+        emails = emails.replaceAll(' ', '').split(',');
+        emails.forEach(email => {
+            valid &= emailRegex.test(email);
+        });
+        return valid;
+    }
+
+    /**
      * Email Shcedule Modal Related Psrametres end
      */
 
@@ -125,24 +139,20 @@ define([
         var exportPdf = '.download-links button[value="pdf"]';
         var scheduledEmailDropdown = '.download-links button[value="email"]';
 
-        /**
-         * Report validation message for email input.
-         */
-        $(document).on('input', '[name="esrrecepient"]', function() {
-            if (!emailRegex.test($(this).val())) {
-                $(this).get(0).setCustomValidity('Please enter valid email address');
-                return false;
-            }
-            $(this).get(0).setCustomValidity('');
-        });
-
         // Validating schedule email form fields.
         $(document).on('input', '[name="esrname"], [name="esrrecepient"], [name="esrsubject"]', function() {
             var name = $('[name="esrname"]').val() == "";
-            var recepient = !emailRegex.test($('[name="esrrecepient"]').val());
+            var recepient = !validateEmails($('[name="esrrecepient"]').val());
             var subject = $('[name="esrsubject"]').val() == "";
-            $('.modal-footer.schedule-email').find(`[data-action="save"], [data-action="send"]`)
-                .prop('disabled', name || recepient || subject);
+            var invalid = name || recepient || subject;
+            $('.modal-footer.schedule-email').find(`[data-action="save"], [data-action="send"]`).prop('disabled', invalid);
+            $('#scheduletab .date-filters').toggleClass('disabled', invalid);
+
+            if (!recepient) {
+                $(this).get(0).setCustomValidity('');
+            } else {
+                $(this).get(0).setCustomValidity('Please enter valid email address');
+            }
         });
 
         // Export data in pdf
@@ -208,8 +218,6 @@ define([
          * Schedule emails to send reports.
          */
         $(document).on("click", scheduledEmailDropdown, function(e) {
-            e.preventDefault();
-            $(this).closest('.dropdown').dropdown('toggle');
             var data = v.getScheduledEmailFormContext();
             var form = $(this).closest('form');
             var formData = form.serializeArray();
@@ -226,11 +234,18 @@ define([
 
             ModalFactory.create({
                     title: modalTitle,
-                    body: Templates.render('local_edwiserreports/email_schedule_tabs', data)
-                }, $(this))
+                    body: Fragment.loadFragment(
+                        'local_edwiserreports',
+                        'email_schedule_tabs',
+                        1, {
+                            data: JSON.stringify(data)
+                        }
+                    )
+                })
                 .done(function(modal) {
                     var root = modal.getRoot();
-
+                    root.find('.modal-header').addClass('border-bottom-0');
+                    root.find('.modal-title').addClass('h4 font-weight-600');
                     modal.modal.addClass("modal-lg");
 
                     root.on(ModalEvents.bodyRendered, function() {
@@ -247,6 +262,11 @@ define([
                     emailScheduleFormInit(data, root, modal);
                     modal.show();
                 });
+        });
+
+        // Search in table.
+        $(document).on('input', '#listemailstab .table-search-input input', function() {
+            emailListTable.search(this.value).draw();
         });
 
         // Show reports page when document is ready
@@ -310,7 +330,7 @@ define([
             if (action == 'edit') {
                 ModalFactory.create({
                     title: 'Edit Block Setting',
-                    body: fragment.loadFragment(
+                    body: Fragment.loadFragment(
                         'local_edwiserreports',
                         'get_blocksetting_form',
                         contextid, {
@@ -372,7 +392,7 @@ define([
             } else if (action == "editcap") {
                 ModalFactory.create({
                     title: 'Edit Block Capabilities',
-                    body: fragment.loadFragment(
+                    body: Fragment.loadFragment(
                         'local_edwiserreports',
                         'get_blockscap_form',
                         contextid, {
@@ -393,7 +413,7 @@ define([
                                 data[$d.name] = $d.value;
                             });
 
-                            fragment.loadFragment(
+                            Fragment.loadFragment(
                                 'local_edwiserreports',
                                 'block_overview_display',
                                 contextid, {
@@ -419,7 +439,7 @@ define([
 
                             // Set block capabilities
                             setBlockCapabilities(blockname, data, function() {
-                                modal.destroy();
+                                modal.hide();
                             });
                         });
                     });
@@ -558,9 +578,8 @@ define([
                     })
                 }
             },
-            dom: '<"edwiserreports-table"<"table-filter d-flex"f><t><"table-pagination"p>>',
+            dom: '<"edwiserreports-table"i<t><"table-pagination"p>>',
             language: {
-                searchPlaceholder: "Search shceduled email",
                 emptyTable: "There is no scheduled emails",
                 sClass: 'text-center'
             },
@@ -588,7 +607,6 @@ define([
                 }
             ],
             responsive: true,
-            bInfo: false,
             lengthChange: false,
         });
     }
@@ -601,18 +619,17 @@ define([
      */
     function validateEmailScheduledForm(form, errorBox) {
         var esrname = form.find('[name="esrname"]').val();
-        var esrrecepient = form.find('[name="esrrecepient"]').val();
-        if (esrname == "" || esrrecepient == "") {
+        var esrsubject = form.find('[name="esrsubject"]').val();
+        var valid = true;
+        if (esrname == "" || esrsubject == "") {
             errorBox.html(emptyerrormsg).show();
-            return false;
+            valid = false;
         }
-
-        if (!emailRegex.test(esrrecepient)) {
+        if (!validateEmails(form.find('[name="esrrecepient"]').val())) {
+            valid = false;
             errorBox.html(emailinvaliderrormsg).show();
-            return false;
         }
-
-        return true;
+        return valid;
     }
 
     /**
@@ -664,7 +681,10 @@ define([
 
         // Reset scheduled form
         root.on('click', '[data-action="cancel"]', function() {
-            root.find('[name^=esr]:not(.d-none):not([id="esr-toggle-"])').val("");
+            root.find('[name^=esr]:not(.d-none):not([id="esr-toggle-"])').val("")
+                .each(function(index, element) {
+                    $(element).trigger("input");
+                });
             root.find('#esr-id').val(-1);
         });
     }
@@ -783,8 +803,11 @@ define([
                     checkbox.prop("checked", false);
                 }
             } else {
-                // Set values for input text
+                // Set values for input text.
                 $('[name="' + idx + '"]').val(val);
+                if ($('input[name="' + idx + '"].form-control').length) {
+                    $('input[name="' + idx + '"].form-control').trigger('input');
+                }
             }
 
         });
@@ -883,6 +906,11 @@ define([
             }
         }).done(function(response) {
             response = JSON.parse(response);
+            if (root.find('#esr-toggle-studentengagement-report-' + id).attr('data-value') == "0") {
+                root.find('#esr-toggle-studentengagement-report-' + id).attr('data-value', 'on');
+            } else {
+                root.find('#esr-toggle-studentengagement-report-' + id).attr('data-value', '0');
+            }
             if (!response.error) {
                 errorBox.html(response.successmsg);
                 errorBox.show();
@@ -950,7 +978,7 @@ define([
         });
 
         // When toggle switch clicked then
-        root.on('change', emailListToggleSwitch, function() {
+        root.on('click', emailListToggleSwitch, function() {
             data.id = $(this).data("id");
             changeScheduledEmailStatusInit(data, root, modal);
         });
@@ -1093,11 +1121,22 @@ define([
         });
     }
 
+    /**
+     * Handling highlight of search input.
+     */
+    function handleSearchInput() {
+        /* Table search listener */
+        $('body').on('input', SELECTOR.SEARCHTABLE, function() {
+            $(this).toggleClass('empty', $(this).val() === '');
+        });
+    }
+
     return {
         loader: loader,
         insight: insight,
         timeFormatter: timeFormatter,
         dateChange: dateChange,
-        stylePaginationButton: stylePaginationButton
+        stylePaginationButton: stylePaginationButton,
+        handleSearchInput: handleSearchInput
     };
 });

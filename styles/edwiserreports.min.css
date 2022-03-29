@@ -16,6 +16,37 @@
     animation: rotating 2s linear infinite;
 }
 
+#wdm-activeusers-individual .dropdown-menu.withcalendar {
+    width: 310px;
+    display: flex;
+    right: 0;
+    left: auto;
+}
+
+#wdm-activeusers-individual .dropdown-menu.withcalendar .dropdown-body {
+    display: none;
+}
+
+#wdm-activeusers-individual .dropdown-menu.withcalendar .dropdown-calendar {
+    height: 300px;
+    width: 308px;
+    float: left;
+    position: relative;
+}
+
+#wdm-activeusers-individual .dropdown-menu.withcalendar .dropdown-calendar .flatpickr-calendar {
+    top: 0 !important;
+    left: 0 !important;
+    right: auto !important;
+    box-shadow: none !important;
+    border: 0 !important;
+    position: unset;
+}
+
+#wdm-activeusers-individual .filter-wrapper {
+    width: fit-content;
+}
+
 #wdm-activeusers-individual input.dropdown-item {
     background-color: transparent;
     color: inherit;
@@ -31,11 +62,6 @@
     box-shadow: none;
 }
 
-#wdm-activeusers-individual .dropdown-menu[aria-labelledby="filter-dropdown"] {
-    right: 0;
-    left: auto;
-}
-
 #wdm-activeusers-individual .dataTable .sorting_asc,
 #wdm-activeusers-individual .dataTable .sorting_desc,
 #wdm-activeusers-individual .dataTable .sorting {
@@ -49,6 +75,108 @@
 #wdm-certificates-individual .table .pie-progress {
     width: 40px;
     margin: auto;
+}
+
+.filter-selector .dropdown-menu .dropdown-item input {
+    height: auto;
+}
+
+.filter-selector .dropdown-menu .dropdown-item.active, .filter-selector .dropdown-menu .dropdown-item:not(.custom):hover {
+    text-decoration: underline;
+}
+
+.filter-selector .dropdown-menu .dropdown-item.active,
+.filter-selector .dropdown-menu .dropdown-item.active input, .filter-selector .dropdown-menu .dropdown-item:hover {
+    background: white !important;
+}
+
+.filter-selector .dropdown-menu .custom input::-webkit-input-placeholder {
+    color: inherit;
+}
+
+.filter-selector .dropdown-menu .custom input:-moz-placeholder {
+    color: inherit;
+}
+
+.filter-selector .dropdown-menu .custom input::-moz-placeholder {
+    color: inherit;
+}
+
+.filter-selector .dropdown-menu .custom input:-ms-input-placeholder {
+    color: inherit;
+}
+
+.filter-selector .dropdown-menu .custom input::-ms-input-placeholder {
+    color: inherit;
+}
+
+.filter-selector .dropdown-menu .custom input::placeholder {
+    color: inherit;
+}
+
+.filter-selector .dropdown-menu .custom:hover input::-webkit-input-placeholder {
+    background: white !important;
+    text-decoration: underline;
+}
+
+.filter-selector .dropdown-menu .custom:hover input:-moz-placeholder {
+    background: white !important;
+    text-decoration: underline;
+}
+
+.filter-selector .dropdown-menu .custom:hover input::-moz-placeholder {
+    background: white !important;
+    text-decoration: underline;
+}
+
+.filter-selector .dropdown-menu .custom:hover input:-ms-input-placeholder {
+    background: white !important;
+    text-decoration: underline;
+}
+
+.filter-selector .dropdown-menu .custom:hover input::-ms-input-placeholder {
+    background: white !important;
+    text-decoration: underline;
+}
+
+.filter-selector .dropdown-menu .custom:hover input::placeholder {
+    background: white !important;
+    text-decoration: underline;
+}
+
+.panel-header .dropdown-menu .dropdown-item:not(.disabled):hover {
+    background: white !important;
+    text-decoration: underline;
+}
+
+.block-filters .dropdown-menu .dropdown-item:hover {
+    background: white !important;
+    text-decoration: underline;
+}
+
+.filters .dropdown-menu .dropdown-item:hover {
+    background: white !important;
+    text-decoration: underline;
+}
+
+#scheduletab .date-filters .dropdown .dropdown-item:hover {
+    background: white;
+    text-decoration: underline;
+}
+
+.select2-results__option--highlighted,
+.select2-results__option[aria-selected='true'] {
+    background-color: white !important;
+    text-decoration: underline;
+}
+
+.edwiserreports-table .dataTables_length select option {
+    background: white;
+    color: inherit;
+}
+
+.edwiserreports-table .dataTables_length select option:hover {
+    background: white !important;
 }
 
 @-webkit-keyframes rotating {
@@ -172,6 +300,17 @@ tr[aria-expanded="true"] .accordion-arrow.icon {
     display: none;
 }
 
+#page-local-edwiserreports-index .edwiserreports-header .filter-selector {
+    position: relative;
+}
+
+#page-local-edwiserreports-index .edwiserreports-header .filter-selector .dropdown-menu {
+    right: 0 !important;
+    left: auto !important;
+    transform: none !important;
+    top: 100% !important;
+}
+
 #page-local-edwiserreports-index .dropdown-menu.withcalendar {
     width: 310px;
     display: flex;
@@ -197,12 +336,19 @@ tr[aria-expanded="true"] .accordion-arrow.icon {
     position: unset;
 }
 
-#page-local-edwiserreports-index .filter-wrapper {
-    width: fit-content;
+#page-local-edwiserreports-index .selected-period {
+    padding: 0.1rem 0.8rem;
+    border-radius: 1rem;
+    font-weight: 500;
 }
 
-#wdm-edwiserreports[data-editing="1"] .panel-header .blocksetting {
-    z-index: 2;
+#page-local-edwiserreports-index .filter-wrapper {
+    width: fit-content;
+    z-index: 1300;
+}
+
+#wdm-edwiserreports .apexcharts-toolbar {
+    transform: translateY(-1.7rem);
 }
 
 #wdm-edwiserreports .panel {
@@ -272,6 +418,39 @@ tr[aria-expanded="true"] .accordion-arrow.icon {
     background-image: none !important;
 }
 
+#wdm-edwiserreports .edwiserReport-block #gradeblock .apexcharts-tooltip,
+#wdm-edwiserreports .edwiserReport-block #courseprogressblock .apexcharts-tooltip,
+#wdm-edwiserreports .edwiserReport-block #learnertimespentonsiteblock [data-charttype="donut"] .apexcharts-tooltip {
+    overflow: visible !important;
+    background: transparent;
+}
+
+#wdm-edwiserreports .edwiserReport-block .custom-donut-tooltip {
+    padding: 1rem 1rem;
+    background: white;
+    color: orange;
+    border: 1px solid #e5e5e5;
+    border-radius: 5px;
+    box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+#wdm-edwiserreports .edwiserReport-block .custom-donut-tooltip::after, #wdm-edwiserreports .edwiserReport-block .custom-donut-tooltip::before {
+    content: " ";
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 95%;
+    border-top: 0.8rem solid white;
+    border-right: 0.8rem solid transparent;
+    border-left: 0.8rem solid transparent;
+}
+
+#wdm-edwiserreports .edwiserReport-block .custom-donut-tooltip::before {
+    border-top: 0.9rem solid #e5e5e5;
+    border-right: 0.9rem solid transparent;
+    border-left: 0.9rem solid transparent;
+}
+
 #wdm-edwiserreports .edwiserReport-block > div {
     position: relative;
     height: 100%;
@@ -282,6 +461,10 @@ tr[aria-expanded="true"] .accordion-arrow.icon {
 
 #wdm-edwiserreports .edwiserReport-block > div .panel {
     height: 100%;
+}
+
+#wdm-edwiserreports .edwiserReport-block > div .panel:not(:hover) .upgrade-to-pro {
+    display: none;
 }
 
 #wdm-edwiserreports .edwiserReport-block > div .panel .upgrade-to-pro {
@@ -301,12 +484,44 @@ tr[aria-expanded="true"] .accordion-arrow.icon {
     transform: translate(-50%, -50%);
 }
 
-#wdm-edwiserreports .edwiserReport-block > div .panel:not(:hover) .upgrade-to-pro {
-    display: none;
-}
-
 #wdm-edwiserreports .edwiserReport-block > div .panel .panel-header {
     position: relative;
+}
+
+#wdm-edwiserreports .edwiserReport-block > div .panel .panel-header .dropdown.blockoptions .dropdown-menu {
+    overflow: visible !important;
+}
+
+#wdm-edwiserreports .edwiserReport-block > div .panel .panel-header .dropdown.blockoptions .dropdown-menu::after, #wdm-edwiserreports .edwiserReport-block > div .panel .panel-header .dropdown.blockoptions .dropdown-menu::before {
+    content: " ";
+    position: absolute;
+    right: 0.5rem;
+    top: -0.8rem;
+    border-bottom: 0.8rem solid white;
+    border-right: 0.6rem solid transparent;
+    border-left: 0.6rem solid transparent;
+}
+
+#wdm-edwiserreports .edwiserReport-block > div .panel .panel-header .dropdown.blockoptions .dropdown-menu::before {
+    transform: translate(0.1rem, -0.2rem);
+    border-bottom: 1rem solid #e5e5e5;
+    border-right: 0.7rem solid transparent;
+    border-left: 0.7rem solid transparent;
+}
+
+#wdm-edwiserreports .edwiserReport-block > div .panel .panel-header .dropdown.blockoptions.show button {
+    background: #E5E5E5;
+    border-radius: 5px;
+}
+
+#wdm-edwiserreports .edwiserReport-block > div .panel .panel-header .panel-background {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.15;
+    z-index: 0;
 }
 
 #wdm-edwiserreports .edwiserReport-block > div .panel .panel-header .panel-title {
@@ -405,6 +620,33 @@ tr[aria-expanded="true"] .accordion-arrow.icon {
     white-space: nowrap;
 }
 
+#scheduletab input {
+    height: 2.7rem;
+}
+
+#scheduletab input,
+#scheduletab textarea,
+#scheduletab .dropdown button {
+    background: #FFFFFF;
+    box-sizing: border-box;
+    border-radius: 0.285rem;
+    box-shadow: 0px 0.142rem 0.142rem rgba(0, 0, 0, 0.3);
+}
+
+#scheduletab .date-filters.disabled .dropdown,
+#scheduletab .date-filters.disabled .esr-switch {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+#listemailstab .esr-switch[data-value="0"] .show-svg {
+    display: none;
+}
+
+#listemailstab .esr-switch[data-value="on"] .hide-svg, #listemailstab .esr-switch[data-value="1"] .hide-svg {
+    display: none;
+}
+
 #listemailstab tbody.empty {
     display: none;
 }
@@ -437,16 +679,6 @@ tr[aria-expanded="true"] .accordion-arrow.icon {
 
 #mostactivecourses input[type="search"] {
     margin: 0;
-}
-
-div[id^="wdm-"][id*="-individual"] {
-    padding: 10px;
-    background: #fff;
-    min-height: 600px;
-}
-
-div[id^="wdm-"][id*="-individual"] table.table {
-    min-width: 100%;
 }
 
 .modal-dialog .table {
@@ -528,6 +760,14 @@ div[id^="wdm-"][id*="-individual"] table.table {
 
 .modal .comparisontable .switch-capability label {
     cursor: pointer;
+}
+
+#page-local-edwiserreports-index .insight-danger {
+    color: #DC0000;
+}
+
+#page-local-edwiserreports-index .insight-success {
+    color: #1AB900;
 }
 
 #page-local-edwiserreports-index #page-header #editing-btn {
@@ -625,9 +865,37 @@ div[id^="wdm-"][id*="-individual"] table.table {
     }
 }
 
-#wdm-userfilter .dropdown-menu {
-    max-height: 400px;
-    overflow: auto;
+#gradeblock .panel-body .apexcharts-legend,
+#courseprogressblock .panel-body .apexcharts-legend {
+    bottom: auto;
+    border: 1px solid #E5E5E5;
+    border-radius: 4px;
+    padding: 1.2rem;
+    right: 1rem !important;
+}
+
+#gradeblock .panel-body .apexcharts-legend .apexcharts-legend-series,
+#courseprogressblock .panel-body .apexcharts-legend .apexcharts-legend-series {
+    margin: 2px 0;
+}
+
+.report-header {
+    padding: 2rem 0;
+}
+
+#studentengagement,
+#learner,
+#grade,
+#coursereport,
+#wdm-activeusers-individual,
+#wdm-certificates-individual,
+#learner {
+    position: relative;
+    overflow: hidden;
+    padding: 2rem;
+    background-color: white;
+    box-shadow: 0 7px 14px 0 rgba(59, 65, 94, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.07);
+    min-height: 350px;
 }
 
 #studentengagement table th:nth-child(n+2),
@@ -635,28 +903,22 @@ div[id^="wdm-"][id*="-individual"] table.table {
 #learner table th:nth-child(n+2),
 #learner table td:nth-child(n+2),
 #grade table th:nth-child(n+2),
-#grade table td:nth-child(n+2) {
+#grade table td:nth-child(n+2),
+#coursereport table th:nth-child(n+2),
+#coursereport table td:nth-child(n+2),
+#wdm-activeusers-individual table th:nth-child(n+2),
+#wdm-activeusers-individual table td:nth-child(n+2),
+#wdm-certificates-individual table th:nth-child(n+2),
+#wdm-certificates-individual table td:nth-child(n+2),
+#learner table th:nth-child(n+2),
+#learner table td:nth-child(n+2) {
     text-align: center;
 }
 
-#gradeblock [class*="-graphs"] .filter-selector .btn,
-#gradeblock [class*="-graphs"] .filter-selector .select2,
-#studentengagementblock [class*="-graphs"] .filter-selector .btn,
-#studentengagementblock [class*="-graphs"] .filter-selector .select2,
-#learnerblock [class*="-graphs"] .filter-selector .btn,
-#learnerblock [class*="-graphs"] .filter-selector .select2 {
-    max-width: 13.5rem;
-}
-
-#gradeblock .block-filters .filter-selector .select2,
-#studentengagementblock .block-filters .filter-selector .select2,
-#learnerblock .block-filters .filter-selector .select2 {
-    max-width: 13.5rem;
-}
-
-#studentengagement .select2,
-#grade .select2 {
-    max-width: 13.5rem;
+#wdm-courseprogress-individual,
+#wdm-courseengage-individual,
+#wdm-completion-individual {
+    overflow: hidden;
 }
 
 #page-local-edwiserreports-old_logs .progress {
@@ -723,9 +985,10 @@ div[id^="wdm-"][id*="-individual"] table.table {
 
 .insight-card .insight-direction .value {
     position: relative;
-    font-size: 1.2rem;
+    display: block;
+    font-size: 1rem;
     font-weight: 600;
-    border: 1px solid grey;
+    border: 1px solid #E5E5E5;
     border-radius: 2rem;
     padding: 0rem 0.5rem 0 2rem;
 }
@@ -733,9 +996,9 @@ div[id^="wdm-"][id*="-individual"] table.table {
 .insight-card .insight-direction .value .fa {
     position: absolute;
     left: -1px;
-    top: calc(50% + 1px);
+    top: 50%;
     transform: translateY(-50%);
-    font-size: 1.8rem;
+    font-size: 1.9rem;
 }
 
 .insight-card .insight-details {
@@ -752,6 +1015,95 @@ div[id^="wdm-"][id*="-individual"] table.table {
     bottom: 15%;
     width: 1px;
     background-color: rgba(0, 0, 0, 0.2);
+}
+
+.download-links .download-label {
+    font-weight: 500;
+    text-transform: uppercase;
+    margin: auto;
+}
+
+.checkbox-edwiserreports {
+    display: block;
+    position: relative;
+    padding: 0.892rem;
+    margin-bottom: 0;
+    user-select: none;
+}
+
+.checkbox-edwiserreports input {
+    display: none !important;
+}
+
+.checkbox-edwiserreports input:disabled + .checkmark {
+    opacity: 0.5;
+}
+
+.checkbox-edwiserreports input:checked ~ .checkmark {
+    background-color: #2196F3;
+}
+
+.checkbox-edwiserreports input:checked ~ .checkmark:after {
+    display: block;
+}
+
+.checkbox-edwiserreports input + .checkmark {
+    user-select: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+    height: 1.785rem;
+    width: 1.785rem;
+    border: 1px solid #E5E5E5;
+    border-radius: 5px;
+}
+
+.checkbox-edwiserreports input + .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+    left: 0.6rem;
+    top: 0.214rem;
+    width: 0.428rem;
+    height: 1rem;
+    border: solid white;
+    border-width: 0 0.2rem 0.2rem 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.table-search-input {
+    position: relative;
+}
+
+.table-search-input button {
+    transition: opacity 300ms ease-in-out;
+}
+
+.table-search-input input {
+    padding-right: 3.5rem;
+}
+
+.table-search-input input.empty ~ .search-button {
+    opacity: 0.2;
+}
+
+.table-search-input .search-button {
+    position: absolute;
+    pointer-events: none;
+    right: 0;
+    top: 0;
+    width: 3.5rem;
+    height: 100%;
+}
+
+.table-length-input .length-label {
+    display: flex;
+    align-items: end;
+    justify-content: right;
+    padding-right: 0;
 }
 
 #wdm-edwiserreports #courseprogressblock .col-md-3 {
@@ -785,8 +1137,8 @@ div[id^="wdm-"][id*="-individual"] table.table {
     white-space: unset;
 }
 
-.reports-preview-body .empty,
-.reports-list-body .empty {
+.reports-preview-body table.empty,
+.reports-list-body table.empty {
     height: 300px;
 }
 
@@ -797,6 +1149,18 @@ div[id^="wdm-"][id*="-individual"] table.table {
     height: 36px;
     width: 36px;
     font-size: 36px;
+}
+
+.reports-list-content [data-action="hide"][data-value="0"] .show-svg {
+    display: none;
+}
+
+.reports-list-content [data-action="hide"][data-value="1"] .hide-svg {
+    display: none;
+}
+
+.reports-filter-body .checkbox-edwiserreports {
+    padding: 0.2rem 2.5rem;
 }
 
 .reports-filter-body .field-group {
@@ -1425,6 +1789,82 @@ table.dataTable td.dataTables_empty {
     padding: 0;
 }
 
+#page-local-edwiserreports-index.theme_moove .card {
+    background: transparent;
+    border: none;
+}
+
+#page-local-edwiserreports-index.theme_move .filter-selector button.dropdown-toggle, #page-local-edwiserreports-index.theme_boost .filter-selector button.dropdown-toggle {
+    background: #fff;
+    border: 1px solid #e4eaec;
+    padding: .4rem .75rem;
+    border-radius: .215rem;
+}
+
+#page-local-edwiserreports-studentengagement.theme_remui .card-body,
+#page-local-edwiserreports-grade.theme_remui .card-body,
+#page-local-edwiserreports-certificates.theme_remui .card-body,
+#page-local-edwiserreports-coursereport.theme_remui .card-body,
+#page-local-edwiserreports-activeusers.theme_remui .card-body,
+#page-local-edwiserreports-learner.theme_remui .card-body {
+    background: transparent;
+    padding: 0;
+}
+
+#page-local-edwiserreports-studentengagement.theme_moove #page-header,
+#page-local-edwiserreports-grade.theme_moove #page-header,
+#page-local-edwiserreports-certificates.theme_moove #page-header,
+#page-local-edwiserreports-coursereport.theme_moove #page-header,
+#page-local-edwiserreports-activeusers.theme_moove #page-header,
+#page-local-edwiserreports-learner.theme_moove #page-header {
+    display: none;
+}
+
+#page-local-edwiserreports-studentengagement.theme_moove .card,
+#page-local-edwiserreports-grade.theme_moove .card,
+#page-local-edwiserreports-certificates.theme_moove .card,
+#page-local-edwiserreports-coursereport.theme_moove .card,
+#page-local-edwiserreports-activeusers.theme_moove .card,
+#page-local-edwiserreports-learner.theme_moove .card {
+    background: transparent;
+    border: none;
+}
+
+#page-local-edwiserreports-studentengagement.theme_boost #page-header,
+#page-local-edwiserreports-grade.theme_boost #page-header,
+#page-local-edwiserreports-certificates.theme_boost #page-header,
+#page-local-edwiserreports-coursereport.theme_boost #page-header,
+#page-local-edwiserreports-activeusers.theme_boost #page-header,
+#page-local-edwiserreports-learner.theme_boost #page-header {
+    display: none;
+}
+
+#page-local-edwiserreports-studentengagement.theme_boost #region-main,
+#page-local-edwiserreports-grade.theme_boost #region-main,
+#page-local-edwiserreports-certificates.theme_boost #region-main,
+#page-local-edwiserreports-coursereport.theme_boost #region-main,
+#page-local-edwiserreports-activeusers.theme_boost #region-main,
+#page-local-edwiserreports-learner.theme_boost #region-main {
+    border: none;
+}
+
+#page-local-edwiserreports-studentengagement.theme_move .filter-selector button.dropdown-toggle, #page-local-edwiserreports-studentengagement.theme_boost .filter-selector button.dropdown-toggle,
+#page-local-edwiserreports-grade.theme_move .filter-selector button.dropdown-toggle,
+#page-local-edwiserreports-grade.theme_boost .filter-selector button.dropdown-toggle,
+#page-local-edwiserreports-certificates.theme_move .filter-selector button.dropdown-toggle,
+#page-local-edwiserreports-certificates.theme_boost .filter-selector button.dropdown-toggle,
+#page-local-edwiserreports-coursereport.theme_move .filter-selector button.dropdown-toggle,
+#page-local-edwiserreports-coursereport.theme_boost .filter-selector button.dropdown-toggle,
+#page-local-edwiserreports-activeusers.theme_move .filter-selector button.dropdown-toggle,
+#page-local-edwiserreports-activeusers.theme_boost .filter-selector button.dropdown-toggle,
+#page-local-edwiserreports-learner.theme_move .filter-selector button.dropdown-toggle,
+#page-local-edwiserreports-learner.theme_boost .filter-selector button.dropdown-toggle {
+    background: #fff;
+    border: 1px solid #e4eaec;
+    padding: .4rem .75rem;
+    border-radius: .215rem;
+}
+
 #wdm-edwiserreports #todaysactivityblock input.input-group-addon {
     top: 0;
     right: 0;
@@ -1505,11 +1945,28 @@ table.dataTable td.dataTables_empty {
     }
 }
 
-.top-insights.editing .insight:first-child .card-editing .move-left {
-    display: none;
+.top-insights {
+    width: 99%;
 }
 
-.top-insights.editing .insight:first-child:nth-last-child(2) .card-editing .edit-hide {
+.top-insights .row {
+    margin: 0 -2.2rem;
+}
+
+.top-insights.editing .insight .card-editing .fa {
+    transition: all 0.3s ease-in-out;
+}
+
+@media (max-width: 767px) {
+    .top-insights.editing .insight .card-editing .fa.fa-arrow-right {
+        transform: rotate(90deg);
+    }
+    .top-insights.editing .insight .card-editing .fa.fa-arrow-left {
+        transform: rotate(90deg);
+    }
+}
+
+.top-insights.editing .insight:first-child .card-editing .move-left {
     display: none;
 }
 
@@ -1519,6 +1976,10 @@ table.dataTable td.dataTables_empty {
 
 .top-insights.editing .insight:nth-child(n+5) {
     display: none;
+}
+
+.top-insights .insight {
+    padding: 2.5rem;
 }
 
 .top-insights .insight:first-child {
@@ -1554,16 +2015,11 @@ table.dataTable td.dataTables_empty {
 }
 
 .top-insights .insight-wrapper {
+    min-height: 10rem;
     box-shadow: 0 7px 14px 0 rgba(59, 65, 94, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.07);
     background: white;
     height: 100%;
     position: relative;
-}
-
-.top-insights .insight-wrapper .pro-lock {
-    position: absolute;
-    right: 1rem;
-    top: 1rem;
 }
 
 .top-insights .insight-wrapper .insight-image .icon {
@@ -1572,6 +2028,10 @@ table.dataTable td.dataTables_empty {
 }
 
 .top-insights .insight-wrapper .insight-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    line-height: 1.142rem;
+    color: #999999;
     text-transform: uppercase;
 }
 
@@ -1599,7 +2059,7 @@ table.dataTable td.dataTables_empty {
     position: relative;
     font-size: 1.2rem;
     font-weight: 600;
-    border: 1px solid grey;
+    border: 1px solid #E5E5E5;
     border-radius: 2rem;
     padding: 0rem 0.5rem 0 2rem;
 }

@@ -21,9 +21,10 @@
  */
 define([
     'jquery',
-    'local_edwiserreports/variables',
-    'local_edwiserreports/common'
-], function($, V) {
+    './variables',
+    './common',
+    './select2'
+], function($, V, common) {
     /* eslint-disable no-unused-vars */
     /**
      * Initialize
@@ -31,27 +32,44 @@ define([
      */
     function init(CONTEXTID) {
         /* eslint-enable no-unused-vars */
-        var PageId = $("#wdm-completion-individual");
-        var CompletionTable = PageId.find(".table");
-        var loader = PageId.find(".loader");
+        var PageId = "#wdm-completion-individual";
+        var CompletionTable = $(PageId).find(".table");
         var Table = null;
+        var pageLength = 10;
+        var lengthSelect = "#wdm-completion-individual .table-length-input select";
+        var searchTable = "#wdm-completion-individual .table-search-input input";
 
         // Varibales for cohort filter
         var cohortId = 0;
 
         $(document).ready(function() {
+
+            common.handleSearchInput();
+
             // Get course id
             var courseId = $(PageId).find('.download-links input[name="filter"]').val();
 
             getCourseCompletion(courseId, cohortId);
 
-            /* Select cohort filter for active users block */
-            $(V.cohortFilterItem).on('click', function() {
-                cohortId = $(this).data('cohortid');
-                $(V.cohortFilterBtn).html($(this).text());
-                // V.changeExportUrl(cohortId, V.exportUrlLink, V.cohortReplaceFlag);
+            // Select cohort filter for active users block.
+            $(PageId).find('.cohort-select').on('change', function() {
+                cohortId = $(this).val();
                 $(PageId).find('.download-links input[name="cohortid"]').val(cohortId);
                 getCourseCompletion(courseId, cohortId);
+            });
+
+            // Initialize select2.
+            $(PageId).find('.singleselect').select2();
+
+            // Observer length change.
+            $(lengthSelect).on('change', function() {
+                Table.page.len(this.value).draw();
+                pageLength = this.value;
+            });
+
+            // Search in table.
+            $(searchTable).on('input', function() {
+                Table.column(0).search(this.value).draw();
             });
         });
 
@@ -61,52 +79,49 @@ define([
          * @param  {number} cohortId Cohort Id
          */
         function getCourseCompletion(courseId, cohortId) {
-            if (Table) {
-                Table.destroy();
-                CompletionTable.hide();
-                loader.show();
-            }
+            common.loader.show(PageId);
 
             var params = {
                 action: "get_completion_data_ajax",
-                sesskey: PageId.data("sesskey"),
+                sesskey: $(PageId).data("sesskey"),
                 data: JSON.stringify({
                     courseid: courseId,
                     cohortid: cohortId
                 })
             };
-            var url = V.generateUrl(V.requestUrl, params);
 
-            CompletionTable.show();
+            if (Table != null) {
+                Table.destroy();
+            }
+
             Table = CompletionTable.DataTable({
-                ajax: url,
+                dom: '<"edwiserreports-table"<"table-filter d-flex"i><t><"table-pagination"p>>',
+                ajax: V.generateUrl(V.requestUrl, params),
+                pageLength: pageLength,
                 oLanguage: {
                     sEmptyTable: "No users are enrolled as student",
-                    sSearchPlaceholder: "Search User"
                 },
                 columns: [
-                    {"data": "username"},
-                    {"data": "enrolledon"},
-                    {"data": "enrolltype"},
-                    {"data": "noofvisits"},
-                    {"data": "completion"},
-                    {"data": "compleiontime"},
-                    {"data": "grade"},
-                    {"data": "lastaccess"}
+                    { "data": "username" },
+                    { "data": "enrolledon" },
+                    { "data": "enrolltype" },
+                    { "data": "noofvisits" },
+                    { "data": "completion" },
+                    { "data": "compleiontime" },
+                    { "data": "grade" },
+                    { "data": "lastaccess" }
                 ],
                 drawCallback: function() {
-                    $('.dataTables_paginate > .pagination').addClass('pagination-sm pull-right');
-                    $('.dataTables_filter').addClass('pagination-sm pull-right');
+                    common.stylePaginationButton(this);
                 },
                 columnDefs: [
-                    {className: "text-left", targets: 0},
-                    {className: "text-left", targets: 1},
-                    {className: "text-center", targets: "_all"}
+                    { className: "text-left", targets: 0 },
+                    { className: "text-left", targets: 1 },
+                    { className: "text-center", targets: "_all" }
                 ],
                 initComplete: function() {
-                    $(loader).hide();
-                },
-                bInfo: false
+                    common.loader.hide(PageId);
+                }
             });
         }
     }

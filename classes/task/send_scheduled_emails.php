@@ -61,6 +61,21 @@ class send_scheduled_emails extends \core\task\scheduled_task {
         $records = $DB->get_records($table);
         mtrace(get_string('sendingscheduledemails', 'local_edwiserreports'));
         foreach ($records as $key => $record) {
+
+            // Removing orphaned records.
+            if ($record->component == 'block') {
+                if (!$DB->get_record_sql(
+                    "SELECT *
+                       FROM {edwreports_blocks}
+                      WHERE " .
+                      $DB->sql_compare_text('classname') . ' = ' . $DB->sql_compare_text(':blockname'),
+                    array('blockname' => $record->blockname))) {
+                    echo "--------------------------------------------------------------------------------\n";
+                    echo "Invalid block " . $record->blockname .". Removing the record.\n";
+                    $DB->delete_records($table, array('id' => $key));
+                    continue;
+                }
+            }
             // If it dosent have email data.
             if (!$emaildata = json_decode($record->emaildata)) {
                 continue;
@@ -77,19 +92,26 @@ class send_scheduled_emails extends \core\task\scheduled_task {
             }
 
             foreach ($emaildata as $k => $email) {
+                echo "--------------------------------------------------------------------------------\n";
+                echo "Task\t: ". $record->blockname ."\n";
+                echo "Name\t: ".$email->esrname . "\n";
+                echo "Status\t: ";
+
                 // Not scheduled for this time.
                 if ($timenow < $email->esrnextrun) {
-                    echo "Not scheduled yet";
+                    echo "Scheduled to run at: ".date('Y-m-d H:i:s', $email->esrnextrun)."\n";
                     continue;
                 }
 
+                // Disabled.
                 if (!$email->esremailenable) {
-                    echo "Email Disabled";
+                    echo "Is Disabled\n";
                     continue;
                 }
 
+                // If reports parameters are not set.
                 if (!isset($email->reportparams)) {
-                    echo "No reports param";
+                    echo "No reports param\n";
                     continue;
                 }
 
@@ -115,12 +137,14 @@ class send_scheduled_emails extends \core\task\scheduled_task {
                     $email->esrnextrun = $schedtime;
                     $emaildata[$k] = $email;
                     ob_clean();
+                    echo "Email sent successfully\n";
                 }
             }
 
             $record->emaildata = json_encode($emaildata);
             $DB->update_record($table, $record);
         }
+        echo "--------------------------------------------------------------------------------\n";
     }
 
     /**

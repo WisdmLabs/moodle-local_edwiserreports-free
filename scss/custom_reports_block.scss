@@ -2,7 +2,7 @@
 
 .reports-preview-body,
 .reports-list-body {
-    .empty {
+    table.empty {
         height: 300px;
     }
     .reports-preview-content.loader,
@@ -15,7 +15,25 @@
     }
 }
 
+.reports-list-content {
+    [data-action="hide"] {
+        &[data-value="0"] {
+            .show-svg {
+                display: none;
+            }
+        }
+        &[data-value="1"] {
+            .hide-svg {
+                display: none;
+            }
+        }
+    }
+}
+
 .reports-filter-body {
+    .checkbox-edwiserreports {
+        padding: 0.2rem 2.5rem;
+    }
     .field-group {
         cursor: pointer;
         &+.field {

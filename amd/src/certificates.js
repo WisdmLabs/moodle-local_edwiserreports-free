@@ -21,30 +21,28 @@
  */
 define([
     'jquery',
-    'core/modal_factory',
-    'core/modal_events',
-    'core/fragment',
-    'core/templates',
+    'local_edwiserreports/common',
     'local_edwiserreports/variables',
     'local_edwiserreports/select2',
     'local_edwiserreports/jquery.dataTables',
     'local_edwiserreports/dataTables.bootstrap4',
-    'local_edwiserreports/jquery-asPieProgress',
-    'local_edwiserreports/common'
-], function($, ModalFactory, ModalEvents, Fragment, Templates, V) {
+    'local_edwiserreports/jquery-asPieProgress'
+], function($, common, V) {
     /* eslint-disable no-unused-vars */
     /**
      * Initialize
      * @param {integer} CONTEXTID Current page context id
      */
     function init(CONTEXTID) {
-    /* eslint-enable no-unused-vars */
+        /* eslint-enable no-unused-vars */
         var PageId = $("#wdm-certificates-individual");
         var CertTable = PageId.find(".table");
         var CertSelect = "#wdm-certificates-select";
         var exportUrlLink = ".dropdown-menu[aria-labelledby='export-dropdown'] .dropdown-item";
-        var dataTable = null;
+        var dataTable;
         var certificateid = null;
+        var searchTable = PageId.find(".table-search-input input");
+        var lengthSelect = PageId.find(".table-length-input select");
 
         // Varibales for cohort filter
         var cohortId = 0;
@@ -66,51 +64,7 @@ define([
                 })
             };
 
-            if (dataTable) {
-                dataTable.destroy();
-            }
-
-            dataTable = CertTable.DataTable({
-                ajax: V.generateUrl(V.requestUrl, params),
-                columnDefs: [
-                    {
-                        "targets": 0,
-                        "className": "align-middle"
-                    },
-                    {
-                        "targets": 1,
-                        "className": "align-middle"
-                    },
-                    {
-                        "targets": "_all",
-                        "className": "align-middle text-center"
-                    }
-                ],
-                columns: [
-                    {"data": "username"},
-                    {"data": "email"},
-                    {"data": "issuedate"},
-                    {"data": "dateenrolled"},
-                    {"data": "grade"},
-                    {"data": "courseprogress"}
-                ],
-                language: {
-                    searchPlaceholder: "Search User",
-                    emptyTable: "No certificates are awarded"
-                },
-                // eslint-disable-next-line no-unused-vars
-                initComplete: function(settings, json) {
-                    $('.pie-progress').asPieProgress();
-                    CertTable.show();
-                },
-                drawCallback: function() {
-                    $('.dataTables_paginate > .pagination').addClass('pagination-sm pull-right');
-                    $('.dataTables_filter').addClass('pagination-sm pull-right');
-                    createPieProgress('');
-                },
-                bInfo: false,
-                responsive: true
-            });
+            dataTable.ajax.url(V.generateUrl(V.requestUrl, params)).load();
         }
 
         /**
@@ -135,9 +89,48 @@ define([
         }
 
         $(document).ready(function() {
-            // CertDropdown.remove();
-            // $(document).find(CertSelect).show();
-            $(document).find(CertSelect).select2();
+            // Initialize datatable.
+            dataTable = CertTable.DataTable({
+                dom: '<"edwiserreports-table"i<t><"table-pagination"p>>',
+                columnDefs: [{
+                        "targets": 0,
+                        "className": "align-middle"
+                    },
+                    {
+                        "targets": 1,
+                        "className": "align-middle"
+                    },
+                    {
+                        "targets": "_all",
+                        "className": "align-middle text-center"
+                    }
+                ],
+                columns: [
+                    { "data": "username" },
+                    { "data": "email" },
+                    { "data": "issuedate" },
+                    { "data": "dateenrolled" },
+                    { "data": "grade" },
+                    { "data": "courseprogress" }
+                ],
+                language: {
+                    searchPlaceholder: "Search User",
+                    emptyTable: "No certificates are awarded"
+                },
+                // eslint-disable-next-line no-unused-vars
+                initComplete: function(settings, json) {
+                    $('.pie-progress').asPieProgress();
+                    CertTable.show();
+                },
+                drawCallback: function() {
+                    common.stylePaginationButton(this);
+                    createPieProgress('');
+                },
+                responsive: true
+            });
+
+            // Initialize select2.
+            $(document).find('.singleselect').select2();
 
             certificateid = $(CertSelect).val();
             getCertificateDetail(certificateid);
@@ -150,12 +143,24 @@ define([
                 getCertificateDetail(certificateid, cohortId);
             });
 
+            // Certificate change.
             $(document).on("change", CertSelect, function() {
                 certificateid = $(this).val();
-                getCertificateDetail(certificateid);
+                getCertificateDetail(certificateid, cohortId);
                 $('.download-links input[name="filter"]').val(certificateid);
-                // V.changeExportUrl(certificateid, exportUrlLink, V.filterReplaceFlag);
             });
+
+            // Observer length change.
+            $(lengthSelect).on('change', function() {
+                dataTable.page.len(this.value).draw();
+            });
+
+            // Search in table.
+            $(searchTable).on('input', function() {
+                dataTable.search(this.value).draw();
+            });
+
+            common.handleSearchInput();
         });
     }
 

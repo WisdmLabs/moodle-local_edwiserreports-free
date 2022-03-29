@@ -35,24 +35,17 @@
     <input type="hidden" name="cohortid" value="{{cohortid}}" />
     <input type="hidden" name="region" value="{{region}}" />
     <input type="hidden" name="sesskey" value="{{sesskey}}">
-    <button type="submit" class="a border-0 bg-white fi fi-csv" name="type" value="csv">
-        <span class="fi-content">
-            <strong>csv</strong>
-        </span>
+    <label class="download-label h5">{{#str}} downloadreport, local_edwiserreports {{/str}}</label>
+    <button type="submit" class="a border-0 bg-white" name="type" value="pdf">
+        {{{pdf}}}
     </button>
-    <button type="submit" class="a border-0 bg-white fi fi-excel" name="type" value="excel">
-        <span class="fi-content">
-            <strong>excel</strong>
-        </span>
+    <button type="submit" class="a border-0 bg-white" name="type" value="csv">
+        {{{csv}}}
     </button>
-    <button type="submit" class="a border-0 bg-white fi fi-pdf" name="type" value="pdf">
-        <span class="fi-content">
-            <strong>pdf</strong>
-        </span>
+    <button type="submit" class="a border-0 bg-white" name="type" value="excel">
+        {{{xls}}}
     </button>
-    <button type="submit" class="a border-0 bg-white fi fi-email" name="type" value="email">
-        <span class="fi-content">
-            <strong>email</strong>
-        </span>
+    <button type="button" class="a ml-2 btn theme-primary-text theme-primary-border bg-white" name="type" value="email">
+        {{#str}} schedule, local_edwiserreports {{/str}}
     </button>
 </form>

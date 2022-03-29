@@ -41,12 +41,29 @@ define([
         var url = V.requestUrl + '?action=get_courseengage_data_ajax&sesskey=' + sesskey;
         var CourseEngageUsers = CourseEngageTable + " a.modal-trigger";
         var datatable = null;
+        var modalTable = null;
         var exportUrlLink = ".dropdown-menu[aria-labelledby='export-dropdown'] .dropdown-item";
 
         // Varibales for cohort filter
         var cohortId = 0;
 
         $(document).ready(function() {
+
+            // Observer length change.
+            $('body').on('change', '#wdm-courseengage-individual .table-length-input select', function() {
+                datatable.page.len(this.value).draw();
+            });
+
+            // Search in table.
+            $('body').on('input', '#wdm-courseengage-individual .table-search-input input', function() {
+                datatable.column(0).search(this.value).draw();
+            });
+
+            // Search in modal table.
+            $('body').on('input', '.courseengage-modal .table-search-input input', function() {
+                modalTable.search(this.value).draw();
+            });
+
             createCourseEngageTable(cohortId);
 
             /* Select cohort filter for active users block */
@@ -81,6 +98,7 @@ define([
                     )
                 }).then(function(modal) {
                     ModalRoot = modal.getRoot();
+                    modal.getBody().addClass('courseengage-modal');
                     ModalRoot.find('.modal-dialog').addClass('modal-lg');
                     modal.setTitle(coursename);
                     modal.show();
@@ -101,18 +119,16 @@ define([
                         }
 
                         // Create dataTable for userslist
-                        ModalTable.DataTable({
+                        modalTable = ModalTable.DataTable({
                             language: {
-                                searchPlaceholder: "Search User",
                                 emptyTable: "There are no users"
                             },
-                            dom: '<"edwiserreports-table"<"table-filter d-flex"f><t><"table-pagination"p>>',
+                            dom: '<"edwiserreports-table"i<t><"table-pagination"p>>',
                             drawCallback: function() {
                                 ModalTable.find('th').addClass('theme-3-bg text-white');
                                 common.stylePaginationButton(this);
                             },
-                            lengthChange: false,
-                            bInfo: false
+                            lengthChange: false
                         });
                     });
                     return;
@@ -131,7 +147,7 @@ define([
 
             datatable = $(CourseEngageTable).DataTable({
                 ajax: url + "&cohortid=" + cohortId,
-                dom: '<"edwiserreports-table"<"table-filter d-flex"fl><"p-2"i><t><"table-pagination"p>>',
+                dom: '<"edwiserreports-table"<"p-2"i><t><"table-pagination"p>>',
                 columns: [
                     { "data": "coursename" },
                     { "data": "enrolment" },
@@ -156,6 +172,9 @@ define([
                     common.loader.hide('#page-local-edwiserreports-coursereport #wdm-courseengage-individual');
                 }
             });
+
+            datatable.page.len($('#wdm-courseengage-individual .table-length-input select').val()).draw();
+            datatable.column(0).search($('#wdm-courseengage-individual .table-search-input input').val()).draw();
         }
     }
 

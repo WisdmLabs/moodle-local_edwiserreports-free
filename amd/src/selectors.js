@@ -21,6 +21,6 @@
  */
 define([], function() {
     return {
-        blockSettingsBtn: '#wdm-edwiserreports .blocksetting .dropdown-item a'
+        blockSettingsBtn: '#wdm-edwiserreports .blocksetting .dropdown-item'
     };
 });

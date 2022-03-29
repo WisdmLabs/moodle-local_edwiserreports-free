@@ -175,7 +175,11 @@ class activeusersblock extends block_base {
 
         $this->dates = [];
         $this->labels = [];
-        $this->enddate = floor(time() / 86400 + 1) * 86400 - 1;
+        if ($this->graphajax == 'graph') {
+            $this->enddate = floor(time() / 86400 + 1) * 86400 - 1;
+        } else {
+            $this->enddate = time();
+        }
         switch ($timeperiod) {
             case 'weekly':
                 // Monthly days.
@@ -213,7 +217,7 @@ class activeusersblock extends block_base {
         $labelcallback = function($value) {
             return date('d M y', $value);
         };
-        if ($this->graphajax == true) {
+        if ($this->graphajax == 'graph') {
             $labelcallback = function($value) {
                 return $value * 1000;
             };
@@ -285,7 +289,7 @@ class activeusersblock extends block_base {
         // Get data from params.
         $this->filter = isset($params->filter) ? $params->filter : false;
         $this->cohortid = isset($params->cohortid) ? $params->cohortid : false;
-        $this->graphajax = isset($params->graphajax) ? $params->graphajax : false;
+        $this->graphajax = isset($params->graphajax) && $params->graphajax == true ? 'graph' : 'table';
 
         // Generate active users data label.
         $this->generate_labels($this->filter);
@@ -486,7 +490,6 @@ class activeusersblock extends block_base {
                 AND l.timecreated < :endtime
                 GROUP BY FLOOR(l.timecreated/86400)";
 
-
         // Get enrolments log.
         $logs = $DB->get_records_sql($sql, $params);
         $enrolments = $this->dates;
@@ -569,9 +572,9 @@ class activeusersblock extends block_base {
         $activeusersdata = $obj->get_data((object) array("filter" => $filter));
 
         // Generate active users data.
-        foreach ($activeusersdata->labels as $key => $lable) {
+        foreach ($activeusersdata->labels as $key => $label) {
             $export[] = array(
-                $lable,
+                $label,
                 $activeusersdata->data->activeUsers[$key],
                 $activeusersdata->data->enrolments[$key],
                 $activeusersdata->data->completionRate[$key],
@@ -597,11 +600,11 @@ class activeusersblock extends block_base {
             "filter" => $filter,
             'cohortid' => $cohortid
         ));
-        foreach ($activeusersdata->labels as $lable) {
+        foreach ($activeusersdata->dates as $key => $date) {
             $export = array_merge($export,
-                self::get_usersdata($lable, "activeusers", $cohortid),
-                self::get_usersdata($lable, "enrolments", $cohortid),
-                self::get_usersdata($lable, "completions", $cohortid)
+                self::get_usersdata($activeusersdata->labels[$key], $date, "activeusers", $cohortid),
+                self::get_usersdata($activeusersdata->labels[$key], $date, "enrolments", $cohortid),
+                self::get_usersdata($activeusersdata->labels[$key], $date, "completions", $cohortid)
             );
         }
 
@@ -610,18 +613,18 @@ class activeusersblock extends block_base {
 
     /**
      * Get User Data for Active Users Block
-     * @param  string $lable    Date for lable
+     * @param  string $date    Date for lable
      * @param  string $action   Action for getting data
      * @param  string $cohortid Cohortid
      * @return array            User data
      */
-    public static function get_usersdata($lable, $action, $cohortid) {
+    public static function get_usersdata($label, $date, $action, $cohortid) {
         $usersdata = array();
-        $users = self::get_userslist(strtotime($lable), $action, $cohortid);
+        $users = self::get_userslist($date, $action, $cohortid);
 
         foreach ($users as $user) {
             $user = array_merge(
-               array($lable),
+               [$label],
                $user
             );
 
@@ -711,34 +714,50 @@ class activeusersblock extends block_base {
      * @return array            Array of users data fields (Full Name, Email)
      */
     public static function get_userslist_table($filter, $action, $cohortid) {
+        global $OUTPUT;
         // Make cache.
         $cache = cache::make('local_edwiserreports', 'activeusers');
         // Get values from cache if it is set.
         $cachekey = "userslist-" . $filter . "-" . $action . "-" . "-" . $cohortid;
         if (!$table = $cache->get($cachekey)) {
-            $table = new html_table();
+            $context = new stdClass();
+            $context->searchicon = \local_edwiserreports\utility::image_icon('actions/search');
+            $context->placeholder = get_string('searchuser', 'local_edwiserreports');
+            $context->length = [10, 25, 50, 100];
+            $table = $OUTPUT->render_from_template('local_edwiserreports/common-table-search-filter', $context);
 
-            // Get table header.
-            $table->head = self::get_modal_table_header($action);
-
-            // Set table attributes.
-            $table->attributes = array (
+            $table .= html_writer::start_tag('table', array(
                 "class" => "modal-table table",
                 "style" => "min-width: 100%;"
-            );
+            ));
 
+            $table .= html_writer::start_tag('thead');
+            $table .= html_writer::start_tag('tr');
+            // Get table header.
+            foreach (self::get_modal_table_header($action) as $header) {
+                $table .= html_writer::tag('th', $header, array('class' => 'theme-3-bg text-white'));
+            }
+            $table .= html_writer::end_tag('tr');
+            $table .= html_writer::end_tag('thead');
+
+            $table .= html_writer::start_tag('tbody');
             // Get Users data.
             $data = self::get_userslist($filter, $action, $cohortid);
-
-            // Set table cell.
-            if (!empty($data)) {
-                $table->data = $data;
+            foreach ($data as $user) {
+                $table .= html_writer::start_tag('tr');
+                foreach ($user as $value) {
+                    $table .= html_writer::tag('td', $value);
+                }
+                $table .= html_writer::end_tag('tr');
             }
+            $table .= html_writer::end_tag('tbody');
+
+            $table .= html_writer::end_tag('table');
 
             // Set cache for users list.
             $cache->set($cachekey, $table);
         }
 
-        return html_writer::table($table);
+        return $table;
     }
 }

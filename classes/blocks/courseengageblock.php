@@ -235,6 +235,13 @@ class courseengageblock extends utility {
      * @return array            Array of users list
      */
     public static function get_userslist_table($courseid, $action, $cohortid) {
+        global $OUTPUT;
+        $context = new stdClass;
+        $context->searchicon = \local_edwiserreports\utility::image_icon('actions/search');
+        $context->placeholder = get_string('searchuser', 'local_edwiserreports');
+        $context->length = [10, 25, 50, 100];
+        $filter = $OUTPUT->render_from_template('local_edwiserreports/common-table-search-filter', $context);
+
         $table = new html_table();
         $table->attributes = array (
             "class" => "modal-table table",
@@ -248,7 +255,7 @@ class courseengageblock extends utility {
         if (!empty($data->data)) {
             $table->data = $data->data;
         }
-        return html_writer::table($table);
+        return $filter . html_writer::table($table);
     }
 
     /**

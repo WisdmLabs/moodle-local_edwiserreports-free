@@ -97,32 +97,34 @@ trait get_customreports_list {
         );
 
         $enabledesktop = $customreport->enabledesktop ? 'checked' : '';
-        $querydata = json_decode($customreport->data);
         $enabledesktopstr = get_string('enabledesktop', 'local_edwiserreports');
         $disabledesktopstr = get_string('disabledesktop', 'local_edwiserreports');
         $tooltipstr = $customreport->enabledesktop ? $disabledesktopstr : $enabledesktopstr;
-        $eyeicon = $customreport->enabledesktop ? 'eye' : 'eye-slash';
         $html = '<div>
             <span>
                 <input type="checkbox" id="wdm-desktopenable-' . $customreport->id . '" class="d-none
                 custom-field-checkbox" ' . $enabledesktop . ' data-reportsid="' . $customreport->id . '"
                 >
                 <a href="' .$editurl. '"
+                    class = "px-3"
                    data-toggle="tooltip" data-action="hide"
                    title="' . $tooltipstr . '"
                    data-titlehide="' . $enabledesktopstr . '"
                    data-titleshow="' . $disabledesktopstr . '"
                    data-value="' . $customreport->enabledesktop . '"
                    data-target="#wdm-desktopenable-' . $customreport->id . '">
-                    <i class="icon fa fa-' . $eyeicon . ' text-dark"></i>
+                    <span class="show-svg">' . \local_edwiserreports\utility::image_icon('actions/show') . '</span>
+                    <span class="hide-svg">' . \local_edwiserreports\utility::image_icon('actions/hide') . '</span>
                 </a>
                 <a href="' .$editurl. '" data-toggle="tooltip"
+                class = "px-3"
                 title="' . get_string('editreports', 'local_edwiserreports') . '">
-                    <i class="icon fa fa-pencil text-primary"></i>
+                    <span class="edit-svg">' . \local_edwiserreports\utility::image_icon('actions/edit') . '</span>
                 </a>
                 <a href="#" data-toggle="tooltip" data-reportsid="' . $customreport->id . '"
+                class = "px-3"
                 title="' . get_string('deletereports', 'local_edwiserreports') . '" data-action="delete">
-                    <i class="icon fa fa-trash text-danger"></i>
+                    <span class="delete-svg">' . \local_edwiserreports\utility::image_icon('actions/delete') . '</span>
                 </a>
             </span>
         </div>';

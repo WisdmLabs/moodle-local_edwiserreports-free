@@ -44,8 +44,8 @@
     <div class="tab-content">
         <div class="tab-pane active show" id="scheduletab" role="tabpanel">
             <form action="#">
-                <div id="region-main" class="col-12 border-0">
-                    <div class="py-2 w-full">
+                <div id="region-main" class="col-9 border-0 m-auto">
+                    <div class="pt-4 w-full">
                         {{! Name field }}
                         <div class="form-group row fitem">
                             <div class="col-12">
@@ -86,14 +86,14 @@
                         <input value="{{ region }}" type="text" id="esr-region" name="region" class="d-none">
                         <input value="{{ sesskey }}" type="text" id="esr-sesskey" name="sesskey" class="d-none">
                     </div>
-                    <div class="form-group row fitem px-3">
+                    <div class="form-group row fitem date-filters disabled px-3">
                         <span class="my-auto mx-1">
                             {{#str}} emailthisreport, local_edwiserreports {{/str}}
                         </span>
                         <div class="duration-dropdown dropdown">
                             <button data-value="0"
                                 type="button"
-                                class="btn btn-default btn-sm dropdown-toggle"
+                                class="btn btn-default btn-sm dropdown-toggle mx-2"
                                 id="durationcount"
                                 data-toggle="dropdown"
                                 aria-expanded="false">
@@ -126,7 +126,7 @@
                         <div class="weekly-dropdown dropdown">
                             <button data-value="0"
                                 type="button"
-                                class="btn btn-default btn-sm dropdown-toggle mx-1"
+                                class="btn btn-default btn-sm dropdown-toggle mx-2"
                                 id="weeksdropdown"
                                 data-toggle="dropdown"
                                 data-managedby="1"
@@ -184,7 +184,7 @@
                         <div class="daily-dropdown dropdown">
                             <button data-value="0"
                                 type="button"
-                                class="btn btn-default btn-sm dropdown-toggle mx-1"
+                                class="btn btn-default btn-sm dropdown-toggle mx-2"
                                 id="timesdropdown"
                                 data-toggle="dropdown"
                                 data-managedby="0"
@@ -208,7 +208,7 @@
                         <div class="monthly-dropdown dropdown">
                             <button data-value="1"
                                 type="button"
-                                class="btn btn-default btn-sm dropdown-toggle mx-1"
+                                class="btn btn-default btn-sm dropdown-toggle mx-2"
                                 id="monthlydropdown"
                                 data-toggle="dropdown"
                                 data-managedby="2"
@@ -243,7 +243,7 @@
                     {{! Error Box }}
                     <div class="esr-form-error" style="display: none;"></div>
                 </div>
-                <div class="modal-footer schedule-email" data-region="footer">
+                <div class="modal-footer schedule-email col-9 m-auto border-0 px-5" data-region="footer">
                     <button class="btn theme-primary-text theme-primary-border mr-auto" disabled type="button" data-action="save" data-toggle="tooltip" title="{{#str}} schedule, local_edwiserreports {{/str}}">
                         {{#str}} schedule, local_edwiserreports {{/str}}
                     </button>
@@ -257,14 +257,19 @@
             </form>
         </div>
         <div class="tab-pane" id="listemailstab" role="tabpanel">
+            <div class="row mt-3">
+                <div class="filter-selector col-12 col-md-4 mb-1">
+                    {{> local_edwiserreports/datatable/search }}
+                </div>
+            </div>
             <div class="table-responsive border-0 my-1" id="region-main">
                 <table id="esr-shceduled-emails" class="table" data-role="content" data-plugin="selectable" data-row-selectable="true">
                     <thead>
                         <tr>
-                            <th class="theme-3-bg">{{#str}} name, local_edwiserreports {{/str}}</th>
-                            <th class="theme-3-bg">{{#str}} nextrun, local_edwiserreports {{/str}}</th>
-                            <th class="theme-3-bg">{{#str}} frequency, local_edwiserreports {{/str}}</th>
-                            <th class="text-center theme-3-bg">{{#str}} manage, local_edwiserreports {{/str}}</th>
+                            <th class="theme-3-bg text-white">{{#str}} name, local_edwiserreports {{/str}}</th>
+                            <th class="theme-3-bg text-white">{{#str}} nextrun, local_edwiserreports {{/str}}</th>
+                            <th class="theme-3-bg text-white">{{#str}} frequency, local_edwiserreports {{/str}}</th>
+                            <th class="text-center theme-3-bg text-white">{{#str}} manage, local_edwiserreports {{/str}}</th>
                         </tr>
                     </thead>
                     <tbody></tbody>

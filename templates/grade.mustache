@@ -12,13 +12,13 @@
     GNU General Public License for more details.
 
     Edwiser RemUI
-    @package   theme_remui
-    @copyright (c) 2020 WisdmLabs (https://wisdmlabs.com/)
+    @package   local_edwiserreports
+    @copyright (c) 2022 WisdmLabs (https://wisdmlabs.com/)
     @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 
 }}
 {{!
-    @template theme_remui/activity_navigation
+    @template local_edwiserreports/grade
 
     Display the activity navigation for all activities in a course
 
@@ -28,31 +28,31 @@
     {
     }
 }}
+{{> local_edwiserreports/report-page-header }}
 <div id="grade" class="table-responsive" data-sesskey="{{sesskey}}">
-    <div id="userfilter" class="h-auto my-10">
-        <div class="row mx-0">
-            <div class="filters col-12 d-flex mb-1 p-0">
-                <div class="backbutton">
-                    <a href="{{backurl}}" class="btn btn-secondary">
-                        <i class="icon fa fa-arrow-left"></i>
-                    </a>
-                </div>
-                <div class="d-flex ml-auto">
-                    {{# cohortfilters }}
-                        <div class="mr-1">
-                            <select class="cohort-select form-control singleselect" name="cohort-select">
-                                {{#values}}
-                                    <option value="{{id}}">{{name}}</option>
-                                {{/values}}
-                            </select>
-                        </div>
-                    {{/ cohortfilters }}
-                    <select class="course-select form-control singleselect" name="course-select">
-                        {{#courses}}
-                            <option value="{{id}}">{{fullname}}</option>
-                        {{/courses}}
+    <div id="userfilter" class="h-auto mt-2">
+        <div class="row">
+            <div class="filter-selector col-12 col-md-3 mb-1">
+                {{> local_edwiserreports/datatable/search }}
+            </div>
+            {{# cohortfilters }}
+                <div class="filter-selector col-12 col-md-2 mb-1">
+                    <select class="cohort-select form-control singleselect" name="cohort-select">
+                        {{#values}}
+                            <option value="{{id}}">{{name}}</option>
+                        {{/values}}
                     </select>
                 </div>
+            {{/ cohortfilters }}
+            <div class="filter-selector col-12 col-md-3 mb-1">
+                <select class="course-select form-control singleselect" name="course-select">
+                    {{#courses}}
+                        <option value="{{id}}">{{fullname}}</option>
+                    {{/courses}}
+                </select>
+            </div>
+            <div class="filter-selector col-12 col-md-3 mb-1 ml-auto">
+                {{> local_edwiserreports/datatable/length }}
             </div>
         </div>
     </div>

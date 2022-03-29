@@ -40,6 +40,7 @@ define([
         var loader = PageId + " .loader";
         var ModalTrigger = CourseProgressTable + " a.modal-trigger";
         var datatable = null;
+        var modalTable = null;
 
         // Cohort variable.
         var cohortId = 0;
@@ -51,6 +52,24 @@ define([
         $('#page-local-edwiserreports-coursereport').find('.singleselect').select2();
 
         $(document).ready(function() {
+
+            common.handleSearchInput();
+
+            // Observer length change.
+            $('body').on('change', '#wdm-courseprogress-individual .table-length-input select', function() {
+                datatable.page.len(this.value).draw();
+            });
+
+            // Search in table.
+            $('body').on('input', '#wdm-courseprogress-individual .table-search-input input', function() {
+                datatable.column(0).search(this.value).draw();
+            });
+
+            // Search in modal table.
+            $('body').on('input', '.courseprogress-modal .table-search-input input', function() {
+                modalTable.search(this.value).draw();
+            });
+
             generateCourseProgressTable(cohortId);
 
             /* Select cohort filter for active users block */
@@ -87,6 +106,7 @@ define([
                     )
                 }).then(function(modal) {
                     ModalRoot = modal.getRoot();
+                    modal.getBody().addClass('courseprogress-modal');
                     ModalRoot.find('.modal-dialog').addClass('modal-lg');
                     modal.setTitle(coursename);
                     modal.show();
@@ -103,18 +123,17 @@ define([
                         }
 
                         // Create dataTable for userslist
-                        ModalTable.DataTable({
+                        modalTable = ModalTable.DataTable({
                             language: {
                                 searchPlaceholder: "Search User",
                                 emptyTable: "There are no users"
                             },
-                            dom: '<"edwiserreports-table"<"table-filter d-flex"f><t><"table-pagination"p>>',
+                            dom: '<"edwiserreports-table"i<t><"table-pagination"p>>',
                             drawCallback: function() {
                                 ModalTable.find('th').addClass('theme-3-bg text-white');
                                 common.stylePaginationButton(this);
                             },
-                            lengthChange: false,
-                            bInfo: false
+                            lengthChange: false
                         });
                     });
                     return;
@@ -138,7 +157,7 @@ define([
 
             datatable = $(CourseProgressTable).DataTable({
                 ajax: url + "&cohortid=" + cohortId + "&data=" + data,
-                dom: '<"edwiserreports-table"<"table-filter d-flex"fl><"p-2"i><t><"table-pagination"p>>',
+                dom: '<"edwiserreports-table"<"p-2"i><t><"table-pagination"p>>',
                 columns: [
                     { "data": "coursename" },
                     { "data": "enrolments" },
@@ -165,6 +184,9 @@ define([
                     common.loader.hide('#page-local-edwiserreports-coursereport #wdm-courseprogress-individual');
                 }
             });
+
+            datatable.page.len($('#wdm-courseprogress-individual .table-length-input select').val()).draw();
+            datatable.column(0).search($('#wdm-courseprogress-individual .table-search-input input').val()).draw();
         }
     }
 

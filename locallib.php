@@ -761,7 +761,7 @@ function local_edwiserreports_get_schedule_emaillist() {
  */
 function local_edwiserreports_carete_select_icons_for_emaillist($select) {
     $selectparam = array(
-        "class" => "checkbox-custom checkbox-primary",
+        "class" => "checkbox-edwiserreports checkbox-primary",
         "type" => "checkbox"
     );
 
@@ -769,9 +769,9 @@ function local_edwiserreports_carete_select_icons_for_emaillist($select) {
         $selectparam["checked"] = "checked";
     }
 
-    $out = html_writer::start_span("checkbox-custom checkbox-primary");
-    $out .= html_writer::start_tag("input", $selectparam);
-    $out .= html_writer::tag("label", "");
+    $out = html_writer::start_span("checkbox-edwiserreports checkbox-primary");
+    $out .= html_writer::tag("input", "", $selectparam);
+    $out .= html_writer::tag("label", "", array("class" => "checkmark"));
     $out .= html_writer::end_span();
     return $out;
 }
@@ -794,7 +794,7 @@ function local_edwiserreports_create_manage_icons_for_emaillist($id, $blockname,
         $region
     );
     $manage .= html_writer::link('javascript:void(0)',
-        '<i class="fa fa-edit text-primary"></i>',
+        '<span class="edit-svg">' . \local_edwiserreports\utility::image_icon('actions/edit') . '</span>',
         array(
             "class" => "esr-email-sched-setting mx-3",
             "data-blockname" => $blockname,
@@ -806,9 +806,9 @@ function local_edwiserreports_create_manage_icons_for_emaillist($id, $blockname,
         )
     );
     $manage .= html_writer::link('javascript:void(0)',
-        '<i class="fa fa-trash text-danger"></i>',
+        '<span class="delete-svg">' . \local_edwiserreports\utility::image_icon('actions/delete') . '</span>',
         array(
-            "class" => "esr-email-sched-delete",
+            "class" => "esr-email-sched-delete mx-3",
             "data-blockname" => $blockname,
             "data-region" => $region,
             "data-id" => $id,
@@ -835,35 +835,25 @@ function local_edwiserreports_create_toggle_switch_for_emails($id, $emailenable,
     $toggleid = "esr-toggle-" . $blockname . "-" . $region . "-" . $id;
     $switchparams = array(
         "id" => $toggleid,
-        "type" => "checkbox",
-        "value" => true,
-        "name" => "esr-emailenable",
+        "href" => "#",
+        "data-id" => $id,
+        "class" => "mx-3 esr-switch",
         "data-sesskey" => sesskey(),
         "data-blockname" => $blockname,
         "data-region" => $region,
-        "data-id" => $id,
+        "data-value" => $emailenable,
+        "tooltip" => get_string('enabledisableemail', 'local_edwiserreports')
     );
-
-    if ($emailenable) {
-        $switchparams["checked"] = "checked";
-    }
 
     // Toggle Switch For Enable and Disable Start.
-    $out = html_writer::start_div("my-auto w-auto d-inline-block ". $customclass);
-    $out .= html_writer::label(
-        html_writer::tag("input", "", $switchparams).
-        html_writer::div(
-            html_writer::div("", "switch-background bg-primary").
-            html_writer::div("", "switch-lever bg-primary"),
-            "switch-container esr-enable-disable-form"
-        ), $toggleid, true,
-        array(
-            "class" => "esr-switch",
-            "title" => "Enable/Disable email",
-            "data-toggle" => "tootip"
-        )
+    $out = html_writer::tag(
+        'a',
+        '
+        <span class="show-svg">' . \local_edwiserreports\utility::image_icon('actions/show') . '</span>
+        <span class="hide-svg">' . \local_edwiserreports\utility::image_icon('actions/hide') . '</span>
+        ',
+        $switchparams
     );
-    $out .= html_writer::end_div();
     // Toggle Switch For Enable and Disable End.
     return $out;
 }
@@ -1053,7 +1043,7 @@ function can_view_block($capname) {
             $allowedrole = $DB->get_records_sql($sql, $inparams);
         }
     } else {
-        $allowedrole = get_roles_with_capability($capname);
+        $allowedrole = get_roles_with_capability($capname, CAP_ALLOW);
     }
 
     foreach ($allowedrole as $role) {

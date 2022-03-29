@@ -20,13 +20,13 @@
  * @author      Yogesh Shirsath
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-define('local_edwiserreports/settings', ['jquery', 'core/ajax'], function($, Ajax) {
+define('local_edwiserreports/settings', ['jquery'], function($) {
     return {
         init: function() {
             /**
              * Selectors.
              */
-            let SELECTORS = {
+            var SELECTORS = {
                 TAB: '.edwiserreportstab',
                 ACTIVE: '[name="activetab"]',
                 LICENSE: '.edwiserreportstab-license',
@@ -50,20 +50,26 @@ define('local_edwiserreports/settings', ['jquery', 'core/ajax'], function($, Aja
                 // Preventing reload notification
                 window.onbeforeunload = null;
 
-                // Tab change.
-                $('a[data-toggle="tab"]').on('shown.bs.tab', function() {
+                if ($(SELECTORS.TAB).length !== 0) {
+                    // Tab change.
+                    $('a[data-toggle="tab"]').on('shown.bs.tab', function() {
+                        checkLicenseTab();
+                    });
+
                     checkLicenseTab();
-                });
+                }
 
-                checkLicenseTab();
+                if ($('[name="theme-radio"]').length !== 0) {
+                    // Hide default select options.
+                    $('[name="theme-radio"][value="' + $('#id_s_local_edwiserreports_theme')
+                        .hide().val() + '"]').prop('checked', true);
 
-                // Hide default select options.
-                $('[name="theme-radio"][value="' + $('#id_s_local_edwiserreports_theme').hide().val() + '"]').prop('checked', true);
+                    // Handling custom radio options.
+                    $('[name="theme-radio"]').on('change', function() {
+                        $('#id_s_local_edwiserreports_theme').val($('[name="theme-radio"]:checked').val());
+                    });
+                }
 
-                // Handling custom radio options.
-                $('[name="theme-radio"]').on('change', function() {
-                    $('#id_s_local_edwiserreports_theme').val($('[name="theme-radio"]:checked').val());
-                });
             });
         }
     };

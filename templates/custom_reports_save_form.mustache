@@ -100,7 +100,7 @@
             <div class="form-control-feedback invalid-feedback" id="id_error_crb_reportshortname"></div>
         </div>
     </div>
-    <div id="crb_download_enable" class="form-group row fitem">
+    <div class="form-group row fitem">
         <div class="col-md-3">
             <span class="float-sm-right text-nowrap">
                 <a class="btn btn-link p-0"
@@ -123,14 +123,14 @@
             </label>
         </div>
         <div class="col-md-9 form-inline felement" data-fieldtype="select">
-            <div class="checkbox-custom checkbox-primary">
+            <div class="checkbox-edwiserreports">
                 <input type="checkbox" class="custom-field-checkbox" name="downloadenable" value="1"
-                id="id_crb_download_enable" {{#downloadenable}}checked{{/downloadenable}}>
-                <label for="id_crb_desktop_enable" class="mb-0"></label>
+                id="crb_download_enable" {{#downloadenable}}checked{{/downloadenable}}>
+                <label for="crb_download_enable" class="mb-0 checkmark"></label>
             </div>
         </div>
     </div>
-    <div id="crb_desktop_enable" class="form-group row fitem">
+    <div class="form-group row fitem">
         <div class="col-md-3">
             <span class="float-sm-right text-nowrap">
                 <a class="btn btn-link p-0"
@@ -153,10 +153,10 @@
             </label>
         </div>
         <div class="col-md-9 form-inline felement" data-fieldtype="checkbox">
-            <div class="checkbox-custom checkbox-primary">
+            <div class="checkbox-edwiserreports">
                 <input type="checkbox" class="custom-field-checkbox" name="enabledesktop" value="1"
-                id="id_crb_desktop_enable" {{#enabledesktop}}checked{{/enabledesktop}}>
-                <label for="id_crb_desktop_enable" class="mb-0"></label>
+                id="crb_desktop_enable" {{#enabledesktop}}checked{{/enabledesktop}}>
+                <label for="crb_desktop_enable" class="mb-0 checkmark"></label>
             </div>
         </div>
     </div>

@@ -22,6 +22,7 @@
 define([
     'jquery',
     'core/modal_factory',
+    './common',
     './insights',
     './modal-migration',
     './block_siteaccess',
@@ -41,6 +42,7 @@ define([
 ], function(
     $,
     ModalFactory,
+    common,
     insights,
     Migration,
     siteAccess,
@@ -64,6 +66,7 @@ define([
      */
     var SELECTOR = {
         ROOT: '#wdm-edwiserreports',
+        DATESELECTED: '.selected-period',
         DATE: '.edwiserreports-calendar',
         DATEMENU: '.edwiserreports-calendar + .dropdown-menu',
         DATEITEM: '.edwiserreports-calendar + .dropdown-menu .dropdown-item',
@@ -107,15 +110,17 @@ define([
 
     /**
      * Throw an event with date change data.
-     * @param {String} date Date
+     * @param {String} date  Date
+     * @param {String} label Date label
      */
-    function throwDateEvent(date) {
+    function throwDateEvent(date, label) {
         let dateChangeEvent = new CustomEvent('edwiserreport:datechange', {
             detail: {
                 date: date
             }
         });
         document.dispatchEvent(dateChangeEvent);
+        $(SELECTOR.DATESELECTED).html(label);
     }
 
     /**
@@ -123,10 +128,11 @@ define([
      */
     function customDateSelected() {
         let date = $(SELECTOR.DATEPICKERINPUT).val(); // Y-m-d format
-        let dateAlternate = $(SELECTOR.DATEPICKERINPUT).next().val(); // d/m/Y format
+        let dateAlternate = $(SELECTOR.DATEPICKERINPUT).next().val().replace("to", "-"); // d M Y format
+        $(SELECTOR.DATEPICKERINPUT).next().val(dateAlternate);
 
         /* If correct date is not selected then return false */
-        if (!dateAlternate.includes("to")) {
+        if (!date.includes("to")) {
             flatpickr.clear();
             return;
         }
@@ -139,7 +145,7 @@ define([
         $(SELECTOR.DATE).html(dateAlternate);
 
         // Throw date change event.
-        throwDateEvent(date);
+        throwDateEvent(date, dateAlternate);
     }
 
     /**
@@ -150,6 +156,8 @@ define([
 
             insights.init();
 
+            common.handleSearchInput();
+
             blocks.forEach(block => {
                 block.init(validateUser);
             });
@@ -157,7 +165,7 @@ define([
             flatpickr = $(SELECTOR.DATEPICKERINPUT).flatpickr({
                 mode: 'range',
                 altInput: true,
-                altFormat: "d/m/Y",
+                altFormat: "d M Y",
                 dateFormat: "Y-m-d",
                 maxDate: "today",
                 appendTo: $(SELECTOR.DATEPICKER).get(0),
@@ -184,7 +192,7 @@ define([
                 flatpickr.clear();
 
                 // Throw date change event.
-                throwDateEvent($(this).data('value'));
+                throwDateEvent($(this).data('value'), $(this).text());
             });
         });
     };

@@ -184,26 +184,21 @@ foreach ($blocks as $blockid => $block) {
         $block['tabletview'],
         $availsizetablet
     ));
-
-    // Roles setting for blocks.
-    $allowedroles = get_roles_with_capability('report/edwiserreports_' . $blockid . 'block:view');
-    $page->add(new admin_setting_configmultiselect(
-        'local_edwiserreports/' . $blockid . 'roleallow',
-        new lang_string($prefix . 'rolesetting', 'local_edwiserreports'),
-        new lang_string('rolesettinghelp', 'local_edwiserreports'),
-        array_keys($allowedroles),
-        $roles
-    ));
 }
 
 $settings->add($page);
 
-if (optional_param('section', '', PARAM_TEXT) == 'local_edwiserreports') {
+if (optional_param('section', '', PARAM_TEXT) == 'local_edwiserreports' ||
+    stripos($_SERVER['REQUEST_URI'], 'upgradesettings.php') !== false) {
     global $PAGE;
     $PAGE->requires->js(new moodle_url('/local/edwiserreports/settings.js'));
     $PAGE->requires->js_call_amd('local_edwiserreports/settings', 'init');
 
     if (optional_param('action', '', PARAM_TEXT) == 'save-settings') {
-        set_config('activetab', optional_param('activetab', 'local_edwiserreports_general_settings', PARAM_TEXT), 'local_edwiserreports');
+        set_config(
+            'activetab',
+            optional_param('activetab', 'local_edwiserreports_general_settings', PARAM_TEXT),
+            'local_edwiserreports'
+        );
     }
 }

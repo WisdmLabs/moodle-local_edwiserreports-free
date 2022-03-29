@@ -1,43 +1,70 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
 
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    Edwiser RemUI
+    @package   local_edwiserreports
+    @copyright (c) 2020 WisdmLabs (https://wisdmlabs.com/)
+    @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+
+}}
+{{!
+    @template local_edwiserreports/certificates
+
+    Display the activity navigation for all activities in a course
+
+    Context variables required for this template:
+
+    Example context (json):
+    {
+    }
+}}
+{{> local_edwiserreports/report-page-header }}
 <div id="wdm-certificates-individual" data-sesskey="{{sesskey}}">
     <div id="wdm-userfilter" class="h-auto my-10">
-        <div class="row m-0">
-            <div class="filters col-12 d-flex mb-1">
-                <div class="backbutton">
-                    <a href="{{backurl}}" class="btn btn-secondary">
-                        <i class="icon fa fa-arrow-left"></i>
-                    </a>
-                </div>
-                <div class="d-flex ml-auto">
-                    {{#hascertificates}}
-                        <div id="wdm-certificates-dropdown" class="">
-                            <select id="wdm-certificates-select" class="form-control singleselect" name="state" style="width: 250px;">
-                                {{#certificates}}
-                                <option value="{{id}}">{{coursename}}: {{name}}</option>
-                                {{/certificates}}
-                            </select>
-                        </div>
-                    {{/hascertificates}}
-                </div>
+        <div class="row">
+            <div class="filter-selector col-12 col-md-3 mb-1">
+                {{> local_edwiserreports/datatable/search }}
+            </div>
+            {{#hascertificates}}
+                    <div class="filter-selector col-12 col-md-3 mb-1" id="wdm-certificates-dropdown">
+                        <select id="wdm-certificates-select" class="form-control singleselect" name="state" style="width: 250px;">
+                            {{#certificates}}
+                            <option value="{{id}}">{{coursename}}: {{name}}</option>
+                            {{/certificates}}
+                        </select>
+                    </div>
+                {{/hascertificates}}
+            <div class="filter-selector col-12 col-md-4 mb-1 ml-auto">
+                {{> local_edwiserreports/datatable/length }}
             </div>
         </div>
     </div>
     <table class="table w-100" class="table-responsive">
         <thead>
             <tr>
-                <th>{{#str}} username, local_edwiserreports {{/str}}</th>
-                <th>{{#str}} useremail, local_edwiserreports {{/str}}</th>
-                <th>{{#str}} dateofissue, local_edwiserreports {{/str}}</th>
-                <th>{{#str}} dateofenrol, local_edwiserreports {{/str}}</th>
-                <th>{{#str}} grade, local_edwiserreports {{/str}}</th>
-                <th>{{#str}} courseprogress, local_edwiserreports {{/str}}</th>
+                <th class="theme-3-bg text-white">{{#str}} username, local_edwiserreports {{/str}}</th>
+                <th class="theme-3-bg text-white">{{#str}} useremail, local_edwiserreports {{/str}}</th>
+                <th class="theme-3-bg text-white">{{#str}} dateofissue, local_edwiserreports {{/str}}</th>
+                <th class="theme-3-bg text-white">{{#str}} dateofenrol, local_edwiserreports {{/str}}</th>
+                <th class="theme-3-bg text-white">{{#str}} grade, local_edwiserreports {{/str}}</th>
+                <th class="theme-3-bg text-white">{{#str}} courseprogress, local_edwiserreports {{/str}}</th>
             </tr>
         </thead>
         <tbody></tbody>
     </table>
+    {{# certexport }}
+    <div class="pull-right px-5">
+        {{> local_edwiserreports/exportreports }}
+    </div>
+    {{/ certexport }}
 </div>
-{{# certexport }}
-<div class="pull-right px-5">
-    {{> local_edwiserreports/exportreports }}
-</div>
-{{/ certexport }}
