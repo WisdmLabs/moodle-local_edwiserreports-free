@@ -1,0 +1,12 @@
+<div class="row table-length-input">
+    <div class="col-7 length-label">
+        <label class="h5">{{#str}} showentries, local_edwiserreports {{/str}}</label>
+    </div>
+    <div class="col-5 length-input">
+        <select class="course-select form-control singleselect" name="length-select">
+            {{#length}}
+                <option value="{{.}}">{{.}}</option>
+            {{/length}}
+        </select>
+    </div>
+</div>

@@ -1,1 +1,31 @@
 
+<div class="table-reponsive">
+    <table class="table w-100 mx-0 border-0">
+        <thead class="">
+            <tr>
+                <th class="border-bottom-0 theme-3-bg text-white">
+                    {{#str}} name, local_edwiserreports {{/str}}
+                </th>
+                <th class="border-bottom-0 theme-3-bg text-white">
+                    {{#str}} course, local_edwiserreports {{/str}}
+                </th>
+                <th class="border-bottom-0 theme-3-bg text-white text-center">
+                    {{#str}} issued, local_edwiserreports {{/str}}
+                </th>
+                <th class="border-bottom-0 theme-3-bg text-white text-center">
+                    {{#str}} notissued, local_edwiserreports {{/str}}
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#customcerts}}
+            <tr>
+                <td>{{name}}</td>
+                <td>{{coursename}}</td>
+                <td class="text-center">{{issued}}</td>
+                <td class="text-center">{{notissued}}</td>
+            </tr>
+            {{/customcerts}}
+        </tbody>
+    </table>
+</div>

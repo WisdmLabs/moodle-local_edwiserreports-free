@@ -28,12 +28,17 @@
     {
     }
 }}
-<div id="edwiserreports-date-filter" class="filter-selector position-relative col-12 mb-3">
+{{{notice}}}
+<div class="edwiserreports-header position-relative d-flex mb-1 mx-4">
+    <div class="edwiserreport-title theme-1-color">
+        <h2 class="m-0">{{#str}} dashboard, local_edwiserreports {{/str}}</h2>
+        <label class="h5 selected-period theme-1-bg text-white">{{#str}} lastweek, local_edwiserreports {{/str}}</label>
+    </div>
     <div class="ml-auto mr-1 filter-wrapper">
         <h6 class="d-inline-block font-weight-600">
             {{#str}} showdatafor, local_edwiserreports {{/str}}
         </h6>
-        <div class="d-inline-block ml-1">
+        <div class="filter-selector d-inline-block ml-1">
             <button type="button" class="btn dropdown-toggle text-left edwiserreports-calendar" data-toggle="dropdown" aria-expanded="false">
                 {{#str}} lastweek, local_edwiserreports {{/str}}
             </button>
@@ -76,18 +81,19 @@
                         </div>
                     {{/pro}}
                     <div class="panel-header p-3 d-flex">
+                        <div class="panel-background"></div>
                         <div class="panel-title theme-1-text p-0">
                             <strong class="mb-1">
                                 {{{name}}}
-                                <a href="javascript:void(0)" data-title="{{info}}" class="small panel-help" data-toggle="tooltip" data-trigger="hover" data-placement="bottom">
-                                    <i class="fa fa-exclamation-circle"></i>
+                                <a href="javascript:void(0)" data-title="{{info}}" class="small panel-help" data-toggle="tooltip" data-trigger="hover" data-placement="top">
+                                    {{{infoicon}}}
                                 </a>
                             </strong>
                         </div>
                         <div class="row p-0 ml-auto mr-0">
                             {{^pro}}
                                 {{# hasmenu}}
-                                    <div class="dropdown float-end">
+                                    <div class="dropdown blockoptions">
                                         <button role="button" type="button" class="btn" data-toggle="dropdown">
                                             <i class="fa fa-ellipsis-v theme-primary-text"></i>
                                         </button>
@@ -139,6 +145,7 @@
                     customreportsblock
                 ) {
                     var tableId = '#{{{id}}} table.customreportdata';
+                    var searchTable = '#{{{id}}}  .table-search-input input';
 
                     /**
                     * Selectors list.
@@ -162,9 +169,9 @@
                         getCustomReportsData[0].done(function(response) {
                             if (response.success) {
                                 var data = JSON.parse(response.data);
-                                $(tableId).DataTable({
+                                var table = $(tableId).DataTable({
                                     columns: data.columns,
-                                    dom: '<"edwiserreports-table"<"table-filter d-flex"f><"table-wrapper overflow-auto"t><"table-pagination"p>>',
+                                    dom: '<"edwiserreports-table"<"table-wrapper overflow-auto"t><"table-pagination"p>>',
                                     data: data.reportsdata,
                                     bInfo: false,
                                     lengthChange: false,
@@ -173,13 +180,18 @@
                                         emptyTable: "{{#str}}noresult, local_edwiserreports{{/str}}"
                                     },
                                     drawCallback: function() {
-                                        $(tableId).find('th').addClass('theme-3-bg');
+                                        $(tableId).find('th').addClass('theme-3-bg text-white');
                                         let pagination = $(this).closest(SELECTOR.TABLE).find(SELECTOR.PAGINATION);
                                         pagination.find(SELECTOR.PAGINATIONITEM).addClass(V.datatableClasses.buttonSpacing);
                                         pagination.find(SELECTOR.PAGINATIONITEM + ' a').addClass(V.datatableClasses.buttonSize);
                                         pagination.find(SELECTOR.PAGINATIONITEM + '.active a').addClass(V.datatableClasses.buttonActive);
                                         pagination.find(SELECTOR.PAGINATIONITEM + ':not(.active) a').addClass(V.datatableClasses.buttonInactive);
                                     }
+                                });
+
+                                // Search in table.
+                                $('body').on('input', searchTable, function() {
+                                    table.search(this.value).draw();
                                 });
                             }
                             common.loader.hide(tableId);

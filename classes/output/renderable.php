@@ -48,7 +48,7 @@ require_once($CFG->dirroot."/local/edwiserreports/locallib.php");
 /**
  * Elucid report renderable.
  */
-class elucidreport_renderable implements renderable, templatable {
+class edwiserreports_renderable implements renderable, templatable {
     /**
      * Function to export the renderer data in a format that is suitable for a
      * edit mustache template.

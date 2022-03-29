@@ -91,14 +91,15 @@ $PAGE->set_url($pageurl);
 // Set Page layout.
 $PAGE->set_pagelayout('standard');
 
+// Add theme class to body.
 $PAGE->add_body_classes(array('theme_' . $PAGE->theme->name));
 
 // Get renderable.
-$renderable = new \local_edwiserreports\output\elucidreport_renderable();
+$renderable = new \local_edwiserreports\output\edwiserreports_renderable();
 $output = $PAGE->get_renderer($component)->render($renderable);
 
 // Set page heading.
-$PAGE->set_heading(get_string("reportsdashboard", "local_edwiserreports"));
+$PAGE->set_heading('');
 $PAGE->set_title(get_string("reportsdashboard", "local_edwiserreports"));
 
 // Print output in page.

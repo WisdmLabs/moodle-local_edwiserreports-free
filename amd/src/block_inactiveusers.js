@@ -41,7 +41,6 @@ define([
      * @param {function} invalidUser Callback function
      */
     function init(invalidUser) {
-        var activeUsersTable;
         var panel = cfg.getPanel("#inactiveusersblock");
         var panelBody = cfg.getPanel("#inactiveusersblock", "body");
         var panelTitle = cfg.getPanel("#inactiveusersblock", "title");
@@ -52,6 +51,7 @@ define([
         var dropdownToggle = panelBody + " button.dropdown-toggle";
         var inActiveUsersTable = null;
         var exportUrlLink = panel + " .dropdown-menu[aria-labelledby='export-dropdown'] .dropdown-item";
+        var searchTable = panel + " .table-search-input input";
 
         if ($(panel).length) {
             // Get inactive users data on load
@@ -66,8 +66,8 @@ define([
                 $(panel).find('.download-links input[name="filter"]').val(filter);
 
                 // If table is already created then destroy the tablw
-                if (activeUsersTable) {
-                    activeUsersTable.destroy();
+                if (inActiveUsersTable) {
+                    inActiveUsersTable.destroy();
                 }
 
                 // Show load and remove table
@@ -83,6 +83,11 @@ define([
 
                 // Get inactive users
                 getInactiveUsersData($(this).data("value"));
+            });
+
+            // Search in table.
+            $('body').on('input', searchTable, function() {
+                inActiveUsersTable.search(this.value).draw();
             });
         }
 
@@ -141,7 +146,7 @@ define([
             // Create inactive users table
             inActiveUsersTable = $(table).DataTable({
                 data: data,
-                dom: '<"edwiserreports-table"<"table-filter d-flex"f><t><"table-pagination"p>>',
+                dom: '<"edwiserreports-table"<t><"table-pagination"p>>',
                 aaSorting: [
                     [2, 'desc']
                 ],

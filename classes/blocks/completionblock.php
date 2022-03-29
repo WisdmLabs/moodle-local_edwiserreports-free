@@ -108,7 +108,7 @@ class completionblock extends utility {
             $gradeval = 0;
             $grade = self::get_grades($courseid, $user->id);
             if (isset($grade->finalgrade)) {
-                $gradeval = round($grade->finalgrade, 2);
+                $gradeval = round($grade->finalgrade / $grade->grademax * 100, 2);
             }
 
             $completioninfo->enrolledon = date("d M Y", $enrolinfo->timemodified);
@@ -116,7 +116,7 @@ class completionblock extends utility {
             $completioninfo->noofvisits = count(self::get_visits_by_users($courseid, $user->id));
             $completioninfo->completion = $progressper;
             $completioninfo->compleiontime = self::get_timecompleted($courseid, $user->id);
-            $completioninfo->grade = $gradeval;
+            $completioninfo->grade = $gradeval . '%';
             $completioninfo->lastaccess = $lastvisits;
             $userscompletion[] = $completioninfo;
         }

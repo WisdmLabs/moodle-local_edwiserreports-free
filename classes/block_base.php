@@ -54,10 +54,10 @@ class block_base {
         $this->layout = new stdClass();
         $this->layout->sesskey = sesskey();
         $this->layout->extraclasses = '';
+        $this->layout->infoicon = $this->image_icon('info');
         $this->layout->contextid = $context->id;
         $this->layout->caneditadv = false;
         $this->layout->region = 'block';
-        $this->layout->upgradelink = UPGRADE_URL;
         $this->block = new stdClass();
 
         if ($blockid) {
@@ -236,7 +236,7 @@ class block_base {
         $courses = enrol_get_all_users_courses($userid);
 
         // Preload contexts and check visibility.
-        foreach ($courses as $id=>$course) {
+        foreach ($courses as $id => $course) {
             context_helper::preload_from_record($course);
             if ($course->visible) {
                 if (!$context = context_course::instance($id)) {

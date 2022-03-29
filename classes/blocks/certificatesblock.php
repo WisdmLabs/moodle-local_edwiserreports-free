@@ -57,10 +57,9 @@ class certificatesblock extends block_base {
         $this->layout->info = get_string('certificatestatsblockhelp', 'local_edwiserreports');
         $this->layout->morelink = new moodle_url($CFG->wwwroot . "/local/edwiserreports/certificates.php");
         $this->layout->downloadlinks = $this->get_block_download_links();
-        $this->layout->filters = '';
+        $this->layout->filters = $this->get_filters();
 
         // Block related data.
-        $this->block = new stdClass();
         $this->block->displaytype = 'line-chart';
 
         // Add block view in layout.
@@ -71,6 +70,18 @@ class certificatesblock extends block_base {
 
         // Return blocks layout.
         return $this->layout;
+    }
+
+    /**
+     * Prepare Inactive users filter
+     * @return string Filter HTML content
+     */
+    public function get_filters() {
+        global $OUTPUT;
+        return $OUTPUT->render_from_template('local_edwiserreports/common-table-search-filter', [
+            'searchicon' => $this->image_icon('actions/search'),
+            'placeholder' => get_string('searchcourse', 'local_edwiserreports')
+        ]);
     }
 
     /**
@@ -226,7 +237,7 @@ class certificatesblock extends block_base {
         $gradeval = 0;
         $grade = \local_edwiserreports\utility::get_grades($course->id, $issue->userid);
         if ($grade) {
-            $gradeval = $grade->finalgrade;
+            $gradeval = round($grade->finalgrade / $grade->grademax * 100, 2);
         }
 
         $enrolment = $DB->get_record_sql($enrolsql, $params, IGNORE_MULTIPLE);
@@ -267,7 +278,7 @@ class certificatesblock extends block_base {
         $certinfo->email = $user->email;
         $certinfo->issuedate = date("d M y", $issue->timecreated);
         $certinfo->dateenrolled = $enrolmentdate;
-        $certinfo->grade = number_format($gradeval, 2);
+        $certinfo->grade = $gradeval . '%';
         $certinfo->courseprogress = $courseprogresshtml;
         return $certinfo;
     }

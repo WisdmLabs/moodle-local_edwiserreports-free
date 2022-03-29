@@ -45,6 +45,7 @@ define([
         var panelBody = cfg.getPanel("#activecoursesblock", "body");
         var loader = panelBody + " .loader";
         var table = panelBody + " .table";
+        var searchTable = panel + ' .table-search-input input';
 
         if ($(panel).length) {
             // Show loader.
@@ -81,6 +82,11 @@ define([
                         });
                         $(table + " td:not(.bg-secondary)").addClass("bg-white");
                     }).draw();
+
+                    // Search in table.
+                    $('body').on('input', searchTable, function() {
+                        activeCourseTable.column(1).search(this.value).draw();
+                    });
                 })
                 .fail(function(error) {
                     // console.log(error);
@@ -105,7 +111,7 @@ define([
             activeCourseTable = $(table).DataTable({
                 responsive: true,
                 data: data,
-                dom: '<"edwiserreports-table"<"table-filter d-flex"f><t><"table-pagination"p>>',
+                dom: '<"edwiserreports-table"<t><"table-pagination"p>>',
                 aaSorting: [
                     [2, 'desc']
                 ],

@@ -46,9 +46,9 @@ class activecoursesblock extends block_base {
         $this->layout->name = get_string('activecoursesheader', 'local_edwiserreports');
         $this->layout->info = get_string('activecoursesblockhelp', 'local_edwiserreports');
         $this->layout->downloadlinks = $this->get_block_download_links();
+        $this->layout->filters = $this->get_filters();
 
         // Block related data.
-        $this->block = new stdClass();
         $this->block->displaytype = 'line-chart';
 
         // Add block view in layout.
@@ -58,6 +58,18 @@ class activecoursesblock extends block_base {
 
         // Return blocks layout.
         return $this->layout;
+    }
+
+    /**
+     * Prepare Inactive users filter
+     * @return string Filter HTML content
+     */
+    public function get_filters() {
+        global $OUTPUT;
+        return $OUTPUT->render_from_template('local_edwiserreports/common-table-search-filter', [
+            'searchicon' => $this->image_icon('actions/search'),
+            'placeholder' => get_string('searchuser', 'local_edwiserreports')
+        ]);
     }
 
     /**

@@ -111,7 +111,6 @@ class activeusersblock extends block_base {
         $this->layout->cohortid = '0';
 
         // Block related data.
-        $this->block = new stdClass();
         $this->block->displaytype = 'line-chart';
 
         // Add block view in layout.
@@ -134,10 +133,10 @@ class activeusersblock extends block_base {
             'class' => 'font-size-12'
         ));
         $lastupdatetext .= get_string('lastupdate', 'local_edwiserreports');
-        $lastupdatetext .= html_writer::tag('i', '', array(
-            'class' => 'refresh fa fa-refresh px-1',
+        $lastupdatetext .= html_writer::tag('label', $this->image_icon('refresh'), array(
+            'class' => 'refresh',
             'data-toggle' => 'tooltip',
-            'title' => get_string('refresh', 'local_edwiserreports')
+            'title' => get_string('refresh', 'local_edwiserreports'),
         ));
         $lastupdatetext .= html_writer::end_tag('small');
 
@@ -303,7 +302,8 @@ class activeusersblock extends block_base {
             $response->data->enrolments = $this->get_enrolments();
             $response->data->completionRate = $this->get_course_completionrate();
             $response->labels = $this->labels;
-            $response->insight = $this->calculate_insight();
+            $response->dates = array_keys($this->dates);
+            $response->insight = $this->calculate_insight($response);
             // Set response in cache.
             $this->cache->set($cachekey, $response);
         }
@@ -334,7 +334,7 @@ class activeusersblock extends block_base {
         // Based on action prepare query.
         switch($action) {
             case "activeusers":
-                $sql = "SELECT DISTINCT l.userid as relateduserid
+                $sql = "SELECT DISTINCT l.userid as userid
                    FROM {logstore_standard_log} l $sqlcohort
                    WHERE l.timecreated >= :starttime
                    AND l.timecreated < :endtime
@@ -344,7 +344,7 @@ class activeusersblock extends block_base {
                 break;
             case "enrolments":
                 $sql = "SELECT DISTINCT(CONCAT(CONCAT(l.courseid, '-'), l.relateduserid )) as id,
-                                l.relateduserid,
+                                l.relateduserid as userid,
                                 l.courseid
                         FROM {logstore_standard_log} l $sqlcohort
                         WHERE l.timecreated >= :starttime
@@ -361,7 +361,7 @@ class activeusersblock extends block_base {
                     $params["cohortid"] = $cohortid;
                 }
                 $sql = "SELECT CONCAT(CONCAT(l.userid, '-'), l.courseid) as id,
-                             l.userid as relateduserid,
+                             l.userid as userid,
                              l.courseid as courseid
                         FROM {edwreports_course_progress} l $sqlcohort
                         WHERE l.completiontime IS NOT NULL
@@ -369,13 +369,13 @@ class activeusersblock extends block_base {
                         AND l.completiontime < :endtime $cohortcondition";
         }
 
-        $params["starttime"] = $filter;
-        $params["endtime"] = $filter + LOCAL_SITEREPORT_ONEDAY;
+        $params["starttime"] = $filter * LOCAL_SITEREPORT_ONEDAY;
+        $params["endtime"] = $params["starttime"] + LOCAL_SITEREPORT_ONEDAY - 1;
         $data = array();
         $records = $DB->get_records_sql($sql, $params);
         if (!empty($records)) {
             foreach ($records as $record) {
-                $user = core_user::get_user($record->relateduserid);
+                $user = core_user::get_user($record->userid);
                 $userdata = new stdClass();
                 $userdata->username = fullname($user);
                 $userdata->useremail = $user->email;
@@ -390,7 +390,6 @@ class activeusersblock extends block_base {
                 $data[] = array_values((array)$userdata);
             }
         }
-
         return $data;
     }
 
@@ -406,7 +405,6 @@ class activeusersblock extends block_base {
             "endtime" => $this->enddate,
             "action" => "viewed"
         );
-
 
         // Get Logs to generate active users data.
         $activeusers = $this->dates;
@@ -431,6 +429,7 @@ class activeusersblock extends block_base {
                 GROUP BY FLOOR(l.timecreated/86400)";
 
         $logs = $DB->get_records_sql($sql, $params);
+
         // Get active users for every day.
         foreach (array_keys($activeusers) as $key) {
             if (!isset($logs[$key])) {
@@ -519,9 +518,6 @@ class activeusersblock extends block_base {
             "endtime" => $this->enddate,
         );
 
-        // Prepare cache key for completion rate.
-        $cachekey = $this->generate_cache_key('activeusers-completionrate', $this->filter, $this->cohortid);
-
         $cohortjoin = "";
         $cohortcondition = "";
         if ($this->cohortid) {
@@ -531,12 +527,7 @@ class activeusersblock extends block_base {
         }
 
         $sql = "SELECT FLOOR(cc.completiontime/86400) as userdate,
-                       COUNT(
-                           CONCAT(
-                               CONCAT(cc.courseid, '-'),
-                               cc.userid
-                           )
-                       ) as usercount
+                       COUNT(cc.completiontime) as usercount
                   FROM {edwreports_course_progress} cc
                        $cohortjoin
                  WHERE cc.completiontime IS NOT NULL
@@ -547,7 +538,6 @@ class activeusersblock extends block_base {
 
         $completionrate = $this->dates;
         $logs = $DB->get_records_sql($sql, $params);
-
         // Get completion for each day.
         foreach (array_keys($completionrate) as $key) {
             if (!isset($logs[$key])) {

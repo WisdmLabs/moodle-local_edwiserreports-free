@@ -45,10 +45,9 @@ class inactiveusersblock extends block_base {
         $this->layout->name = get_string('inactiveusers', 'local_edwiserreports');
         $this->layout->info = get_string('inactiveusersblockhelp', 'local_edwiserreports');
         $this->layout->downloadlinks = $this->get_block_download_links();
-        $this->layout->filters = $this->get_inactiveusers_filter();
+        $this->layout->filters = $this->get_filters();
 
         // Block related data.
-        $this->block = new stdClass();
         $this->block->displaytype = 'line-chart';
 
         // Add block view in layout.
@@ -64,9 +63,12 @@ class inactiveusersblock extends block_base {
      * Prepare Inactive users filter
      * @return string Filter HTML content
      */
-    public function get_inactiveusers_filter() {
+    public function get_filters() {
         global $OUTPUT;
-        return $OUTPUT->render_from_template('local_edwiserreports/inactiveusersblockfilters', []);
+        return $OUTPUT->render_from_template('local_edwiserreports/inactiveusersblockfilters', [
+            'searchicon' => $this->image_icon('actions/search'),
+            'placeholder' => get_string('searchuser', 'local_edwiserreports')
+        ]);
     }
 
     /**

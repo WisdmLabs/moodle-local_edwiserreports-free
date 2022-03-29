@@ -30,6 +30,8 @@ define([
     var panelBody = cfg.getPanel("#certificatesblock", "body");
     var table = panel + " .table";
     var dropdownBody = panel + " .table-dropdown";
+    var searchTable = panel + " .table-search-input input";
+    var certificateTable;
 
     /**
      * Initialize
@@ -47,38 +49,42 @@ define([
             common.loader.show('#certificatesblock');
 
             $.ajax({
-                url: cfg.requestUrl,
-                type: cfg.requestType,
-                dataType: cfg.requestDataType,
-                data: {
-                    action: 'get_certificates_data_ajax',
-                    secret: M.local_edwiserreports.secret
-                },
-            }).done(function(response) {
-                if (response.error === true && response.exception.errorcode === 'invalidsecretkey') {
-                    invalidUser('certificatestatsblock', response);
-                }
-                templates.render('local_edwiserreports/certificatestable', response.data)
-                    .then(function(html, js) {
-                        $(panelBody).empty();
-                        templates.appendNodeContents(panelBody, html, js);
-                        createCertificatesTable(response.data);
+                    url: cfg.requestUrl,
+                    type: cfg.requestType,
+                    dataType: cfg.requestDataType,
+                    data: {
+                        action: 'get_certificates_data_ajax',
+                        secret: M.local_edwiserreports.secret
+                    },
+                }).done(function(response) {
+                    if (response.error === true && response.exception.errorcode === 'invalidsecretkey') {
+                        invalidUser('certificatestatsblock', response);
+                    }
+                    templates.render('local_edwiserreports/certificatestable', response.data)
+                        .then(function(html, js) {
+                            templates.replaceNode(table, html, js);
+                            createCertificatesTable();
 
-                        // Hide loader.
-                        hideLoader();
-                        return;
-                    }).fail(function(ex) {
-                        console.log(ex);
+                            // Hide loader.
+                            hideLoader();
+                            return;
+                        }).fail(function(ex) {
+                            console.log(ex);
 
-                        // Hide loader.
-                        hideLoader();
-                    });
-            })
-            .fail(function(error) {
-                // console.log(error);
+                            // Hide loader.
+                            hideLoader();
+                        });
+                })
+                .fail(function(error) {
+                    // console.log(error);
 
-                // Hide loader.
-                hideLoader();
+                    // Hide loader.
+                    hideLoader();
+                });
+
+            // Search in table.
+            $('body').on('input', searchTable, function() {
+                certificateTable.search(this.value).draw();
             });
         }
     }
@@ -87,7 +93,8 @@ define([
      * Create certificate table.
      */
     function createCertificatesTable() {
-        $(table).DataTable({
+        certificateTable = $(table).DataTable({
+            dom: '<"edwiserreports-table"<t><"table-pagination"p>>',
             oLanguage: {
                 sEmptyTable: "There is no certificate created",
                 sSearchPlaceholder: "Search Certificates"
@@ -96,8 +103,7 @@ define([
                 $(dropdownBody).show();
             },
             drawCallback: function() {
-                $('.dataTables_paginate > .pagination').addClass('pagination-sm pull-right');
-                $('.dataTables_filter').addClass('pagination-sm pull-right');
+                common.stylePaginationButton(this);
             },
             lengthChange: false,
             bInfo: false

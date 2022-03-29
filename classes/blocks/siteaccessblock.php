@@ -53,9 +53,6 @@ class siteaccessblock extends block_base {
         $this->layout->name = get_string('accessinfo', 'local_edwiserreports');
         $this->layout->info = get_string('accessinfoblockhelp', 'local_edwiserreports');
 
-        // Block related data.
-        $this->block = new stdClass();
-
         if (is_siteadmin()) {
             $lastrun = $DB->get_field('task_scheduled', 'lastruntime', array(
                 'component' => 'local_edwiserreports',

@@ -33,6 +33,7 @@ define([
     var panelBody = cfg.getPanel("#liveusersblock", "body");
     var loader = $(panelBody + " .loader");
     var table = $(panelBody + " .table");
+    var searchTable = panel + " .table-search-input input";
 
     /**
      * Initialize
@@ -67,6 +68,11 @@ define([
                     // Hide loader.
                     common.loader.hide("#liveusersblock");
                 });
+
+            // Search in table.
+            $('body').on('input', searchTable, function() {
+                liveUsersTable.column(0).search(this.value).draw();
+            });
         }
     }
 
@@ -84,7 +90,7 @@ define([
 
         liveUsersTable = table.DataTable({
             data: data,
-            dom: '<"edwiserreports-table"<"table-filter d-flex"f><t><"table-pagination"p>>',
+            dom: '<"edwiserreports-table"<t><"table-pagination"p>>',
             language: {
                 searchPlaceholder: "Search User"
             },

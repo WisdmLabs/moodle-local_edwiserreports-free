@@ -154,6 +154,9 @@ define([
             // Date selector listener.
             common.dateChange(function(date) {
                 filter = date;
+
+                // Set export filter to download link.
+                $('#activeusersblock').find('.download-links [name="filter"]').val(filter);
                 getActiveUsersBlockData();
             });
 

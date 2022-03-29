@@ -223,6 +223,18 @@ class utility {
         return $grade->get_graph_data($data->filter);
     }
 
+    /**
+     * Get learner table data.
+     *
+     * @param Object $data Data object
+     *
+     * @return Object
+     */
+    public static function get_grade_table_data($data) {
+        $grade = new \local_edwiserreports\gradeblock();
+        return $grade->get_table_data($data->filter);
+    }
+
     /** Generate Course Filter for course progress block
      * @param  Bool  $all Get course with no enrolment as well
      * @return Array      Array of courses
@@ -576,7 +588,7 @@ class utility {
      * Get Course visited by a users
      * @param  Integer $courseid Course ID
      * @param  String  $userid   User ID
-     * @return Integer           Count of visits by this users
+     * @return array           Count of visits by this users
      */
     public static function get_visits_by_users($courseid, $userid) {
         global $DB;
@@ -1464,5 +1476,46 @@ class utility {
         $theme = self::get_active_theme();
         $PAGE->requires->data_for_js('edwiser_reports_color_themes', LOCAL_EDWISERREPORTS_COLOR_THEMES[$theme]);
         $PAGE->requires->css(new moodle_url('/local/edwiserreports/styles/color-themes.php', array('theme' => $theme)));
+    }
+
+    /**
+     * Get all exports icons
+     * If options is set then return options with icons.
+     * Else return icons array.
+     *
+     * @param Array $options Array options to add export icons
+     * @return Array
+     */
+    public static function get_export_icons($options = null) {
+        $pdf = self::image_icon('export/pdf');
+        $csv = self::image_icon('export/csv');
+        $xls = self::image_icon('export/xls');
+        if ($options == null) {
+            $options = [];
+        }
+        $options['pdf'] = $pdf;
+        $options['csv'] = $csv;
+        $options['xls'] = $xls;
+        return $options;
+    }
+
+    /**
+     * Get svg content.
+     *
+     * @return string
+     */
+    public static function image_icon($type) {
+        global $CFG;
+        $image = file_get_contents($CFG->dirroot . '/local/edwiserreports/pix/' . $type . '.svg');
+        return $image;
+    }
+
+    public static function get_default_capabilities() {
+        global $CFG;
+        require_once($CFG->dirroot . '/local/edwiserreports/db/access.php');
+        foreach ($capabilities as $key => $capability) {
+            $capabilities[$key] = $capability['archetypes'];
+        }
+        return $capabilities;
     }
 }

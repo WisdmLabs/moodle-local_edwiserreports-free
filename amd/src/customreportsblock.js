@@ -250,6 +250,13 @@ define([
             root.find('.modal-dialog').addClass('modal-lg');
             modal.getFooter().find('[data-action="save"]').removeClass('btn-primary').addClass('theme-primary-bg text-white');
             modal.show();
+
+            // Destroying modal on hide event.
+            root.on(modalEvents.hidden, function() {
+                modal.destroy();
+            });
+
+            // Saving modal data.
             root.on(modalEvents.save, function(e) {
                 // Stop the default save button behaviour which is to close the modal.
                 e.preventDefault();
@@ -314,7 +321,6 @@ define([
                 $("html, body").animate({ scrollTop: 0 }, "slow");
                 getCustomReportsList();
                 modal.hide();
-                modal.destroy();
             }
         });
     }
@@ -362,7 +368,7 @@ define([
                                 orderable: false
                             }
                         ],
-                        dom: '<"edwiserreports-table"<"table-filter d-flex"f><t><"table-pagination"p>>',
+                        dom: '<"edwiserreports-table"<t><"table-pagination"p>>',
                         language: {
                             searchPlaceholder: M.util.get_string('searchreports', 'local_edwiserreports'),
                             emptyTable: M.util.get_string('noresult', 'local_edwiserreports')
@@ -474,14 +480,22 @@ define([
                 $(this).attr('title', $(this).data('titlehide'));
                 $(this).attr('data-original-title', $(this).data('titlehide'));
                 $(this).data('value', 0);
+                $(this).attr('data-value', 0);
             } else {
                 $(this).attr('title', $(this).data('titleshow'));
                 $(this).attr('data-original-title', $(this).data('titleshow'));
                 $(this).data('value', 1);
+                $(this).attr('data-value', 1);
             }
             $(this).find('.icon').toggleClass('fa-eye');
             $(this).find('.icon').toggleClass('fa-eye-slash');
             $(checkboxId).trigger('click');
+        });
+
+
+        // Search in table.
+        $('body').on('input', '.customreports-block-section .table-search-input input', function() {
+            crListTable.column(0).search(this.value).draw();
         });
     }
 
