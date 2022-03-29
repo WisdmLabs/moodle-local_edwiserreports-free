@@ -575,7 +575,7 @@ $string['delete'] = 'Delete';
 $string['report/edwiserreports_activeusersblock:editadvance'] = 'Edit Advance';
 
 /* Custom Reports block related strings */
-$string['customreportedit'] = 'Custom Reports Block Manage';
+$string['customreportedit'] = 'Custom Reports';
 $string['reportspreview'] = 'Reports Preview';
 $string['reportsfilter'] = 'Reports Filter';
 $string['noreportspreview'] = 'No Preview Available';
@@ -624,7 +624,7 @@ $string['selectcourses'] = 'Select Courses';
 $string['selectcohorts'] = 'Select Cohorts';
 $string['createnewcustomreports'] = 'Create new Report';
 $string['unlockthisfeature'] = 'Unlock this feature';
-$string['availableinpro'] = 'Available in Pro<br>version';
+$string['availableinpro'] = 'Available in PRO<br>version';
 $string['upgradetopro'] = 'Upgrade to PRO';
 
 $string['invalidsecretkey'] = 'Invalid secret key. Please logout and login again.';
@@ -747,18 +747,18 @@ $string['licensekeyhasexpired'] = "Your license key has Expired. Please, Renew i
 $string['licensekeyactivated'] = "Your license key is activated.";
 $string['enterlicensekey'] = "Please enter correct license key.";
 
-// Visits on site block.
-$string['visitsonsiteheader'] = 'Visits on site';
+// Visits On Site block.
+$string['visitsonsiteheader'] = 'Visits On Site';
 $string['visitsonsiteblockhelp'] = 'The number of visits users had on your site in a given user session. Session duration is defined in Edwiser Reports settings.';
-$string['visitsonsiteblockview'] = 'Visits on site View';
-$string['visitsonsiteblockedit'] = 'Visits on site Edit';
-$string['visitsonsiterolesetting'] = 'Visits on site allowed roles';
-$string['visitsonsitedesktopsize'] = 'Visits on site size in Desktop';
-$string['visitsonsitetabletsize'] = 'Visits on site size in Tablet';
-$string['visitsonsiteposition'] = 'Visits on site\'s Position';
-$string['visitsonsiteblockexportheader'] = 'Visits on site Report';
-$string['visitsonsiteblockexporthelp'] = 'This report will show the Visits on site exported data.';
-$string['visitsonsiteblockeditadvance'] = 'Visits on site Block Advance Edit';
+$string['visitsonsiteblockview'] = 'Visits On Site View';
+$string['visitsonsiteblockedit'] = 'Visits On Site Edit';
+$string['visitsonsiterolesetting'] = 'Visits On Site allowed roles';
+$string['visitsonsitedesktopsize'] = 'Visits On Site size in Desktop';
+$string['visitsonsitetabletsize'] = 'Visits On Site size in Tablet';
+$string['visitsonsiteposition'] = 'Visits On Site\'s Position';
+$string['visitsonsiteblockexportheader'] = 'Visits On Site Report';
+$string['visitsonsiteblockexporthelp'] = 'This report will show the Visits On Site exported data.';
+$string['visitsonsiteblockeditadvance'] = 'Visits On Site Block Advance Edit';
 $string['averagesitevisits'] = 'Average site visits';
 $string['totalsitevisits'] = 'Total site visits';
 

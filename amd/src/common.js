@@ -906,10 +906,10 @@ define([
             }
         }).done(function(response) {
             response = JSON.parse(response);
-            if (root.find('#esr-toggle-studentengagement-report-' + id).attr('data-value') == "0") {
-                root.find('#esr-toggle-studentengagement-report-' + id).attr('data-value', 'on');
+            if (root.find('#esr-toggle-timespentonsiteblock-block-' + id).attr('data-value') == "0") {
+                root.find('#esr-toggle-timespentonsiteblock-block-' + id).attr('data-value', 'on');
             } else {
-                root.find('#esr-toggle-studentengagement-report-' + id).attr('data-value', '0');
+                root.find('#esr-toggle-timespentonsiteblock-block-' + id).attr('data-value', '0');
             }
             if (!response.error) {
                 errorBox.html(response.successmsg);

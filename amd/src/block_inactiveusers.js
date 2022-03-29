@@ -22,7 +22,6 @@
 /* eslint-disable no-console */
 define([
     'jquery',
-    'core/templates',
     './defaultconfig',
     './variables',
     './common',
@@ -30,7 +29,6 @@ define([
     './dataTables.bootstrap4'
 ], function(
     $,
-    Templates,
     cfg,
     V,
     common
@@ -54,6 +52,30 @@ define([
         var searchTable = panel + " .table-search-input input";
 
         if ($(panel).length) {
+            // Rending data table.
+            inActiveUsersTable = $(table).DataTable({
+                dom: '<"edwiserreports-table"<t><"table-pagination"p>>',
+                aaSorting: [
+                    [2, 'desc']
+                ],
+                oLanguage: {
+                    sEmptyTable: "No inactive users are available.",
+                    sSearchPlaceholder: "Search Users"
+                },
+                columnDefs: [{
+                    "targets": 2,
+                    "className": "text-center"
+                }],
+                drawCallback: function() {
+                    common.stylePaginationButton(this);
+                    // Hide loader.
+                    common.loader.hide('#inactiveusersblock');
+                },
+                responsive: true,
+                lengthChange: false,
+                bInfo: false
+            });
+
             // Get inactive users data on load
             getInactiveUsersData($(dropdown).data("value"));
 
@@ -64,16 +86,6 @@ define([
                 // Get filter
                 var filter = $(this).data("value");
                 $(panel).find('.download-links input[name="filter"]').val(filter);
-
-                // If table is already created then destroy the tablw
-                if (inActiveUsersTable) {
-                    inActiveUsersTable.destroy();
-                }
-
-                // Show load and remove table
-                $(loader).show();
-                $(table).hide();
-                $(tableWrapper).hide();
 
                 // Set dropdown button value
                 $(dropdownToggle).html($(this).html());
@@ -117,7 +129,9 @@ define([
                         invalidUser('inactiveusersblock', response);
                         return;
                     }
-                    createInactiveUsersTable(response.data);
+                    inActiveUsersTable.clear();
+                    inActiveUsersTable.rows.add(response.data);
+                    inActiveUsersTable.draw();
                 })
                 .fail(function(error) {
                     // console.log(error);
@@ -125,46 +139,6 @@ define([
                     // Hide loader.
                     common.loader.hide('#inactiveusersblock');
                 });
-        }
-
-        /**
-         * Create inactive users table
-         * @param  {String} data Table data
-         */
-        function createInactiveUsersTable(data) {
-            // If table is creted then destroy table
-            if (inActiveUsersTable) {
-                // Remove table data first
-                $("#inactiveuserstable tbody").remove();
-                inActiveUsersTable.destroy();
-            }
-
-            // Display loader
-            $(loader).hide();
-            $(table).show();
-
-            // Create inactive users table
-            inActiveUsersTable = $(table).DataTable({
-                data: data,
-                dom: '<"edwiserreports-table"<t><"table-pagination"p>>',
-                aaSorting: [
-                    [2, 'desc']
-                ],
-                oLanguage: {
-                    sEmptyTable: "No inactive users are available.",
-                    sSearchPlaceholder: "Search Users"
-                },
-                columnDefs: [{
-                    "targets": 2,
-                    "className": "text-center"
-                }],
-                drawCallback: function() {
-                    common.stylePaginationButton(this);
-                },
-                responsive: true,
-                lengthChange: false,
-                bInfo: false
-            });
         }
     }
 

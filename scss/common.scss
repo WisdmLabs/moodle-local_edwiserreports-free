@@ -151,6 +151,9 @@ tr[aria-expanded="true"] {
 }
 
 #page-local-edwiserreports-index {
+    .comparisontable {
+        width: 100%;
+    }
     .edwiserreports-header {
         .filter-selector {
             position: relative;
@@ -182,7 +185,7 @@ tr[aria-expanded="true"] {
     }
     .filter-wrapper {
         width: fit-content;
-        z-index: 1300;
+        z-index: 1;
     }
 }
 
@@ -754,12 +757,16 @@ tr[aria-expanded="true"] {
 #gradeblock,
 #courseprogressblock {
     .panel-body {
+        .empty-donut {
+            .apexcharts-legend {
+                display: none;
+            }
+        }
         .apexcharts-legend {
             bottom: auto;
             border: 1px solid #E5E5E5;
             border-radius: 4px;
             padding: 1.2rem;
-            right: 1rem !important;
             .apexcharts-legend-series {
                 margin: 2px 0;
             }
@@ -828,7 +835,8 @@ tr[aria-expanded="true"] {
 .insight-card {
     position: relative;
     display: flex;
-    box-shadow: 0 10px 15px 0 rgba(59, 65, 94, 0.1), 0 0 30px 0 rgba(0, 0, 0, 0.07);
+    box-shadow: 0 10px 15px 0 rgba(59, 65, 94, 0.1),
+    0 0 30px 0 rgba(0, 0, 0, 0.07);
     .pro-lock {
         position: absolute;
         right: 1rem;

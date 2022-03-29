@@ -497,6 +497,8 @@ define([
         $('body').on('input', '.customreports-block-section .table-search-input input', function() {
             crListTable.column(0).search(this.value).draw();
         });
+
+        common.handleSearchInput();
     }
 
     return {

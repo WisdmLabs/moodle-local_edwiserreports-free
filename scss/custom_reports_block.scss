@@ -31,6 +31,14 @@
 }
 
 .reports-filter-body {
+    .select2-selection--single {
+        height: 100% !important;
+    }
+    .select2-selection__rendered {
+        word-wrap: break-word !important;
+        text-overflow: inherit !important;
+        white-space: normal !important;
+    }
     .checkbox-edwiserreports {
         padding: 0.2rem 2.5rem;
     }

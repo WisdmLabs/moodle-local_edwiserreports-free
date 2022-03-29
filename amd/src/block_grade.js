@@ -139,6 +139,7 @@ define([
                             </div>`;
                     }
                 };
+                $(SELECTOR.PANEL).find(SELECTOR.GRAPH).toggleClass('empty-donut', data.labels.length == 0);
                 data.chart.events = {
                     mounted: function() {
                         $(SELECTOR.PANEL).find(SELECTOR.GRAPH).find('.apexcharts-legend')

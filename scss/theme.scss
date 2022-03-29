@@ -21,16 +21,16 @@
             border: none;
         }
     }
-    &.theme_move,
-    &.theme_boost {
-        .filter-selector {
-            button.dropdown-toggle {
-                background: #fff;
-                border: 1px solid #e4eaec;
-                padding: .4rem .75rem;
-                border-radius: .215rem;
+    &.theme_adaptable {
+        #liveusersblock {
+            .text-success,
+            .text-dander {
+                font-size: 1rem !important;
             }
         }
+    }
+    #todaysactivityblock input.input-group-addon {
+        width: 150px;
     }
 }
 
@@ -63,14 +63,55 @@
             border: none;
         }
     }
-    &.theme_move,
+}
+
+$padding: 1.0715rem;
+#page-local-edwiserreports-index,
+#page-local-edwiserreports-studentengagement,
+#page-local-edwiserreports-grade,
+#page-local-edwiserreports-certificates,
+#page-local-edwiserreports-coursereport,
+#page-local-edwiserreports-activeusers,
+#page-local-edwiserreports-learner {
+    &.theme_adaptable,
+    &.theme_fordson,
+    &.theme_moove,
     &.theme_boost {
+        .block-cap-form {
+            .col-form-label {
+                font-size: 1.286rem !important;
+                font-weight: 400 !important;
+            }
+        }
+        .panel-header,
         .filter-selector {
             button.dropdown-toggle {
                 background: #fff;
                 border: 1px solid #e4eaec;
                 padding: .4rem .75rem;
                 border-radius: .215rem;
+            }
+        }
+    }
+    &.theme_fordson {
+        .row {
+            margin-right: -$padding;
+            margin-left: -$padding;
+        }
+        @for $i from 1 through 12 {
+            .col-#{$i},
+            .col-sm-#{$i},
+            .col-md-#{$i},
+            .col-lg-#{$i} {
+                padding-right: $padding;
+                padding-left: $padding;
+            }
+        }
+    }
+    &.theme_adaptable {
+        #scheduletab {
+            button.dropdown-toggle {
+                color: #333 !important;
             }
         }
     }

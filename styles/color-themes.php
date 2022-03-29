@@ -114,14 +114,6 @@ echo "
 	color: $primarycolor !important;
 }
 
-.blockoptions .pro-feature {
-    background: " . LOCAL_EDWISERREPORTS_COLOR_THEMES[$theme][1] . " !important;
-    color: white !important;
-}
-.blockoptions .pro-feature button {
-    color: white !important;
-    text-align: center;
-}
 ";
 
 // Select 2 colors.
