@@ -58,11 +58,11 @@ define('local_edwiserreports/settings', ['jquery', 'core/ajax'], function($, Aja
                 checkLicenseTab();
 
                 // Hide default select options.
-                $('[name="palette-radio"][value="' + $('#id_s_local_edwiserreports_palette').hide().val() + '"]').prop('checked', true);
+                $('[name="theme-radio"][value="' + $('#id_s_local_edwiserreports_theme').hide().val() + '"]').prop('checked', true);
 
                 // Handling custom radio options.
-                $('[name="palette-radio"]').on('change', function() {
-                    $('#id_s_local_edwiserreports_palette').val($('[name="palette-radio"]:checked').val());
+                $('[name="theme-radio"]').on('change', function() {
+                    $('#id_s_local_edwiserreports_theme').val($('[name="theme-radio"]:checked').val());
                 });
             });
         }

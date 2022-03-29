@@ -43,7 +43,7 @@ require_login(get_course($courseid));
 
 local_edwiserreports_get_required_strings_for_js();
 
-// Load color palettes from constants.
+// Load color themes from constants.
 local_edwiserreports\utility::load_color_pallets();
 
 // Get course context.

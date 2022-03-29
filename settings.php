@@ -77,26 +77,26 @@ $page->add(new admin_setting_configcheckbox(
     1
 ));
 
-$help = "<table class='table-color-palette'><tbody>";
-$palettes = [];
-foreach (LOCAL_EDWISERREPORTS_COLOR_PALETTES as $key => $palette) {
-    $label = get_string('palette', 'local_edwiserreports') . ' ' . ($key + 1);
+$help = "<table class='table-color-theme'><tbody>";
+$themes = [];
+foreach (LOCAL_EDWISERREPORTS_COLOR_THEMES as $key => $theme) {
+    $label = get_string('theme', 'local_edwiserreports') . ' ' . ($key + 1);
     $disabled = '';
     if ($key > 0) {
         $label .= ' <strong>(PRO)</strong>';
         $disabled = 'disabled';
     }
-    $palettes[] = $label;
+    $themes[] = $label;
     $help .= "<tr>";
     $help .= "<td style='font-weight: 700; color: #222;'>";
     $help .= "<div class='form-check $disabled'>
-                <input class='form-check-input' name='palette-radio' type='radio' id='palette-radio-$key' value='$key' $disabled>
-                <label class='form-check-label' for='palette-radio-$key'>
+                <input class='form-check-input' name='theme-radio' type='radio' id='theme-radio-$key' value='$key' $disabled>
+                <label class='form-check-label' for='theme-radio-$key'>
                     $label
                 </label>
             </div>";
     $help .= "</td>";
-    foreach ($palette as $color) {
+    foreach ($theme as $color) {
         $help .= "<td style='
                     background-color: $color;
                     color: #fff;
@@ -116,11 +116,11 @@ $help .= "</a>";
 $help .= "</div>";
 
 $page->add(new admin_setting_configselect(
-    'local_edwiserreports/palette',
-    new lang_string('colorpalette', 'local_edwiserreports'),
-    new lang_string('colorpalettehelp', 'local_edwiserreports') . $help,
+    'local_edwiserreports/theme',
+    new lang_string('colortheme', 'local_edwiserreports'),
+    new lang_string('colorthemehelp', 'local_edwiserreports') . $help,
     0,
-    $palettes
+    $themes
 ));
 
 $settings->add($page);

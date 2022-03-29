@@ -110,7 +110,7 @@ define([
                             },
                             dom: '<"edwiserreports-table"<"table-filter d-flex"f><t><"table-pagination"p>>',
                             drawCallback: function() {
-                                ModalTable.find('th').addClass('palette-3-bg text-white');
+                                ModalTable.find('th').addClass('theme-3-bg text-white');
                                 common.stylePaginationButton(this);
                             },
                             lengthChange: false,
@@ -158,7 +158,7 @@ define([
                     emptyTable: "There are no courses"
                 },
                 drawCallback: function() {
-                    $(CourseProgressTable).find('th').addClass('palette-3-bg text-white');
+                    $(CourseProgressTable).find('th').addClass('theme-3-bg text-white');
                     common.stylePaginationButton(this);
                 },
                 initComplete: function() {

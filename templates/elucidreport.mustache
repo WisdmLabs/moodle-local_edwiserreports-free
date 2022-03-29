@@ -57,7 +57,7 @@
 <div id="wdm-edwiserreports" class="row m-1 d-none" data-editing="{{ editing }}">
     {{# canmanagecustomreports }}
         <div class="col-12 mb-3">
-            <a href="{{customreportseditlink}}" class="btn palette-primary-bg text-white pull-right">
+            <a href="{{customreportseditlink}}" class="btn theme-primary-bg text-white pull-right">
                 <i class="icon fa fa-plus fa-fw " aria-hidden="true"></i>
                 {{#str}} createcustomreports, local_edwiserreports {{/str}}
             </a>
@@ -71,12 +71,12 @@
                         <div class="upgrade-to-pro text-white">
                             <div class="upgrade-notice text-center">
                                 <h4 class="text-white">{{#str}} unlockthisfeature, local_edwiserreports, {{{upgradelink}}} {{/str}}</h4>
-                                <a href="{{{upgradelink}}}" class="btn palette-primary-bg text-white mt-1" target="_blank">{{#str}} upgradetopro, local_edwiserreports {{/str}}</a>
+                                <a href="{{{upgradelink}}}" class="btn theme-primary-bg text-white mt-1" target="_blank">{{#str}} upgradetopro, local_edwiserreports {{/str}}</a>
                             </div>
                         </div>
                     {{/pro}}
                     <div class="panel-header p-3 d-flex">
-                        <div class="panel-title palette-1-text p-0">
+                        <div class="panel-title theme-1-text p-0">
                             <strong class="mb-1">
                                 {{{name}}}
                                 <a href="javascript:void(0)" data-title="{{info}}" class="small panel-help" data-toggle="tooltip" data-trigger="hover" data-placement="bottom">
@@ -89,7 +89,7 @@
                                 {{# hasmenu}}
                                     <div class="dropdown float-end">
                                         <button role="button" type="button" class="btn" data-toggle="dropdown">
-                                            <i class="fa fa-ellipsis-v palette-primary-text"></i>
+                                            <i class="fa fa-ellipsis-v theme-primary-text"></i>
                                         </button>
                                         <div class="dropdown-menu dropdown-menu-right" style="">
                                             {{# morelink }}
@@ -173,7 +173,7 @@
                                         emptyTable: "{{#str}}noresult, local_edwiserreports{{/str}}"
                                     },
                                     drawCallback: function() {
-                                        $(tableId).find('th').addClass('palette-3-bg');
+                                        $(tableId).find('th').addClass('theme-3-bg');
                                         let pagination = $(this).closest(SELECTOR.TABLE).find(SELECTOR.PAGINATION);
                                         pagination.find(SELECTOR.PAGINATIONITEM).addClass(V.datatableClasses.buttonSpacing);
                                         pagination.find(SELECTOR.PAGINATIONITEM + ' a').addClass(V.datatableClasses.buttonSize);
@@ -191,7 +191,7 @@
     {{/ blocks }}
     {{# canmanagecustomreports }}
         <div class="col-12">
-            <a href="{{customreportseditlink}}" class="btn palette-primary-bg text-white pull-right">
+            <a href="{{customreportseditlink}}" class="btn theme-primary-bg text-white pull-right">
                 <i class="icon fa fa-plus fa-fw " aria-hidden="true"></i>
                 {{#str}} createcustomreports, local_edwiserreports {{/str}}
             </a>

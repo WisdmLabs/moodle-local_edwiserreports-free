@@ -5,27 +5,27 @@ require_once(__DIR__ . '/../../../config.php');
 require_once(__DIR__ . '/../classes/constants.php');
 ob_clean();
 
-$palette = local_edwiserreports\utility::get_active_palette();
+$theme = local_edwiserreports\utility::get_active_theme();
 
 header('Content-Type: text/css; charset=utf-8');
 
-foreach (LOCAL_EDWISERREPORTS_COLOR_PALETTES[$palette] as $colindex => $color) {
-    $mainclass = ".palette-" . $colindex . "-";
+foreach (LOCAL_EDWISERREPORTS_COLOR_THEMES[$theme] as $colindex => $color) {
+    $mainclass = ".theme-" . $colindex . "-";
     echo $mainclass . "bg { background-color: $color !important; }\n";
     echo $mainclass . "text { color: $color !important; }\n";
     echo $mainclass . "border { border-color: $color !important; }\n";
 }
 
-$primarycolor = LOCAL_EDWISERREPORTS_COLOR_PALETTES[$palette][0];
-$secondarycolor = LOCAL_EDWISERREPORTS_COLOR_PALETTES[$palette][2];
-$mainclass = ".palette-primary-";
+$primarycolor = LOCAL_EDWISERREPORTS_COLOR_THEMES[$theme][0];
+$secondarycolor = LOCAL_EDWISERREPORTS_COLOR_THEMES[$theme][2];
+$mainclass = ".theme-primary-";
     echo $mainclass . "bg { background-color: $primarycolor !important; }\n";
     echo $mainclass . "text { color: $primarycolor !important; }\n";
     echo $mainclass . "border { border-color: $primarycolor !important; }\n";
 
 // For SVG.
-echo ".palette-primary-fill { fill: $primarycolor !important; }\n";
-echo ".palette-secondary-fill { fill: " . $secondarycolor . "60 !important; }\n";
+echo ".theme-primary-fill { fill: $primarycolor !important; }\n";
+echo ".theme-secondary-fill { fill: " . $secondarycolor . "60 !important; }\n";
 
 
 echo "

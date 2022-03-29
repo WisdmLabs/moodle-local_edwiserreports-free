@@ -190,7 +190,7 @@ define([
                                 searching: false,
                                 lengthChange: false,
                                 drawCallback: function() {
-                                    $('#cr-preview-table').find('th').addClass('palette-3-bg text-white');
+                                    $('#cr-preview-table').find('th').addClass('theme-3-bg text-white');
                                     common.stylePaginationButton(this);
                                 }
                             });
@@ -248,7 +248,7 @@ define([
         }).done(function(modal) {
             var root = modal.getRoot();
             root.find('.modal-dialog').addClass('modal-lg');
-            modal.getFooter().find('[data-action="save"]').removeClass('btn-primary').addClass('palette-primary-bg text-white');
+            modal.getFooter().find('[data-action="save"]').removeClass('btn-primary').addClass('theme-primary-bg text-white');
             modal.show();
             root.on(modalEvents.save, function(e) {
                 // Stop the default save button behaviour which is to close the modal.
@@ -374,7 +374,7 @@ define([
                         bInfo: false,
                         lengthChange: false,
                         drawCallback: function() {
-                            $('#cr-list-table').find('th').addClass('palette-3-bg text-white');
+                            $('#cr-list-table').find('th').addClass('theme-3-bg text-white');
                             common.stylePaginationButton(this);
                         }
                     });

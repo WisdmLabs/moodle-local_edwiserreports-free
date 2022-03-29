@@ -120,7 +120,7 @@ define([
             position: 'top',
             floating: true
         },
-        colors: CFG.getColorPalette(),
+        colors: CFG.getColorTheme(),
         dataLabels: {
             enabled: false
         }

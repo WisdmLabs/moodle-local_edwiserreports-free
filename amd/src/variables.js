@@ -86,7 +86,7 @@ define(['jquery', 'local_edwiserreports/variables'], function($) {
             buttonSpacing: 'mx-1',
             buttonSize: "px-3 py-2",
             buttonActive: "border-secondary bg-secondary text-dark rounded",
-            buttonInactive: "border palette-primary-border palette-primary-text rounded"
+            buttonInactive: "border theme-primary-border theme-primary-text rounded"
         },
 
         // Get scheduled email context

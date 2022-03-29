@@ -80,8 +80,8 @@ define('LOCAL_SITEREPORT_BLOCK_SMALL', 0);
 // Course Progres Manager.
 define('CPM_STUDENTS_ARCHETYPE', 'student');
 
-// Color Palettes.
-define('LOCAL_EDWISERREPORTS_COLOR_PALETTES', [
+// Color Themes.
+define('LOCAL_EDWISERREPORTS_COLOR_THEMES', [
     ['#F98012', '#133F3F', '#00A1A8', '#444444', '#666666'],
     ['#AC0034', '#142458', '#DFC11C', '#333333', '#999999'],
     ['#ED553B', '#20639B', '#92CD53', '#222222', '#888888']

@@ -448,9 +448,9 @@ $string['selectblocks'] = 'Select blocks to show for Reporting Managers: ';
 $string['rpmblocks'] = 'Reporting Manager Blocks';
 $string['addblocks'] = 'Add Blocks';
 $string['notselected'] = 'Not Selected';
-$string['colorpalette'] = 'Color Palette';
-$string['colorpalettehelp'] = 'Choose color palette for dashboard.';
-$string['palette'] = 'Palette';
+$string['colortheme'] = 'Color Theme';
+$string['colorthemehelp'] = 'Choose color theme for dashboard.';
+$string['theme'] = 'Theme';
 
 // Custom Query Report.
 $string['customqueryreport'] = 'Custom Query Report';

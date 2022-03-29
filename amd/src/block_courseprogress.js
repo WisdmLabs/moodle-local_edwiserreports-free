@@ -163,7 +163,7 @@ define([
                     type: 'pie',
                     height: 350
                 },
-                colors: CFG.getColorPalette(),
+                colors: CFG.getColorTheme(),
                 fill: {
                     type: 'solid',
                 },

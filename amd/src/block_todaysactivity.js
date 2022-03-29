@@ -170,7 +170,7 @@ define([
                 xaxis: {
                     categories: CFG.todaysActivityBlock.graph.labels,
                 },
-                colors: [CFG.getColorPalette()[2]]
+                colors: [CFG.getColorTheme()[2]]
             };
 
             /**

@@ -164,7 +164,7 @@ define([
         dataLabels: {
             enabled: false
         },
-        colors: CFG.getColorPalette(),
+        colors: CFG.getColorTheme(),
         noData: {
             text: M.util.get_string('nographdata', 'local_edwiserreports')
         }

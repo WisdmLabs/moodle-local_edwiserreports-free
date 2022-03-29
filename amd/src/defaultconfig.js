@@ -27,9 +27,9 @@ define(["jquery", "local_edwiserreports/variables", "local_edwiserreports/select
         requestDataType: v.requestDataType,
         component: v.component,
 
-        // Get color palette.
-        getColorPalette: function() {
-            return edwiser_reports_color_palettes;
+        // Get color theme.
+        getColorTheme: function() {
+            return edwiser_reports_color_themes;
         },
 
         // Todays Activity Block

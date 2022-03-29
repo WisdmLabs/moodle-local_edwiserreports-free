@@ -92,7 +92,7 @@ define([
         dataLabels: {
             enabled: false
         },
-        colors: [CFG.getColorPalette()[2]],
+        colors: [CFG.getColorTheme()[2]],
     };
 
     /**
@@ -142,7 +142,7 @@ define([
         }
 
         loadGraph(invalidUser);
-        $(SELECTOR.SHADE).css('background-image', 'linear-gradient(to right, rgba(0, 0, 0, 0), ' + CFG.getColorPalette()[2] + ')');
+        $(SELECTOR.SHADE).css('background-image', 'linear-gradient(to right, rgba(0, 0, 0, 0), ' + CFG.getColorTheme()[2] + ')');
     }
 
     // Must return the init function

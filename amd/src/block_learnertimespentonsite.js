@@ -110,7 +110,7 @@ define([
         dataLabels: {
             enabled: false
         },
-        colors: [CFG.getColorPalette()[2]]
+        colors: [CFG.getColorTheme()[2]]
     };
 
     /**
@@ -131,7 +131,7 @@ define([
         theme: {
             monochrome: {
                 enabled: true,
-                color: CFG.getColorPalette()[2],
+                color: CFG.getColorTheme()[2],
                 shadeTo: 'light',
                 shadeIntensity: 0.65
             },

@@ -57,7 +57,7 @@ define([
             position: 'bottom',
             offsetY: 0
         },
-        colors: CFG.getColorPalette(),
+        colors: CFG.getColorTheme(),
         noData: {
             text: M.util.get_string('nographdata', 'local_edwiserreports')
         }

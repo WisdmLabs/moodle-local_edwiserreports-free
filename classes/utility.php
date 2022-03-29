@@ -1446,23 +1446,23 @@ class utility {
     }
 
     /**
-     * Get active palette.
+     * Get active theme.
      *
      * @return int
      */
-    public static function get_active_palette() {
+    public static function get_active_theme() {
         return 0;
     }
 
     /**
-     * Load color palettes as variable and css classes on page.
+     * Load color themes as variable and css classes on page.
      *
      * @return void
      */
     public static function load_color_pallets() {
         global $PAGE;
-        $palette = self::get_active_palette();
-        $PAGE->requires->data_for_js('edwiser_reports_color_palettes', LOCAL_EDWISERREPORTS_COLOR_PALETTES[$palette]);
-        $PAGE->requires->css(new moodle_url('/local/edwiserreports/styles/color-palettes.php', array('palette' => $palette)));
+        $theme = self::get_active_theme();
+        $PAGE->requires->data_for_js('edwiser_reports_color_themes', LOCAL_EDWISERREPORTS_COLOR_THEMES[$theme]);
+        $PAGE->requires->css(new moodle_url('/local/edwiserreports/styles/color-themes.php', array('theme' => $theme)));
     }
 }
