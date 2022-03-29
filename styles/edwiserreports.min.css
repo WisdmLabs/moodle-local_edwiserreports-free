@@ -467,7 +467,7 @@ tr[aria-expanded="true"] .accordion-arrow.icon {
     height: 100%;
 }
 
-#wdm-edwiserreports .edwiserReport-block > div .panel:not(:hover) .upgrade-to-pro {
+#wdm-edwiserreports .edwiserReport-block > div .panel:not(:hover) > .upgrade-to-pro {
     display: none;
 }
 
@@ -511,6 +511,33 @@ tr[aria-expanded="true"] .accordion-arrow.icon {
     border-bottom: 1rem solid #e5e5e5;
     border-right: 0.7rem solid transparent;
     border-left: 0.7rem solid transparent;
+}
+
+#wdm-edwiserreports .edwiserReport-block > div .panel .panel-header .dropdown.blockoptions .dropdown-menu .dropdown-item.disabled {
+    color: #444444;
+    opacity: 0.5;
+}
+
+#wdm-edwiserreports .edwiserReport-block > div .panel .panel-header .dropdown.blockoptions .dropdown-menu .dropdown-item.disabled.pro-highlight {
+    color: white;
+    font-weight: 600;
+    opacity: 1;
+}
+
+#wdm-edwiserreports .edwiserReport-block > div .panel .panel-header .dropdown.blockoptions .dropdown-menu .dropdown-item.disabled.pro-highlight span {
+    border-radius: 5px;
+    position: relative;
+}
+
+#wdm-edwiserreports .edwiserReport-block > div .panel .panel-header .dropdown.blockoptions .dropdown-menu .dropdown-item.disabled.pro-highlight span::after {
+    content: " ";
+    position: absolute;
+    left: 40%;
+    transform: translateX(-50%);
+    top: 100%;
+    border-top: 0.5rem solid;
+    border-right: 0.5rem solid transparent;
+    border-left: 0.5rem solid transparent;
 }
 
 #wdm-edwiserreports .edwiserReport-block > div .panel .panel-header .dropdown.blockoptions.show button {
@@ -955,6 +982,10 @@ tr[aria-expanded="true"] .accordion-arrow.icon {
     box-shadow: 0 10px 15px 0 rgba(59, 65, 94, 0.1), 0 0 30px 0 rgba(0, 0, 0, 0.07);
 }
 
+.insight-card:not(:hover) > .upgrade-to-pro {
+    display: none;
+}
+
 .insight-card .pro-lock {
     position: absolute;
     right: 1rem;
@@ -1023,6 +1054,26 @@ tr[aria-expanded="true"] .accordion-arrow.icon {
     bottom: 15%;
     width: 1px;
     background-color: rgba(0, 0, 0, 0.2);
+}
+
+.download-links button {
+    position: relative;
+}
+
+.download-links button.disabled {
+    opacity: 1;
+}
+
+.download-links button.disabled .lock-content {
+    opacity: 0.5;
+}
+
+.download-links button.disabled .lock-icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: translateY(-50%);
+    opacity: 1;
 }
 
 .download-links .download-label {
@@ -2359,6 +2410,16 @@ table.dataTable td.dataTables_empty {
 #page-local-edwiserreports-activeusers.theme_adaptable #scheduletab button.dropdown-toggle,
 #page-local-edwiserreports-learner.theme_adaptable #scheduletab button.dropdown-toggle {
     color: #333 !important;
+}
+
+#page-local-edwiserreports-index .select2-container--default,
+#page-local-edwiserreports-studentengagement .select2-container--default,
+#page-local-edwiserreports-grade .select2-container--default,
+#page-local-edwiserreports-certificates .select2-container--default,
+#page-local-edwiserreports-coursereport .select2-container--default,
+#page-local-edwiserreports-activeusers .select2-container--default,
+#page-local-edwiserreports-learner .select2-container--default {
+    max-width: 100%;
 }
 
 #wdm-edwiserreports #todaysactivityblock input.input-group-addon {

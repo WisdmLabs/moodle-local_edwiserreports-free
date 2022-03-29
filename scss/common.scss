@@ -299,7 +299,7 @@ tr[aria-expanded="true"] {
             border-radius: .25rem;
             .panel {
                 &:not(:hover) {
-                    .upgrade-to-pro {
+                    &>.upgrade-to-pro {
                         display: none;
                     }
                 }
@@ -338,6 +338,31 @@ tr[aria-expanded="true"] {
                                 border-bottom: 1rem solid #e5e5e5;
                                 border-right: 0.7rem solid transparent;
                                 border-left: 0.7rem solid transparent;
+                            }
+                            .dropdown-item {
+                                &.disabled {
+                                    color: #444444;
+                                    opacity: 0.5;
+                                    &.pro-highlight {
+                                        color: white;
+                                        font-weight: 600;
+                                        opacity: 1;
+                                        span {
+                                            border-radius: 5px;
+                                            position: relative;
+                                            &::after {
+                                                content: " ";
+                                                position: absolute;
+                                                left: 40%;
+                                                transform: translateX(-50%);
+                                                top: 100%;
+                                                border-top: 0.5rem solid;
+                                                border-right: 0.5rem solid transparent;
+                                                border-left: 0.5rem solid transparent;
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                         &.show {
@@ -833,6 +858,11 @@ tr[aria-expanded="true"] {
 }
 
 .insight-card {
+    &:not(:hover) {
+        &>.upgrade-to-pro {
+            display: none;
+        }
+    }
     position: relative;
     display: flex;
     box-shadow: 0 10px 15px 0 rgba(59, 65, 94, 0.1),
@@ -900,6 +930,22 @@ tr[aria-expanded="true"] {
 }
 
 .download-links {
+    button {
+        position: relative;
+        &.disabled {
+            opacity: 1;
+            .lock-content {
+                opacity: 0.5;
+            }
+            .lock-icon {
+                position: absolute;
+                right: 0;
+                top: 0;
+                transform: translateY(-50%);
+                opacity: 1;
+            }
+        }
+    }
     .download-label {
         font-weight: 500;
         text-transform: uppercase;
