@@ -1487,15 +1487,13 @@ class utility {
      * @return Array
      */
     public static function get_export_icons($options = null) {
-        $pdf = self::image_icon('export/pdf');
-        $csv = self::image_icon('export/csv');
-        $xls = self::image_icon('export/xls');
         if ($options == null) {
             $options = [];
         }
-        $options['pdf'] = $pdf;
-        $options['csv'] = $csv;
-        $options['xls'] = $xls;
+        $options['pdf'] = self::image_icon('export/pdf');
+        $options['csv'] = self::image_icon('export/csv');
+        $options['xls'] = self::image_icon('export/xls');
+        $options['lock'] = self::image_icon('lock');
         return $options;
     }
 
