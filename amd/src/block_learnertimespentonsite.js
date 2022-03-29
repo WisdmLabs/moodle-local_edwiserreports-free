@@ -33,7 +33,7 @@ define([
     const lineChartDefault = {
         series: [],
         chart: {
-            type: 'area',
+            type: 'line',
             height: 350,
             dropShadow: {
                 enabled: true,
@@ -53,6 +53,9 @@ define([
             zoom: {
                 enabled: false
             }
+        },
+        markers: {
+            size: 0
         },
         tooltip: {
             enabled: true,
@@ -79,13 +82,11 @@ define([
             }
         },
         stroke: {
-            curve: 'smooth'
+            curve: 'smooth',
+            width: 2
         },
         grid: {
             borderColor: '#e7e7e7'
-        },
-        markers: {
-            size: 1
         },
         xaxis: {
             categories: null,
@@ -105,7 +106,12 @@ define([
         },
         legend: {
             position: 'top',
-            floating: true
+            horizontalAlign: 'left',
+            offsetY: '-20',
+            itemMargin: {
+                horizontal: 10,
+                vertical: 0
+            },
         },
         dataLabels: {
             enabled: false
@@ -118,7 +124,7 @@ define([
      */
     const pieChartDefault = {
         chart: {
-            type: 'pie',
+            type: 'donut',
             height: 350
         },
         legend: {
@@ -217,18 +223,27 @@ define([
                     data.tooltip.y.title.formatter = (title) => {
                         return M.util.get_string('time', 'local_edwiserreports') + ': ';
                     }
+                    $(SELECTOR.PANEL).find('.panel-body').attr('data-charttype', 'line');
                 } else {
                     data = Object.assign({}, pieChartDefault);
                     data.labels = response.labels;
                     data.series = response.timespent;
                     data.tooltip = {
-                        y: {
-                            formatter: Common.timeFormatter
+                        custom: function({ series, seriesIndex, dataPointIndex, w }) {
+                            let value = Common.timeFormatter(series[seriesIndex], {
+                                dataPointIndex: dataPointIndex
+                            });
+                            let label = w.config.labels[seriesIndex];
+                            return `<div class="custom-donut-tooltip theme-2-text">
+                                    <span style="font-weight: 500;"> ${label}:</span>
+                                    <span style="font-weight: 700;"> ${value} </span>
+                                </div>`;
                         }
                     };
                     data.legend = {
                         show: false
                     };
+                    $(SELECTOR.PANEL).find('.panel-body').attr('data-charttype', 'donut');
                 }
                 renderGraph($(SELECTOR.PANEL).find(SELECTOR.GRAPH), data);
                 Common.loader.hide(SELECTOR.PANEL);
@@ -244,6 +259,11 @@ define([
     function customDateSelected(target) {
         let date = $(SELECTOR.PANEL).find(SELECTOR.DATEPICKERINPUT).val(); // Y-m-d format
         let dateAlternate = $(SELECTOR.PANEL).find(SELECTOR.DATEPICKERINPUT).next().val(); // d/m/Y format
+
+        /* If correct date is not selected then return false */
+        if (date == '') {
+            return;
+        }
 
         // Set active class to custom date selector item.
         $(SELECTOR.PANEL).find(SELECTOR.DATEITEM).removeClass('active');

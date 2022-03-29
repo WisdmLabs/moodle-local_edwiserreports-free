@@ -132,6 +132,15 @@ define([
             },
             tickPlacement: 'on'
         },
+        legend: {
+            position: 'top',
+            horizontalAlign: 'left',
+            offsetY: '-20',
+            itemMargin: {
+                horizontal: 10,
+                vertical: 0
+            },
+        },
         colors: [CFG.getColorTheme()[2]],
         noData: {
             text: M.util.get_string('nographdata', 'local_edwiserreports')

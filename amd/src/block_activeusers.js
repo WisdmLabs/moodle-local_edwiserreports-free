@@ -45,7 +45,7 @@ define([
     const lineChartDefault = {
         series: [],
         chart: {
-            type: 'area',
+            type: 'line',
             height: 350,
             dropShadow: {
                 enabled: true,
@@ -65,6 +65,9 @@ define([
             zoom: {
                 enabled: false
             }
+        },
+        markers: {
+            size: 0
         },
         tooltip: {
             enabled: true,
@@ -92,13 +95,12 @@ define([
             },
         },
         stroke: {
-            curve: 'smooth'
+            curve: 'smooth',
+            width: 2,
+            lineCap: 'round'
         },
         grid: {
             borderColor: '#e7e7e7'
-        },
-        markers: {
-            size: 1
         },
         xaxis: {
             categories: null,
@@ -118,7 +120,12 @@ define([
         },
         legend: {
             position: 'top',
-            floating: true
+            horizontalAlign: 'left',
+            offsetY: '-20',
+            itemMargin: {
+                horizontal: 10,
+                vertical: 0
+            },
         },
         colors: CFG.getColorTheme(),
         dataLabels: {

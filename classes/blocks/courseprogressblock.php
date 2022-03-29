@@ -70,14 +70,31 @@ class courseprogressblock extends block_base {
 
             // Get response.
             $response = new stdClass();
-            list($progress, $average) = $this->get_completion_with_percentage($course, $enrolledstudents, $cohortid, $returncompleted);
+            list($progress, $average) = $this->get_completion_with_percentage(
+                $course,
+                $enrolledstudents,
+                $cohortid,
+                $returncompleted
+            );
             $response->data = $progress;
             $response->average = $average;
-            $response->pro = $this->image_icon('lock');
+            $response->tooltip = [
+                'single' => get_string('student', 'core_grades'),
+                'plural' => get_string('students')
+            ];
 
             // Set cache to get data for course progress.
             $cache->set($cachekey, $response);
         }
+
+        // Insight.
+        $response->insight = [
+            'insight' => [
+                'value' => '??',
+                'title' => get_string('averagecourseprogress', 'local_edwiserreports')
+            ],
+            'pro' => $this->image_icon('lock')
+        ];
 
         // Return response.
         return $response;
@@ -318,13 +335,62 @@ class courseprogressblock extends block_base {
 
             $courseid = $course->id;
             $coursename = $course->fullname;
-            $res->completed0to20 = self::get_userlist_popup_link($courseid, $coursename, $completedusers['0% - 20%'], 'completed0to20', '0', '20');
-            $res->completed21to40 = self::get_userlist_popup_link($courseid, $coursename, $completedusers['21% - 40%'], 'completed21to40', '21', '40');
-            $res->completed41to60 = self::get_userlist_popup_link($courseid, $coursename, $completedusers['41% - 60%'], 'completed41to60', '41', '60');
-            $res->completed61to80 = self::get_userlist_popup_link($courseid, $coursename, $completedusers['61% - 80%'], 'completed61to80', '61', '80');
-            $res->completed81to100 = self::get_userlist_popup_link($courseid, $coursename, $completedusers['81% - 100%'], 'completed81to100', '81', '100');
-            $res->completed = self::get_userlist_popup_link($courseid, $coursename, $completedusers['completed'], 'completed', '100', '100');
-            $res->enrolments = self::get_userlist_popup_link($courseid, $coursename, $enrolments, 'enrolments', '-1', '100');
+            $res->completed0to20 = self::get_userlist_popup_link(
+                $courseid,
+                $coursename,
+                $completedusers['0% - 20%'],
+                'completed0to20',
+                '0',
+                '20'
+            );
+            $res->completed21to40 = self::get_userlist_popup_link(
+                $courseid,
+                $coursename,
+                $completedusers['21% - 40%'],
+                'completed21to40',
+                '21',
+                '40'
+            );
+            $res->completed41to60 = self::get_userlist_popup_link(
+                $courseid,
+                $coursename,
+                $completedusers['41% - 60%'],
+                'completed41to60',
+                '41',
+                '60'
+            );
+            $res->completed61to80 = self::get_userlist_popup_link(
+                $courseid,
+                $coursename,
+                $completedusers['61% - 80%'],
+                'completed61to80',
+                '61',
+                '80'
+            );
+            $res->completed81to100 = self::get_userlist_popup_link(
+                $courseid,
+                $coursename,
+                $completedusers['81% - 100%'],
+                'completed81to100',
+                '81',
+                '100'
+            );
+            $res->completed = self::get_userlist_popup_link(
+                $courseid,
+                $coursename,
+                $completedusers['completed'],
+                'completed',
+                '100',
+                '100'
+            );
+            $res->enrolments = self::get_userlist_popup_link(
+                $courseid,
+                $coursename,
+                $enrolments,
+                'enrolments',
+                '-1',
+                '100'
+            );
 
             // Added response object in response array.
             $response[] = $res;

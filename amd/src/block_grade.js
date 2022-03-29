@@ -47,17 +47,22 @@ define([
      */
     const pieChartDefault = {
         chart: {
-            type: 'pie',
+            type: 'donut',
             height: 350
         },
         fill: {
             type: 'solid',
         },
         legend: {
-            position: 'bottom',
-            offsetY: 0
+            position: 'right',
+            formatter: function(seriesName, opts) {
+                return [seriesName, " - ", opts.w.globals.series[opts.seriesIndex]]
+            }
         },
         colors: CFG.getColorTheme(),
+        dataLabels: {
+            enabled: false
+        },
         noData: {
             text: M.util.get_string('nographdata', 'local_edwiserreports')
         }
@@ -118,9 +123,29 @@ define([
         PROMISE.GET_GRAPH_DATA()
             .done(function(response) {
                 data = Object.assign({}, pieChartDefault);
-                data.labels = response.labels;
-                data.series = response.grades;
-                $(SELECTOR.PANEL).find(SELECTOR.GRAPHLABEL).text(response.header);
+                data.labels = response.labels.reverse();
+                data.series = response.grades.reverse();
+                $(SELECTOR.PANEL).find(SELECTOR.GRAPH).data('responseTitle', response.header);
+                data.responseTitle = response.header;
+                data.tooltip = {
+                    custom: function({ series, seriesIndex, dataPointIndex, w }) {
+                        let value = series[seriesIndex];
+                        let tooltip = value < 2 ? response.tooltip.single : response.tooltip.plural;
+                        let label = w.config.labels[seriesIndex];
+                        let color = w.config.colors[seriesIndex];
+                        return `<div class="custom-donut-tooltip" style="color: ${color};">
+                                <span style="font-weight: 500;"> ${label}:</span>
+                                <span style="font-weight: 700;"> ${value} ${tooltip}</span>
+                            </div>`;
+                    }
+                };
+                data.chart.events = {
+                    mounted: function() {
+                        $(SELECTOR.PANEL).find(SELECTOR.GRAPH).find('.apexcharts-legend')
+                            .prepend(`<label class="graph-label h4 w-100 text-center">${$(SELECTOR.PANEL).find(SELECTOR.GRAPH).data('responseTitle')}</label>`);
+                    },
+                };
+                data.chart.events.updated = data.chart.events.mounted;
                 common.insight('#gradeblock .insight', {
                     'insight': {
                         'value': response.average + '%',

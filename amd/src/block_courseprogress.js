@@ -40,42 +40,15 @@ define([
         var selectedCourse = panelBody + " #wdm-courseprogress-select";
         var chart = panelBody + " .ct-chart";
         var loader = panelBody + " .loader";
-        var pieChart = {
-            type: "pie",
+        var donutChart = {
             data: [0, 0, 0, 0, 0, 0],
-            options: {
-                responsive: true,
-                legend: { position: 'bottom' },
-                maintainAspectRatio: false,
-                aspectRatio: 1,
-                tooltips: {
-                    callbacks: {
-                        title: function(tooltipItem, data) {
-                            return [
-                                M.util.get_string('cpblocktooltip1',
-                                    v.component, {
-                                        "per": data.labels[tooltipItem[0].index],
-                                    }),
-                                M.util.get_string('cpblocktooltip2',
-                                    v.component, {
-                                        "val": data.datasets[0].data[tooltipItem[0].index]
-                                    })
-                            ];
-                        },
-                        label: function() {
-                            return '';
-                        }
-                    }
-                }
-            },
             labels: [
                 '0% - 20%',
                 '21% - 40%',
                 '41% - 60%',
                 '61% - 80%',
                 '81% - 100%'
-            ],
-            backgroundColor: ["#fe6384", "#36a2eb", "#fdce56", "#c70fbe", "#4ac0c0", "#ff851b"]
+            ]
         };
 
         var form = $(panel + ' form.download-links');
@@ -126,22 +99,16 @@ define([
                         invalidUser('courseprogressblock', response);
                         return;
                     }
-                    pieChart.data = response.data;
-                    pieChart.average = response.average == 0 ? 0 : response.average.toPrecision(2);
-                    pieChart.pro = response.pro;
+                    donutChart.data = response.data;
+                    donutChart.average = response.average == 0 ? 0 : response.average.toPrecision(2);
+                    donutChart.tooltipStrings = response.tooltip;
+                    common.insight('#courseprogressblock .insight', response.insight);
                 })
                 .fail(function(error) {
                     // console.log(error);
-                    pieChart.average = '0';
+                    donutChart.average = '0';
                 })
                 .always(function() {
-                    common.insight('#courseprogressblock .insight', {
-                        'insight': {
-                            'value': '??',
-                            'title': M.util.get_string('averagecourseprogress', 'local_edwiserreports')
-                        },
-                        'pro': pieChart.pro
-                    });
                     cpGraph = generateCourseProgressGraph();
                     $(loader).hide();
                     $(chart).fadeIn("slow");
@@ -158,19 +125,36 @@ define([
         function generateCourseProgressGraph() {
 
             var options = {
-                series: pieChart.data,
+                series: donutChart.data.reverse(),
                 chart: {
-                    type: 'pie',
+                    type: 'donut',
                     height: 350
                 },
                 colors: CFG.getColorTheme(),
                 fill: {
                     type: 'solid',
                 },
-                labels: pieChart.labels,
+                labels: donutChart.labels.reverse(),
+                dataLabels: {
+                    enabled: false
+                },
+                tooltip: {
+                    custom: function({ series, seriesIndex, dataPointIndex, w }) {
+                        let value = series[seriesIndex];
+                        let tooltip = value < 2 ? donutChart.tooltipStrings.single : donutChart.tooltipStrings.plural;
+                        let label = w.config.labels[seriesIndex];
+                        let color = w.config.colors[seriesIndex];
+                        return `<div class="custom-donut-tooltip" style="color: ${color};">
+                                <span style="font-weight: 500;"> ${label}:</span>
+                                <span style="font-weight: 700;"> ${value} ${tooltip}</span>
+                            </div>`;
+                    }
+                },
                 legend: {
-                    position: 'bottom',
-                    offsetY: 0
+                    position: 'right',
+                    formatter: function(seriesName, opts) {
+                        return [seriesName, " - ", opts.w.globals.series[opts.seriesIndex]]
+                    }
                 }
             };
 
