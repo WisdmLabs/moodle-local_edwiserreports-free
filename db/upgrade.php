@@ -119,8 +119,15 @@ function xmldb_local_edwiserreports_upgrade($oldversion) {
         $DB->set_field('edwreports_course_progress', 'pchange', true);
     }
 
+    // Removing email data.
     $table = new xmldb_table('edwreports_schedemails');
-    if (!$dbman->table_exists($table)) {
+    if ($dbman->table_exists($table)) {
+        $DB->execute('TRUNCATE TABLE {edwreports_schedemails}');
+    }
+
+    // Removing activity log table.
+    $table = new xmldb_table('edwreports_activity_log');
+    if ($dbman->table_exists($table)) {
         $dbman->drop_table($table);
     }
 
