@@ -72,13 +72,6 @@ foreach (scandir($CFG->dirroot . '/local/edwiserreports/externaljs/build/') as $
 // Require JS for index page.
 $PAGE->requires->js_call_amd('local_edwiserreports/main', 'init');
 
-if (get_config('local_edwiserreports', 'fetch') == false &&
-    (get_config('local_edwiserreports', 'fetchlater') == false ||
-    get_config('local_edwiserreports', 'fetchlater') < time())) {
-    // Initialize migration modal.
-    $PAGE->requires->js_call_amd('local_edwiserreports/main', 'initMigration');
-}
-
 // Require CSS for index page.
 $PAGE->requires->css('/local/edwiserreports/styles/edwiserreports.min.css');
 

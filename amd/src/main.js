@@ -24,7 +24,6 @@ define([
     'core/modal_factory',
     './common',
     './insights',
-    './modal-migration',
     './block_siteaccess',
     './block_activecourses',
     './block_activeusers',
@@ -44,7 +43,6 @@ define([
     ModalFactory,
     common,
     insights,
-    Migration,
     siteAccess,
     activeCourses,
     activeUsers,
@@ -197,15 +195,8 @@ define([
         });
     };
 
-    function initMigration() {
-        ModalFactory.create({
-            type: Migration.TYPE
-        }, $('#create'));
-    }
-
     // Must return the init function
     return {
-        init: init,
-        initMigration: initMigration
+        init: init
     };
 });

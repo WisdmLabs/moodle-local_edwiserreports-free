@@ -30,15 +30,6 @@ require_once($CFG->dirroot . '/local/edwiserreports/classes/constants.php');
 
 $ADMIN->add('modules', new admin_category('edwiserreports', new lang_string("pluginname", "local_edwiserreports")));
 
-// Fetch old data page link.
-$ADMIN->add('edwiserreports',
-    new admin_externalpage(
-        'local_edwiserreports/fetch',
-        new lang_string("fetcholdlogs", "local_edwiserreports"),
-        new moodle_url("/local/edwiserreports/old_logs.php")
-    )
-);
-
 // Settings.
 $ADMIN->add('edwiserreports',
     new admin_externalpage(

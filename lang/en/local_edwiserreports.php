@@ -605,26 +605,6 @@ $string['upgradetopro'] = 'Upgrade to PRO';
 
 $string['invalidsecretkey'] = 'Invalid secret key. Please logout and login again.';
 
-// Old log.
-$string['oldloginfo'] = 'Select start date and set the maximum time between 2 clicks in a the same session';
-$string['oldlogmintime'] = 'Set Start date';
-$string['oldlogmintime_help'] = 'Start date description - Select any date from the previous period, before the installation of Edwiser Reports, to fetch and compile old user log data from your Moodle site into Edwiser Reports. This will add and process all historical data of your Moodle site as part of Edwiser Reports. <br><strong>For eg:</strong> If you want to pull old user log data from the month of October in the previous year from your Moodle site. And make sure it’s saved and processed by Edwiser Reports after plugin installation. You can set this date as 1st October 2020. Similarly any previous date can be set.';
-$string['oldloglimit'] = 'Maximum time elapsed between 2 clicks';
-$string['oldloglimit_help'] = 'This helps you set the session duration, that is the number of minutes, seconds or hours two clicks apart.';
-$string['fetcholdlogs'] = 'Fetch old Moodle logs';
-$string['fetchingoldlogs'] = 'Fetching old logs';
-$string['fetcholdlogsquestion'] = 'All time log data will be cleaned and recalculated using Moodle logs. This will take time for large log data. You should run this task only once.';
-$string['fetch'] = 'Fetch';
-$string['calculate'] = 'Calculate';
-$string['oldlognote'] = 'Note: Your Moodle site log between {$a->from} to {$a->to} is being complied and made compatible with Edwiser Reports. Skipping this process will result in Moodle site old logs not being captured to Edwiser Reports Dashboard.';
-$string['fetcholdlogsdescription'] = 'Fetch Old User Log Data (Data saved in Moodle backend before installation of Edwiser Reports)';
-$string['fetchmodalcontent'] = 'It seems like your site has old logs which can be converted into Edwiser Reports time tracking data. It will be one time process.<br>
-conversion page link is always available in Site administration -> Plugins -> Edwiser Reports menu.<br>
-<strong>Continue:</strong> Proceed with conversion. <br>
-<strong>Later:</strong> Show this popup after 7 days. <br>
-<strong>Never:</strong> Do not convert and never show this popup.';
-$string['overallprogress'] = 'Overall progress';
-$string['later'] = 'Later';
 $string['time'] = 'Time';
 
 // Settings.
