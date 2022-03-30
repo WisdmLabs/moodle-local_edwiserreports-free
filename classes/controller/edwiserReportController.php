@@ -134,38 +134,6 @@ class edwiserReportController extends controllerAbstract {
     }
 
     /**
-     * Get scheduled emails ajax action
-     */
-    public function get_scheduled_emails_ajax_action() {
-        $data = json_decode(required_param('data', PARAM_RAW));
-        echo json_encode(\local_edwiserreports\utility::get_scheduled_emails($data));
-    }
-
-    /**
-     * Get scheduled email detail ajax action
-     */
-    public function get_scheduled_email_detail_ajax_action() {
-        $data = json_decode(required_param('data', PARAM_RAW));
-        echo json_encode(\local_edwiserreports\utility::get_scheduled_email_details($data));
-    }
-
-    /**
-     * Delete scheduled mail ajax action
-     */
-    public function delete_scheduled_email_ajax_action() {
-        $data = json_decode(required_param('data', PARAM_RAW));
-        echo json_encode(\local_edwiserreports\utility::delete_scheduled_email($data));
-    }
-
-    /**
-     * Change scheduled email status ajax action
-     */
-    public function change_scheduled_email_status_ajax_action() {
-        $data = json_decode(required_param('data', PARAM_RAW));
-        echo json_encode(\local_edwiserreports\utility::change_scheduled_email_status($data));
-    }
-
-    /**
      * Get course reports selectors
      */
     public function get_customreport_selectors_ajax_action() {

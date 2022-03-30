@@ -17,17 +17,6 @@
                 <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="The unique id for this report_completion instance."/>
             </KEYS>
         </TABLE>
-        <TABLE NAME="edwreports_schedemails" COMMENT="This table saves scheduled emails inforamtion.">
-            <FIELDS>
-                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-                <FIELD NAME="blockname" TYPE="text" LENGTH="255" COMMENT="Block name."/>
-                <FIELD NAME="component" TYPE="text" LENGTH="255" COMMENT="Report component for the block (block/ individual)."/>
-                <FIELD NAME="emaildata" TYPE="text" LENGTH="big" COMMENT="Email data in json stringif format."/>
-            </FIELDS>
-            <KEYS>
-                <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="The unique id for this scheduledemail instance."/>
-            </KEYS>
-        </TABLE>
         <TABLE
             COMMENT="Information about the course progress by all users"
             NAME="edwreports_course_progress">

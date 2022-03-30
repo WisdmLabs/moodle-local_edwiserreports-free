@@ -192,15 +192,12 @@ $string['noofactiveusers'] = "No. of active users";
 $string['noofenrolledusers'] = "No. of enrollments";
 $string['noofcompletedusers'] = "No. of completions";
 $string['email'] = "Email";
-$string['emailscheduled'] = "Email Scheduled";
 $string['usersnotavailable'] = "No Users are available for this day";
 $string['activeusersmodaltitle'] = 'Users active on {$a->date}';
 $string['enrolmentsmodaltitle'] = 'Users enrolled into courses on {$a->date}';
 $string['completionsmodaltitle'] = 'Users who have completed a course on {$a->date}';
 $string['recordnotfound'] = 'Record not found';
 $string['jsondecodefailed'] = 'Json decode failed';
-$string['emaildataisnotasarray'] = 'Email data is not an array';
-$string['sceduledemailnotexist'] = 'Schedule email not exist';
 $string['searchdate'] = 'Search date';
 
 /* Active courses block */
@@ -311,12 +308,8 @@ $string['enrolments_status'] = "User Enrolled";
 $string['completions_status'] = "Course Completed";
 $string['completedactivity'] = "Completed Activity";
 $string['coursecompletedusers'] = "Course Completed By Users";
-$string['emailsent'] = "Email has been sent to your mail account";
-$string['reportemailhelp'] = "Report will be send to this email address.";
-$string['emailnotsent'] = "Failed to send email";
 $string['subject'] = "Subject";
 $string['content'] = "Content";
-$string['emailexample'] = "example1.mail.com; example2.mail.com;";
 
 $string['activeusersblockexportheader'] = "Site activity overview";
 $string['activeusersblockexporthelp'] = "This report will show active users, course enrolment and course completion over the period.";
@@ -360,7 +353,6 @@ $string['monthly_0'] = "Month Start";
 $string['monthly_1'] = "Month Between";
 $string['monthly_2'] = "Month End";
 $string['weeks_on'] = "Weeks on";
-$string['emailthisreport'] = "Email this report";
 $string['onevery'] = "on every";
 $string['duration_0'] = "Daily";
 $string['duration_1'] = "Weekly";
@@ -372,8 +364,6 @@ $string['schedule'] = "Schedule Email";
 $string['downloadreport'] = 'Download Report';
 $string['scheduledlist'] = "All Scheduled Reports";
 $string['reset'] = "Reset";
-$string['confirmemailremovaltitle'] = "Delete Scheduled Email";
-$string['confirmemailremovalquestion'] = "<p class='px-20'>Do you really want to delete this sheduled email</p>";
 
 /* Course Engagement Block */
 $string['activitystart'] = "At least one Activity Started";
@@ -410,8 +400,6 @@ $string['updatinguserrecord'] = 'Updating userid {$a->userid} in courseid {$a->c
 $string['deletingguserrecord'] = 'Deleting userid {$a->userid} in courseid {$a->courseid}';
 $string['gettinguserrecord'] = 'Getting userid {$a->userid} in courseid {$a->courseid}';
 $string['creatinguserrecord'] = 'Create records for users completions';
-$string['sendscheduledemails'] = 'Send Scheduled Emails';
-$string['sendingscheduledemails'] = 'Sending Scheduled Emails...';
 $string['sending'] = 'Sending';
 
 /* Cache Strings */
@@ -554,21 +542,9 @@ $string['moduleidnotdefined'] = 'Module id is not defined';
 
 $string['clicktogetuserslist'] = 'Click in numbers in order to get the users list';
 
-/* Email Schedule Strings */
-$string['enabledisableemail'] = 'Enable/Disable Email';
-$string['scheduleerrormsg'] = '<div class="alert alert-danger"><b>ERROR:</b> Error while scheduling email</div>';
-$string['schedulesuccessmsg'] = '<div class="alert alert-success"><b>SUCCESS:</b> Email scheduled successfully</div>';
-$string['deletesuccessmsg'] = '<div class="alert alert-success"><b>SUCCESS:</b> Email deleted successfully</div>';
-$string['deleteerrormsg'] = '<div class="alert alert-danger"><b>ERROR:</b> Email deletion failed</div>';
-$string['emptyerrormsg'] = '<div class="alert alert-danger"><b>ERROR:</b> Name and Recepient Fields can not be empty</div>';
-$string['emailinvaliderrormsg'] = '<div class="alert alert-danger"><b>ERROR:</b> Invalid email adderesses (space not allowed)</div>';
-$string['scheduledemaildisbled'] = '<div class="alert alert-success"><b>SUCCESS:</b> Scheduled Email Disabled</div>';
-$string['scheduledemailenabled'] = '<div class="alert alert-success"><b>SUCCESS:</b> Scheduled Email Enabled</div>';
-
 $string['nextrun'] = 'Next Run';
 $string['frequency'] = 'Frequency';
 $string['manage'] = 'Manage';
-$string['scheduleemailfor'] = 'Schedule Emails for';
 $string['edit'] = 'Edit';
 $string['delete'] = 'Delete';
 

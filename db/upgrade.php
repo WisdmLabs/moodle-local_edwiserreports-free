@@ -119,6 +119,11 @@ function xmldb_local_edwiserreports_upgrade($oldversion) {
         $DB->set_field('edwreports_course_progress', 'pchange', true);
     }
 
+    $table = new xmldb_table('edwreports_schedemails');
+    if (!$dbman->table_exists($table)) {
+        $dbman->drop_table($table);
+    }
+
     local_edwiserreports_process_block_creation();
 
     unset_config('siteaccessinformation', 'local_edwiserreports');

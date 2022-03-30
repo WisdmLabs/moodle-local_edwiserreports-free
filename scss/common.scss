@@ -517,43 +517,6 @@ tr[aria-expanded="true"] {
     }
 }
 
-#listemailstab {
-    .esr-switch {
-        &[data-value="0"] {
-            .show-svg {
-                display: none;
-            }
-        }
-        &[data-value="on"],
-        &[data-value="1"] {
-            .hide-svg {
-                display: none;
-            }
-        }
-    }
-    tbody.empty {
-        display: none;
-    }
-    thead {
-        th {
-            border-bottom: none;
-        }
-    }
-    .fa-edit,
-    .fa-trash {
-        font-size: 1.429rem;
-        &::before {
-            position: relative;
-        }
-    }
-    .fa-trash::before {
-        top: 0.19rem;
-    }
-    .fa-edit::before {
-        top: 0.214rem;
-    }
-}
-
 .font-size-14 {
     font-size: 14px;
 }

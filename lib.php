@@ -78,65 +78,6 @@ function local_edwiserreports_output_fragment_userslist($args) {
 require_once("$CFG->libdir/formslib.php");
 
 /**
- * Email Dialog form to send report via email
- */
-class local_edwiserreports_email_dialog_form extends moodleform {
-    /**
-     * Add elements to form.
-     */
-    public function definition() {
-        $mform = $this->_form;
-        $customdata = $this->_customdata;
-        $blockname = $customdata["blockname"];
-
-        // Email Text area.
-        $mform->addElement('text', 'email',
-            get_string('email', 'local_edwiserreports'),
-            array(
-                'size' => '30',
-                'placeholder' => get_string("emailexample", "local_edwiserreports")
-            )
-        );
-        $mform->setType('email', PARAM_NOTAGS);
-
-        // Subject Text area.
-        $mform->addElement('text', 'subject',
-            get_string("subject", "local_edwiserreports"),
-            array(
-                'size' => '30',
-                'placeholder' => get_string($blockname . "exportheader", "local_edwiserreports")
-            )
-        );
-        $mform->setType('subject', PARAM_NOTAGS);
-
-        // Content Text area.
-        $mform->addElement('editor', 'content',
-            get_string("content", "local_edwiserreports"),
-            array(
-                'rows' => '5',
-                'cols' => '40',
-                'enable_filemanagement' => false
-            )
-        );
-        $mform->setType('content', PARAM_RAW);
-        $this->content["text"] = get_string($blockname . "exporthelp", "local_edwiserreports");
-    }
-}
-
-/**
- * Create fragment for email dialog box
- * @param  [array] $args Arguments
- * @return [string] HTML String
- */
-function local_edwiserreports_output_fragment_email_dialog($args) {
-    $blockname = clean_param($args["blockname"], PARAM_TEXT);
-    $form = new local_edwiserreports_email_dialog_form(null, array("blockname" => $blockname));
-    ob_start();
-    $form->display();
-    return ob_get_clean();
-}
-
-/**
  * Serves any files associated with the theme settings.
  *
  * @param stdClass $course
@@ -310,21 +251,6 @@ function local_edwiserreports_output_fragment_get_blockscap_form($block) {
     return $output;
 }
 
-/**
- * Fragment to generate email tabs
- * @param array $block Fragment parameter data object
- * @return string
- */
-function local_edwiserreports_output_fragment_email_schedule_tabs($args) {
-    global $OUTPUT;
-    $response = null;
-    $data = clean_param($args["data"], PARAM_RAW);
-    $data = json_decode($data, true);
-    $data['searchicon'] = \local_edwiserreports\utility::image_icon('actions/search');
-    $data['placeholder'] = get_string('search');
-    $data['length'] = [10, 25, 50, 100];
-    return $OUTPUT->render_from_template('local_edwiserreports/email_schedule_tabs', $data);
-}
 /**
  * Render blocks capability view
  * @param Array $capvalue  Fragment parameter array
