@@ -40,14 +40,15 @@ define([
         var selectedCourse = panelBody + " #wdm-courseprogress-select";
         var chart = panelBody + " .ct-chart";
         var loader = panelBody + " .loader";
+        var position = 'right';
         var donutChart = {
             data: [0, 0, 0, 0, 0, 0],
             labels: [
-                '0% - 20%',
-                '21% - 40%',
-                '41% - 60%',
+                '81% - 100%',
                 '61% - 80%',
-                '81% - 100%'
+                '41% - 60%',
+                '21% - 40%',
+                '0% - 20%'
             ]
         };
 
@@ -61,11 +62,28 @@ define([
         $(panelBody + ' .singleselect').select2();
 
         $(selectedCourse).on("change", function() {
-            $(chart).hide();
             $(loader).show();
 
             getCourseProgressData();
         });
+
+        // Handling legend position based on width.
+        setInterval(function() {
+            if (cpGraph === null) {
+                return;
+            }
+            let width = $(panel).find('.apexcharts-canvas').width();
+            let newPosition = width >= 400 ? 'right' : 'bottom';
+            if (newPosition == position) {
+                return;
+            }
+            position = newPosition;
+            cpGraph.updateOptions({
+                legend: {
+                    position: position
+                }
+            })
+        }, 1000);
 
         /**
          * Get progress data through ajax
@@ -111,7 +129,6 @@ define([
                 .always(function() {
                     cpGraph = generateCourseProgressGraph();
                     $(loader).hide();
-                    $(chart).fadeIn("slow");
 
                     // Hide loader.
                     common.loader.hide('#courseprogressblock');
@@ -134,7 +151,7 @@ define([
                 fill: {
                     type: 'solid',
                 },
-                labels: donutChart.labels.reverse(),
+                labels: donutChart.labels,
                 dataLabels: {
                     enabled: false
                 },
@@ -151,9 +168,9 @@ define([
                     }
                 },
                 legend: {
-                    position: 'right',
+                    position: position,
                     formatter: function(seriesName, opts) {
-                        return [seriesName, " - ", opts.w.globals.series[opts.seriesIndex]]
+                        return [seriesName + ": " + opts.w.globals.series[opts.seriesIndex]]
                     }
                 }
             };

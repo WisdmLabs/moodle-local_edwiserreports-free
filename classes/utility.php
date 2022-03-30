@@ -433,7 +433,7 @@ class utility {
         }
 
         // Please note that we must fetch all grade_grades fields if we want to construct grade_grade object from it!
-        $gradesql = "SELECT g.id, g.finalgrade
+        $gradesql = "SELECT g.id, gi.grademax, g.finalgrade
             FROM {grade_items} gi, {grade_grades} g
             WHERE g.itemid = gi.id
             AND gi.courseid = :courseid

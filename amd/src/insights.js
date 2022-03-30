@@ -201,6 +201,7 @@ define([
             $(SELECTOR.ONLYINSIGHT).each(function(index, insight) {
                 updateInsight($(insight).data('id'));
             });
+            $(SELECTOR.CONTAINER).find('.overflow-hidden').removeClass('overflow-hidden');
         });
     }
     return {

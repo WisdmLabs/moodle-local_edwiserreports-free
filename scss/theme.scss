@@ -21,7 +21,25 @@
             border: none;
         }
     }
+    &.theme_adaptable,
+    &.theme_fordson,
+    &.theme_boost {
+        .insight-wrap .insight-value {
+            margin: 0 !important;
+        }
+        .insight-wrap .insight-direction {
+            margin-top: 0.3rem !important;
+        }
+    }
     &.theme_adaptable {
+        .blockoptions {
+            button {
+                border: 0;
+            }
+        }
+        .panel-body {
+            overflow: visible !important;
+        }
         #liveusersblock {
             .text-success,
             .text-dander {

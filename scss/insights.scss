@@ -91,32 +91,74 @@
             top: 0;
             right: 0;
             transform: translateY(-100%);
-            z-index: 1;
+            z-index: 0;
         }
-        .insight-value {
-            font-size: 2rem;
-            margin: 0 0 -1rem 0;
+    }
+}
+
+
+/* Common */
+
+.insight-wrap {
+    .insight-value {
+        font-size: 2rem;
+        margin-top: 0.2rem;
+        font-weight: 600;
+        line-height: 2.2rem;
+    }
+    .insight-direction {
+        margin-top: 0.2rem;
+        font-size: 1.7rem;
+        vertical-align: bottom;
+        .value {
+            display: flex;
+            position: relative;
+            font-size: 1.2rem;
             font-weight: 600;
-            line-height: 2.2rem;
-        }
-        .insight-direction {
-            font-size: 1.7rem;
-            vertical-align: bottom;
-            .value {
-                position: relative;
-                font-size: 1.2rem;
-                font-weight: 600;
-                border: 1px solid #E5E5E5;
-                border-radius: 2rem;
-                padding: 0rem 0.5rem 0 2rem;
-                .fa {
-                    position: absolute;
-                    left: -1px;
-                    top: calc(50% + 1px);
-                    transform: translateY(-50%);
-                    font-size: 1.8rem;
-                }
+            border: 1px solid #E5E5E5;
+            border-radius: 2rem;
+            padding: 0rem 0.5rem 0 2.2rem;
+            .fa {
+                position: absolute;
+                left: -1px;
+                top: 50%;
+                transform: translateY(-50%);
+                font-size: 2.2rem;
             }
+        }
+    }
+}
+
+
+/* BLock insights */
+
+.insight-card {
+    position: relative;
+    display: flex;
+    box-shadow: 0 10px 15px 0 rgba(59, 65, 94, 0.1), 0 0 30px 0 rgba(0, 0, 0, 0.07);
+    .insight-body {
+        display: flex;
+        align-items: center;
+    }
+    .insight-title {
+        text-transform: uppercase;
+        margin: 0;
+        padding: 0;
+        font-weight: 600;
+        font-size: 0.85rem;
+    }
+    .insight-details {
+        position: relative;
+        display: flex;
+        align-items: center;
+        &::before {
+            content: " ";
+            position: absolute;
+            left: 0;
+            top: 15%;
+            bottom: 15%;
+            width: 1px;
+            background-color: rgba(0, 0, 0, 0.2);
         }
     }
 }

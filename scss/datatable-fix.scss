@@ -105,6 +105,12 @@ table.dataTable td.dataTables_empty {
         .dataTables_paginate {
             margin: 0 auto;
             .paginate_button {
+                &.disabled {
+                    &.previous,
+                    &.next {
+                        opacity: 0.3;
+                    }
+                }
                 &:hover {
                     background: transparent !important;
                     border-color: transparent !important;

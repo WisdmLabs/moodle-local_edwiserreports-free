@@ -63,6 +63,9 @@ define([
                     sSearchPlaceholder: "Search Users"
                 },
                 columnDefs: [{
+                    "targets": 1,
+                    "className": "d-none d-sm-none d-md-table-cell d-lg-table-cell "
+                }, {
                     "targets": 2,
                     "className": "text-center"
                 }],

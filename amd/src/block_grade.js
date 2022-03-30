@@ -43,6 +43,11 @@ define([
     var chart = null;
 
     /**
+     * Default position.
+     */
+    var position = 'right';
+
+    /**
      * Pie chart default config.
      */
     const pieChartDefault = {
@@ -54,9 +59,9 @@ define([
             type: 'solid',
         },
         legend: {
-            position: 'right',
+            position: position,
             formatter: function(seriesName, opts) {
-                return [seriesName, " - ", opts.w.globals.series[opts.seriesIndex]]
+                return [seriesName + ": " + opts.w.globals.series[opts.seriesIndex]]
             }
         },
         colors: CFG.getColorTheme(),
@@ -123,6 +128,7 @@ define([
         PROMISE.GET_GRAPH_DATA()
             .done(function(response) {
                 data = Object.assign({}, pieChartDefault);
+                data.legend.position = position;
                 data.labels = response.labels.reverse();
                 data.series = response.grades.reverse();
                 $(SELECTOR.PANEL).find(SELECTOR.GRAPH).data('responseTitle', response.header);
@@ -143,7 +149,7 @@ define([
                 data.chart.events = {
                     mounted: function() {
                         $(SELECTOR.PANEL).find(SELECTOR.GRAPH).find('.apexcharts-legend')
-                            .prepend(`<label class="graph-label h4 w-100 text-center">${$(SELECTOR.PANEL).find(SELECTOR.GRAPH).data('responseTitle')}</label>`);
+                            .prepend(`<label class="graph-label w-100 text-center">${$(SELECTOR.PANEL).find(SELECTOR.GRAPH).data('responseTitle')}</label>`);
                     },
                 };
                 data.chart.events.updated = data.chart.events.mounted;
@@ -159,6 +165,32 @@ define([
     }
 
     /**
+     * Initialize event listeners.
+     */
+    function initEvents() {
+
+
+
+        // Handling legend position based on width.
+        setInterval(function() {
+            if (chart === null) {
+                return;
+            }
+            let width = $(SELECTOR.PANEL).find(SELECTOR.GRAPH).width();
+            let newPosition = width >= 400 ? 'right' : 'bottom';
+            if (newPosition == position) {
+                return;
+            }
+            position = newPosition;
+            chart.updateOptions({
+                legend: {
+                    position: position
+                }
+            })
+        }, 1000);
+    }
+
+    /**
      * Initialize
      * @param {function} invalidUser Callback function
      */
@@ -167,6 +199,7 @@ define([
             return;
         }
         $(SELECTOR.PANEL).find('.singleselect').select2();
+        initEvents();
         loadGraph();
     }
     return {

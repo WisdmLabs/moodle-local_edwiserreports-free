@@ -305,12 +305,13 @@ class activeusersblock extends block_base {
             $response->data->activeUsers = $this->get_active_users();
             $response->data->enrolments = $this->get_enrolments();
             $response->data->completionRate = $this->get_course_completionrate();
-            $response->labels = $this->labels;
             $response->dates = array_keys($this->dates);
             $response->insight = $this->calculate_insight($response);
             // Set response in cache.
             $this->cache->set($cachekey, $response);
         }
+
+        $response->labels = $this->labels;
 
         ob_clean();
         return $response;
@@ -444,8 +445,6 @@ class activeusersblock extends block_base {
 
         $activeusers = array_values($activeusers);
 
-        /* Reverse the array because the graph take
-        value from left to right */
         return $activeusers;
     }
 
@@ -504,8 +503,6 @@ class activeusersblock extends block_base {
 
         $enrolments = array_values($enrolments);
 
-        /* Reverse the array because the graph take
-        value from left to right */
         return $enrolments;
     }
 
@@ -551,8 +548,6 @@ class activeusersblock extends block_base {
 
         $completionrate = array_values($completionrate);
 
-        /* Reverse the array because the graph take
-        value from left to right */
         return $completionrate;
     }
 

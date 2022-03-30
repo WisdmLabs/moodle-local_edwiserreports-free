@@ -190,8 +190,12 @@ tr[aria-expanded="true"] {
 }
 
 #wdm-edwiserreports {
+    .blocksetting {
+        z-index: 2;
+    }
     .apexcharts-toolbar {
         transform: translateY(-1.7rem);
+        z-index: 1 !important;
     }
     .panel {
         box-shadow: unset;
@@ -261,7 +265,12 @@ tr[aria-expanded="true"] {
     .edwiserReport-block {
         #gradeblock,
         #courseprogressblock,
-        #learnertimespentonsiteblock [data-charttype="donut"] {
+        #learnertimespentonsiteblock [data-charttype="donut"],
+        #learnercourseprogressblock [data-charttype="donut"] {
+            .graph-label {
+                font-size: 1.1rem;
+                font-weight: 700;
+            }
             .apexcharts-tooltip {
                 overflow: visible !important;
                 background: transparent;
@@ -775,21 +784,31 @@ tr[aria-expanded="true"] {
 }
 
 #gradeblock,
-#courseprogressblock {
-    .panel-body {
-        .empty-donut {
-            .apexcharts-legend {
-                display: none;
-            }
-        }
+#courseprogressblock,
+#learnercourseprogressblock [data-charttype="donut"] {
+    .empty-donut {
         .apexcharts-legend {
-            bottom: auto;
+            display: none;
+        }
+    }
+    .apexcharts-legend {
+        bottom: auto;
+        border-radius: 4px;
+        padding: 1.2rem;
+        margin-bottom: 0.3rem;
+        &.position-right {
             border: 1px solid #E5E5E5;
-            border-radius: 4px;
-            padding: 1.2rem;
-            .apexcharts-legend-series {
-                margin: 2px 0;
+        }
+        .apexcharts-legend-series {
+            &:first-child {
+                margin-top: 0 !important;
             }
+            &:last-child {
+                margin-bottom: 0 !important;
+            }
+            font-size: 1rem;
+            font-weight: 400;
+            margin: 5px 0 !important;
         }
     }
 }
@@ -864,69 +883,10 @@ tr[aria-expanded="true"] {
         top: 50%;
         transform: translate(-50%, -50%);
     }
-    position: relative;
-    display: flex;
-    box-shadow: 0 10px 15px 0 rgba(59, 65, 94, 0.1),
-    0 0 30px 0 rgba(0, 0, 0, 0.07);
     .pro-lock {
         position: absolute;
         right: 1rem;
         top: 1rem;
-    }
-    .insight-body {
-        display: flex;
-        align-items: center;
-        .insight-wrap {
-            display: flex;
-            align-items: center;
-        }
-    }
-    .insight-value {
-        font-size: 2.2rem;
-        margin: 0 0 -1rem 0;
-        font-weight: 600;
-        line-height: 2.2rem;
-        padding-bottom: 1rem;
-    }
-    .insight-title {
-        text-transform: uppercase;
-        margin: 0;
-        padding: 0;
-        font-weight: 600;
-        font-size: 0.85rem;
-    }
-    .insight-direction {
-        font-size: 1.7rem;
-        .value {
-            position: relative;
-            display: block;
-            font-size: 1rem;
-            font-weight: 600;
-            border: 1px solid #E5E5E5;
-            border-radius: 2rem;
-            padding: 0rem 0.5rem 0 2rem;
-            .fa {
-                position: absolute;
-                left: -1px;
-                top: 50%;
-                transform: translateY(-50%);
-                font-size: 1.9rem;
-            }
-        }
-    }
-    .insight-details {
-        position: relative;
-        display: flex;
-        align-items: center;
-        &::before {
-            content: " ";
-            position: absolute;
-            left: 0;
-            top: 15%;
-            bottom: 15%;
-            width: 1px;
-            background-color: rgba(0, 0, 0, 0.2);
-        }
     }
 }
 

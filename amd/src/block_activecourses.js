@@ -68,17 +68,13 @@ define([
                     /* Create active course table */
                     createActiveCourseTable(response.data);
                     /* Added fixed column rank in datatable */
-                    activeCourseTable.on('order.dt search.dt', function() {
-                        activeCourseTable.column(0, { search: 'applied', order: 'applied' }).nodes().each(function(cell, i) {
-                            if (i == 0) {
-                                cell.innerHTML = "<i class='fa fa-trophy text-gold'></i>";
-                            } else if (i == 1) {
-                                cell.innerHTML = "<i class='fa fa-trophy text-silver'></i>";
-                            } else if (i == 2) {
-                                cell.innerHTML = "<i class='fa fa-trophy text-bronze'></i>";
-                            } else {
-                                cell.innerHTML = i + 1;
+                    activeCourseTable.on('order.dt', function() {
+                        activeCourseTable.column(0, { order: 'applied' }).nodes().each(function(cell, i) {
+                            let img = '';
+                            if (i >= 0 && i <= 2) {
+                                img = "<img class='ml-1' src='" + M.util.image_url('trophy/' + ['gold', 'silver', 'bronze'][i], 'local_edwiserreports') + "'></img>";
                             }
+                            cell.innerHTML = (i + 1) + img;
                         });
                         $(table + " td:not(.bg-secondary)").addClass("bg-white");
                     }).draw();
@@ -135,7 +131,7 @@ define([
                 },
                 columnDefs: [{
                         "targets": 0,
-                        "className": "text-center",
+                        "className": "text-left pl-5",
                         "orderable": false
                     },
                     {

@@ -281,7 +281,7 @@ class active_users_data extends \core\task\scheduled_task {
 
         /* Reverse the array because the graph take
         value from left to right */
-        return array_reverse($activeusers);
+        return $activeusers;
     }
 
     /**
@@ -339,9 +339,7 @@ class active_users_data extends \core\task\scheduled_task {
 
         $enrolments = array_values($enrolments);
 
-        /* Reverse the array because the graph take
-        value from left to right */
-        return array_reverse($enrolments);
+        return $enrolments;
     }
 
     /**
@@ -357,12 +355,7 @@ class active_users_data extends \core\task\scheduled_task {
         );
 
         $sql = "SELECT FLOOR(cc.completiontime/86400) as userdate,
-                       COUNT(
-                           CONCAT(
-                               CONCAT(cc.courseid, '-'),
-                               cc.userid
-                           )
-                       ) as usercount
+                       COUNT(cc.completiontime) as usercount
                   FROM {edwreports_course_progress} cc
                  WHERE cc.completiontime IS NOT NULL
                     AND cc.completiontime >= :starttime
@@ -392,8 +385,6 @@ class active_users_data extends \core\task\scheduled_task {
 
         $completionrate = array_values($completionrate);
 
-        /* Reverse the array because the graph take
-        value from left to right */
-        return array_reverse($completionrate);
+        return $completionrate;
     }
 }
