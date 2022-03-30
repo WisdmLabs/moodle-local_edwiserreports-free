@@ -120,41 +120,11 @@ define([
     };
 
     /**
-     * Pie chart default config.
-     */
-    const pieChartDefault = {
-        chart: {
-            type: 'donut',
-            height: 350
-        },
-        legend: {
-            position: 'bottom',
-            offsetY: 0
-        },
-        noData: {
-            text: M.util.get_string('nographdata', 'local_edwiserreports')
-        },
-        theme: {
-            monochrome: {
-                enabled: true,
-                color: CFG.getColorTheme()[2],
-                shadeTo: 'light',
-                shadeIntensity: 0.65
-            },
-        }
-    };
-
-    /**
      * Selectors list.
      */
     var SELECTOR = {
         PANEL: '#learnertimespentonsiteblock',
-        DATE: '.learnertimespentonsite-calendar',
-        DATEMENU: '.learnertimespentonsite-calendar + .dropdown-menu',
-        DATEITEM: '.learnertimespentonsite-calendar + .dropdown-menu .dropdown-item',
-        DATEPICKER: '.learnertimespentonsite-calendar + .dropdown-menu .dropdown-calendar',
-        DATEPICKERINPUT: '.learnertimespentonsite-calendar + .dropdown-menu .flatpickr',
-        GRAPH: '#apex-chart-learnertimespentonsite-block',
+        GRAPH: '#apex-chart-learnertimespentonsite-block'
     };
 
     /**
@@ -163,20 +133,16 @@ define([
     var PROMISE = {
         /**
          * Get timespent on site using filters.
-         * @param {Object} filter Filter data
          * @returns {PROMISE}
          */
-        GET_TIMESPENTONSITE: function(filter) {
+        GET_TIMESPENTONSITE: function() {
             return $.ajax({
                 url: CFG.requestUrl,
                 type: CFG.requestType,
                 dataType: CFG.requestDataType,
                 data: {
                     action: 'get_learnertimespentonsite_graph_data_ajax',
-                    secret: M.local_edwiserreports.secret,
-                    data: JSON.stringify({
-                        filter: filter
-                    })
+                    secret: M.local_edwiserreports.secret
                 },
             });
         },
@@ -206,45 +172,23 @@ define([
         }
         PROMISE.GET_TIMESPENTONSITE(filter)
             .done(function(response) {
-                if (filter.date.includes("to") || ['weekly', 'monthly', 'yearly'].indexOf(filter.date) !== -1) {
-                    data = Object.assign({}, lineChartDefault);
-                    data.yaxis = {
-                        labels: {
-                            formatter: Common.timeFormatter
-                        }
-                    };
-                    data.xaxis.categories = response.labels;
-                    data.series = [{
-                        name: M.util.get_string('timespentonlms', 'local_edwiserreports'),
-                        data: response.timespent,
-                    }];
-                    data.chart.toolbar.show = response.labels.length > 30;
-                    data.chart.zoom.enabled = response.labels.length > 30;
-                    data.tooltip.y.title.formatter = (title) => {
-                        return M.util.get_string('time', 'local_edwiserreports') + ': ';
+                data = Object.assign({}, lineChartDefault);
+                data.yaxis = {
+                    labels: {
+                        formatter: Common.timeFormatter
                     }
-                    $(SELECTOR.PANEL).find('.panel-body').attr('data-charttype', 'line');
-                } else {
-                    data = Object.assign({}, pieChartDefault);
-                    data.labels = response.labels;
-                    data.series = response.timespent;
-                    data.tooltip = {
-                        custom: function({ series, seriesIndex, dataPointIndex, w }) {
-                            let value = Common.timeFormatter(series[seriesIndex], {
-                                dataPointIndex: dataPointIndex
-                            });
-                            let label = w.config.labels[seriesIndex];
-                            return `<div class="custom-donut-tooltip theme-2-text">
-                                    <span style="font-weight: 500;"> ${label}:</span>
-                                    <span style="font-weight: 700;"> ${value} </span>
-                                </div>`;
-                        }
-                    };
-                    data.legend = {
-                        show: false
-                    };
-                    $(SELECTOR.PANEL).find('.panel-body').attr('data-charttype', 'donut');
+                };
+                data.xaxis.categories = response.labels;
+                data.series = [{
+                    name: M.util.get_string('timespentonlms', 'local_edwiserreports'),
+                    data: response.timespent,
+                }];
+                data.chart.toolbar.show = response.labels.length > 30;
+                data.chart.zoom.enabled = response.labels.length > 30;
+                data.tooltip.y.title.formatter = (title) => {
+                    return M.util.get_string('time', 'local_edwiserreports') + ': ';
                 }
+                $(SELECTOR.PANEL).find('.panel-body').attr('data-charttype', 'line');
                 renderGraph($(SELECTOR.PANEL).find(SELECTOR.GRAPH), data);
                 Common.loader.hide(SELECTOR.PANEL);
             }).fail(function(exception) {
@@ -253,52 +197,9 @@ define([
     }
 
     /**
-     * After Select Custom date get active users details.
-     * @param {String} target Targeted graph
-     */
-    function customDateSelected(target) {
-        let date = $(SELECTOR.PANEL).find(SELECTOR.DATEPICKERINPUT).val(); // Y-m-d format
-        let dateAlternate = $(SELECTOR.PANEL).find(SELECTOR.DATEPICKERINPUT).next().val(); // d/m/Y format
-
-        /* If correct date is not selected then return false */
-        if (date == '') {
-            return;
-        }
-
-        // Set active class to custom date selector item.
-        $(SELECTOR.PANEL).find(SELECTOR.DATEITEM).removeClass('active');
-        $(SELECTOR.PANEL).find(SELECTOR.DATEITEM + '.custom').addClass('active');
-
-        // Show custom date to dropdown button.
-        $(SELECTOR.PANEL).find(SELECTOR.DATE).html(dateAlternate);
-        filter.date = date;
-        loadGraph(target);
-    }
-
-    /**
      * Initialize event listeners.
      */
     function initEvents() {
-
-        /* Date selector listener */
-        $('body').on('click', SELECTOR.DATEITEM + ":not(.custom)", function() {
-            let target = $(this).closest(SELECTOR.FILTERS).data('id');
-            // Set custom selected item as active.
-            $(SELECTOR.PANEL).find(SELECTOR.DATEITEM).removeClass('active');
-            $(this).addClass('active');
-
-            // Show selected item on dropdown button.
-            $(SELECTOR.PANEL).find(SELECTOR.DATE).html($(this).text());
-
-            // Clear custom date.
-            flatpickr.clear();
-
-            // Set date.
-            filter.date = $(this).data('value');
-
-            // Load graph data.
-            loadGraph();
-        });
 
         flatpickr = $(SELECTOR.PANEL).find(SELECTOR.DATEPICKERINPUT).flatpickr({
             mode: 'range',
@@ -306,14 +207,7 @@ define([
             altFormat: "d/m/Y",
             dateFormat: "Y-m-d",
             maxDate: "today",
-            appendTo: $(SELECTOR.PANEL).find(SELECTOR.DATEPICKER).get(0),
-            onOpen: function() {
-                $(SELECTOR.PANEL).find(SELECTOR.DATEMENU).addClass('withcalendar');
-            },
-            onClose: function() {
-                $(SELECTOR.PANEL).find(SELECTOR.DATEMENU).removeClass('withcalendar');
-                customDateSelected();
-            }
+            appendTo: $(SELECTOR.PANEL).find(SELECTOR.DATEPICKER).get(0)
         });
     }
 

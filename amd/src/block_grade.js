@@ -169,8 +169,6 @@ define([
      */
     function initEvents() {
 
-
-
         // Handling legend position based on width.
         setInterval(function() {
             if (chart === null) {

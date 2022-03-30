@@ -182,10 +182,6 @@ define([
     function loadGraph(invalidUser) {
         common.loader.show(SELECTOR.PANEL);
 
-        // Set export filter to download link.
-        let exportFilter = Object.keys(filter).map(key => filter[key]).join("-");
-        $(SELECTOR.PANEL).find(SELECTOR.FORMFILTER).val(exportFilter);
-
         /**
          * Render graph.
          * @param {DOM} graph Graph element
@@ -224,33 +220,6 @@ define([
     }
 
     /**
-     * Initialize events.
-     */
-    function initEvents() {
-        // Date selector listener.
-        common.dateChange(function(date) {
-            filter.date = date;
-            loadGraph();
-        });
-
-        // Student selector listener.
-        $('body').on('change', `${SELECTOR.PANEL} ${SELECTOR.STUDENT}`, function() {
-            filter.student = parseInt($(this).val());
-
-            // Load graph data.
-            loadGraph();
-        });
-
-        // Course selector listener.
-        $('body').on('change', `${SELECTOR.PANEL} ${SELECTOR.COURSE}`, function() {
-            filter.course = parseInt($(this).val());
-
-            // Load graph data.
-            loadGraph();
-        });
-    }
-
-    /**
      * Initialize
      * @param {function} invalidUser Callback function
      */
@@ -261,8 +230,6 @@ define([
         }
 
         loadGraph(invalidUser);
-
-        initEvents();
 
         $(SELECTOR.PANEL).find('.singleselect').select2();
     }

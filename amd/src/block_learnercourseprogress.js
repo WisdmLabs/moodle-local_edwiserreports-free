@@ -97,48 +97,11 @@ define([
         colors: [CFG.getColorTheme()[2]]
     };
 
-    let position = 'right';
-
-    /**
-     * Donut chart default config.
-     */
-    const donutChartDefault = {
-        chart: {
-            type: 'donut',
-            height: 350
-        },
-        legend: {
-            position: position,
-            formatter: function(seriesName, opts) {
-                return [seriesName + ": " + opts.w.globals.series[opts.seriesIndex] + '%']
-            }
-        },
-        dataLabels: {
-            enabled: false
-        },
-        tooltip: {
-            custom: function({ series, seriesIndex, dataPointIndex, w }) {
-                let value = series[seriesIndex];
-                let label = w.config.labels[seriesIndex];
-                let color = w.config.colors[seriesIndex];
-                return `<div class="custom-donut-tooltip" style="color: ${color};">
-                        <span style="font-weight: 500;"> ${label}:</span>
-                        <span style="font-weight: 700;"> ${value}</span>
-                    </div>`;
-            }
-        },
-        noData: {
-            text: M.util.get_string('nographdata', 'local_edwiserreports')
-        },
-        colors: CFG.getColorTheme()
-    };
-
     /**
      * Selectors list.
      */
     var SELECTOR = {
         PANEL: '#learnercourseprogressblock',
-        COURSE: '#learnercourseprogress-course-select',
         GRAPH: '#apex-chart-learnercourseprogress-block'
     };
 
@@ -192,71 +155,30 @@ define([
 
         PROMISE.GET_COURSEPROGRESS(filter)
             .done(function(response) {
-                if (filter.course == 0) {
-                    data = Object.assign({}, barChartDefault);
-                    data.yaxis = {
-                        max: 100,
-                        labels: {
-                            formatter: (progress) => {
-                                return progress + '%';
-                            }
+                data = Object.assign({}, barChartDefault);
+                data.yaxis = {
+                    max: 100,
+                    labels: {
+                        formatter: (progress) => {
+                            return progress + '%';
                         }
-                    };
-                    data.xaxis.categories = response.labels;
-                    data.series = [{
-                        name: M.util.get_string('courseprogress', 'local_edwiserreports'),
-                        data: response.progress,
-                    }];
-                    data.chart.toolbar.show = response.labels.length > 30;
-                    data.chart.zoom.enabled = response.labels.length > 30;
-                    data.tooltip.y.title.formatter = (title) => {
-                        return M.util.get_string('progress', 'local_edwiserreports') + ': ';
-                    };
-                    $(SELECTOR.PANEL).find('.panel-body').attr('data-charttype', 'bar');
-                } else {
-                    data = Object.assign({}, donutChartDefault);
-                    data.labels = response.labels;
-                    data.series = response.progress;
-                    $(SELECTOR.PANEL).find('.panel-body').attr('data-charttype', 'donut');
-                }
+                    }
+                };
+                data.xaxis.categories = response.labels;
+                data.series = [{
+                    name: M.util.get_string('courseprogress', 'local_edwiserreports'),
+                    data: response.progress,
+                }];
+                data.chart.toolbar.show = response.labels.length > 30;
+                data.chart.zoom.enabled = response.labels.length > 30;
+                data.tooltip.y.title.formatter = (title) => {
+                    return M.util.get_string('progress', 'local_edwiserreports') + ': ';
+                };
+
                 renderGraph($(SELECTOR.PANEL).find(SELECTOR.GRAPH), data);
             }).fail(function(exception) {
                 Common.loader.hide(SELECTOR.PANEL);
             });
-    }
-
-    /**
-     * Initialize event listeners.
-     */
-    function initEvents() {
-
-        // Course selector listener.
-        $('body').on('change', `${SELECTOR.PANEL} ${SELECTOR.COURSE}`, function() {
-            let courseid = parseInt($(this).val());
-            filter.course = courseid;
-
-            // Load graph data.
-            loadGraph();
-        });
-
-        // Handling legend position based on width.
-        setInterval(function() {
-            if (chart === null) {
-                return;
-            }
-            let width = $(SELECTOR.PANEL).find(SELECTOR.GRAPH).width();
-            let newPosition = width >= 400 ? 'right' : 'bottom';
-            if (newPosition == position) {
-                return;
-            }
-            position = newPosition;
-            chart.updateOptions({
-                legend: {
-                    position: position
-                }
-            })
-        }, 1000);
-
     }
 
     /**
@@ -268,7 +190,6 @@ define([
             return;
         }
         $(SELECTOR.PANEL).find('.singleselect').select2();
-        initEvents();
 
         loadGraph();
     }
