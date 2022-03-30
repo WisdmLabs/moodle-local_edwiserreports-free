@@ -33,30 +33,6 @@ use local_edwiserreports\utility;
 trait timespentoncourses {
 
     /**
-     * Get students timespent on courses in given period.
-     *
-     * @param int    $startdate   Start date.
-     * @param int    $enddate     End date.
-     * @param string $coursetable Course table.
-     *
-     * @return int
-     */
-    private function get_timespent_on_courses($startdate, $enddate, $coursetable) {
-        global $DB;
-
-        $sql = "SELECT SUM(eal.timespent)
-                FROM {edwreports_activity_log} eal
-                JOIN {{$coursetable}} c ON eal.course = c.id
-                WHERE eal.datecreated >= :startdate
-                  AND eal.datecreated <= :enddate";
-        $params = array(
-            'startdate' => $startdate,
-            'enddate' => $enddate
-        );
-        return $DB->get_field_sql($sql, $params);
-    }
-
-    /**
      * Get new registration insight data
      *
      * @param int   $startdate      Start date.
@@ -73,19 +49,8 @@ trait timespentoncourses {
         $oldenddate
     ) {
 
-        $blockbase = new block_base();
-        $userid = $blockbase->get_current_user();
-        $courses = $blockbase->get_courses_of_user($userid);
-        // Temporary course table.
-        $coursetable = 'tmp_insight_courses_' . $userid;
-        // Creating temporary table.
-        utility::create_temp_table($coursetable, array_keys($courses));
-
-        $currenttimespent = $this->get_timespent_on_courses(floor($startdate / 86400), floor($enddate / 86400), $coursetable);
-        $oldtimespent = $this->get_timespent_on_courses(floor($oldstartdate / 86400), floor($oldenddate / 86400), $coursetable);
-
-        // Drop temporary table.
-        utility::drop_temp_table($coursetable);
+        $currenttimespent = 53100;
+        $oldtimespent = 50280;
 
         return [$currenttimespent, $oldtimespent];
     }

@@ -84,7 +84,8 @@ class insight {
             'timespentoncourses' => array(
                 'icon' => $this->image_icon('timespent'),
                 'title' => get_string('timespentoncourses', 'local_edwiserreports'),
-                'internal' => true
+                'internal' => true,
+                'pro' => $this->image_icon('lock')
             ),
             'totalcoursesenrolled' => array(
                 'icon' => $this->image_icon('enrolment'),
@@ -104,7 +105,8 @@ class insight {
             'timespentonsite' => array(
                 'icon' => $this->image_icon('timespent'),
                 'title' => get_string('timespentonsite', 'local_edwiserreports'),
-                'internal' => true
+                'internal' => true,
+                'pro' => $this->image_icon('lock')
             )
         );
     }

@@ -32,29 +32,6 @@ use local_edwiserreports\block_base;
 trait timespentonsite {
 
     /**
-     * Get user's timespent on site in give time period.
-     *
-     * @param int $startdate Start date.
-     * @param int $enddate   End date.
-     * @param int $userid    User id.
-     *
-     * @return void
-     */
-    private function get_users_timespent_on_site($startdate, $enddate, $userid) {
-        global $DB;
-        $sql = "SELECT SUM(timespent)
-                FROM {edwreports_activity_log}
-                WHERE datecreated >= :startdate
-                  AND datecreated <= :enddate
-                  AND userid = :userid";
-        $params = array(
-            'startdate' => $startdate,
-            'enddate' => $enddate,
-            'userid' => $userid
-        );
-        return $DB->get_field_sql($sql, $params);
-    }
-    /**
      * Get new registration insight data
      *
      * @param int   $startdate      Start date.
@@ -70,11 +47,9 @@ trait timespentonsite {
         $oldstartdate,
         $oldenddate
     ) {
-        $blockbase = new block_base();
-        $userid = $blockbase->get_current_user();
 
-        $timespentonsite = $this->get_users_timespent_on_site(floor($startdate / 86400), floor($enddate / 86400), $userid);
-        $oldtimespentonsite = $this->get_users_timespent_on_site(floor($oldstartdate / 86400), floor($oldenddate / 86400), $userid);
+        $timespentonsite = 70210;
+        $oldtimespentonsite = 56820;
 
         return [$timespentonsite, $oldtimespentonsite];
     }
