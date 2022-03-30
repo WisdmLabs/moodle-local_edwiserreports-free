@@ -477,15 +477,8 @@ tr[aria-expanded="true"] .accordion-arrow.icon {
     right: 0;
     bottom: 0;
     top: 0;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.8);
     z-index: 2;
-}
-
-#wdm-edwiserreports .edwiserReport-block > div .panel .upgrade-to-pro .upgrade-notice {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
 }
 
 #wdm-edwiserreports .edwiserReport-block > div .panel .panel-header {
@@ -985,6 +978,13 @@ tr[aria-expanded="true"] .accordion-arrow.icon {
 
 .insight-card:not(:hover) > .upgrade-to-pro {
     display: none;
+}
+
+.insight-card .upgrade-notice {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .insight-card .pro-lock {

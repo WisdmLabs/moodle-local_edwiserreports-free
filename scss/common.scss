@@ -309,14 +309,8 @@ tr[aria-expanded="true"] {
                     right: 0;
                     bottom: 0;
                     top: 0;
-                    background: rgba(0, 0, 0, 0.5);
+                    background: rgba(0, 0, 0, 0.8);
                     z-index: 2;
-                    .upgrade-notice {
-                        position: absolute;
-                        left: 50%;
-                        top: 50%;
-                        transform: translate(-50%, -50%);
-                    }
                 }
                 .panel-header {
                     position: relative;
@@ -863,6 +857,12 @@ tr[aria-expanded="true"] {
         &>.upgrade-to-pro {
             display: none;
         }
+    }
+    .upgrade-notice {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
     }
     position: relative;
     display: flex;

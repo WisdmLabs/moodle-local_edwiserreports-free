@@ -24,14 +24,14 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['pluginname'] = 'Edwiser Reports';
-$string['reportsdashboard'] = 'Edwiser Reports';
+$string['pluginname'] = 'Edwiser Reports Free';
+$string['reportsdashboard'] = 'Edwiser Reports Free';
 $string['reportsandanalytics'] = "Reports & Analytics";
 $string['all'] = "All";
 $string['refresh'] = "Refresh";
 $string['noaccess'] = "Sorry. You don't have rights to access this page.";
 $string['showdatafor'] = "SHOW DATA FOR";
-$string['dashboard'] = 'Edwiser Reports Dashboard';
+$string['dashboard'] = 'Edwiser Reports Free Dashboard';
 $string['permissionwarning'] = 'You have allowed following users to see this block which is not recommended. Please hide this block from those users. Once you hide this block, it will not appear again.';
 $string['showentries'] = 'Show Entries';
 
@@ -623,7 +623,7 @@ $string['guestaccess'] = 'Course Guest Access';
 $string['selectcourses'] = 'Select Courses';
 $string['selectcohorts'] = 'Select Cohorts';
 $string['createnewcustomreports'] = 'Create new Report';
-$string['unlockthisfeature'] = 'Unlock this feature';
+$string['unlockthisfeature'] = 'Available in PRO version';
 $string['availableinpro'] = 'Available in PRO<br>version';
 $string['upgradetopro'] = 'Upgrade to PRO';
 
