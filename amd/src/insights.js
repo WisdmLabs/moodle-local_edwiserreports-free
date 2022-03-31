@@ -39,7 +39,7 @@ define([
         CONTAINER: '.top-insights',
         INSIGHT: '.top-insights .insight',
         ONLYINSIGHT: '.top-insights .insight:not(.add-insight)',
-        INSIGHT_CONTENT: '.insight-content',
+        INSIGHT_WRAP: '.insight-wrap',
         MOVELEFT: '.top-insights .card-editing .move-left',
         MOVERIGHT: '.top-insights .card-editing .move-right',
         HIDE: '.top-insights .card-editing .edit-hide',
@@ -132,7 +132,7 @@ define([
                 Templates.render('local_edwiserreports/insights/content', response)
                     .done(function(html, js) {
                         Templates.replaceNode($(SELECTOR.INSIGHT + '[data-id="' + id + '"]')
-                            .find(SELECTOR.INSIGHT_CONTENT), html, js);
+                            .find(SELECTOR.INSIGHT_WRAP), html, js);
                         common.loader.hide(SELECTOR.CONTAINER + ' [data-id="' + id + '"] .insight-wrapper');
                     });
             });
