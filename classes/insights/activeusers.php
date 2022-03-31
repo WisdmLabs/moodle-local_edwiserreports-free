@@ -52,7 +52,8 @@ trait activeusers {
             'starttime' => $startdate,
             'endtime' => $enddate
         );
-        return $DB->get_field_sql($sql, $params);
+        $activeusers = $DB->get_field_sql($sql, $params);
+        return $activeusers ? $activeusers : 0;
 
     }
     /**

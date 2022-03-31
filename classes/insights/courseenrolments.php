@@ -42,17 +42,22 @@ trait courseenrolments {
      */
     private function get_enrolments($startdate, $enddate, $coursetable) {
         global $DB;
-        $sql = "SELECT COUNT(ue.userid)
-                  FROM {user_enrolments} ue
-                  JOIN {enrol} e ON e.id = ue.enrolid
-                  JOIN {{$coursetable}} c ON c.id = e.courseid
-                  WHERE ue.timecreated >= :starttime
-                    AND ue.timecreated < :endtime";
+        $sql = "SELECT SUM(enrolments.usercount)
+                  FROM (SELECT COUNT(DISTINCT(CONCAT(CONCAT(l.courseid, '-'), l.relateduserid))) as usercount
+                          FROM {logstore_standard_log} l
+                         WHERE l.eventname = :eventname
+                           AND l.action = :actionname
+                           AND l.timecreated >= :starttime
+                           AND l.timecreated < :endtime
+                         GROUP BY FLOOR(l.timecreated/86400)) as enrolments";
         $params = array(
+            "eventname" => '\core\event\user_enrolment_created',
+            "actionname" => "created",
             'starttime' => $startdate,
             'endtime' => $enddate
         );
-        return $DB->get_field_sql($sql, $params);
+        $enrolments = $DB->get_field_sql($sql, $params);
+        return $enrolments ? $enrolments : 0;
     }
 
     /**

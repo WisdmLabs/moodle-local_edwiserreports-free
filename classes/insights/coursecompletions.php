@@ -42,16 +42,19 @@ trait coursecompletions {
      */
     private function get_completions($startdate, $enddate, $coursetable) {
         global $DB;
-        $sql = "SELECT COUNT(ecp.completiontime)
-                  FROM {edwreports_course_progress} ecp
-                  JOIN {{$coursetable}} c ON c.id = ecp.courseid
-                  WHERE ecp.completiontime >= :starttime
-                    AND ecp.completiontime < :endtime";
+        $sql = "SELECT SUM(completions.usercount)
+                  FROM (SELECT COUNT(cc.completiontime) as usercount
+                          FROM {edwreports_course_progress} cc
+                         WHERE cc.completiontime IS NOT NULL
+                           AND cc.completiontime >= :starttime
+                           AND cc.completiontime < :endtime
+                         GROUP BY FLOOR(cc.completiontime/86400)) as completions";
         $params = array(
             'starttime' => $startdate,
             'endtime' => $enddate
         );
-        return $DB->get_field_sql($sql, $params);
+        $completions = $DB->get_field_sql($sql, $params);
+        return $completions ? $completions : 0;
     }
 
     /**
