@@ -141,7 +141,20 @@ $currentpos = 0;
 
 $positionwarning = $PAGE->pagetype == 'admin-upgradesettings' ? get_string('positionhelpupgrade', 'local_edwiserreports') : '';
 
+$problocks = [
+    'visitsonsite',
+    'timespentonsite',
+    'timespentoncourse',
+    'courseactivitystatus',
+    'learnertimespentonsite',
+    'grade',
+    'learnercourseprogress'
+];
 foreach ($blocks as $blockid => $block) {
+    $prolabel = '';
+    if (in_array($blockid, $problocks)) {
+        $prolabel = '<strong>(PRO)</strong>';
+    }
     $prefix = $PAGE->pagetype == 'admin-upgradesettings' ? $blockid : '';
 
     $page->add(new admin_setting_heading(
@@ -152,7 +165,7 @@ foreach ($blocks as $blockid => $block) {
 
     $page->add(new admin_setting_configselect(
         'local_edwiserreports/' . $blockid . 'position',
-        new lang_string($prefix . 'position', 'local_edwiserreports'),
+        new lang_string($prefix . 'position', 'local_edwiserreports') . $prolabel,
         new lang_string('positionhelp', 'local_edwiserreports') . $positionwarning,
         $currentpos++,
         $positions
@@ -161,7 +174,7 @@ foreach ($blocks as $blockid => $block) {
     // Desktopview for blocks.
     $page->add(new admin_setting_configselect(
         'local_edwiserreports/' . $blockid . 'desktopsize',
-        new lang_string($prefix . 'desktopsize', 'local_edwiserreports'),
+        new lang_string($prefix . 'desktopsize', 'local_edwiserreports') . $prolabel,
         new lang_string('desktopsizehelp', 'local_edwiserreports'),
         $block['desktopview'],
         $availsizedesktop
@@ -170,7 +183,7 @@ foreach ($blocks as $blockid => $block) {
     // Tablet view for blocks.
     $page->add(new admin_setting_configselect(
         'local_edwiserreports/' . $blockid . 'tabletsize',
-        new lang_string($prefix . 'tabletsize', 'local_edwiserreports'),
+        new lang_string($prefix . 'tabletsize', 'local_edwiserreports') . $prolabel,
         new lang_string('tabletsizehelp', 'local_edwiserreports'),
         $block['tabletview'],
         $availsizetablet

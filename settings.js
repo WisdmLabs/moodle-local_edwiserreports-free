@@ -75,6 +75,24 @@ define('local_edwiserreports/settings', ['jquery'], function($) {
 
                 // Disabling precalculated.
                 $('#admin-precalculated [name]').prop('disabled', true);
+
+                // Pro block settings disabled.
+                [
+                    'visitsonsite',
+                    'timespentonsite',
+                    'timespentoncourse',
+                    'courseactivitystatus',
+                    'learnertimespentonsite',
+                    'grade',
+                    'learnercourseprogress'
+                ]
+                .forEach(function(item) {
+                    $('[id^="admin-' + item + '"] [name]').prop('disabled', true);
+                });
+
+                $('body').on('submit', '#adminsettings', function() {
+                    $(this).find('[name]').prop('disabled', false);
+                });
             });
         }
     };
