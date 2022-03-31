@@ -53,8 +53,10 @@
         </div>
         <div class="upgrade-to-pro text-white">
             <div class="upgrade-notice text-center">
-                <h4 class="text-white d-inline">{{#str}} unlockthisfeature, local_edwiserreports, {{{upgradelink}}} {{/str}}</h4>
-                <a href="{{{upgradelink}}}" class="btn theme-primary-bg text-white ml-2 d-inline" target="_blank">{{#str}} upgradetopro, local_edwiserreports {{/str}}</a>
+                <h4 class="text-white d-inline">{{#str}} unlockthisfeature, local_edwiserreports {{/str}}</h4>
+                {{#upgradelink}}
+                    <a href="{{{upgradelink}}}" class="btn theme-primary-bg text-white ml-2 d-inline" target="_blank">{{#str}} upgradetopro, local_edwiserreports {{/str}}</a>
+                {{/upgradelink}}
             </div>
         </div>
     {{/pro}}

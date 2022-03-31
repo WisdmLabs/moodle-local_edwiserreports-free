@@ -60,7 +60,9 @@ class block_base {
         $this->layout->caneditadv = false;
         $this->layout->region = 'block';
         $this->block = new stdClass();
-        $this->layout->upgradelink = UPGRADE_URL;
+        if (is_siteadmin()) {
+            $this->layout->upgradelink = UPGRADE_URL;
+        }
 
         if ($blockid) {
             $this->blockid = $blockid;

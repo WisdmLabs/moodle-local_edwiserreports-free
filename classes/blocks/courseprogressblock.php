@@ -87,13 +87,19 @@ class courseprogressblock extends block_base {
             $cache->set($cachekey, $response);
         }
 
+        $upgradelink = '';
+        if (is_siteadmin($this->get_current_user())) {
+            $upgradelink = UPGRADE_URL;
+        }
+
         // Insight.
         $response->insight = [
             'insight' => [
                 'value' => '??',
                 'title' => get_string('averagecourseprogress', 'local_edwiserreports')
             ],
-            'pro' => $this->image_icon('lock')
+            'pro' => $this->image_icon('lock'),
+            'upgradelink' => $upgradelink
         ];
 
         // Return response.

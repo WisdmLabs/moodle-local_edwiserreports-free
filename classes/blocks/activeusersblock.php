@@ -256,7 +256,12 @@ class activeusersblock extends block_base {
      * @return object
      */
     public function calculate_insight() {
+        $upgradelink = '';
+        if (is_siteadmin($this->get_current_user())) {
+            $upgradelink = UPGRADE_URL;
+        }
         $insight = [
+            'upgradelink' => $upgradelink,
             'insight' => [
                 'title' => get_string('averageactiveusers', 'local_edwiserreports'),
                 'value' => '??'
@@ -306,11 +311,11 @@ class activeusersblock extends block_base {
             $response->data->enrolments = $this->get_enrolments();
             $response->data->completionRate = $this->get_course_completionrate();
             $response->dates = array_keys($this->dates);
-            $response->insight = $this->calculate_insight($response);
             // Set response in cache.
             $this->cache->set($cachekey, $response);
         }
 
+        $response->insight = $this->calculate_insight($response);
         $response->labels = $this->labels;
 
         ob_clean();

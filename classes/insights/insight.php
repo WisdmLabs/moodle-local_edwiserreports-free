@@ -55,6 +55,10 @@ class insight {
      * Constructor
      */
     public function __construct() {
+        $upgradelink = '';
+        if (is_siteadmin()) {
+            $upgradelink = UPGRADE_URL;
+        }
         $this->insights = array(
             'newregistrations' => array(
                 'icon' => $this->image_icon('registration'),
@@ -85,7 +89,8 @@ class insight {
                 'icon' => $this->image_icon('timespent'),
                 'title' => get_string('timespentoncourses', 'local_edwiserreports'),
                 'internal' => true,
-                'pro' => $this->image_icon('lock')
+                'pro' => $this->image_icon('lock'),
+                'upgradelink' => $upgradelink
             ),
             'totalcoursesenrolled' => array(
                 'icon' => $this->image_icon('enrolment'),
@@ -106,7 +111,8 @@ class insight {
                 'icon' => $this->image_icon('timespent'),
                 'title' => get_string('timespentonsite', 'local_edwiserreports'),
                 'internal' => true,
-                'pro' => $this->image_icon('lock')
+                'pro' => $this->image_icon('lock'),
+                'upgradelink' => $upgradelink
             )
         );
     }

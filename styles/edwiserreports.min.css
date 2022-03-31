@@ -1553,6 +1553,23 @@ table.dataTable td.dataTables_empty {
     position: relative;
 }
 
+.top-insights .insight-wrapper:not(:hover) > .upgrade-to-pro {
+    display: none;
+}
+
+.top-insights .insight-wrapper .upgrade-to-pro {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .top-insights .insight-wrapper .pro-lock {
     position: absolute;
     right: 1rem;
