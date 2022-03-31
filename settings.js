@@ -70,6 +70,11 @@ define('local_edwiserreports/settings', ['jquery'], function($) {
                     });
                 }
 
+                // Disabling frequency setting.
+                $('#admin-trackfrequency [name]').prop('disabled', true);
+
+                // Disabling precalculated.
+                $('#admin-precalculated [name]').prop('disabled', true);
             });
         }
     };
