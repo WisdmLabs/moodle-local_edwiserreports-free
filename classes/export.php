@@ -126,6 +126,12 @@ class export {
             case "pdf":
                 $this->data_export_pdf($filename, $data);
                 break;
+            case "email":
+                $this->data_export_email($filename, $data);
+                break;
+            case "emailscheduled":
+                $this->data_export_emailscheduled($filename);
+                break;
         }
     }
 
@@ -249,6 +255,161 @@ class export {
         }
 
         return $filepath;
+    }
+
+    /**
+     * Export data email to user
+     * @param  string $filename File name to export data
+     * @param  array  $data     Data to be export
+     */
+    public function data_export_email($filename, $data) {
+        global $USER;
+        $recuser = $USER;
+        $senduser = core_user::get_noreply_user();
+
+        // Generate csv file.
+        $filename .= ".csv";
+        $filepath = $this->generate_csv_file($filename, $data);
+
+        // Get email data from submited form.
+        $emailids = trim(optional_param("esrrecepient", false, PARAM_TEXT));
+        $subject = trim(optional_param("esrsubject", false, PARAM_TEXT));
+
+        // Optional parameter causing issue because this is an array.
+        $contenttext = optional_param('esrmessage', '', PARAM_TEXT);
+
+        // If subject is not set the get default subject.
+        if (!$subject && $subject == '') {
+            $subject = get_string($this->blockname . "exportheader", "local_edwiserreports");
+        }
+
+        // Send emails foreach email ids.
+        if ($emailids && $emailids !== '') {
+            // Process in background and dont show message in console.
+            ob_start();
+            $emailids = explode(";", $emailids);
+            foreach ($emailids as $emailcommaids) {
+                foreach (explode(",", $emailcommaids) as $emailid) {
+                    // Trim email id if white spaces are added.
+                    $recuser->email = trim($emailid);
+
+                    // Send email to user.
+                    email_to_user(
+                        $recuser,
+                        $senduser,
+                        $subject,
+                        '',
+                        $contenttext,
+                        $filepath,
+                        $filename
+                    );
+                }
+            }
+            ob_end_clean();
+
+            // If failed then return error.
+            $res = new stdClass();
+            $res->error = false;
+            $res->errormsg = get_string('emailsent', 'local_edwiserreports');
+            echo json_encode($res);
+        } else {
+            // If failed then return error.
+            $res = new stdClass();
+            $res->error = true;
+            $res->errormsg = get_string('emailnotsent', 'local_edwiserreports');
+            echo json_encode($res);
+        }
+
+        // Remove file after email sending process.
+        unlink($filepath);
+    }
+
+    /**
+     * Save data scheduled email for users
+     * @param string $filename file name to export data
+     */
+    public function data_export_emailscheduled($filename) {
+        global $CFG, $DB;
+        $response = new stdClass();
+        $response->error = false;
+
+        $data = new stdClass();
+        $data->blockname = $this->blockname;
+        $data->component = $this->region;
+
+        $table = "edwreports_schedemails";
+        $blockcompare = $DB->sql_compare_text('blockname');
+        $componentcompare = $DB->sql_compare_text('component');
+        $sql = "SELECT id, emaildata FROM {edwreports_schedemails}
+            WHERE $blockcompare LIKE :blockname
+            AND $componentcompare LIKE :component";
+        if ($rec = $DB->get_record_sql($sql, (array)$data)) {
+            $data->id = $rec->id;
+            list($id, $data->emaildata) = $this->get_email_data($rec->emaildata);
+            $DB->update_record($table, $data);
+        } else {
+            list($id, $data->emaildata) = $this->get_email_data();
+            $DB->insert_record($table, $data);
+        }
+
+        $args = array(
+            "id" => optional_param("esrid", null, PARAM_INT),
+            "blockname" => $this->blockname,
+            "region" => $this->region,
+            "href" => $CFG->wwwroot . $_SERVER["REQUEST_URI"]
+        );
+
+        // Return data in json format.
+        echo json_encode($response);
+    }
+
+    /**
+     * Get scheduled email data
+     * @param  string $emaildata Encoded email data
+     * @return array             Decoded email data
+     */
+    private function get_email_data($emaildata = false) {
+        // Generate default email information array.
+        $emailinfo = array(
+            'esrname' => required_param("esrname", PARAM_TEXT),
+            'esremailenable' => optional_param("esremailenable", false, PARAM_TEXT),
+            'esrrecepient' => required_param("esrrecepient", PARAM_TEXT),
+            'esrsubject' => optional_param("esrsubject", '', PARAM_TEXT),
+            'esrmessage' => optional_param("esrmessage", '', PARAM_TEXT),
+            'esrduration' => optional_param("esrduration", 0, PARAM_TEXT),
+            'esrtime' => optional_param("esrtime", 0, PARAM_TEXT),
+            'esrlastrun' => false,
+            'esrnextrun' => false,
+            'reportparams' => array(
+                'filter' => optional_param("filter", false, PARAM_TEXT),
+                'blockname' => $this->blockname,
+                'region' => optional_param("region", false, PARAM_TEXT)
+            )
+        );
+
+        // Calculate Next Run.
+        list($fequency, $nextrun) = local_edwiserreports_get_email_schedule_next_run(
+            $emailinfo["esrduration"],
+            $emailinfo["esrtime"]
+        );
+
+        $emailinfo["esrnextrun"] = $nextrun;
+        $emailinfo["esrfrequency"] = $fequency;
+
+        // Get previous data and update.
+        if (!$emaildata = json_decode($emaildata)) {
+            $emaildata = array($emailinfo);
+        } else if (is_array($emaildata)) {
+            $esrid = optional_param("esrid", false, PARAM_INT);
+            if ($esrid < 0) {
+                $emaildata[] = $emailinfo;
+            } else {
+                $emaildata[$esrid] = $emailinfo;
+            }
+        }
+
+        // Return array if of data and encoded email data.
+        return array((count($emaildata) - 1), json_encode($emaildata));
     }
 
     /**
@@ -431,11 +592,6 @@ class export {
             case "courseanalytics":
                 $export = courseanalytics_block::get_exportable_data_report($filter);
                 break;
-            case "studentengagement":
-                $export = studentengagement::get_exportable_data_report($filter);
-                break;
-            case 'gradeblock':
-                $export = gradeblock::get_exportable_data_report($filter);
                 break;
         }
         return $export;

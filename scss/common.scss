@@ -517,6 +517,43 @@ tr[aria-expanded="true"] {
     }
 }
 
+#listemailstab {
+    .esr-switch {
+        &[data-value="0"] {
+            .show-svg {
+                display: none;
+            }
+        }
+        &[data-value="on"],
+        &[data-value="1"] {
+            .hide-svg {
+                display: none;
+            }
+        }
+    }
+    tbody.empty {
+        display: none;
+    }
+    thead {
+        th {
+            border-bottom: none;
+        }
+    }
+    .fa-edit,
+    .fa-trash {
+        font-size: 1.429rem;
+        &::before {
+            position: relative;
+        }
+    }
+    .fa-trash::before {
+        top: 0.19rem;
+    }
+    .fa-edit::before {
+        top: 0.214rem;
+    }
+}
+
 .font-size-14 {
     font-size: 14px;
 }
@@ -855,22 +892,6 @@ tr[aria-expanded="true"] {
 }
 
 .download-links {
-    button {
-        position: relative;
-        &.disabled {
-            opacity: 1;
-            .lock-content {
-                opacity: 0.5;
-            }
-            .lock-icon {
-                position: absolute;
-                right: 0;
-                top: 0;
-                transform: translateY(-50%);
-                opacity: 1;
-            }
-        }
-    }
     .download-label {
         font-weight: 500;
         text-transform: uppercase;

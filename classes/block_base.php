@@ -24,7 +24,6 @@
 namespace local_edwiserreports;
 
 use stdClass;
-use html_writer;
 use context_system;
 use context_helper;
 use context_course;
@@ -363,22 +362,21 @@ class block_base {
      */
     public function get_block_download_links() {
         return [[
+            'name' => 'csv',
+            'label' => get_string('exporttocsv', 'local_edwiserreports'),
+            'type' => 'submit'
+        ], [
+            'name' => 'excel',
+            'label' => get_string('exporttoexcel', 'local_edwiserreports'),
+            'type' => 'submit'
+        ], [
             'name' => 'pdf',
             'label' => get_string('exporttopdf', 'local_edwiserreports'),
             'type' => 'submit'
         ], [
-            'pro' => true,
-            'label' => get_string('availableinpro', 'local_edwiserreports'),
-            'class' => 'pro-highlight text-center',
-        ], [
-            'pro' => true,
-            'label' => get_string('exporttocsv', 'local_edwiserreports')
-        ], [
-            'pro' => true,
-            'label' => get_string('exporttoexcel', 'local_edwiserreports')
-        ], [
-            'pro' => true,
-            'label' => get_string('sendoveremail', 'local_edwiserreports')
+            'name' => 'email',
+            'label' => get_string('sendoveremail', 'local_edwiserreports'),
+            'type' => 'button'
         ]];
     }
 

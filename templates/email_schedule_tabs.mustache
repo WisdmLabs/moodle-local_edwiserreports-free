@@ -1,0 +1,282 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    Edwiser RemUI
+    @package   theme_remui
+    @copyright (c) 2020 WisdmLabs (https://wisdmlabs.com/)
+    @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+
+}}
+{{!
+    @template theme_remui/activity_navigation
+
+    Display the activity navigation for all activities in a course
+
+    Context variables required for this template:
+
+    Example context (json):
+    {
+    }
+}}
+<div class="nav-tabs-horizontal" data-plugin="tabs">
+    <ul class="nav nav-tabs nav-tabs-line" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link active show" data-toggle="tab" aria-controls="scheduletab" role="tab" aria-selected="false" href="#scheduletab">
+                {{#str}} email, local_edwiserreports {{/str}}
+            </a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" data-toggle="tab" aria-controls="listemailstab" role="tab" aria-selected="true" href="#listemailstab">
+                {{#str}} scheduledlist, local_edwiserreports {{/str}}
+            </a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active show" id="scheduletab" role="tabpanel">
+            <form action="#">
+                <div id="region-main" class="col-9 border-0 m-auto">
+                    <div class="pt-4 w-full">
+                        {{! Name field }}
+                        <div class="form-group row fitem">
+                            <div class="col-12">
+                                <input type="text" value="" name="esrname" class="form-control" required
+                                placeholder="{{# str }} name, local_edwiserreports {{/ str }}">
+                            </div>
+                        </div>
+
+                        {{! Recepient field }}
+                        <div class="form-group row fitem">
+                            <div class="col-12">
+                                <input type="text" value="" name="esrrecepient" class="form-control" required
+                                placeholder="{{# str }} recipient, local_edwiserreports {{/ str }}">
+                            </div>
+                        </div>
+
+                        {{! Subject fields }}
+                        <div class="form-group row fitem">
+                            <div class="col-12">
+                                <input type="text" value="" name="esrsubject" class="form-control" required
+                                placeholder="{{# str }} subject, local_edwiserreports {{/ str }}">
+                            </div>
+                        </div>
+
+                        {{! Message Fields }}
+                        <div class="form-group row fitem">
+                            <div class="col-12">
+                                <textarea value="" name="esrmessage" class="form-control w-full mb-10" rows="4"
+                                placeholder="{{# str }} message, local_edwiserreports {{/ str }}"></textarea>
+                            </div>
+                        </div>
+
+                        {{! Hidden Input Fileds }}
+                        <input value="0" type="text" id="esr-sendduration" name="esrduration" class="d-none">
+                        <input value="0" type="text" id="esr-sendtime" name="esrtime" class="d-none">
+                        <input value="-1" type="text" id="esr-id" name="esrid" class="d-none">
+                        <input value="{{ block }}" type="text" id="esr-blockname" name="blockname" class="d-none">
+                        <input value="{{ region }}" type="text" id="esr-region" name="region" class="d-none">
+                        <input value="{{ sesskey }}" type="text" id="esr-sesskey" name="sesskey" class="d-none">
+                    </div>
+                    <div class="form-group row fitem date-filters disabled px-3">
+                        <span class="my-auto mx-1">
+                            {{#str}} emailthisreport, local_edwiserreports {{/str}}
+                        </span>
+                        <div class="duration-dropdown dropdown">
+                            <button data-value="0"
+                                type="button"
+                                class="btn btn-default btn-sm dropdown-toggle mx-2"
+                                id="durationcount"
+                                data-toggle="dropdown"
+                                aria-expanded="false">
+                                {{#str}} duration_0, local_edwiserreports {{/str}}
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="durationcount" role="menu">
+                                <a class="dropdown-item"
+                                    href="javascript:void(0)"
+                                    data-value="0"
+                                    role="menuitem">
+                                    {{#str}} duration_0, local_edwiserreports {{/str}}
+                                </a>
+                                <a class="dropdown-item"
+                                    href="javascript:void(0)"
+                                    data-value="1"
+                                    role="menuitem">
+                                    {{#str}} duration_1, local_edwiserreports {{/str}}
+                                </a>
+                                <a class="dropdown-item"
+                                    href="javascript:void(0)"
+                                    data-value="2"
+                                    role="menuitem">
+                                    {{#str}} duration_2, local_edwiserreports {{/str}}
+                                </a>
+                            </div>
+                        </div>
+                        <span class="my-auto mx-1">
+                            on every
+                        </span>
+                        <div class="weekly-dropdown dropdown">
+                            <button data-value="0"
+                                type="button"
+                                class="btn btn-default btn-sm dropdown-toggle mx-2"
+                                id="weeksdropdown"
+                                data-toggle="dropdown"
+                                data-managedby="1"
+                                aria-expanded="false"
+                                style="display: none;">
+                                {{#str}} week_0, local_edwiserreports {{/str}}
+                            </button>
+                            <div class="dropdown-menu"
+                                aria-labelledby="weeksdropdown"
+                                role="menu">
+                                <a class="dropdown-item"
+                                    href="javascript:void(0)"
+                                    data-value="0"
+                                    role="menuitem">
+                                    {{#str}} week_0, local_edwiserreports {{/str}}
+                                </a>
+                                <a class="dropdown-item"
+                                    href="javascript:void(0)"
+                                    data-value="1"
+                                    role="menuitem">
+                                    {{#str}} week_1, local_edwiserreports {{/str}}
+                                </a>
+                                <a class="dropdown-item"
+                                    href="javascript:void(0)"
+                                    data-value="2"
+                                    role="menuitem">
+                                    {{#str}} week_2, local_edwiserreports {{/str}}
+                                </a>
+                                <a class="dropdown-item"
+                                    href="javascript:void(0)"
+                                    data-value="3"
+                                    role="menuitem">
+                                    {{#str}} week_3, local_edwiserreports {{/str}}
+                                </a>
+                                <a class="dropdown-item"
+                                    href="javascript:void(0)"
+                                    data-value="4"
+                                    role="menuitem">
+                                    {{#str}} week_4, local_edwiserreports {{/str}}
+                                </a>
+                                <a class="dropdown-item"
+                                    href="javascript:void(0)"
+                                    data-value="5"
+                                    role="menuitem">
+                                    {{#str}} week_5, local_edwiserreports {{/str}}
+                                </a>
+                                <a class="dropdown-item"
+                                    href="javascript:void(0)"
+                                    data-value="6"
+                                    role="menuitem">
+                                    {{#str}} week_6, local_edwiserreports {{/str}}
+                                </a>
+                            </div>
+                        </div>
+                        <div class="daily-dropdown dropdown">
+                            <button data-value="0"
+                                type="button"
+                                class="btn btn-default btn-sm dropdown-toggle mx-2"
+                                id="timesdropdown"
+                                data-toggle="dropdown"
+                                data-managedby="0"
+                                aria-expanded="false"
+                                style="">
+                                {{#str}} time00, local_edwiserreports {{/str}}
+                            </button>
+                            <div class="dropdown-menu"
+                                aria-labelledby="timesdropdown"
+                                role="menu" style="max-height: 300px;overflow-y: scroll;">
+                                {{#timesdropdown}}
+                                <a class="dropdown-item"
+                                    href="javascript:void(0)"
+                                    data-value="{{value}}"
+                                    role="menuitem">
+                                    {{timestring}}
+                                </a>
+                                {{/timesdropdown}}
+                            </div>
+                        </div>
+                        <div class="monthly-dropdown dropdown">
+                            <button data-value="1"
+                                type="button"
+                                class="btn btn-default btn-sm dropdown-toggle mx-2"
+                                id="monthlydropdown"
+                                data-toggle="dropdown"
+                                data-managedby="2"
+                                aria-expanded="false"
+                                style="display: none;">1</button>
+                            <div class="dropdown-menu"
+                                aria-labelledby="monthlydropdown"
+                                role="menu" style="max-height: 300px;overflow-y: scroll;">
+                                {{#daysdropdown}}
+                                <a class="dropdown-item"
+                                    href="javascript:void(0)"
+                                    data-value="{{value}}"
+                                    role="menuitem">
+                                    {{string}}
+                                </a>
+                                {{/daysdropdown}}
+                            </div>
+                        </div>
+
+                        {{! Toggle switch }}
+                        <div class="my-auto px-3">
+                            <label class="esr-switch" title="Enable/Disable email" for="esr-toggle-">
+                                <input id="esr-toggle-" type="checkbox" name="esremailenable" checked="checked">
+                                <div class="switch-container esr-enable-disable-form">
+                                    <div class="switch-background theme-primary-bg"></div>
+                                    <div class="switch-lever theme-primary-bg"></div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    {{! Error Box }}
+                    <div class="esr-form-error" style="display: none;"></div>
+                </div>
+                <div class="modal-footer schedule-email col-9 m-auto border-0 px-5" data-region="footer">
+                    <button class="btn theme-primary-text theme-primary-border mr-auto" disabled type="button" data-action="save" data-toggle="tooltip" title="{{#str}} schedule, local_edwiserreports {{/str}}">
+                        {{#str}} schedule, local_edwiserreports {{/str}}
+                    </button>
+                    <button class="btn theme-primary-bg text-white" disabled type="button" data-action="send" data-toggle="tooltip" title="{{#str}} send, local_edwiserreports {{/str}}">
+                        {{#str}} send, local_edwiserreports {{/str}}
+                    </button>
+                    <button class="btn btn-secondary" type="button" data-action="cancel" data-toggle="tooltip" title="{{#str}} reset, local_edwiserreports {{/str}}">
+                        {{#str}} reset, local_edwiserreports {{/str}}
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div class="tab-pane" id="listemailstab" role="tabpanel">
+            <div class="row mt-3">
+                <div class="filter-selector col-12 col-md-4 mb-1">
+                    {{> local_edwiserreports/datatable/search }}
+                </div>
+            </div>
+            <div class="table-responsive border-0 my-1" id="region-main">
+                <table id="esr-shceduled-emails" class="table" data-role="content" data-plugin="selectable" data-row-selectable="true">
+                    <thead>
+                        <tr>
+                            <th class="theme-3-bg text-white">{{#str}} name, local_edwiserreports {{/str}}</th>
+                            <th class="theme-3-bg text-white">{{#str}} nextrun, local_edwiserreports {{/str}}</th>
+                            <th class="theme-3-bg text-white">{{#str}} frequency, local_edwiserreports {{/str}}</th>
+                            <th class="text-center theme-3-bg text-white">{{#str}} manage, local_edwiserreports {{/str}}</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            {{! Error Box }}
+            <div class="esr-form-error mt-30" style="display: none;"></div>
+        </div>
+    </div>
+</div>

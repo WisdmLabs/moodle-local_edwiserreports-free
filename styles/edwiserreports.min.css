@@ -159,6 +159,11 @@
     text-decoration: underline;
 }
 
+#scheduletab .date-filters .dropdown .dropdown-item:hover {
+    background: white;
+    text-decoration: underline;
+}
+
 .select2-results__option--highlighted,
 .select2-results__option[aria-selected='true'] {
     background-color: white !important;
@@ -673,6 +678,40 @@ tr[aria-expanded="true"] .accordion-arrow.icon {
     opacity: 0.5;
 }
 
+#listemailstab .esr-switch[data-value="0"] .show-svg {
+    display: none;
+}
+
+#listemailstab .esr-switch[data-value="on"] .hide-svg, #listemailstab .esr-switch[data-value="1"] .hide-svg {
+    display: none;
+}
+
+#listemailstab tbody.empty {
+    display: none;
+}
+
+#listemailstab thead th {
+    border-bottom: none;
+}
+
+#listemailstab .fa-edit,
+#listemailstab .fa-trash {
+    font-size: 1.429rem;
+}
+
+#listemailstab .fa-edit::before,
+#listemailstab .fa-trash::before {
+    position: relative;
+}
+
+#listemailstab .fa-trash::before {
+    top: 0.19rem;
+}
+
+#listemailstab .fa-edit::before {
+    top: 0.214rem;
+}
+
 .font-size-14 {
     font-size: 14px;
 }
@@ -984,26 +1023,6 @@ tr[aria-expanded="true"] .accordion-arrow.icon {
     position: absolute;
     right: 1rem;
     top: 1rem;
-}
-
-.download-links button {
-    position: relative;
-}
-
-.download-links button.disabled {
-    opacity: 1;
-}
-
-.download-links button.disabled .lock-content {
-    opacity: 0.5;
-}
-
-.download-links button.disabled .lock-icon {
-    position: absolute;
-    right: 0;
-    top: 0;
-    transform: translateY(-50%);
-    opacity: 1;
 }
 
 .download-links .download-label {

@@ -90,6 +90,22 @@
 }
 
 
+/* Email tab dropdown */
+
+#scheduletab {
+    .date-filters {
+        .dropdown {
+            .dropdown-item {
+                &:hover {
+                    background: white;
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+}
+
+
 /* Select2 */
 
 .select2-results__option--highlighted,

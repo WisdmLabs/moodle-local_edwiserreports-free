@@ -27,6 +27,14 @@ defined('MOODLE_INTERNAL') || die();
 
 $tasks = [
     [
+        'classname' => 'local_edwiserreports\task\send_scheduled_emails',
+        'blocking' => 0,
+        'minute' => '*',
+        'hour' => '*',
+        'day' => '*',
+        'month' => '*',
+        'dayofweek' => '*',
+    ], [
         'classname' => '\local_edwiserreports\task\update_course_progress_data',
         'blocking' => 0,
         'minute' => '*/5',
