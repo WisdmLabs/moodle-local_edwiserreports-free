@@ -30,7 +30,7 @@
 }}
 {{> local_edwiserreports/report-page-header }}
 <div id="coursereport" class="nav-tabs-horizontal" data-plugin="tabs">
-    <div class="pro-feature-warning">
+    <div class="pro-feature-warning d-none">
         <div class="warning-container">
             <div class="pr-4">
                 {{{warningicon}}}
@@ -92,3 +92,17 @@
         </div>
     </div>
 </div>
+{{#js}}
+require(['jquery'], function($) {
+    $(document).ready(function() {
+        $('#coursereport .nav-tabs .nav-item').on('shown.bs.tab', function (e) {
+            var target = $(e.target).attr("href");
+            if (target == '#progress') {
+                $('#coursereport .pro-feature-warning').addClass('d-none');
+            } else if (target == '#engagement') {
+                $('#coursereport .pro-feature-warning').removeClass('d-none');
+            }
+        });
+    });
+});
+{{/js}}
