@@ -362,17 +362,17 @@ class block_base {
      */
     public function get_block_download_links() {
         return [[
-            'name' => 'csv',
-            'label' => get_string('exporttocsv', 'local_edwiserreports'),
-            'type' => 'submit'
-        ], [
-            'name' => 'excel',
-            'label' => get_string('exporttoexcel', 'local_edwiserreports'),
-            'type' => 'submit'
-        ], [
             'name' => 'pdf',
             'label' => get_string('exporttopdf', 'local_edwiserreports'),
             'type' => 'submit'
+        ], [
+            'name' => 'csv',
+            'label' => get_string('exporttocsv', 'local_edwiserreports'),
+            'type' => 'button'
+        ], [
+            'name' => 'excel',
+            'label' => get_string('exporttoexcel', 'local_edwiserreports'),
+            'type' => 'button'
         ], [
             'name' => 'email',
             'label' => get_string('sendoveremail', 'local_edwiserreports'),

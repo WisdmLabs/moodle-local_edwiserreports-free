@@ -315,12 +315,28 @@ function local_edwiserreports_output_fragment_get_blockscap_form($block) {
  * @param array $block Fragment parameter data object
  * @return string
  */
+function local_edwiserreports_output_fragment_export_data_warning($args) {
+    global $OUTPUT;
+    $warning = clean_param($args["warning"], PARAM_RAW);
+    $data = [
+        'warningicon' => \local_edwiserreports\utility::image_icon('warning'),
+        'warning' => get_string($warning, 'local_edwiserreports')
+    ];
+    return $OUTPUT->render_from_template('local_edwiserreports/exportwarning', $data);
+}
+
+/**
+ * Fragment to generate email tabs
+ * @param array $block Fragment parameter data object
+ * @return string
+ */
 function local_edwiserreports_output_fragment_email_schedule_tabs($args) {
     global $OUTPUT;
     $response = null;
     $data = clean_param($args["data"], PARAM_RAW);
     $data = json_decode($data, true);
     $data['searchicon'] = \local_edwiserreports\utility::image_icon('actions/search');
+    $data['warningicon'] = \local_edwiserreports\utility::image_icon('warning');
     $data['placeholder'] = get_string('search');
     $data['length'] = [10, 25, 50, 100];
     return $OUTPUT->render_from_template('local_edwiserreports/email_schedule_tabs', $data);

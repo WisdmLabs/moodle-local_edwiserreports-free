@@ -340,6 +340,7 @@ class coursereport_renderable implements renderable, templatable {
         $output->searchicon = \local_edwiserreports\utility::image_icon('actions/search');
         $output->placeholder = get_string('searchcourse', 'local_edwiserreports');
         $output->length = [10, 25, 50, 100];
+        $output->warningicon = \local_edwiserreports\utility::image_icon('warning');
 
         return $output;
     }
@@ -427,56 +428,6 @@ class completion_renderable implements renderable, templatable {
 
         // Add export icons to export array.
         $output->completionexport = \local_edwiserreports\utility::get_export_icons($output->completionexport);
-
-        $output->searchicon = \local_edwiserreports\utility::image_icon('actions/search');
-        $output->placeholder = get_string('searchuser', 'local_edwiserreports');
-        $output->length = [10, 25, 50, 100];
-
-        return $output;
-    }
-}
-
-/**
- * Student engagement renderables.
- */
-class studentengagement_renderable implements renderable, templatable {
-    /**
-     * Function to export the renderer data in a format that is suitable for a
-     * edit mustache template.
-     *
-     * @param renderer_base $output Used to do a final render of any components that need to be rendered for export.
-     * @return stdClass|array
-     */
-    public function export_for_template(renderer_base $output) {
-        global $USER, $COURSE, $CFG;
-
-        $output = new stdClass();
-        $studentengagement = new \local_edwiserreports\studentengagement();
-
-        $authentication = new authentication();
-
-        $output->secret = $authentication->get_secret_key($USER->id);
-
-        $output->courses = $studentengagement->get_studentengagement_filter();
-
-        // Fetch cohort filters.
-        if ($cohortfilters = local_edwiserreports_get_cohort_filter()) {
-            $output->cohortfilters = $cohortfilters;
-        }
-
-        $output->studentengagementexport = array(
-            "id" => "studentengagement",
-            "region" => "report",
-            "downloadurl" => $CFG->wwwroot . "/local/edwiserreports/download.php",
-            "filter" => "0-0"
-        );
-
-        // Add export icons to export array.
-        $output->studentengagementexport = \local_edwiserreports\utility::get_export_icons($output->studentengagementexport);
-
-        $output->pageheader = get_string('studentengagementreportheader', 'local_edwiserreports');
-
-        $output->backurl = $CFG->wwwroot."/local/edwiserreports/index.php";
 
         $output->searchicon = \local_edwiserreports\utility::image_icon('actions/search');
         $output->placeholder = get_string('searchuser', 'local_edwiserreports');

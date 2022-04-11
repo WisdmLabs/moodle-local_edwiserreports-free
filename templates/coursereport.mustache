@@ -30,6 +30,16 @@
 }}
 {{> local_edwiserreports/report-page-header }}
 <div id="coursereport" class="nav-tabs-horizontal" data-plugin="tabs">
+    <div class="pro-feature-warning">
+        <div class="warning-container">
+            <div class="pr-4">
+                {{{warningicon}}}
+            </div>
+            <div class="text-left">
+                {{#str}} courseengagementprowarning, local_edwiserreports {{/str}}
+            </div>
+        </div>
+    </div>
     <div id="wdm-userfilter" class="h-auto my-10">
         <div class="row">
             <div class="filters col-12 d-flex mb-1">

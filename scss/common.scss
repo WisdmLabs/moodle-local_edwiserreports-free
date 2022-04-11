@@ -150,6 +150,38 @@ tr[aria-expanded="true"] {
     }
 }
 
+.export-notice-modal {
+    max-width: 700px;
+    .modal-body {
+        padding: 3rem 1rem;
+    }
+    .pro-feature-warning {
+        width: 85%;
+    }
+    .export-notice {
+        div {
+            display: inline-block;
+        }
+        .notice-text {
+            font-weight: 500;
+            vertical-align: sub;
+        }
+    }
+}
+
+.pro-feature-warning {
+    padding: 2rem;
+    border-radius: 5px;
+    background: #FFD21E33;
+    border: 1px solid #FFD21E;
+    margin: auto;
+    width: 80%;
+    .warning-container {
+        display: flex;
+        align-items: center;
+    }
+}
+
 #page-local-edwiserreports-index {
     .comparisontable {
         width: 100%;

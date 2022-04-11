@@ -300,6 +300,41 @@ tr[aria-expanded="true"] .accordion-arrow.icon {
     display: none;
 }
 
+.export-notice-modal {
+    max-width: 700px;
+}
+
+.export-notice-modal .modal-body {
+    padding: 3rem 1rem;
+}
+
+.export-notice-modal .pro-feature-warning {
+    width: 85%;
+}
+
+.export-notice-modal .export-notice div {
+    display: inline-block;
+}
+
+.export-notice-modal .export-notice .notice-text {
+    font-weight: 500;
+    vertical-align: sub;
+}
+
+.pro-feature-warning {
+    padding: 2rem;
+    border-radius: 5px;
+    background: #FFD21E33;
+    border: 1px solid #FFD21E;
+    margin: auto;
+    width: 80%;
+}
+
+.pro-feature-warning .warning-container {
+    display: flex;
+    align-items: center;
+}
+
 #page-local-edwiserreports-index .comparisontable {
     width: 100%;
 }

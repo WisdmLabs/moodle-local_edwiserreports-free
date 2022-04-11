@@ -137,7 +137,49 @@ define([
 
     $(document).ready(function() {
         var exportPdf = '.download-links button[value="pdf"]';
+        var exportCsv = '.download-links button[value="csv"][type="button"]';
+        var exportExcel = '.download-links button[value="excel"][type="button"]';
         var scheduledEmailDropdown = '.download-links button[value="email"]';
+
+        // Show pro feature warning for Excel and CSV export.
+        $(document).on('click', [exportCsv, exportExcel].join(', '), function() {
+            var $this = $(this);
+            ModalFactory.create({
+                    title: '',
+                    type: ModalFactory.types.default,
+                    body: Fragment.loadFragment(
+                        'local_edwiserreports',
+                        'export_data_warning',
+                        1, {
+                            warning: $this.val() == 'csv' ? 'csvprowarning' : 'excelprowarning'
+                        }
+                    ),
+                })
+                .done(function(modal) {
+                    var root = modal.getRoot();
+                    root.find('.modal-header').addClass('d-none');
+                    root.find('.modal-dialog').addClass('export-notice-modal');
+
+                    root.on(ModalEvents.hidden, function() {
+                        modal.destroy();
+                    });
+
+                    root.on('click', '[data-action="download"]', function() {
+                        // Following is my dirty hack to handle warning and downloading report using same button.
+
+                        // Change button to type submit to download report.
+                        $this.attr('type', 'submit');
+
+                        // Simulate click to start downloading report.
+                        $this.click();
+
+                        // Change button to type to button to show this warning again.
+                        $this.attr('type', 'button');
+                        modal.hide();
+                    });
+                    modal.show();
+                });
+        });
 
         // Validating schedule email form fields.
         $(document).on('input', '[name="esrname"], [name="esrrecepient"], [name="esrsubject"]', function() {
