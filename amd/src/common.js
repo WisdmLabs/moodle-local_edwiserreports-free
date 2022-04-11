@@ -905,11 +905,12 @@ define([
                 })
             }
         }).done(function(response) {
+            let switchElement = root.find('.esr-manage-scheduled-emails .esr-switch[data-id="' + data.id + '"]');
             response = JSON.parse(response);
-            if (root.find('#esr-toggle-timespentonsiteblock-block-' + id).attr('data-value') == "0") {
-                root.find('#esr-toggle-timespentonsiteblock-block-' + id).attr('data-value', 'on');
+            if (switchElement.attr('data-value') == "0") {
+                switchElement.attr('data-value', 'on');
             } else {
-                root.find('#esr-toggle-timespentonsiteblock-block-' + id).attr('data-value', '0');
+                switchElement.attr('data-value', '0');
             }
             if (!response.error) {
                 errorBox.html(response.successmsg);
@@ -920,6 +921,7 @@ define([
                 errorBox.show();
                 errorBox.delay(3000).fadeOut('slow');
             }
+
         });
     }
 
