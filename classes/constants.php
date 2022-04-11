@@ -87,4 +87,4 @@ define('LOCAL_EDWISERREPORTS_COLOR_THEMES', [
     ['#ED553B', '#20639B', '#92CD53', '#222222', '#888888']
 ]);
 
-define('UPGRADE_URL', 'https://edwiser.org/reports/#pricing');
+define('UPGRADE_URL', 'https://bit.ly/3rJ9l24');
