@@ -282,7 +282,7 @@ class export {
         if (!$subject && $subject == '') {
             $subject = get_string($this->blockname . "exportheader", "local_edwiserreports");
         }
-
+        $status = false;
         // Send emails foreach email ids.
         if ($emailids && $emailids !== '') {
             // Process in background and dont show message in console.
@@ -294,7 +294,7 @@ class export {
                     $recuser->email = trim($emailid);
 
                     // Send email to user.
-                    email_to_user(
+                    $status &= email_to_user(
                         $recuser,
                         $senduser,
                         $subject,
@@ -307,6 +307,8 @@ class export {
             }
             ob_end_clean();
 
+        }
+        if ($status) {
             // If failed then return error.
             $res = new stdClass();
             $res->error = false;
