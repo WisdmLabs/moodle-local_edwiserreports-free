@@ -95,6 +95,9 @@
 {{#js}}
 require(['jquery'], function($) {
     $(document).ready(function() {
+        if ($('#coursereport .nav-tabs .nav-item .nav-link.active').attr('href') == '#engagement') {
+            $('#coursereport .pro-feature-warning').removeClass('d-none');
+        }
         $('#coursereport .nav-tabs .nav-item').on('shown.bs.tab', function (e) {
             var target = $(e.target).attr("href");
             if (target == '#progress') {
