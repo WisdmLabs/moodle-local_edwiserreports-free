@@ -1,6 +1,23 @@
+v 1.2.0
+====================================================
+Tweak
+- Now Active Users block is Site Overview Status block
+- Warning on capability modal to show block for recommended users only.
+- Removed Block capabilities settings from Plugin settings page.
+
+Features
+- Dummy blocks to get overview of pro blocks
+- Completely redesigned UI.
+- Created common date selector for following block
+    - Site Overview Status
+- Added color themes for Dashboard and more details page
+
+Fix
+- Fixed Site Overview Status block's data calculation
+
+
 v 1.1.0
 ====================================================
-
 Features
 - New graph: Course activity status block which shows daily Assignment submission and activities completion.
 - New block: Grade block shows Student, Course, and Activity grade categories.
