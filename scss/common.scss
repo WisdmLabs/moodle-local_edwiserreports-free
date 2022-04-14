@@ -187,6 +187,9 @@ tr[aria-expanded="true"] {
         width: 100%;
     }
     .edwiserreports-header {
+        @media (min-width: 520px) {
+            display: flex;
+        }
         .filter-selector {
             position: relative;
             .dropdown-menu {
@@ -222,6 +225,11 @@ tr[aria-expanded="true"] {
 }
 
 #wdm-edwiserreports {
+    @media (max-width: 767px) {
+        & > [data-block], & > .col-12 {
+            padding: 0 !important;
+        }
+    }
     .blocksetting {
         z-index: 2;
     }

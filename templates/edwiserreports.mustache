@@ -29,12 +29,12 @@
     }
 }}
 {{{notice}}}
-<div class="edwiserreports-header position-relative d-flex mb-1 mx-4">
-    <div class="edwiserreport-title theme-1-color">
+<div class="edwiserreports-header position-relative mb-5 mx-4">
+    <div class="edwiserreport-title theme-1-color text-left">
         <h2 class="m-0">{{#str}} dashboard, local_edwiserreports {{/str}}</h2>
         <label class="h5 selected-period theme-1-bg text-white">{{#str}} lastweek, local_edwiserreports {{/str}}</label>
     </div>
-    <div class="ml-auto mr-1 filter-wrapper">
+    <div class="ml-auto filter-wrapper text-right mt-2">
         <h6 class="d-inline-block font-weight-600">
             {{#str}} showdatafor, local_edwiserreports {{/str}}
         </h6>
@@ -59,9 +59,9 @@
 {{# topinsights }}
     {{> local_edwiserreports/insights/insights }}
 {{/ topinsights }}
-<div id="wdm-edwiserreports" class="row m-1 d-none" data-editing="{{ editing }}">
+<div id="wdm-edwiserreports" class="row mx-0" data-editing="{{ editing }}">
     {{# canmanagecustomreports }}
-        <div class="col-12 mb-3">
+        <div class="col-12 mb-5">
             <a href="{{customreportseditlink}}" class="btn theme-primary-bg text-white pull-right">
                 <i class="icon fa fa-plus fa-fw " aria-hidden="true"></i>
                 {{#str}} createcustomreports, local_edwiserreports {{/str}}
@@ -206,7 +206,7 @@
         {{/iscustomblock}}
     {{/ blocks }}
     {{# canmanagecustomreports }}
-        <div class="col-12">
+        <div class="col-12 mb-5">
             <a href="{{customreportseditlink}}" class="btn theme-primary-bg text-white pull-right">
                 <i class="icon fa fa-plus fa-fw " aria-hidden="true"></i>
                 {{#str}} createcustomreports, local_edwiserreports {{/str}}

@@ -339,6 +339,12 @@ tr[aria-expanded="true"] .accordion-arrow.icon {
     width: 100%;
 }
 
+@media (min-width: 520px) {
+    #page-local-edwiserreports-index .edwiserreports-header {
+        display: flex;
+    }
+}
+
 #page-local-edwiserreports-index .edwiserreports-header .filter-selector {
     position: relative;
 }
@@ -384,6 +390,12 @@ tr[aria-expanded="true"] .accordion-arrow.icon {
 #page-local-edwiserreports-index .filter-wrapper {
     width: fit-content;
     z-index: 1;
+}
+
+@media (max-width: 767px) {
+    #wdm-edwiserreports > [data-block], #wdm-edwiserreports > .col-12 {
+        padding: 0 !important;
+    }
 }
 
 #wdm-edwiserreports .blocksetting {
@@ -1202,7 +1214,13 @@ tr[aria-expanded="true"] .accordion-arrow.icon {
     display: none;
 }
 
-.reports-filter-body .select2-selection--single {
+.reports-filter-body .select2-container {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.reports-filter-body .select2-selection--single,
+.reports-filter-body .select2-selection--multiple {
     height: 100% !important;
 }
 
@@ -1535,7 +1553,23 @@ table.dataTable td.dataTables_empty {
 }
 
 .top-insights .row {
-    margin: 0 -2.2rem;
+    margin: 0 -0.5rem;
+}
+
+@media (min-width: 768px) and (max-width: 1199px) {
+    .top-insights .row {
+        margin: 0 -0.3rem;
+    }
+}
+
+@media (max-width: 767px) {
+    .top-insights .row {
+        margin: 0;
+    }
+}
+
+.top-insights.editing .insight {
+    margin-top: 2.428rem;
 }
 
 .top-insights.editing .insight .card-editing .fa {
@@ -1563,8 +1597,10 @@ table.dataTable td.dataTables_empty {
     display: none;
 }
 
-.top-insights .insight {
-    padding: 2.5rem;
+@media (max-width: 767px) {
+    .top-insights .insight {
+        padding: 0;
+    }
 }
 
 .top-insights .insight:first-child {

@@ -3,10 +3,17 @@
 .top-insights {
     width: 99%;
     .row {
-        margin: 0 -2.2rem;
+        margin: 0 -0.5rem;
+        @media (min-width: 768px) and (max-width: 1199px) {
+            margin: 0 -0.3rem;
+        }
+        @media (max-width: 767px) {
+            margin: 0;
+        }
     }
     &.editing {
         .insight {
+            margin-top: 2.428rem;
             .card-editing {
                 .fa {
                     transition: all 0.3s ease-in-out;
@@ -38,7 +45,9 @@
         }
     }
     .insight {
-        padding: 2.5rem;
+        @media (max-width: 767px) {
+            padding: 0;
+        }
         &:first-child {
             margin-left: auto;
         }

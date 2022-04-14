@@ -31,7 +31,12 @@
 }
 
 .reports-filter-body {
-    .select2-selection--single {
+    .select2-container {
+        width: 100% !important;
+        height: 100% !important;
+    }
+    .select2-selection--single,
+    .select2-selection--multiple {
         height: 100% !important;
     }
     .select2-selection__rendered {
