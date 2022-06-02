@@ -436,6 +436,10 @@ function local_edwiserreports_output_fragment_block_overview_display($capvalue, 
     return $warning . $output;
 }
 
+function local_edwiserreports_extends_navigation(global_navigation $nav) {
+    local_edwiserreports_extend_navigation($nav);
+}
+
 /**
  * Adding learning program link in sidebar
  * @param navigation_node $nav navigation node
@@ -454,17 +458,26 @@ function local_edwiserreports_extend_navigation(navigation_node $nav) {
     $PAGE->requires->js_call_amd('local_edwiserreports/install', 'init');
 
     if ($hasblocks) {
-        $icon = new pix_icon('i/stats', '');
+        if ($CFG->branch < 400) {
+            $icon = new pix_icon('i/stats', '');
 
-        $node = $nav->add(
-            get_string('reportsandanalytics', 'local_edwiserreports'),
-            new moodle_url($CFG->wwwroot . '/local/edwiserreports/index.php'),
-            navigation_node::TYPE_CUSTOM,
-            'reportsandanalytics',
-            'reportsandanalytics',
-            $icon
-        );
-        $node->showinflatnavigation = true;
+            $node = $nav->add(
+                get_string('reportsandanalytics', 'local_edwiserreports'),
+                new moodle_url($CFG->wwwroot . '/local/edwiserreports/index.php'),
+                navigation_node::TYPE_CUSTOM,
+                'reportsandanalytics',
+                'reportsandanalytics',
+                $icon
+            );
+            $node->showinflatnavigation = true;
+        } else {
+            $nodes = explode("\n", $CFG->custommenuitems);
+            $node = get_string('reportsandanalytics', 'local_edwiserreports');
+            $node .= "|";
+            $node .= "/local/edwiserreports/index.php";
+            array_unshift($nodes, $node);
+            $CFG->custommenuitems = implode("\n", $nodes);
+        }
     }
 
     // If url is not set.
@@ -481,17 +494,29 @@ function local_edwiserreports_extend_navigation(navigation_node $nav) {
         return;
     }
 
-    $icon = new pix_icon('i/report', '');
+    if ($CFG->branch < 400) {
+        $icon = new pix_icon('i/report', '');
 
-    $node = $nav->add(
-        get_string('completionreports', 'local_edwiserreports'),
-        new moodle_url($CFG->wwwroot . '/local/edwiserreports/completion.php', array('courseid' => $COURSE->id)),
-        navigation_node::TYPE_CUSTOM,
-        'completionreports',
-        'completionreports',
-        $icon
-    );
-    $node->showinflatnavigation = true;
+        $node = $nav->add(
+            get_string('completionreports', 'local_edwiserreports'),
+            new moodle_url($CFG->wwwroot . '/local/edwiserreports/completion.php', array('courseid' => $COURSE->id)),
+            navigation_node::TYPE_CUSTOM,
+            'completionreports',
+            'completionreports',
+            $icon
+        );
+        $node->showinflatnavigation = true;
+    } else {
+        $nodes = explode("\n", $CFG->custommenuitems);
+        $pluginnode = array_shift($nodes);
+        $node = get_string('completionreports', 'local_edwiserreports');
+        $node .= "|";
+        $node .= '/local/edwiserreports/completion.php?courseid=' . $COURSE->id;
+        array_unshift($nodes, $node);
+        array_unshift($nodes, $pluginnode);
+        $CFG->custommenuitems = implode("\n", $nodes);
+
+    }
 }
 
 /**
