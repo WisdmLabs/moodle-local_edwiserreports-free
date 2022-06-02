@@ -49,10 +49,10 @@ class courseprogressblock extends block_base {
         $courseid = isset($params->courseid) ? $params->courseid : false;
         $cohortid = isset($params->cohortid) ? $params->cohortid : false;
 
-        if (isset($params->returncompleted) && $params->returncompleted == true) {
-            $returncompleted = true;
+        if (isset($params->tabledata) && $params->tabledata == true) {
+            $tabledata = true;
         } else {
-            $returncompleted = false;
+            $tabledata = false;
         }
 
         // Make cache for courseprogress block.
@@ -74,7 +74,7 @@ class courseprogressblock extends block_base {
                 $course,
                 $enrolledstudents,
                 $cohortid,
-                $returncompleted
+                $tabledata
             );
             $response->data = $progress;
             $response->average = $average;
@@ -158,10 +158,9 @@ class courseprogressblock extends block_base {
      * (0%, 20%, 40%, 60%, 80%, 100%)
      * @param  object $course   Course Object
      * @param  array  $users    Users Object
-     * @param  int    $cohortid Cohort id
      * @return array            Array of completion with percentage
      */
-    public function get_completion_with_percentage($course, $users, $cohortid, $returncompleted = false) {
+    public function get_completion_with_percentage($course, $users, $tabledata = false) {
         $completions = \local_edwiserreports\utility::get_course_completion($course->id);
 
         // Default grade scores.
@@ -178,13 +177,6 @@ class courseprogressblock extends block_base {
         $count = 0;
         foreach ($users as $user) {
             $count++;
-            /* If cohort filter is there then get only users from cohort */
-            if ($cohortid) {
-                $cohorts = cohort_get_user_cohorts($user->id);
-                if (!array_key_exists($cohortid, $cohorts)) {
-                    continue;
-                }
-            }
             // If not set the completion then this user is not completed.
             if (!isset($completions[$user->id])) {
                 $completedusers['0% - 20%']++;
@@ -213,7 +205,7 @@ class courseprogressblock extends block_base {
                 }
             }
         }
-        if ($returncompleted) {
+        if ($tabledata) {
             $completedusers['completed'] = $completed;
         }
         return [array_values($completedusers), $total == 0 ? 0 : $total / $count];
@@ -258,8 +250,10 @@ class courseprogressblock extends block_base {
      * @return array           Object of course list
      */
     public function get_courselist($cohortid) {
-        global $CFG;
-        $courses = \local_edwiserreports\utility::get_courses(true);
+        global $COURSE, $CFG;
+
+        $courses = $this->get_courses_of_user();
+        unset($courses[$COURSE->id]);
 
         $response = array();
         foreach ($courses as $course) {
@@ -284,7 +278,11 @@ class courseprogressblock extends block_base {
             );
 
             // Get only enrolled student.
-            $enrolledstudents = \local_edwiserreports\utility::get_enrolled_students($course->id);
+            $enrolledstudents = \local_edwiserreports\utility::get_enrolled_students(
+                $course->id,
+                false,
+                $cohortid
+            );
             if (!count($enrolledstudents) && !is_siteadmin()) {
                 continue;
             }
@@ -293,17 +291,7 @@ class courseprogressblock extends block_base {
             $completions = $compobj->get_course_completions($course->id);
 
             // For each enrolled student get completions.
-            foreach ($enrolledstudents as $key => $user) {
-                // If cohort filter in there then remove the users
-                // who is not belongs to the cohort.
-                if ($cohortid) {
-                    $cohorts = cohort_get_user_cohorts($user->id);
-                    if (!array_key_exists($cohortid, $cohorts)) {
-                        unset($enrolledstudents[$key]);
-                        continue;
-                    }
-                }
-
+            foreach ($enrolledstudents as $user) {
                 // Generate $key to save completion in an array.
                 if (!isset($completions[$user->id])) {
                     // Completed 0% of course.
@@ -473,35 +461,32 @@ class courseprogressblock extends block_base {
      * @return array           Users Data Array
      */
     public static function get_userslist($courseid, $minval, $maxval, $cohortid) {
-        $course = get_course($courseid);
-        $enrolledstudents = \local_edwiserreports\utility::get_enrolled_students($course->id);
+        global $DB;
+
+        $enrolledstudents = \local_edwiserreports\utility::get_enrolled_students(
+            $courseid,
+            false,
+            $cohortid
+        );
 
         // Get completions.
-        $compobj = new \local_edwiserreports\completions();
-        $completions = $compobj->get_course_completions($course->id);
+        $completions = $DB->get_records_sql(
+            'SELECT userid, progress as completion, completiontime
+               FROM {edwreports_course_progress}
+              WHERE courseid = :courseid
+                AND progress >= :minval
+                AND progress <= :maxval',
+            array(
+                'courseid' => $courseid,
+                'minval' => $minval,
+                'maxval' => $maxval
+            )
+        );
 
         $usersdata = array();
         foreach ($enrolledstudents as $enrolleduser) {
-            /* If cohort filter is there then get only users from cohort */
-            if ($cohortid) {
-                $cohorts = cohort_get_user_cohorts($enrolleduser->id);
-                if (!array_key_exists($cohortid, $cohorts)) {
-                    continue;
-                }
-            }
 
-            // If Completion table dont have entries then
-            // set progress as zero.
-            if (!isset($completions[$enrolleduser->id])) {
-                $progress = 0;
-            } else {
-                $progress = $completions[$enrolleduser->id]->completion;
-            }
-
-            // If progress between the min and max value.
-            if (($progress >= $minval && $progress < $maxval) ||
-                ($progress == 100 && $maxval == 100 && $minval == 100) ||
-                ($maxval == 100 && $minval == -1)) {
+            if (isset($completions[$enrolleduser->id])) {
                 $user = core_user::get_user($enrolleduser->id);
                 $usersdata[] = array(
                     fullname($user),
@@ -522,7 +507,7 @@ class courseprogressblock extends block_base {
         $export = array();
         $export[] = self::get_header();
         $course = get_course($filter);
-        $enrolledstudents = \local_edwiserreports\utility::get_enrolled_students($filter);
+        $enrolledstudents = \local_edwiserreports\utility::get_enrolled_students($course->id, false);
         foreach ($enrolledstudents as $student) {
             $completion = \local_edwiserreports\utility::get_course_completion_info($course, $student->id);
             $completed = $completion["completedactivities"] . "/" . $completion["totalactivities"];
@@ -540,34 +525,26 @@ class courseprogressblock extends block_base {
 
     /**
      * Get Exportable data for Active Users Page
-     * @param  string $filter Filter to get data from specific range
      * @return array          Array of exportable data
      */
-    public static function get_exportable_data_report($filter) {
+    public static function get_exportable_data_report() {
+        global $COURSE;
+
         $cohortid = optional_param("cohortid", 0, PARAM_INT);
         $export = array();
         $export[] = self::get_header_report();
 
-        $courses = \local_edwiserreports\utility::get_courses();
-
-        foreach ($courses as $key => $course) {
+        $blockobj = new self();
+        $courses = $blockobj->get_courses_of_user();
+        unset($courses[$COURSE->id]);
+        $params = (object) array(
+            'cohortid' => $cohortid
+        );
+        foreach ($courses as $course) {
             $blockobj = new self();
-
-            $params = (object) array(
-                'courseid' => $course->id,
-                'cohortid' => $cohortid,
-                'returncompleted' => true
-            );
+            $params->courseid = $course->id;
             $courseprogress = $blockobj->get_data($params);
-            $enrolledstudents = \local_edwiserreports\utility::get_enrolled_students($course->id);
-            if ($cohortid) {
-                foreach ($enrolledstudents as $key => $user) {
-                    $cohorts = cohort_get_user_cohorts($user->id);
-                    if (!array_key_exists($cohortid, $cohorts)) {
-                        unset($enrolledstudents[$key]);
-                    }
-                }
-            }
+            $enrolledstudents = \local_edwiserreports\utility::get_enrolled_students($course->id, false, $cohortid);
 
             $export[] = array_merge(
                 array(

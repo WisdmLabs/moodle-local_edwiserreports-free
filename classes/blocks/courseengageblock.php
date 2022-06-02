@@ -62,7 +62,6 @@ class courseengageblock extends utility {
         $engagedata = array();
         $courses = self::get_courses(true);
         $params = array();
-        $sqlcohort = "";
         $cohortjoin = '';
         $cohortcondition = '';
         if ($cohortid) {
@@ -153,16 +152,7 @@ class courseengageblock extends utility {
         $engagement = new stdClass();
 
         // Get only enrolled students.
-        $enrolledstudents = \local_edwiserreports\utility::get_enrolled_students($course->id);
-        /* If cohort filter is there then select only cohort users */
-        if ($cohortid) {
-            foreach ($enrolledstudents as $key => $user) {
-                $cohorts = cohort_get_user_cohorts($user->id);
-                if (!array_key_exists($cohortid, $cohorts)) {
-                    unset($enrolledstudents[$key]);
-                }
-            }
-        }
+        $enrolledstudents = \local_edwiserreports\utility::get_enrolled_students($course->id, false, $cohortid);
 
         // Generate course url.
         $courseurl = new moodle_url($CFG->wwwroot . "/course/view.php", array("id" => $course->id));
@@ -181,7 +171,7 @@ class courseengageblock extends utility {
         $engagement->visited = self::get_course_engagement_link(
             "visited",
             $course,
-            count(self::get_course_visites($course->id, $cohortid))
+            self::get_course_visites($course->id, $cohortid, true)
         );
 
         // Generate activity started link.
@@ -291,13 +281,65 @@ class courseengageblock extends utility {
     }
 
     /**
+     * Get Users who visited the Course
+     * @param  Integer $courseid Course ID to get all visits
+     * @param  Integer $cohortid Cohort id
+     * @param  Bool    $count    If count is true then return count of users
+     * @return Array             Array of Users ID who visited the course
+     */
+    public static function get_course_visites($courseid, $cohortid, $count = false) {
+        global $DB;
+
+        $params = array(
+            "courseid" => $courseid,
+            "action" => "viewed",
+            "archetype" => "student",
+            "contextlevel" => CONTEXT_COURSE
+        );
+
+        $cohortsql = "";
+        if ($cohortid) {
+            $params["cohortid"] = $cohortid;
+            $cohortsql = "JOIN {cohort_members} cm ON l.userid = cm.userid AND cm.cohortid = :cohortid
+                          JOIN {cohort} c ON cm.cohortid = c.id AND c.visible = 1";
+        }
+
+        $select = "";
+        $groupby = "";
+        if ($count == true) {
+            $select = "COUNT(l.userid) AS usercount";
+        } else {
+            $select = "u.id, u.firstname, u.lastname, u.email, COUNT(l.userid) AS visits";
+            $groupby = "GROUP BY u.id, u.firstname, u.lastname, u.email";
+        }
+
+        $sql = "SELECT $select
+            FROM {logstore_standard_log} l
+            JOIN {user} u ON u.id = l.userid
+            $cohortsql
+            JOIN {context} ctx ON l.courseid = ctx.instanceid AND ctx.contextlevel = :contextlevel
+            JOIN {role_assignments} ra ON u.id = ra.userid AND ctx.id = ra.contextid
+            JOIN {role} r ON ra.roleid = r.id
+            WHERE l.action = :action
+            AND l.courseid = :courseid
+            AND u.deleted = 0
+            AND r.archetype = :archetype
+            $groupby";
+        if ($count == true) {
+            return $DB->get_record_sql($sql, $params)->usercount;
+        } else {
+            return $DB->get_records_sql($sql, $params);
+        }
+    }
+
+    /**
      * Get Enrolled users in a course
      * @param  object $course   Course Object
      * @param  object $cohortid Cohort id
      * @return array            Array of users list
      */
     public static function get_enrolled_users($course, $cohortid) {
-        $users = \local_edwiserreports\utility::get_enrolled_students($course->id);
+        $users = \local_edwiserreports\utility::get_enrolled_students($course->id, false, $cohortid);
 
         $usersdata = new stdClass();
         $usersdata->head = array(
@@ -307,16 +349,8 @@ class courseengageblock extends utility {
 
         $usersdata->data = array();
         foreach ($users as $user) {
-            /* If cohort filter is there then get only users from cohort */
-            if ($cohortid) {
-                $cohorts = cohort_get_user_cohorts($user->id);
-                if (!array_key_exists($cohortid, $cohorts)) {
-                    continue;
-                }
-            }
-
             $usersdata->data[] = array(
-                fullname($user),
+                $user->firstname . " " . $user->lastname,
                 $user->email,
             );
         }
@@ -334,26 +368,38 @@ class courseengageblock extends utility {
         $usersdata = new stdClass();
         $usersdata->head = array(
             get_string("name", "local_edwiserreports"),
-            get_string("email", "local_edwiserreports")
+            get_string("email", "local_edwiserreports"),
+            get_string("visits", "local_edwiserreports")
         );
 
         $usersdata->data = array();
         foreach ($users as $user) {
-            /* If cohort filter is there then get only users from cohort */
-            if ($cohortid) {
-                $cohorts = cohort_get_user_cohorts($user->id);
-                if (!array_key_exists($cohortid, $cohorts)) {
-                    continue;
-                }
-            }
-
-            $user = core_user::get_user($user->userid);
             $usersdata->data[] = array(
-                fullname($user),
+                $user->firstname . ' ' . $user->lastname,
                 $user->email,
+                $user->visits
             );
         }
         return $usersdata;
+    }
+
+    /**
+     * Get Users Who have complted atleast one activity in a course
+     * @param  Object $course   Course
+     * @param  Array  $users    Enrolled Users
+     * @return Array            Array of Users ID who have completed a activity
+     */
+    public static function users_completed_a_module($course, $users) {
+        $records = array();
+
+        foreach ($users as $user) {
+            $completion = self::get_course_completion_info($course, $user->id);
+            if ($completion["completedactivities"] > 0) {
+                $records[] = $user;
+            }
+        }
+
+        return $records;
     }
 
     /**
@@ -363,8 +409,8 @@ class courseengageblock extends utility {
      * @return array            Array of users list
      */
     public static function get_users_started_an_activity($course, $cohortid) {
-        $enrolledusers = \local_edwiserreports\utility::get_enrolled_students($course->id);
-        $users = self::users_completed_a_module($course, $enrolledusers, $cohortid);
+        $enrolledusers = \local_edwiserreports\utility::get_enrolled_students($course->id, false, $cohortid);
+        $users = self::users_completed_a_module($course, $enrolledusers);
         $usersdata = new stdClass();
         $usersdata->head = array(
             get_string("name", "local_edwiserreports"),
@@ -373,17 +419,9 @@ class courseengageblock extends utility {
 
         $usersdata->data = array();
         foreach ($users as $user) {
-            /* If cohort filter is there then get only users from cohort */
-            if ($cohortid) {
-                $cohorts = cohort_get_user_cohorts($user->id);
-                if (!array_key_exists($cohortid, $cohorts)) {
-                    continue;
-                }
-            }
-
             $usersdata->data[] = array(
-                fullname($user),
-                $user->email,
+                $user->firstname . ' ' . $user->lastname,
+                $user->email
             );
         }
         return $usersdata;
@@ -396,7 +434,7 @@ class courseengageblock extends utility {
      * @return array            Array of users list
      */
     public static function get_users_completed_half_courses($course, $cohortid) {
-        $enrolledusers = \local_edwiserreports\utility::get_enrolled_students($course->id);
+        $enrolledusers = \local_edwiserreports\utility::get_enrolled_students($course->id, false, $cohortid);
 
         // Get completions.
         $compobj = new \local_edwiserreports\completions();
@@ -410,18 +448,10 @@ class courseengageblock extends utility {
 
         $usersdata->data = array();
         foreach ($enrolledusers as $user) {
-            /* If cohort filter is there then get only users from cohort */
-            if ($cohortid) {
-                $cohorts = cohort_get_user_cohorts($user->id);
-                if (!array_key_exists($cohortid, $cohorts)) {
-                    continue;
-                }
-            }
-
             $progress = isset($completions[$user->id]->completion) ? $completions[$user->id]->completion : 0;
             if ($progress >= 50 && $progress < 100) {
                 $usersdata->data[] = array(
-                    fullname($user),
+                    $user->firstname . ' ' . $user->lastname,
                     $user->email,
                 );
             }
@@ -436,7 +466,7 @@ class courseengageblock extends utility {
      * @return array            Array of users list
      */
     public static function get_users_completed_courses($course, $cohortid) {
-        $enrolledusers = \local_edwiserreports\utility::get_enrolled_students($course->id);
+        $enrolledusers = \local_edwiserreports\utility::get_enrolled_students($course->id, false, $cohortid);
 
         // Get completions.
         $compobj = new \local_edwiserreports\completions();
@@ -450,18 +480,10 @@ class courseengageblock extends utility {
 
         $usersdata->data = array();
         foreach ($enrolledusers as $user) {
-            /* If cohort filter is there then get only users from cohort */
-            if ($cohortid) {
-                $cohorts = cohort_get_user_cohorts($user->id);
-                if (!array_key_exists($cohortid, $cohorts)) {
-                    continue;
-                }
-            }
-
             $progress = isset($completions[$user->id]->completion) ? $completions[$user->id]->completion : 0;
             if ($progress == 100) {
                 $usersdata->data[] = array(
-                    fullname($user),
+                    $user->firstname . ' ' . $user->lastname,
                     $user->email,
                 );
             }

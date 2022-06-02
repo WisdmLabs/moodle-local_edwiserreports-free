@@ -223,18 +223,6 @@ class utility {
         return $grade->get_graph_data($data->filter);
     }
 
-    /**
-     * Get learner table data.
-     *
-     * @param Object $data Data object
-     *
-     * @return Object
-     */
-    public static function get_grade_table_data($data) {
-        $grade = new \local_edwiserreports\gradeblock();
-        return $grade->get_table_data($data->filter);
-    }
-
     /** Generate Course Filter for course progress block
      * @param  Bool  $all Get course with no enrolment as well
      * @return Array      Array of courses
@@ -384,38 +372,6 @@ class utility {
     }
 
     /**
-     * Get Course Completion Time For Users
-     * @param  Integer $courseid Course Id
-     * @param  Integer $userid   User Id
-     * @return Integer           Completion Time
-     */
-    public static function get_time_completion($courseid = false, $userid = false) {
-        global $COURSE, $DB, $USER;
-
-        if (!$courseid) {
-            $courseid = $COURSE->id;
-        }
-
-        if (!$userid) {
-            $userid = $USER->id;
-        }
-
-        $params = array(
-            "userid" => $userid,
-            "course" => $courseid
-        );
-        $completion = $DB->get_record("course_completions", $params);
-
-        // If completion then return time completed.
-        if ($completion && $completion->timecompleted) {
-            return $completion->timecompleted;
-        }
-
-        // If not completed then return false.
-        return null;
-    }
-
-    /**
      * Get Course Grade of a user
      * @param  Integer $courseid Course Id
      * @param  Integer $userid   User Id
@@ -429,7 +385,7 @@ class utility {
         }
 
         if (!$courseid) {
-            $coueseid = $COURSE->id;
+            $courseid = $COURSE->id;
         }
 
         // Please note that we must fetch all grade_grades fields if we want to construct grade_grade object from it!
@@ -444,144 +400,6 @@ class utility {
         $gradereport = $DB->get_record_sql($gradesql, $params);
 
         return $gradereport;
-    }
-
-    /**
-     * Get Users who visited the Course
-     * @param  Integer $courseid Course ID to get all visits
-     * @param  Integer $cohortid Cohort id
-     * @return Array             Array of Users ID who visited the course
-     */
-    public static function get_course_visites($courseid, $cohortid) {
-        global $DB;
-
-        $params = array(
-            "courseid" => $courseid,
-            "action" => "viewed"
-        );
-        if ($cohortid) {
-            $params["cohortid"] = $cohortid;
-            $sql = "SELECT DISTINCT l.userid
-                FROM {logstore_standard_log} l
-                JOIN {cohort_members} cm
-                ON l.userid = cm.userid
-                JOIN {user} u
-                ON u.id = l.userid
-                WHERE cm.cohortid = :cohortid
-                AND l.action = :action
-                AND l.courseid = :courseid
-                AND u.deleted = 0";
-        } else {
-            $sql = "SELECT DISTINCT l.userid
-                FROM {logstore_standard_log} l
-                JOIN {user} u
-                ON u.id = l.userid
-                WHERE l.action = :action
-                AND l.courseid = :courseid
-                AND u.deleted = 0";
-        }
-        $records = $DB->get_records_sql($sql, $params);
-        return $records;
-    }
-
-    /**
-     * Get Users Who have complted atleast one activity in a course
-     * @param  Object $course   Course
-     * @param  Array  $users    Enrolled Users
-     * @param  Int    $cohortid Cohort id
-     * @return Array            Array of Users ID who have completed a activity
-     */
-    public static function users_completed_a_module($course, $users, $cohortid) {
-        $records = array();
-
-        foreach ($users as $user) {
-            /* If cohort filter is there then get only users from cohort */
-            if ($cohortid) {
-                $cohorts = cohort_get_user_cohorts($user->id);
-                if (!array_key_exists($cohortid, $cohorts)) {
-                    continue;
-                }
-            }
-
-            $completion = self::get_course_completion_info($course, $user->id);
-            if ($completion["completedactivities"] > 0) {
-                $records[] = $user;
-            }
-        }
-
-        return $records;
-    }
-
-    /**
-     * Get Users Who have complted half activities in a course
-     * @param  Object $course   Course
-     * @param  Array  $users    Enrolled Users
-     * @param  Int    $cohortid Cohort id
-     * @return Array            Array of Users ID who have completed half activities
-     */
-    public static function users_completed_half_modules($course, $users, $cohortid) {
-        global $DB;
-
-        $records = array();
-        foreach ($users as $user) {
-            /* If cohort filter is there then get only users from cohort */
-            if ($cohortid) {
-                $cohorts = cohort_get_user_cohorts($user->id);
-                if (!array_key_exists($cohortid, $cohorts)) {
-                    continue;
-                }
-            }
-
-            $completionsql = "SELECT id, progress as completion
-                FROM {edwreports_course_progress}
-                WHERE userid = :userid
-                AND courseid = :courseid
-                AND progress
-                BETWEEN :completionstart
-                AND :completionend";
-
-            // Calculate 50% Completion Count for Courses.
-            $params = array(
-                "completionstart" => 50.00,
-                "completionend" => 99.99,
-                "courseid" => $course->id,
-                "userid" => $user->id
-            );
-            $completion = $DB->get_record_sql($completionsql, $params);
-
-            if ($completion && $completion->completion >= 50 && $completion->completion < 100) {
-                $records[] = $user;
-            }
-        }
-
-        return $records;
-    }
-
-    /**
-     * Get Users Who have complted all activities in a course
-     * @param  Object $course   Course
-     * @param  Array  $users    Enrolled Users
-     * @param  Int    $cohortid Cohort id
-     * @return Array            Array of Users ID who have completed all activities
-     */
-    public static function users_completed_all_module($course, $users, $cohortid) {
-        $records = array();
-        foreach ($users as $user) {
-            /* If cohort filter is there then get only users from cohort */
-            if ($cohortid) {
-                $cohorts = cohort_get_user_cohorts($user->id);
-                if (!array_key_exists($cohortid, $cohorts)) {
-                    continue;
-                }
-            }
-
-            $completion = self::get_course_completion_info($course, $user->id);
-            if ($completion["progresspercentage"] == 100) {
-                $records[] = $user;
-            }
-        }
-
-        return $records;
     }
 
     /**
@@ -1069,7 +887,7 @@ class utility {
      * Get all available modules for reports
      * @return Array Modules array
      */
-    public static function get_available_reports_modules () {
+    public static function get_available_reports_modules() {
         global $DB;
         $availablemod = array(
             'quiz'
@@ -1174,16 +992,42 @@ class utility {
      * Get enrolled students in course
      * @param  Integer     $courseid Course Id
      * @param  Object|Bool $context  Context
+     * @param  Integer     $cohortid Cohort Id
+     * @param  Integer     $groupid  Group Id
+     * @param  String      $fields   User table fields
      * @return Array                 Array of users
      */
-    public static function get_enrolled_students($courseid, $context = false) {
+    public static function get_enrolled_students($courseid, $context = false, $cohortid = 0, $groupid = 0, $fields = "u.*") {
+        global $DB;
         if (!$context) {
             // Get default course context.
             $context = context_course::instance($courseid);
         }
 
-        // Get only students from that course.
-        return get_enrolled_users($context, 'moodle/course:isincompletionreports');
+        list($esql, $params) = get_enrolled_sql(
+            $context,
+            'moodle/course:isincompletionreports',
+            $groupid,
+            false);
+
+        $cohortsql = "";
+        if ($cohortid) {
+            $params["cohortid"] = $cohortid;
+            $cohortsql = "JOIN {cohort_members} ctmr ON u.id = ctmr.userid AND ctmr.cohortid = :cohortid
+                            JOIN {cohort} cht ON ctmr.cohortid = cht.id AND cht.visible = 1";
+        }
+
+        $sql = "SELECT $fields
+                FROM {user} u
+                $cohortsql
+                JOIN ($esql) je ON je.id = u.id
+                WHERE u.deleted = 0";
+
+        list($sort, $sortparams) = users_order_by_sql('u');
+        $sql = "$sql ORDER BY $sort";
+        $params = array_merge($params, $sortparams);
+
+        return $DB->get_records_sql($sql, $params);
     }
 
     /**

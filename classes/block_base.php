@@ -229,7 +229,11 @@ class block_base {
      *
      * @return array
      */
-    public function get_courses_of_user($userid) {
+    public function get_courses_of_user($userid = null) {
+        global $USER;
+        if ($userid == null) {
+            $userid = $USER->id;
+        }
 
         // Admin or Manager.
         if (is_siteadmin($userid) || has_capability('moodle/site:configview', context_system::instance(), $userid)) {
