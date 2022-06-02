@@ -628,10 +628,10 @@ $string['availableinpro'] = 'Available in PRO<br>version';
 $string['upgradetopro'] = 'Upgrade to PRO';
 $string['okaygotit'] = 'Okay got it!';
 $string['imponotice'] = 'IMPORTANT NOTICE';
-$string['csvprowarning'] = '<strong>Export to CSV will no longer be available in version 1.2.1</strong> (Next update of Edwiser Reports FREE) as we are making code and feature level improvements to this feature. <br><strong>Please note:</strong> It will continue to be a part of Edwiser Reports PRO.';
-$string['excelprowarning'] = '<strong>Export to Excel will no longer be available in version 1.2.1</strong> (Next update of Edwiser Reports FREE) as we are making code and feature level improvements to this feature. <br><strong>Please note:</strong> It will continue to be a part of Edwiser Reports PRO.';
-$string['emailprowarning'] = '<strong>Email scheduling will no longer be available in version 1.2.1</strong> (Next update of Edwiser Reports FREE) as we are making code and feature level improvements to this feature. <br><strong>Please note:</strong> It will continue to be a part of Edwiser Reports PRO.';
-$string['courseengagementprowarning'] = '<strong>The course engagement Report will no longer be available in version 1.2.1 </strong> (Next update of Edwiser Reports FREE) as we are making code and feature level improvements to this feature. <br><strong>Please note: </strong> It will continue to be a part of Edwiser Reports PRO.';
+$string['csvprowarning'] = '<strong>Export to CSV will no longer be available in version 1.4.0</strong> (Next update of Edwiser Reports FREE) as we are making code and feature level improvements to this feature. <br><strong>Please note:</strong> It will continue to be a part of Edwiser Reports PRO.';
+$string['excelprowarning'] = '<strong>Export to Excel will no longer be available in version 1.4.0</strong> (Next update of Edwiser Reports FREE) as we are making code and feature level improvements to this feature. <br><strong>Please note:</strong> It will continue to be a part of Edwiser Reports PRO.';
+$string['emailprowarning'] = '<strong>Email scheduling will no longer be available in version 1.4.0</strong> (Next update of Edwiser Reports FREE) as we are making code and feature level improvements to this feature. <br><strong>Please note:</strong> It will continue to be a part of Edwiser Reports PRO.';
+$string['courseengagementprowarning'] = '<strong>The course engagement Report will no longer be available in version 1.4.0 </strong> (Next update of Edwiser Reports FREE) as we are making code and feature level improvements to this feature. <br><strong>Please note: </strong> It will continue to be a part of Edwiser Reports PRO.';
 
 $string['invalidsecretkey'] = 'Invalid secret key. Please logout and login again.';
 
