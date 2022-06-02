@@ -66,7 +66,7 @@ $PAGE->set_context($context);
 $PAGE->set_url($pageurl);
 
 // Set Page layout.
-$PAGE->set_pagelayout('standard');
+$PAGE->set_pagelayout('base');
 
 // Get renderable.
 $renderable = new \local_edwiserreports\output\custom_reports_block($reportsid);

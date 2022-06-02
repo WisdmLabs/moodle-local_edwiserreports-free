@@ -58,7 +58,7 @@ $PAGE->requires->css('/local/edwiserreports/styles/edwiserreports.min.css');
 $PAGE->set_context($context);
 
 // Set Page layout.
-$PAGE->set_pagelayout('standard');
+$PAGE->set_pagelayout('base');
 
 // Add theme class to body.
 $PAGE->add_body_classes(array('theme_' . $PAGE->theme->name));
