@@ -56,10 +56,11 @@ $PAGE->requires->css('/local/edwiserreports/styles/edwiserreports.min.css');
 $pageurl = new moodle_url($CFG->wwwroot . "/local/edwiserreports/completion.php", array("courseid" => $courseid));
 
 // Set page context.
-$PAGE->set_context($coursecontext);
+// Setting system context to hide course setting options.
+$PAGE->set_context(context_system::instance());
 
 // Set page layout.
-$PAGE->set_pagelayout('standard');
+$PAGE->set_pagelayout('base');
 
 // Add theme class to body.
 $PAGE->add_body_classes(array('theme_' . $PAGE->theme->name));
@@ -74,7 +75,7 @@ $PAGE->requires->js_call_amd('local_edwiserreports/completion', 'init', array($c
 $renderable = new \local_edwiserreports\output\completion_renderable();
 $output = $PAGE->get_renderer($component)->render($renderable);
 
-$PAGE->set_heading(get_string("completionheader", "local_edwiserreports", array('coursename' => $course->fullname)));
+$PAGE->set_heading('');
 $PAGE->set_title(get_string("completionheader", "local_edwiserreports", array('coursename' => $course->fullname)));
 
 // Print output for course completion page.

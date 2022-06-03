@@ -412,6 +412,7 @@ class completion_renderable implements renderable, templatable {
         global $CFG;
 
         $courseid = required_param("courseid", PARAM_INT);
+        $course = get_course($courseid);
         $output = new stdClass();
         $output->sesskey = sesskey();
 
@@ -428,6 +429,14 @@ class completion_renderable implements renderable, templatable {
 
         // Add export icons to export array.
         $output->completionexport = \local_edwiserreports\utility::get_export_icons($output->completionexport);
+
+        $output->pageheader = get_string("completionheader", "local_edwiserreports", array('coursename' => $course->fullname));
+
+        if ($url = optional_param('backurl', '', PARAM_URL)) {
+            $output->backurl = $url;
+        } else {
+            $output->backurl = $CFG->wwwroot."/course/view.php?id=".$courseid;
+        }
 
         $output->searchicon = \local_edwiserreports\utility::image_icon('actions/search');
         $output->placeholder = get_string('searchuser', 'local_edwiserreports');

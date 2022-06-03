@@ -273,7 +273,13 @@ class courseprogressblock extends block_base {
             // Assign response data.
             $res->id = $course->id;
             $res->coursename = html_writer::link(
-                new moodle_url($CFG->wwwroot . "/course/view.php", array("id" => $course->id)),
+                new moodle_url(
+                    "/local/edwiserreports/completion.php",
+                    array(
+                        "courseid" => $course->id,
+                        'backurl' => new moodle_url('/local/edwiserreports/coursereport.php#progress')
+                    )
+                ),
                 $course->fullname
             );
 

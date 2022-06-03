@@ -154,11 +154,17 @@ class courseengageblock extends utility {
         // Get only enrolled students.
         $enrolledstudents = \local_edwiserreports\utility::get_enrolled_students($course->id, false, $cohortid);
 
-        // Generate course url.
-        $courseurl = new moodle_url($CFG->wwwroot . "/course/view.php", array("id" => $course->id));
-
         // Get course name with course url.
-        $engagement->coursename = html_writer::link($courseurl, $course->fullname);
+        $engagement->coursename = html_writer::link(
+            new moodle_url(
+                "/local/edwiserreports/completion.php",
+                array(
+                    "courseid" => $course->id,
+                    'backurl' => new moodle_url('/local/edwiserreports/coursereport.php#engagement')
+                )
+            ),
+            $course->fullname
+        );
 
         // Generate enrolments link.
         $engagement->enrolment = self::get_course_engagement_link(
