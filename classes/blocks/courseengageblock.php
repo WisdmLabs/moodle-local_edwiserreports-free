@@ -215,7 +215,7 @@ class courseengageblock extends utility {
     public static function get_course_engagement_link($attrname, $course, $val) {
         return html_writer::link("javascript:void(0)", $val,
             array(
-                "class" => "modal-trigger text-dark text-decoration-none",
+                "class" => "modal-trigger text-decoration-none",
                 "data-courseid" => $course->id,
                 "data-coursename" => $course->fullname,
                 "data-action" => $attrname

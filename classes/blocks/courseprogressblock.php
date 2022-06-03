@@ -412,7 +412,7 @@ class courseprogressblock extends block_base {
      */
     public static function get_userlist_popup_link($courseid, $coursename, $value, $action, $minval, $maxval) {
         $url = new moodle_url('javascript:void(0)');
-        $class = 'modal-trigger text-dark text-decoration-none';
+        $class = 'modal-trigger text-decoration-none';
         return html_writer::link(
             $url,
             $value,
