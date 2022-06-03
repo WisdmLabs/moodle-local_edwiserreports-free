@@ -24,12 +24,8 @@
 
 namespace local_edwiserreports;
 
-defined('MOODLE_INTERNAL') || die();
-
 use stdClass;
 use html_writer;
-use context_system;
-use block_online_users\fetcher;
 
 /**
  * Class live users Block. To get the data of live users.
@@ -94,7 +90,7 @@ class liveusersblock extends block_base {
         $groupmembers = "";
         $groupselect  = "";
         $groupby       = "";
-        $lastaccess    = ", lastaccess, lastlogin";
+        $lastaccess    = ", lastaccess, currentlogin, lastlogin";
         $uservisibility = "";
         $uservisibilityselect = "";
         if ($CFG->block_online_users_onlinestatushiding) {
@@ -109,6 +105,7 @@ class liveusersblock extends block_base {
             $userfieldsapi = \core_user\fields::for_userpic()->including('username', 'deleted');
             $userfields = $userfieldsapi->get_sql('u', false, '', '', false)->selects;
         } else {
+            // Using fallback deprecated method for backword compatibility.
             $extrafields = get_extra_user_fields(\context_system::instance());
             $extrafields[] = 'username';
             $extrafields[] = 'deleted';
@@ -155,6 +152,9 @@ class liveusersblock extends block_base {
             if ($inactiveuser->lastlogin != 0) {
                 $user["lastlogin"] = '<div class="d-none">' . $inactiveuser->lastlogin . '</div>';
                 $user["lastlogin"] .= format_time($timenow - $inactiveuser->lastlogin);
+            } else if ($inactiveuser->currentlogin != 0) {
+                $user["lastlogin"] = '<div class="d-none">' . $inactiveuser->currentlogin . '</div>';
+                $user["lastlogin"] .= format_time($timenow - $inactiveuser->currentlogin);
             } else {
                 $user["lastlogin"] = get_string('never');
             }
