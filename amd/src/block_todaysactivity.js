@@ -80,6 +80,7 @@ define([
                     data: {
                         action: 'get_todaysactivity_data_ajax',
                         secret: M.local_edwiserreports.secret,
+                        lang: $('html').attr('lang'),
                         data: JSON.stringify({
                             date: date
                         })

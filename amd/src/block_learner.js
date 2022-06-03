@@ -243,6 +243,7 @@ define([
                 data: {
                     action: 'get_learner_courseprogress_graph_data_ajax',
                     secret: M.local_edwiserreports.secret,
+                    lang: $('html').attr('lang'),
                     data: JSON.stringify({
                         filter: filter
                     })
@@ -262,6 +263,7 @@ define([
                 data: {
                     action: 'get_learner_timespentonlms_graph_data_ajax',
                     secret: M.local_edwiserreports.secret,
+                    lang: $('html').attr('lang'),
                     data: JSON.stringify({
                         filter: filter
                     })

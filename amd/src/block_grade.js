@@ -61,7 +61,7 @@ define([
         legend: {
             position: position,
             formatter: function(seriesName, opts) {
-                return [seriesName + ": " + opts.w.globals.series[opts.seriesIndex]]
+                return [seriesName + ": " + opts.w.globals.series[opts.seriesIndex]];
             }
         },
         colors: CFG.getColorTheme(),
@@ -97,7 +97,8 @@ define([
                 dataType: CFG.requestDataType,
                 data: {
                     action: 'get_grade_graph_data_ajax',
-                    secret: M.local_edwiserreports.secret
+                    secret: M.local_edwiserreports.secret,
+                    lang: $('html').attr('lang')
                 },
             });
         }
@@ -149,7 +150,8 @@ define([
                 data.chart.events = {
                     mounted: function() {
                         $(SELECTOR.PANEL).find(SELECTOR.GRAPH).find('.apexcharts-legend')
-                            .prepend(`<label class="graph-label w-100 text-center">${$(SELECTOR.PANEL).find(SELECTOR.GRAPH).data('responseTitle')}</label>`);
+                            .prepend(`<label class="graph-label w-100 text-center">
+                            ${$(SELECTOR.PANEL).find(SELECTOR.GRAPH).data('responseTitle')}</label>`);
                     },
                 };
                 data.chart.events.updated = data.chart.events.mounted;
@@ -184,7 +186,7 @@ define([
                 legend: {
                     position: position
                 }
-            })
+            });
         }, 1000);
     }
 

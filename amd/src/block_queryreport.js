@@ -114,6 +114,7 @@ define([
                     data: {
                         action: 'get_customqueryreport_data_ajax',
                         secret: M.local_edwiserreports.secret,
+                        lang: $('html').attr('lang'),
                         data: JSON.stringify({
                             lpids: values
                         })

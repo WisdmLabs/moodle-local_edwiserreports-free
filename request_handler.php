@@ -20,6 +20,9 @@
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+// phpcs:disable
+
 if (isset($_GET['secret']) || isset($_POST['secret'])) {
     define('NO_MOODLE_COOKIES', true);
     define('ALLOW_GET_PARAMETERS', true);
@@ -28,11 +31,14 @@ if (isset($_GET['secret']) || isset($_POST['secret'])) {
 ob_start();
 require('../../config.php');
 
+// phpcs:enable
+global $USER, $DB;
+
 use local_edwiserreports\controller\edwiserReportKernel;
 use local_edwiserreports\controller\edwiserReportRouter;
 
 // Define ajax script based on action value.
-$action = filter_input(INPUT_GET, 'action', FILTER_SANITIZE_STRIPPED);
+$action = required_param('action', PARAM_TEXT);
 if (!isset($action) || empty($action)) {
     return;
 }
@@ -84,6 +90,8 @@ if ($secret == null) {
             // Do not process the remaining requests.
         }
     }
+    $USER = $DB->get_record('user', ['id' => $user]);
+    $USER->lang = optional_param('lang', $USER->lang, PARAM_LANG);
 }
 
 $PAGE->set_context($context);

@@ -142,7 +142,8 @@ define([
                 dataType: CFG.requestDataType,
                 data: {
                     action: 'get_learnertimespentonsite_graph_data_ajax',
-                    secret: M.local_edwiserreports.secret
+                    secret: M.local_edwiserreports.secret,
+                    lang: $('html').attr('lang')
                 },
             });
         },

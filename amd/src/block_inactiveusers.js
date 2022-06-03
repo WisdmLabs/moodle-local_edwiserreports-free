@@ -122,6 +122,7 @@ define([
                     data: {
                         action: 'get_inactiveusers_data_ajax',
                         secret: M.local_edwiserreports.secret,
+                        lang: $('html').attr('lang'),
                         data: JSON.stringify({
                             filter: filter
                         })

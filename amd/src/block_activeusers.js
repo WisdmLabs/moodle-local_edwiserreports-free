@@ -180,6 +180,7 @@ define([
                 data: {
                     action: 'get_activeusers_graph_data_ajax',
                     secret: M.local_edwiserreports.secret,
+                    lang: $('html').attr('lang'),
                     data: JSON.stringify({
                         precalculated: ['weekly', 'monthly', 'yearly'].indexOf(filter) !== -1,
                         filter: filter,

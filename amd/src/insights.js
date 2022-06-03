@@ -70,6 +70,7 @@ define([
                 data: {
                     action: 'get_insight_card_context_ajax',
                     secret: M.local_edwiserreports.secret,
+                    lang: $('html').attr('lang'),
                     data: JSON.stringify({
                         id: id
                     })
@@ -90,6 +91,7 @@ define([
                 data: {
                     action: 'get_insight_card_data_ajax',
                     secret: M.local_edwiserreports.secret,
+                    lang: $('html').attr('lang'),
                     data: JSON.stringify({
                         id: id,
                         filter: filter

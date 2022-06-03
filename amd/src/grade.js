@@ -66,6 +66,7 @@ define([
                 data: {
                     action: 'get_grade_table_data_ajax',
                     secret: M.local_edwiserreports.secret,
+                    lang: $('html').attr('lang'),
                     data: JSON.stringify({
                         filter: filter
                     })
@@ -165,7 +166,6 @@ define([
                 initializeDatatable();
                 return;
             }
-            console.log(this.value);
             dataTable.page.len(this.value);
             dataTable.ajax.reload();
         });

@@ -107,6 +107,7 @@ define([
                     data: {
                         action: 'get_courseprogress_graph_data_ajax',
                         secret: M.local_edwiserreports.secret,
+                        lang: $('html').attr('lang'),
                         data: JSON.stringify({
                             courseid: courseId
                         })

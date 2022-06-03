@@ -50,7 +50,8 @@ define([
                     dataType: cfg.requestDataType,
                     data: {
                         action: 'get_liveusers_data_ajax',
-                        secret: M.local_edwiserreports.secret
+                        secret: M.local_edwiserreports.secret,
+                        lang: $('html').attr('lang')
                     },
                 }).done(function(response) {
                     if (response.error === true && response.exception.errorcode === 'invalidsecretkey') {
