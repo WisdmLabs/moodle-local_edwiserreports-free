@@ -37,7 +37,7 @@ define([
     let SELECTOR = {
         PANEL: '#siteaccessblock',
         GRAPH: '#apex-chart-siteaccess-block',
-        SHADE: '.siteaccess-values-shade'
+        SHADES: '.siteaccess-values-shade .shades'
     };
 
     /**
@@ -132,6 +132,22 @@ define([
     }
 
     /**
+     * Generate shades of heatmap.
+     */
+    function generateShades() {
+        let opacity = 0;
+        let numberOfShades = 15;
+        let increment = 1 / (numberOfShades - 1);
+        for (let index = 1; index <= numberOfShades; index++) {
+            $(SELECTOR.SHADES).append(`<div class="shade" style="opacity: ${opacity};"><div class="shade-inner"></div></div>`);
+            opacity += increment;
+        }
+        let width = 100 / numberOfShades;
+        $(SELECTOR.SHADES).find('.shade .shade-inner').css('background-color', CFG.getColorTheme()[2]);
+        $(SELECTOR.SHADES).find('.shade').css('width', width + '%');
+    }
+
+    /**
      * Initialize
      * @param {function} invalidUser Callback function
      */
@@ -142,7 +158,8 @@ define([
         }
 
         loadGraph(invalidUser);
-        $(SELECTOR.SHADE).css('background-image', 'linear-gradient(to right, rgba(0, 0, 0, 0), ' + CFG.getColorTheme()[2] + ')');
+
+        generateShades();
     }
 
     // Must return the init function

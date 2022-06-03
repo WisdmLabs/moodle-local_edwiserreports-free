@@ -1949,21 +1949,27 @@ table.dataTable td.dataTables_empty {
     position: relative;
     height: 2.5rem;
     margin: 0 3.5rem 3rem 5rem;
+    display: flex;
+    align-items: center;
 }
 
-#wdm-edwiserreports #siteaccessblock .siteaccess-values-shade .siteaccess-quiest,
-#wdm-edwiserreports #siteaccessblock .siteaccess-values-shade .siteaccess-busiest {
-    position: absolute;
-    bottom: 0;
-    transform: translateY(150%);
+#wdm-edwiserreports #siteaccessblock .siteaccess-values-shade .siteaccess {
+    margin: 0;
 }
 
-#wdm-edwiserreports #siteaccessblock .siteaccess-values-shade .siteaccess-quiest {
-    left: 0;
+#wdm-edwiserreports #siteaccessblock .siteaccess-values-shade .shades {
+    display: flex;
+    flex: 1;
 }
 
-#wdm-edwiserreports #siteaccessblock .siteaccess-values-shade .siteaccess-busiest {
-    right: 0;
+#wdm-edwiserreports #siteaccessblock .siteaccess-values-shade .shades .shade {
+    height: 2rem;
+    padding: 0 0.2rem;
+}
+
+#wdm-edwiserreports #siteaccessblock .siteaccess-values-shade .shades .shade .shade-inner {
+    width: 100%;
+    height: 100%;
 }
 
 #wdm-edwiserreports[data-editing="1"] #studentengagementblock .graph-header-background {

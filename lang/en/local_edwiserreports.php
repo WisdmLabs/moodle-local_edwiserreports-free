@@ -149,8 +149,8 @@ $string['nolearningprograms'] = "No Learning Programs Found";
 $string['siteaccessinformationtask'] = 'Calculate site access information';
 $string['siteaccessrecalculate'] = 'Plugin is just upgraded. Please <a target="_blank" href="{$a}">run</a> <strong>Calculate site access information</strong> task to see the result.';
 $string['siteaccessinformationcronwarning'] = '<strong>Calculate site access information</strong> task should run every 24 hours. Please <a target="_blank" href="{$a}">run now</a> to see accurate result.';
-$string['busiest'] = 'Busiest';
-$string['quietest'] = 'Quietest';
+$string['busiest'] = 'Most Busy';
+$string['quietest'] = 'Least Busy';
 
 /* Block Inactive Users */
 $string['siteaccess'] = "Site Access:";
