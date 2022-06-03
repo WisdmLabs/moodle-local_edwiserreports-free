@@ -278,6 +278,7 @@ function local_edwiserreports_output_fragment_get_blockscap_form($block) {
 
     // Get block capabilities.
     $capabilities = \local_edwiserreports\utility::get_blocks_capability($block);
+    $hidden = count($capabilities) > 1 ? '' : 'hidden';
     $capvalue = 'report/edwiserreports_' . $blockname . ':view';
 
     // Prepare form for block editing.
@@ -293,14 +294,14 @@ function local_edwiserreports_output_fragment_get_blockscap_form($block) {
     $output .= html_writer::end_tag('div');
     $output .= html_writer::start_tag('div', array('class' => 'col-md-9'));
     $output .= html_writer::tag('label', $capabilities[$capvalue], array('class' => 'col-form-label d-inline h4'));
-    $output .= html_writer::select($capabilities, 'capabilities', $capvalue, null, array('class' => 'hidden h4'));
+    $output .= html_writer::select($capabilities, 'capabilities', $capvalue, null, array('class' => $hidden . ' h4'));
     $output .= html_writer::end_tag('label');
     $output .= html_writer::end_tag('div');
     $output .= html_writer::end_tag('div');
 
     $output .= html_writer::start_div('clearfix path-admin-tool-capability overflow-scroll col-12 cap-overview');
     $blockname = $block->classname . '-' . $block->id;
-    $output .= local_edwiserreports_output_fragment_block_overview_display($capvalue, $blockname);
+    $output .= local_edwiserreports_block_overview_display($capvalue, $blockname);
     $output .= html_writer::end_div();
     $btnparams = array('type' => 'submit', 'class' => 'btn theme-primary-bg text-white pull-right save-block-caps');
     $output .= html_writer::tag('button', 'Save', $btnparams);
@@ -346,7 +347,19 @@ function local_edwiserreports_output_fragment_email_schedule_tabs($args) {
  * @param Array $capvalue  Fragment parameter array
  * @param Array $blockname Block name
  */
-function local_edwiserreports_output_fragment_block_overview_display($capvalue, $blockname = '') {
+function local_edwiserreports_output_fragment_block_overview_display($args) {
+    $capvalue = $args['capvalue'];
+    $blockname = current(explode(':', $capvalue));
+    $blockname = end(explode('_', $blockname));
+    return local_edwiserreports_block_overview_display($capvalue, $blockname);
+}
+
+/**
+ * Render blocks capability view
+ * @param Array $capvalue  Fragment parameter array
+ * @param Array $blockname Block name
+ */
+function local_edwiserreports_block_overview_display($capvalue, $blockname = '') {
     global $CFG;
 
     require_once($CFG->dirroot . '/admin/tool/capability/locallib.php');

@@ -463,7 +463,7 @@ define([
                                 }
                                 // eslint-disable-next-line no-unused-vars
                             ).done(function(html, js, css) {
-                                modal.modal.find('.cap-overview').html(html);
+                                Templates.replaceNodeContents(modal.modal.find('.cap-overview'), html, js);
                                 switchCapabilitiesBlock(modal);
                             });
                         });
