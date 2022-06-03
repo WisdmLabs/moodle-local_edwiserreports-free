@@ -118,6 +118,13 @@ define([
                 enabled: false
             }
         },
+        yaxis: {
+            labels: {
+                formatter: function(val, index) {
+                    return val === undefined ? val : val.toFixed(0);
+                }
+            }
+        },
         legend: {
             position: 'top',
             horizontalAlign: 'left',
