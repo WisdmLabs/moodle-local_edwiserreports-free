@@ -56,6 +56,7 @@ define([
         var modalTable = null;
         var searchTable = PageId + " .table-search-input input";
         var lengthSelect = PageId + " .table-length-input select";
+        var flatpickr = null;
 
         // Initialize select2.
         $(PageId).find('.singleselect').select2();
@@ -189,7 +190,7 @@ define([
          * Create Calender in dropdown tp select range.
          */
         function createDropdownCalendar() {
-            $(flatpickrCalender).flatpickr({
+            flatpickr = $(flatpickrCalender).flatpickr({
                 mode: 'range',
                 altInput: true,
                 altFormat: "d/m/Y",
@@ -215,7 +216,8 @@ define([
             var date = $(dropdownInput).val();
 
             /* If correct date is not selected then return false */
-            if (!filter.includes("to")) {
+            if (!date.includes(" to ")) {
+                flatpickr.clear();
                 return;
             }
 

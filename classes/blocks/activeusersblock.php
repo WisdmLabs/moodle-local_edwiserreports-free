@@ -25,12 +25,12 @@ namespace local_edwiserreports;
 
 defined('MOODLE_INTERNAL') or die;
 
-use stdClass;
-use moodle_url;
-use cache;
+use context_system;
 use html_writer;
-use html_table;
+use moodle_url;
 use core_user;
+use stdClass;
+use cache;
 
 require_once($CFG->dirroot . '/local/edwiserreports/classes/block_base.php');
 
@@ -214,10 +214,11 @@ class activeusersblock extends block_base {
         $this->startdate = (round($this->enddate / 86400) - $this->xlabelcount) * 86400;
 
         // Generate date label.
-        $labelcallback = function($value) {
-            return date('d M y', $value);
-        };
-        if ($this->graphajax == 'graph') {
+        if ($this->graphajax != 'graph') {
+            $labelcallback = function($value) {
+                return date('d M y', $value);
+            };
+        } else {
             $labelcallback = function($value) {
                 return $value * 1000;
             };
@@ -293,7 +294,7 @@ class activeusersblock extends block_base {
 
         // Get data from params.
         $this->filter = isset($params->filter) ? $params->filter : false;
-        $this->cohortid = isset($params->cohortid) ? $params->cohortid : false;
+        $this->cohortid = isset($params->cohortid) ? $params->cohortid : 0;
         $this->graphajax = isset($params->graphajax) && $params->graphajax == true ? 'graph' : 'table';
 
         // Generate active users data label.
@@ -308,8 +309,18 @@ class activeusersblock extends block_base {
             $response->data = new stdClass();
 
             $response->data->activeUsers = $this->get_active_users();
-            $response->data->enrolments = $this->get_enrolments();
-            $response->data->completionRate = $this->get_course_completionrate();
+
+            $courses = $this->get_courses_of_user();
+            // Temporary course table.
+            $coursetable = 'tmp_au_courses';
+            utility::create_temp_table($coursetable, array_keys($courses));
+
+            $response->data->enrolments = $this->get_enrolments($coursetable);
+            $response->data->completionRate = $this->get_course_completionrate($coursetable);
+
+            // Drop temporary table.
+            utility::drop_temp_table($coursetable);
+
             $response->dates = array_keys($this->dates);
             // Set response in cache.
             $this->cache->set($cachekey, $response);
@@ -332,57 +343,49 @@ class activeusersblock extends block_base {
      */
     public static function get_userslist($filter, $action, $cohortid = false) {
         global $DB;
-        // If cohort ID is there then add cohort filter in sqlquery.
-        $sqlcohort = "";
-        $cohortcondition = "";
-        if ($cohortid) {
-            $sqlcohort .= " JOIN {cohort_members} cm
-                   ON cm.userid = l.relateduserid";
-            $cohortcondition = "AND cm.cohortid = :cohortid";
-            $params["cohortid"] = $cohortid;
-        }
+        $blockobj = new self();
+
+        // Filtering users.
+        $users = $blockobj->get_user_from_cohort_course_group($cohortid, 0, 0, $blockobj->get_current_user());
+
+        // Temporary filtering table.
+        $userstable = 'tmp_au_filter';
+        utility::create_temp_table($userstable, array_keys($users));
+
         // Based on action prepare query.
         switch($action) {
             case "activeusers":
                 $sql = "SELECT DISTINCT l.userid as userid
-                   FROM {logstore_standard_log} l $sqlcohort
-                   WHERE l.timecreated >= :starttime
-                   AND l.timecreated < :endtime
-                   AND l.action = :action
-                   AND l.userid > 1 $cohortcondition";
+                   FROM {logstore_standard_log} l
+                   JOIN {{$userstable}} ft ON l.userid = ft.tempid
+                   WHERE FLOOR(l.timecreated/86400) = :datefilter
+                   AND l.action = :action";
                 $params["action"] = 'viewed';
                 break;
             case "enrolments":
                 $sql = "SELECT DISTINCT(CONCAT(CONCAT(l.courseid, '-'), l.relateduserid )) as id,
                                 l.relateduserid as userid,
                                 l.courseid
-                        FROM {logstore_standard_log} l $sqlcohort
-                        WHERE l.timecreated >= :starttime
-                        AND l.timecreated < :endtime
-                        AND l.eventname = :eventname $cohortcondition
+                        FROM {logstore_standard_log} l
+                        JOIN {{$userstable}} ft ON l.relateduserid = ft.tempid
+                        WHERE FLOOR(l.timecreated/86400) = :datefilter
+                        AND l.eventname = :eventname
                         GROUP BY l.relateduserid, l.courseid";
                 $params["eventname"] = '\core\event\user_enrolment_created';
                 break;
-            case "completions";
-                $sqlcohort = "";
-                if ($cohortid) {
-                    $sqlcohort .= " JOIN {cohort_members} cm
-                           ON cm.userid = l.userid";
-                    $params["cohortid"] = $cohortid;
-                }
-                $sql = "SELECT CONCAT(CONCAT(l.userid, '-'), l.courseid) as id,
-                             l.userid as userid,
-                             l.courseid as courseid
-                        FROM {edwreports_course_progress} l $sqlcohort
-                        WHERE l.completiontime IS NOT NULL
-                        AND l.completiontime >= :starttime
-                        AND l.completiontime < :endtime $cohortcondition";
+            case "completions":
+                $sql = "SELECT CONCAT(CONCAT(ecp.userid, '-'), ecp.courseid) as id,
+                             ecp.userid as userid,
+                             ecp.courseid as courseid
+                        FROM {edwreports_course_progress} ecp
+                        JOIN {{$userstable}} ft ON ecp.userid = ft.tempid
+                        WHERE FLOOR(ecp.completiontime/86400) = :datefilter";
         }
 
-        $params["starttime"] = $filter * LOCAL_SITEREPORT_ONEDAY;
-        $params["endtime"] = $params["starttime"] + LOCAL_SITEREPORT_ONEDAY - 1;
+        $params["datefilter"] = $filter;
         $data = array();
         $records = $DB->get_records_sql($sql, $params);
+
         if (!empty($records)) {
             foreach ($records as $record) {
                 $user = core_user::get_user($record->userid);
@@ -400,6 +403,9 @@ class activeusersblock extends block_base {
                 $data[] = array_values((array)$userdata);
             }
         }
+
+        // Drop temporary table.
+        utility::drop_temp_table($userstable);
         return $data;
     }
 
@@ -411,34 +417,34 @@ class activeusersblock extends block_base {
         global $DB;
 
         $params = array(
-            "starttime" => $this->startdate,
-            "endtime" => $this->enddate,
+            "starttime" => $this->startdate - 86400,
+            "endtime" => $this->enddate + 86400,
             "action" => "viewed"
         );
+
+        $users = $this->get_user_from_cohort_course_group($this->cohortid, 0, 0, $this->get_current_user());
+
+        // Temporary users table.
+        $userstable = 'tmp_au_users';
+        utility::create_temp_table($userstable, array_keys($users));
 
         // Get Logs to generate active users data.
         $activeusers = $this->dates;
 
         // Query to get activeusers from logs.
-        $cohortjoin = "";
-        $cohortcondition = "";
-        if ($this->cohortid) {
-            $cohortjoin = "JOIN {cohort_members} cm ON l.userid = cm.userid";
-            $cohortcondition = "AND cm.cohortid = :cohortid";
-            $params["cohortid"] = $this->cohortid;
-        }
-        $sql = "SELECT FLOOR(l.timecreated/86400) as userdate,
-                    COUNT( DISTINCT l.userid ) as usercount
-                    FROM {logstore_standard_log} l
-                    $cohortjoin
-                WHERE l.action = :action
-                    $cohortcondition
-                    AND l.timecreated >= :starttime
-                    AND l.timecreated < :endtime
-                    AND l.userid > 1
+        $sql = "SELECT FLOOR(l.timecreated/86400) as userdate, COUNT(DISTINCT l.userid) as usercount
+                  FROM {logstore_standard_log} l
+                  JOIN {{$userstable}} ut ON l.userid = ut.tempid
+                 WHERE l.action = :action
+                   AND l.timecreated >= :starttime
+                   AND l.timecreated < :endtime
+                   AND l.userid > 1
                 GROUP BY FLOOR(l.timecreated/86400)";
 
         $logs = $DB->get_records_sql($sql, $params);
+
+        // Droppping course table.
+        utility::drop_temp_table($userstable);
 
         // Get active users for every day.
         foreach (array_keys($activeusers) as $key) {
@@ -455,14 +461,15 @@ class activeusersblock extends block_base {
 
     /**
      * Get all Enrolments
-     * @return array            Array of all active users based
+     * @param  string $coursetable Course table.
+     * @return array               Array of all active users based
      */
-    public function get_enrolments() {
+    public function get_enrolments($coursetable) {
         global $DB;
 
         $params = array(
-            "starttime" => $this->startdate,
-            "endtime" => $this->enddate,
+            "starttime" => $this->startdate - 86400,
+            "endtime" => $this->enddate + 86400,
             "eventname" => '\core\event\user_enrolment_created',
             "actionname" => "created"
         );
@@ -486,6 +493,7 @@ class activeusersblock extends block_base {
                     )
                     as usercount
                 FROM {logstore_standard_log} l
+                JOIN {{$coursetable}} ct ON l.courseid = ct.tempid
                 $cohortjoin
                 WHERE l.eventname = :eventname
                 $cohortcondition
@@ -513,14 +521,15 @@ class activeusersblock extends block_base {
 
     /**
      * Get all Enrolments
-     * @return array            Array of all active users based
+     * @param  string $coursetable Course table.
+     * @return array               Array of all active users based
      */
-    public function get_course_completionrate() {
+    public function get_course_completionrate($coursetable) {
         global $DB;
 
         $params = array(
-            "starttime" => $this->startdate,
-            "endtime" => $this->enddate,
+            "starttime" => $this->startdate - 86400,
+            "endtime" => $this->enddate + 86400,
         );
 
         $cohortjoin = "";
@@ -534,6 +543,7 @@ class activeusersblock extends block_base {
         $sql = "SELECT FLOOR(cc.completiontime/86400) as userdate,
                        COUNT(cc.completiontime) as usercount
                   FROM {edwreports_course_progress} cc
+                  JOIN {{$coursetable}} ct ON cc.courseid = ct.tempid
                        $cohortjoin
                  WHERE cc.completiontime IS NOT NULL
                     AND cc.completiontime >= :starttime
@@ -570,11 +580,12 @@ class activeusersblock extends block_base {
         $obj = new self();
         $export[] = self::get_header();
         $activeusersdata = $obj->get_data((object) array("filter" => $filter));
+        $dates = array_keys($obj->dates);
 
         // Generate active users data.
-        foreach ($activeusersdata->labels as $key => $label) {
+        foreach ($dates as $key => $date) {
             $export[] = array(
-                $label,
+                date('d-m-Y', $date * 86400),
                 $activeusersdata->data->activeUsers[$key],
                 $activeusersdata->data->enrolments[$key],
                 $activeusersdata->data->completionRate[$key],
@@ -594,17 +605,21 @@ class activeusersblock extends block_base {
         $export = array();
 
         $blockobj = new self();
+        $blockobj->graphajax = false;
         $export[] = self::get_header_report();
         $cohortid = optional_param('cohortid', 0, PARAM_INT);
-        $activeusersdata = $blockobj->get_data((object) array(
-            "filter" => $filter,
-            'cohortid' => $cohortid
-        ));
-        foreach ($activeusersdata->dates as $key => $date) {
+
+        // Generate active users data label.
+        $blockobj->generate_labels($filter);
+
+        $labels = $blockobj->labels;
+        $dates = array_keys($blockobj->dates);
+
+        foreach ($dates as $key => $date) {
             $export = array_merge($export,
-                self::get_usersdata($activeusersdata->labels[$key], $date, "activeusers", $cohortid),
-                self::get_usersdata($activeusersdata->labels[$key], $date, "enrolments", $cohortid),
-                self::get_usersdata($activeusersdata->labels[$key], $date, "completions", $cohortid)
+                self::get_usersdata($labels[$key], $date, "activeusers", $cohortid),
+                self::get_usersdata($labels[$key], $date, "enrolments", $cohortid),
+                self::get_usersdata($labels[$key], $date, "completions", $cohortid)
             );
         }
 

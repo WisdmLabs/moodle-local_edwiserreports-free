@@ -221,9 +221,39 @@ class block_base {
     }
 
     /**
+     * Filter courses based on visibility and capability.
+     *
+     * @param array $courses        Courses to be filtered
+     * @param array $visiblecourses Array to store filtered courses
+     * @param int   $userid         Current user id
+     *
+     * @return void
+     */
+    public function filter_courses($courses, &$visiblecourses, $userid) {
+        // Preload contexts and check visibility.
+        foreach ($courses as $course) {
+            context_helper::preload_from_record($course);
+            if ($course->visible) {
+                if (!$context = context_course::instance($course->id)) {
+                    continue;
+                }
+                // Check if user can view course.
+                if (!has_capability('moodle/course:viewhiddencourses', $context, $userid)) {
+                    continue;
+                }
+                // Skip duplicate course.
+                if (isset($visiblecourses[$course->id])) {
+                    continue;
+                }
+                $visiblecourses[$course->id] = $course;
+            }
+        }
+    }
+
+    /**
      * Get users courses based on user role.
-     * Admin/Manager - All courses.
-     * Teacher/Editing Teacher - Enrolled courses.
+     * Site Admin/Manager - All courses.
+     * Category Manager/Category Creator/Teacher/Editing Teacher - Enrolled courses.
      *
      * @param int $userid User id
      *
@@ -236,28 +266,175 @@ class block_base {
         }
 
         // Admin or Manager.
-        if (is_siteadmin($userid) || has_capability('moodle/site:configview', context_system::instance(), $userid)) {
+        if (is_siteadmin() || has_capability('moodle/site:configview', context_system::instance())) {
             return get_courses();
         }
 
-        $courses = enrol_get_all_users_courses($userid);
+        $visiblecourses = [];
 
-        // Preload contexts and check visibility.
-        foreach ($courses as $id => $course) {
-            context_helper::preload_from_record($course);
-            if ($course->visible) {
-                if (!$context = context_course::instance($id)) {
-                    unset($courses[$id]);
-                    continue;
-                }
-                if (!has_capability('moodle/course:viewhiddencourses', $context, $userid)) {
-                    unset($courses[$id]);
-                    continue;
-                }
-            }
+        // Enrolled users courses.
+        $allcourses = enrol_get_all_users_courses($userid);
+        $this->filter_courses($allcourses, $visiblecourses, $userid);
+
+        return $visiblecourses;
+    }
+
+    /**
+     * Get courses based on cohort.
+     *
+     * @param int $cohortid Cohort id
+     * @param int $userid   User id
+     *
+     * @return array
+     */
+    public function get_courses_of_cohort_and_user($cohortid, $userid = null) {
+        global $USER, $DB, $COURSE;
+        if ($userid == null) {
+            $userid = $USER->id;
         }
 
-        return $courses;
+        // Get courses.
+        $allcourses = $this->get_courses_of_user($userid);
+
+        // Remove site course.
+        unset($allcourses[$COURSE->id]);
+
+        if ($cohortid) {
+            // Temporary course table.
+            $coursetable = 'tmp_blockbase_courses';
+            utility::create_temp_table($coursetable, array_keys($allcourses));
+
+            $fields = implode(', ', [
+                'c.id',
+                'c.category',
+                'c.sortorder',
+                'c.fullname',
+                'c.shortname',
+                'c.idnumber',
+                'c.summaryformat',
+                'c.format',
+                'c.showgrades',
+                'c.newsitems',
+                'c.startdate',
+                'c.enddate',
+                'c.relativedatesmode',
+                'c.marker',
+                'c.maxbytes',
+                'c.legacyfiles',
+                'c.showreports',
+                'c.visible',
+                'c.visibleold',
+                'c.downloadcontent',
+                'c.groupmode',
+                'c.groupmodeforce',
+                'c.defaultgroupingid',
+                'c.lang',
+                'c.calendartype',
+                'c.theme',
+                'c.timecreated',
+                'c.timemodified',
+                'c.requested',
+                'c.enablecompletion',
+                'c.completionnotify',
+                'c.cacherev',
+                'c.originalcourseid',
+                'c.showactivitydates',
+                'c.showcompletionconditions'
+            ]);
+
+            $sql = "SELECT DISTINCT $fields
+                    FROM {cohort} cht
+                    JOIN {cohort_members} cm ON cht.id = cm.cohortid AND cm.cohortid = :cohortid
+                    JOIN {role_assignments} ra ON cm.userid = ra.userid
+                    JOIN {context} ctx ON ra.contextid = ctx.id AND ctx.contextlevel = :contextlevel
+                    JOIN {course} c ON ctx.instanceid = c.id
+                    JOIN {{$coursetable}} ct ON ct.tempid = ctx.instanceid";
+            $param = [
+                'cohortid' => $cohortid,
+                'contextlevel' => CONTEXT_COURSE
+            ];
+
+            $allcourses = $DB->get_records_sql($sql, $param);
+
+            // Drop temp table.
+            utility::drop_temp_table($coursetable);
+        }
+
+        // Allowed courses.
+        $visiblecourses = [];
+
+        $this->filter_courses($allcourses, $visiblecourses, $userid);
+
+        return $visiblecourses;
+    }
+
+    /**
+     * Get users list based on cohort, course, and group.
+     *
+     * @param int $cohortid Cohort id
+     * @param int $courseid Course id
+     * @param int $groupid  Group id
+     * @param int $userid   User id
+     *
+     * @return array
+     */
+    public function get_user_from_cohort_course_group($cohortid, $courseid, $groupid, $userid = null) {
+        global $USER, $DB;
+        if ($userid == null) {
+            $userid = $USER->id;
+        }
+
+        $fields = 'u.id, ' . $DB->sql_fullname("u.firstname", "u.lastname") . ' AS fullname';
+
+        // Use utility method if group is selected.
+        if ($groupid != 0) {
+            return \local_edwiserreports\utility::get_enrolled_students($courseid, false, $cohortid, $groupid, $fields);
+        }
+
+        $params = [
+            'contextlevel' => CONTEXT_COURSE,
+            'archetype' => 'student'
+        ];
+
+        // Cohort join.
+        $cohortjoin = "";
+        if ($cohortid != 0) {
+            $cohortjoin = "JOIN {cohort_members} cm ON cm.userid = u.id AND cm.cohortid = :cohortid";
+            $params['cohortid'] = $cohortid;
+        }
+
+        // Course join.
+        if ($courseid != 0) {
+            $coursejoin = " AND c.id = :courseid";
+            $params['courseid'] = $courseid;
+        } else {
+            // Get courses.
+            $courses = $this->get_courses_of_user($userid);
+
+            // Creating temporary table.
+            $coursetable = 'tmp_blockbase_courses';
+            utility::create_temp_table($coursetable, array_keys($courses));
+
+            $coursejoin = "JOIN {{$coursetable}} ct ON ct.tempid = ctx.instanceid";
+        }
+
+        $sql = "SELECT DISTINCT $fields
+                FROM {role_assignments} ra
+                JOIN {role} r ON ra.roleid = r.id AND r.archetype = :archetype
+                JOIN {user} u ON ra.userid = u.id
+                JOIN {context} ctx ON ra.contextid = ctx.id AND ctx.contextlevel = :contextlevel
+                JOIN {course} c ON ctx.instanceid = c.id
+                $coursejoin
+                $cohortjoin";
+
+        $users = $DB->get_records_sql($sql, $params);
+
+        if ($courseid == 0) {
+            // Drop temp table.
+            utility::drop_temp_table($coursetable);
+        }
+
+        return $users;
     }
 
     /**
