@@ -94,7 +94,10 @@ class edwiserreports_renderable implements renderable, templatable {
         // Top insights.
         $insights = new \local_edwiserreports\insights\insight();
         $export->topinsights = $insights->get_insights();
-
+        if ($CFG->branch > 311) {
+            $export->setactive = true;
+            $export->activeurl = new moodle_url("/local/edwiserreports/index.php");
+        }
         return $export;
     }
 
@@ -290,7 +293,10 @@ class activeusers_renderable implements renderable, templatable {
         $output->searchicon = \local_edwiserreports\utility::image_icon('actions/search');
         $output->placeholder = get_string('searchdate', 'local_edwiserreports');
         $output->length = [10, 25, 50, 100];
-
+        if ($CFG->branch > 311) {
+            $output->setactive = true;
+            $output->activeurl = new moodle_url("/local/edwiserreports/index.php");
+        }
         return $output;
     }
 }
@@ -340,8 +346,10 @@ class coursereport_renderable implements renderable, templatable {
         $output->searchicon = \local_edwiserreports\utility::image_icon('actions/search');
         $output->placeholder = get_string('searchcourse', 'local_edwiserreports');
         $output->length = [10, 25, 50, 100];
-        $output->warningicon = \local_edwiserreports\utility::image_icon('warning');
-
+        if ($CFG->branch > 311) {
+            $output->setactive = true;
+            $output->activeurl = new moodle_url("/local/edwiserreports/index.php");
+        }
         return $output;
     }
 }
@@ -393,6 +401,10 @@ class certificates_renderable implements renderable, templatable {
             $output->placeholder = get_string('searchuser', 'local_edwiserreports');
             $output->length = [10, 25, 50, 100];
         }
+        if ($CFG->branch > 311) {
+            $output->setactive = true;
+            $output->activeurl = new moodle_url("/local/edwiserreports/index.php");
+        }
         return $output;
     }
 }
@@ -441,7 +453,10 @@ class completion_renderable implements renderable, templatable {
         $output->searchicon = \local_edwiserreports\utility::image_icon('actions/search');
         $output->placeholder = get_string('searchuser', 'local_edwiserreports');
         $output->length = [10, 25, 50, 100];
-
+        if ($CFG->branch > 311) {
+            $output->setactive = true;
+            $output->activeurl = new moodle_url("/local/edwiserreports/completion.php", array('courseid' => $course->id));
+        }
         return $output;
     }
 }
@@ -500,7 +515,10 @@ class grade_renderable implements renderable, templatable {
         $output->gradeexport = \local_edwiserreports\utility::get_export_icons($output->gradeexport);
 
         $output->backurl = $CFG->wwwroot."/local/edwiserreports/index.php";
-
+        if ($CFG->branch > 311) {
+            $output->setactive = true;
+            $output->activeurl = new moodle_url("/local/edwiserreports/index.php");
+        }
         return $output;
     }
 }
@@ -551,7 +569,10 @@ class learner_renderable implements renderable, templatable {
         $output->searchicon = \local_edwiserreports\utility::image_icon('actions/search');
         $output->placeholder = get_string('searchcourse', 'local_edwiserreports');
         $output->length = [10, 25, 50, 100];
-
+        if ($CFG->branch > 311) {
+            $output->setactive = true;
+            $output->activeurl = new moodle_url("/local/edwiserreports/index.php");
+        }
         return $output;
     }
 }

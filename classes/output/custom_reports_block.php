@@ -24,8 +24,6 @@
 
 namespace local_edwiserreports\output;
 
-defined('MOODLE_INTERNAL') || die();
-
 use renderable;
 use renderer_base;
 use stdClass;
@@ -76,7 +74,6 @@ class custom_reports_block implements renderable, templatable {
             $selectedcohorts = $reportsdata->cohorts;
         }
 
-        $syscontext = context_system::instance();
         $cohortobj = cohort_get_all_cohorts(0, 0);
         $cohorts = $cohortobj['cohorts'];
 
@@ -115,7 +112,10 @@ class custom_reports_block implements renderable, templatable {
         $export->searchicon = \local_edwiserreports\utility::image_icon('actions/search');
         $export->placeholder = get_string('searchreports', 'local_edwiserreports');
         $export->length = [10, 25, 50, 100];
-
+        if ($CFG->branch > 311) {
+            $export->setactive = true;
+            $export->activeurl = new moodle_url($CFG->wwwroot . "/local/edwiserreports/index.php");
+        }
         return $export;
     }
 

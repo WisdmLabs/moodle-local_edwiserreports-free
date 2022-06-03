@@ -30,10 +30,6 @@
 }}
 {{> local_edwiserreports/report-page-header }}
 <div id="wdm-activeusers-individual" data-sesskey="{{sesskey}}">
-    <div class="alert alert-info alert-block fade in " role="alert" data-aria-autofocus="true">
-        <button type="button" class="close" data-dismiss="alert">×</button>
-        {{# str }} clicktogetuserslist, local_edwiserreports {{/ str}}
-    </div>
     <div id="userfilter" class="h-auto mt-2">
         <div class="row">
             <div class="filter-selector col-12 col-md-3 mb-1">
@@ -82,3 +78,6 @@
         </div>
     {{/ export }}
 </div>
+{{#setactive}}
+    {{> local_edwiserreports/setactivenav }}
+{{/setactive}}
