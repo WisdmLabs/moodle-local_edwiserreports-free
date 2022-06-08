@@ -129,6 +129,8 @@ function xmldb_local_edwiserreports_upgrade($oldversion) {
 
     unset_config('siteaccessinformation', 'local_edwiserreports');
 
+    unset_config('activecoursesdata', 'local_edwiserreports');
+
     set_config('siteaccessrecalculate', true, 'local_edwiserreports');
 
     return true;

@@ -1,5 +1,34 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
 
-<div class="table-reponsive">
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    Edwiser Reports
+    @package   local_edwiserreports
+    @copyright (c) 2022 WisdmLabs (https://wisdmlabs.com/)
+    @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+
+}}
+{{!
+    @template local_edwiserreports/certificatestatsblock
+
+    Display the certificate list.
+
+    Context variables required for this template:
+
+    Example context (json):
+    {
+    }
+}}
+<div class="table-responsive">
     <table class="table w-100 mx-0 border-0">
         <thead class="">
             <tr>
@@ -17,15 +46,5 @@
                 </th>
             </tr>
         </thead>
-        <tbody>
-            {{#customcerts}}
-            <tr>
-                <td>{{name}}</td>
-                <td>{{coursename}}</td>
-                <td class="text-center">{{issued}}</td>
-                <td class="text-center">{{notissued}}</td>
-            </tr>
-            {{/customcerts}}
-        </tbody>
     </table>
 </div>

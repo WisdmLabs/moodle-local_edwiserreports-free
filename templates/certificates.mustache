@@ -29,21 +29,21 @@
     }
 }}
 {{> local_edwiserreports/report-page-header }}
-<div id="wdm-certificates-individual" data-sesskey="{{sesskey}}">
+<div id="wdm-certificates-individual">
     <div id="wdm-userfilter" class="h-auto my-10">
         <div class="row">
             <div class="filter-selector col-12 col-md-3 mb-1">
                 {{> local_edwiserreports/datatable/search }}
             </div>
-            {{#hascertificates}}
-                    <div class="filter-selector col-12 col-md-3 mb-1" id="wdm-certificates-dropdown">
-                        <select id="wdm-certificates-select" class="form-control singleselect" name="state" style="width: 250px;">
-                            {{#certificates}}
-                            <option value="{{id}}">{{coursename}}: {{name}}</option>
-                            {{/certificates}}
-                        </select>
-                    </div>
-                {{/hascertificates}}
+            {{# hascertificates}}
+                <div class="filter-selector col-12 col-md-3 mb-1" id="wdm-certificates-dropdown">
+                    <select class="certificate-select form-control singleselect" name="certificate-select">
+                        {{#certificates}}
+                        <option value="{{id}}">{{coursename}}: {{name}}</option>
+                        {{/certificates}}
+                    </select>
+                </div>
+            {{/ hascertificates}}
             <div class="filter-selector col-12 col-md-4 mb-1 ml-auto">
                 {{> local_edwiserreports/datatable/length }}
             </div>
@@ -68,6 +68,11 @@
     </div>
     {{/ certexport }}
 </div>
+{{#js}}
+M.local_edwiserreports = {
+    secret: '{{{secret}}}'
+};
+{{/js}}
 {{#setactive}}
     {{> local_edwiserreports/setactivenav }}
 {{/setactive}}

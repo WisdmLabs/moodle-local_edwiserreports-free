@@ -22,93 +22,127 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 define([
-    "jquery",
-    "core/templates",
-    "local_edwiserreports/defaultconfig",
+    'jquery',
+    'core/notification',
+    './defaultconfig',
     './common',
-], function($, templates, cfg, common) {
-    var panel = cfg.getPanel("#certificatesblock");
-    var panelBody = cfg.getPanel("#certificatesblock", "body");
-    var table = panel + " .table";
-    var dropdownBody = panel + " .table-dropdown";
-    var searchTable = panel + " .table-search-input input";
-    var certificateTable;
+], function(
+    $,
+    Notification,
+    CFG,
+    common
+) {
 
     /**
-     * Initialize
+     * Selectors.
      */
-    function init() {
+    var SELECTOR = {
+        PANEL: '#certificatesblock',
+        TABLE: '#certificatesblock table',
+        SEARCH: '.table-search-input input'
+    };
+
+    /**
+     * Data table object.
+     */
+    var dataTable = null;
+
+    /**
+     * Promises list.
+     */
+    let PROMISE = {
         /**
-         * Hide loader/
+         * Get certificates.
+         * @returns {PROMISE}
          */
-        function hideLoader() {
-            common.loader.hide('#certificatesblock');
-        }
-
-        if ($(panel).length) {
-            // Show loader.
-            common.loader.show('#certificatesblock');
-
-            $.ajax({
-                    url: cfg.requestUrl,
-                    type: cfg.requestType,
-                    dataType: cfg.requestDataType,
-                    data: {
-                        action: 'get_certificates_data_ajax',
-                        secret: M.local_edwiserreports.secret,
-                        lang: $('html').attr('lang')
-                    },
-                }).done(function(response) {
-                    if (response.error === true && response.exception.errorcode === 'invalidsecretkey') {
-                        invalidUser('certificatestatsblock', response);
-                    }
-                    templates.render('local_edwiserreports/certificatestable', response.data)
-                        .then(function(html, js) {
-                            templates.replaceNode(table, html, js);
-                            createCertificatesTable();
-
-                            // Hide loader.
-                            hideLoader();
-                            return;
-                        }).fail(function(ex) {
-                            console.log(ex);
-
-                            // Hide loader.
-                            hideLoader();
-                        });
-                })
-                .fail(function(error) {
-                    // console.log(error);
-
-                    // Hide loader.
-                    hideLoader();
-                });
-
-            // Search in table.
-            $('body').on('input', searchTable, function() {
-                certificateTable.search(this.value).draw();
+        GET_CERTIFICATES: function() {
+            return $.ajax({
+                url: CFG.requestUrl,
+                type: CFG.requestType,
+                dataType: CFG.requestDataType,
+                data: {
+                    action: 'get_certificates_data_ajax',
+                    secret: M.local_edwiserreports.secret,
+                    lang: $('html').attr('lang')
+                },
             });
         }
+    };
+
+    /**
+     * Load data to dataTable using ajax.
+     */
+    function loadData() {
+        // Show loader.
+        common.loader.show(SELECTOR.PANEL);
+
+        PROMISE.GET_CERTIFICATES().done(function(response) {
+                if (dataTable !== null) {
+                    dataTable.destroy();
+                }
+                dataTable = $(SELECTOR.TABLE).DataTable({
+                    responsive: true,
+                    data: response.data,
+                    dom: '<"edwiserreports-table"<t><"table-pagination"p>>',
+                    columns: [{
+                        "data": "name"
+                    }, {
+                        "data": "coursename"
+                    }, {
+                        "data": "issued"
+                    }, {
+                        "data": "notissued"
+                    }],
+                    columnDefs: [{
+                        "targets": [0, 1],
+                        "className": "text-left"
+                    }, {
+                        "targets": "_all",
+                        "className": "text-center",
+                    }],
+                    language: {
+                        info: M.util.get_string('tableinfo', 'local_edwiserreports'),
+                        infoEmpty: M.util.get_string('infoempty', 'local_edwiserreports'),
+                        emptyTable: M.util.get_string('nocertificates', 'local_edwiserreports'),
+                        zeroRecords: M.util.get_string('zerorecords', 'local_edwiserreports'),
+                        paginate: {
+                            previous: M.util.get_string('previous', 'moodle'),
+                            next: M.util.get_string('next', 'moodle')
+                        }
+                    },
+                    drawCallback: function() {
+                        common.stylePaginationButton(this);
+                    },
+                    lengthChange: false,
+                    bInfo: false
+                });
+            })
+            .fail(Notification.exception)
+            .always(function() {
+                // Hide loader.
+                common.loader.hide(SELECTOR.PANEL);
+            });
     }
 
     /**
-     * Create certificate table.
+     * Initialize
+     * @param {function} invalidUser Callback function
      */
-    function createCertificatesTable() {
-        certificateTable = $(table).DataTable({
-            dom: '<"edwiserreports-table"<t><"table-pagination"p>>',
-            oLanguage: {
-                sEmptyTable: "There is no certificate created",
-                sSearchPlaceholder: "Search Certificates"
-            },
-            initComplete: function() {
-                $(dropdownBody).show();
-            },
-            drawCallback: function() {
-                common.stylePaginationButton(this);
-            },
-            lengthChange: false,
-            bInfo: false
+    function init(invalidUser) {
+
+        // Block not present on page.
+        if ($(SELECTOR.PANEL).length === 0) {
+            return;
+        }
+
+        // Enable select2 on cohort filter.
+        $(SELECTOR.PANEL).find('.singleselect').select2();
+
+        loadData();
+
+        // Search in table.
+        $('body').on('input', `${SELECTOR.PANEL} ${SELECTOR.SEARCH}`, function() {
+            dataTable.columns(0).search($(this).val()).draw();
         });
     }
 
