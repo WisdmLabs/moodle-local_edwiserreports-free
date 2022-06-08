@@ -47,6 +47,16 @@
             }
         }
     }
+    &.theme_adaptable,
+    &.theme_fordson {
+        #siteaccessblock {
+            a {
+                color: #0f6fc5;
+                text-decoration: none;
+                background-color: transparent;
+            }
+        }
+    }
     #todaysactivityblock input.input-group-addon {
         width: 150px;
     }
@@ -131,6 +141,9 @@ $padding: 1.0715rem;
             button.dropdown-toggle {
                 color: #333 !important;
             }
+        }
+        .dropdown-menu a {
+            color: #526069;
         }
     }
     .select2-container--default {

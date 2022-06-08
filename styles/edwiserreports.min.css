@@ -16,6 +16,12 @@
     animation: rotating 2s linear infinite;
 }
 
+#wdm-activeusers-individual .dropdown-item input {
+    border-radius: 0 !important;
+    border: 0 !important;
+    box-shadow: none !important;
+}
+
 #wdm-activeusers-individual .dropdown-menu.withcalendar {
     width: 310px;
     display: flex;
@@ -227,6 +233,10 @@
     }
 }
 
+.select2-container--default .select2-results__option[aria-disabled="true"] {
+    color: #999 !important;
+}
+
 .clearfix {
     clear: both;
 }
@@ -339,6 +349,16 @@ tr[aria-expanded="true"] .accordion-arrow.icon {
     width: 100%;
 }
 
+#page-local-edwiserreports-index .dropdown-item input {
+    border-radius: 0 !important;
+    border: 0 !important;
+    box-shadow: none !important;
+}
+
+#page-local-edwiserreports-index #page #region-main > .card {
+    overflow: hidden;
+}
+
 @media (min-width: 520px) {
     #page-local-edwiserreports-index .edwiserreports-header {
         display: flex;
@@ -396,6 +416,11 @@ tr[aria-expanded="true"] .accordion-arrow.icon {
     #wdm-edwiserreports > [data-block], #wdm-edwiserreports > .col-12 {
         padding: 0 !important;
     }
+}
+
+#wdm-edwiserreports .select2-container--default {
+    max-width: 100%;
+    width: 100% !important;
 }
 
 #wdm-edwiserreports .blocksetting {
@@ -725,6 +750,10 @@ tr[aria-expanded="true"] .accordion-arrow.icon {
     opacity: 0.5;
 }
 
+#scheduletab .invalid-feedback {
+    font-size: 1rem;
+}
+
 #listemailstab .esr-switch[data-value="0"] .show-svg {
     display: none;
 }
@@ -884,6 +913,10 @@ tr[aria-expanded="true"] .accordion-arrow.icon {
     bottom: 0;
     background: rgba(255, 255, 255, 0.7);
     z-index: 1201;
+}
+
+.edwiserreports-loader.position-fixed {
+    z-index: 1701;
 }
 
 .edwiserreports-loader .animation-wrapper {
@@ -1077,6 +1110,10 @@ tr[aria-expanded="true"] .accordion-arrow.icon {
     font-weight: 500;
     text-transform: uppercase;
     margin: auto;
+}
+
+.download-links:not(.dropdown-item) button:focus {
+    outline: none !important;
 }
 
 .checkbox-edwiserreports {
@@ -1281,6 +1318,20 @@ tr[aria-expanded="true"] .accordion-arrow.icon {
 #wdm-customreports-edit .dataTable .sorting_desc,
 #wdm-customreports-edit .dataTable .sorting {
     background-image: none !important;
+}
+
+#wdm-customreports-save-form .form-group .text-nowrap {
+    align-self: center;
+    margin-left: auto;
+}
+
+#wdm-customreports-save-form .form-group .text-nowrap abbr[title] {
+    text-decoration: none !important;
+}
+
+#wdm-customreports-save-form .form-group .text-nowrap * {
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 table.dataTable {
@@ -1673,11 +1724,12 @@ table.dataTable td.dataTables_empty {
 }
 
 .top-insights .insight-wrapper .insight-title {
-    font-size: 1.1rem;
+    font-size: 0.857rem;
     font-weight: 700;
     line-height: 1.142rem;
     color: #999999;
     text-transform: uppercase;
+    margin-top: 1.287rem;
 }
 
 .top-insights .insight-wrapper .card-editing {
@@ -1688,15 +1740,22 @@ table.dataTable td.dataTables_empty {
     z-index: 0;
 }
 
+.insight-wrap {
+    align-items: center;
+}
+
 .insight-wrap .insight-value {
-    font-size: 2rem;
-    margin-top: 0.2rem;
     font-weight: 600;
-    line-height: 2.2rem;
+    white-space: nowrap;
+    font-size: 1.57rem;
+    line-height: 2.14rem;
+    margin-bottom: 0;
+    margin-top: 0;
+    margin-right: 0.3rem;
 }
 
 .insight-wrap .insight-direction {
-    margin-top: 0.2rem;
+    margin-top: 0;
     font-size: 1.7rem;
     vertical-align: bottom;
 }
@@ -1704,19 +1763,24 @@ table.dataTable td.dataTables_empty {
 .insight-wrap .insight-direction .value {
     display: flex;
     position: relative;
-    font-size: 1.2rem;
     font-weight: 600;
     border: 1px solid #E5E5E5;
     border-radius: 2rem;
-    padding: 0rem 0.5rem 0 2.2rem;
+    font-size: 0.857rem;
+    line-height: 1.17rem;
+    margin-right: 0.5rem;
+    padding-right: 0.5rem;
+    align-items: center;
 }
 
-.insight-wrap .insight-direction .value .fa {
-    position: absolute;
-    left: -1px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 2.2rem;
+.insight-wrap .insight-direction .value .icon {
+    width: 1.285rem;
+    height: 1.285rem;
+    margin-right: 0.5rem !important;
+}
+
+.insight-wrap .insight-direction .value span {
+    white-space: nowrap;
 }
 
 .insight-card {
@@ -2100,6 +2164,12 @@ table.dataTable td.dataTables_empty {
 #page-local-edwiserreports-index.theme_adaptable #liveusersblock .text-success,
 #page-local-edwiserreports-index.theme_adaptable #liveusersblock .text-dander {
     font-size: 1rem !important;
+}
+
+#page-local-edwiserreports-index.theme_adaptable #siteaccessblock a, #page-local-edwiserreports-index.theme_fordson #siteaccessblock a {
+    color: #0f6fc5;
+    text-decoration: none;
+    background-color: transparent;
 }
 
 #page-local-edwiserreports-index #todaysactivityblock input.input-group-addon {
@@ -2644,6 +2714,16 @@ table.dataTable td.dataTables_empty {
 #page-local-edwiserreports-activeusers.theme_adaptable #scheduletab button.dropdown-toggle,
 #page-local-edwiserreports-learner.theme_adaptable #scheduletab button.dropdown-toggle {
     color: #333 !important;
+}
+
+#page-local-edwiserreports-index.theme_adaptable .dropdown-menu a,
+#page-local-edwiserreports-studentengagement.theme_adaptable .dropdown-menu a,
+#page-local-edwiserreports-grade.theme_adaptable .dropdown-menu a,
+#page-local-edwiserreports-certificates.theme_adaptable .dropdown-menu a,
+#page-local-edwiserreports-coursereport.theme_adaptable .dropdown-menu a,
+#page-local-edwiserreports-activeusers.theme_adaptable .dropdown-menu a,
+#page-local-edwiserreports-learner.theme_adaptable .dropdown-menu a {
+    color: #526069;
 }
 
 #page-local-edwiserreports-index .select2-container--default,
@@ -3752,7 +3832,7 @@ span.flatpickr-weekday {
     position: absolute;
     left: -100000px;
     width: 100%;
-    z-index: 1200;
+    z-index: 1000;
 }
 
 .select2-results {
@@ -3827,7 +3907,7 @@ span.flatpickr-weekday {
     height: auto;
     width: auto;
     opacity: 0;
-    z-index: 1800;
+    z-index: 1001;
     background-color: #fff;
     filter: alpha(opacity=0);
 }

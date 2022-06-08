@@ -1,4 +1,5 @@
 /* stylelist-disable */
+
 .select2-container {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -142,7 +143,7 @@
     position: absolute;
     left: -100000px;
     width: 100%;
-    z-index: 1200;
+    z-index: 1000;
 }
 
 .select2-results {
@@ -217,7 +218,7 @@
     height: auto;
     width: auto;
     opacity: 0;
-    z-index: 1800;
+    z-index: 1001;
     background-color: #fff;
     filter: alpha(opacity=0);
 }
@@ -388,7 +389,7 @@
     margin-top: 1px;
 }
 
-.select2-container--default .select2-results > .select2-results__options {
+.select2-container--default .select2-results>.select2-results__options {
     max-height: 200px;
     overflow-y: auto;
 }

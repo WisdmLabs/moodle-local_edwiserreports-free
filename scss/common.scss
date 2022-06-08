@@ -72,6 +72,10 @@
     }
 }
 
+.select2-container--default .select2-results__option[aria-disabled="true"] {
+    color: #999 !important;
+}
+
 .clearfix {
     clear: both;
 }
@@ -186,6 +190,16 @@ tr[aria-expanded="true"] {
     .comparisontable {
         width: 100%;
     }
+    .dropdown-item {
+        input {
+            border-radius: 0 !important;
+            border: 0 !important;
+            box-shadow: none !important;
+        }
+    }
+    #page #region-main>.card {
+        overflow: hidden;
+    }
     .edwiserreports-header {
         @media (min-width: 520px) {
             display: flex;
@@ -229,6 +243,10 @@ tr[aria-expanded="true"] {
         & > [data-block], & > .col-12 {
             padding: 0 !important;
         }
+    }
+    .select2-container--default {
+        max-width: 100%;
+        width: 100% !important;
     }
     .blocksetting {
         z-index: 2;
@@ -555,6 +573,9 @@ tr[aria-expanded="true"] {
             }
         }
     }
+    .invalid-feedback {
+        font-size: 1rem;
+    }
 }
 
 #listemailstab {
@@ -747,6 +768,9 @@ tr[aria-expanded="true"] {
     bottom: 0;
     background: rgba(255, 255, 255, 0.7);
     z-index: 1201;
+    &.position-fixed {
+        z-index: 1701;
+    }
     .animation-wrapper {
         position: absolute;
         left: 50%;
@@ -937,6 +961,11 @@ tr[aria-expanded="true"] {
         font-weight: 500;
         text-transform: uppercase;
         margin: auto;
+    }
+    &:not(.dropdown-item) {
+        button:focus {
+            outline: none !important;
+        }
     }
 }
 

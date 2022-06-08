@@ -23,11 +23,14 @@
  * @author      Yogesh Shirsath
  */
 
+// phpcs:disable
+
 ob_start();
 require_once(__DIR__ . '/../../../config.php');
 require_once(__DIR__ . '/../classes/constants.php');
 ob_clean();
 
+// phpcs:enable
 $theme = local_edwiserreports\utility::get_active_theme();
 
 header('Content-Type: text/css; charset=utf-8');

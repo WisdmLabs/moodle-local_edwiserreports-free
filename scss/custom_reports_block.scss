@@ -99,3 +99,19 @@
         }
     }
 }
+
+#wdm-customreports-save-form {
+    .form-group {
+        .text-nowrap {
+            abbr[title] {
+                text-decoration: none !important;
+            }
+            align-self: center;
+            margin-left: auto;
+            * {
+                margin-top: 0;
+                margin-bottom: 0;
+            }
+        }
+    }
+}
