@@ -15,13 +15,13 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     local_edwiserreports
  * @copyright   2021 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 /* eslint-disable no-console */
 define([
     'jquery',
+    'core/notification',
     './defaultconfig',
     './variables',
     './common',
@@ -29,6 +29,7 @@ define([
     './dataTables.bootstrap4'
 ], function(
     $,
+    Notification,
     cfg,
     V,
     common
@@ -41,10 +42,7 @@ define([
     function init(invalidUser) {
         var panel = cfg.getPanel("#inactiveusersblock");
         var panelBody = cfg.getPanel("#inactiveusersblock", "body");
-        var panelTitle = cfg.getPanel("#inactiveusersblock", "title");
         var table = panelBody + " #inactiveuserstable";
-        var tableWrapper = panelBody + " #inactiveuserstable_wrapper";
-        var loader = panelBody + " .loader";
         var dropdown = panelBody + " .dropdown-menu .dropdown-item";
         var dropdownToggle = panelBody + " button.dropdown-toggle";
         var inActiveUsersTable = null;
@@ -58,9 +56,15 @@ define([
                 aaSorting: [
                     [2, 'desc']
                 ],
-                oLanguage: {
-                    sEmptyTable: "No inactive users are available.",
-                    sSearchPlaceholder: "Search Users"
+                language: {
+                    info: M.util.get_string('tableinfo', 'local_edwiserreports'),
+                    infoEmpty: M.util.get_string('infoempty', 'local_edwiserreports'),
+                    emptyTable: M.util.get_string('noinactiveusers', 'local_edwiserreports'),
+                    zeroRecords: M.util.get_string('zerorecords', 'local_edwiserreports'),
+                    paginate: {
+                        previous: M.util.get_string('previous', 'moodle'),
+                        next: M.util.get_string('next', 'moodle')
+                    }
                 },
                 columnDefs: [{
                     "targets": 1,
@@ -137,8 +141,8 @@ define([
                     inActiveUsersTable.rows.add(response.data);
                     inActiveUsersTable.draw();
                 })
-                .fail(function(error) {
-                    // console.log(error);
+                .fail(function(ex) {
+                    Notification.exception(ex);
                 }).always(function() {
                     // Hide loader.
                     common.loader.hide('#inactiveusersblock');

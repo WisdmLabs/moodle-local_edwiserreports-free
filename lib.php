@@ -246,7 +246,7 @@ function local_edwiserreports_output_fragment_get_blocksetting_form($params) {
     $output .= html_writer::end_tag('div');
     $output .= html_writer::tag(
         'button',
-        'Save',
+        get_string('save'),
         array('type' => 'submit', 'class' => 'btn theme-primary-bg text-white pull-right save-block-settings')
     );
 
@@ -304,7 +304,7 @@ function local_edwiserreports_output_fragment_get_blockscap_form($block) {
     $output .= local_edwiserreports_block_overview_display($capvalue, $blockname);
     $output .= html_writer::end_div();
     $btnparams = array('type' => 'submit', 'class' => 'btn theme-primary-bg text-white pull-right save-block-caps');
-    $output .= html_writer::tag('button', 'Save', $btnparams);
+    $output .= html_writer::tag('button', get_string('save'), $btnparams);
 
     $output .= html_writer::end_tag('form');
 

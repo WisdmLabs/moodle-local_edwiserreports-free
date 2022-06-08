@@ -97,8 +97,15 @@ define([
                 dom: '<"edwiserreports-table"<"table-filter d-flex"i><t><"table-pagination"p>>',
                 ajax: V.generateUrl(V.requestUrl, params),
                 pageLength: pageLength,
-                oLanguage: {
-                    sEmptyTable: "No users are enrolled as student",
+                language: {
+                    info: M.util.get_string('tableinfo', 'local_edwiserreports'),
+                    infoEmpty: M.util.get_string('infoempty', 'local_edwiserreports'),
+                    emptyTable: M.util.get_string('nostudentsenrolled', 'local_edwiserreports'),
+                    zeroRecords: M.util.get_string('zerorecords', 'local_edwiserreports'),
+                    paginate: {
+                        previous: M.util.get_string('previous', 'moodle'),
+                        next: M.util.get_string('next', 'moodle')
+                    }
                 },
                 columns: [{
                     "data": "username"

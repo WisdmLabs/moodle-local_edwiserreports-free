@@ -15,18 +15,19 @@
 /**
  * Grade table js.
  *
- * @package     local_edwiserreports
  * @copyright   2021 wisdmlabs <support@wisdmlabs.com>
  * @author      Yogesh Shirsath
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 define([
     'jquery',
+    'core/notification',
     './common',
     './defaultconfig',
     './select2'
 ], function(
     $,
+    Notification,
     common,
     CFG
 ) {
@@ -100,8 +101,14 @@ define([
             }],
             dom: '<"edwiserreports-table"i<t><"table-pagination"p>>',
             language: {
-                searchPlaceholder: M.util.get_string('searchuser', 'local_edwiserreports'),
-                emptyTable: M.util.get_string('emptytable', 'local_edwiserreports')
+                info: M.util.get_string('tableinfo', 'local_edwiserreports'),
+                infoEmpty: M.util.get_string('infoempty', 'local_edwiserreports'),
+                emptyTable: M.util.get_string('emptytable', 'local_edwiserreports'),
+                zeroRecords: M.util.get_string('zerorecords', 'local_edwiserreports'),
+                paginate: {
+                    previous: M.util.get_string('previous', 'moodle'),
+                    next: M.util.get_string('next', 'moodle')
+                }
             },
             drawCallback: function() {
                 common.stylePaginationButton(this);

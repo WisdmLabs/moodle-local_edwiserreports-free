@@ -147,7 +147,10 @@ define([
                         let color = w.config.colors[seriesIndex];
                         return `<div class="custom-donut-tooltip" style="color: ${color};">
                                 <span style="font-weight: 500;"> ${label}:</span>
-                                <span style="font-weight: 700;"> ${value} ${tooltip}</span>
+                                <span style="font-weight: 700;"> ${value} ${M.util.get_string(
+                                    tooltip,
+                                    'local_edwiserreports'
+                                )}</span>
                             </div>`;
                     }
                 };
@@ -163,7 +166,7 @@ define([
                 common.insight('#gradeblock .insight', {
                     'insight': {
                         'value': response.average + '%',
-                        'title': M.util.get_string('averagegrade', 'local_edwiserreports')
+                        'title': 'averagegrade'
                     }
                 });
                 renderGraph($(SELECTOR.PANEL).find(SELECTOR.GRAPH), data);

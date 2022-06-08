@@ -96,7 +96,7 @@ class courseprogressblock extends block_base {
         $response->insight = [
             'insight' => [
                 'value' => '??',
-                'title' => get_string('averagecourseprogress', 'local_edwiserreports')
+                'title' => 'averagecourseprogress'
             ],
             'pro' => $this->image_icon('lock'),
             'upgradelink' => $upgradelink

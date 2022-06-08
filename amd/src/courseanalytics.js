@@ -111,13 +111,12 @@ define([
          * @return {Objcet} Datatable object
          */
         function generateDataTable(tableId, table, data) {
-            var emptyStr = "No users has Enrolled in this course";
-            var searchPlaceholder = "Search Analytics";
+            var emptyStr = M.util.get_string('nousersincourse', 'local_edwiserreports');
 
             if (tableId == RecentCompletion) {
-                emptyStr = "No users has completed this course";
+                emptyStr = M.util.get_string('nouserscompleted', 'local_edwiserreports');
             } else if (tableId == RecentVisits) {
-                emptyStr = "No users has visited this course";
+                emptyStr = M.util.get_string('nousersvisited', 'local_edwiserreports');
             }
 
             if (table !== null) {
@@ -131,9 +130,15 @@ define([
             table = tableId.DataTable({
                 data: data,
                 responsive: true,
-                oLanguage: {
-                    sEmptyTable: emptyStr,
-                    sSearchPlaceholder: searchPlaceholder
+                language: {
+                    info: M.util.get_string('tableinfo', 'local_edwiserreports'),
+                    infoEmpty: M.util.get_string('infoempty', 'local_edwiserreports'),
+                    emptyTable: emptyStr,
+                    zeroRecords: M.util.get_string('zerorecords', 'local_edwiserreports'),
+                    paginate: {
+                        previous: M.util.get_string('previous', 'moodle'),
+                        next: M.util.get_string('next', 'moodle')
+                    }
                 },
                 columnDefs: [{
                     className: "text-left",

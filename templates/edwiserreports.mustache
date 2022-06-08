@@ -180,8 +180,14 @@
                                     bInfo: false,
                                     lengthChange: false,
                                     language: {
-                                        searchPlaceholder: "{{#str}}searchreports, local_edwiserreports{{/str}}",
-                                        emptyTable: "{{#str}}noresult, local_edwiserreports{{/str}}"
+                                        info: "{{#str}}tableinfo, local_edwiserreports{{/str}}",
+                                        infoEmpty: "{{#str}}infoempty, local_edwiserreports{{/str}}",
+                                        emptyTable: "{{#str}}nodata, local_edwiserreports{{/str}}",
+                                        zeroRecords: "{{#str}}zerorecords, local_edwiserreports{{/str}}",
+                                        paginate: {
+                                            previous: "{{#str}}previous{{/str}}",
+                                            next: "{{#str}}next{{/str}}"
+                                        }
                                     },
                                     drawCallback: function() {
                                         $(tableId).find('th').addClass('theme-3-bg text-white');

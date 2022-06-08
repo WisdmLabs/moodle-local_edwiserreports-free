@@ -152,8 +152,14 @@ define([
                     "data": "enddate"
                 }],
                 "language": {
-                    "searchPlaceholder": "Search Course",
-                    "emptyTable": "There are no courses"
+                    info: M.util.get_string('tableinfo', 'local_edwiserreports'),
+                    infoEmpty: M.util.get_string('infoempty', 'local_edwiserreports'),
+                    emptyTable: M.util.get_string('nocourses', 'local_edwiserreports'),
+                    zeroRecords: M.util.get_string('zerorecords', 'local_edwiserreports'),
+                    paginate: {
+                        previous: M.util.get_string('previous', 'moodle'),
+                        next: M.util.get_string('next', 'moodle')
+                    }
                 }
             };
         }

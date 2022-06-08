@@ -151,7 +151,7 @@ class courseactivitystatusblock extends block_base {
         $totalcompletion = array_sum($completions);
         $insight = [
             'insight' => [
-                'title' => get_string('averagecompletion', 'local_edwiserreports'),
+                'title' => 'averagecompletion',
                 'value' => floor($totalcompletion / $days),
                 'difference' => [
                     'direction' => 1,
@@ -160,10 +160,10 @@ class courseactivitystatusblock extends block_base {
             ],
             'details' => [
                 'data' => [[
-                    'title' => get_string('totalassignment', 'local_edwiserreports'),
+                    'title' => 'totalassignment',
                     'value' => $totalsubmission
                 ], [
-                    'title' => get_string('totalcompletion', 'local_edwiserreports'),
+                    'title' => 'totalcompletion',
                     'value' => $totalcompletion
                 ]]
             ]

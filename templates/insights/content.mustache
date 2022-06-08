@@ -3,7 +3,12 @@
     {{#difference}}
         <span class="insight-direction d-inline-block pr-6 insight-{{#direction}}success{{/direction}}{{^direction}}danger{{/direction}}">
             <span class="value">
-                <i class="fa fa-arrow-circle-{{#direction}}up{{/direction}}{{^direction}}down{{/direction}}"></i>
+                {{#direction}}
+                    {{#pix}} uparrow, local_edwiserreports {{/pix}}
+                {{/direction}}
+                {{^direction}}
+                    {{#pix}} downarrow, local_edwiserreports {{/pix}}
+                {{/direction}}
                 {{value}}%
                 {{#direction}}
                     <span class="ml-1">{{#str}} up {{/str}}</span>

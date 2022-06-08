@@ -68,7 +68,12 @@
                 {{#difference}}
                     <span class="insight-direction pr-2 insight-{{#direction}}success{{/direction}}{{^direction}}danger{{/direction}}">
                         <span class="value">
-                            <i class="fa fa-arrow-circle-{{#direction}}up{{/direction}}{{^direction}}down{{/direction}}"></i>
+                            {{#direction}}
+                                {{#pix}} uparrow, local_edwiserreports {{/pix}}
+                            {{/direction}}
+                            {{^direction}}
+                                {{#pix}} downarrow, local_edwiserreports {{/pix}}
+                            {{/direction}}
                             {{value}}%
                         </span>
                     </span>

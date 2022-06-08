@@ -92,7 +92,14 @@ define([
             data: data,
             dom: '<"edwiserreports-table"<t><"table-pagination"p>>',
             language: {
-                searchPlaceholder: "Search User"
+                info: M.util.get_string('tableinfo', 'local_edwiserreports'),
+                infoEmpty: M.util.get_string('infoempty', 'local_edwiserreports'),
+                emptyTable: M.util.get_string('nousers', 'local_edwiserreports'),
+                zeroRecords: M.util.get_string('zerorecords', 'local_edwiserreports'),
+                paginate: {
+                    previous: M.util.get_string('previous', 'moodle'),
+                    next: M.util.get_string('next', 'moodle')
+                }
             },
             aaSorting: [
                 [1, 'asc']

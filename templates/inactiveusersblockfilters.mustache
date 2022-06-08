@@ -3,19 +3,19 @@
         {{> local_edwiserreports/datatable/search }}
     </div>
     <div class="filter-selector col-12 col-md-6 mb-1 d-flex">
-        <button type="button" class="btn btn-sm dropdown-toggle ml-auto" data-toggle="dropdown" aria-expanded="true">Never</button>
+        <button type="button" class="btn btn-sm dropdown-toggle ml-auto" data-toggle="dropdown" aria-expanded="true">{{#str}}never, local_edwiserreports{{/str}}</button>
         <div class="dropdown-menu dropdown-sm" role="menu" x-placement="top-start">
             <a class="active dropdown-item" href="javascript:void(0)" data-value="never" role="menuitem">
-                Never
+                {{#str}}never, local_edwiserreports{{/str}}
             </a>
             <a class="dropdown-item" href="javascript:void(0)" data-value="1month" role="menuitem">
-                Before 1 Month
+                {{#str}}before1month, local_edwiserreports{{/str}}
             </a>
             <a class="dropdown-item" href="javascript:void(0)" data-value="3month" role="menuitem">
-                Before 3 Month
+                {{#str}}before3month, local_edwiserreports{{/str}}
             </a>
             <a class="dropdown-item" href="javascript:void(0)" data-value="6month" role="menuitem">
-                Before 6 Month
+                {{#str}}before6month, local_edwiserreports{{/str}}
             </a>
         </div>
     </div>

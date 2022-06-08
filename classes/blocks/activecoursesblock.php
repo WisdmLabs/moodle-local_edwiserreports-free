@@ -68,7 +68,7 @@ class activecoursesblock extends block_base {
         global $OUTPUT;
         return $OUTPUT->render_from_template('local_edwiserreports/common-table-search-filter', [
             'searchicon' => $this->image_icon('actions/search'),
-            'placeholder' => get_string('searchuser', 'local_edwiserreports')
+            'placeholder' => get_string('searchcourse', 'local_edwiserreports')
         ]);
     }
 

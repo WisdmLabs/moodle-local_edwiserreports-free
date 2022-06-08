@@ -264,18 +264,18 @@ class activeusersblock extends block_base {
         $insight = [
             'upgradelink' => $upgradelink,
             'insight' => [
-                'title' => get_string('averageactiveusers', 'local_edwiserreports'),
+                'title' => 'averageactiveusers',
                 'value' => '??'
             ],
             'details' => [
                 'data' => [[
-                    'title' => get_string('totalactiveusers', 'local_edwiserreports'),
+                    'title' => 'totalactiveusers',
                     'value' => '??'
                 ], [
-                    'title' => get_string('totalcourseenrolments', 'local_edwiserreports'),
+                    'title' => 'totalcourseenrolments',
                     'value' => '??'
                 ], [
-                    'title' => get_string('totalcoursecompletions', 'local_edwiserreports'),
+                    'title' => 'totalcoursecompletions',
                     'value' => '??'
                 ]]
             ],

@@ -34,8 +34,11 @@
         <input type="hidden" name="reportsid" value="{{#reportsid}}{{.}}{{/reportsid}}{{^reportsid}}0{{/reportsid}}" />
     </div>
     <div id="fitem_id_crb_reportname" class="form-group row fitem">
-        <div class="col-md-3">
-            <span class="float-sm-right text-nowrap">
+        <div class="col-md-3 d-flex">
+            <label class="col-form-label d-inline" for="id_crb_reportname">
+                {{#str}} reportname, local_edwiserreports {{/str}}
+            </label>
+            <span class="text-nowrap">
                 <abbr class="initialism text-danger"
                       title="{{#str}} required, moodle {{/str}}">
                     <i class="icon fa fa-exclamation-circle text-danger fa-fw "
@@ -58,9 +61,6 @@
                     </i>
                 </a>
             </span>
-            <label class="col-form-label d-inline" for="id_crb_reportname">
-                {{#str}} reportname, local_edwiserreports {{/str}}
-            </label>
         </div>
         <div class="col-md-9 form-inline felement" data-fieldtype="text">
             <input type="text" class="form-control " name="reportname" id="id_crb_reportname" size="50" maxlength="254" value="{{reportname}}">
@@ -68,8 +68,11 @@
         </div>
     </div>
     <div id="fitem_id_crb_reportshortname" class="form-group row fitem">
-        <div class="col-md-3">
-            <span class="float-sm-right text-nowrap">
+        <div class="col-md-3 d-flex">
+            <label class="col-form-label d-inline" for="id_crb_reportshortname">
+                {{#str}} reportshortname, local_edwiserreports {{/str}}
+            </label>
+            <span class="text-nowrap">
                 <abbr class="initialism text-danger" title="{{#str}} required, moodle {{/str}}">
                     <i class="icon fa fa-exclamation-circle text-danger fa-fw "
                        title="{{#str}} required, moodle {{/str}}"
@@ -91,9 +94,6 @@
                     </i>
                 </a>
             </span>
-            <label class="col-form-label d-inline" for="id_crb_reportshortname">
-                {{#str}} reportshortname, local_edwiserreports {{/str}}
-            </label>
         </div>
         <div class="col-md-9 form-inline felement" data-fieldtype="text">
             <input type="text" class="form-control " name="reportshortname" id="id_crb_reportshortname" size="50" maxlength="254"  value="{{reportshortname}}">
@@ -101,8 +101,11 @@
         </div>
     </div>
     <div class="form-group row fitem">
-        <div class="col-md-3">
-            <span class="float-sm-right text-nowrap">
+        <div class="col-md-3 d-flex">
+            <label class="col-form-label d-inline" for="crb_download_enable">
+                {{#str}} downloadenable, local_edwiserreports {{/str}}
+            </label>
+            <span class="text-nowrap">
                 <a class="btn btn-link p-0"
                    role="button"
                    data-container="body"
@@ -118,9 +121,6 @@
                     </i>
                 </a>
             </span>
-            <label class="col-form-label d-inline" for="crb_download_enable">
-                {{#str}} downloadenable, local_edwiserreports {{/str}}
-            </label>
         </div>
         <div class="col-md-9 form-inline felement" data-fieldtype="select">
             <div class="checkbox-edwiserreports">
@@ -131,8 +131,11 @@
         </div>
     </div>
     <div class="form-group row fitem">
-        <div class="col-md-3">
-            <span class="float-sm-right text-nowrap">
+        <div class="col-md-3 d-flex">
+            <label class="col-form-label d-inline" for="crb_desktop_enable">
+                {{#str}} enabledesktop, local_edwiserreports {{/str}}
+            </label>
+            <span class="text-nowrap">
                 <a class="btn btn-link p-0"
                    role="button"
                    data-container="body"
@@ -148,9 +151,6 @@
                     </i>
                 </a>
             </span>
-            <label class="col-form-label d-inline" for="crb_desktop_enable">
-                {{#str}} enabledesktop, local_edwiserreports {{/str}}
-            </label>
         </div>
         <div class="col-md-9 form-inline felement" data-fieldtype="checkbox">
             <div class="checkbox-edwiserreports">

@@ -128,7 +128,7 @@ class timespentonsiteblock extends block_base {
         $total = array_sum($timespent);
         $insight = [
             'insight' => [
-                'title' => get_string('averagetimespent', 'local_edwiserreports'),
+                'title' => 'averagetimespent',
                 'value' => floor($total / $this->xlabelcount),
                 'difference' => [
                     'direction' => 0,
@@ -137,7 +137,7 @@ class timespentonsiteblock extends block_base {
             ],
             'details' => [
                 'data' => [[
-                    'title' => get_string('totaltimespent', 'local_edwiserreports'),
+                    'title' => 'totaltimespent',
                     'value' => $total
                 ]]
             ]

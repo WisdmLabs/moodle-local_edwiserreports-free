@@ -175,9 +175,7 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                     args: {}
                 }]);
 
-                completePluginInstallation[0].done(function(response) {
-                    console.log(response);
-                });
+                completePluginInstallation[0].done();
             }
         });
 

@@ -182,6 +182,16 @@ define([
                                 columns: data.columns,
                                 dom: '<"edwiserreports-table"<"table-filter d-flex"f><t><"table-pagination"p>>',
                                 data: data.reportsdata,
+                                language: {
+                                    info: M.util.get_string('tableinfo', 'local_edwiserreports'),
+                                    infoEmpty: M.util.get_string('infoempty', 'local_edwiserreports'),
+                                    emptyTable: M.util.get_string('nodata', 'local_edwiserreports'),
+                                    zeroRecords: M.util.get_string('zerorecords', 'local_edwiserreports'),
+                                    paginate: {
+                                        previous: M.util.get_string('previous', 'moodle'),
+                                        next: M.util.get_string('next', 'moodle')
+                                    }
+                                },
                                 bInfo: false,
                                 bFilter: false,
                                 searching: false,
@@ -364,8 +374,14 @@ define([
                         }],
                         dom: '<"edwiserreports-table"<t><"table-pagination"p>>',
                         language: {
-                            searchPlaceholder: M.util.get_string('searchreports', 'local_edwiserreports'),
-                            emptyTable: M.util.get_string('noresult', 'local_edwiserreports')
+                            info: M.util.get_string('tableinfo', 'local_edwiserreports'),
+                            infoEmpty: M.util.get_string('infoempty', 'local_edwiserreports'),
+                            emptyTable: M.util.get_string('nodata', 'local_edwiserreports'),
+                            zeroRecords: M.util.get_string('zerorecords', 'local_edwiserreports'),
+                            paginate: {
+                                previous: M.util.get_string('previous', 'moodle'),
+                                next: M.util.get_string('next', 'moodle')
+                            }
                         },
                         order: [
                             [0, 'asc']

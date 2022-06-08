@@ -390,7 +390,7 @@ define([
 
             if (action == 'edit') {
                 ModalFactory.create({
-                    title: 'Edit Block Setting',
+                    title: M.util.get_string('editblocksetting', 'local_edwiserreports'),
                     body: Fragment.loadFragment(
                         'local_edwiserreports',
                         'get_blocksetting_form',
@@ -452,7 +452,7 @@ define([
                 });
             } else if (action == "editcap") {
                 ModalFactory.create({
-                    title: 'Edit Block Capabilities',
+                    title: M.util.get_string('editblockcapabilities', 'local_edwiserreports'),
                     body: Fragment.loadFragment(
                         'local_edwiserreports',
                         'get_blockscap_form',
@@ -641,8 +641,15 @@ define([
             },
             dom: '<"edwiserreports-table"i<t><"table-pagination"p>>',
             language: {
-                emptyTable: "There is no scheduled emails",
-                sClass: 'text-center'
+                info: M.util.get_string('tableinfo', 'local_edwiserreports'),
+                infoEmpty: M.util.get_string('infoempty', 'local_edwiserreports'),
+                emptyTable: M.util.get_string('noscheduleemails', 'local_edwiserreports'),
+                zeroRecords: M.util.get_string('zerorecords', 'local_edwiserreports'),
+                sClass: 'text-center',
+                paginate: {
+                    previous: M.util.get_string('previous', 'moodle'),
+                    next: M.util.get_string('next', 'moodle')
+                }
             },
             drawCallback: function() {
                 stylePaginationButton(this);
@@ -1136,14 +1143,16 @@ define([
                 if (short) {
                     time.push(h + " " + "h.");
                 } else {
-                    time.push(h + " " + (h == 1 ? "hour" : "hours"));
+                    time.push(h + " " + (h == 1 ? M.util.get_string('hour', 'local_edwiserreports') :
+                        M.util.get_string('hours', 'local_edwiserreports')));
                 }
             }
             if (m > 0) {
                 if (short) {
                     time.push(m + " " + "min.");
                 } else {
-                    time.push(m + " " + (m == 1 ? "minute" : "minutes"));
+                    time.push(m + " " + (m == 1 ? M.util.get_string('minute', 'local_edwiserreports') :
+                        M.util.get_string('minutes', 'local_edwiserreports')));
                 }
             }
             if (s > 0) {
@@ -1152,7 +1161,8 @@ define([
                         time.push(s + " " + "sec.");
                     }
                 } else {
-                    time.push(s + " " + (s == 1 ? "second" : "seconds"));
+                    time.push(s + " " + (s == 1 ? M.util.get_string('second', 'local_edwiserreports') :
+                        M.util.get_string('seconds', 'local_edwiserreports')));
                 }
             }
             if (time.length == 0) {
@@ -1169,6 +1179,12 @@ define([
      * @param {Object} data     Insight data
      */
     function insight(selector, data) {
+        data.insight.title = M.util.get_string(data.insight.title, 'local_edwiserreports');
+        if (data.details !== undefined && data.details.data !== undefined) {
+            data.details.data.forEach(function(value, index) {
+                data.details.data[index].title = M.util.get_string(value.title, 'local_edwiserreports');
+            });
+        }
         Templates.render('local_edwiserreports/insight-placeholder', {})
             .done(function(html, js) {
                 Templates.replaceNodeContents(selector, html, js);

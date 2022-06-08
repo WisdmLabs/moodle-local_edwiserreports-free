@@ -955,7 +955,9 @@ function local_edwiserreports_get_required_strings_for_js() {
 
     // Require string from role component.
     $str = array(
-        'loading'
+        'loading',
+        'next',
+        'previous'
     );
     $PAGE->requires->strings_for_js($str, 'moodle');
 }

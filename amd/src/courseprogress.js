@@ -124,8 +124,14 @@ define([
                         // Create dataTable for userslist
                         modalTable = ModalTable.DataTable({
                             language: {
-                                searchPlaceholder: "Search User",
-                                emptyTable: "There are no users"
+                                info: M.util.get_string('tableinfo', 'local_edwiserreports'),
+                                infoEmpty: M.util.get_string('infoempty', 'local_edwiserreports'),
+                                emptyTable: M.util.get_string('nousers', 'local_edwiserreports'),
+                                zeroRecords: M.util.get_string('zerorecords', 'local_edwiserreports'),
+                                paginate: {
+                                    previous: M.util.get_string('previous', 'moodle'),
+                                    next: M.util.get_string('next', 'moodle')
+                                }
                             },
                             dom: '<"edwiserreports-table"i<t><"table-pagination"p>>',
                             drawCallback: function() {
@@ -182,8 +188,14 @@ define([
                     targets: "_all"
                 }],
                 language: {
-                    searchPlaceholder: "Search Course",
-                    emptyTable: "There are no courses"
+                    info: M.util.get_string('tableinfo', 'local_edwiserreports'),
+                    infoEmpty: M.util.get_string('infoempty', 'local_edwiserreports'),
+                    emptyTable: M.util.get_string('nocourses', 'local_edwiserreports'),
+                    zeroRecords: M.util.get_string('zerorecords', 'local_edwiserreports'),
+                    paginate: {
+                        previous: M.util.get_string('previous', 'moodle'),
+                        next: M.util.get_string('next', 'moodle')
+                    }
                 },
                 drawCallback: function() {
                     $(CourseProgressTable).find('th').addClass('theme-3-bg text-white');

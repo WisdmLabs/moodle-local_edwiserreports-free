@@ -26,12 +26,6 @@ namespace local_edwiserreports;
 
 defined('MOODLE_INTERNAL') or die;
 
-use local_edwiserreports\controller\authentication;
-use moodle_url;
-use cache;
-use html_writer;
-use core_text;
-
 require_once($CFG->dirroot . '/local/edwiserreports/classes/block_base.php');
 
 /**

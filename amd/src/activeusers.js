@@ -169,7 +169,14 @@ define([
                         modalTable = ModalRoot.find(".modal-table").DataTable({
                             dom: '<"edwiserreports-table"<"p-2"i><t><"table-pagination"p>>',
                             language: {
-                                emptyTable: "There are no users"
+                                info: M.util.get_string('tableinfo', 'local_edwiserreports'),
+                                infoEmpty: M.util.get_string('infoempty', 'local_edwiserreports'),
+                                emptyTable: M.util.get_string('nousers', 'local_edwiserreports'),
+                                zeroRecords: M.util.get_string('zerorecords', 'local_edwiserreports'),
+                                paginate: {
+                                    previous: M.util.get_string('previous', 'moodle'),
+                                    next: M.util.get_string('next', 'moodle')
+                                }
                             },
                             drawCallback: function() {
                                 common.stylePaginationButton(this);
@@ -288,8 +295,14 @@ define([
                                 [0, 'desc']
                             ],
                             language: {
-                                searchPlaceholder: "Search Date",
-                                emptyTable: "There are no active users"
+                                info: M.util.get_string('tableinfo', 'local_edwiserreports'),
+                                infoEmpty: M.util.get_string('infoempty', 'local_edwiserreports'),
+                                emptyTable: M.util.get_string('noactiveusers', 'local_edwiserreports'),
+                                zeroRecords: M.util.get_string('zerorecords', 'local_edwiserreports'),
+                                paginate: {
+                                    previous: M.util.get_string('previous', 'moodle'),
+                                    next: M.util.get_string('next', 'moodle')
+                                }
                             },
                             columnDefs: [{
                                     "targets": 0,

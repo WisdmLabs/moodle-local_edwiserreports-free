@@ -127,7 +127,7 @@ class visitsonsiteblock extends block_base {
         $total = array_sum($visits);
         $insight = [
             'insight' => [
-                'title' => get_string('averagesitevisits', 'local_edwiserreports'),
+                'title' => 'averagesitevisits',
                 'value' => floor($total / $this->xlabelcount),
                 'difference' => [
                     'direction' => 1,
@@ -136,7 +136,7 @@ class visitsonsiteblock extends block_base {
             ],
             'details' => [
                 'data' => [[
-                    'title' => get_string('totalsitevisits', 'local_edwiserreports'),
+                    'title' => 'totalsitevisits',
                     'value' => $total
                 ]]
             ]

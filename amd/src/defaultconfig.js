@@ -137,9 +137,9 @@ define(["jquery", "local_edwiserreports/variables", "local_edwiserreports/select
                         aspectRatio: 1
                     },
                     labelName: {
-                        activeUsers: "Active Users",
-                        enrolments: "Course Enrolment",
-                        completionRate: "Course Completion Rate"
+                        activeUsers: M.util.get_string('activeusers', 'local_edwiserreports'),
+                        enrolments: M.util.get_string('courseenrolment', 'local_edwiserreports'),
+                        completionRate: M.util.get_string('coursecompletionrate', 'local_edwiserreports'),
                     },
                     backgroundColor: {
                         activeUsers: "rgba(0, 0, 0, 0)",

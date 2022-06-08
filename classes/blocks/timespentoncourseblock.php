@@ -128,7 +128,7 @@ class timespentoncourseblock extends block_base {
         $total = array_sum($courses);
         $insight = [
             'insight' => [
-                'title' => get_string('averagetimespent', 'local_edwiserreports'),
+                'title' => 'averagetimespent',
                 'value' => $total / count($courses),
                 'difference' => [
                     'direction' => 0,
@@ -137,7 +137,7 @@ class timespentoncourseblock extends block_base {
             ],
             'details' => [
                 'data' => [[
-                    'title' => get_string('totaltimespent', 'local_edwiserreports'),
+                    'title' => 'totaltimespent',
                     'value' => $total
                 ]]
             ]
