@@ -32,120 +32,144 @@ define([
 ) {
 
     /**
+     * Selectors.
+     */
+    var SELECTOR = {
+        PANEL: '#activecoursesblock',
+        TABLE: '#activecoursesblock table',
+        SEARCH: '.table-search-input input',
+        USERS: '#activecoursesblock table a.modal-trigger'
+    };
+
+    /**
+     * Data table object.
+     */
+    var dataTable = null;
+
+    /**
+     * Promises list.
+     */
+    let PROMISE = {
+        /**
+         * Get active courses.
+         * @returns {PROMISE}
+         */
+        GET_ACTIVECOURSES: function() {
+            return $.ajax({
+                url: CFG.requestUrl,
+                type: CFG.requestType,
+                dataType: CFG.requestDataType,
+                data: {
+                    action: 'get_activecourses_data_ajax',
+                    secret: M.local_edwiserreports.secret,
+                    lang: $('html').attr('lang')
+                },
+            });
+        }
+    };
+
+    /**
+     * Load data to dataTable using ajax.
+     */
+    function loadData() {
+        // Show loader.
+        common.loader.show(SELECTOR.PANEL);
+
+        PROMISE.GET_ACTIVECOURSES().done(function(response) {
+                if (dataTable !== null) {
+                    dataTable.destroy();
+                }
+                dataTable = $(SELECTOR.TABLE).DataTable({
+                    responsive: true,
+                    data: response.data,
+                    dom: '<"edwiserreports-table"<t><"table-pagination"p>>',
+                    aaSorting: [
+                        [2, 'desc']
+                    ],
+                    aoColumns: [null, null, {
+                        "orderSequence": ["desc"]
+                    }, {
+                        "orderSequence": ["desc"]
+                    }, {
+                        "orderSequence": ["desc"]
+                    }],
+                    language: {
+                        info: M.util.get_string('tableinfo', 'local_edwiserreports'),
+                        infoEmpty: M.util.get_string('infoempty', 'local_edwiserreports'),
+                        emptyTable: M.util.get_string('nocourses', 'local_edwiserreports'),
+                        zeroRecords: M.util.get_string('zerorecords', 'local_edwiserreports'),
+                        paginate: {
+                            previous: M.util.get_string('previous', 'moodle'),
+                            next: M.util.get_string('next', 'moodle')
+                        }
+                    },
+                    drawCallback: function() {
+                        common.stylePaginationButton(this);
+                    },
+                    columnDefs: [{
+                            "targets": 0,
+                            "className": "text-left pl-5",
+                            "orderable": false
+                        },
+                        {
+                            "targets": 1,
+                            "className": "text-left",
+                            "orderable": false
+                        },
+                        {
+                            "targets": "_all",
+                            "className": "text-center",
+                        }
+                    ],
+                    lengthChange: false,
+                    bInfo: false
+                });
+                /* Added fixed column rank in datatable */
+                dataTable.on('order.dt', function() {
+                    dataTable.column(0, {
+                        order: 'applied'
+                    }).nodes().each(function(cell, i) {
+                        let img = '';
+                        if (i >= 0 && i <= 2) {
+                            img = "<img class='ml-1' src='" + M.util.image_url(
+                                'trophy/' + ['gold', 'silver', 'bronze'][i],
+                                'local_edwiserreports'
+                            ) + "'></img>";
+                        }
+                        cell.innerHTML = (i + 1) + img;
+                    });
+                    $(SELECTOR.TABLE + " td:not(.bg-secondary)").addClass("bg-white");
+                }).draw();
+            })
+            .fail(function(data) {
+                console.log(data);
+            })
+            .always(function() {
+                // Hide loader.
+                common.loader.hide(SELECTOR.PANEL);
+            });
+    }
+
+    /**
      * Initialize
      * @param {function} invalidUser Callback function
      */
     function init(invalidUser) {
-        var activeCourseTable;
 
-        var panel = cfg.getPanel("#activecoursesblock");
-        var panelBody = cfg.getPanel("#activecoursesblock", "body");
-        var loader = panelBody + " .loader";
-        var table = panelBody + " .table";
-        var searchTable = panel + ' .table-search-input input';
-
-        if ($(panel).length) {
-            // Show loader.
-            common.loader.show('#activecoursesblock');
-
-            /* Ajax request to get data for active courses table */
-            $.ajax({
-                    url: cfg.requestUrl,
-                    type: cfg.requestType,
-                    dataType: cfg.requestDataType,
-                    data: {
-                        action: 'get_activecourses_data_ajax',
-                        secret: M.local_edwiserreports.secret,
-                        lang: $('html').attr('lang')
-                    },
-                }).done(function(response) {
-                    if (response.error === true && response.exception.errorcode === 'invalidsecretkey') {
-                        invalidUser('activecoursesblock', response);
-                        return;
-                    }
-                    /* Create active course table */
-                    createActiveCourseTable(response.data);
-                    /* Added fixed column rank in datatable */
-                    activeCourseTable.on('order.dt', function() {
-                        activeCourseTable.column(0, { order: 'applied' }).nodes().each(function(cell, i) {
-                            let img = '';
-                            if (i >= 0 && i <= 2) {
-                                img = "<img class='ml-1' src='" + M.util.image_url('trophy/' + ['gold', 'silver', 'bronze'][i], 'local_edwiserreports') + "'></img>";
-                            }
-                            cell.innerHTML = (i + 1) + img;
-                        });
-                        $(table + " td:not(.bg-secondary)").addClass("bg-white");
-                    }).draw();
-
-                    // Search in table.
-                    $('body').on('input', searchTable, function() {
-                        activeCourseTable.column(1).search(this.value).draw();
-                    });
-                })
-                .fail(function(error) {
-                    // console.log(error);
-                })
-                .always(function() {
-                    // Hide loader.
-                    common.loader.hide('#activecoursesblock');
-                });
+        // Block not present on page.
+        if ($(SELECTOR.PANEL).length === 0) {
+            return;
         }
 
-        /**
-         * Create active course table.
-         * @param {object} data Table data object
-         */
-        function createActiveCourseTable(data) {
-            /* If datable already created the destroy the table*/
-            if (activeCourseTable) {
-                activeCourseTable.destroy();
-            }
+        // Enable select2 on cohort filter.
+        $(SELECTOR.PANEL).find('.singleselect').select2();
 
-            /* Create datatable for active courses */
-            activeCourseTable = $(table).DataTable({
-                responsive: true,
-                data: data,
-                dom: '<"edwiserreports-table"<t><"table-pagination"p>>',
-                aaSorting: [
-                    [2, 'desc']
-                ],
-                aoColumns: [
-                    null,
-                    null,
-                    { "orderSequence": ["desc"] },
-                    { "orderSequence": ["desc"] },
-                    { "orderSequence": ["desc"] }
-                ],
-                language: {
-                    searchPlaceholder: "Search Course"
-                },
-                initComplete: function() {
-                    /* Remove laoder and display table after table is created */
-                    $(loader).hide();
-                    $(table).fadeIn("slow");
-                },
-                drawCallback: function() {
-                    common.stylePaginationButton(this);
-                },
-                columnDefs: [{
-                        "targets": 0,
-                        "className": "text-left pl-5",
-                        "orderable": false
-                    },
-                    {
-                        "targets": 1,
-                        "className": "text-left",
-                        "orderable": false
-                    },
-                    {
-                        "targets": "_all",
-                        "className": "text-center",
-                    }
-                ],
-                lengthChange: false,
-                bInfo: false
-            });
-        }
+        loadData();
+
+        // Search in table.
+        $('body').on('input', `${SELECTOR.PANEL} ${SELECTOR.SEARCH}`, function() {
+            dataTable.columns(1).search($(this).val()).draw();
+        });
     }
 
     // Must return the init function

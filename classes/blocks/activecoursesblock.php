@@ -24,16 +24,23 @@
 
 namespace local_edwiserreports;
 
-defined('MOODLE_INTERNAL') or die;
-
-use stdClass;
+use local_edwiserreports\utility;
 use context_course;
+use stdClass;
 use cache;
 
 /**
  * Class Acive Users Block. To get the data related to active users block.
  */
 class activecoursesblock extends block_base {
+
+    /**
+     * Initialize the block.
+     */
+    public function __construct() {
+        parent::__construct();
+        $this->cache = cache::make('local_edwiserreports', 'activecourses');
+    }
     /**
      * Preapre layout for active courses block
      * @return object Layout object
@@ -73,21 +80,42 @@ class activecoursesblock extends block_base {
     }
 
     /**
+     * Filter active courses data based on enrolled courses.
+     *
+     * @param array $data Data to be filtered.
+     *
+     * @return array
+     */
+    public function filter_active_courses($data) {
+        $userid = $this->get_current_user();
+        $courses = $this->get_courses_of_user($userid);
+        unset($courses[SITEID]);
+        $courses = array_keys($courses);
+        $filtered = [];
+        foreach ($data as $key => $value) {
+            if (in_array($key, $courses)) {
+                $filtered[] = $value;
+            }
+        }
+        return $filtered;
+    }
+
+    /**
      * Get Data for Active Courses
      * @param  object $params Parameteres
      * @return object         Response for Active Courses
      */
     public function get_data($params = false) {
-
         $response = new stdClass();
 
-        $cache = cache::make('local_edwiserreports', 'activecourses');
-        if (!$data = $cache->get('activecoursesdata')) {
+        if (!$data = $this->cache->get('activecoursesdata')) {
             $data = get_config('local_edwiserreports', 'activecoursesdata');
             if (!$data || !$data = json_decode($data, true)) {
                 $data = $this->get_course_data();
+            } else {
+                $data = $this->filter_active_courses($data);
             }
-            $cache->set('activecoursesdata', $data);
+            $this->cache->set('activecoursesdata', $data);
         }
 
         $response->data = $data;
@@ -95,37 +123,25 @@ class activecoursesblock extends block_base {
     }
 
     /**
-     * Get headers for Active Courses Block
-     * @return array Array of header of course block
-     */
-    public static function get_header() {
-        $header = array(
-            get_string("coursename", "local_edwiserreports"),
-            get_string("enrolments", "local_edwiserreports"),
-            get_string("visits", "local_edwiserreports"),
-            get_string("completions", "local_edwiserreports"),
-        );
-
-        return $header;
-    }
-
-    /**
      * Get Active Courses data
-     * @return array Array of course active records
+     * @return array         Array of course active records
      */
-    public static function get_course_data() {
+    public function get_course_data() {
         global $DB;
 
-        $courses = get_courses();
+        $userid = $this->get_current_user();
+        $courses = $this->get_courses_of_user($userid);
 
         $count = 1;
         $response = array();
-        // Calculate Completion Count for All Course.
-        $sql = "SELECT courseid, COUNT(userid) AS users
-            FROM {edwreports_course_progress}
-            WHERE progress = :progress
-            GROUP BY courseid";
+
         $params = array("progress" => 100);
+
+        // Calculate Completion Count for All Course.
+        $sql = "SELECT ecp.courseid, COUNT(ecp.userid) AS users
+            FROM {edwreports_course_progress} ecp
+            WHERE ecp.progress = :progress
+            GROUP BY ecp.courseid";
         // Get records with 100% completions.
         $coursecompletion = $DB->get_records_sql($sql, $params);
 
@@ -140,7 +156,7 @@ class activecoursesblock extends block_base {
 
             // Get Enrolled users
             // 'moodle/course:isincompletionreports' - this capability is allowed to only students.
-            $enrolledstudents = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+            $enrolledstudents = utility::get_enrolled_students($course->id, $coursecontext);
             if (empty($enrolledstudents)) {
                 continue;
             }
@@ -169,28 +185,51 @@ class activecoursesblock extends block_base {
 
     /**
      * Get Course View Count by users
-     * @param  int   $courseid         Course Id
-     * @param  array $studentsids      Array of enrolled uesers id
-     * @return int                     Number of course views by users
+     * @param  int   $courseid    Course Id
+     * @param  array $studentsids Array of enrolled uesers id
+     * @return int                Number of course views by users
      */
     public static function get_courseview_count($courseid, $studentsids) {
         global $DB;
 
-        $extsql = '';
-        $params = array();
+        $userstable = '';
         if (!empty($studentsids)) {
-            list($extsql, $params) = $DB->get_in_or_equal($studentsids, SQL_PARAMS_NAMED, 'user');
+            // Create a temporary table for enrolled users.
+            $userstable = utility::create_temp_table('tmp_ac_users', $studentsids);
         }
 
-        $sqlcourseview = "SELECT COUNT(DISTINCT userid) as usercount
-            FROM {logstore_standard_log}
-            WHERE action = :action
-            AND courseid = :courseid
-            AND userid $extsql";
-        $params['courseid'] = $courseid;
-        $params['action'] = 'viewed';
+        $params = [
+            'courseid' => $courseid,
+            'action' => 'viewed'
+        ];
+
+        $sqlcourseview = "SELECT COUNT(DISTINCT lsl.userid) as usercount
+            FROM {logstore_standard_log} lsl
+            JOIN {{$userstable}} ut ON lsl.userid = ut.tempid
+            WHERE lsl.action = :action
+            AND lsl.courseid = :courseid";
+
         $views = $DB->get_record_sql($sqlcourseview, $params);
+
+        if (!empty($studentsids)) {
+            // Drop temporary table.
+            utility::drop_temp_table($userstable);
+        }
         return $views->usercount;
+    }
+
+    /**
+     * Get headers for Active Courses Block
+     * @return array Array of header of course block
+     */
+    public static function get_header() {
+        $header = array(
+            get_string("coursename", "local_edwiserreports"),
+            get_string("enrolments", "local_edwiserreports"),
+            get_string("visits", "local_edwiserreports"),
+            get_string("completions", "local_edwiserreports"),
+        );
+        return $header;
     }
 
     /**
@@ -198,6 +237,7 @@ class activecoursesblock extends block_base {
      * @return array Array of exportable data
      */
     public static function get_exportable_data_block() {
+
         $export = array();
         $header = self::get_header();
 
@@ -214,6 +254,4 @@ class activecoursesblock extends block_base {
 
         return $export;
     }
-
-
 }

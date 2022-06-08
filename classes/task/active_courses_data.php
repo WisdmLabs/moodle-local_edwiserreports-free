@@ -114,7 +114,7 @@ class active_courses_data extends \core\task\scheduled_task {
 
             $res[] = $this->get_courseview_count($course->id, array_keys($enrolledstudents));
             $res[] = $completedusers;
-            $activecourses[] = $res;
+            $activecourses[$course->id] = $res;
 
             // Update progress.
             $this->progress->update_progress($progress);
