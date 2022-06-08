@@ -35,6 +35,15 @@ use local_edwiserreports\controller\progress;
  * Update course progress data
  */
 class update_course_progress_data extends \core\task\scheduled_task {
+
+    /**
+     * Can run cron task.
+     *
+     * @return boolean
+     */
+    public function can_run(): bool {
+        return true;
+    }
     /**
      * Return the task's name as shown in admin screens.
      *

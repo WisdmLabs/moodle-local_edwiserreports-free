@@ -37,6 +37,15 @@ use cache;
 class site_access_data extends \core\task\scheduled_task {
 
     /**
+     * Can run cron task.
+     *
+     * @return boolean
+     */
+    public function can_run(): bool {
+        return true;
+    }
+
+    /**
      * Set response object for site access information
      * @var array
      */

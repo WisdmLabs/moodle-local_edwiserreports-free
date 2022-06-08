@@ -44,6 +44,15 @@ class active_users_data extends \core\task\scheduled_task {
     private $progress;
 
     /**
+     * Can run cron task.
+     *
+     * @return boolean
+     */
+    public function can_run(): bool {
+        return true;
+    }
+
+    /**
      * Return the task's name as shown in admin screens.
      *
      * @return string

@@ -40,6 +40,15 @@ defined('MOODLE_INTERNAL') || die();
 class send_scheduled_emails extends \core\task\scheduled_task {
 
     /**
+     * Can run cron task.
+     *
+     * @return boolean
+     */
+    public function can_run(): bool {
+        return true;
+    }
+
+    /**
      * Return the task's name as shown in admin screens.
      *
      * @return string
