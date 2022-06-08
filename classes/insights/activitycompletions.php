@@ -46,7 +46,7 @@ trait activitycompletions {
         $sql = "SELECT COUNT(cmc.completionstate)
                 FROM {course_modules_completion} cmc
                 JOIN {course_modules} cm ON cm.id = cmc.coursemoduleid
-                JOIN {{$coursetable}} c ON c.id = cm.course
+                JOIN {{$coursetable}} c ON c.tempid = cm.course
                 WHERE cmc.completionstate = 1
                 AND cmc.timemodified >= :startdate
                 AND cmc.timemodified <= :enddate";

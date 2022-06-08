@@ -24,6 +24,9 @@
 
 namespace local_edwiserreports\insights;
 
+use local_edwiserreports\block_base;
+use local_edwiserreports\utility;
+
 /**
  * Trait for activeusers
  */
@@ -32,29 +35,38 @@ trait activeusers {
     /**
      * Get active users in given period.
      *
-     * @param int $startdate Start date.
-     * @param int $enddate   End date.
+     * @param int    $startdate  Start date.
+     * @param int    $enddate    End date.
+     * @param string $userstable Temporary users table
      *
      * @return int
      */
-    private function get_activeusers($startdate, $enddate) {
+    private function get_activeusers($startdate, $enddate, $userstable) {
         global $DB;
-        $sql = "SELECT SUM(active.usercount)
-                FROM (SELECT COUNT( DISTINCT l.userid ) as usercount
-                    FROM {logstore_standard_log} l
-                WHERE l.action = :action
-                    AND l.timecreated >= :starttime
-                    AND l.timecreated < :endtime
-                    AND l.userid > 1
-                GROUP BY FLOOR(l.timecreated/86400)) as active";
+
+        $sum = 0;
+
+        $sql = "SELECT COUNT( DISTINCT l.userid ) as usercount
+                  FROM {logstore_standard_log} l
+                  JOIN {{$userstable}} ut ON l.userid = ut.tempid
+                 WHERE l.action = :action
+                   AND l.timecreated >= :starttime
+                   AND l.timecreated < :endtime
+                   AND l.userid > 1
+                 GROUP BY FLOOR( l.timecreated / 86400)";
         $params = array(
             'action' => 'viewed',
             'starttime' => $startdate,
             'endtime' => $enddate
         );
-        $activeusers = $DB->get_field_sql($sql, $params);
-        return $activeusers ? $activeusers : 0;
+        $activeusers = $DB->get_recordset_sql($sql, $params);
 
+        if ($activeusers->valid()) {
+            foreach ($activeusers as $activeuser) {
+                $sum += $activeuser->usercount;
+            }
+        }
+        return $sum;
     }
     /**
      * Get new registration insight data
