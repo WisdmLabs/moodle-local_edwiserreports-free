@@ -72,8 +72,19 @@ trait activeusers {
         $oldstartdate,
         $oldenddate
     ) {
-        $currentactive = $this->get_activeusers($startdate, $enddate);
-        $oldactive = $this->get_activeusers($oldstartdate, $oldenddate);
+
+        $blockbase = new block_base();
+        $userid = $blockbase->get_current_user();
+        $users = $blockbase->get_users_of_courses($userid, $blockbase->get_courses_of_user($userid));
+        // Temporary users table.
+        $userstable = utility::create_temp_table('tmp_insight_users', array_keys($users));
+
+        $currentactive = $this->get_activeusers($startdate, $enddate, $userstable);
+        $oldactive = $this->get_activeusers($oldstartdate, $oldenddate, $userstable);
+
+        // Drop temporary table.
+        utility::drop_temp_table($userstable);
+
         return [$currentactive, $oldactive];
     }
 }

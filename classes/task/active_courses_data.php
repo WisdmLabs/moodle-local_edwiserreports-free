@@ -136,10 +136,7 @@ class active_courses_data extends \core\task\scheduled_task {
         global $DB;
 
         // Temporary course table.
-        $userstable = 'tmp_active_course_students';
-
-        // Creating temporary table.
-        utility::create_temp_table($userstable, $studentsids);
+        $userstable = utility::create_temp_table('tmp_active_course_students', $studentsids);
         $params = array();
 
         // Students join.

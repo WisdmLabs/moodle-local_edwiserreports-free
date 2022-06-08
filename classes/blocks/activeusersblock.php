@@ -349,8 +349,7 @@ class activeusersblock extends block_base {
         $users = $blockobj->get_user_from_cohort_course_group($cohortid, 0, 0, $blockobj->get_current_user());
 
         // Temporary filtering table.
-        $userstable = 'tmp_au_filter';
-        utility::create_temp_table($userstable, array_keys($users));
+        $userstable = utility::create_temp_table('tmp_au_filter', array_keys($users));
 
         // Based on action prepare query.
         switch($action) {
@@ -425,8 +424,7 @@ class activeusersblock extends block_base {
         $users = $this->get_user_from_cohort_course_group($this->cohortid, 0, 0, $this->get_current_user());
 
         // Temporary users table.
-        $userstable = 'tmp_au_users';
-        utility::create_temp_table($userstable, array_keys($users));
+        $userstable = utility::create_temp_table('tmp_au_users', array_keys($users));
 
         // Get Logs to generate active users data.
         $activeusers = $this->dates;

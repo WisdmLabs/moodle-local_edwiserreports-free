@@ -80,9 +80,7 @@ trait courseenrolments {
         $userid = $blockbase->get_current_user();
         $courses = $blockbase->get_courses_of_user($userid);
         // Temporary course table.
-        $coursetable = 'tmp_insight_courses_' . $userid;
-        // Creating temporary table.
-        utility::create_temp_table($coursetable, array_keys($courses));
+        $coursetable = utility::create_temp_table('tmp_insight_courses', array_keys($courses));
 
         $currentenrolments = $this->get_enrolments($startdate, $enddate, $coursetable);
         $oldenrolments = $this->get_enrolments($oldstartdate, $oldenddate, $coursetable);

@@ -385,7 +385,7 @@ class utility {
         }
 
         if (!$courseid) {
-            $courseid = $COURSE->id;
+            $coueseid = $COURSE->id;
         }
 
         // Please note that we must fetch all grade_grades fields if we want to construct grade_grade object from it!
@@ -1268,6 +1268,13 @@ class utility {
     public static function create_temp_table($tablename, $ids) {
         global $DB;
 
+        $blockbase = new block_base();
+
+        // User id for unique temp table for individual user.
+        $userid = $blockbase->get_current_user();
+
+        $tablename = $tablename . '_' . $userid;
+
         $dbman = $DB->get_manager();
 
         $table = new xmldb_table($tablename);
@@ -1278,11 +1285,14 @@ class utility {
         self::drop_temp_table($tablename);
 
         $dbman->create_temp_table($table);
+
         foreach ($ids as $id) {
             $DB->insert_record($tablename, (object)[
                 'tempid' => $id
             ]);
         }
+
+        return $tablename;
     }
 
     /**
