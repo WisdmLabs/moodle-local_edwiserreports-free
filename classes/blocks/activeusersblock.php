@@ -312,8 +312,7 @@ class activeusersblock extends block_base {
 
             $courses = $this->get_courses_of_user();
             // Temporary course table.
-            $coursetable = 'tmp_au_courses';
-            utility::create_temp_table($coursetable, array_keys($courses));
+            $coursetable = utility::create_temp_table('tmp_au_courses', array_keys($courses));
 
             $response->data->enrolments = $this->get_enrolments($coursetable);
             $response->data->completionRate = $this->get_course_completionrate($coursetable);
@@ -621,7 +620,12 @@ class activeusersblock extends block_base {
             );
         }
 
-        return $export;
+        return (object) [
+            'data' => $export,
+            'options' => [
+                'orientation' => 'l',
+            ]
+        ];
     }
 
     /**

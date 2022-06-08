@@ -38,6 +38,13 @@
 }
 
 #wdm-activeusers-individual {
+    .dropdown-item {
+        input {
+            border-radius: 0 !important;
+            border: 0 !important;
+            box-shadow: none !important;
+        }
+    }
     .dropdown-menu.withcalendar {
         width: 310px;
         display: flex;

@@ -164,7 +164,8 @@ class active_users_data extends \core\task\scheduled_task {
             $this->progress->start_progress();
             $activeusers[$filter]['insight'] = $this->calculate_insight(
                 $activeusers[$filter]['activeusers'],
-                $activeusers[$filter]['enrolments']
+                $activeusers[$filter]['enrolments'],
+                $activeusers[$filter]['completionrate']
             );
             echo "\n....................................................................................\n";
         }
@@ -175,11 +176,13 @@ class active_users_data extends \core\task\scheduled_task {
     /**
      * Calculate insight data for active users block.
      *
-     * @param object $data   Response data
+     * @param array $activeusers Active users data
+     * @param array $enrolments  Enrolments data
+     * @param array $completion  Course completion rate
      *
      * @return object
      */
-    public function calculate_insight($activeusers, $enrolments) {
+    public function calculate_insight($activeusers, $enrolments, $completions) {
         $totalactiveusers = 0;
         $count = 0;
         foreach ($activeusers as $active) {
@@ -191,16 +194,19 @@ class active_users_data extends \core\task\scheduled_task {
 
         $insight = [
             'insight' => [
-                'title' => get_string('averageactiveusers', 'local_edwiserreports'),
+                'title' => 'averageactiveusers',
                 'value' => $averageactiveusers
             ],
             'details' => [
                 'data' => [[
-                    'title' => get_string('totalactiveusers', 'local_edwiserreports'),
+                    'title' => 'totalactiveusers',
                     'value' => $totalactiveusers
                 ], [
-                    'title' => get_string('totalcourseenrolments', 'local_edwiserreports'),
+                    'title' => 'totalcourseenrolments',
                     'value' => array_sum($enrolments)
+                ], [
+                    'title' => 'totalcoursecompletions',
+                    'value' => array_sum($completions)
                 ]]
             ]
         ];
