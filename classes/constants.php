@@ -26,8 +26,6 @@
  * Define all constants for use
  */
 
-defined('MOODLE_INTERNAL') || die();
-
 /* Course completion constant */
 define('LOCAL_SITEREPORT_COURSE_COMPLETE_00PER', 0);
 define('LOCAL_SITEREPORT_COURSE_COMPLETE_20PER', 0.2);

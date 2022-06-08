@@ -22,8 +22,6 @@
  * @author    Yogesh Shirsath
  */
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Admin settings tab definition
  * @package   local_edwiserreports

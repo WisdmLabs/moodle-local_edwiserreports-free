@@ -24,8 +24,6 @@ namespace local_edwiserreports\controller;
 
 use coding_exception;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Controller Router.
  *
@@ -79,7 +77,7 @@ class edwiserReportRouter {
      * by first come, first serve.
      *
      * @param  string                   $action Rounter action
-     * @return string|void|boolean|null
+     * @return array|object
      * @throws coding_exception
      */
     public function route_action($action) {

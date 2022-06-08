@@ -25,8 +25,6 @@
 
 namespace local_edwiserreports\controller;
 
-defined('MOODLE_INTERNAL') || die;
-
 class progress {
 
     /**
