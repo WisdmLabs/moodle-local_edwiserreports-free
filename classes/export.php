@@ -113,9 +113,10 @@ class export {
     /**
      * Export data
      * @param string $filename File name to export data
-     * @param array  $data    Data to be export
+     * @param array  $data     Data to be export
+     * @param array  $options  Options for pdf export
      */
-    public function data_export($filename, $data) {
+    public function data_export($filename, $data, $options = null) {
         switch($this->format) {
             case "csv":
                 $this->data_export_csv($filename, $data);
@@ -124,7 +125,7 @@ class export {
                 $this->data_export_excel($filename, $data);
                 break;
             case "pdf":
-                $this->data_export_pdf($filename, $data);
+                $this->data_export_pdf($filename, $data, $options);
                 break;
             case "email":
                 $this->data_export_email($filename, $data);
@@ -187,9 +188,13 @@ class export {
     /**
      * Export data in Pdf format
      * @param string $filename File name to export data
-     * @param array  $data    Data to be export
+     * @param array  $data     Data to be export
+     * @param array  $options  Options for pdf export
+     *                         Supported options
+     *                         orientation: p - Portrait
+     *                                      l - Landscape
      */
-    public function data_export_pdf($filename, $data) {
+    public function data_export_pdf($filename, $data, $options = null) {
         $filename .= '.pdf';
         $html = $this->generate_pdf_file($data);
 
@@ -199,6 +204,9 @@ class export {
             "filename" => $filename,
             "html" => $html
         );
+        if ($options != null) {
+            $res->options = $options;
+        }
         echo json_encode($res);
         die;
     }
@@ -282,7 +290,7 @@ class export {
         if (!$subject && $subject == '') {
             $subject = get_string($this->blockname . "exportheader", "local_edwiserreports");
         }
-        $status = false;
+
         // Send emails foreach email ids.
         if ($emailids && $emailids !== '') {
             // Process in background and dont show message in console.
@@ -294,7 +302,7 @@ class export {
                     $recuser->email = trim($emailid);
 
                     // Send email to user.
-                    $status &= email_to_user(
+                    email_to_user(
                         $recuser,
                         $senduser,
                         $subject,
@@ -307,8 +315,6 @@ class export {
             }
             ob_end_clean();
 
-        }
-        if ($status) {
             // If failed then return error.
             $res = new stdClass();
             $res->error = false;
@@ -434,58 +440,36 @@ class export {
      * @param  array  $data Array of exportable Data
      * @return string       HTML String
      */
-    public function get_html_for_pdf($data) {
-        $table = new html_table();
-        $table->align = array("left", "left", "center", "center", "center");
-        $table->attributes = array(
-            "style" => "width: 100%; font-size:10px;"
-        );
-
-        // Generate HTML to export.
-        $html = html_writer::tag(
-            "h1",
-            get_string($this->blockname . "exportheader", "local_edwiserreports"),
-            array(
-                "style" => "width:100%;text-align:center"
-            )
-        );
-
-        $html .= html_writer::tag("p",
-            get_string($this->blockname . "exporthelp", "local_edwiserreports"),
-            array(
-                "style" => "text-indent: 50px"
-            )
-        );
-
-        foreach ($data as $key => $val) {
-            if ($key == 0) {
-                $table->head = $val;
-            } else {
-                $table->data[] = $val;
-            }
-        }
-
-        $html .= html_writer::table($table);
-        $html = str_replace("\n", "", $html);
-        return $html;
-    }
-
-    /**
-     * Get HTML Content to export
-     * @param  array  $data Array of exportable Data
-     * @return string       HTML String
-     */
     public function get_html_for_pdf2($data) {
+        global $DB;
+
+        $headerrow = array_shift($data);
+        if (strpos($this->blockname, 'customreportsblock') !== false) {
+            $params = explode('-', $this->blockname);
+            $filter = isset($params[1]) ? $params[1] : '';
+            $header = get_string('customreport', 'local_edwiserreports');
+            if ($field = $DB->get_field('edwreports_custom_reports', 'fullname', array('id' => $filter))) {
+                $header .= ' - ' . $field;
+            }
+            if (count($headerrow) > 10) {
+                $help = get_string('customreportexportpdfnote', 'local_edwiserreports');
+            } else {
+                $help = '';
+            }
+        } else {
+            $header = get_string($this->blockname . "exportheader", "local_edwiserreports");
+            $help = get_string($this->blockname . "exporthelp", "local_edwiserreports");
+        }
         // Generate HTML to export.
         $html = html_writer::tag("h1",
-            get_string($this->blockname . "exportheader", "local_edwiserreports"),
+            $header,
             array(
                 "style" => "width:100%;text-align:center"
             )
         );
 
         $html .= html_writer::tag("p",
-            get_string($this->blockname . "exporthelp", "local_edwiserreports"),
+            $help,
             array(
                 "style" => "text-indent: 50px"
             )
@@ -493,21 +477,19 @@ class export {
 
         $html .= "<table style='font-size: 10px; width: 50px; display: block;'>";
 
-        foreach ($data as $key => $val) {
+        $html .= "<tr>";
+        foreach ($headerrow as $cell) {
+            $cols = count($headerrow);
+            $width = 100 / $cols;
+            $html .= "<th style='background-color: #ddd; width: " . $width
+            . "%; display: block; word-break: break-word;'>" . $cell . "</th>";
+        }
+        $html .= "</tr>";
+        foreach ($data as $row) {
             $html .= "<tr>";
-            $width = 0;
-            if ($key == 0) {
-                foreach ($val as $v) {
-                    $cols = count($val);
-                    $width = 100 / $cols;
-                    $html .= "<th style='background-color: #ddd; width: " . $width
-                    . "%; display: block; word-break: break-word;'>" . $v . "</th>";
-                }
-            } else {
-                foreach ($val as $v) {
-                    $html .= "<td style='background-color: #ddd; " . $width .
-                    "%; display: block; word-break: break-word;'>" . $v . "</td>";
-                }
+            foreach ($row as $cell) {
+                $html .= "<td style='background-color: #ddd; " . $width .
+                "%; display: block; word-break: break-word;'>" . $cell . "</td>";
             }
             $html .= "</tr>";
         }
@@ -519,8 +501,8 @@ class export {
 
     /**
      * Get exportable data to export
-     * @param  array $filter Filter parameter
-     * @return array         Exported table data
+     * @param  array        $filter Filter parameter
+     * @return array|object         Return array for table. Return object for table and options for pdf only.
      */
     public function get_exportable_data($filter) {
         $export = null;
@@ -925,7 +907,7 @@ class export {
         $head['coursename'] = get_string('coursename', $component);
         $head['enrolledon'] = get_string('enrolledon', $component);
         $head['category'] = get_string('category', $component);
-        $head['completionsper'] = get_string('completionsper', $component);
+        $head['completionspercentage'] = get_string('completionspercentage', $component);
         $head['completedactivities'] = get_string('completedactivities', $component);
         $head['firstname'] = get_string('firstname', $component);
         $head['lastname'] = get_string('lastname', $component);
@@ -1068,10 +1050,10 @@ class export {
                 $completion = (object) \local_edwiserreports\utility::get_course_completion_info($course, $user->id);
                 if ($completion && !empty($completion)) {
                     $data->completedactivities = '(' . $completion->completedactivities . '/' . $completion->totalactivities . ')';
-                    $data->completionsper = $completion->progresspercentage . "%";
+                    $data->completionspercentage = $completion->progresspercentage . "%";
                 } else {
                     $data->completedactivities = get_string('na', 'local_edwiserreports');
-                    $data->completionsper = get_string('na', 'local_edwiserreports');
+                    $data->completionspercentage = get_string('na', 'local_edwiserreports');
                 }
 
                 $this->inseart_custom_filed_data($data, $user->id);

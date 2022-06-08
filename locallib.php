@@ -931,6 +931,17 @@ function local_edwiserreports_get_email_schedule_next_run($duration, $time) {
  * @return string Filename
  */
 function local_edwiserreports_prepare_export_filename($params) {
+    if (isset($params['filter'])) {
+        $filter = $params['filter'];
+        if ($filter = json_decode($filter, true)) {
+            $filtered = [];
+            foreach ($filter as $key => $value) {
+                $filtered[] = $key . '-' . $value;
+            }
+            $filter = implode(',', $filtered);
+            $params['filter'] = $filter;
+        }
+    }
     return "report_" . implode("_", $params);
 }
 

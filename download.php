@@ -90,10 +90,17 @@ if ($type == "emailscheduled") {
     // Prepare exportable data.
     $data = $export->get_exportable_data($filter);
 
+    $options = null;
+    if (gettype($data) == "object") {
+        $options = $data->options;
+        $data = $data->data;
+    }
+
+    // Filename.
     $filename .= $export->data_export_file_postfix($filter);
 
     // If data is there then download data with files.
     if ($data) {
-        $export->data_export($filename, $data);
+        $export->data_export($filename, $data, $options);
     }
 }

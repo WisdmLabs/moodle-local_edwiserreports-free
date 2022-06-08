@@ -107,13 +107,16 @@ define([
 
     // Loader functions.
     var loader = {
-        show: function(id) {
+        show: function(id, position) {
             var $class;
             if (id == undefined) {
                 id = 'body';
                 $class = 'position-fixed';
             } else {
                 $class = 'position-absolute';
+            }
+            if (position != undefined) {
+                $class = position;
             }
             $(id).append(`
             <div class="edwiserreports-loader ${$class}">
@@ -217,11 +220,10 @@ define([
         });
 
         // Export data in pdf
-        $(document).on("click", exportPdf, function(e) {
-            e.preventDefault();
-
+        $(document).on("click", exportPdf, function() {
             var _this = this;
             var form = $(_this).closest("form");
+            loader.show('body', 'position-fixed');
             $.ajax({
                 url: form.attr('action'),
                 type: 'POST',
@@ -233,45 +235,59 @@ define([
                     'region': form.find('input[name="region"]').val()
                 }
             }).done(function(response) {
-                response = JSON.parse(response);
-                var pdf = jsPDF('p', 'pt', 'a4');
-                var margins = {
-                    top: 40,
-                    bottom: 30,
-                    left: 10,
-                    width: "100%"
-                };
-
-                pdf.setFontSize(10);
-
-                // ID selector for either ID or node name. ("#iAmID", "div", "span" etc.)
-                // There is no support for any other type of selectors
-                // (class, of compound) at this time.
-                var specialElementHandlers = {
-                    // Element with id of "bypass" - jQuery style selector
-                    // eslint-disable-next-line no-unused-vars
-                    '#bypassme': function(element, renderer) {
-                        // True = "handled elsewhere, bypass text extraction"
-                        return true;
+                try {
+                    response = JSON.parse(response);
+                    var orientation = 'p';
+                    var format = 'a4';
+                    if (response.options != undefined) {
+                        if (response.options.orientation != undefined) {
+                            orientation = response.options.orientation;
+                        }
+                        if (response.options.format != undefined) {
+                            format = response.options.format;
+                        }
                     }
-                };
-                // All coords and widths are in jsPDF instance's declared units
-                // 'inches' in this case
-                pdf.fromHTML(
-                    response.data.html, // HTML string or DOM elem ref.
-                    margins.left, // X coord
-                    margins.top, { // Y coord
-                        'width': margins.width, // Max width of content on PDF
-                        'elementHandlers': specialElementHandlers
-                    },
-                    // eslint-disable-next-line no-unused-vars
-                    function(dispose) {
-                        // Dispose: object with X, Y of the last line add to the PDF
-                        //          this allow the insertion of new lines after html
-                        pdf.save(response.data.filename);
-                    }, margins);
+                    var pdf = jsPDF(orientation, 'pt', format);
+                    var margins = {
+                        top: 40,
+                        bottom: 30,
+                        left: 10,
+                        width: "100%"
+                    };
+
+                    pdf.setFontSize(10);
+
+                    // ID selector for either ID or node name. ("#iAmID", "div", "span" etc.)
+                    // There is no support for any other type of selectors
+                    // (class, of compound) at this time.
+                    var specialElementHandlers = {
+                        // Element with id of "bypass" - jQuery style selector
+                        // eslint-disable-next-line no-unused-vars
+                        '#bypassme': function(element, renderer) {
+                            // True = "handled elsewhere, bypass text extraction"
+                            return true;
+                        }
+                    };
+                    // All coords and widths are in jsPDF instance's declared units
+                    // 'inches' in this case
+                    pdf.fromHTML(
+                        response.data.html, // HTML string or DOM elem ref.
+                        margins.left, // X coord
+                        margins.top, { // Y coord
+                            'width': margins.width, // Max width of content on PDF
+                            'elementHandlers': specialElementHandlers
+                        },
+                        // eslint-disable-next-line no-unused-vars
+                        function(dispose) {
+                            // Dispose: object with X, Y of the last line add to the PDF
+                            //          this allow the insertion of new lines after html
+                            pdf.save(response.data.filename);
+                        }, margins);
+                } catch (Exception) {
+                    loader.hide('body');
+                }
             }).always(function() {
-                $(document).find('#cover-spin').hide();
+                loader.hide('body');
             });
         });
 
