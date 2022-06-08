@@ -53,7 +53,7 @@
     </ul>
     <div class="tab-content">
         <div class="tab-pane active show" id="scheduletab" role="tabpanel">
-            <form action="#">
+            <form action="#" class="was-validated">
                 <div id="region-main" class="col-9 border-0 m-auto">
                     <div class="pt-4 w-full">
                         {{! Name field }}
@@ -69,6 +69,8 @@
                             <div class="col-12">
                                 <input type="text" value="" name="esrrecepient" class="form-control" required
                                 placeholder="{{# str }} recipient, local_edwiserreports {{/ str }}">
+                                <div class="invalid-feedback">
+                                </div>
                             </div>
                         </div>
 

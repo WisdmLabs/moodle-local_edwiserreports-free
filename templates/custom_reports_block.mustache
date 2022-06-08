@@ -47,7 +47,9 @@
                         </div>
                     </div>
                     <div class="reports-list-content d-none justify-content-center align-items-center">
-                        <table id="cr-list-table" class="datatable table"></table>
+                        <div class="table-responsive">
+                            <table id="cr-list-table" class="datatable table"></table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -62,7 +64,7 @@
                 <h4> {{#str}} reportsfilter, local_edwiserreports {{/str}} </h4>
             </div>
             <div class="reports-filter-body row">
-                <div class="col-3">
+                <div class="col-12 col-md-6 col-lg-3 mb-1">
                     <select id="wdm-cohort-select" class="custom-field-select form-control singleselect w-full">
                         <option value="0">{{#str}} allcohorts, local_edwiserreports {{/str}}</option>
                         {{#cohorts}}
@@ -70,7 +72,7 @@
                         {{/cohorts}}
                     </select>
                 </div>
-                <div class="col-3">
+                <div class="col-12 col-md-6 col-lg-3 mb-1">
                     <select id="wdm-course-select" class="custom-field-select form-control singleselect w-full">
                         <option value="0" {{#allcourses}}selected{{/allcourses}}>{{#str}} fulllistofcourses {{/str}}</option>
                         {{#courses}}
@@ -79,8 +81,8 @@
                     </select>
                 </div>
                 {{#fields}}
-                <div class="col-3 field-group-wrap" data-key="{{key}}">
-                    <div id="{{key}}-field-group" class="field-group w-full p-2 border mb-1">
+                <div class="col-12 col-md-6 col-lg-3 mb-1 field-group-wrap" data-key="{{key}}">
+                    <div id="{{key}}-field-group" class="field-group w-full p-2 border">
                         {{title}}
                         <i class="fa fa-angle-right pull-right p-1"></i>
                     </div>
@@ -118,7 +120,9 @@
                         </div>
                     </div>
                     <div class="reports-preview-content d-none justify-content-center align-items-center">
-                        <table id="cr-preview-table" class="datatable table"></table>
+                        <div class="table-responsive">
+                            <table id="cr-preview-table" class="datatable table"></table>
+                        </div>
                     </div>
                     <div class="border reports-preview-content empty d-flex justify-content-center align-items-center">
                         {{#str}} noreportspreview, local_edwiserreports {{/str}}

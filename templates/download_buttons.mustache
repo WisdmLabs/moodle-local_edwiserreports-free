@@ -35,7 +35,7 @@
     <input type="hidden" name="cohortid" value="{{cohortid}}" />
     <input type="hidden" name="region" value="{{region}}" />
     <input type="hidden" name="sesskey" value="{{sesskey}}">
-    <button type="{{type}}" class="a border-0 bg-transparent dropdown-item m-0 text-body w-100 text-left" name="type" value="{{name}}">
+    <button type="{{#type}}{{type}}{{/type}}{{^type}}submit{{/type}}" class="a border-0 bg-transparent dropdown-item m-0 text-body w-100 text-left" name="type" value="{{name}}">
         {{{label}}}
     </button>
 </form>

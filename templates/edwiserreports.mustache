@@ -191,11 +191,7 @@
                                     },
                                     drawCallback: function() {
                                         $(tableId).find('th').addClass('theme-3-bg text-white');
-                                        let pagination = $(this).closest(SELECTOR.TABLE).find(SELECTOR.PAGINATION);
-                                        pagination.find(SELECTOR.PAGINATIONITEM).addClass(V.datatableClasses.buttonSpacing);
-                                        pagination.find(SELECTOR.PAGINATIONITEM + ' a').addClass(V.datatableClasses.buttonSize);
-                                        pagination.find(SELECTOR.PAGINATIONITEM + '.active a').addClass(V.datatableClasses.buttonActive);
-                                        pagination.find(SELECTOR.PAGINATIONITEM + ':not(.active) a').addClass(V.datatableClasses.buttonInactive);
+                                        common.stylePaginationButton(this);
                                     }
                                 });
 
