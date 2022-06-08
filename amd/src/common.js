@@ -146,11 +146,29 @@ define([
      */
     function validateEmails(emails) {
         var valid = true;
-        emails = emails.replaceAll(' ', '').split(',');
-        emails.forEach(email => {
-            valid &= emailRegex.test(email);
-        });
-        return valid;
+        var domElement = $('[name="esrrecepient"]').get(0);
+        var duplicates = [],
+            duplicate;
+        emails.replaceAll(' ', '').replaceAll(';', ',').split(',')
+            .forEach(email => {
+                if (duplicates[email] != undefined) {
+                    duplicate = true;
+                }
+                duplicates[email] = true;
+                valid &= emailRegex.test(email);
+            });
+        if (duplicate) {
+            domElement.setCustomValidity('Invalid email');
+            $(domElement).next().text(M.util.get_string('duplicateemail', 'local_edwiserreports'));
+            return false;
+        }
+        if (!valid) {
+            domElement.setCustomValidity('Invalid email');
+            $(domElement).next().text(M.util.get_string('invalidemail', 'local_edwiserreports'));
+            return false;
+        }
+        domElement.setCustomValidity('');
+        return true;
     }
 
     /**
@@ -1221,10 +1239,23 @@ define([
      */
     function stylePaginationButton(element) {
         let pagination = $(element).closest(SELECTOR.TABLE).find(SELECTOR.PAGINATION);
+        if (pagination.find(SELECTOR.PAGINATIONITEM).length < 4) {
+            pagination.addClass('d-none');
+            return;
+        }
+        pagination.removeClass('d-none');
         pagination.find(SELECTOR.PAGINATIONITEM).addClass(v.datatableClasses.buttonSpacing);
         pagination.find(SELECTOR.PAGINATIONITEM + ' a').addClass(v.datatableClasses.buttonSize);
         pagination.find(SELECTOR.PAGINATIONITEM + '.active a').addClass(v.datatableClasses.buttonActive);
         pagination.find(SELECTOR.PAGINATIONITEM + ':not(.active) a').addClass(v.datatableClasses.buttonInactive);
+        pagination.find(SELECTOR.PAGINATIONITEM + '.previous a').addClass(v.datatableClasses.prevNextSpacing);
+        pagination.find(SELECTOR.PAGINATIONITEM + '.next a').addClass(v.datatableClasses.prevNextSpacing);
+        // Different margin.
+        pagination.find(SELECTOR.PAGINATIONITEM + '.previous').removeClass(v.datatableClasses.buttonsSpacing)
+            .addClass('mx-4');
+        pagination.find(SELECTOR.PAGINATIONITEM + '.next').removeClass(v.datatableClasses.buttonsSpacing)
+            .addClass('mx-4');
+
     }
 
     /**
@@ -1247,9 +1278,22 @@ define([
             $(this).toggleClass('empty', $(this).val() === '');
         });
     }
+    /**
+     * Apply precision to number. If number is whole then return as it is.
+     * @param {Number} value     Value to apply precision
+     * @param {Number} precision Precision to apply
+     * @returns {Number}
+     */
+    function toPrecision(value, precision) {
+        if (value % 1 === 0) {
+            return value;
+        }
+        return value.toPrecision(precision);
+    }
 
     return {
         loader: loader,
+        toPrecision: toPrecision,
         insight: insight,
         timeFormatter: timeFormatter,
         dateChange: dateChange,
