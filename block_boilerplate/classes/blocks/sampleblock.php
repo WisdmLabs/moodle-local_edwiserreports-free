@@ -24,8 +24,6 @@
 
 namespace local_edwiserreports;
 
-defined('MOODLE_INTERNAL') or die;
-
 use stdClass;
 
 /**
@@ -45,7 +43,7 @@ class sampleblock extends block_base {
         $this->layout->info = get_string('sampleblockhelp', 'local_edwiserreports');
 
         // To add export links.
-        // $this->layout->downloadlinks = $this->get_block_download_links();
+        // $this->layout->downloadlinks = $this->get_block_download_links();.
 
         // Add block view in layout.
         $this->layout->blockview = $this->render_block('sampleblock', $this->block);
