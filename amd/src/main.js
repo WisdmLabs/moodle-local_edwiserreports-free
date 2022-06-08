@@ -129,7 +129,7 @@ define([
         $(SELECTOR.DATEPICKERINPUT).next().val(dateAlternate);
 
         /* If correct date is not selected then return false */
-        if (!date.includes("to")) {
+        if (!date.includes(" to ")) {
             flatpickr.clear();
             return;
         }
