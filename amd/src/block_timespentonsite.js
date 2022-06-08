@@ -15,10 +15,10 @@
 /**
  * Block service call and rendering defined in this file.
  *
- * @package     local_edwiserreports
  * @copyright   2021 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 define([
     'jquery',
@@ -175,6 +175,7 @@ define([
 
     /**
      * Load graph
+     * @param {function} invalidUser Function to be called when user is invalid
      */
     function loadGraph(invalidUser) {
         common.loader.show(SELECTOR.PANEL);
@@ -212,17 +213,18 @@ define([
                 data.chart.zoom.enabled = response.labels.length > 30;
                 data.tooltip.y.title.formatter = () => {
                     return M.util.get_string('time', 'local_edwiserreports') + ': ';
-                }
+                };
                 response.insight.insight.value = common.timeFormatter(response.insight.insight.value, {
                     dataPointIndex: 0,
-                    short: true
-                }).replaceAll(',', '<br>');
+                    'short': true
+                }).replaceAll(',', ' ');
                 response.insight.details.data[0].value = common.timeFormatter(response.insight.details.data[0].value, {
                     dataPointIndex: 0
                 });
                 common.insight(SELECTOR.INSIGHT, response.insight);
                 renderGraph($(SELECTOR.PANEL).find(SELECTOR.GRAPH), data);
-            }).fail(function(exception) {
+            }).fail(function(ex) {
+                Notification.exception(ex);
                 common.loader.hide(SELECTOR.PANEL);
             });
     }

@@ -15,11 +15,11 @@
 /**
  * Grade table js.
  *
- * @package     local_edwiserreports
  * @copyright   2021 wisdmlabs <support@wisdmlabs.com>
  * @author      Yogesh Shirsath
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+/* eslint-disable no-unused-vars */
 define([
     'jquery',
     'core/ajax',
@@ -135,7 +135,12 @@ define([
                 $(SELECTOR.PANEL).find(SELECTOR.GRAPH).data('responseTitle', response.header);
                 data.responseTitle = response.header;
                 data.tooltip = {
-                    custom: function({ series, seriesIndex, dataPointIndex, w }) {
+                    custom: function({
+                        series,
+                        seriesIndex,
+                        dataPointIndex,
+                        w
+                    }) {
                         let value = series[seriesIndex];
                         let tooltip = value < 2 ? response.tooltip.single : response.tooltip.plural;
                         let label = w.config.labels[seriesIndex];

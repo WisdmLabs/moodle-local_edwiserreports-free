@@ -15,7 +15,6 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     local_edwiserreports
  * @copyright   2021 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -108,38 +107,38 @@ define([
                 selectedLps = values;
 
                 $.ajax({
-                    url: cfg.requestUrl,
-                    type: cfg.requestType,
-                    dataType: cfg.requestDataType,
-                    data: {
-                        action: 'get_customqueryreport_data_ajax',
-                        secret: M.local_edwiserreports.secret,
-                        lang: $('html').attr('lang'),
-                        data: JSON.stringify({
-                            lpids: values
-                        })
-                    },
-                })
-                .done(function(response) {
-                    $("#ed_courses").html('');
-                    var template = "local_edwiserreports/customquery_options";
-                    var context = {courses: response};
-                    Templates.render(template, context).then(function(html, js) {
-                        Templates.replaceNodeContents($("#ed_courses"), html, js);
-                        return;
-                    }).fail(function(ex) {
-                        console.log(ex);
+                        url: cfg.requestUrl,
+                        type: cfg.requestType,
+                        dataType: cfg.requestDataType,
+                        data: {
+                            action: 'get_customqueryreport_data_ajax',
+                            secret: M.local_edwiserreports.secret,
+                            lang: $('html').attr('lang'),
+                            data: JSON.stringify({
+                                lpids: values
+                            })
+                        },
+                    })
+                    .done(function(response) {
+                        $("#ed_courses").html('');
+                        var template = "local_edwiserreports/customquery_options";
+                        var context = { courses: response };
+                        Templates.render(template, context).then(function(html, js) {
+                            Templates.replaceNodeContents($("#ed_courses"), html, js);
+                            return;
+                        }).fail(function(ex) {
+                            console.log(ex);
+                        });
+                    })
+                    .fail(function(error) {
+                        // console.log(error);
+                    }).always(function() {
+                        $("#ed_courses").select2({
+                            multiple: true,
+                            closeOnSelect: false,
+                            placeholder: "Courses"
+                        });
                     });
-                })
-                .fail(function(error) {
-                    // console.log(error);
-                }).always(function() {
-                    $("#ed_courses").select2({
-                        multiple: true,
-                        closeOnSelect: false,
-                        placeholder: "Courses"
-                    });
-                });
 
                 // Hide checkboxes of Learning programs if LP is not selected
                 if (!values.length) {
@@ -198,75 +197,75 @@ define([
                 selectedRPM = values;
 
                 $.ajax({
-                    url: cfg.requestUrl,
-                    type: cfg.requestType,
-                    dataType: cfg.requestDataType,
-                    data: {
-                        action: 'get_customqueryreport_rpm_data_ajax',
-                        sesskey: M.cfg.sesskey,
-                        data: JSON.stringify({
-                            rpmids: values,
-                            cohortids: cohortids
-                        })
-                    },
-                })
-                .done(function(response) {
-                    $("#ed_lps").html('');
-                    $("#ed_courses").html('');
-                    var template = "local_edwiserreports/customquery_lpoptions";
-                    var context = {lps: response.lps};
-                    if (response.lps.length > 0) {
-                        Templates.render(template, context).then(function(html, js) {
-                            Templates.appendNodeContents($("#ed_lps"), html, js);
-                            return;
-                        }).fail(function(ex) {
-                            console.log(ex);
-                        });
-                    }
-                    if (response.courses.length > 0) {
-                        template = "local_edwiserreports/customquery_options";
-                        context = {courses: response.courses};
-                        Templates.render(template, context).then(function(html, js) {
-                            Templates.appendNodeContents($("#ed_courses"), html, js);
-                            return;
-                        }).fail(function(ex) {
-                            console.log(ex);
-                        });
-                    }
-
-                    // Render users
-                    if (response.users.length > 0) {
-                        template = "local_edwiserreports/customquery_lpoptions"; // Work same as lp filter
-                        context = {lps: response.users}; // Work same as lp filters
-                        if (response.users.length > 0) {
+                        url: cfg.requestUrl,
+                        type: cfg.requestType,
+                        dataType: cfg.requestDataType,
+                        data: {
+                            action: 'get_customqueryreport_rpm_data_ajax',
+                            sesskey: M.cfg.sesskey,
+                            data: JSON.stringify({
+                                rpmids: values,
+                                cohortids: cohortids
+                            })
+                        },
+                    })
+                    .done(function(response) {
+                        $("#ed_lps").html('');
+                        $("#ed_courses").html('');
+                        var template = "local_edwiserreports/customquery_lpoptions";
+                        var context = { lps: response.lps };
+                        if (response.lps.length > 0) {
                             Templates.render(template, context).then(function(html, js) {
-                                Templates.appendNodeContents($("#ed_users"), html, js);
+                                Templates.appendNodeContents($("#ed_lps"), html, js);
                                 return;
                             }).fail(function(ex) {
                                 console.log(ex);
                             });
                         }
-                    }
-                })
-                .fail(function(error) {
-                    console.log(error);
-                }).always(function() {
-                    $("#ed_lps").select2({
-                        multiple: true,
-                        closeOnSelect: false,
-                        placeholder: "Learning Programs"
+                        if (response.courses.length > 0) {
+                            template = "local_edwiserreports/customquery_options";
+                            context = { courses: response.courses };
+                            Templates.render(template, context).then(function(html, js) {
+                                Templates.appendNodeContents($("#ed_courses"), html, js);
+                                return;
+                            }).fail(function(ex) {
+                                console.log(ex);
+                            });
+                        }
+
+                        // Render users
+                        if (response.users.length > 0) {
+                            template = "local_edwiserreports/customquery_lpoptions"; // Work same as lp filter
+                            context = { lps: response.users }; // Work same as lp filters
+                            if (response.users.length > 0) {
+                                Templates.render(template, context).then(function(html, js) {
+                                    Templates.appendNodeContents($("#ed_users"), html, js);
+                                    return;
+                                }).fail(function(ex) {
+                                    console.log(ex);
+                                });
+                            }
+                        }
+                    })
+                    .fail(function(error) {
+                        console.log(error);
+                    }).always(function() {
+                        $("#ed_lps").select2({
+                            multiple: true,
+                            closeOnSelect: false,
+                            placeholder: "Learning Programs"
+                        });
+                        $("#ed_courses").select2({
+                            multiple: true,
+                            closeOnSelect: false,
+                            placeholder: "Courses"
+                        });
+                        $("#ed_users").select2({
+                            multiple: true,
+                            closeOnSelect: false,
+                            placeholder: "Users"
+                        });
                     });
-                    $("#ed_courses").select2({
-                        multiple: true,
-                        closeOnSelect: false,
-                        placeholder: "Courses"
-                    });
-                    $("#ed_users").select2({
-                        multiple: true,
-                        closeOnSelect: false,
-                        placeholder: "Users"
-                    });
-                });
 
                 // Hide checkboxes of Learning programs if LP is not selected
                 if (!values.length) {
@@ -354,21 +353,21 @@ define([
 
                 // Load only cohort based users
                 $.ajax({
-                    url: cfg.requestUrl,
-                    type: cfg.requestType,
-                    dataType: cfg.requestDataType,
-                    data: {
-                        action: 'get_customqueryreport_cohort_users_ajax',
-                        sesskey: M.cfg.sesskey,
-                        data: JSON.stringify({
-                            cohortids: values,
-                            rpmids: rpmids
-                        })
-                    },
-                })
+                        url: cfg.requestUrl,
+                        type: cfg.requestType,
+                        dataType: cfg.requestDataType,
+                        data: {
+                            action: 'get_customqueryreport_cohort_users_ajax',
+                            sesskey: M.cfg.sesskey,
+                            data: JSON.stringify({
+                                cohortids: values,
+                                rpmids: rpmids
+                            })
+                        },
+                    })
                     .done(function(response) {
                         var template = "local_edwiserreports/customquery_lpoptions"; // Work same as lp filter
-                        var context = {lps: response.users}; // Work same as lp filters
+                        var context = { lps: response.users }; // Work same as lp filters
                         if (response.users.length > 0) {
                             Templates.render(template, context).then(function(html, js) {
                                 Templates.appendNodeContents($("#ed_users"), html, js);

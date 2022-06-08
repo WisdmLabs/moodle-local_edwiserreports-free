@@ -15,17 +15,17 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     local_edwiserreports
  * @copyright   2021 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 /* eslint-disable no-console */
 define([
     'jquery',
-    'local_edwiserreports/chart/apexcharts',
-    'local_edwiserreports/defaultconfig',
+    'core/notification',
+    './chart/apexcharts',
+    './defaultconfig',
     './common'
-], function($, ApexCharts, CFG, common) {
+], function($, Notification, ApexCharts, CFG, common) {
     /**
      * Initialize
      * @param {function} invalidUser Callback function
@@ -103,7 +103,7 @@ define([
                     generateTodaysVisitsGraph(response.data.visitshour);
                 })
                 .fail(function(error) {
-                    // console.log(error);
+                    Notification.exception(error);
                 }).always(function() {
                     // Hide loader.
                     common.loader.hide('#todaysactivityblock');
@@ -160,7 +160,12 @@ define([
                 },
                 tooltip: {
                     theme: 'dark',
-                    custom: function({ series, seriesIndex, dataPointIndex, w }) {
+                    custom: function({
+                        series,
+                        seriesIndex,
+                        dataPointIndex,
+                        w
+                    }) {
                         return '<div class="text-center p-1">' +
                             w.config.xaxis.categories[dataPointIndex] +
                             '<br>' +

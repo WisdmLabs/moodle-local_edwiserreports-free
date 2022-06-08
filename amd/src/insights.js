@@ -15,18 +15,19 @@
 /**
  * Page top insight management js.
  *
- * @package     local_edwiserreports
  * @copyright   2021 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 /* eslint-disable no-console */
 define([
     'jquery',
+    'core/notification',
     'core/templates',
     './common',
     './defaultconfig'
 ], function(
     $,
+    Notification,
     Templates,
     common,
     CFG
@@ -127,7 +128,7 @@ define([
                     case 'timespentonsite':
                         response.value = common.timeFormatter(response.value, {
                             dataPointIndex: 0,
-                            short: true
+                            'short': true
                         }).replaceAll(', ', ' ');
                         break;
                 }
@@ -170,7 +171,9 @@ define([
         $('body').on('click', SELECTOR.HIDE, function() {
             let insight = $(this).closest(SELECTOR.INSIGHT);
             $(SELECTOR.INSIGHT_DROPDOWNMENU)
-                .prepend(`<a class="dropdown-item" href="#" data-id="${insight.data('id')}">${insight.find('.insight-title').text()}</a>`);
+                .prepend(`<a class="dropdown-item" href="#" data-id="${
+                    insight.data('id')
+                }">${insight.find('.insight-title').text()}</a>`);
             insight.remove();
             updateOrder();
         });
@@ -179,7 +182,7 @@ define([
         $('body').on('click', SELECTOR.INSIGHT_ITEM, function() {
             let id = $(this).data('id');
             common.loader.hide(SELECTOR.CONTAINER);
-            PROMISE.GET_INSIGHT_CARD_CONTEXT(id).then(function(response) {
+            PROMISE.GET_INSIGHT_CARD_CONTEXT(id).done(function(response) {
                 if (response.present == true) {
                     response.editing = true;
                     Templates.render('local_edwiserreports/insights/insight', response).done(function(html, js) {
@@ -190,7 +193,7 @@ define([
                         updateInsight(id);
                     });
                 }
-            });
+            }).fail(Notification.exception);
         });
     }
 
@@ -208,5 +211,5 @@ define([
     }
     return {
         init: init
-    }
+    };
 });

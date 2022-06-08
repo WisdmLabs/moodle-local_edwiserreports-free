@@ -15,7 +15,6 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     local_edwiserreports
  * @copyright   2021 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -27,7 +26,6 @@ define([
     'core/templates',
     'core/notification',
     'core/str',
-    './variables',
     './common',
     './jquery.dataTables',
     './dataTables.bootstrap4'
@@ -39,7 +37,6 @@ define([
     templates,
     notif,
     str,
-    V,
     common
 ) {
     'use strict';
@@ -318,7 +315,9 @@ define([
                 });
             }
             if (modal) {
-                $("html, body").animate({ scrollTop: 0 }, "slow");
+                $("html, body").animate({
+                    scrollTop: 0
+                }, "slow");
                 getCustomReportsList();
                 modal.hide();
             }
@@ -347,27 +346,22 @@ define([
 
                     crListTable = $('#cr-list-table').DataTable({
                         columns: [{
-                                data: 'fullname',
-                                title: M.util.get_string('title', 'local_edwiserreports')
-                            },
-                            {
-                                data: 'createdby',
-                                title: M.util.get_string('createdby', 'local_edwiserreports')
-                            },
-                            {
-                                data: 'datecreated',
-                                title: M.util.get_string('datecreated', 'local_edwiserreports')
-                            },
-                            {
-                                data: 'datemodified',
-                                title: M.util.get_string('datemodified', 'local_edwiserreports')
-                            },
-                            {
-                                data: 'managehtml',
-                                title: M.util.get_string('manage', 'local_edwiserreports'),
-                                orderable: false
-                            }
-                        ],
+                            data: 'fullname',
+                            title: M.util.get_string('title', 'local_edwiserreports')
+                        }, {
+                            data: 'createdby',
+                            title: M.util.get_string('createdby', 'local_edwiserreports')
+                        }, {
+                            data: 'datecreated',
+                            title: M.util.get_string('datecreated', 'local_edwiserreports')
+                        }, {
+                            data: 'datemodified',
+                            title: M.util.get_string('datemodified', 'local_edwiserreports')
+                        }, {
+                            data: 'managehtml',
+                            title: M.util.get_string('manage', 'local_edwiserreports'),
+                            orderable: false
+                        }],
                         dom: '<"edwiserreports-table"<t><"table-pagination"p>>',
                         language: {
                             searchPlaceholder: M.util.get_string('searchreports', 'local_edwiserreports'),
@@ -398,7 +392,9 @@ define([
         var deleteCustomReport = ajax.call([{
             methodname: 'local_edwiserreports_delete_custom_report',
             args: {
-                params: JSON.stringify({ reportsid: reportsId })
+                params: JSON.stringify({
+                    reportsid: reportsId
+                })
             }
         }]);
         deleteCustomReport[0].done(function(response) {
@@ -414,7 +410,9 @@ define([
                 });
             }
         }).always(function() {
-            $("html, body").animate({ scrollTop: 0 }, "slow");
+            $("html, body").animate({
+                scrollTop: 0
+            }, "slow");
             getCustomReportsList();
         });
     }

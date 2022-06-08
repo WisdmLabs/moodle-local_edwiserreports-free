@@ -15,10 +15,10 @@
 /**
  * Block service call and rendering defined in this file.
  *
- * @package     local_edwiserreports
  * @copyright   2021 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 define([
     'jquery',
@@ -179,6 +179,7 @@ define([
 
     /**
      * Load graph
+     * @param {function} invalidUser Function callback
      */
     function loadGraph(invalidUser) {
         common.loader.show(SELECTOR.PANEL);

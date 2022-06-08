@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -15,19 +16,18 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     local_edwiserreports
  * @copyright   2021 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 /* eslint-disable no-console */
 define([
     'jquery',
-    'local_edwiserreports/chart/apexcharts',
-    'local_edwiserreports/defaultconfig',
-    'local_edwiserreports/variables',
+    'core/notification',
+    './chart/apexcharts',
+    './defaultconfig',
     './common',
-    'local_edwiserreports/select2'
-], function($, ApexCharts, CFG, v, common) {
+    './select2'
+], function($, Notification, ApexCharts, CFG, common) {
 
     /**
      * Initialize
@@ -38,7 +38,6 @@ define([
         var panel = CFG.getPanel("#courseprogressblock");
         var panelBody = CFG.getPanel("#courseprogressblock", "body");
         var selectedCourse = panelBody + " #wdm-courseprogress-select";
-        var chart = panelBody + " .ct-chart";
         var loader = panelBody + " .loader";
         var position = 'right';
         var donutChart = {
@@ -82,7 +81,7 @@ define([
                 legend: {
                     position: position
                 }
-            })
+            });
         }, 1000);
 
         /**
@@ -123,8 +122,8 @@ define([
                     donutChart.tooltipStrings = response.tooltip;
                     common.insight('#courseprogressblock .insight', response.insight);
                 })
-                .fail(function(error) {
-                    // console.log(error);
+                .fail(function(ex) {
+                    Notification.exception(ex);
                     donutChart.average = '0';
                 })
                 .always(function() {
@@ -157,7 +156,12 @@ define([
                     enabled: false
                 },
                 tooltip: {
-                    custom: function({ series, seriesIndex, dataPointIndex, w }) {
+                    custom: function({
+                        series,
+                        seriesIndex,
+                        dataPointIndex,
+                        w
+                    }) {
                         let value = series[seriesIndex];
                         let tooltip = value < 2 ? donutChart.tooltipStrings.single : donutChart.tooltipStrings.plural;
                         let label = w.config.labels[seriesIndex];
@@ -171,7 +175,7 @@ define([
                 legend: {
                     position: position,
                     formatter: function(seriesName, opts) {
-                        return [seriesName + ": " + opts.w.globals.series[opts.seriesIndex]]
+                        return [seriesName + ": " + opts.w.globals.series[opts.seriesIndex]];
                     }
                 }
             };

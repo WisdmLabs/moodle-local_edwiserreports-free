@@ -15,7 +15,6 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     local_edwiserreports
  * @copyright   2021 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -83,10 +82,11 @@ define(['jquery', 'local_edwiserreports/variables'], function($) {
 
         // Datatable stylingclasses.
         datatableClasses: {
-            buttonSpacing: 'mx-1',
-            buttonSize: "px-3 py-2",
+            buttonSpacing: 'mx-2',
+            buttonSize: "px-3 py-1",
             buttonActive: "border-secondary bg-secondary text-dark rounded",
-            buttonInactive: "border theme-primary-border theme-primary-text rounded"
+            buttonInactive: "border theme-primary-border theme-primary-text rounded",
+            prevNextSpacing: "px-4 py-1"
         },
 
         // Get scheduled email context

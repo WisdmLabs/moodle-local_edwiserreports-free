@@ -15,7 +15,6 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     local_edwiserreports
  * @copyright   2021 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -42,7 +41,7 @@ define([
      * @param {integer} CONTEXTID Current page context id
      */
     function init(CONTEXTID) {
-    /* eslint-enable no-unused-vars */
+        /* eslint-enable no-unused-vars */
         var PageId = "#wdm-f2fsessions-individual";
         var F2fTable = PageId + " .table";
         var loader = PageId + " .loader";
@@ -59,32 +58,32 @@ define([
          */
         function getF2fSessions(cohortId) {
             $.ajax({
-                url: V.requestUrl,
-                type: V.requestType,
-                dataType: V.requestDataType,
-                data: {
-                    action: 'get_f2fsession_data_ajax',
-                    sesskey: sesskey,
-                    data: JSON.stringify({
-                        cohortid: cohortId
-                    })
-                },
-            })
+                    url: V.requestUrl,
+                    type: V.requestType,
+                    dataType: V.requestDataType,
+                    data: {
+                        action: 'get_f2fsession_data_ajax',
+                        sesskey: sesskey,
+                        data: JSON.stringify({
+                            cohortid: cohortId
+                        })
+                    },
+                })
                 .done(function(response) {
                     var context = response.data;
                     context.sesskey = sesskey;
 
                     // eslint-disable-next-line promise/catch-or-return
                     Templates.render('local_edwiserreports/f2fsessions', context)
-                    .then(function(html, js) {
-                        Templates.replaceNode(PageId, html, js);
-                        return;
-                    }).fail(function(ex) {
-                        console.log(ex);
-                    }).always(function() {
-                        $(F2fTable).show();
-                        $(loader).hide();
-                    });
+                        .then(function(html, js) {
+                            Templates.replaceNode(PageId, html, js);
+                            return;
+                        }).fail(function(ex) {
+                            console.log(ex);
+                        }).always(function() {
+                            $(F2fTable).show();
+                            $(loader).hide();
+                        });
                 })
                 .fail(function(error) {
                     console.log(error);

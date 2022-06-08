@@ -15,7 +15,6 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     local_edwiserreports
  * @copyright   2021 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -70,18 +69,18 @@ define([
         function getCourseAnalyticsData(courseId, cohortId) {
             var sesskey = PageId.data("sesskey");
             $.ajax({
-                url: V.requestUrl,
-                type: V.requestType,
-                dataType: V.requestDataType,
-                data: {
-                    action: 'get_courseanalytics_data_ajax',
-                    sesskey: sesskey,
-                    data: JSON.stringify({
-                        courseid: courseId,
-                        cohortid: cohortId
-                    })
-                },
-            })
+                    url: V.requestUrl,
+                    type: V.requestType,
+                    dataType: V.requestDataType,
+                    data: {
+                        action: 'get_courseanalytics_data_ajax',
+                        sesskey: sesskey,
+                        data: JSON.stringify({
+                            courseid: courseId,
+                            cohortid: cohortId
+                        })
+                    },
+                })
                 .done(function(response) {
                     /* Generate Recent Visit Table */
                     RecentVisitsTable = generateDataTable(RecentVisits, RecentVisitsTable, response.data.recentvisits);
@@ -129,22 +128,27 @@ define([
             tableId.fadeIn("slow");
             PageId.fadeIn("slow");
 
-             table = tableId.DataTable({
+            table = tableId.DataTable({
                 data: data,
                 responsive: true,
                 oLanguage: {
                     sEmptyTable: emptyStr,
                     sSearchPlaceholder: searchPlaceholder
                 },
-                columnDefs: [
-                    {className: "text-left", targets: 0},
-                    {className: "text-center", targets: "_all"}
-                ],
+                columnDefs: [{
+                    className: "text-left",
+                    targets: 0
+                }, {
+                    className: "text-center",
+                    targets: "_all"
+                }],
                 drawCallback: function() {
                     $('.dataTables_paginate > .pagination').addClass('pagination-sm pull-right');
                     $('.dataTables_filter').addClass('pagination-sm pull-right');
                 },
-                order: [[1, 'desc']],
+                order: [
+                    [1, 'desc']
+                ],
                 bInfo: false,
                 lengthChange: false,
             });

@@ -15,19 +15,18 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     local_edwiserreports
  * @copyright   2021 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 define([
     'jquery',
-    'core/str',
     './defaultconfig',
     './variables',
+    './common',
     './flatpickr',
     './jquery.dataTables',
     './dataTables.bootstrap4'
-], function($, str, config, v) {
+], function($, config, v, common) {
     /**
      * Selector datable variable
      * @type {object | null}
@@ -119,14 +118,19 @@ define([
     var getDatatableConfig = function(selectorType) {
         if (selectorType == 'lps') {
             return {
-                "columns": [
-                    { "data": "select" },
-                    { "data": "fullname" },
-                    { "data": "shortname" },
-                    { "data": "startdate" },
-                    { "data": "enddate" },
-                    { "data": "duration" },
-                ],
+                "columns": [{
+                    "data": "select"
+                }, {
+                    "data": "fullname"
+                }, {
+                    "data": "shortname"
+                }, {
+                    "data": "startdate"
+                }, {
+                    "data": "enddate"
+                }, {
+                    "data": "duration"
+                }],
                 "language": {
                     "searchPlaceholder": "Search Learning Programs",
                     "emptyTable": "There are no learning programs"
@@ -134,14 +138,19 @@ define([
             };
         } else {
             return {
-                "columns": [
-                    { "data": "select" },
-                    { "data": "fullname" },
-                    { "data": "shortname" },
-                    { "data": "category" },
-                    { "data": "startdate" },
-                    { "data": "enddate" },
-                ],
+                "columns": [{
+                    "data": "select"
+                }, {
+                    "data": "fullname"
+                }, {
+                    "data": "shortname"
+                }, {
+                    "data": "category"
+                }, {
+                    "data": "startdate"
+                }, {
+                    "data": "enddate"
+                }],
                 "language": {
                     "searchPlaceholder": "Search Course",
                     "emptyTable": "There are no courses"
@@ -176,7 +185,8 @@ define([
         });
 
         // Prepare url to get selector related data
-        var url = v.requestUrl + '?action=get_customreport_selectors_ajax&secret=' + M.local_edwiserreports.secret + '&filter=' + filter;
+        var url = v.requestUrl + '?action=get_customreport_selectors_ajax&secret=' +
+            M.local_edwiserreports.secret + '&filter=' + filter;
 
         // Show custom report selectors
         rootContainer.show();

@@ -15,18 +15,19 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     local_edwiserreports
  * @copyright   2021 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 /* eslint-disable no-console */
 define([
     'jquery',
+    'core/notification',
     './chart/apexcharts',
     './common',
     './defaultconfig'
 ], function(
     $,
+    Notification,
     ApexCharts,
     common,
     CFG
@@ -98,6 +99,7 @@ define([
 
     /**
      * Load graph
+     * @param {function} invalidUser Function to call if user is invalid
      */
     function loadGraph(invalidUser) {
         common.loader.show(SELECTOR.PANEL);
@@ -127,7 +129,8 @@ define([
                 let data = Object.assign({}, heatmapChart);
                 data.series = response.data.siteaccess.reverse();
                 renderGraph($(SELECTOR.PANEL).find(SELECTOR.GRAPH), data);
-            }).fail(function(exception) {
+            }).fail(function(ex) {
+                Notification.exception(ex);
                 common.loader.hide(SELECTOR.PANEL);
             });
     }

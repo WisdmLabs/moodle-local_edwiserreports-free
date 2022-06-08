@@ -15,7 +15,6 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     local_edwiserreports
  * @copyright   2021 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -107,6 +106,9 @@ define(['jquery', 'core/ajax'], function($, ajax) {
         });
     }
 
+    /**
+     * Initialize position handler.
+     */
     function initializePositionsHandler() {
         var positionSelector = 'select[id ^=id_s_local_edwiserreports][id $=position]';
 

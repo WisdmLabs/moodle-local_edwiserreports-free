@@ -15,7 +15,6 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     local_edwiserreports
  * @copyright   2021 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -90,7 +89,7 @@ define([
                 })
             };
 
-            if (Table != null) {
+            if (Table !== null) {
                 Table.destroy();
             }
 
@@ -101,24 +100,36 @@ define([
                 oLanguage: {
                     sEmptyTable: "No users are enrolled as student",
                 },
-                columns: [
-                    { "data": "username" },
-                    { "data": "enrolledon" },
-                    { "data": "enrolltype" },
-                    { "data": "noofvisits" },
-                    { "data": "completion" },
-                    { "data": "compleiontime" },
-                    { "data": "grade" },
-                    { "data": "lastaccess" }
-                ],
+                columns: [{
+                    "data": "username"
+                }, {
+                    "data": "enrolledon"
+                }, {
+                    "data": "enrolltype"
+                }, {
+                    "data": "noofvisits"
+                }, {
+                    "data": "completion"
+                }, {
+                    "data": "compleiontime"
+                }, {
+                    "data": "grade"
+                }, {
+                    "data": "lastaccess"
+                }],
                 drawCallback: function() {
                     common.stylePaginationButton(this);
                 },
-                columnDefs: [
-                    { className: "text-left", targets: 0 },
-                    { className: "text-left", targets: 1 },
-                    { className: "text-center", targets: "_all" }
-                ],
+                columnDefs: [{
+                    className: "text-left",
+                    targets: 0
+                }, {
+                    className: "text-left",
+                    targets: 1
+                }, {
+                    className: "text-center",
+                    targets: "_all"
+                }],
                 initComplete: function() {
                     common.loader.hide(PageId);
                 }

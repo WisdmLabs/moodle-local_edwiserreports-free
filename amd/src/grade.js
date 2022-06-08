@@ -73,7 +73,7 @@ define([
                 },
             });
         },
-    }
+    };
 
     /**
      * Initialize datable.
@@ -88,12 +88,16 @@ define([
             scrollX: true,
             scrollCollapse: true,
             autoWidth: true,
-            columns: [
-                { data: "student" },
-                { data: "course" },
-                { data: "activity", sortable: false },
-                { data: "grade" }
-            ],
+            columns: [{
+                data: "student"
+            }, {
+                data: "course"
+            }, {
+                data: "activity",
+                sortable: false
+            }, {
+                data: "grade"
+            }],
             dom: '<"edwiserreports-table"i<t><"table-pagination"p>>',
             language: {
                 searchPlaceholder: M.util.get_string('searchuser', 'local_edwiserreports'),
@@ -124,6 +128,7 @@ define([
                     common.loader.hide(SELECTOR.PAGE);
                     callback(response);
                 }).fail(function(exception) {
+                    Notification.exception(exception);
                     common.loader.hide(SELECTOR.PAGE);
                 });
             }

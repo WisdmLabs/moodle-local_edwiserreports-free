@@ -15,7 +15,6 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     local_edwiserreports
  * @copyright   2021 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -66,28 +65,28 @@ define([
          */
         function getLpStatsData(lpId) {
             $.ajax({
-                url: cfg.requestUrl,
-                type: cfg.requestType,
-                dataType: cfg.requestDataType,
-                sesskey: $(panel).data("sesskey"),
-                data: {
-                    action: 'get_lpstats_data_ajax',
+                    url: cfg.requestUrl,
+                    type: cfg.requestType,
+                    dataType: cfg.requestDataType,
                     sesskey: $(panel).data("sesskey"),
-                    data: JSON.stringify({
-                        lpid: lpId
-                    })
-                },
-            })
-            .done(function(response) {
-                generateLpChart(response.data);
-            })
-            .fail(function(error) {
-                console.log(error);
-            })
-            .always(function() {
-                $(loader).addClass("d-none");
-                $(chart).removeClass("d-none");
-            });
+                    data: {
+                        action: 'get_lpstats_data_ajax',
+                        sesskey: $(panel).data("sesskey"),
+                        data: JSON.stringify({
+                            lpid: lpId
+                        })
+                    },
+                })
+                .done(function(response) {
+                    generateLpChart(response.data);
+                })
+                .fail(function(error) {
+                    console.log(error);
+                })
+                .always(function() {
+                    $(loader).addClass("d-none");
+                    $(chart).removeClass("d-none");
+                });
         }
 
         /**

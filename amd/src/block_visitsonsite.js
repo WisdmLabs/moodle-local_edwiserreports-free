@@ -15,18 +15,19 @@
 /**
  * Block service call and rendering defined in this file.
  *
- * @package     local_edwiserreports
  * @copyright   2021 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 /* eslint-disable no-console */
 define([
     'jquery',
+    'core/notification',
     './chart/apexcharts',
     './common',
     './defaultconfig'
 ], function(
     $,
+    Notification,
     ApexCharts,
     common,
     CFG
@@ -163,6 +164,7 @@ define([
 
     /**
      * Load graph
+     * @param {function} invalidUser Function to be called when user is invalid
      */
     function loadGraph(invalidUser) {
         common.loader.show(SELECTOR.PANEL);
@@ -199,10 +201,11 @@ define([
                 data.chart.zoom.enabled = response.labels.length > 30;
                 data.tooltip.y.title.formatter = () => {
                     return M.util.get_string('visits', 'local_edwiserreports') + ': ';
-                }
+                };
                 common.insight(SELECTOR.INSIGHT, response.insight);
                 renderGraph($(SELECTOR.PANEL).find(SELECTOR.GRAPH), data);
             }).fail(function(exception) {
+                Notification.exception(exception);
                 common.loader.hide(SELECTOR.PANEL);
             });
     }

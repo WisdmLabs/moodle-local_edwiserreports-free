@@ -15,7 +15,6 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     local_edwiserreports
  * @copyright   2021 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -65,8 +64,8 @@ define([
      * @type {object}
      */
     var translation = str.get_strings([
-        {key: 'searchlps', component: component},
-        {key: 'nolearningprograms', component: component},
+        { key: 'searchlps', component: component },
+        { key: 'nolearningprograms', component: component },
     ]);
 
     // Prepare url to get selector related data
@@ -78,12 +77,12 @@ define([
         // Datatable configurations
         var dtConfig = {
             "columns": [
-                {"data": "select"},
-                {"data": "fullname"},
-                {"data": "shortname"},
-                {"data": "startdate"},
-                {"data": "enddate"},
-                {"data": "duration"},
+                { "data": "select" },
+                { "data": "fullname" },
+                { "data": "shortname" },
+                { "data": "startdate" },
+                { "data": "enddate" },
+                { "data": "duration" },
             ],
             "language": {
                 "searchPlaceholder": M.util.get_string('searchlps', component),

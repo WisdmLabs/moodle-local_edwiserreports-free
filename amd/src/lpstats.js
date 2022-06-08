@@ -15,7 +15,6 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     local_edwiserreports
  * @copyright   2021 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -69,7 +68,7 @@ define([
          * @type {object}
          */
         var translation = str.get_strings([
-            {key: 'lpdetailedreport', component: component}
+            { key: 'lpdetailedreport', component: component }
         ]);
 
         // Varibales for cohort filter
@@ -137,9 +136,9 @@ define([
                         // Set Modal Body
                         modal.setBody(Templates.render(
                             'local_edwiserreports/lpdetailedreport', {
-                            sesskey: $(PageId).data('sesskey'),
-                            formaction: M.cfg.wwwroot + "/local/edwiserreports/download.php"
-                        }
+                                sesskey: $(PageId).data('sesskey'),
+                                formaction: M.cfg.wwwroot + "/local/edwiserreports/download.php"
+                            }
                         ));
 
                         // Show learning program modal
@@ -165,8 +164,7 @@ define([
             var fragment = Fragment.loadFragment(
                 'local_edwiserreports',
                 'lpstats',
-                CONTEXTID,
-                {
+                CONTEXTID, {
                     lpid: lpid,
                     cohortid: cohortId
                 }
@@ -176,22 +174,22 @@ define([
                 var context = JSON.parse(response);
                 // eslint-disable-next-line promise/catch-or-return
                 Templates.render('local_edwiserreports/lpstatsinfo', context)
-                .then(function(html, js) {
-                    Templates.replaceNode(LpTable, html, js);
-                    return;
-                }).fail(function(ex) {
-                    console.log(ex);
-                }).always(function() {
-                    $(LpTable).show();
-                    Table = $(LpTable).DataTable({
-                        dom: "<'pull-left'f><t><p>",
-                        oLanguage: {
-                            sEmptyTable: "No Users are enrolled in any Learning Programs"
-                        },
-                        responsive: true
+                    .then(function(html, js) {
+                        Templates.replaceNode(LpTable, html, js);
+                        return;
+                    }).fail(function(ex) {
+                        console.log(ex);
+                    }).always(function() {
+                        $(LpTable).show();
+                        Table = $(LpTable).DataTable({
+                            dom: "<'pull-left'f><t><p>",
+                            oLanguage: {
+                                sEmptyTable: "No Users are enrolled in any Learning Programs"
+                            },
+                            responsive: true
+                        });
+                        $(loader).hide();
                     });
-                    $(loader).hide();
-                });
             });
         }
     }

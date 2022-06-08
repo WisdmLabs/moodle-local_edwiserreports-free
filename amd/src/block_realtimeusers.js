@@ -15,19 +15,18 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     local_edwiserreports
  * @copyright   2021 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 /* eslint-disable no-console */
 define([
     "jquery",
+    'core/notification',
     "./defaultconfig",
     "./common",
-    "./variables",
     "./jquery.dataTables",
     "./dataTables.bootstrap4"
-], function($, cfg, common, V) {
+], function($, Notification, cfg, common) {
     var liveUsersTable = null;
     var panel = cfg.getPanel("#liveusersblock");
     var panelBody = cfg.getPanel("#liveusersblock", "body");
@@ -64,7 +63,7 @@ define([
                     createRealtimeUsersBlock(response.data);
                 })
                 .fail(function(error) {
-                    // console.log(error);
+                    Notification.exception(error);
                 }).always(function() {
                     // Hide loader.
                     common.loader.hide("#liveusersblock");

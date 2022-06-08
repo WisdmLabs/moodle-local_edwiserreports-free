@@ -1,19 +1,39 @@
+/* eslint-disable no-unused-vars */
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+/**
+ * Plugin administration pages are defined here.
+ *
+ * @copyright   2021 wisdmlabs <support@wisdmlabs.com>
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+/* eslint-disable no-console */
 define([
     'jquery',
+    'core/notification',
     './chart/apexcharts',
     './common',
     './defaultconfig',
     './select2'
 ], function(
     $,
+    Notification,
     ApexCharts,
     Common,
     CFG
 ) {
-    /**
-     * Date picker.
-     */
-    var flatpickr = null;
 
     /**
      * Charts list.
@@ -147,7 +167,7 @@ define([
                 },
             });
         },
-    }
+    };
 
     /**
      * Load graph
@@ -188,11 +208,12 @@ define([
                 data.chart.zoom.enabled = response.labels.length > 30;
                 data.tooltip.y.title.formatter = (title) => {
                     return M.util.get_string('time', 'local_edwiserreports') + ': ';
-                }
+                };
                 $(SELECTOR.PANEL).find('.panel-body').attr('data-charttype', 'line');
                 renderGraph($(SELECTOR.PANEL).find(SELECTOR.GRAPH), data);
                 Common.loader.hide(SELECTOR.PANEL);
             }).fail(function(exception) {
+                Notification.exception(exception);
                 Common.loader.hide(SELECTOR.PANEL);
             });
     }
@@ -202,7 +223,7 @@ define([
      */
     function initEvents() {
 
-        flatpickr = $(SELECTOR.PANEL).find(SELECTOR.DATEPICKERINPUT).flatpickr({
+        $(SELECTOR.PANEL).find(SELECTOR.DATEPICKERINPUT).flatpickr({
             mode: 'range',
             altInput: true,
             altFormat: "d/m/Y",

@@ -15,7 +15,6 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     local_edwiserreports
  * @copyright   2021 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -42,7 +41,6 @@ define([
         var CourseEngageUsers = CourseEngageTable + " a.modal-trigger";
         var datatable = null;
         var modalTable = null;
-        var exportUrlLink = ".dropdown-menu[aria-labelledby='export-dropdown'] .dropdown-item";
 
         // Varibales for cohort filter
         var cohortId = 0;
@@ -148,18 +146,26 @@ define([
             datatable = $(CourseEngageTable).DataTable({
                 ajax: url + "&cohortid=" + cohortId,
                 dom: '<"edwiserreports-table"<"p-2"i><t><"table-pagination"p>>',
-                columns: [
-                    { "data": "coursename" },
-                    { "data": "enrolment" },
-                    { "data": "visited" },
-                    { "data": "activitystart" },
-                    { "data": "completedhalf" },
-                    { "data": "coursecompleted" }
-                ],
-                columnDefs: [
-                    { className: "text-left", targets: 0 },
-                    { className: "text-center modal-trigger", targets: "_all" }
-                ],
+                columns: [{
+                    "data": "coursename"
+                }, {
+                    "data": "enrolment"
+                }, {
+                    "data": "visited"
+                }, {
+                    "data": "activitystart"
+                }, {
+                    "data": "completedhalf"
+                }, {
+                    "data": "coursecompleted"
+                }],
+                columnDefs: [{
+                    className: "text-left",
+                    targets: 0
+                }, {
+                    className: "text-center modal-trigger",
+                    targets: "_all"
+                }],
                 language: {
                     searchPlaceholder: "Search Course",
                     emptyTable: "There are no courses"

@@ -1,3 +1,23 @@
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+/**
+ * Plugin administration pages are defined here.
+ *
+ * @copyright   2021 wisdmlabs <support@wisdmlabs.com>
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 /* eslint-disable no-console */
 define([
     'jquery',
@@ -9,14 +29,13 @@ define([
     'core/str',
     './variables',
     './selectors',
-    './templateselector',
     './jspdf',
     './select2',
     './jquery.dataTables',
     './dataTables.bootstrap4'
 ], function(
     $,
-    notif,
+    Notification,
     Fragment,
     ModalFactory,
     ModalEvents,
@@ -24,7 +43,6 @@ define([
     str,
     v,
     selector,
-    tempSelector,
     jsPDF
 ) {
     var emailListTable = null;
@@ -120,7 +138,8 @@ define([
 
     /**
      * Validate comma separated emails.
-     * @param {string} emails Comma separated emails
+     * @param {String} emails Comma separated emails
+     * @return {Boolean}
      */
     function validateEmails(emails) {
         var valid = true;
@@ -259,7 +278,7 @@ define([
         /**
          * Schedule emails to send reports.
          */
-        $(document).on("click", scheduledEmailDropdown, function(e) {
+        $(document).on("click", scheduledEmailDropdown, function() {
             var data = v.getScheduledEmailFormContext();
             var form = $(this).closest('form');
             var formData = form.serializeArray();
@@ -544,14 +563,14 @@ define([
                 callback();
                 location.reload();
             } else {
-                notif.addNotification({
+                Notification.addNotification({
                     message: "Error",
                     type: "error"
                 });
             }
         }).fail(function(error) {
             console.log(error);
-            notif.addNotification({
+            Notification.addNotification({
                 message: error,
                 type: "error"
             });
@@ -582,7 +601,7 @@ define([
             }
         }).fail(function(error) {
             console.log(error);
-            notif.addNotification({
+            Notification.addNotification({
                 message: error,
                 type: "error"
             });
@@ -963,7 +982,6 @@ define([
                 errorBox.show();
                 errorBox.delay(3000).fadeOut('slow');
             }
-
         });
     }
 
@@ -1015,7 +1033,7 @@ define([
                     component: 'moodle'
                 }
             ]).done(function(s) {
-                notif.confirm(s[0], s[1], s[2], s[3], $.proxy(function() {
+                Notification.confirm(s[0], s[1], s[2], s[3], $.proxy(function() {
                     emailScheduleDeleteInit(data, root, modal);
                 }, e.currentTarget));
             });
@@ -1074,8 +1092,35 @@ define([
     }
 
     /**
+     * Send plain formatted time.
+     * @param {Number} h Hours
+     * @param {Number} m Minutes
+     * @param {Number} s Seconds
+     * @returns {String}
+     */
+    function timePlainFormat(h, m, s) {
+        if (h > 0) {
+            h = h < 10 ? "0" + h : h;
+        } else {
+            h = "00";
+        }
+        if (m > 0) {
+            m = m < 10 ? "0" + m : m;
+        } else {
+            m = "00";
+        }
+        if (s > 0) {
+            s = s < 10 ? "0" + s : s;
+        } else {
+            s = "00";
+        }
+        return h + ":" + m + ":" + s;
+    }
+
+    /**
      * Convert seconds to HH:MM:SS
      * @param {Integer} seconds Seconds
+     * @param {Object} opts Options
      * @returns {String}
      */
     function timeFormatter(seconds, opts) {
@@ -1115,11 +1160,7 @@ define([
             }
             return time.join(', ');
         }
-        return [
-            h > 0 ? (h < 10 ? "0" + h : h) : "00",
-            m > 0 ? (m < 10 ? "0" + m : m) : "00",
-            s > 0 ? (s < 10 ? "0" + s : s) : "00",
-        ].join(':');
+        return timePlainFormat(h, m, s);
     }
 
     /**

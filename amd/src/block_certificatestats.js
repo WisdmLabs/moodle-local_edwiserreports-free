@@ -13,12 +13,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 /**
- * Plugin administration pages are defined here.
+ * Certificate block.
  *
- * @package     local_edwiserreports
- * @copyright   2021 wisdmlabs <support@wisdmlabs.com>
+ * @copyright   2022 Wisdmlabs <support@wisdmlabs.com>
+ * @author      Yogesh Shirsath
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 define([
     "jquery",

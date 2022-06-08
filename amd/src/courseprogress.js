@@ -15,7 +15,6 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     local_edwiserreports
  * @copyright   2021 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -158,20 +157,30 @@ define([
             datatable = $(CourseProgressTable).DataTable({
                 ajax: url + "&cohortid=" + cohortId + "&data=" + data,
                 dom: '<"edwiserreports-table"<"p-2"i><t><"table-pagination"p>>',
-                columns: [
-                    { "data": "coursename" },
-                    { "data": "enrolments" },
-                    { "data": "completed" },
-                    { "data": "completed81to100" },
-                    { "data": "completed61to80" },
-                    { "data": "completed41to60" },
-                    { "data": "completed21to40" },
-                    { "data": "completed0to20" },
-                ],
-                columnDefs: [
-                    { className: "text-left", targets: 0 },
-                    { className: "text-center modal-trigger", targets: "_all" }
-                ],
+                columns: [{
+                    "data": "coursename"
+                }, {
+                    "data": "enrolments"
+                }, {
+                    "data": "completed"
+                }, {
+                    "data": "completed81to100"
+                }, {
+                    "data": "completed61to80"
+                }, {
+                    "data": "completed41to60"
+                }, {
+                    "data": "completed21to40"
+                }, {
+                    "data": "completed0to20"
+                }],
+                columnDefs: [{
+                    className: "text-left",
+                    targets: 0
+                }, {
+                    className: "text-center modal-trigger",
+                    targets: "_all"
+                }],
                 language: {
                     searchPlaceholder: "Search Course",
                     emptyTable: "There are no courses"
