@@ -933,7 +933,8 @@ function local_edwiserreports_get_email_schedule_next_run($duration, $time) {
 function local_edwiserreports_prepare_export_filename($params) {
     if (isset($params['filter'])) {
         $filter = $params['filter'];
-        if ($filter = json_decode($filter, true)) {
+        $filter = json_decode($filter, true);
+        if (is_array($filter)) {
             $filtered = [];
             foreach ($filter as $key => $value) {
                 $filtered[] = $key . '-' . $value;
