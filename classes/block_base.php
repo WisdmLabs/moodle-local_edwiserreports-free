@@ -541,7 +541,7 @@ class block_base {
         return [[
             'name' => 'pdf',
             'label' => get_string('exporttopdf', 'local_edwiserreports'),
-            'type' => 'submit'
+            'type' => 'button'
         ], [
             'name' => 'csv',
             'label' => get_string('exporttocsv', 'local_edwiserreports'),
