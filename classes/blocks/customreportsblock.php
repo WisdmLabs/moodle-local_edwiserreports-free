@@ -58,56 +58,53 @@ class customreportsblock extends block_base {
 
         // Check courses.
         $coursedb = '> 1';
-        $params = array();
+        $params = array(
+            'contextlevel' => CONTEXT_COURSE,
+            'archetype' => 'student'
+        );
         if (!in_array(0, $courses)) {
             list($coursedb, $inparams) = $DB->get_in_or_equal($courses, SQL_PARAMS_NAMED, 'course', true, true);
             $params = array_merge($params, $inparams);
         }
 
         // Check Cohorts.
-        $allusers = false;
+        $cohortsjoin = '';
         if (!in_array(0, $cohorts)) {
-            $cohorts = \local_edwiserreports\utility::get_cohort_users($cohorts);
-            $userids = array_column($cohorts['users'], 'id');
-        } else {
-            $allusers = true;
-        }
-
-        $userdb = '> 1';
-        if (!$allusers) {
-            list($userdb, $uparams) = $DB->get_in_or_equal($userids, SQL_PARAMS_NAMED, 'user', true, true);
-            $params = array_merge($params, $uparams);
+            list($cohortsql, $inparams) = $DB->get_in_or_equal($cohorts, SQL_PARAMS_NAMED, 'cohort', true, true);
+            $cohortsjoin = 'JOIN {cohort_members} cm ON cm.userid = u.id AND cm.cohortid ' . $cohortsql;
+            $params = array_merge($params, $inparams);
         }
 
         // Main query to execute the custom query reports.
-        $sql = 'SELECT '.$customfields.'
+        $sql = "SELECT $customfields
                 FROM {user} u
+                $cohortsjoin
                 JOIN {role_assignments} ra ON ra.userid = u.id
                 JOIN {role} r ON r.id = ra.roleid
                 JOIN {context} ct ON ct.id = ra.contextid
                 JOIN {course} c ON c.id = ct.instanceid
-                JOIN {edwreports_course_progress} ec ON ec.courseid = c.id AND ec.userid = u.id AND c.id '.$coursedb.'
+                JOIN {edwreports_course_progress} ec ON ec.courseid = c.id AND ec.userid = u.id AND c.id $coursedb
                 JOIN {course_categories} ctg ON ctg.id = c.category
-                JOIN {course_format_options} cfo ON c.id = cfo.courseid
+                LEFT JOIN {course_format_options} cfo ON c.id = cfo.courseid
                 JOIN {enrol} e ON c.id = e.courseid AND e.status = 0
-                WHERE u.id '.$userdb.'
-                AND ct.contextlevel = '.CONTEXT_COURSE.'
-                AND r.archetype = \'student\'
-                AND u.deleted = 0';
-
+                WHERE u.id > 1
+                AND ct.contextlevel = :contextlevel
+                AND r.archetype = :archetype
+                AND u.deleted = 0";
         $recordset = $DB->get_recordset_sql($sql, $params);
         $records = array();
-        while ($recordset->key()) {
-            $record = $recordset->current();
-            if (!empty($resultfunc)) {
-                foreach ($resultfunc as $id => $func) {
-                    $record->$id = $func($record->$id);
+        if ($recordset->valid()) {
+            foreach ($recordset as $record) {
+                if (!empty($resultfunc)) {
+                    foreach ($resultfunc as $id => $func) {
+                        $record->$id = $func($record->$id);
+                    }
+                }
+                if (!in_array($record, $records)) {
+                    $records[] = $record;
                 }
             }
-
-            if (!in_array($record, $records)) {
-                $records[] = $record;
-            }
+            $record = $recordset->current();
             $recordset->next();
         }
 

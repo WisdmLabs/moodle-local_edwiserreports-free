@@ -251,7 +251,7 @@ class custom_reports_block implements renderable, templatable {
                 'dbkey' => 'cfo.format',
                 'selected' => in_array('courseformat', $selectedfield),
                 'resultfunc' => function($value) {
-                    return get_string('pluginname', 'format_' . $value);
+                    return $value ? get_string('courseformat' . $value, 'local_edwiserreports') : get_string('na', 'local_edwiserreports');
                 }
             ),
             array(
