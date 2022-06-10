@@ -366,10 +366,13 @@ class certificates_renderable implements renderable, templatable {
      * @return stdClass|array
      */
     public function export_for_template(renderer_base $output) {
-        global $CFG, $DB;
+        global $CFG, $DB, $USER;
 
         $output = new stdClass();
-        $output->sesskey = sesskey();
+
+        $authentication = new authentication();
+        $output->secret = $authentication->get_secret_key($USER->id);
+
         $customcerts = $DB->get_records("customcert", array());
 
         $output->pageheader = get_string("certificatestats", "local_edwiserreports");

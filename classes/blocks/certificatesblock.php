@@ -103,11 +103,7 @@ class certificatesblock extends block_base {
         // Get response from cache.
         if (!$response = $this->cache->get('response')) {
             $response = new stdClass();
-            if (isset($params->certificateid)) {
-                $response->data = $this->get_issued_users($params->certificateid, 0)->data;
-            } else {
-                $response->data = $this->get_certificate_list(0);
-            }
+            $response->data = $this->get_certificate_list(0);
             // Set cache for certificate response.
             $this->cache->set('response', $response);
         }
@@ -354,9 +350,8 @@ class certificatesblock extends block_base {
      * @return [array] Array certificates information
      */
     public static function get_exportable_data_block() {
-        $cohort = optional_param('cohortid', 0, PARAM_INT);
         $cert = new self();
-        $certificates = $cert->get_certificate_list($cohort);
+        $certificates = $cert->get_certificate_list(0);
         foreach ($certificates as $key => $certificate) {
             unset($certificate["id"]);
             $certificates[$key] = array_values($certificate);

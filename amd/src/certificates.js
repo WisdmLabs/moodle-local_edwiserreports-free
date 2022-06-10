@@ -71,9 +71,7 @@ define([
                     action: 'get_certificates_data_ajax',
                     secret: M.local_edwiserreports.secret,
                     lang: $('html').attr('lang'),
-                    data: JSON.stringify({
-                        filter: filter
-                    })
+                    data: JSON.stringify(filter)
                 },
             });
         }
