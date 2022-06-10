@@ -142,9 +142,10 @@ define([
     /**
      * Validate comma separated emails.
      * @param {String} emails Comma separated emails
+     * @param {Boolean} highlight Highlight error if email is invalid
      * @return {Boolean}
      */
-    function validateEmails(emails) {
+    function validateEmails(emails, highlight = true) {
         var valid = true;
         var domElement = $('[name="esrrecepient"]').get(0);
         var duplicates = [],
@@ -155,19 +156,25 @@ define([
                     duplicate = true;
                 }
                 duplicates[email] = true;
-                valid &= emailRegex.test(email);
+                valid = valid && emailRegex.test(email);
             });
         if (duplicate) {
-            domElement.setCustomValidity('Invalid email');
-            $(domElement).next().text(M.util.get_string('duplicateemail', 'local_edwiserreports'));
+            if (highlight) {
+                domElement.setCustomValidity('Invalid email');
+                $(domElement).next().text(M.util.get_string('duplicateemail', 'local_edwiserreports'));
+            }
             return false;
         }
         if (!valid) {
-            domElement.setCustomValidity('Invalid email');
-            $(domElement).next().text(M.util.get_string('invalidemail', 'local_edwiserreports'));
+            if (highlight) {
+                domElement.setCustomValidity('Invalid email');
+                $(domElement).next().text(M.util.get_string('invalidemail', 'local_edwiserreports'));
+            }
             return false;
         }
-        domElement.setCustomValidity('');
+        if (highlight) {
+            domElement.setCustomValidity('');
+        }
         return true;
     }
 
@@ -221,20 +228,25 @@ define([
                 });
         });
 
+        // Validating email field of schedule email form.
+        $(document).on('input', '[name="esrrecepient"]', function() {
+            validateEmails($(this).val());
+        });
+
         // Validating schedule email form fields.
         $(document).on('input', '[name="esrname"], [name="esrrecepient"], [name="esrsubject"]', function() {
             var name = $('[name="esrname"]').val() == "";
-            var recepient = !validateEmails($('[name="esrrecepient"]').val());
+            var recepient = !validateEmails($('[name="esrrecepient"]').val(), false);
             var subject = $('[name="esrsubject"]').val() == "";
             var invalid = name || recepient || subject;
+            $(this).closest('.fitem').addClass('was-validated');
             $('.modal-footer.schedule-email').find(`[data-action="save"], [data-action="send"]`).prop('disabled', invalid);
             $('#scheduletab .date-filters').toggleClass('disabled', invalid);
+        });
 
-            if (!recepient) {
-                $(this).get(0).setCustomValidity('');
-            } else {
-                $(this).get(0).setCustomValidity('Please enter valid email address');
-            }
+        // Highlight invalid input.
+        $(document).on('blur', '[name="esrname"], [name="esrrecepient"], [name="esrsubject"]', function() {
+            $(this).closest('.fitem').addClass('was-validated');
         });
 
         // Export data in pdf
