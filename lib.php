@@ -483,7 +483,7 @@ function local_edwiserreports_extend_navigation(navigation_node $nav) {
                 $icon
             );
             $node->showinflatnavigation = true;
-        } else {
+        } else if (stripos($CFG->custommenuitems, "/local/edwiserreports/index.php") === false) {
             $nodes = explode("\n", $CFG->custommenuitems);
             $node = get_string('reportsandanalytics', 'local_edwiserreports');
             $node .= "|";

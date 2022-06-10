@@ -40,5 +40,15 @@ function xmldb_local_edwiserreports_uninstall() {
     foreach (array_keys($blocks) as $blockid) {
         $DB->delete_records('user_preferences', array('name' => 'pref_' . $blockid . 'block'));
     }
+
+    // Delete Dashboard url from custommenuitems on uninstall.
+    $links = explode("\n", get_config('core', 'custommenuitems'));
+    foreach ($links as $key => $link) {
+        if (strpos($link, "/local/edwiserreports/index.php") !== false) {
+            unset($links[$key]);
+            break;
+        }
+    }
+    set_config('custommenuitems', implode("\n", $links));
     return true;
 }
