@@ -131,6 +131,11 @@ class send_scheduled_emails extends \core\task\scheduled_task {
                 $export = new export("email", $region, $blockname);
                 $data = $export->get_exportable_data($filter);
 
+                // If exported data is object.
+                if (gettype($data) == "object") {
+                    $data = $data->data;
+                }
+
                 // If data exist then send emails.
                 if ($data) {
                     mtrace(get_string('sending', 'local_edwiserreports') . ' ' . $email->esrname);
