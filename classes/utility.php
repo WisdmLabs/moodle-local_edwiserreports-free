@@ -112,8 +112,8 @@ class utility {
 
         $certificatesblock = new \local_edwiserreports\certificatesblock();
         if (isset($data->certificateid)) {
-            $cohortid = isset($data->cohortid) ? $data->cohortid : false;
-            return \local_edwiserreports\certificatesblock::get_issued_users($data->certificateid, $cohortid);
+            $cohort = isset($data->cohort) ? $data->cohort : false;
+            return $certificatesblock->get_issued_users($data->certificateid, $cohort);
         }
         return $certificatesblock->get_data();
     }
