@@ -44,7 +44,9 @@ class completionblock extends utility {
      */
     public static function get_data($courseid, $cohortid) {
         $response = new stdClass();
+        ob_start();
         $response->data = self::get_completions($courseid, $cohortid);
+        ob_end_clean();
         return $response;
     }
 
@@ -168,7 +170,9 @@ class completionblock extends utility {
     public static function get_exportable_data_report($courseid) {
         global $DB;
         $cohortid = optional_param("cohortid", 0, PARAM_INT);
+        ob_start();
         $completions = self::get_completions($courseid, $cohortid);
+        ob_end_clean();
 
         $export = array();
         $export[] = self::get_header();
