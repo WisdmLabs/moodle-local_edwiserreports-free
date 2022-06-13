@@ -72,13 +72,13 @@ class send_scheduled_emails extends \core\task\scheduled_task {
         foreach ($records as $key => $record) {
 
             // Removing orphaned records.
-            if ($record->component == 'block') {
+            if ($record->component == 'block' && stripos($record->blockname, 'customreportsblock') === false) {
                 if (!$DB->get_record_sql(
                     "SELECT *
                        FROM {edwreports_blocks}
                       WHERE " .
-                      $DB->sql_compare_text('classname') . ' = ' . $DB->sql_compare_text(':blockname'),
-                    array('blockname' => $record->blockname))) {
+                      $DB->sql_compare_text('blockname') . ' = ' . $DB->sql_compare_text(':blockname'),
+                      array('blockname' => $record->blockname))) {
                     echo "--------------------------------------------------------------------------------\n";
                     echo "Invalid block " . $record->blockname .". Removing the record.\n";
                     $DB->delete_records($table, array('id' => $key));
@@ -86,7 +86,8 @@ class send_scheduled_emails extends \core\task\scheduled_task {
                 }
             }
             // If it dosent have email data.
-            if (!$emaildata = json_decode($record->emaildata)) {
+            $emaildata = json_decode($record->emaildata);
+            if (!$emaildata) {
                 continue;
             }
 
@@ -175,6 +176,10 @@ class send_scheduled_emails extends \core\task\scheduled_task {
         $blockname = $emailinfo->reportparams->blockname;
 
         $recuser = $USER;
+
+        // Handling issue with suspended account. This is scheduled email and has to be sent.
+        $recuser->suspended = 0;
+
         $senduser = core_user::get_noreply_user();
 
         // Generate file to send emails.
