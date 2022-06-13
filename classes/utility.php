@@ -513,16 +513,16 @@ class utility {
         $records = $DB->get_record_sql($sql, $params);
         if (!$records) {
             $response->error = true;
-            $response->errormsg = get_string('recordnotfound', 'local_edwisrreports');
+            $response->errormsg = get_string('recordnotfound', 'local_edwiserreports');
         } else if (!$emaildata = json_decode($records->emaildata)) { // If it dosent have email data.
             $response->error = true;
-            $response->errormsg = get_string('jsondecodefailed', 'local_edwisrreports');
+            $response->errormsg = get_string('jsondecodefailed', 'local_edwiserreports');
         } else if (!is_array($emaildata)) { // If dta is not an array.
             $response->error = true;
-            $response->errormsg = get_string('emaildataisnotasarray', 'local_edwisrreports');
+            $response->errormsg = get_string('emaildataisnotasarray', 'local_edwiserreports');
         } else if (!isset($emaildata[$data->id])) {
             $response->error = true;
-            $response->errormsg = get_string('sceduledemailnotexist', 'local_edwisrreports');
+            $response->errormsg = get_string('sceduledemailnotexist', 'local_edwiserreports');
         } else {
             $response->error = false;
             $emaildata[$data->id]->esrid = $data->id;
@@ -553,16 +553,16 @@ class utility {
         $response = new stdClass();
         if (!$rec = $DB->get_record_sql($sql, $params)) {
             $response->error = true;
-            $response->errormsg = get_string('recordnotfound', 'local_edwisrreports');
+            $response->errormsg = get_string('recordnotfound', 'local_edwiserreports');
         } else if (!$emaildata = json_decode($rec->emaildata)) { // If it dosent have email data.
             $response->error = true;
-            $response->errormsg = get_string('jsondecodefailed', 'local_edwisrreports');
+            $response->errormsg = get_string('jsondecodefailed', 'local_edwiserreports');
         } else if (!is_array($emaildata)) { // If dta is not an array.
             $response->error = true;
-            $response->errormsg = get_string('emaildataisnotasarray', 'local_edwisrreports');
+            $response->errormsg = get_string('emaildataisnotasarray', 'local_edwiserreports');
         } else if (!isset($emaildata[$data->id])) {
             $response->error = true;
-            $response->errormsg = get_string('sceduledemailnotexist', 'local_edwisrreports');
+            $response->errormsg = get_string('sceduledemailnotexist', 'local_edwiserreports');
         } else {
             $response->error = false;
             unset($emaildata[$data->id]);
@@ -596,19 +596,19 @@ class utility {
         $response = new stdClass();
         if (!$rec = $DB->get_record_sql($sql, $params)) {
             $response->error = true;
-            $response->errormsg = get_string('recordnotfound', 'local_edwisrreports');
+            $response->errormsg = get_string('recordnotfound', 'local_edwiserreports');
             return $response;
         } else if (!$emaildata = json_decode($rec->emaildata)) { // If it dosent have email data.
             $response->error = true;
-            $response->errormsg = get_string('jsondecodefailed', 'local_edwisrreports');
+            $response->errormsg = get_string('jsondecodefailed', 'local_edwiserreports');
             return $response;
         } else if (!is_array($emaildata)) { // If dta is not an array.
             $response->error = true;
-            $response->errormsg = get_string('emaildataisnotasarray', 'local_edwisrreports');
+            $response->errormsg = get_string('emaildataisnotasarray', 'local_edwiserreports');
             return $response;
         } else if (!isset($emaildata[$data->id])) {
             $response->error = true;
-            $response->errormsg = get_string('sceduledemailnotexist', 'local_edwisrreports');
+            $response->errormsg = get_string('sceduledemailnotexist', 'local_edwiserreports');
             return $response;
         } else {
             $response->error = false;
