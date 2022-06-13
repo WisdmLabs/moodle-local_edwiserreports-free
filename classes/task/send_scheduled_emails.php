@@ -77,7 +77,7 @@ class send_scheduled_emails extends \core\task\scheduled_task {
                     "SELECT *
                        FROM {edwreports_blocks}
                       WHERE " .
-                      $DB->sql_compare_text('blockname') . ' = ' . $DB->sql_compare_text(':blockname'),
+                      $DB->sql_compare_text('classname') . ' = ' . $DB->sql_compare_text(':blockname'),
                       array('blockname' => $record->blockname))) {
                     echo "--------------------------------------------------------------------------------\n";
                     echo "Invalid block " . $record->blockname .". Removing the record.\n";
