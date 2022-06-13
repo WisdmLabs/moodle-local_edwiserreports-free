@@ -60,7 +60,8 @@ class courseprogressblock extends block_base {
         $cachekey = $this->generate_cache_key('courseprogress', $courseid, $cohortid);
 
         // If cache not set for course progress.
-        if (!$response = $cache->get($cachekey)) {
+        if ((!$response = $cache->get($cachekey)) || $tabledata) {
+
             // Get all courses for dropdown.
             $course = get_course($courseid);
             $coursecontext = context_course::instance($courseid);
@@ -73,7 +74,6 @@ class courseprogressblock extends block_base {
             list($progress, $average) = $this->get_completion_with_percentage(
                 $course,
                 $enrolledstudents,
-                $cohortid,
                 $tabledata
             );
             $response->data = $progress;
@@ -544,7 +544,8 @@ class courseprogressblock extends block_base {
         $courses = $blockobj->get_courses_of_user();
         unset($courses[$COURSE->id]);
         $params = (object) array(
-            'cohortid' => $cohortid
+            'cohortid' => $cohortid,
+            'tabledata' => true
         );
         foreach ($courses as $course) {
             $blockobj = new self();
