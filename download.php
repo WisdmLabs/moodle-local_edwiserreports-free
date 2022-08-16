@@ -83,24 +83,19 @@ $filename = local_edwiserreports_prepare_export_filename($params);
 // Get export object.
 $export = new export($type, $region, $blockname);
 
-// If format is scheduled email then dont prepare data.
-if ($type == "emailscheduled") {
-    $export->data_export($filename, false);
-} else {
-    // Prepare exportable data.
-    $data = $export->get_exportable_data($filter);
+// Prepare exportable data.
+$data = $export->get_exportable_data($filter);
 
-    $options = null;
-    if (gettype($data) == "object") {
-        $options = $data->options;
-        $data = $data->data;
-    }
+$options = null;
+if (gettype($data) == "object") {
+    $options = $data->options;
+    $data = $data->data;
+}
 
-    // Filename.
-    $filename .= $export->data_export_file_postfix($filter);
+// Filename.
+$filename .= $export->data_export_file_postfix($filter);
 
-    // If data is there then download data with files.
-    if ($data) {
-        $export->data_export($filename, $data, $options);
-    }
+// If data is there then download data with files.
+if ($data) {
+    $export->data_export($filename, $data, $options);
 }

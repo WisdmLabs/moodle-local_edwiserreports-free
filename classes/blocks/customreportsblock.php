@@ -26,7 +26,6 @@ namespace local_edwiserreports;
 defined('MOODLE_INTERNAL') || die;
 
 use stdClass;
-use moodle_url;
 
 require_once($CFG->dirroot . '/local/edwiserreports/classes/block_base.php');
 

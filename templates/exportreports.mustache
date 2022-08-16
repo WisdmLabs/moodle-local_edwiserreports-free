@@ -29,7 +29,7 @@
         "downloadurl": "#"
     }
 }}
-<form action="{{{ downloadurl }}}" target="_blank" method="post" class="download-links row m-0 ml-auto">
+<form action="{{{ downloadurl }}}" target="_blank" method="post" class="download-links more-details row m-0 ml-auto">
     <input type="hidden" name="block" value="{{id}}" />
     <input type="hidden" name="filter" value="{{filter}}" />
     <input type="hidden" name="cohortid" value="{{cohortid}}" />
@@ -39,13 +39,22 @@
     <button type="button" class="a border-0 bg-white" name="type" value="pdf">
         {{{pdf}}}
     </button>
-    <button type="button" class="a border-0 bg-white" name="type" value="csv">
+    <button type="button" class="a border-0 bg-white pro-export" name="type" value="csv">
         {{{csv}}}
+        <span class="lock-icon">
+            {{{lock}}}
+        </span>
     </button>
-    <button type="button" class="a border-0 bg-white" name="type" value="excel">
+    <button type="button" class="a border-0 bg-white pro-export" name="type" value="excel">
         {{{xls}}}
+        <span class="lock-icon">
+            {{{lock}}}
+        </span>
     </button>
-    <button type="button" class="a ml-2 btn theme-primary-text theme-primary-border bg-white" name="type" value="email">
+    <button type="button" class="a ml-2 btn theme-primary-text theme-primary-border bg-white pro-export" name="type" value="email">
         {{#str}} schedule, local_edwiserreports {{/str}}
+        <span class="lock-icon">
+            {{{lock}}}
+        </span>
     </button>
 </form>

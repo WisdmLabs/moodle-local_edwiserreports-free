@@ -25,7 +25,6 @@ namespace local_edwiserreports;
 
 defined('MOODLE_INTERNAL') or die;
 
-use context_system;
 use html_writer;
 use moodle_url;
 use core_user;
@@ -103,7 +102,7 @@ class activeusersblock extends block_base {
         $this->layout->name = get_string('activeusersheader', 'local_edwiserreports');
         $this->layout->info = get_string('activeusersblocktitlehelp', 'local_edwiserreports');
         $this->layout->morelink = new moodle_url($CFG->wwwroot . "/local/edwiserreports/activeusers.php");
-        $this->layout->downloadlinks = $this->get_block_download_links();
+        $this->layout->downloadlinks = $this->get_block_download_links(true);
         $this->layout->filters = $this->get_activeusers_filter();
 
         // Selected default filters.

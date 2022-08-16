@@ -24,11 +24,8 @@
 
 namespace local_edwiserreports;
 
-defined('MOODLE_INTERNAL') or die;
-
 use stdClass;
-use cache;
-use moodle_url;
+
 /**
  * Class Visits on site. To get the data related to Visits on site.
  */

@@ -52,6 +52,11 @@ class siteaccessblock extends block_base {
         $this->layout->id = 'siteaccessblock';
         $this->layout->name = get_string('accessinfo', 'local_edwiserreports');
         $this->layout->info = get_string('accessinfoblockhelp', 'local_edwiserreports');
+        $links = $this->get_block_download_links(true);
+        $links[0]['class'] = 'disabled';
+        [$links[1], $links[0]] = [$links[0], $links[1]];
+        array_pop($links);
+        $this->layout->downloadlinks = $links;
 
         if (is_siteadmin()) {
             $lastrun = $DB->get_field('task_scheduled', 'lastruntime', array(

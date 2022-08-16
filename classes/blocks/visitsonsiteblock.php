@@ -24,11 +24,6 @@
 
 namespace local_edwiserreports;
 
-defined('MOODLE_INTERNAL') or die;
-
-use stdClass;
-use cache;
-use moodle_url;
 /**
  * Class Visits on site. To get the data related to Visits on site.
  */
@@ -192,7 +187,6 @@ class visitsonsiteblock extends block_base {
             'labels' => $this->labels,
             'insight' => $this->calculate_insight($visits)
         ];
-
 
         return $response;
     }

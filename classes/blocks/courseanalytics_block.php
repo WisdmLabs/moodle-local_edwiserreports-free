@@ -23,6 +23,7 @@
  */
 
 namespace local_edwiserreports;
+
 use stdClass;
 use context_course;
 use html_writer;

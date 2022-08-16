@@ -33,7 +33,6 @@
 require(['jquery'], function($) {
     $(document).ready(function() {
         $('.more-nav .nav-item .nav-link.active').removeClass('active');
-        console.log("{{activeurl}}");
         $('.more-nav .nav-item [href="{{activeurl}}"]').addClass('active');
     });
 });

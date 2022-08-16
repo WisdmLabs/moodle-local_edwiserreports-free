@@ -24,8 +24,6 @@
 
 namespace local_edwiserreports;
 
-defined('MOODLE_INTERNAL') or die;
-
 use stdClass;
 use context_course;
 

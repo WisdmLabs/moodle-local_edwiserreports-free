@@ -110,14 +110,6 @@ class edwiserReportController extends controllerAbstract {
     }
 
     /**
-     * Get course engage data ajax action
-     */
-    public function get_courseengage_data_ajax_action() {
-        $cohortid = json_decode(optional_param('cohortid', 0, PARAM_RAW));
-        echo json_encode(\local_edwiserreports\utility::get_courseengage_data($cohortid));
-    }
-
-    /**
      * Get completion data ajax action
      */
     public function get_completion_data_ajax_action() {
@@ -131,38 +123,6 @@ class edwiserReportController extends controllerAbstract {
     public function get_courseanalytics_data_ajax_action() {
         $data = json_decode(required_param('data', PARAM_RAW));
         echo json_encode(\local_edwiserreports\utility::get_courseanalytics_data($data));
-    }
-
-    /**
-     * Get scheduled emails ajax action
-     */
-    public function get_scheduled_emails_ajax_action() {
-        $data = json_decode(required_param('data', PARAM_RAW));
-        echo json_encode(\local_edwiserreports\utility::get_scheduled_emails($data));
-    }
-
-    /**
-     * Get scheduled email detail ajax action
-     */
-    public function get_scheduled_email_detail_ajax_action() {
-        $data = json_decode(required_param('data', PARAM_RAW));
-        echo json_encode(\local_edwiserreports\utility::get_scheduled_email_details($data));
-    }
-
-    /**
-     * Delete scheduled mail ajax action
-     */
-    public function delete_scheduled_email_ajax_action() {
-        $data = json_decode(required_param('data', PARAM_RAW));
-        echo json_encode(\local_edwiserreports\utility::delete_scheduled_email($data));
-    }
-
-    /**
-     * Change scheduled email status ajax action
-     */
-    public function change_scheduled_email_status_ajax_action() {
-        $data = json_decode(required_param('data', PARAM_RAW));
-        echo json_encode(\local_edwiserreports\utility::change_scheduled_email_status($data));
     }
 
     /**

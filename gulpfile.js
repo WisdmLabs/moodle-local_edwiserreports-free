@@ -14,7 +14,7 @@ var gulp = require('gulp'),
 var PRODUCTION = process.argv.includes('-production');
 
 var sources = [
-    './amd/src/*.js'
+    './amd/src/**/*.js'
 ];
 
 var minifyOptions = {

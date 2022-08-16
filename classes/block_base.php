@@ -534,27 +534,66 @@ class block_base {
 
     /**
      * Get download link list for dropdown.
-     *
-     * @return array
+     * @param   bool    $graph  If graph is true then return graph export options.
+     * @return  array
      */
-    public function get_block_download_links() {
-        return [[
+    public function get_block_download_links($graph = false) {
+        $exports = [[
             'name' => 'pdf',
             'label' => get_string('exporttopdf', 'local_edwiserreports'),
-            'type' => 'button'
+            'type' => 'button',
+            'btnclass' => 'text-left'
         ], [
-            'name' => 'csv',
-            'label' => get_string('exporttocsv', 'local_edwiserreports'),
-            'type' => 'button'
-        ], [
-            'name' => 'excel',
-            'label' => get_string('exporttoexcel', 'local_edwiserreports'),
-            'type' => 'button'
-        ], [
+            'name' => 'info',
+            'label' => get_string('availableinpro', 'local_edwiserreports'),
+            'type' => 'button',
+            'pro' => true,
+            'class' => 'disabled text-center',
+            'btnclass' => 'text-white theme-1-bg'
+        ]];
+        if ($graph == true) {
+            $exports = array_merge($exports, [[
+                'name' => 'png',
+                'label' => get_string('exporttopng', 'local_edwiserreports'),
+                'type' => 'button',
+                'class' => 'disabled',
+                'btnclass' => 'text-left'
+            ], [
+                'name' => 'jpeg',
+                'label' => get_string('exporttojpeg', 'local_edwiserreports'),
+                'type' => 'button',
+                'class' => 'disabled',
+                'btnclass' => 'text-left'
+            ], [
+                'name' => 'svg',
+                'label' => get_string('exporttosvg', 'local_edwiserreports'),
+                'type' => 'button',
+                'class' => 'disabled',
+                'btnclass' => 'text-left'
+            ]]);
+        } else {
+            $exports = array_merge($exports, [[
+                'name' => 'csv',
+                'label' => get_string('exporttocsv', 'local_edwiserreports'),
+                'type' => 'button',
+                'class' => 'disabled',
+                'btnclass' => 'text-left'
+            ], [
+                'name' => 'excel',
+                'label' => get_string('exporttoexcel', 'local_edwiserreports'),
+                'type' => 'button',
+                'class' => 'disabled',
+                'btnclass' => 'text-left'
+            ]]);
+        }
+        $exports[] = [
             'name' => 'email',
             'label' => get_string('sendoveremail', 'local_edwiserreports'),
-            'type' => 'button'
-        ]];
+            'type' => 'button',
+            'class' => 'disabled',
+            'btnclass' => 'text-left'
+        ];
+        return $exports;
     }
 
     /**

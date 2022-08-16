@@ -385,6 +385,7 @@ tr[aria-expanded="true"] {
                         .dropdown-menu {
                             overflow: visible !important;
                             min-width: 10rem;
+                            padding: 0.5rem 0.2rem;
                             &::after,
                             &::before {
                                 content: " ";
@@ -411,13 +412,12 @@ tr[aria-expanded="true"] {
                                         opacity: 1;
                                         span {
                                             border-radius: 5px;
-                                            position: relative;
+                                            position: absolute;
+                                            bottom: 0;
+                                            left: 30%;
                                             &::after {
                                                 content: " ";
                                                 position: absolute;
-                                                left: 40%;
-                                                transform: translateX(-50%);
-                                                top: 100%;
                                                 border-top: 0.5rem solid;
                                                 border-right: 0.5rem solid transparent;
                                                 border-left: 0.5rem solid transparent;
@@ -429,6 +429,7 @@ tr[aria-expanded="true"] {
                         }
                         &.show {
                             button {
+                                position: relative;
                                 background: #E5E5E5;
                                 border-radius: 5px;
                             }
@@ -451,6 +452,21 @@ tr[aria-expanded="true"] {
                 .panel-help {
                     color: rgba(82, 96, 105, 0.5) !important;
                 }
+            }
+        }
+    }
+}
+
+.more-details {
+    .pro-export {
+        position: relative;
+        opacity: 0.3;
+        .lock-icon {
+            position: absolute;
+            top: -0.6rem;
+            right: 0rem;
+            svg {
+                width: 1rem;
             }
         }
     }
@@ -575,43 +591,6 @@ tr[aria-expanded="true"] {
     }
     .invalid-feedback {
         font-size: 1rem;
-    }
-}
-
-#listemailstab {
-    .esr-switch {
-        &[data-value="0"] {
-            .show-svg {
-                display: none;
-            }
-        }
-        &[data-value="on"],
-        &[data-value="1"] {
-            .hide-svg {
-                display: none;
-            }
-        }
-    }
-    tbody.empty {
-        display: none;
-    }
-    thead {
-        th {
-            border-bottom: none;
-        }
-    }
-    .fa-edit,
-    .fa-trash {
-        font-size: 1.429rem;
-        &::before {
-            position: relative;
-        }
-    }
-    .fa-trash::before {
-        top: 0.19rem;
-    }
-    .fa-edit::before {
-        top: 0.214rem;
     }
 }
 
@@ -767,7 +746,7 @@ tr[aria-expanded="true"] {
     right: 0;
     bottom: 0;
     background: rgba(255, 255, 255, 0.7);
-    z-index: 1201;
+    z-index: 1;
     &.position-fixed {
         z-index: 1701;
     }
