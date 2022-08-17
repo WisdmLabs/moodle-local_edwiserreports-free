@@ -585,7 +585,7 @@ class block_base {
         $exports = [[
             'name' => 'pdf',
             'label' => get_string('exporttopdf', 'local_edwiserreports'),
-            'type' => 'button',
+            'type' => 'submit',
             'btnclass' => 'text-left'
         ], [
             'name' => 'info',

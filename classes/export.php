@@ -131,53 +131,29 @@ class export {
         $html = html_writer::tag("h1",
             $header,
             array(
-                "style" => "width:100%;text-align:center"
+                "style" => "width:100%; text-align:center;"
             )
         );
 
-        $html .= html_writer::tag("p",
-            $help,
-            array(
-                "style" => "text-indent: 50px"
-            )
-        );
+        $html .= html_writer::tag("p", $help);
 
-        $html .= "<table style='font-size: 10px; width: 50px; display: block;'>";
+        $html .= '<table style="font-size: 11px;" border="1px" cellpadding="3">';
 
-        $html .= "<tr>";
+        $html .= '<tr>';
         foreach ($headerrow as $cell) {
-            $cols = count($headerrow);
-            $width = 100 / $cols;
-            $html .= "<th style='background-color: #ddd; width: " . $width
-            . "%; display: block; word-break: break-word;'>" . $cell . "</th>";
+            $html .= '<th bgcolor="#ddd" style="font-weight: bold">' . $cell . '</th>';
         }
-        $html .= "</tr>";
+        $html .= '</tr>';
         foreach ($data as $row) {
-            $html .= "<tr>";
+            $html .= '<tr>';
             foreach ($row as $cell) {
-                $html .= "<td style='background-color: #ddd; " . $width .
-                "%; display: block; word-break: break-word;'>" . $cell . "</td>";
+                $html .= '<td>' . $cell . '</td>';
             }
-            $html .= "</tr>";
+            $html .= '</tr>';
         }
 
         $html .= '</table>';
         $html = str_replace("\n", "", $html);
-        return $html;
-    }
-
-    /**
-     * Generate PDF file to export
-     * @param  array  $data Data to export
-     * @return string       HTML content for pdf
-     */
-    public function generate_pdf_file($data) {
-
-        // Generate HTML to export.
-        ob_start();
-        $html = $this->get_html_for_pdf2($data);
-        ob_clean();
-
         return $html;
     }
 
@@ -188,19 +164,33 @@ class export {
      * @param array  $options  Options for pdf export
      */
     public function data_export($filename, $data, $options = null) {
-        $filename .= '.pdf';
-        $html = $this->generate_pdf_file($data);
+        global $CFG;
 
-        $res = new stdClass();
-        $res->error = false;
-        $res->data = array(
-            "filename" => $filename,
-            "html" => $html
-        );
+        $filename .= '.pdf';
+
+        $orientation = 'p';
+        $format = 'A4';
         if ($options != null) {
-            $res->options = $options;
+            if (isset($options['orientation'])) {
+                $orientation = $options['orientation'];
+            }
+            if (isset($options['format'])) {
+                $format = $options['format'];
+            }
         }
-        echo json_encode($res);
+
+        // Generate HTML to export.
+        ob_start();
+        $html = utf8_encode($this->get_html_for_pdf2($data));
+        ob_clean();
+
+        require_once($CFG->libdir.'/pdflib.php');
+        $pdf = new \pdf($orientation, 'pt', $format);
+        $pdf->SetPrintHeader(false);
+        $pdf->SetPrintFooter(false);
+        $pdf->AddPage();
+        $pdf->WriteHTML($html, true, false, false, false, '');
+        $pdf->Output($filename, 'D');
         die;
     }
 
