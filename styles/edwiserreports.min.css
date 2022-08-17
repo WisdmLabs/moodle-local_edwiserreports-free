@@ -165,11 +165,6 @@
     text-decoration: underline;
 }
 
-#scheduletab .date-filters .dropdown .dropdown-item:hover {
-    background: white;
-    text-decoration: underline;
-}
-
 .select2-results__option--highlighted,
 .select2-results__option[aria-selected='true'] {
     background-color: white !important;
@@ -574,6 +569,7 @@ tr[aria-expanded="true"] .accordion-arrow.icon {
 #wdm-edwiserreports .edwiserReport-block > div .panel .panel-header .dropdown.blockoptions .dropdown-menu {
     overflow: visible !important;
     min-width: 10rem;
+    padding: 0.5rem 0.2rem;
 }
 
 #wdm-edwiserreports .edwiserReport-block > div .panel .panel-header .dropdown.blockoptions .dropdown-menu::after, #wdm-edwiserreports .edwiserReport-block > div .panel .panel-header .dropdown.blockoptions .dropdown-menu::before {
@@ -606,21 +602,21 @@ tr[aria-expanded="true"] .accordion-arrow.icon {
 
 #wdm-edwiserreports .edwiserReport-block > div .panel .panel-header .dropdown.blockoptions .dropdown-menu .dropdown-item.disabled.pro-highlight span {
     border-radius: 5px;
-    position: relative;
+    position: absolute;
+    bottom: 0;
+    left: 30%;
 }
 
 #wdm-edwiserreports .edwiserReport-block > div .panel .panel-header .dropdown.blockoptions .dropdown-menu .dropdown-item.disabled.pro-highlight span::after {
     content: " ";
     position: absolute;
-    left: 40%;
-    transform: translateX(-50%);
-    top: 100%;
     border-top: 0.5rem solid;
     border-right: 0.5rem solid transparent;
     border-left: 0.5rem solid transparent;
 }
 
 #wdm-edwiserreports .edwiserReport-block > div .panel .panel-header .dropdown.blockoptions.show button {
+    position: relative;
     background: #E5E5E5;
     border-radius: 5px;
 }
@@ -641,6 +637,21 @@ tr[aria-expanded="true"] .accordion-arrow.icon {
 
 #wdm-edwiserreports .edwiserReport-block > div .panel .panel-help {
     color: rgba(82, 96, 105, 0.5) !important;
+}
+
+.more-details .pro-export {
+    position: relative;
+    opacity: 0.3;
+}
+
+.more-details .pro-export .lock-icon {
+    position: absolute;
+    top: -0.6rem;
+    right: 0rem;
+}
+
+.more-details .pro-export .lock-icon svg {
+    width: 1rem;
 }
 
 .pie-placeholder {
@@ -752,40 +763,6 @@ tr[aria-expanded="true"] .accordion-arrow.icon {
 
 #scheduletab .invalid-feedback {
     font-size: 1rem;
-}
-
-#listemailstab .esr-switch[data-value="0"] .show-svg {
-    display: none;
-}
-
-#listemailstab .esr-switch[data-value="on"] .hide-svg, #listemailstab .esr-switch[data-value="1"] .hide-svg {
-    display: none;
-}
-
-#listemailstab tbody.empty {
-    display: none;
-}
-
-#listemailstab thead th {
-    border-bottom: none;
-}
-
-#listemailstab .fa-edit,
-#listemailstab .fa-trash {
-    font-size: 1.429rem;
-}
-
-#listemailstab .fa-edit::before,
-#listemailstab .fa-trash::before {
-    position: relative;
-}
-
-#listemailstab .fa-trash::before {
-    top: 0.19rem;
-}
-
-#listemailstab .fa-edit::before {
-    top: 0.214rem;
 }
 
 .font-size-14 {
@@ -912,7 +889,7 @@ tr[aria-expanded="true"] .accordion-arrow.icon {
     right: 0;
     bottom: 0;
     background: rgba(255, 255, 255, 0.7);
-    z-index: 1201;
+    z-index: 1;
 }
 
 .edwiserreports-loader.position-fixed {
@@ -1035,6 +1012,7 @@ tr[aria-expanded="true"] .accordion-arrow.icon {
 #coursereport,
 #wdm-activeusers-individual,
 #wdm-certificates-individual,
+#wdm-courseprogress-individual,
 #learner {
     position: relative;
     overflow: hidden;
@@ -1057,6 +1035,8 @@ tr[aria-expanded="true"] .accordion-arrow.icon {
 #wdm-activeusers-individual table td:nth-child(n+2),
 #wdm-certificates-individual table th:nth-child(n+2),
 #wdm-certificates-individual table td:nth-child(n+2),
+#wdm-courseprogress-individual table th:nth-child(n+2),
+#wdm-courseprogress-individual table td:nth-child(n+2),
 #learner table th:nth-child(n+2),
 #learner table td:nth-child(n+2) {
     text-align: center;

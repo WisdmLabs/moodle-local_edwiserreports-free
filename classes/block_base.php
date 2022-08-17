@@ -251,6 +251,50 @@ class block_base {
     }
 
     /**
+     * Get cohorts list.
+     * @return array Cohort list.
+     */
+    public function get_cohorts() {
+        return [
+            'values' => [
+                [
+                    'id' => 0,
+                    'name' => get_string('allcohorts', 'local_edwiserreports')
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * Check whether group filter can be shown.
+     * If groups are present in the site then returning blank option
+     * with message: 'Please select course'
+     *
+     * @return mixed boolean/array
+     */
+    public function get_default_group_filter() {
+        global $DB;
+        $sql = "SELECT DISTINCT(g.id), g.courseid, g.name
+                  FROM {groups} g
+                  JOIN {groups_members} gm ON g.id = gm.groupid
+        ";
+        if (!$DB->get_records_sql($sql)) {
+            return false;
+        }
+        return [
+            'groups' =>
+            [[
+                'id' => 0,
+                'name' => get_string('allgroups', 'local_edwiserreports')
+            ], [
+                'id' => -1,
+                'name' => get_string('pleaseselectcourse', 'local_edwiserreports'),
+                'disabled' => 'disabled'
+            ]]
+        ];
+    }
+
+    /**
      * Get users courses based on user role.
      * Site Admin/Manager - All courses.
      * Category Manager/Category Creator/Teacher/Editing Teacher - Enrolled courses.

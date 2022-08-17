@@ -277,6 +277,16 @@ class edwiserReportController extends controllerAbstract {
     }
 
     /**
+     * Get table data for Course activity status graph.
+     */
+    public function get_courseengagement_data_ajax_action() {
+        $courseengagement = new \local_edwiserreports\courseengagementblock();
+
+        // Response for ajax action.
+        echo json_encode($courseengagement->get_data());
+    }
+
+    /**
      * Get insight card context to render insight card.
      */
     public function get_insight_card_context_ajax_action() {

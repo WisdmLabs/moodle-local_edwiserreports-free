@@ -99,6 +99,24 @@ $capabilities = array(
             'manager' => CAP_ALLOW
         ),
     ),
+    'report/edwiserreports_courseengagementblock:view' => array(
+        'riskbitmask' => RISK_SPAM,
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => array(
+            'coursecreator' => CAP_ALLOW,
+            'manager' => CAP_ALLOW
+        ),
+    ),
+    'report/edwiserreports_courseengagementblock:editadvance' => array(
+        'riskbitmask' => RISK_SPAM,
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => array(
+            'coursecreator' => CAP_ALLOW,
+            'manager' => CAP_ALLOW
+        ),
+    ),
     'report/edwiserreports_certificatesblock:view' => array(
         'riskbitmask' => RISK_SPAM,
         'captype' => 'read',

@@ -43,13 +43,6 @@
         <licenseversion></licenseversion>
     </library>
     <library>
-        <location>amd/src/jspdf.js</location>
-        <name>jsPDF - PDF Document creation from JavaScript</name>
-        <license>MIT</license>
-        <version>1.0.0</version>
-        <licenseversion></licenseversion>
-    </library>
-    <library>
         <location>amd/src/select2.js</location>
         <name>Select2</name>
         <license>MIT</license>

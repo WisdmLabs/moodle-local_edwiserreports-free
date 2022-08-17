@@ -46,7 +46,6 @@ if (!has_capability($capname, $context) &&
 
 // Include JS for course report page.
 $PAGE->requires->js_call_amd('local_edwiserreports/courseprogress', 'init', array($context->id));
-$PAGE->requires->js_call_amd('local_edwiserreports/courseengage', 'init', array($context->id));
 
 // Get page URL.
 $pageurl = new moodle_url($CFG->wwwroot . "/local/edwiserreports/coursereport.php");

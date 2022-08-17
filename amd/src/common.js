@@ -28,7 +28,6 @@ define([
     'core/templates',
     './variables',
     './selectors',
-    './jspdf',
     './select2',
     './jquery.dataTables',
     './dataTables.bootstrap4'

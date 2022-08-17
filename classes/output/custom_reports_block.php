@@ -150,6 +150,12 @@ class custom_reports_block implements renderable, templatable {
                 'text' => get_string('lastname', 'local_edwiserreports'),
                 'dbkey' => 'u.lastname',
                 'selected' => in_array('lastname', $selectedfield)
+            ),
+            array(
+                'id' => 'timespentonsite',
+                'text' => get_string('timespentonsite', 'local_edwiserreports'),
+                'selected' => false,
+                'disabled' => true
             )
         );
         return $userfields;

@@ -20,13 +20,13 @@
  */
 define([
     'jquery',
-    'core/modal_factory',
     './common',
     './insights',
     './block_siteaccess',
     './block_activecourses',
     './block_activeusers',
     './block_courseprogress',
+    './block_courseengagement',
     './block_inactiveusers',
     './block_realtimeusers',
     './block_todaysactivity',
@@ -39,13 +39,13 @@ define([
     './block_learnertimespentonsite'
 ], function(
     $,
-    ModalFactory,
     common,
     insights,
     siteAccess,
     activeCourses,
     activeUsers,
     courseProgress,
+    courseEngagement,
     inactiveUsers,
     realTimeUsers,
     todaysActivity,
@@ -79,6 +79,7 @@ define([
         activeCourses,
         activeUsers,
         courseProgress,
+        courseEngagement,
         inactiveUsers,
         realTimeUsers,
         todaysActivity,

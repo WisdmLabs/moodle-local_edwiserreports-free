@@ -63,13 +63,6 @@ function local_edwiserreports_output_fragment_userslist($args) {
 
             $response = \local_edwiserreports\courseprogressblock::get_userslist_table($courseid, $minval, $maxval, $cohortid);
             break;
-        case "courseengage":
-            require_once($CFG->dirroot . '/local/edwiserreports/classes/blocks/courseengageblock.php');
-            $courseid = clean_param($args['courseid'], PARAM_TEXT);
-            $action   = clean_param($args['action'], PARAM_TEXT);
-
-            $response = \local_edwiserreports\courseengageblock::get_userslist_table($courseid, $action, $cohortid);
-            break;
     }
 
     return $response;
@@ -547,6 +540,12 @@ function local_edwiserreports_get_default_block_settings() {
         ),
         'courseprogress' => array(
             'classname' => 'courseprogressblock',
+            'position' => $index++,
+            LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW => LOCAL_SITEREPORT_BLOCK_MEDIUM,
+            LOCAL_SITEREPORT_BLOCK_TABLET_VIEW => LOCAL_SITEREPORT_BLOCK_LARGE
+        ),
+        'courseengagement' => array(
+            'classname' => 'courseengagementblock',
             'position' => $index++,
             LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW => LOCAL_SITEREPORT_BLOCK_MEDIUM,
             LOCAL_SITEREPORT_BLOCK_TABLET_VIEW => LOCAL_SITEREPORT_BLOCK_LARGE

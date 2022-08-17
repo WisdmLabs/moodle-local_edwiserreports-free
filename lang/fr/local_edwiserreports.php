@@ -843,6 +843,20 @@ $string['site'] = 'Site';
 $string['completed-y'] = 'Terminé';
 $string['completed-n'] = 'Pas achevé';
 
+// Course Engagement block.
+$string['courseengagementheader'] = 'Bloc d\'engagement du cours';
+$string['courseengagementblockhelp'] = 'Ce bloc montrera les données d\'engagement du cours.';
+$string['courseengagementblockview'] = 'Vue de blocs d\'engagement du cours';
+$string['courseengagementblockedit'] = 'Bloc d\'engagement du cours Modifier';
+$string['courseengagementrolesetting'] = 'Bloc de fiançailles de cours Rôles autorisés';
+$string['courseengagementdesktopsize'] = 'Taille du bloc de fiançailles du cours dans le bureau';
+$string['courseengagementtabletsize'] = 'Taille du bloc d\'engagement du cours dans la tablette';
+$string['courseengagementposition'] = 'Position du bloc d\'engagement du cours';
+$string['courseengagementblockexportheader'] = 'Rapport de bloc d\'engagement du cours';
+$string['courseengagementblockexporthelp'] = 'Ce rapport affichera les données exportées du bloc d\'engagement du cours.';
+$string['courseengagementblockeditadvance'] = 'Cours Engagement Block Advance Modifier';
+$string['categoryname'] = 'Nom de catégorie';
+
 // Top page insights.
 $string['newregistrations'] = 'Nouvelles inscriptions';
 $string['courseenrolments'] = 'Inscription au cours';

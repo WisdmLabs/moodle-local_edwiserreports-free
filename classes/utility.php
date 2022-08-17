@@ -159,16 +159,6 @@ class utility {
     }
 
     /**
-     * Get course engage data
-     *
-     * @param  Object $cohortid Cohort id
-     * @return Array
-     */
-    public static function get_courseengage_data($cohortid) {
-        return \local_edwiserreports\courseengageblock::get_data($cohortid);
-    }
-
-    /**
      * Get inactive users data
      *
      * @param  Object $data Filter data

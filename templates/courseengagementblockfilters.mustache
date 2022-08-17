@@ -1,0 +1,14 @@
+<div class="row pb-3">
+    <div class="filter-selector col-12 col-md-6 mb-1">
+        {{> local_edwiserreports/datatable/search }}
+    </div>
+    {{# cohort }}
+        <div class="filter-selector col-12 col-md-6 mb-1">
+            <select class="cohort-select form-control singleselect" name="cohort-select">
+                {{#values}}
+                    <option value="{{id}}">{{name}}</option>
+                {{/values}}
+            </select>
+        </div>
+    {{/ cohort }}
+</div>
