@@ -295,6 +295,69 @@ class block_base {
     }
 
     /**
+     * Get courses of categories where user is category manager or course creator.
+     *
+     * @param int $userid Current user id
+     *
+     * @return array
+     */
+    public function get_category_manager_creator_courses($userid) {
+        global $DB;
+
+        $allcats = array_keys(\core_course_category::make_categories_list());
+        $allowedcat = array();
+        $usercats = array();
+
+        $categories = $DB->get_records_sql(
+            "SELECT cc.*
+               FROM {role_assignments} ra
+               JOIN {role} r ON ra.roleid = r.id AND (r.archetype = 'manager' OR r.archetype = 'coursecreator')
+               JOIN {context} ctx ON ra.contextid = ctx.id AND ctx.contextlevel = :contextlevel
+               JOIN {course_categories} cc ON ctx.instanceid = cc.id
+              WHERE ra.userid = :userid",
+        array('userid' => $userid, 'contextlevel' => CONTEXT_COURSECAT));
+        foreach ($categories as $categories) {
+            $nested = $DB->get_records_sql(
+                "SELECT * FROM {course_categories} WHERE path LIKE ? OR path LIKE ?",
+                array('%/' . $categories->id, '%/' . $categories->id . '/%')
+            );
+            foreach ($nested as $n) {
+                $usercats[$n->id] = true;
+            }
+        }
+
+        $allowedcat = array_intersect($allcats, array_keys($usercats));
+
+        // Temporary table for storing the course ids.
+        $catstable = utility::create_temp_table('tmp_bb_cats', $allowedcat);
+
+        $courses = $DB->get_records_sql(
+            "SELECT c.*
+            FROM {{$catstable}} ct
+            JOIN {course} c ON ct.tempid = c.category"
+        );
+
+        // Droppping cats table.
+        utility::drop_temp_table($catstable);
+
+        // Get manager courses.
+        $managercourses = $DB->get_records_sql(
+            "SELECT c.*
+               FROM {role_assignments} ra
+               JOIN {role} r ON ra.roleid = r.id AND (r.archetype = 'manager' OR r.archetype = 'coursecreator')
+               JOIN {context} ctx ON ra.contextid = ctx.id AND ctx.contextlevel = :contextlevel
+               JOIN {course} c ON ctx.instanceid = c.id
+              WHERE ra.userid = :userid",
+        array('userid' => $userid, 'contextlevel' => CONTEXT_COURSE));
+
+        foreach ($managercourses as $id => $course) {
+            $courses[$id] = $course;
+        }
+
+        return $courses;
+    }
+
+    /**
      * Get users courses based on user role.
      * Site Admin/Manager - All courses.
      * Category Manager/Category Creator/Teacher/Editing Teacher - Enrolled courses.
@@ -310,11 +373,18 @@ class block_base {
         }
 
         // Admin or Manager.
-        if (is_siteadmin() || has_capability('moodle/site:configview', context_system::instance())) {
+        if (is_siteadmin($userid) || has_capability('moodle/site:configview', context_system::instance(), $userid)) {
             return get_courses();
         }
 
         $visiblecourses = [];
+
+        // Manager or creator courses.
+        $managercourses = $this->get_category_manager_creator_courses($userid);
+        $this->filter_courses($managercourses, $visiblecourses, $userid);
+        if (count($visiblecourses) > 0) {
+            return $visiblecourses;
+        }
 
         // Enrolled users courses.
         $allcourses = enrol_get_all_users_courses($userid);
