@@ -89,8 +89,8 @@
                     <div class="field ml-3 mr-3" aria-control="{{key}}-field-group">
                         {{#fieldsarray}}
                         <div class="{{id}} p-2">
-                            <div class="checkbox-edwiserreports">
-                                <input type="checkbox" id="{{id}}" class="custom-field-checkbox" value="{{id}}" {{#selected}}checked{{/selected}}>
+                            <div class="checkbox-edwiserreports {{#disabled}}disabled{{/disabled}}" {{#disabled}}title="{{#str}} unlockthisfeature, local_edwiserreports {{/str}}"{{/disabled}}>
+                                <input type="checkbox" id="{{id}}" class="custom-field-checkbox" value="{{id}}" {{#selected}}checked{{/selected}} {{#disabled}}disabled{{/disabled}}>
                                 <label for="{{id}}" class="checkmark"></label>
                                 <label for="{{id}}" class="mb-0">{{text}}</label>
                             </div>

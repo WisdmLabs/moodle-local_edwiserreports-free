@@ -5,6 +5,9 @@
     table.empty {
         height: 300px;
     }
+    .reports-preview-content.empty {
+        padding: 7rem 0;
+    }
     .reports-preview-content.loader,
     .reports-list-content.loader {
         .icon {
@@ -55,6 +58,8 @@
             background: white;
             left: 0;
             right: 0;
+            max-height: 200px;
+            overflow-y: auto;
             box-shadow: 0 7px 14px 0 rgba(59, 65, 94, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.07);
         }
     }

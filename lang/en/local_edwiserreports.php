@@ -107,7 +107,7 @@ $string['lastupdate'] = 'Last updated <span class="minute">0</span> min ago';
 $string['lastweek'] = 'Last Week';
 $string['lastmonth'] = 'Last Month';
 $string['lastyear'] = 'Last Year';
-$string['custom'] = 'Custom Date';
+$string['customdate'] = 'Custom Date';
 $string['rank'] = 'Rank';
 $string['enrolments'] = 'Enrolments';
 $string['visits'] = 'Visits';
@@ -489,6 +489,7 @@ $string['duration'] = 'Duration';
 $string['na'] = 'NA';
 $string['activityname'] = 'Activity Name';
 $string['searchtitle'] = 'Search Title';
+$string['custom'] = 'Custom';
 
 // Setting.
 $string['edwiserReport_settings'] = 'Edwiser Reports & Analytics Dashboard Settings';

@@ -955,6 +955,13 @@ tr[aria-expanded="true"] {
     padding: 0.892rem;
     margin-bottom: 0;
     user-select: none;
+    &.disabled {
+        cursor: not-allowed !important;
+        input,
+        label {
+            cursor: not-allowed !important;
+        }
+    }
     input {
         display: none !important;
         &:disabled {

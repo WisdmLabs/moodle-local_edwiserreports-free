@@ -120,6 +120,68 @@ class custom_reports_block implements renderable, templatable {
     }
 
     /**
+     * Adding custom user profile fields to userfields array.
+     *
+     * @param array $userfields     User fields list
+     *
+     * @return array                User fields list with custom profile fields.
+     */
+    public function get_custom_report_custom_user_fields($userfields) {
+        global $DB, $CFG;
+        // Social labels.
+        $socialstringplugin = $CFG->branch < 311 ? 'moodle' : 'profilefield_social';
+        $social = [
+            'icq' => get_string('icqnumber', $socialstringplugin),
+            'msn' => get_string('msnid', $socialstringplugin),
+            'aim' => get_string('aimid', $socialstringplugin),
+            'yahoo' => get_string('yahooid', $socialstringplugin),
+            'skype' => get_string('skypeid', $socialstringplugin),
+            'url' => get_string('webpage', $socialstringplugin),
+        ];
+
+        $customfields = $DB->get_records_sql(
+            "SELECT *
+               FROM {user_info_field}
+              WHERE visible > 1
+              ORDER BY sortorder");
+        foreach ($customfields as $id => $field) {
+            $fieldid = $field->shortname . '_' . $id;
+            $name = '';
+            $fielddata = [
+                'id' => $fieldid,
+                'tableid' => $id,
+                'custom' => true,
+                'selected' => false,
+                'disabled' => true
+            ];
+            $skip = false;
+            switch ($field->datatype) {
+                case 'text':
+                    if ($field->param3 == 1) {
+                        $skip = true;
+                    }
+                case 'menu':
+                case 'checkbox':
+                case 'datetime':
+                    $name = $field->name;
+                    break;
+                case 'social':
+                    $name = $social[$field->param1];
+                    break;
+                default:
+                    $skip = true;
+                    break;
+            }
+            if ($skip) {
+                continue;
+            }
+            $fielddata['text'] = $name . ' (' . get_string('custom', 'local_edwiserreports') . ') (PRO)';
+            $userfields[] = $fielddata;
+        }
+        return $userfields;
+    }
+
+    /**
      * Get custom reports users fields
      * @param  Array $selectedfield Selected report fields
      * @return Array                Users Field for custom reports
@@ -153,11 +215,15 @@ class custom_reports_block implements renderable, templatable {
             ),
             array(
                 'id' => 'timespentonsite',
-                'text' => get_string('timespentonsite', 'local_edwiserreports'),
+                'text' => get_string('timespentonsite', 'local_edwiserreports') . ' (PRO)',
                 'selected' => false,
                 'disabled' => true
             )
         );
+
+        // Adding cutom profile fields.
+        $userfields = $this->get_custom_report_custom_user_fields($userfields);
+
         return $userfields;
     }
 
@@ -232,6 +298,12 @@ class custom_reports_block implements renderable, templatable {
                 'resultfunc' => function($value) {
                     return $value ? date('d M Y', $value) : get_string('na', 'local_edwiserreports');
                 }
+            ),
+            array(
+                'id' => 'timespentoncourse',
+                'text' => get_string('timespentoncourse', 'local_edwiserreports') . ' (PRO)',
+                'selected' => false,
+                'disabled' => true
             ),
             array(
                 'id' => 'coursestartdate',

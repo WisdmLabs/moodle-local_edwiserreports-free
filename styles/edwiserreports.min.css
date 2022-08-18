@@ -1104,6 +1104,15 @@ tr[aria-expanded="true"] .accordion-arrow.icon {
     user-select: none;
 }
 
+.checkbox-edwiserreports.disabled {
+    cursor: not-allowed !important;
+}
+
+.checkbox-edwiserreports.disabled input,
+.checkbox-edwiserreports.disabled label {
+    cursor: not-allowed !important;
+}
+
 .checkbox-edwiserreports input {
     display: none !important;
 }
@@ -1215,6 +1224,11 @@ tr[aria-expanded="true"] .accordion-arrow.icon {
     height: 300px;
 }
 
+.reports-preview-body .reports-preview-content.empty,
+.reports-list-body .reports-preview-content.empty {
+    padding: 7rem 0;
+}
+
 .reports-preview-body .reports-preview-content.loader .icon,
 .reports-preview-body .reports-list-content.loader .icon,
 .reports-list-body .reports-preview-content.loader .icon,
@@ -1262,6 +1276,8 @@ tr[aria-expanded="true"] .accordion-arrow.icon {
     background: white;
     left: 0;
     right: 0;
+    max-height: 200px;
+    overflow-y: auto;
     box-shadow: 0 7px 14px 0 rgba(59, 65, 94, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.07);
 }
 

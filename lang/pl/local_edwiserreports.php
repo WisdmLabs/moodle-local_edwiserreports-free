@@ -107,7 +107,7 @@ $string['lastupdate'] = 'Ostatnia aktualizacja <span class = "minute"> 0 </span>
 $string['lastweek'] = 'Zeszły tydzień';
 $string['lastmonth'] = 'W zeszłym miesiącu';
 $string['lastyear'] = 'Ostatni rok';
-$string['custom'] = 'Data niestandardowa';
+$string['customdate'] = 'Data niestandardowa';
 $string['rank'] = 'Ranga';
 $string['enrolments'] = 'Zapisy';
 $string['visits'] = 'Odwiedziny';
@@ -490,6 +490,7 @@ $string['duration'] = 'Czas trwania';
 $string['na'] = 'NA';
 $string['activityname'] = 'Nazwa aktywności';
 $string['searchtitle'] = 'Wyszukaj tytuł';
+$string['custom'] = 'Zwyczaj';
 
 // Setting.
 $string['edwiserReport_settings'] = 'EDWISER RAPORTY I ANALYTICS Ustawienia pulpitu nawigacyjnego';
