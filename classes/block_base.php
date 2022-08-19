@@ -252,10 +252,15 @@ class block_base {
 
     /**
      * Get cohorts list.
-     * @return array Cohort list.
+     * @param  bool     $disabled   If true, return disabled cohorts.
+     * @return array                Cohort list.
      */
-    public function get_cohorts() {
-        return [
+    public function get_cohorts($disabled = false) {
+        global $DB;
+        if (!$DB->get_records('cohort')) {
+            return false;
+        }
+        $cohorts = [
             'values' => [
                 [
                     'id' => 0,
@@ -263,6 +268,10 @@ class block_base {
                 ]
             ]
         ];
+        if ($disabled) {
+            $cohorts['disabled'] = true;
+        }
+        return $cohorts;
     }
 
     /**
@@ -272,7 +281,7 @@ class block_base {
      *
      * @return mixed boolean/array
      */
-    public function get_default_group_filter() {
+    public function get_default_group_filter($disabled = false) {
         global $DB;
         $sql = "SELECT DISTINCT(g.id), g.courseid, g.name
                   FROM {groups} g
@@ -281,17 +290,17 @@ class block_base {
         if (!$DB->get_records_sql($sql)) {
             return false;
         }
-        return [
+        $groups = [
             'groups' =>
             [[
                 'id' => 0,
                 'name' => get_string('allgroups', 'local_edwiserreports')
-            ], [
-                'id' => -1,
-                'name' => get_string('pleaseselectcourse', 'local_edwiserreports'),
-                'disabled' => 'disabled'
             ]]
         ];
+        if ($disabled) {
+            $groups['disabled'] = true;
+        }
+        return $groups;
     }
 
     /**

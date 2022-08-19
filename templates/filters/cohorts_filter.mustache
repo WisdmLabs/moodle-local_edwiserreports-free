@@ -1,4 +1,4 @@
-<select class="cohort-select form-control singleselect">
+<select class="cohort-select form-control singleselect" {{#disabled}}disabled title="{{#str}} unlockthisfeature, local_edwiserreports {{/str}}"{{/disabled}}>
     {{#values}}
         <option value="{{id}}">{{name}}</option>
     {{/values}}

@@ -1,5 +1,5 @@
-<select class="group-select form-control singleselect">
+<select class="group-select form-control singleselect" {{#disabled}}disabled title="{{#str}} unlockthisfeature, local_edwiserreports {{/str}}"{{/disabled}}>
     {{#groups}}
-        <option value="{{id}}" {{disabled}}>{{name}}</option>
+        <option value="{{id}}">{{name}}</option>
     {{/groups}}
 </select>
