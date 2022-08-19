@@ -86,9 +86,10 @@ class certificatesblock extends block_base {
      */
     public function get_filters() {
         global $OUTPUT;
-        return $OUTPUT->render_from_template('local_edwiserreports/common-table-search-filter', [
+        return $OUTPUT->render_from_template('local_edwiserreports/certificatesblockfilters', [
+            'cohort' => $this->get_cohorts(true),
             'searchicon' => $this->image_icon('actions/search'),
-            'placeholder' => get_string('searchcertificates', 'local_edwiserreports')
+            'placeholder' => get_string('searchcourse', 'local_edwiserreports')
         ]);
     }
 

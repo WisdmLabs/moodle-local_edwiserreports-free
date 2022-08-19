@@ -162,7 +162,9 @@ define([
         }
 
         // Enable select2 on cohort filter.
-        $(SELECTOR.PANEL).find('.singleselect').select2();
+        $(SELECTOR.PANEL).find('.singleselect').select2({
+            selectionTitleAttribute: false
+        });
 
         loadData();
 
