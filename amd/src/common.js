@@ -527,6 +527,30 @@ define([
         return value.toPrecision(precision);
     }
 
+    /**
+     * Handle filters size based on visibility.
+     * @param {String} PANEL Panel name
+     */
+    function handleFilterSize(PANEL) {
+        let removeClasses = ['col-md-3', 'col-md-4', 'col-md-6', 'col-md-12'];
+        let addClasses = [];
+        switch ($(PANEL).find('.filter-selector:not(.d-none)').length) {
+            case 1:
+                addClasses = removeClasses.splice(removeClasses.indexOf('col-md-12'), 1);
+                break;
+            case 2:
+                addClasses = removeClasses.splice(removeClasses.indexOf('col-md-6'), 1);
+                break;
+            case 3:
+                addClasses = removeClasses.splice(removeClasses.indexOf('col-md-4'), 1);
+                break;
+            case 4:
+                addClasses = removeClasses.splice(removeClasses.indexOf('col-md-3'), 1);
+                break;
+        }
+        $(PANEL).find('.filter-selector').addClass(addClasses.join(' ')).removeClass(removeClasses.join(' '));
+    }
+
     return {
         loader: loader,
         toPrecision: toPrecision,
@@ -534,6 +558,7 @@ define([
         timeFormatter: timeFormatter,
         dateChange: dateChange,
         stylePaginationButton: stylePaginationButton,
-        handleSearchInput: handleSearchInput
+        handleSearchInput: handleSearchInput,
+        handleFilterSize: handleFilterSize
     };
 });
