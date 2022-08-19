@@ -32,7 +32,9 @@ use renderer_base;
 use stdClass;
 use templatable;
 use context_system;
+use local_edwiserreports\certificatesblock;
 use local_edwiserreports\controller\authentication;
+use local_edwiserreports\courseprogressblock;
 
 $files = scandir($CFG->dirroot . "/local/edwiserreports/classes/blocks/");
 unset($files[0]);
@@ -343,6 +345,7 @@ class coursereport_renderable implements renderable, templatable {
             $output->cohortfilters = $cohortfilter;
         }
 
+        $output->groups = (new courseprogressblock())->get_default_group_filter(true);
         $output->searchicon = \local_edwiserreports\utility::image_icon('actions/search');
         $output->placeholder = get_string('searchcourse', 'local_edwiserreports');
         $output->length = [10, 25, 50, 100];
@@ -399,7 +402,7 @@ class certificates_renderable implements renderable, templatable {
 
             // Add export icons to export array.
             $output->certexport = \local_edwiserreports\utility::get_export_icons($output->certexport);
-
+            $output->cohort = (new certificatesblock())->get_cohorts(true);
             $output->searchicon = \local_edwiserreports\utility::image_icon('actions/search');
             $output->placeholder = get_string('searchuser', 'local_edwiserreports');
             $output->length = [10, 25, 50, 100];

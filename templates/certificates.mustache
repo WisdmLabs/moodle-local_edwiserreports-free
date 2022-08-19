@@ -35,6 +35,11 @@
             <div class="filter-selector col-12 col-md-3 mb-1">
                 {{> local_edwiserreports/datatable/search }}
             </div>
+            {{# cohort }}
+                <div class="filter-selector col-12 col-md-2 mb-1">
+                    {{> local_edwiserreports/filters/cohorts_filter }}
+                </div>
+            {{/ cohort }}
             {{# hascertificates}}
                 <div class="filter-selector col-12 col-md-3 mb-1" id="wdm-certificates-dropdown">
                     <select class="certificate-select form-control singleselect" name="certificate-select">
