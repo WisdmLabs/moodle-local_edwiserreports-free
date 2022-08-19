@@ -234,6 +234,7 @@ define([
         loadGraph(invalidUser);
 
         $(SELECTOR.PANEL).find('.singleselect').select2();
+        common.handleFilterSize(SELECTOR.PANEL);
     }
 
     // Must return the init function

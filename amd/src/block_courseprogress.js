@@ -37,7 +37,7 @@ define([
         var cpGraph = null;
         var panel = CFG.getPanel("#courseprogressblock");
         var panelBody = CFG.getPanel("#courseprogressblock", "body");
-        var selectedCourse = panelBody + " #wdm-courseprogress-select";
+        var selectedCourse = panelBody + " .course-select";
         var loader = panelBody + " .loader";
         var position = 'right';
         var donutChart = {
@@ -83,6 +83,8 @@ define([
                 }
             });
         }, 1000);
+
+        common.handleFilterSize(panelBody);
 
         /**
          * Get progress data through ajax

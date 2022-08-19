@@ -44,7 +44,7 @@ class gradeblock extends block_base {
         $this->layout->id = 'gradeblock';
         $this->layout->name = get_string('gradeheader', 'local_edwiserreports');
         $this->layout->info = get_string('gradeblockhelp', 'local_edwiserreports');
-        $this->layout->filters = $this->get_grade_filter();
+        $this->layout->filters = $this->get_filter();
         $this->layout->pro = $this->image_icon('lock');
 
         // Add block view in layout.
@@ -59,47 +59,22 @@ class gradeblock extends block_base {
 
     /**
      * Prepare active users block filters
-     * @param  $onlycourses Return only courses dropdown for current user.
      * @return array filters array
      */
-    public function get_grade_filter($onlycourses = false) {
+    public function get_filter() {
         global $OUTPUT;
 
-        $users = [[
-            'id' => 0,
-            'fullname' => get_string('allusers', 'search')
-        ]];
-
-        $courses = [[
-            'id' => 0,
-            'fullname' => get_string('fulllistofcourses')
-        ]];
-
-        for ($i = 1; $i <= 5; $i++) {
-            $users[] = [
-                'id' => $i,
-                'fullname' => get_string('user') . ' ' . $i
-            ];
-            $courses[] = [
-                'id' => $i,
-                'fullname' => get_string('course') . ' ' . $i
-            ];
-        }
-
-        for ($i = 5; $i <= 100; $i++) {
-            $users[] = [
-                'id' => $i,
-                'fullname' => 'User ' . $i
-            ];
-        }
-
-        // Return only courses array if $onlycourses is true.
-        if ($onlycourses == true) {
-            return $courses;
-        }
         return $OUTPUT->render_from_template('local_edwiserreports/gradeblockfilters', [
-            'courses' => $courses,
-            'students' => $users
+            'cohort' => $this->get_cohorts(),
+            'group' => $this->get_default_group_filter(),
+            'courses' => [[
+                'id' => 0,
+                'fullname' => get_string('fulllistofcourses')
+            ]],
+            'students' => [[
+                'id' => 0,
+                'fullname' => get_string('allusers', 'search')
+            ]]
         ]);
     }
 

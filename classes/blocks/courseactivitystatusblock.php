@@ -79,43 +79,22 @@ class courseactivitystatusblock extends block_base {
 
     /**
      * Prepare active users block filters
-     * @param  $onlycourses Return only courses dropdown for current user.
      * @return array filters array
      */
-    public function get_filter($onlycourses = false) {
+    public function get_filter() {
         global $OUTPUT;
 
-        $users = [[
-            'id' => 0,
-            'fullname' => get_string('allusers', 'search')
-        ]];
-
-        $courses = [[
-            'id' => 0,
-            'fullname' => get_string('fulllistofcourses')
-        ]];
-
-        for ($i = 1; $i <= 5; $i++) {
-            $users[] = [
-                'id' => $i,
-                'fullname' => get_string('user') . ' ' . $i
-            ];
-            $courses[] = [
-                'id' => $i,
-                'fullname' => get_string('course') . ' ' . $i
-            ];
-        }
-
-        for ($i = 5; $i <= 100; $i++) {
-            $users[] = [
-                'id' => $i,
-                'fullname' => 'User ' . $i
-            ];
-        }
-
-        return $OUTPUT->render_from_template('local_edwiserreports/courseactivitystatusblockfilters', [
-            'courses' => $courses,
-            'students' => $users
+        return $OUTPUT->render_from_template('local_edwiserreports/gradeblockfilters', [
+            'cohort' => $this->get_cohorts(),
+            'group' => $this->get_default_group_filter(),
+            'courses' => [[
+                'id' => 0,
+                'fullname' => get_string('fulllistofcourses')
+            ]],
+            'students' => [[
+                'id' => 0,
+                'fullname' => get_string('allusers', 'search')
+            ]]
         ]);
     }
 

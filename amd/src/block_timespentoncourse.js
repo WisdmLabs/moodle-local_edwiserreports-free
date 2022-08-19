@@ -220,7 +220,7 @@ define([
         }
 
         $(SELECTOR.PANEL).find('.singleselect').select2();
-
+        common.handleFilterSize(SELECTOR.PANEL);
         loadGraph(invalidUser);
     }
 

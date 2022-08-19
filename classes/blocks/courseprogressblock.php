@@ -119,7 +119,7 @@ class courseprogressblock extends block_base {
         $this->layout->info = get_string('courseprogressblockhelp', 'local_edwiserreports');
         $this->layout->morelink = new moodle_url($CFG->wwwroot . "/local/edwiserreports/coursereport.php");
         $this->layout->downloadlinks = $this->get_block_download_links(true);
-        $this->layout->filters = $this->get_courseprogress_filter();
+        $this->layout->filters = $this->get_filter();
 
         // Add block view in layout.
         $this->layout->blockview = $this->render_block('courseprogressblock', $this->block);
@@ -135,8 +135,8 @@ class courseprogressblock extends block_base {
      * Prepare active users block filters
      * @return array filters array
      */
-    public function get_courseprogress_filter() {
-        global $OUTPUT, $USER, $COURSE, $USER, $DB;
+    public function get_filter() {
+        global $OUTPUT, $USER, $COURSE, $USER;
 
         $courses = $this->get_courses_of_user($USER->id);
 
@@ -149,6 +149,8 @@ class courseprogressblock extends block_base {
         }
 
         return $OUTPUT->render_from_template('local_edwiserreports/courseprogressblockfilters', [
+            'cohort' => $this->get_cohorts(true),
+            'group' => $this->get_default_group_filter(true),
             'courses' => array_values($courses)
         ]);
     }

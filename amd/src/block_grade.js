@@ -22,16 +22,12 @@
 /* eslint-disable no-unused-vars */
 define([
     'jquery',
-    'core/ajax',
-    'core/templates',
     './chart/apexcharts',
     './common',
     './defaultconfig',
     './select2'
 ], function(
     $,
-    Ajax,
-    Templates,
     ApexCharts,
     common,
     CFG
@@ -207,6 +203,7 @@ define([
             return;
         }
         $(SELECTOR.PANEL).find('.singleselect').select2();
+        common.handleFilterSize(SELECTOR.PANEL);
         initEvents();
         loadGraph();
     }
