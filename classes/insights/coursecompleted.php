@@ -45,8 +45,8 @@ trait coursecompleted {
         global $DB;
         $sql = "SELECT COUNT(ecp.completiontime)
                   FROM {edwreports_course_progress} ecp
-                  WHERE ecp.completiontime >= :starttime
-                    AND ecp.completiontime < :endtime
+                  WHERE FLOOR(ecp.completiontime / 86400) >= :starttime
+                    AND FLOOR(ecp.completiontime / 86400) <= :endtime
                     AND ecp.userid = :userid";
         $params = array(
             'starttime' => $startdate,

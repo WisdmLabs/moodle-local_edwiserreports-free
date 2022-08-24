@@ -35,8 +35,9 @@ trait courseenrolments {
     /**
      * Get enrolments data in given period.
      *
-     * @param int $startdate Start date timestamp.
-     * @param int $enddate   End date timestamp.
+     * @param int    $startdate   Start date timestamp.
+     * @param int    $enddate     End date timestamp.
+     * @param string $coursetable Course table
      *
      * @return int
      */
@@ -44,20 +45,28 @@ trait courseenrolments {
         global $DB;
 
         $sum = 0;
-        $sql = "SELECT COUNT(DISTINCT(CONCAT(CONCAT(l.courseid, '-'), l.relateduserid))) as usercount
+        $archetype = $DB->sql_compare_text('r.archetype');
+        $archevalue = $DB->sql_compare_text(':archetype');
+
+        $sql = "SELECT FLOOR(l.timecreated/86400) as userdate,
+                       COUNT(DISTINCT(CONCAT(CONCAT(l.courseid, '-'), l.relateduserid))) as usercount
                   FROM {logstore_standard_log} l
                   JOIN {{$coursetable}} ct ON l.courseid = ct.tempid
+                  JOIN {role_assignments} ra ON l.contextid = ra.contextid AND l.relateduserid = ra.userid
+                  JOIN {role} r ON ra.roleid = r.id AND {$archetype} = {$archevalue}
                  WHERE l.eventname = :eventname
                    AND l.action = :actionname
-                   AND l.timecreated >= :starttime
-                   AND l.timecreated < :endtime
-                 GROUP BY FLOOR(l.timecreated/86400)";
+                   AND FLOOR(l.timecreated / 86400) >= :starttime
+                   AND FLOOR(l.timecreated / 86400) <= :endtime
+                 GROUP BY FLOOR(l.timecreated / 86400)";
         $params = array(
+            'starttime' => $startdate,
+            'endtime' => $enddate,
             "eventname" => '\core\event\user_enrolment_created',
             "actionname" => "created",
-            'starttime' => $startdate,
-            'endtime' => $enddate
+            'archetype' => 'student'
         );
+
         $enrolments = $DB->get_recordset_sql($sql, $params);
 
         if ($enrolments->valid()) {
@@ -88,7 +97,7 @@ trait courseenrolments {
         $userid = $blockbase->get_current_user();
         $courses = $blockbase->get_courses_of_user($userid);
         // Temporary course table.
-        $coursetable = utility::create_temp_table('tmp_insight_courses', array_keys($courses));
+        $coursetable = utility::create_temp_table('tmp_i_ce', array_keys($courses));
 
         $currentenrolments = $this->get_enrolments($startdate, $enddate, $coursetable);
         $oldenrolments = $this->get_enrolments($oldstartdate, $oldenddate, $coursetable);

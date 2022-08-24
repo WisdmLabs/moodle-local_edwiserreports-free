@@ -48,9 +48,9 @@ trait coursecompletions {
                   FROM {edwreports_course_progress} cc
                   JOIN {{$coursetable}} ct ON cc.courseid = ct.tempid
                  WHERE cc.completiontime IS NOT NULL
-                   AND cc.completiontime >= :starttime
-                   AND cc.completiontime < :endtime
-                 GROUP BY FLOOR(cc.completiontime/86400)";
+                   AND FLOOR(cc.completiontime / 86400) >= :starttime
+                   AND FLOOR(cc.completiontime / 86400) <= :endtime
+                 GROUP BY FLOOR(cc.completiontime / 86400)";
         $params = array(
             'starttime' => $startdate,
             'endtime' => $enddate
@@ -84,9 +84,10 @@ trait coursecompletions {
     ) {
         $blockbase = new block_base();
         $userid = $blockbase->get_current_user();
+
         $courses = $blockbase->get_courses_of_user($userid);
         // Temporary course table.
-        $coursetable = utility::create_temp_table('tmp_insight_courses', array_keys($courses));
+        $coursetable = utility::create_temp_table('tmp_i_cc', array_keys($courses));
 
         $currentcompletions = $this->get_completions($startdate, $enddate, $coursetable);
         $oldcompletions = $this->get_completions($oldstartdate, $oldenddate, $coursetable);

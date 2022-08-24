@@ -104,6 +104,8 @@ $string['sessions'] = 'Sitzungen';
 $string['totalusers'] = 'Gesamt Benutzer';
 $string['sitevisits'] = 'Standortbesuche pro Stunde';
 $string['lastupdate'] = 'Letzte aktualisiert <span class="minute"> 0 </span> min';
+$string['loading'] = 'Wird geladen...';
+$string['last7days'] = 'Letzten 7 Tage';
 $string['lastweek'] = 'Letzte Woche';
 $string['lastmonth'] = 'Letzten Monat';
 $string['lastyear'] = 'Letztes Jahr';
@@ -196,6 +198,18 @@ $string['courseenrolment'] = 'Kursregistrierung';
 $string['coursecompletionrate'] = 'Kursabschlussrate';
 $string['totalcourseenrolments'] = 'Gesamtkursanmeldungen';
 $string['totalcoursecompletions'] = 'Gesamtkursabschluss';
+$string['january'] = 'Januar';
+$string['february'] = 'Februar';
+$string['march'] = 'Marsch';
+$string['april'] = 'april';
+$string['may'] = 'Kann';
+$string['june'] = 'Juni';
+$string['july'] = 'Juli';
+$string['august'] = 'august';
+$string['september'] = 'september';
+$string['october'] = 'Oktober';
+$string['november'] = 'november';
+$string['december'] = 'Dezember';
 
 /* Student Engagement block */
 $string['studentengagementexportheader'] = 'Student Engagement Report';

@@ -106,7 +106,7 @@ class activeusersblock extends block_base {
         $this->layout->filters = $this->get_activeusers_filter();
 
         // Selected default filters.
-        $this->layout->filter = 'weekly';
+        $this->layout->filter = 'last7days';
         $this->layout->cohortid = '0';
 
         // Block related data.
@@ -171,63 +171,15 @@ class activeusersblock extends block_base {
      * Generate labels for active users block.
      */
     public function generate_labels($timeperiod) {
-
         $this->dates = [];
-        $this->labels = [];
-        if ($this->graphajax == 'graph') {
-            $this->enddate = floor(time() / 86400 + 1) * 86400 - 1;
-        } else {
-            $this->enddate = time();
-        }
-        switch ($timeperiod) {
-            case 'weekly':
-                // Monthly days.
-                $this->xlabelcount = LOCAL_SITEREPORT_WEEKLY_DAYS;
-                break;
-            case 'monthly':
-                // Yearly days.
-                $this->xlabelcount = LOCAL_SITEREPORT_MONTHLY_DAYS;
-                break;
-            case 'yearly':
-                // Weekly days.
-                $this->xlabelcount = LOCAL_SITEREPORT_YEARLY_DAYS;
-                break;
-            default:
-                // Explode dates from custom date filter.
-                $dates = explode(" to ", $timeperiod);
-                if (count($dates) == 2) {
-                    $startdate = strtotime($dates[0]." 00:00:00");
-                    $enddate = strtotime($dates[1]." 23:59:59");
-                }
-                // If it has correct startdat and end date then count xlabel.
-                if (isset($startdate) && isset($enddate)) {
-                    $days = round(($enddate - $startdate) / LOCAL_SITEREPORT_ONEDAY);
-                    $this->xlabelcount = $days;
-                    $this->enddate = $enddate;
-                } else {
-                    $this->xlabelcount = LOCAL_SITEREPORT_WEEKLY_DAYS; // Default one week.
-                }
-                break;
-        }
 
-        $this->startdate = (round($this->enddate / 86400) - $this->xlabelcount) * 86400;
-
-        // Generate date label.
-        if ($this->graphajax != 'graph') {
-            $labelcallback = function($value) {
-                return date('d M y', $value);
-            };
-        } else {
-            $labelcallback = function($value) {
-                return $value * 1000;
-            };
-        }
+        // Get start and end date.
+        list($this->startdate, $this->enddate, $this->xlabelcount) = $this->get_date_range($timeperiod);
 
         // Get all lables.
-        for ($i = $this->xlabelcount - 1; $i >= 0; $i--) {
+        for ($i = $this->xlabelcount; $i >= 0; $i--) {
             $time = $this->enddate - $i * LOCAL_SITEREPORT_ONEDAY;
             $this->dates[floor($time / LOCAL_SITEREPORT_ONEDAY)] = 0;
-            $this->labels[] = $labelcallback($time);
         }
     }
 
@@ -311,7 +263,7 @@ class activeusersblock extends block_base {
 
             $courses = $this->get_courses_of_user();
             // Temporary course table.
-            $coursetable = utility::create_temp_table('tmp_au_courses', array_keys($courses));
+            $coursetable = utility::create_temp_table('tmp_au_c', array_keys($courses));
 
             $response->data->enrolments = $this->get_enrolments($coursetable);
             $response->data->completionRate = $this->get_course_completionrate($coursetable);
@@ -319,13 +271,18 @@ class activeusersblock extends block_base {
             // Drop temporary table.
             utility::drop_temp_table($coursetable);
 
-            $response->dates = array_keys($this->dates);
+            // Preserving dates.
+            $dates = $this->dates;
+
+            // Reassigning dates.
+            $this->dates = $dates;
+
             // Set response in cache.
             $this->cache->set($cachekey, $response);
         }
 
-        $response->insight = $this->calculate_insight($response);
-        $response->labels = $this->labels;
+        $response->dates = array_keys($this->dates);
+        $response->insight = $this->calculate_insight($this->filter, $response);
 
         ob_clean();
         return $response;
@@ -347,7 +304,7 @@ class activeusersblock extends block_base {
         $users = $blockobj->get_user_from_cohort_course_group($cohortid, 0, 0, $blockobj->get_current_user());
 
         // Temporary filtering table.
-        $userstable = utility::create_temp_table('tmp_au_filter', array_keys($users));
+        $userstable = utility::create_temp_table('tmp_au_f', array_keys($users));
 
         // Based on action prepare query.
         switch($action) {
@@ -408,49 +365,68 @@ class activeusersblock extends block_base {
 
     /**
      * Get all active users
+     * @param  bool  $insight If true then calculate data for insight
      * @return array           Array of all active users based
      */
-    public function get_active_users() {
+    public function get_active_users($insight = false) {
         global $DB;
-
-        $params = array(
-            "starttime" => $this->startdate - 86400,
-            "endtime" => $this->enddate + 86400,
-            "action" => "viewed"
-        );
 
         $users = $this->get_user_from_cohort_course_group($this->cohortid, 0, 0, $this->get_current_user());
 
         // Temporary users table.
-        $userstable = utility::create_temp_table('tmp_au_users', array_keys($users));
+        $userstable = utility::create_temp_table('tmp_au_u', array_keys($users));
 
-        // Get Logs to generate active users data.
-        $activeusers = $this->dates;
+        if ($insight == true) {
+            $params = array(
+                "starttime" => floor($this->startdate / 86400),
+                "endtime" => floor($this->enddate / 86400),
+                "action" => "viewed"
+            );
+            // Query to get activeusers from logs.
+            $sql = "SELECT DISTINCT l.userid
+                    FROM {logstore_standard_log} l
+                    JOIN {{$userstable}} ut ON l.userid = ut.tempid
+                    WHERE l.action = :action
+                    AND FLOOR(l.timecreated / 86400) BETWEEN :starttime AND :endtime
+                    AND l.userid > 1";
 
-        // Query to get activeusers from logs.
-        $sql = "SELECT FLOOR(l.timecreated/86400) as userdate, COUNT(DISTINCT l.userid) as usercount
-                  FROM {logstore_standard_log} l
-                  JOIN {{$userstable}} ut ON l.userid = ut.tempid
-                 WHERE l.action = :action
-                   AND l.timecreated >= :starttime
-                   AND l.timecreated < :endtime
-                   AND l.userid > 1
-                GROUP BY FLOOR(l.timecreated/86400)";
+            $logs = $DB->get_records_sql($sql, $params);
 
-        $logs = $DB->get_records_sql($sql, $params);
+            $activeusers = [count($logs)];
+        } else {
+            $params = array(
+                "starttime" => $this->startdate - 86400,
+                "endtime" => $this->enddate + 86400,
+                "action" => "viewed"
+            );
+            // Get Logs to generate active users data.
+            $activeusers = $this->dates;
+
+            // Query to get activeusers from logs.
+            $sql = "SELECT FLOOR(l.timecreated / 86400) as userdate,
+                        COUNT( DISTINCT l.userid ) as usercount
+                    FROM {logstore_standard_log} l
+                    JOIN {{$userstable}} ut ON l.userid = ut.tempid
+                    WHERE l.action = :action
+                    AND l.timecreated BETWEEN :starttime AND :endtime
+                    AND l.userid > 1
+                    GROUP BY FLOOR(l.timecreated / 86400)";
+
+            $logs = $DB->get_records_sql($sql, $params);
+
+            // Get active users for every day.
+            foreach (array_keys($activeusers) as $key) {
+                if (!isset($logs[$key])) {
+                    continue;
+                }
+                $activeusers[$key] = $logs[$key]->usercount;
+            }
+
+            $activeusers = array_values($activeusers);
+        }
 
         // Droppping course table.
         utility::drop_temp_table($userstable);
-
-        // Get active users for every day.
-        foreach (array_keys($activeusers) as $key) {
-            if (!isset($logs[$key])) {
-                continue;
-            }
-            $activeusers[$key] = $logs[$key]->usercount;
-        }
-
-        $activeusers = array_values($activeusers);
 
         return $activeusers;
     }
@@ -467,7 +443,8 @@ class activeusersblock extends block_base {
             "starttime" => $this->startdate - 86400,
             "endtime" => $this->enddate + 86400,
             "eventname" => '\core\event\user_enrolment_created',
-            "actionname" => "created"
+            "actionname" => "created",
+            "archetype" => "student"
         );
 
         $cohortjoin = "";
@@ -478,25 +455,21 @@ class activeusersblock extends block_base {
             $params["cohortid"] = $this->cohortid;
         }
 
+        $archetype = $DB->sql_compare_text('r.archetype');
+        $archevalue = $DB->sql_compare_text(':archetype');
+
         $sql = "SELECT FLOOR(l.timecreated/86400) as userdate,
-                    COUNT(
-                        DISTINCT(
-                            CONCAT(
-                                CONCAT(l.courseid, '-')
-                                , l.relateduserid
-                            )
-                        )
-                    )
-                    as usercount
-                FROM {logstore_standard_log} l
-                JOIN {{$coursetable}} ct ON l.courseid = ct.tempid
-                $cohortjoin
-                WHERE l.eventname = :eventname
-                $cohortcondition
-                AND l.action = :actionname
-                AND l.timecreated >= :starttime
-                AND l.timecreated < :endtime
-                GROUP BY FLOOR(l.timecreated/86400)";
+                       COUNT(DISTINCT(CONCAT(CONCAT(l.courseid, '-'), l.relateduserid))) as usercount
+                  FROM {logstore_standard_log} l
+                  JOIN {role_assignments} ra ON l.contextid = ra.contextid AND l.relateduserid = ra.userid
+                  JOIN {role} r ON ra.roleid = r.id AND {$archetype} = {$archevalue}
+                  $cohortjoin
+                 WHERE l.eventname = :eventname
+                   $cohortcondition
+                   AND l.action = :actionname
+                   AND l.timecreated >= :starttime
+                   AND l.timecreated <= :endtime
+                 GROUP BY FLOOR(l.timecreated / 86400)";
 
         // Get enrolments log.
         $logs = $DB->get_records_sql($sql, $params);
@@ -548,6 +521,7 @@ class activeusersblock extends block_base {
                  GROUP BY FLOOR(cc.completiontime/86400)";
 
         $completionrate = $this->dates;
+
         $logs = $DB->get_records_sql($sql, $params);
         // Get completion for each day.
         foreach (array_keys($completionrate) as $key) {
@@ -565,36 +539,17 @@ class activeusersblock extends block_base {
 
     /**
      * Get Exportable data for Active Users Block
-     * @param  string $filter Filter to get data from specific range
-     * @return array          Array of exportable data
+     * @param  string $filter     Filter to apply on data
+     * @return array              Array of exportable data
      */
     public function get_exportable_data_block($filter) {
-
-        // Get exportable data for active users block.
-        $export = array();
-
-        $obj = new self();
-        $export[] = self::get_header();
-        $activeusersdata = $obj->get_data((object) array("filter" => $filter));
-        $dates = array_keys($obj->dates);
-
-        // Generate active users data.
-        foreach ($dates as $key => $date) {
-            $export[] = array(
-                date('d-m-Y', $date * 86400),
-                $activeusersdata->data->activeUsers[$key],
-                $activeusersdata->data->enrolments[$key],
-                $activeusersdata->data->completionRate[$key],
-            );
-        }
-
-        return $export;
+        return self::get_exportable_data_report($filter);
     }
 
     /**
      * Get Exportable data for Active Users Page
-     * @param  string $filter Filter to get data from specific range
-     * @return array          Array of exportable data
+     * @param  string $filter     Filter to apply on data
+     * @return array              Array of exportable data
      */
     public static function get_exportable_data_report($filter) {
 
@@ -608,14 +563,14 @@ class activeusersblock extends block_base {
         // Generate active users data label.
         $blockobj->generate_labels($filter);
 
-        $labels = $blockobj->labels;
         $dates = array_keys($blockobj->dates);
 
-        foreach ($dates as $key => $date) {
+        foreach ($dates as $date) {
+            $label = date("d F Y", $date * 86400);
             $export = array_merge($export,
-                self::get_usersdata($labels[$key], $date, "activeusers", $cohortid),
-                self::get_usersdata($labels[$key], $date, "enrolments", $cohortid),
-                self::get_usersdata($labels[$key], $date, "completions", $cohortid)
+                self::get_usersdata($label, $date, "activeusers", $cohortid),
+                self::get_usersdata($label, $date, "enrolments", $cohortid),
+                self::get_usersdata($label, $date, "completions", $cohortid)
             );
         }
 

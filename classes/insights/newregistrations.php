@@ -48,8 +48,8 @@ trait newregistrations {
         global $DB;
         $sql = "SELECT COUNT(id)
                 FROM {user}
-                WHERE timecreated >= ?
-                AND timecreated <= ?";
+                WHERE FLOOR(timecreated / 86400) >= ?
+                AND FLOOR(timecreated / 86400) <= ?";
 
         $currentregistrations = $DB->get_field_sql($sql, [$startdate, $enddate]);
         $oldregistrations = $DB->get_field_sql($sql, [$oldstartdate, $oldenddate]);

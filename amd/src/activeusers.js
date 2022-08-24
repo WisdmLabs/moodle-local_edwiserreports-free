@@ -32,6 +32,9 @@ define([
     './dataTables.bootstrap4',
     './flatpickr'
 ], function($, ModalFactory, ModalEvents, Notification, Fragment, Templates, V, common) {
+
+    var filter = 'last7days';
+
     /**
      * Initialize
      * @param {integer} CONTEXTID Current page context id
@@ -44,10 +47,7 @@ define([
         var dropdownToggle = "#filter-dropdown.dropdown-toggle";
         var dropdownMenu = ".dropdown-menu[aria-labelledby='filter-dropdown']";
         var dropdownItem = dropdownMenu + " .dropdown-item";
-        var flatpickrCalender = "#flatpickrCalender-activeusers";
-        var dropdownButton = "button#filter-dropdown";
         var cohortFilter = '.cohort-select';
-        var filter = 'weekly';
         var cohortId = 0;
         var dropdownInput = "#userfilter input.form-control.input";
         var sesskey = null;
@@ -57,13 +57,21 @@ define([
         var lengthSelect = PageId + " .table-length-input select";
         var flatpickr = null;
 
+        var SELECTOR = {
+            DATESELECTED: '.selected-period',
+            DATE: '.edwiserreports-calendar',
+            DATEMENU: '.edwiserreports-calendar + .dropdown-menu',
+            DATEITEM: '.edwiserreports-calendar + .dropdown-menu .dropdown-item',
+            DATEPICKER: '.edwiserreports-calendar + .dropdown-menu .dropdown-calendar',
+            DATEPICKERINPUT: '.edwiserreports-calendar + .dropdown-menu .flatpickr'
+        };
+
         // Initialize select2.
         $(PageId).find('.singleselect').select2();
 
         $(PageId).find('.download-links input[name="cohortid"]').val(cohortId);
         $(PageId).find('.download-links input[name="filter"]').val(filter);
 
-        // Var tableDom = '<"row"f><"row"t><"row"<"d-none"i><p>>';
         $(document).ready(function() {
 
             common.handleSearchInput();
@@ -89,23 +97,31 @@ define([
 
             /* Select filter for active users block */
             $(dropdownItem + ":not(.custom)").on('click', function() {
-                filter = $(this).attr('value');
-                $(PageId).find('.download-links input[name="filter"]').val(filter);
-                $(dropdownMenu).removeClass('show');
-                $(dropdownButton).html($(this).text());
-                createActiveUsersTable(filter, cohortId);
-                $(flatpickrCalender).val("Custom");
-                $(dropdownInput).val("Custom");
+                filter = $(this).data('value');
+
+                // Set custom selected item as active.
+                $(SELECTOR.DATEITEM).removeClass('active');
+                $(this).addClass('active');
+
+                // Show selected item on dropdown button.
+                $(SELECTOR.DATE).html($(this).text());
+
+                // Hide dropdown.
+                $(SELECTOR.DATEMENU).removeClass('show');
+
+                // Clear custom date.
+                flatpickr.clear();
+                createActiveUsersTable(cohortId);
             });
 
             // Cohort filter.w
             $(PageId + " " + cohortFilter).on('change', function() {
                 cohortId = $(this).val();
                 $(PageId).find('.download-links input[name="cohortid"]').val(cohortId);
-                createActiveUsersTable(filter, cohortId);
+                createActiveUsersTable(cohortId);
             });
 
-            createActiveUsersTable(filter, cohortId);
+            createActiveUsersTable(cohortId);
             createModalOfUsersList();
             createDropdownCalendar();
         });
@@ -117,11 +133,11 @@ define([
             $(document).on('click', ModalTrigger, function() {
                 var title = "";
                 var action = $(this).data("action");
-                var filter = $(this).data("filter");
+                var modalFilter = $(this).data("filter");
                 var ModalRoot = null;
 
                 // eslint-disable-next-line no-eval
-                var titleDate = V.formatDate(new Date(eval(filter * 86400 * 1000)), "d MMM yyyy");
+                var titleDate = V.formatDate(new Date(eval(modalFilter * 86400 * 1000)), "d MMM yyyy");
 
                 if (action == "activeusers") {
                     title = M.util.get_string('activeusersmodaltitle', V.component, {
@@ -143,7 +159,7 @@ define([
                         'userslist',
                         CONTEXTID, {
                             page: 'activeusers',
-                            filter: filter,
+                            filter: modalFilter,
                             cohortid: cohortId,
                             action: action
                         }
@@ -196,19 +212,19 @@ define([
          * Create Calender in dropdown tp select range.
          */
         function createDropdownCalendar() {
-            flatpickr = $(flatpickrCalender).flatpickr({
+            flatpickr = $(SELECTOR.DATEPICKERINPUT).flatpickr({
                 mode: 'range',
                 altInput: true,
-                altFormat: "d/m/Y",
+                altFormat: "d M Y",
                 dateFormat: "Y-m-d",
                 maxDate: "today",
-                appendTo: $(dropdownButton).next().find('.dropdown-calendar').get(0),
+                appendTo: $(SELECTOR.DATEPICKER).get(0),
                 onOpen: function() {
-                    $(dropdownMenu).addClass('withcalendar');
+                    $(SELECTOR.DATEMENU).addClass('withcalendar');
+                    $(SELECTOR.DATE).dropdown('update');
                 },
                 onClose: function() {
-                    $(dropdownMenu).removeClass('withcalendar');
-                    $(dropdownMenu).removeClass('show');
+                    $(SELECTOR.DATEMENU).removeClass('withcalendar');
                     selectedCustomDate();
                 }
             });
@@ -218,8 +234,9 @@ define([
          * After Select Custom date get active users details.
          */
         function selectedCustomDate() {
-            filter = $(flatpickrCalender).val();
-            var date = $(dropdownInput).val();
+            let date = $(SELECTOR.DATEPICKERINPUT).val(); // Y-m-d format
+            let dateAlternate = $(SELECTOR.DATEPICKERINPUT).next().val().replace("to", "-"); // Date d M Y format.
+            $(SELECTOR.DATEPICKERINPUT).next().val(dateAlternate);
 
             /* If correct date is not selected then return false */
             if (!date.includes(" to ")) {
@@ -227,18 +244,41 @@ define([
                 return;
             }
 
-            $(dropdownButton).html(date);
-            $(flatpickrCalender).val("");
-            $(PageId).find('.download-links input[name="filter"]').val(filter);
-            createActiveUsersTable(filter, cohortId);
+            // Set active class to custom date selector item.
+            $(SELECTOR.DATEITEM).removeClass('active');
+            $(SELECTOR.DATEITEM + '.custom').addClass('active');
+
+            // Show custom date to dropdown button.
+            $(SELECTOR.DATE).html(dateAlternate);
+
+            filter = date;
+
+            // Hide dropdown.
+            $(SELECTOR.DATEMENU).removeClass('show');
+            createActiveUsersTable(cohortId);
         }
 
         /**
          * Create Active Users Table.
-         * @param {string} filter Filter string.
          * @param {integer} cohortId Integer string.
          */
-        function createActiveUsersTable(filter, cohortId) {
+        function createActiveUsersTable(cohortId) {
+            $(PageId).find('.download-links input[name="filter"]').val(filter);
+            let date, day, month, year;
+            let months = [
+                M.util.get_string('january', 'local_edwiserreports'),
+                M.util.get_string('february', 'local_edwiserreports'),
+                M.util.get_string('march', 'local_edwiserreports'),
+                M.util.get_string('april', 'local_edwiserreports'),
+                M.util.get_string('may', 'local_edwiserreports'),
+                M.util.get_string('june', 'local_edwiserreports'),
+                M.util.get_string('july', 'local_edwiserreports'),
+                M.util.get_string('august', 'local_edwiserreports'),
+                M.util.get_string('september', 'local_edwiserreports'),
+                M.util.get_string('october', 'local_edwiserreports'),
+                M.util.get_string('november', 'local_edwiserreports'),
+                M.util.get_string('december', 'local_edwiserreports')
+            ];
             sesskey = $(PageId).data("sesskey");
 
             /* If datatable is already created then destroy the table */
@@ -265,9 +305,13 @@ define([
                 var ActiveUsers = [];
                 response = JSON.parse(response);
 
-                $.each(response.labels, function(idx, val) {
+                $.each(response.dates, function(idx, val) {
+                    date = new Date(val * 86400 * 1000);
+                    day = date.getDate();
+                    month = months[date.getMonth()];
+                    year = date.getFullYear();
                     ActiveUsers[idx] = {
-                        date: val,
+                        date: `${(day < 10 ? '0' + day : day)} ${month} ${year}`,
                         filter: response.dates[idx],
                         activeusers: response.data.activeUsers[idx],
                         courseenrolment: response.data.enrolments[idx],
@@ -286,7 +330,7 @@ define([
                         Templates.replaceNode(ActiveUsersTable, html, js);
                         return;
                     }).fail(function(ex) {
-                        console.log(ex);
+                        Notification.exception(ex);
                     }).always(function() {
                         DataTable = $(ActiveUsersTable).DataTable({
                             responsive: true,
@@ -317,6 +361,8 @@ define([
                                 common.stylePaginationButton(this);
                             }
                         });
+                        DataTable.page.len($(lengthSelect).val());
+                        DataTable.column(0).search($(searchTable).val()).draw();
                         $(ActiveUsersTable).show();
                         $(loader).hide();
 
@@ -324,7 +370,7 @@ define([
                         common.loader.hide("#wdm-activeusers-individual");
                     });
             }).fail(function(error) {
-                console.log(error);
+                Notification.exception(error);
                 // Hide loader.
                 common.loader.hide("#wdm-activeusers-individual");
             });

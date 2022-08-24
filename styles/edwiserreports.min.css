@@ -34,6 +34,7 @@
 }
 
 #wdm-activeusers-individual .dropdown-menu.withcalendar .dropdown-calendar {
+    user-select: none;
     height: 300px;
     width: 308px;
     float: left;
@@ -381,6 +382,7 @@ tr[aria-expanded="true"] .accordion-arrow.icon {
 }
 
 #page-local-edwiserreports-index .dropdown-menu.withcalendar .dropdown-calendar {
+    user-select: none;
     height: 300px;
     width: 308px;
     float: left;

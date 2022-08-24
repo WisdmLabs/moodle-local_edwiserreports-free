@@ -54,6 +54,7 @@
             display: none;
         }
         .dropdown-calendar {
+            user-select: none;
             @include calendar-size;
             .flatpickr-calendar {
                 @include calendar-position;

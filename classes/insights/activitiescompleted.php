@@ -45,8 +45,8 @@ trait activitiescompleted {
         $sql = "SELECT COUNT(cmc.completionstate)
                 FROM {course_modules_completion} cmc
                 WHERE cmc.completionstate = 1
-                AND cmc.timemodified >= :startdate
-                AND cmc.timemodified <= :enddate
+                AND FLOOR(cmc.timemodified / 86400) >= :startdate
+                AND FLOOR(cmc.timemodified / 86400) <= :enddate
                 AND cmc.userid = :userid";
         $params = array(
             'startdate' => $startdate,

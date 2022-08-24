@@ -104,6 +104,8 @@ $string['sessions'] = 'Séances';
 $string['totalusers'] = 'Total utilisateurs';
 $string['sitevisits'] = 'Visites du site par heure';
 $string['lastupdate'] = 'Dernière mise à jour <span class="minute"> 0 </span> il y a min';
+$string['loading'] = 'Chargement...';
+$string['last7days'] = 'Les 7 derniers jours';
 $string['lastweek'] = 'La semaine dernière';
 $string['lastmonth'] = 'Le mois dernier';
 $string['lastyear'] = 'L\'année dernière';
@@ -196,6 +198,18 @@ $string['courseenrolment'] = 'Inscription au cours';
 $string['coursecompletionrate'] = 'Taux d\'achèvement du cours';
 $string['totalcourseenrolments'] = 'Inscriptions totales de cours';
 $string['totalcoursecompletions'] = 'Achèvement total des cours';
+$string['january'] = 'Janvier';
+$string['february'] = 'Février';
+$string['march'] = 'Mars';
+$string['april'] = 'Avril';
+$string['may'] = 'Peut';
+$string['june'] = 'Juin';
+$string['july'] = 'Juillet';
+$string['august'] = 'Août';
+$string['september'] = 'Septembre';
+$string['october'] = 'Octobre';
+$string['november'] = 'Novembre';
+$string['december'] = 'Décembre';
 
 /* Student Engagement block */
 $string['studentengagementexportheader'] = 'Rapport d\'engagement des étudiants';

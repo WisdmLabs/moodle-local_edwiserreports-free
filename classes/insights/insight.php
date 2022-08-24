@@ -197,80 +197,21 @@ class insight {
     /**
      * Generate labels and dates array for graph
      *
-     * @param string $timeperiod Filter time period Weekly/Monthly/Yearly or custom dates.
+     * @param string $timeperiod Filter time period Last 7 Days/Weekly/Monthly/Yearly or custom dates.
      *
      * @return array
      */
     private function generate_dates($timeperiod) {
-        $enddate = floor(time() / 86400 + 1) * 86400 - 1;
-        switch ($timeperiod) {
-            case 'weekly':
-                // Monthly days.
-                $days = LOCAL_SITEREPORT_WEEKLY_DAYS;
-                break;
-            case 'monthly':
-                // Yearly days.
-                $days = LOCAL_SITEREPORT_MONTHLY_DAYS;
-                break;
-            case 'yearly':
-                // Weekly days.
-                $days = LOCAL_SITEREPORT_YEARLY_DAYS;
-                break;
-            default:
-                // Explode dates from custom date filter.
-                $dates = explode(" to ", $timeperiod);
-                if (count($dates) == 2) {
-                    $startdate = strtotime($dates[0]." 00:00:00");
-                    $enddate = strtotime($dates[1]." 23:59:59");
-                }
-                // If it has correct startdat and end date then count xlabel.
-                if (isset($startdate) && isset($enddate)) {
-                    $days = round(($enddate - $startdate) / LOCAL_SITEREPORT_ONEDAY);
-                    $enddate = $enddate;
-                } else {
-                    $days = LOCAL_SITEREPORT_WEEKLY_DAYS;
-                }
-                break;
-        }
-
-        $startdate = (round($enddate / 86400) - $days) * 86400;
-
-        $timedifference = $enddate - $startdate;
-        $oldenddate = $startdate - 1;
-        $oldstartdate = $oldenddate - $timedifference;
-
+        // Get start and end date.
+        $base = new \local_edwiserreports\block_base();
+        list($startdate, $enddate) = $base->get_date_range($timeperiod);
+        list($oldstartdate, $oldenddate) = $base->get_old_date_range($timeperiod, $startdate, $enddate);
         return [
-            $startdate,
-            $enddate,
-            $oldstartdate,
-            $oldenddate,
+            floor($oldstartdate / 86400),
+            floor($oldenddate / 86400),
+            floor($startdate / 86400),
+            floor($enddate / 86400)
         ];
-    }
-
-    /**
-     * Get students courses.
-     *
-     * @return array
-     */
-    private function get_students_courses() {
-        $blockbase = new block_base();
-        $userid = $blockbase->get_current_user();
-        // Admin or Manager.
-        if (is_siteadmin($userid) || has_capability('moodle/site:configview', context_system::instance(), $userid)) {
-            return get_courses();
-        }
-
-        $courses = enrol_get_all_users_courses($userid);
-
-        // Preload contexts and check visibility.
-        foreach ($courses as $id => $course) {
-            context_helper::preload_from_record($course);
-            if (!$course->visible) {
-                unset($courses[$id]);
-                continue;
-            }
-        }
-        return $courses;
     }
 
     /**
@@ -288,10 +229,10 @@ class insight {
         }
         $insight = $this->insights[$id];
         list(
-            $startdate,
-            $enddate,
             $oldstartdate,
-            $oldenddate
+            $oldenddate,
+            $startdate,
+            $enddate
         ) = $this->generate_dates($filter);
         if ($insight['internal']) {
             $method = 'get_' . $id . '_data';
@@ -302,27 +243,25 @@ class insight {
                 $oldenddate
             );
             $difference = $currentdata - $olddata;
-
-            if ($difference == 0) {
-                $data = [
-                    'value' => $currentdata
-                ];
-            } else if ($difference > 0) {
-                $data = [
-                    'value' => $currentdata,
-                    'difference' => [
+            $data = [
+                'value' => $currentdata,
+                'oldvalue' => $olddata
+            ];
+            switch (true) {
+                case $currentdata == $olddata:
+                    break;
+                case $olddata == 0:
+                    $data['difference'] = [
                         'direction' => true,
-                        'value' => floor($difference / $currentdata * 100)
-                    ]
-                ];
-            } else {
-                $data = [
-                    'value' => $currentdata,
-                    'difference' => [
-                        'direction' => false,
-                        'value' => floor($difference / $olddata * -100)
-                    ]
-                ];
+                        'value' => 100
+                    ];
+                    break;
+                default:
+                    $data['difference'] = [
+                        'direction' => $difference > 0,
+                        'value' => abs(round($difference / $olddata * 100))
+                    ];
+                    break;
             }
 
             $cache->set($id . '-' . $filter, $data);

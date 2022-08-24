@@ -48,8 +48,8 @@ trait activitycompletions {
                 JOIN {course_modules} cm ON cm.id = cmc.coursemoduleid
                 JOIN {{$coursetable}} c ON c.tempid = cm.course
                 WHERE cmc.completionstate = 1
-                AND cmc.timemodified >= :startdate
-                AND cmc.timemodified <= :enddate";
+                AND FLOOR(cmc.timemodified / 86400) >= :startdate
+                AND FLOOR(cmc.timemodified / 86400) <= :enddate";
         $params = array(
             'startdate' => $startdate,
             'enddate' => $enddate
@@ -77,7 +77,7 @@ trait activitycompletions {
         $userid = $blockbase->get_current_user();
         $courses = $blockbase->get_courses_of_user($userid);
         // Temporary course table.
-        $coursetable = utility::create_temp_table('tmp_insight_courses', array_keys($courses));
+        $coursetable = utility::create_temp_table('tmp_i_ac', array_keys($courses));
 
         $activitiescompleted = $this->get_activitycompletions($startdate, $enddate, $coursetable);
         $oldactivitiescompleted = $this->get_activitycompletions($oldstartdate, $oldenddate, $coursetable);

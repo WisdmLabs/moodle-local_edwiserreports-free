@@ -200,7 +200,7 @@ define([
                     return;
                 }
                 activeUsersData.graph.data = response.data;
-                activeUsersData.graph.labels = response.labels;
+                activeUsersData.graph.labels = response.dates.map(date => date * 86400000);
                 common.insight('#activeusersblock .insight', response.insight);
             }).fail(function(error) {
                 Notification.exception(error);

@@ -50,8 +50,26 @@ trait totalcoursesenrolled {
         $oldstartdate,
         $oldenddate
     ) {
-        $courses = $this->get_students_courses();
-        $count = count($courses);
+        $blockbase = new block_base();
+        $userid = $blockbase->get_current_user();
+        // Admin or Manager.
+        if (is_siteadmin($userid) || has_capability('moodle/site:configview', context_system::instance(), $userid)) {
+            $courses = get_courses();
+            unset($courses[SITEID]);
+        } else {
+            $courses = enrol_get_all_users_courses($userid);
+        }
+
+        $count = 0;
+        // Preload contexts and check visibility.
+        foreach ($courses as $id => $course) {
+            context_helper::preload_from_record($course);
+            if (!$course->visible) {
+                unset($courses[$id]);
+                continue;
+            }
+            $count++;
+        }
 
         return [$count, $count];
     }

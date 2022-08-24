@@ -44,29 +44,21 @@ trait activeusers {
     private function get_activeusers($startdate, $enddate, $userstable) {
         global $DB;
 
-        $sum = 0;
-
-        $sql = "SELECT COUNT( DISTINCT l.userid ) as usercount
+        $sql = "SELECT DISTINCT l.userid
                   FROM {logstore_standard_log} l
                   JOIN {{$userstable}} ut ON l.userid = ut.tempid
                  WHERE l.action = :action
-                   AND l.timecreated >= :starttime
-                   AND l.timecreated < :endtime
-                   AND l.userid > 1
-                 GROUP BY FLOOR( l.timecreated / 86400)";
+                   AND FLOOR(l.timecreated / 86400) >= :starttime
+                   AND FLOOR(l.timecreated / 86400) <= :endtime
+                   AND l.userid > 1";
         $params = array(
             'action' => 'viewed',
             'starttime' => $startdate,
             'endtime' => $enddate
         );
-        $activeusers = $DB->get_recordset_sql($sql, $params);
 
-        if ($activeusers->valid()) {
-            foreach ($activeusers as $activeuser) {
-                $sum += $activeuser->usercount;
-            }
-        }
-        return $sum;
+        $users = $DB->get_records_sql($sql, $params);
+        return count($users);
     }
     /**
      * Get new registration insight data
@@ -86,10 +78,10 @@ trait activeusers {
     ) {
 
         $blockbase = new block_base();
-        $userid = $blockbase->get_current_user();
-        $users = $blockbase->get_users_of_courses($userid, $blockbase->get_courses_of_user($userid));
+
+        $users = $blockbase->get_user_from_cohort_course_group(0, 0, 0, $blockbase->get_current_user());
         // Temporary users table.
-        $userstable = utility::create_temp_table('tmp_insight_users', array_keys($users));
+        $userstable = utility::create_temp_table('tmp_i_au', array_keys($users));
 
         $currentactive = $this->get_activeusers($startdate, $enddate, $userstable);
         $oldactive = $this->get_activeusers($oldstartdate, $oldenddate, $userstable);
