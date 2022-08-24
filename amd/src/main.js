@@ -22,6 +22,7 @@ define([
     'jquery',
     './common',
     './insights',
+    './defaultconfig',
     './block_siteaccess',
     './block_activecourses',
     './block_activeusers',
@@ -41,6 +42,7 @@ define([
     $,
     common,
     insights,
+    CFG,
     siteAccess,
     activeCourses,
     activeUsers,
@@ -57,6 +59,30 @@ define([
     learnercourseprogress,
     learnertimespentonsite
 ) {
+
+    /**
+     * Promises.
+     */
+    var PROMISE = {
+        /**
+         * Get time period label to show in the header.
+         * @param {String} timeperiod Time period.
+         * @returns {Promise}
+         */
+        GET_TIMEPERIOD_LABEL: function(timeperiod) {
+            return $.ajax({
+                url: CFG.requestUrl,
+                type: CFG.requestType,
+                dataType: CFG.requestDataType,
+                data: {
+                    action: 'get_timeperiod_label_data_ajax',
+                    secret: M.local_edwiserreports.secret,
+                    lang: $('html').attr('lang'),
+                    data: timeperiod
+                }
+            });
+        },
+    };
 
     /**
      * Selector list.
@@ -107,6 +133,30 @@ define([
     }
 
     /**
+     * Show time duration in header.
+     * @param {String} date Time period.
+     */
+    function showTimeLabel(date) {
+        PROMISE.GET_TIMEPERIOD_LABEL(date).done(function(response) {
+            let startdate = new Date(response.startdate * 86400000);
+            let enddate = new Date(response.enddate * 86400000);
+            let startDay = startdate.getDate();
+            startDay = startDay < 10 ? '0' + startDay : startDay;
+            let endDay = enddate.getDate();
+            endDay = endDay < 10 ? '0' + endDay : endDay;
+            $(SELECTOR.DATESELECTED).html(`
+            ${startDay} ${startdate.toLocaleString('default', {
+                month: 'long'
+            })} ${startdate.getFullYear()} -
+            ${endDay} ${enddate.toLocaleString('default', {
+                month: 'long'
+            })} ${enddate.getFullYear()}`);
+        }).fail(function(ex) {
+            Notification.exception(ex);
+        });
+    }
+
+    /**
      * Throw an event with date change data.
      * @param {String} date  Date
      * @param {String} label Date label
@@ -118,7 +168,7 @@ define([
             }
         });
         document.dispatchEvent(dateChangeEvent);
-        $(SELECTOR.DATESELECTED).html(label);
+        showTimeLabel(date, label);
     }
 
     /**
@@ -153,6 +203,14 @@ define([
         $(document).ready(function() {
 
             insights.init();
+
+            let currentDate = $(SELECTOR.DATEITEM + '.active').data('value');
+
+            // Show time period in header.
+            showTimeLabel(
+                currentDate,
+                $(SELECTOR.DATEITEM + '.active').text()
+            );
 
             common.handleSearchInput();
 

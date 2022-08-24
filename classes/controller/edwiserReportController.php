@@ -314,4 +314,24 @@ class edwiserReportController extends controllerAbstract {
             $data->filter
         ));
     }
+
+    /**
+     * Get timeperiod label to display on dashboard.
+     */
+    public function get_timeperiod_label_data_ajax_action() {
+        // Get data.
+        $timeperiod = required_param('data', PARAM_RAW);
+
+        $base = new \local_edwiserreports\block_base();
+        list($startdate, $enddate) = $base->get_date_range($timeperiod);
+
+        if ($timeperiod == 'yearly') {
+            $startdate--;
+            $enddate--;
+        }
+        echo json_encode([
+            'startdate' => $startdate / 86400,
+            'enddate' => $enddate / 86400
+        ]);
+    }
 }
