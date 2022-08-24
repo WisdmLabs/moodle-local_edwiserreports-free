@@ -185,6 +185,7 @@ class export {
         ob_clean();
 
         require_once($CFG->libdir.'/pdflib.php');
+        raise_memory_limit(MEMORY_EXTRA);
         $pdf = new \pdf($orientation, 'pt', $format);
         $pdf->SetPrintHeader(false);
         $pdf->SetPrintFooter(false);
@@ -210,7 +211,6 @@ class export {
                 $export = $this->exportable_data_report($this->blockname, $filter);
                 break;
         }
-
         return $export;
     }
 
