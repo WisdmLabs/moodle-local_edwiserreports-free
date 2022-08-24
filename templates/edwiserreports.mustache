@@ -61,6 +61,9 @@
     {{> local_edwiserreports/insights/insights }}
 {{/ topinsights }}
 <div id="wdm-edwiserreports" class="row mx-0" data-editing="{{ editing }}">
+    {{#showwhatsnew}}
+        {{> local_edwiserreports/whatsnew }}
+    {{/showwhatsnew}}
     {{# canmanagecustomreports }}
         <div class="col-12 mb-5">
             <a href="{{customreportseditlink}}" class="btn theme-primary-bg text-white pull-right">

@@ -883,3 +883,16 @@ $string['timespentoncourses'] = 'Czas spędzony na kursach';
 $string['totalcoursesenrolled'] = 'Zapisane kursy ogółem';
 $string['coursecompleted'] = 'Kurs zakończony';
 $string['activitiescompleted'] = 'Zakończone działania';
+
+// Whats new section.
+$string['whatsnew'] = 'Co nowego';
+$string['whatsnew1'] = 'Poprawiliśmy logikę dat w ciągu ostatnich 7 dni, w zeszłym tygodniu, w zeszłym miesiącu i w zeszłym roku.Powinien teraz działać zgodnie ze standardami branżowymi.';
+$string['whatsnew2'] = 'Biblioteka eksportu PDF zaktualizowana w celu rozwiązania problemów z wyrównaniem';
+$string['whatsnew3'] = 'Poprawki uprawnień użytkownika: Teraz nauczyciele i inne role użytkowników mogą zobaczyć tylko dane, które są im dozwolone zgodnie z uprawnieniami do roli użytkownika.';
+$string['whatsnew4'] = 'Zwiększyliśmy funkcjonalność eksportu, planowania, a także ulepszaliśmy raport zaangażowania kursu.';
+$string['whatsnew41'] = 'Teraz możesz eksportować raporty graficzne w różnych formatach';
+$string['whatsnew42'] = 'Funkcjonalność planowania wiadomości e -mail otrzymuje dwa ulepszenia.Możesz teraz zaplanować e -maile z/bez zastosowanych filtrów, a także wybrać, w którym formacie należy wysłać raport.';
+$string['whatsnew43'] = 'Timespent jest jedną z ważnych wskaźników śledzonych do zaangażowania, został uwzględniony w ramach raportu o zaangażowaniu.';
+$string['whatsnew5'] = 'Funkcje te są teraz dostępne w <a href="https://edwiser.org/reports/#pricing" target="_blank">Edwiser Reports PRO</a> i są przestarzałe w bieżącej wersji Raporty Edwiser za darmo.';
+$string['whatsnew6'] = 'To nie wszystko. <a href="https://edwiser.org/reports/#pricing" target="_blank">Edwiser Reports PRO</a> ma wiele nowych funkcji i raportów.';
+$string['gotit'] = 'ROZUMIEM';

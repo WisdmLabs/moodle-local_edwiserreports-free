@@ -133,5 +133,7 @@ function xmldb_local_edwiserreports_upgrade($oldversion) {
 
     set_config('siteaccessrecalculate', true, 'local_edwiserreports');
 
+    set_config('showwhatsnew', true, 'local_edwiserreports');
+
     return true;
 }

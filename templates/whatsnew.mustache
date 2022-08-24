@@ -1,0 +1,47 @@
+<div class="edwiser-whatsnew d-none">
+    <div class="whatsnew-inner p-5 rounded">
+        <h1 class="text-center">{{#str}} whatsnew, local_edwiserreports {{/str}}</h1>
+        <ol class="pl-3 font-size-16">
+            <li>{{#str}} whatsnew1, local_edwiserreports {{/str}}</li>
+            <li>{{#str}} whatsnew2, local_edwiserreports {{/str}}</li>
+            <li>{{#str}} whatsnew3, local_edwiserreports {{/str}}</li>
+            <li>{{#str}} whatsnew4, local_edwiserreports {{/str}}
+                <ol>
+                    <li>{{#str}} whatsnew41, local_edwiserreports {{/str}}</li>
+                    <li>{{#str}} whatsnew42, local_edwiserreports {{/str}}</li>
+                    <li>{{#str}} whatsnew43, local_edwiserreports {{/str}}</li>
+                </ol>
+            </li>
+            <li>{{#str}} whatsnew5, local_edwiserreports {{/str}}</li>
+        </ol>
+        <label class="font-size-16">{{#str}} whatsnew6, local_edwiserreports {{/str}}</label>
+        <div class="text-center">
+            <button class="btn theme-primary-bg text-white" id="hidewhatsnew">{{#str}} gotit, local_edwiserreports {{/str}}</button>
+        </div>
+    </div>
+</div>
+{{#js}}
+require(['jquery', 'core/ajax', 'core/notification'], function($, ajax, notification) {
+    $(document).ready(function() {
+        setTimeout(function() {
+            $('.edwiser-whatsnew').removeClass('d-none');
+        });
+        $('#hidewhatsnew').click(function() {
+            ajax.call([{
+                methodname: 'local_edwiserreports_set_plugin_config',
+                args: {
+                    pluginname: 'local_edwiserreports',
+                    configname: 'showwhatsnew',
+                    value: false
+                }
+            }])[0]
+            .fail(function(ex) {
+                notification.exception(ex);
+            })
+            .always(function() {
+                $('.edwiser-whatsnew').remove();
+            });
+        });
+    });
+});
+{{/js}}

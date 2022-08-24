@@ -882,3 +882,16 @@ $string['timespentoncourses'] = 'Tiempo dedicado a cursos';
 $string['totalcoursesenrolled'] = 'Total de cursos inscritos';
 $string['coursecompleted'] = 'Curso completado';
 $string['activitiescompleted'] = 'Actividades completadas';
+
+// Whats new section.
+$string['whatsnew'] = 'Qué hay de nuevo';
+$string['whatsnew1'] = 'Hemos mejorado la lógica del rango de fechas durante los últimos 7 días, la semana pasada, el mes pasado y el año pasado.Debería funcionar según los estándares de la industria ahora.';
+$string['whatsnew2'] = 'Biblioteca de exportación PDF actualizada para resolver problemas de alineación';
+$string['whatsnew3'] = 'Soluciones de permiso del usuario: ahora los maestros y otros roles de usuario solo pueden ver los datos que se les permiten según sus permisos de rol de usuario.';
+$string['whatsnew4'] = 'Tenemos una mejor exportación, una funcionalidad de programación y también un informe de participación del curso mejorado.';
+$string['whatsnew41'] = 'Ahora puede exportar informes gráficos en varios formatos';
+$string['whatsnew42'] = 'La funcionalidad de programación de correo electrónico recibe dos mejoras.Ahora puede programar correos electrónicos con/sin filtros aplicados y también elegir en qué formato debe enviarse el informe.';
+$string['whatsnew43'] = 'Los tiempos que son una de las métricas importantes rastreadas para el compromiso se ha incluido como parte del informe de participación del curso.';
+$string['whatsnew5'] = 'Estas características ahora están disponibles en <a href="https://edwiser.org/reports/#pricing" target="_blank">Edwiser Reports PRO</a> y está en desuso en la versión actual de Edwiser Reports GRATIS.';
+$string['whatsnew6'] = 'Eso no es todo. <a href="https://edwiser.org/reports/#pricing" target="_blank">Edwiser Reports PRO</a> tiene muchas características e informes nuevas alineados.';
+$string['gotit'] = 'ENTENDIDO';

@@ -251,6 +251,109 @@ class block_base {
     }
 
     /**
+     * Get date range for timeperiod.
+     * @param String $timeperiod Timeperiod
+     */
+    public function get_old_date_range($timeperiod, $startdate, $enddate) {
+        $oldenddate = $startdate - 86400;
+
+        // Switch between timeperiod.
+        switch ($timeperiod) {
+            case 'last7days':
+            case 'weekly':
+                $days = LOCAL_SITEREPORT_WEEKLY_DAYS - 1;
+                break;
+            case 'monthly':
+                $oldenddate = strtotime('last day of previous month', $startdate);
+                $days = $oldenddate / 86400 - strtotime('first day of this month', $oldenddate) / 86400;
+                break;
+            case 'yearly':
+                // Yearly days.
+                // Ex. Date is 1960-04-31. Then period will be from 1958-04-01 to 1959-03-31.
+                // Ex. Date is 1960-05-01. Then period will be from 1959-04-01 to 1960-03-31.
+                $month = date('m', $startdate);
+                $year = date('Y', $startdate);
+                if ($month < 4) {
+                    $year--;
+                }
+                $oldenddate = strtotime("$year-03-31") + 86400;
+                $days = ($oldenddate / 86400) - (strtotime(($year - 1) . "-04-01") / 86400) - 1;
+                break;
+            default:
+                $days = round(($enddate - $startdate) / 86400);
+                break;
+        }
+
+        // Calculating startdate.
+        $oldstartdate = $oldenddate - ($days * 86400);
+
+        // Returning startdate and enddate.
+        return [$oldstartdate, $oldenddate, $days];
+    }
+
+    /**
+     * Get date range for timeperiod.
+     * @param String $timeperiod Timeperiod
+     */
+    public function get_date_range($timeperiod) {
+
+        // Default enddate.
+        $enddate = floor(strtotime('yesterday') / 86400 + 1) * 86400;
+
+        // Switch between timeperiod.
+        switch ($timeperiod) {
+            case 'last7days':
+                // Last 7 days. Except today.
+                $enddate = floor(strtotime('yesterday') / 86400 + 1) * 86400;
+                $days = LOCAL_SITEREPORT_WEEKLY_DAYS - 1;
+                break;
+            case 'weekly':
+                // Weekly days. From Last Week. Sunday to Saturday.
+                $enddate = floor(strtotime('last saturday') / 86400 + 1) * 86400;
+                $days = LOCAL_SITEREPORT_WEEKLY_DAYS - 1;
+                break;
+            case 'monthly':
+                // Monthly days. Last Months 1st day to last day.
+                $enddate = strtotime('last day of previous month');
+                $days = $enddate / 86400 - strtotime('first day of previous month') / 86400;
+                break;
+            case 'yearly':
+                // Yearly days.
+                // Ex. Date is 1960-04-31. Then period will be from 1958-04-01 to 1959-03-31.
+                // Ex. Date is 1960-05-01. Then period will be from 1959-04-01 to 1960-03-31.
+                $month = date('m');
+                $year = date('Y');
+                if ($month < 4) {
+                    $year--;
+                }
+                $enddate = strtotime("$year-03-31") + 86400;
+                $days = ($enddate / 86400) - (strtotime(($year - 1) . "-04-01") / 86400) - 1;
+                break;
+            default:
+                // Explode dates from custom date filter.
+                $dates = explode(" to ", $timeperiod);
+                if (count($dates) == 2) {
+                    $startdate = strtotime($dates[0] . " 00:00:00") + 86400;
+                    $enddate = strtotime($dates[1] . " 23:59:59");
+                }
+
+                // If it has correct startdat and end date then count xlabel.
+                if (isset($startdate) && isset($enddate)) {
+                    $days = round(($enddate - $startdate) / LOCAL_SITEREPORT_ONEDAY);
+                } else {
+                    $days = LOCAL_SITEREPORT_WEEKLY_DAYS; // Default one week.
+                }
+                break;
+        }
+
+        // Calculating startdate.
+        $startdate = $enddate - ($days * 86400);
+
+        // Returning startdate and enddate.
+        return [$startdate, $enddate, $days];
+    }
+
+    /**
      * Get cohorts list.
      * @param  bool     $disabled   If true, return disabled cohorts.
      * @return array                Cohort list.

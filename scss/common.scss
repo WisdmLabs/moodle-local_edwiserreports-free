@@ -240,8 +240,26 @@ tr[aria-expanded="true"] {
 }
 
 #wdm-edwiserreports {
+    .edwiser-whatsnew {
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 1702;
+        background: rgba(0, 0, 0, 0.5);
+        .whatsnew-inner {
+            background: white;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 40rem;
+            transform: translate(-50%, -50%);
+        }
+    }
     @media (max-width: 767px) {
-        & > [data-block], & > .col-12 {
+        &>[data-block],
+        &>.col-12 {
             padding: 0 !important;
         }
     }

@@ -882,3 +882,16 @@ $string['timespentoncourses'] = 'Temps passé sur les cours';
 $string['totalcoursesenrolled'] = 'Total des cours inscrits';
 $string['coursecompleted'] = 'Cours terminé';
 $string['activitiescompleted'] = 'Activités terminées';
+
+// Whats new section.
+$string['whatsnew'] = 'Quoi de neuf';
+$string['whatsnew1'] = 'Nous avons amélioré la logique de la plage de dates pendant 7 jours, la semaine dernière, le mois dernier et l\'année dernière.Cela devrait fonctionner conformément aux normes de l\'industrie maintenant.';
+$string['whatsnew2'] = 'Bibliothèque d\'exportation PDF mise à jour pour résoudre les problèmes d\'alignement';
+$string['whatsnew3'] = 'Correction de l\'autorisation de l\'utilisateur: Les enseignants et autres rôles des utilisateurs ne peuvent désormais voir que les données qui leur sont autorisées conformément à leurs autorisations de rôle utilisateur.';
+$string['whatsnew4'] = 'Nous avons une exportation améliorée, des fonctionnalités de planification et également un rapport d\'amélioration de l\'engagement des cours.';
+$string['whatsnew41'] = 'Vous pouvez maintenant exporter des rapports graphiques dans divers formats';
+$string['whatsnew42'] = 'La fonctionnalité de planification des e-mails reçoit deux améliorations.Vous pouvez désormais planifier des e-mails avec / sans filtres appliqués et également choisir dans quel format le rapport doit être envoyé.';
+$string['whatsnew43'] = 'Le plan de temps étant l\'une des métriques importantes suivis pour l\'engagement a été incluse dans le rapport de l\'engagement des cours.';
+$string['whatsnew5'] = 'Ces fonctionnalités sont désormais disponibles dans <a href="https://edwiser.org/reports/#pricing" target="_blank">Edwiser Reports PRO</a> et sont obsolètes dans la version actuelle d\'Edwiser Reports gratuitement.';
+$string['whatsnew6'] = 'Ce n\'est pas tout. <a href="https://edwiser.org/reports/#pricing" target="_blank">Edwiser Reports PRO</a> a de nombreuses nouvelles fonctionnalités et rapports alignés.';
+$string['gotit'] = 'J\'AI COMPRIS';
