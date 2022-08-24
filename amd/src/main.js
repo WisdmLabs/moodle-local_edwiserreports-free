@@ -156,6 +156,11 @@ define([
 
             common.handleSearchInput();
 
+            // Forcefully applying first option to select dropdown element.
+            $('.singleselect').each(function(index, select) {
+                $(select).val($(select).find('option:nth-child(1)').val());
+            });
+
             blocks.forEach(block => {
                 block.init(validateUser);
             });
