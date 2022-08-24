@@ -10197,6 +10197,75 @@ define('local_edwiserreports/chart/apexcharts', ['local_edwiserreports/chart/svg
                 return this.fixSvgStringForIe11(svgString);
             }
         }, {
+            key: "handleSideLegends",
+            value: function handleSideLegends() {
+                var w = this.w;
+
+                var legend = w.globals.dom.baseEl.getElementsByClassName('apexcharts-legend');
+                if (legend.length != 0) {
+                    legend = legend[0];
+                }
+
+                if (legend.classList.contains('position-right')) {
+                    legend.style.border = '1px solid #E5E5E5';
+                    legend.style.bottom = 'auto';
+                    legend.style.padding = '1rem';
+                    legend.style.borderRadius = '4px';
+                }
+
+                // Custom handler for grade block.
+                if (w.config.chart.id != 'grade') {
+                    return;
+                }
+
+                if (w.config.labels.length == 0) {
+                    return;
+                }
+
+                if (legend.getElementsByClassName('graph-label').length !== 0) {
+                    legend.getElementsByClassName('graph-label')[0].style.display = 'none';
+                }
+
+                let label = document.createElement('label');
+                label.classList.add('graph-label-handle');
+                label.innerText = w.config.responseTitle;
+                label.style.fontSize = '1rem';
+                label.style.fontWeight = 700;
+                label.style.width = '100%';
+                label.style.textAlign = 'center';
+                label.style.marginBottom = '.5rem';
+                label.style.fontFamily = 'Roboto,sans-serif';
+                legend.prepend(label);
+            }
+        }, {
+            key: 'clearSideLegends',
+            value: function clearSideLegends() {
+                var w = this.w;
+
+                var legend = w.globals.dom.baseEl.getElementsByClassName('apexcharts-legend');
+                if (legend.length != 0) {
+                    legend = legend[0];
+                }
+
+                if (legend.getElementsByClassName('graph-label').length !== 0) {
+                    legend.getElementsByClassName('graph-label')[0].style.display = 'block';
+                }
+
+                legend.style.border = '';
+                legend.style.padding = '';
+                legend.style.borderRadius = '';
+
+                if (legend.classList.contains('position-right')) {
+                    legend.style.bottom = '';
+                } else if (legend.classList.contains('position-bottom')) {
+                    legend.style.bottom = '1px';
+                }
+
+                if (legend.getElementsByClassName('graph-label-handle').length !== 0) {
+                    legend.getElementsByClassName('graph-label-handle')[0].remove();
+                }
+            }
+        }, {
             key: "cleanup",
             value: function cleanup() {
                 var w = this.w; // hide some elements to avoid printing them on exported svg
@@ -10204,6 +10273,7 @@ define('local_edwiserreports/chart/apexcharts', ['local_edwiserreports/chart/svg
                 var xcrosshairs = w.globals.dom.baseEl.getElementsByClassName('apexcharts-xcrosshairs');
                 var ycrosshairs = w.globals.dom.baseEl.getElementsByClassName('apexcharts-ycrosshairs');
                 var zoomSelectionRects = w.globals.dom.baseEl.querySelectorAll('.apexcharts-zoom-rect, .apexcharts-selection-rect');
+
                 Array.prototype.forEach.call(zoomSelectionRects, function(z) {
                     z.setAttribute('width', 0);
                 });
@@ -10224,11 +10294,12 @@ define('local_edwiserreports/chart/apexcharts', ['local_edwiserreports/chart/svg
             key: "svgUrl",
             value: function svgUrl() {
                 this.cleanup();
-                var svgData = this.getSvgString();
+                var svgData = this.getSvgString(1);
                 var svgBlob = new Blob([svgData], {
                     type: 'image/svg+xml;charset=utf-8'
                 });
-                return URL.createObjectURL(svgBlob);
+                var url = URL.createObjectURL(svgBlob);
+                return url;
             }
         }, {
             key: "dataURI",
@@ -10237,6 +10308,7 @@ define('local_edwiserreports/chart/apexcharts', ['local_edwiserreports/chart/svg
 
                 return new Promise(function(resolve) {
                     var w = _this.w;
+
                     var scale = options ? options.scale || options.width / w.globals.svgWidth : 1;
 
                     _this.cleanup();
@@ -10246,11 +10318,16 @@ define('local_edwiserreports/chart/apexcharts', ['local_edwiserreports/chart/svg
                     canvas.height = parseInt(w.globals.dom.elWrap.style.height, 10) * scale; // because of resizeNonAxisCharts
 
                     var canvasBg = w.config.chart.background === 'transparent' ? '#fff' : w.config.chart.background;
+
                     var ctx = canvas.getContext('2d');
                     ctx.fillStyle = canvasBg;
                     ctx.fillRect(0, 0, canvas.width * scale, canvas.height * scale);
 
+                    _this.handleSideLegends();
+
                     var svgData = _this.getSvgString(scale);
+
+                    _this.clearSideLegends();
 
                     if (window.canvg && Utils.isIE11()) {
                         // use canvg as a polyfill to workaround ie11 considering a canvas with loaded svg 'unsafe'
@@ -10297,13 +10374,14 @@ define('local_edwiserreports/chart/apexcharts', ['local_edwiserreports/chart/svg
         }, {
             key: "exportToSVG",
             value: function exportToSVG() {
+                this.handleSideLegends();
                 this.triggerDownload(this.svgUrl(), this.w.config.chart.toolbar.export.svg.filename, '.svg');
+                this.clearSideLegends();
             }
         }, {
             key: "exportToPng",
             value: function exportToPng() {
                 var _this2 = this;
-
                 this.dataURI().then(function(_ref) {
                     var imgURI = _ref.imgURI,
                         blob = _ref.blob;
@@ -23725,9 +23803,6 @@ define('local_edwiserreports/chart/apexcharts', ['local_edwiserreports/chart/svg
                 var reformattedTimescaleArray = filteredTimeScale.map(function(ts) {
                     var value = ts.value.toString();
                     // Adjusting date by 1 day.
-                    if (w.config.xaxis.type == 'datetime') {
-                        value--;
-                    }
 
                     var dt = new DateTime(_this2.ctx);
 
