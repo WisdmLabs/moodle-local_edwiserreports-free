@@ -75,9 +75,6 @@ class edwiserreports_renderable implements renderable, templatable {
         $reportblocks = new \local_edwiserreports\report_blocks($reportblocks);
         $export->blocks = $reportblocks->get_report_blocks();
 
-        // Todo: Remove below code.
-        $export->downloadurl = $CFG->wwwroot."/local/edwiserreports/download.php";
-
         $export->sesskey = sesskey();
         $export->timenow = date("Y-m-d", time());
         $export->courses = \local_edwiserreports\utility::get_courses();
@@ -132,14 +129,12 @@ class activeusers_renderable implements renderable, templatable {
             $output->cohortfilters = $cohortfilter;
         }
 
-        $output->export = array(
+        // Add export icons to export array.
+        $output->export = \local_edwiserreports\utility::get_export_icons([
             "id" => "activeusersblock",
             "region" => "report",
-            "downloadurl" => $CFG->wwwroot . "/local/edwiserreports/download.php"
-        );
-
-        // Add export icons to export array.
-        $output->export = \local_edwiserreports\utility::get_export_icons($output->export);
+            "downloadurl" => new moodle_url("/local/edwiserreports/download.php")
+        ]);
 
         $output->searchicon = \local_edwiserreports\utility::image_icon('actions/search');
         $output->placeholder = get_string('searchdate', 'local_edwiserreports');
@@ -168,23 +163,12 @@ class coursereport_renderable implements renderable, templatable {
         $output = new stdClass();
         $output->sesskey = sesskey();
 
-        $output->courseprogressexport = array(
+        // Add export icons to export array.
+        $output->export = \local_edwiserreports\utility::get_export_icons(array(
             "id" => "courseprogressblock",
             "region" => "report",
             "downloadurl" => $CFG->wwwroot . "/local/edwiserreports/download.php"
-        );
-
-        // Add export icons to export array.
-        $output->courseprogressexport = \local_edwiserreports\utility::get_export_icons($output->courseprogressexport);
-
-        $output->courseengageexport = array(
-            "id" => "courseengageblock",
-            "region" => "report",
-            "downloadurl" => $CFG->wwwroot . "/local/edwiserreports/download.php"
-        );
-
-        // Add export icons to export array.
-        $output->courseengageexport = \local_edwiserreports\utility::get_export_icons($output->courseengageexport);
+        ));
 
         $output->pageheader = get_string("coursereportsheader", "local_edwiserreports");
 
@@ -242,15 +226,14 @@ class certificates_renderable implements renderable, templatable {
                 $customcert->coursename = $course->shortname;
             }
             $output->certificates = array_values($customcerts);
-            $output->certexport = array(
+
+            // Add export icons to export array.
+            $output->export = \local_edwiserreports\utility::get_export_icons(array(
                 "id" => "certificatesblock",
                 "region" => "report",
                 "downloadurl" => $CFG->wwwroot . "/local/edwiserreports/download.php",
                 "filter" => $firstcertid
-            );
-
-            // Add export icons to export array.
-            $output->certexport = \local_edwiserreports\utility::get_export_icons($output->certexport);
+            ));
             $output->cohort = (new certificatesblock())->get_cohorts(true);
             $output->searchicon = \local_edwiserreports\utility::image_icon('actions/search');
             $output->placeholder = get_string('searchuser', 'local_edwiserreports');
@@ -287,15 +270,13 @@ class completion_renderable implements renderable, templatable {
             $output->cohortfilters = $cohortfilter;
         }
 
-        $output->completionexport = array(
+        // Add export icons to export array.
+        $output->export = \local_edwiserreports\utility::get_export_icons(array(
             "id" => "completionblock",
             "region" => "report",
             "downloadurl" => $CFG->wwwroot . "/local/edwiserreports/download.php",
             "filter" => $courseid
-        );
-
-        // Add export icons to export array.
-        $output->completionexport = \local_edwiserreports\utility::get_export_icons($output->completionexport);
+        ));
 
         $output->pageheader = get_string("completionheader", "local_edwiserreports", array('coursename' => $course->fullname));
 

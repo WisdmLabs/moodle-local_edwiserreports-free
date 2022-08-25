@@ -1134,6 +1134,7 @@ class utility {
         $options['pdf'] = self::image_icon('export/pdf');
         $options['csv'] = self::image_icon('export/csv');
         $options['xls'] = self::image_icon('export/xls');
+        $options['availableinprolink'] = get_string('availableinprolink', 'local_edwiserreports', UPGRADE_URL);
         return $options;
     }
 

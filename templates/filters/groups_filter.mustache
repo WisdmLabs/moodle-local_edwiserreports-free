@@ -1,4 +1,7 @@
-<select class="group-select form-control singleselect" {{#disabled}}disabled title="{{#str}} unlockthisfeature, local_edwiserreports {{/str}}"{{/disabled}}>
+{{#disabled}}
+    {{> local_edwiserreports/proexport }}
+{{/disabled}}
+<select class="group-select form-control singleselect" {{#disabled}}disabled title=""{{/disabled}}>
     {{#groups}}
         <option value="{{id}}">{{name}}</option>
     {{/groups}}

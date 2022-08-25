@@ -39,22 +39,31 @@
     <button type="submit" class="a border-0 bg-white" name="type" value="pdf">
         {{{pdf}}}
     </button>
-    <button type="button" class="a border-0 bg-white pro-export" name="type" value="csv">
-        {{{csv}}}
-        <span class="lock-icon">
-            {{{lock}}}
-        </span>
-    </button>
-    <button type="button" class="a border-0 bg-white pro-export" name="type" value="excel">
-        {{{xls}}}
-        <span class="lock-icon">
-            {{{lock}}}
-        </span>
-    </button>
-    <button type="button" class="a ml-2 btn theme-primary-text theme-primary-border bg-white pro-export" name="type" value="email">
-        {{#str}} schedule, local_edwiserreports {{/str}}
-        <span class="lock-icon">
-            {{{lock}}}
-        </span>
-    </button>
+    <div class="pro-export-wrapper">
+        {{> local_edwiserreports/proexport }}
+        <button type="button" class="a border-0 bg-white pro-export" name="type" value="csv">
+            {{{csv}}}
+            <span class="lock-icon">
+                {{{lock}}}
+            </span>
+        </button>
+    </div>
+    <div class="pro-export-wrapper">
+        {{> local_edwiserreports/proexport }}
+        <button type="button" class="a border-0 bg-white pro-export" name="type" value="excel">
+            {{{xls}}}
+            <span class="lock-icon">
+                {{{lock}}}
+            </span>
+        </button>
+    </div>
+    <div class="pro-export-wrapper">
+        {{> local_edwiserreports/proexport }}
+        <button type="button" class="a ml-2 btn theme-primary-text theme-primary-border bg-white pro-export" name="type" value="email">
+            {{#str}} schedule, local_edwiserreports {{/str}}
+            <span class="lock-icon">
+                {{{lock}}}
+            </span>
+        </button>
+    </div>
 </form>

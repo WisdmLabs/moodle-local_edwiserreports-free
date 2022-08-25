@@ -373,6 +373,7 @@ class block_base {
         ];
         if ($disabled) {
             $cohorts['disabled'] = true;
+            $cohorts['availableinprolink'] = get_string('availableinprolink', 'local_edwiserreports', UPGRADE_URL);
         }
         return $cohorts;
     }
@@ -402,6 +403,7 @@ class block_base {
         ];
         if ($disabled) {
             $groups['disabled'] = true;
+            $groups['availableinprolink'] = get_string('availableinprolink', 'local_edwiserreports', UPGRADE_URL);
         }
         return $groups;
     }
@@ -771,7 +773,7 @@ class block_base {
             'btnclass' => 'text-left'
         ], [
             'name' => 'info',
-            'label' => get_string('availableinpro', 'local_edwiserreports'),
+            'label' => get_string('availableinpro', 'local_edwiserreports', UPGRADE_URL),
             'type' => 'button',
             'pro' => true,
             'class' => 'disabled text-center',

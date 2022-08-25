@@ -36,7 +36,7 @@
                 {{> local_edwiserreports/datatable/search }}
             </div>
             {{# cohort }}
-                <div class="filter-selector col-12 col-md-2 mb-1">
+                <div class="filter-selector pro-export-wrapper col-12 col-md-2 mb-1">
                     {{> local_edwiserreports/filters/cohorts_filter }}
                 </div>
             {{/ cohort }}
@@ -67,11 +67,11 @@
         </thead>
         <tbody></tbody>
     </table>
-    {{# certexport }}
+    {{# export }}
     <div class="pull-right px-5">
         {{> local_edwiserreports/exportreports }}
     </div>
-    {{/ certexport }}
+    {{/ export }}
 </div>
 {{#js}}
 M.local_edwiserreports = {

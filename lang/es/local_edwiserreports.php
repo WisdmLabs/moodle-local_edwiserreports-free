@@ -685,7 +685,8 @@ $string['createnewcustomreports'] = 'Crear un nuevo informe';
 
 $string['invalidsecretkey'] = 'Clave secreta inválida.Inicie sesión e inicie sesión nuevamente.';
 $string['unlockthisfeature'] = 'Disponible en versión PRO';
-$string['availableinpro'] = 'Disponible en versión <br>PRO';
+$string['availableinpro'] = 'Disponible en versión <br><a href="{$a}" target="_blank">Pro</a>';
+$string['availableinprolink'] = 'Disponible en versión <a href="{$a}" target="_blank">Pro</a>';
 $string['upgradetopro'] = 'Actualizar a PRO';
 $string['okaygotit'] = '¡Ok, lo tengo!';
 $string['imponotice'] = 'NOTICIA IMPORTANTE';

@@ -152,7 +152,7 @@
 }
 
 .panel-header .dropdown-menu .dropdown-item:not(.disabled):hover {
-    background: white !important;
+    background: white;
     text-decoration: underline;
 }
 
@@ -616,20 +616,33 @@ tr[aria-expanded="true"] .accordion-arrow.icon {
     opacity: 0.5;
 }
 
-#wdm-edwiserreports .edwiserReport-block > div .panel .panel-header .dropdown.blockoptions .dropdown-menu .dropdown-item.disabled.pro-highlight {
+#wdm-edwiserreports .edwiserReport-block > div .panel .panel-header .dropdown.blockoptions .dropdown-menu .dropdown-item.pro-highlight {
     color: white;
     font-weight: 600;
     opacity: 1;
 }
 
-#wdm-edwiserreports .edwiserReport-block > div .panel .panel-header .dropdown.blockoptions .dropdown-menu .dropdown-item.disabled.pro-highlight span {
+#wdm-edwiserreports .edwiserReport-block > div .panel .panel-header .dropdown.blockoptions .dropdown-menu .dropdown-item.pro-highlight button {
+    text-decoration: none;
+    color: white !important;
+}
+
+#wdm-edwiserreports .edwiserReport-block > div .panel .panel-header .dropdown.blockoptions .dropdown-menu .dropdown-item.pro-highlight button a {
+    display: inline;
+    text-decoration: underline;
+    color: #62a8eb !important;
+    pointer-events: all;
+    cursor: pointer;
+}
+
+#wdm-edwiserreports .edwiserReport-block > div .panel .panel-header .dropdown.blockoptions .dropdown-menu .dropdown-item.pro-highlight span {
     border-radius: 5px;
     position: absolute;
     bottom: 0;
     left: 30%;
 }
 
-#wdm-edwiserreports .edwiserReport-block > div .panel .panel-header .dropdown.blockoptions .dropdown-menu .dropdown-item.disabled.pro-highlight span::after {
+#wdm-edwiserreports .edwiserReport-block > div .panel .panel-header .dropdown.blockoptions .dropdown-menu .dropdown-item.pro-highlight span::after {
     content: " ";
     position: absolute;
     border-top: 0.5rem solid;
@@ -659,6 +672,39 @@ tr[aria-expanded="true"] .accordion-arrow.icon {
 
 #wdm-edwiserreports .edwiserReport-block > div .panel .panel-help {
     color: rgba(82, 96, 105, 0.5) !important;
+}
+
+.pro-export-wrapper {
+    position: relative;
+}
+
+.pro-export-wrapper:not(:hover) .pro-export-title {
+    display: none;
+}
+
+.pro-export-wrapper .pro-export-title {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: max-content;
+    border-radius: 4px;
+    z-index: 1;
+}
+
+.pro-export-wrapper .pro-export-title a {
+    text-decoration: underline;
+}
+
+.pro-export-wrapper .pro-export-title::after {
+    content: " ";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-top: 0.5rem solid;
+    border-right: 0.5rem solid transparent;
+    border-left: 0.5rem solid transparent;
 }
 
 .more-details .pro-export {
@@ -1028,46 +1074,27 @@ tr[aria-expanded="true"] .accordion-arrow.icon {
     padding: 2rem 0;
 }
 
-#studentengagement,
-#learner,
-#grade,
-#coursereport,
 #wdm-activeusers-individual,
 #wdm-certificates-individual,
 #wdm-courseprogress-individual,
-#learner {
+#wdm-completion-individual {
     position: relative;
-    overflow: hidden;
-    padding: 2rem;
+    padding: 2rem 2rem 4rem 2rem;
     background-color: white;
     box-shadow: 0 7px 14px 0 rgba(59, 65, 94, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.07);
     min-height: 350px;
     margin-bottom: 1rem;
 }
 
-#studentengagement table th:nth-child(n+2),
-#studentengagement table td:nth-child(n+2),
-#learner table th:nth-child(n+2),
-#learner table td:nth-child(n+2),
-#grade table th:nth-child(n+2),
-#grade table td:nth-child(n+2),
-#coursereport table th:nth-child(n+2),
-#coursereport table td:nth-child(n+2),
 #wdm-activeusers-individual table th:nth-child(n+2),
 #wdm-activeusers-individual table td:nth-child(n+2),
 #wdm-certificates-individual table th:nth-child(n+2),
 #wdm-certificates-individual table td:nth-child(n+2),
 #wdm-courseprogress-individual table th:nth-child(n+2),
 #wdm-courseprogress-individual table td:nth-child(n+2),
-#learner table th:nth-child(n+2),
-#learner table td:nth-child(n+2) {
+#wdm-completion-individual table th:nth-child(n+2),
+#wdm-completion-individual table td:nth-child(n+2) {
     text-align: center;
-}
-
-#wdm-courseprogress-individual,
-#wdm-courseengage-individual,
-#wdm-completion-individual {
-    overflow: hidden;
 }
 
 #page-local-edwiserreports-old_logs .progress {
@@ -1106,6 +1133,10 @@ tr[aria-expanded="true"] .accordion-arrow.icon {
     position: absolute;
     right: 1rem;
     top: 1rem;
+}
+
+.download-links {
+    position: relative;
 }
 
 .download-links .download-label {

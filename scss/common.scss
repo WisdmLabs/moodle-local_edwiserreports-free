@@ -425,22 +425,33 @@ tr[aria-expanded="true"] {
                                 &.disabled {
                                     color: #444444;
                                     opacity: 0.5;
-                                    &.pro-highlight {
-                                        color: white;
-                                        font-weight: 600;
-                                        opacity: 1;
-                                        span {
-                                            border-radius: 5px;
+                                }
+                                &.pro-highlight {
+                                    color: white;
+                                    font-weight: 600;
+                                    opacity: 1;
+                                    button {
+                                        text-decoration: none;
+                                        color: white !important;
+                                        a {
+                                            display: inline;
+                                            text-decoration: underline;
+                                            color: #62a8eb !important;
+                                            pointer-events: all;
+                                            cursor: pointer;
+                                        }
+                                    }
+                                    span {
+                                        border-radius: 5px;
+                                        position: absolute;
+                                        bottom: 0;
+                                        left: 30%;
+                                        &::after {
+                                            content: " ";
                                             position: absolute;
-                                            bottom: 0;
-                                            left: 30%;
-                                            &::after {
-                                                content: " ";
-                                                position: absolute;
-                                                border-top: 0.5rem solid;
-                                                border-right: 0.5rem solid transparent;
-                                                border-left: 0.5rem solid transparent;
-                                            }
+                                            border-top: 0.5rem solid;
+                                            border-right: 0.5rem solid transparent;
+                                            border-left: 0.5rem solid transparent;
                                         }
                                     }
                                 }
@@ -472,6 +483,37 @@ tr[aria-expanded="true"] {
                     color: rgba(82, 96, 105, 0.5) !important;
                 }
             }
+        }
+    }
+}
+
+.pro-export-wrapper {
+    position: relative;
+    &:not(:hover) {
+        .pro-export-title {
+            display: none;
+        }
+    }
+    .pro-export-title {
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: max-content;
+        border-radius: 4px;
+        z-index: 1;
+        a {
+            text-decoration: underline;
+        }
+        &::after {
+            content: " ";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-top: 0.5rem solid;
+            border-right: 0.5rem solid transparent;
+            border-left: 0.5rem solid transparent;
         }
     }
 }
@@ -879,17 +921,12 @@ tr[aria-expanded="true"] {
     padding: 2rem 0;
 }
 
-#studentengagement,
-#learner,
-#grade,
-#coursereport,
 #wdm-activeusers-individual,
 #wdm-certificates-individual,
 #wdm-courseprogress-individual,
-#learner {
+#wdm-completion-individual {
     position: relative;
-    overflow: hidden;
-    padding: 2rem;
+    padding: 2rem 2rem 4rem 2rem;
     background-color: white;
     box-shadow: 0 7px 14px 0 rgba(59, 65, 94, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.07);
     min-height: 350px;
@@ -902,12 +939,6 @@ tr[aria-expanded="true"] {
             }
         }
     }
-}
-
-#wdm-courseprogress-individual,
-#wdm-courseengage-individual,
-#wdm-completion-individual {
-    overflow: hidden;
 }
 
 #page-local-edwiserreports-old_logs {
@@ -956,6 +987,7 @@ tr[aria-expanded="true"] {
 }
 
 .download-links {
+    position: relative;
     .download-label {
         font-weight: 500;
         text-transform: uppercase;

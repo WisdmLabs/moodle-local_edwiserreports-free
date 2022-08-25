@@ -29,116 +29,114 @@
     }
 }}
 {{> local_edwiserreports/report-page-header }}
-<div id="courseprogress" class="nav-tabs-horizontal" data-plugin="tabs">
-    <div id="wdm-courseprogress-individual" class="table-responsive" data-sesskey="{{sesskey}}">
-        <div id="userfilter" class="h-auto mt-2">
-            <div class="row">
-            <div class="filter-selector col-12 col-lg-3 col-md-4 mb-1">
-                {{> local_edwiserreports/datatable/search }}
-            </div>
-            {{# cohortfilters }}
-                <div class="filter-selector col-12 col-md-2 mb-1">
-                    <select class="cohort-select form-control singleselect" name="cohort-select">
-                        {{#values}}
-                            <option value="{{id}}">{{name}}</option>
-                        {{/values}}
-                    </select>
-                </div>
-            {{/ cohortfilters }}
-            {{# groups }}
-                <div class="filter-selector col-12 col-lg-4 col-md-4 mb-1">
-                    {{> local_edwiserreports/filters/groups_filter }}
-                </div>
-            {{/ groups }}
-            <div class="filter-selector col-12 col-lg-3 col-md-4 mb-1 ml-auto">
-                {{> local_edwiserreports/datatable/length }}
-            </div>
+<div id="wdm-courseprogress-individual" class="table-responsive" data-sesskey="{{sesskey}}">
+    <div id="userfilter" class="h-auto mt-2">
+        <div class="row">
+        <div class="filter-selector col-12 col-lg-3 col-md-4 mb-1">
+            {{> local_edwiserreports/datatable/search }}
         </div>
-        </div>
-        <div class="table-reponsive">
-            <table class="table admintable w-100">
-                <thead>
-                    <tr>
-                        <th class="theme-3-bg text-white">
-                            {{#str}} coursename, local_edwiserreports {{/str}}
-                        </th>
-                        <th class="theme-3-bg text-white">
-                            {{#str}} enrolled, local_edwiserreports {{/str}}
-                        </th>
-                        <th class="theme-3-bg text-white">
-                            {{#str}} completed, local_edwiserreports {{/str}}
-                        </th>
-                        <th class="theme-3-bg text-white">
-                            81% - 100%
-                        </th>
-                        <th class="theme-3-bg text-white">
-                            61% - 80%
-                        </th>
-                        <th class="theme-3-bg text-white">
-                            41% - 60%
-                        </th>
-                        <th class="theme-3-bg text-white">
-                            21% - 40%
-                        </th>
-                        <th class="theme-3-bg text-white">
-                            0% - 20%
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {{#courseprogress}}
-                    <tr>
-                        <td>
-                            <a href="{{courseurl}}" class="w-full course-link">
-                                {{{fullname}}}
-                            </a>
-                        </td>
-                        <td>
-                            <a href="javascript:void(0)" class="w-full modal-trigger" data-action="enrolments" data-minvalue="-1" data-maxvalue="100" data-courseid="{{id}}" data-coursename="{{fullname}}">
-                                {{enrolments}}
-                            </a>
-                        </td>
-                        <td>
-                            <a href="javascript:void(0)" class="w-full modal-trigger" data-action="completed" data-minvalue="99" data-maxvalue="100" data-courseid="{{id}}" data-coursename="{{fullname}}">
-                                {{completed100}}
-                            </a>
-                        </td>
-                        <td>
-                            <a href="javascript:void(0)" class="w-full modal-trigger" data-action="completed80" data-minvalue="80" data-maxvalue="99" data-courseid="{{id}}" data-coursename="{{fullname}}">
-                                {{completed80}}
-                            </a>
-                        </td>
-                        <td>
-                            <a href="javascript:void(0)" class="w-full modal-trigger" data-action="completed60" data-minvalue="60" data-maxvalue="80" data-courseid="{{id}}" data-coursename="{{fullname}}">
-                                {{completed60}}
-                            </a>
-                        </td>
-                        <td>
-                            <a href="javascript:void(0)" class="w-full modal-trigger" data-action="completed40" data-minvalue="40" data-maxvalue="60" data-courseid="{{id}}" data-coursename="{{fullname}}">
-                                {{completed40}}
-                            </a>
-                        </td>
-                        <td>
-                            <a href="javascript:void(0)" class="w-full modal-trigger" data-action="completed20" data-minvalue="20" data-maxvalue="40" data-courseid="{{id}}" data-coursename="{{fullname}}">
-                                {{completed20}}
-                            </a>
-                        </td>
-                        <td>
-                            <a href="javascript:void(0)" class="w-full modal-trigger" data-action="incompleted" data-minvalue="-1" data-maxvalue="20" data-courseid="{{id}}" data-coursename="{{fullname}}">
-                                {{completed00}}
-                            </a>
-                        </td>
-                    </tr>
-                    {{/courseprogress}}
-                </tbody>
-            </table>
+        {{# cohortfilters }}
+            <div class="filter-selector col-12 col-md-2 mb-1">
+                <select class="cohort-select form-control singleselect" name="cohort-select">
+                    {{#values}}
+                        <option value="{{id}}">{{name}}</option>
+                    {{/values}}
+                </select>
+            </div>
+        {{/ cohortfilters }}
+        {{# groups }}
+            <div class="filter-selector col-12 col-lg-4 col-md-4 mb-1">
+                {{> local_edwiserreports/filters/groups_filter }}
+            </div>
+        {{/ groups }}
+        <div class="filter-selector col-12 col-lg-3 col-md-4 mb-1 ml-auto">
+            {{> local_edwiserreports/datatable/length }}
         </div>
     </div>
-    {{# courseprogressexport }}
+    </div>
+    <div class="table-reponsive">
+        <table class="table admintable w-100">
+            <thead>
+                <tr>
+                    <th class="theme-3-bg text-white">
+                        {{#str}} coursename, local_edwiserreports {{/str}}
+                    </th>
+                    <th class="theme-3-bg text-white">
+                        {{#str}} enrolled, local_edwiserreports {{/str}}
+                    </th>
+                    <th class="theme-3-bg text-white">
+                        {{#str}} completed, local_edwiserreports {{/str}}
+                    </th>
+                    <th class="theme-3-bg text-white">
+                        81% - 100%
+                    </th>
+                    <th class="theme-3-bg text-white">
+                        61% - 80%
+                    </th>
+                    <th class="theme-3-bg text-white">
+                        41% - 60%
+                    </th>
+                    <th class="theme-3-bg text-white">
+                        21% - 40%
+                    </th>
+                    <th class="theme-3-bg text-white">
+                        0% - 20%
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#courseprogress}}
+                <tr>
+                    <td>
+                        <a href="{{courseurl}}" class="w-full course-link">
+                            {{{fullname}}}
+                        </a>
+                    </td>
+                    <td>
+                        <a href="javascript:void(0)" class="w-full modal-trigger" data-action="enrolments" data-minvalue="-1" data-maxvalue="100" data-courseid="{{id}}" data-coursename="{{fullname}}">
+                            {{enrolments}}
+                        </a>
+                    </td>
+                    <td>
+                        <a href="javascript:void(0)" class="w-full modal-trigger" data-action="completed" data-minvalue="99" data-maxvalue="100" data-courseid="{{id}}" data-coursename="{{fullname}}">
+                            {{completed100}}
+                        </a>
+                    </td>
+                    <td>
+                        <a href="javascript:void(0)" class="w-full modal-trigger" data-action="completed80" data-minvalue="80" data-maxvalue="99" data-courseid="{{id}}" data-coursename="{{fullname}}">
+                            {{completed80}}
+                        </a>
+                    </td>
+                    <td>
+                        <a href="javascript:void(0)" class="w-full modal-trigger" data-action="completed60" data-minvalue="60" data-maxvalue="80" data-courseid="{{id}}" data-coursename="{{fullname}}">
+                            {{completed60}}
+                        </a>
+                    </td>
+                    <td>
+                        <a href="javascript:void(0)" class="w-full modal-trigger" data-action="completed40" data-minvalue="40" data-maxvalue="60" data-courseid="{{id}}" data-coursename="{{fullname}}">
+                            {{completed40}}
+                        </a>
+                    </td>
+                    <td>
+                        <a href="javascript:void(0)" class="w-full modal-trigger" data-action="completed20" data-minvalue="20" data-maxvalue="40" data-courseid="{{id}}" data-coursename="{{fullname}}">
+                            {{completed20}}
+                        </a>
+                    </td>
+                    <td>
+                        <a href="javascript:void(0)" class="w-full modal-trigger" data-action="incompleted" data-minvalue="-1" data-maxvalue="20" data-courseid="{{id}}" data-coursename="{{fullname}}">
+                            {{completed00}}
+                        </a>
+                    </td>
+                </tr>
+                {{/courseprogress}}
+            </tbody>
+        </table>
+    </div>
+    {{# export }}
     <div class="pull-right px-5">
         {{> local_edwiserreports/exportreports }}
     </div>
-    {{/ courseprogressexport }}
+    {{/ export }}
 </div>
 {{#setactive}}
     {{> local_edwiserreports/setactivenav }}
