@@ -36,7 +36,7 @@ define([
     var chart = panelBody + " .ct-chart";
     var loader = panelBody + " .loader";
     var refreshBtn = panelBody + " .refresh";
-    var filter = 'weekly';
+    var filter = 'last7days';
     var timer = null;
 
     /**
