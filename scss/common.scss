@@ -990,6 +990,7 @@ tr[aria-expanded="true"] {
     user-select: none;
     &.disabled {
         cursor: not-allowed !important;
+        opacity: 0.5;
         input,
         label {
             cursor: not-allowed !important;
