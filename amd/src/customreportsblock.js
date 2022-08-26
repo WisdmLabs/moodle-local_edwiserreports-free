@@ -154,61 +154,60 @@ define([
             if (selectedFields.length == 0) {
                 $(cfSave).prop('disabled', true);
                 reportsDataLoaded = true;
-            } else {
-                common.loader.show('#wdm-customreports-edit');
-                var getCustomReportsDataAjax = ajax.call([{
-                    methodname: 'local_edwiserreports_get_customreports_data',
-                    args: {
-                        params: JSON.stringify({
-                            fields: selectedFields,
-                            cohorts: cohorts,
-                            courses: courses
-                        })
-                    }
-                }]);
-                getCustomReportsDataAjax[0].done(function(response) {
-                    if (response.success) {
-                        var data = JSON.parse(response.data);
-                        if (data.reportsdata.length == 0) {
-                            cfPreview.empty();
-                            $(cfSave).prop('disabled', true);
-                        } else {
-                            if (cfPreviewTable) {
-                                cfPreviewTable.clear().destroy();
-                                $('#cr-preview-table').html('');
-                            }
-                            cfPreview.show();
-                            cfPreviewTable = $('#cr-preview-table').DataTable({
-                                columns: data.columns,
-                                dom: '<"edwiserreports-table"<"table-filter d-flex"f><t><"table-pagination"p>>',
-                                data: data.reportsdata,
-                                language: {
-                                    info: M.util.get_string('tableinfo', 'local_edwiserreports'),
-                                    infoEmpty: M.util.get_string('infoempty', 'local_edwiserreports'),
-                                    emptyTable: M.util.get_string('nodata', 'local_edwiserreports'),
-                                    zeroRecords: M.util.get_string('zerorecords', 'local_edwiserreports'),
-                                    paginate: {
-                                        previous: M.util.get_string('previous', 'moodle'),
-                                        next: M.util.get_string('next', 'moodle')
-                                    }
-                                },
-                                bInfo: false,
-                                bFilter: false,
-                                searching: false,
-                                lengthChange: false,
-                                drawCallback: function() {
-                                    $('#cr-preview-table').find('th').addClass('theme-3-bg text-white');
-                                    common.stylePaginationButton(this);
-                                }
-                            });
-                            $(cfSave).prop('disabled', false);
-                        }
-                    }
-                }).always(function() {
-                    reportsDataLoaded = true;
-                    common.loader.hide('#wdm-customreports-edit');
-                });
             }
+            common.loader.show('#wdm-customreports-edit');
+            var getCustomReportsDataAjax = ajax.call([{
+                methodname: 'local_edwiserreports_get_customreports_data',
+                args: {
+                    params: JSON.stringify({
+                        fields: selectedFields,
+                        cohorts: cohorts,
+                        courses: courses
+                    })
+                }
+            }]);
+            getCustomReportsDataAjax[0].done(function(response) {
+                if (response.success) {
+                    var data = JSON.parse(response.data);
+                    if (data.reportsdata.length == 0) {
+                        cfPreview.empty();
+                        $(cfSave).prop('disabled', true);
+                    } else {
+                        if (cfPreviewTable) {
+                            cfPreviewTable.clear().destroy();
+                            $('#cr-preview-table').html('');
+                        }
+                        cfPreview.show();
+                        cfPreviewTable = $('#cr-preview-table').DataTable({
+                            columns: data.columns,
+                            dom: '<"edwiserreports-table"<"table-filter d-flex"f><t><"table-pagination"p>>',
+                            data: data.reportsdata,
+                            language: {
+                                info: M.util.get_string('tableinfo', 'local_edwiserreports'),
+                                infoEmpty: M.util.get_string('infoempty', 'local_edwiserreports'),
+                                emptyTable: M.util.get_string('nodata', 'local_edwiserreports'),
+                                zeroRecords: M.util.get_string('zerorecords', 'local_edwiserreports'),
+                                paginate: {
+                                    previous: M.util.get_string('previous', 'moodle'),
+                                    next: M.util.get_string('next', 'moodle')
+                                }
+                            },
+                            bInfo: false,
+                            bFilter: false,
+                            searching: false,
+                            lengthChange: false,
+                            drawCallback: function() {
+                                $('#cr-preview-table').find('th').addClass('theme-3-bg text-white');
+                                common.stylePaginationButton(this);
+                            }
+                        });
+                        $(cfSave).prop('disabled', false);
+                    }
+                }
+            }).always(function() {
+                reportsDataLoaded = true;
+                common.loader.hide('#wdm-customreports-edit');
+            });
         }
     }
 

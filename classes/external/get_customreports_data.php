@@ -59,8 +59,14 @@ trait get_customreports_data {
         require_once($CFG->dirroot . "/local/edwiserreports/classes/blocks/customreportsblock.php");
 
         $params = json_decode($params);
-        $customreportsblock = new \local_edwiserreports\customreportsblock();
-        $data = $customreportsblock->get_data($params);
+        if (!empty($params->fields)) {
+            $customreportsblock = new \local_edwiserreports\customreportsblock();
+            $data = $customreportsblock->get_data($params);
+        } else {
+            $data = [
+                'reportsdata' => []
+            ];
+        }
 
         $response = array(
             "success" => true,
