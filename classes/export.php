@@ -34,7 +34,7 @@ require_once($CFG->dirroot."/local/edwiserreports/locallib.php");
 require_once($CFG->dirroot."/local/edwiserreports/classes/output/renderable.php");
 
 use html_writer;
-use stdClass;
+use core_php_time_limit;
 
 /**
  * Class to export data.
@@ -128,33 +128,31 @@ class export {
             $help = get_string($this->blockname . "exporthelp", "local_edwiserreports");
         }
         // Generate HTML to export.
-        $html = html_writer::tag("h1",
+        echo html_writer::tag("h1",
             $header,
             array(
                 "style" => "width:100%; text-align:center;"
             )
         );
 
-        $html .= html_writer::tag("p", $help);
+        echo html_writer::tag("p", $help);
 
-        $html .= '<table style="font-size: 11px;" border="1px" cellpadding="3">';
+        echo '<table style="font-size: 11px;" border="1px" cellpadding="3">';
 
-        $html .= '<tr>';
+        echo '<tr nobr="true">';
         foreach ($headerrow as $cell) {
-            $html .= '<th bgcolor="#ddd" style="font-weight: bold">' . $cell . '</th>';
+            echo '<th bgcolor="#ddd" style="font-weight: bold">' . $cell . '</th>';
         }
-        $html .= '</tr>';
+        echo '</tr>';
         foreach ($data as $row) {
-            $html .= '<tr>';
+            echo '<tr nobr="true">';
             foreach ($row as $cell) {
-                $html .= '<td>' . $cell . '</td>';
+                echo '<td>' . $cell . '</td>';
             }
-            $html .= '</tr>';
+            echo '</tr>';
         }
 
-        $html .= '</table>';
-        $html = str_replace("\n", "", $html);
-        return $html;
+        echo '</table>';
     }
 
     /**
@@ -179,13 +177,16 @@ class export {
             }
         }
 
+        // Raise memory and time limit.
+        raise_memory_limit(MEMORY_HUGE); // MEMORY_HUGE uses 2G or MEMORY_EXTRA, whichever is bigger.
+        core_php_time_limit::raise(1200); // Setting time limit to 20 minutes.
+
         // Generate HTML to export.
         ob_start();
-        $html = utf8_encode($this->get_html_for_pdf2($data));
-        ob_clean();
+        $this->get_html_for_pdf2($data);
+        $html = ob_get_clean();
 
         require_once($CFG->libdir.'/pdflib.php');
-        raise_memory_limit(MEMORY_EXTRA);
         $pdf = new \pdf($orientation, 'pt', $format);
         $pdf->SetPrintHeader(false);
         $pdf->SetPrintFooter(false);
