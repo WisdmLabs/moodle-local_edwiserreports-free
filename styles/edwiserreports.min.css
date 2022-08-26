@@ -1772,11 +1772,11 @@ table.dataTable td.dataTables_empty {
 
 .insight-wrap {
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .insight-wrap .insight-value {
     font-weight: 600;
-    white-space: nowrap;
     font-size: 1.57rem;
     line-height: 2.14rem;
     margin-bottom: 0;
@@ -2206,62 +2206,39 @@ table.dataTable td.dataTables_empty {
     width: 150px;
 }
 
-#page-local-edwiserreports-studentengagement.theme_remui .card-body,
-#page-local-edwiserreports-grade.theme_remui .card-body,
 #page-local-edwiserreports-certificates.theme_remui .card-body,
 #page-local-edwiserreports-coursereport.theme_remui .card-body,
-#page-local-edwiserreports-activeusers.theme_remui .card-body,
-#page-local-edwiserreports-learner.theme_remui .card-body {
+#page-local-edwiserreports-activeusers.theme_remui .card-body {
     background: transparent;
     padding: 0;
 }
 
-#page-local-edwiserreports-studentengagement.theme_moove #page-header,
-#page-local-edwiserreports-grade.theme_moove #page-header,
 #page-local-edwiserreports-certificates.theme_moove #page-header,
 #page-local-edwiserreports-coursereport.theme_moove #page-header,
-#page-local-edwiserreports-activeusers.theme_moove #page-header,
-#page-local-edwiserreports-learner.theme_moove #page-header {
+#page-local-edwiserreports-activeusers.theme_moove #page-header {
     display: none;
 }
 
-#page-local-edwiserreports-studentengagement.theme_moove .card,
-#page-local-edwiserreports-grade.theme_moove .card,
 #page-local-edwiserreports-certificates.theme_moove .card,
 #page-local-edwiserreports-coursereport.theme_moove .card,
-#page-local-edwiserreports-activeusers.theme_moove .card,
-#page-local-edwiserreports-learner.theme_moove .card {
+#page-local-edwiserreports-activeusers.theme_moove .card {
     background: transparent;
     border: none;
 }
 
-#page-local-edwiserreports-studentengagement.theme_boost #page-header,
-#page-local-edwiserreports-grade.theme_boost #page-header,
 #page-local-edwiserreports-certificates.theme_boost #page-header,
 #page-local-edwiserreports-coursereport.theme_boost #page-header,
-#page-local-edwiserreports-activeusers.theme_boost #page-header,
-#page-local-edwiserreports-learner.theme_boost #page-header {
+#page-local-edwiserreports-activeusers.theme_boost #page-header {
     display: none;
 }
 
-#page-local-edwiserreports-studentengagement.theme_boost #region-main,
-#page-local-edwiserreports-grade.theme_boost #region-main,
 #page-local-edwiserreports-certificates.theme_boost #region-main,
 #page-local-edwiserreports-coursereport.theme_boost #region-main,
-#page-local-edwiserreports-activeusers.theme_boost #region-main,
-#page-local-edwiserreports-learner.theme_boost #region-main {
+#page-local-edwiserreports-activeusers.theme_boost #region-main {
     border: none;
 }
 
 #page-local-edwiserreports-index.theme_adaptable .block-cap-form .col-form-label, #page-local-edwiserreports-index.theme_fordson .block-cap-form .col-form-label, #page-local-edwiserreports-index.theme_moove .block-cap-form .col-form-label, #page-local-edwiserreports-index.theme_boost .block-cap-form .col-form-label,
-#page-local-edwiserreports-studentengagement.theme_adaptable .block-cap-form .col-form-label,
-#page-local-edwiserreports-studentengagement.theme_fordson .block-cap-form .col-form-label,
-#page-local-edwiserreports-studentengagement.theme_moove .block-cap-form .col-form-label,
-#page-local-edwiserreports-studentengagement.theme_boost .block-cap-form .col-form-label,
-#page-local-edwiserreports-grade.theme_adaptable .block-cap-form .col-form-label,
-#page-local-edwiserreports-grade.theme_fordson .block-cap-form .col-form-label,
-#page-local-edwiserreports-grade.theme_moove .block-cap-form .col-form-label,
-#page-local-edwiserreports-grade.theme_boost .block-cap-form .col-form-label,
 #page-local-edwiserreports-certificates.theme_adaptable .block-cap-form .col-form-label,
 #page-local-edwiserreports-certificates.theme_fordson .block-cap-form .col-form-label,
 #page-local-edwiserreports-certificates.theme_moove .block-cap-form .col-form-label,
@@ -2273,11 +2250,7 @@ table.dataTable td.dataTables_empty {
 #page-local-edwiserreports-activeusers.theme_adaptable .block-cap-form .col-form-label,
 #page-local-edwiserreports-activeusers.theme_fordson .block-cap-form .col-form-label,
 #page-local-edwiserreports-activeusers.theme_moove .block-cap-form .col-form-label,
-#page-local-edwiserreports-activeusers.theme_boost .block-cap-form .col-form-label,
-#page-local-edwiserreports-learner.theme_adaptable .block-cap-form .col-form-label,
-#page-local-edwiserreports-learner.theme_fordson .block-cap-form .col-form-label,
-#page-local-edwiserreports-learner.theme_moove .block-cap-form .col-form-label,
-#page-local-edwiserreports-learner.theme_boost .block-cap-form .col-form-label {
+#page-local-edwiserreports-activeusers.theme_boost .block-cap-form .col-form-label {
     font-size: 1.286rem !important;
     font-weight: 400 !important;
 }
@@ -2287,22 +2260,6 @@ table.dataTable td.dataTables_empty {
 #page-local-edwiserreports-index.theme_fordson .filter-selector button.dropdown-toggle, #page-local-edwiserreports-index.theme_moove .panel-header button.dropdown-toggle,
 #page-local-edwiserreports-index.theme_moove .filter-selector button.dropdown-toggle, #page-local-edwiserreports-index.theme_boost .panel-header button.dropdown-toggle,
 #page-local-edwiserreports-index.theme_boost .filter-selector button.dropdown-toggle,
-#page-local-edwiserreports-studentengagement.theme_adaptable .panel-header button.dropdown-toggle,
-#page-local-edwiserreports-studentengagement.theme_adaptable .filter-selector button.dropdown-toggle,
-#page-local-edwiserreports-studentengagement.theme_fordson .panel-header button.dropdown-toggle,
-#page-local-edwiserreports-studentengagement.theme_fordson .filter-selector button.dropdown-toggle,
-#page-local-edwiserreports-studentengagement.theme_moove .panel-header button.dropdown-toggle,
-#page-local-edwiserreports-studentengagement.theme_moove .filter-selector button.dropdown-toggle,
-#page-local-edwiserreports-studentengagement.theme_boost .panel-header button.dropdown-toggle,
-#page-local-edwiserreports-studentengagement.theme_boost .filter-selector button.dropdown-toggle,
-#page-local-edwiserreports-grade.theme_adaptable .panel-header button.dropdown-toggle,
-#page-local-edwiserreports-grade.theme_adaptable .filter-selector button.dropdown-toggle,
-#page-local-edwiserreports-grade.theme_fordson .panel-header button.dropdown-toggle,
-#page-local-edwiserreports-grade.theme_fordson .filter-selector button.dropdown-toggle,
-#page-local-edwiserreports-grade.theme_moove .panel-header button.dropdown-toggle,
-#page-local-edwiserreports-grade.theme_moove .filter-selector button.dropdown-toggle,
-#page-local-edwiserreports-grade.theme_boost .panel-header button.dropdown-toggle,
-#page-local-edwiserreports-grade.theme_boost .filter-selector button.dropdown-toggle,
 #page-local-edwiserreports-certificates.theme_adaptable .panel-header button.dropdown-toggle,
 #page-local-edwiserreports-certificates.theme_adaptable .filter-selector button.dropdown-toggle,
 #page-local-edwiserreports-certificates.theme_fordson .panel-header button.dropdown-toggle,
@@ -2326,15 +2283,7 @@ table.dataTable td.dataTables_empty {
 #page-local-edwiserreports-activeusers.theme_moove .panel-header button.dropdown-toggle,
 #page-local-edwiserreports-activeusers.theme_moove .filter-selector button.dropdown-toggle,
 #page-local-edwiserreports-activeusers.theme_boost .panel-header button.dropdown-toggle,
-#page-local-edwiserreports-activeusers.theme_boost .filter-selector button.dropdown-toggle,
-#page-local-edwiserreports-learner.theme_adaptable .panel-header button.dropdown-toggle,
-#page-local-edwiserreports-learner.theme_adaptable .filter-selector button.dropdown-toggle,
-#page-local-edwiserreports-learner.theme_fordson .panel-header button.dropdown-toggle,
-#page-local-edwiserreports-learner.theme_fordson .filter-selector button.dropdown-toggle,
-#page-local-edwiserreports-learner.theme_moove .panel-header button.dropdown-toggle,
-#page-local-edwiserreports-learner.theme_moove .filter-selector button.dropdown-toggle,
-#page-local-edwiserreports-learner.theme_boost .panel-header button.dropdown-toggle,
-#page-local-edwiserreports-learner.theme_boost .filter-selector button.dropdown-toggle {
+#page-local-edwiserreports-activeusers.theme_boost .filter-selector button.dropdown-toggle {
     background: #fff;
     border: 1px solid #e4eaec;
     padding: .4rem .75rem;
@@ -2342,12 +2291,9 @@ table.dataTable td.dataTables_empty {
 }
 
 #page-local-edwiserreports-index.theme_fordson .row,
-#page-local-edwiserreports-studentengagement.theme_fordson .row,
-#page-local-edwiserreports-grade.theme_fordson .row,
 #page-local-edwiserreports-certificates.theme_fordson .row,
 #page-local-edwiserreports-coursereport.theme_fordson .row,
-#page-local-edwiserreports-activeusers.theme_fordson .row,
-#page-local-edwiserreports-learner.theme_fordson .row {
+#page-local-edwiserreports-activeusers.theme_fordson .row {
     margin-right: -1.0715rem;
     margin-left: -1.0715rem;
 }
@@ -2356,14 +2302,6 @@ table.dataTable td.dataTables_empty {
 #page-local-edwiserreports-index.theme_fordson .col-sm-1,
 #page-local-edwiserreports-index.theme_fordson .col-md-1,
 #page-local-edwiserreports-index.theme_fordson .col-lg-1,
-#page-local-edwiserreports-studentengagement.theme_fordson .col-1,
-#page-local-edwiserreports-studentengagement.theme_fordson .col-sm-1,
-#page-local-edwiserreports-studentengagement.theme_fordson .col-md-1,
-#page-local-edwiserreports-studentengagement.theme_fordson .col-lg-1,
-#page-local-edwiserreports-grade.theme_fordson .col-1,
-#page-local-edwiserreports-grade.theme_fordson .col-sm-1,
-#page-local-edwiserreports-grade.theme_fordson .col-md-1,
-#page-local-edwiserreports-grade.theme_fordson .col-lg-1,
 #page-local-edwiserreports-certificates.theme_fordson .col-1,
 #page-local-edwiserreports-certificates.theme_fordson .col-sm-1,
 #page-local-edwiserreports-certificates.theme_fordson .col-md-1,
@@ -2375,11 +2313,7 @@ table.dataTable td.dataTables_empty {
 #page-local-edwiserreports-activeusers.theme_fordson .col-1,
 #page-local-edwiserreports-activeusers.theme_fordson .col-sm-1,
 #page-local-edwiserreports-activeusers.theme_fordson .col-md-1,
-#page-local-edwiserreports-activeusers.theme_fordson .col-lg-1,
-#page-local-edwiserreports-learner.theme_fordson .col-1,
-#page-local-edwiserreports-learner.theme_fordson .col-sm-1,
-#page-local-edwiserreports-learner.theme_fordson .col-md-1,
-#page-local-edwiserreports-learner.theme_fordson .col-lg-1 {
+#page-local-edwiserreports-activeusers.theme_fordson .col-lg-1 {
     padding-right: 1.0715rem;
     padding-left: 1.0715rem;
 }
@@ -2388,14 +2322,6 @@ table.dataTable td.dataTables_empty {
 #page-local-edwiserreports-index.theme_fordson .col-sm-2,
 #page-local-edwiserreports-index.theme_fordson .col-md-2,
 #page-local-edwiserreports-index.theme_fordson .col-lg-2,
-#page-local-edwiserreports-studentengagement.theme_fordson .col-2,
-#page-local-edwiserreports-studentengagement.theme_fordson .col-sm-2,
-#page-local-edwiserreports-studentengagement.theme_fordson .col-md-2,
-#page-local-edwiserreports-studentengagement.theme_fordson .col-lg-2,
-#page-local-edwiserreports-grade.theme_fordson .col-2,
-#page-local-edwiserreports-grade.theme_fordson .col-sm-2,
-#page-local-edwiserreports-grade.theme_fordson .col-md-2,
-#page-local-edwiserreports-grade.theme_fordson .col-lg-2,
 #page-local-edwiserreports-certificates.theme_fordson .col-2,
 #page-local-edwiserreports-certificates.theme_fordson .col-sm-2,
 #page-local-edwiserreports-certificates.theme_fordson .col-md-2,
@@ -2407,11 +2333,7 @@ table.dataTable td.dataTables_empty {
 #page-local-edwiserreports-activeusers.theme_fordson .col-2,
 #page-local-edwiserreports-activeusers.theme_fordson .col-sm-2,
 #page-local-edwiserreports-activeusers.theme_fordson .col-md-2,
-#page-local-edwiserreports-activeusers.theme_fordson .col-lg-2,
-#page-local-edwiserreports-learner.theme_fordson .col-2,
-#page-local-edwiserreports-learner.theme_fordson .col-sm-2,
-#page-local-edwiserreports-learner.theme_fordson .col-md-2,
-#page-local-edwiserreports-learner.theme_fordson .col-lg-2 {
+#page-local-edwiserreports-activeusers.theme_fordson .col-lg-2 {
     padding-right: 1.0715rem;
     padding-left: 1.0715rem;
 }
@@ -2420,14 +2342,6 @@ table.dataTable td.dataTables_empty {
 #page-local-edwiserreports-index.theme_fordson .col-sm-3,
 #page-local-edwiserreports-index.theme_fordson .col-md-3,
 #page-local-edwiserreports-index.theme_fordson .col-lg-3,
-#page-local-edwiserreports-studentengagement.theme_fordson .col-3,
-#page-local-edwiserreports-studentengagement.theme_fordson .col-sm-3,
-#page-local-edwiserreports-studentengagement.theme_fordson .col-md-3,
-#page-local-edwiserreports-studentengagement.theme_fordson .col-lg-3,
-#page-local-edwiserreports-grade.theme_fordson .col-3,
-#page-local-edwiserreports-grade.theme_fordson .col-sm-3,
-#page-local-edwiserreports-grade.theme_fordson .col-md-3,
-#page-local-edwiserreports-grade.theme_fordson .col-lg-3,
 #page-local-edwiserreports-certificates.theme_fordson .col-3,
 #page-local-edwiserreports-certificates.theme_fordson .col-sm-3,
 #page-local-edwiserreports-certificates.theme_fordson .col-md-3,
@@ -2439,11 +2353,7 @@ table.dataTable td.dataTables_empty {
 #page-local-edwiserreports-activeusers.theme_fordson .col-3,
 #page-local-edwiserreports-activeusers.theme_fordson .col-sm-3,
 #page-local-edwiserreports-activeusers.theme_fordson .col-md-3,
-#page-local-edwiserreports-activeusers.theme_fordson .col-lg-3,
-#page-local-edwiserreports-learner.theme_fordson .col-3,
-#page-local-edwiserreports-learner.theme_fordson .col-sm-3,
-#page-local-edwiserreports-learner.theme_fordson .col-md-3,
-#page-local-edwiserreports-learner.theme_fordson .col-lg-3 {
+#page-local-edwiserreports-activeusers.theme_fordson .col-lg-3 {
     padding-right: 1.0715rem;
     padding-left: 1.0715rem;
 }
@@ -2452,14 +2362,6 @@ table.dataTable td.dataTables_empty {
 #page-local-edwiserreports-index.theme_fordson .col-sm-4,
 #page-local-edwiserreports-index.theme_fordson .col-md-4,
 #page-local-edwiserreports-index.theme_fordson .col-lg-4,
-#page-local-edwiserreports-studentengagement.theme_fordson .col-4,
-#page-local-edwiserreports-studentengagement.theme_fordson .col-sm-4,
-#page-local-edwiserreports-studentengagement.theme_fordson .col-md-4,
-#page-local-edwiserreports-studentengagement.theme_fordson .col-lg-4,
-#page-local-edwiserreports-grade.theme_fordson .col-4,
-#page-local-edwiserreports-grade.theme_fordson .col-sm-4,
-#page-local-edwiserreports-grade.theme_fordson .col-md-4,
-#page-local-edwiserreports-grade.theme_fordson .col-lg-4,
 #page-local-edwiserreports-certificates.theme_fordson .col-4,
 #page-local-edwiserreports-certificates.theme_fordson .col-sm-4,
 #page-local-edwiserreports-certificates.theme_fordson .col-md-4,
@@ -2471,11 +2373,7 @@ table.dataTable td.dataTables_empty {
 #page-local-edwiserreports-activeusers.theme_fordson .col-4,
 #page-local-edwiserreports-activeusers.theme_fordson .col-sm-4,
 #page-local-edwiserreports-activeusers.theme_fordson .col-md-4,
-#page-local-edwiserreports-activeusers.theme_fordson .col-lg-4,
-#page-local-edwiserreports-learner.theme_fordson .col-4,
-#page-local-edwiserreports-learner.theme_fordson .col-sm-4,
-#page-local-edwiserreports-learner.theme_fordson .col-md-4,
-#page-local-edwiserreports-learner.theme_fordson .col-lg-4 {
+#page-local-edwiserreports-activeusers.theme_fordson .col-lg-4 {
     padding-right: 1.0715rem;
     padding-left: 1.0715rem;
 }
@@ -2484,14 +2382,6 @@ table.dataTable td.dataTables_empty {
 #page-local-edwiserreports-index.theme_fordson .col-sm-5,
 #page-local-edwiserreports-index.theme_fordson .col-md-5,
 #page-local-edwiserreports-index.theme_fordson .col-lg-5,
-#page-local-edwiserreports-studentengagement.theme_fordson .col-5,
-#page-local-edwiserreports-studentengagement.theme_fordson .col-sm-5,
-#page-local-edwiserreports-studentengagement.theme_fordson .col-md-5,
-#page-local-edwiserreports-studentengagement.theme_fordson .col-lg-5,
-#page-local-edwiserreports-grade.theme_fordson .col-5,
-#page-local-edwiserreports-grade.theme_fordson .col-sm-5,
-#page-local-edwiserreports-grade.theme_fordson .col-md-5,
-#page-local-edwiserreports-grade.theme_fordson .col-lg-5,
 #page-local-edwiserreports-certificates.theme_fordson .col-5,
 #page-local-edwiserreports-certificates.theme_fordson .col-sm-5,
 #page-local-edwiserreports-certificates.theme_fordson .col-md-5,
@@ -2503,11 +2393,7 @@ table.dataTable td.dataTables_empty {
 #page-local-edwiserreports-activeusers.theme_fordson .col-5,
 #page-local-edwiserreports-activeusers.theme_fordson .col-sm-5,
 #page-local-edwiserreports-activeusers.theme_fordson .col-md-5,
-#page-local-edwiserreports-activeusers.theme_fordson .col-lg-5,
-#page-local-edwiserreports-learner.theme_fordson .col-5,
-#page-local-edwiserreports-learner.theme_fordson .col-sm-5,
-#page-local-edwiserreports-learner.theme_fordson .col-md-5,
-#page-local-edwiserreports-learner.theme_fordson .col-lg-5 {
+#page-local-edwiserreports-activeusers.theme_fordson .col-lg-5 {
     padding-right: 1.0715rem;
     padding-left: 1.0715rem;
 }
@@ -2516,14 +2402,6 @@ table.dataTable td.dataTables_empty {
 #page-local-edwiserreports-index.theme_fordson .col-sm-6,
 #page-local-edwiserreports-index.theme_fordson .col-md-6,
 #page-local-edwiserreports-index.theme_fordson .col-lg-6,
-#page-local-edwiserreports-studentengagement.theme_fordson .col-6,
-#page-local-edwiserreports-studentengagement.theme_fordson .col-sm-6,
-#page-local-edwiserreports-studentengagement.theme_fordson .col-md-6,
-#page-local-edwiserreports-studentengagement.theme_fordson .col-lg-6,
-#page-local-edwiserreports-grade.theme_fordson .col-6,
-#page-local-edwiserreports-grade.theme_fordson .col-sm-6,
-#page-local-edwiserreports-grade.theme_fordson .col-md-6,
-#page-local-edwiserreports-grade.theme_fordson .col-lg-6,
 #page-local-edwiserreports-certificates.theme_fordson .col-6,
 #page-local-edwiserreports-certificates.theme_fordson .col-sm-6,
 #page-local-edwiserreports-certificates.theme_fordson .col-md-6,
@@ -2535,11 +2413,7 @@ table.dataTable td.dataTables_empty {
 #page-local-edwiserreports-activeusers.theme_fordson .col-6,
 #page-local-edwiserreports-activeusers.theme_fordson .col-sm-6,
 #page-local-edwiserreports-activeusers.theme_fordson .col-md-6,
-#page-local-edwiserreports-activeusers.theme_fordson .col-lg-6,
-#page-local-edwiserreports-learner.theme_fordson .col-6,
-#page-local-edwiserreports-learner.theme_fordson .col-sm-6,
-#page-local-edwiserreports-learner.theme_fordson .col-md-6,
-#page-local-edwiserreports-learner.theme_fordson .col-lg-6 {
+#page-local-edwiserreports-activeusers.theme_fordson .col-lg-6 {
     padding-right: 1.0715rem;
     padding-left: 1.0715rem;
 }
@@ -2548,14 +2422,6 @@ table.dataTable td.dataTables_empty {
 #page-local-edwiserreports-index.theme_fordson .col-sm-7,
 #page-local-edwiserreports-index.theme_fordson .col-md-7,
 #page-local-edwiserreports-index.theme_fordson .col-lg-7,
-#page-local-edwiserreports-studentengagement.theme_fordson .col-7,
-#page-local-edwiserreports-studentengagement.theme_fordson .col-sm-7,
-#page-local-edwiserreports-studentengagement.theme_fordson .col-md-7,
-#page-local-edwiserreports-studentengagement.theme_fordson .col-lg-7,
-#page-local-edwiserreports-grade.theme_fordson .col-7,
-#page-local-edwiserreports-grade.theme_fordson .col-sm-7,
-#page-local-edwiserreports-grade.theme_fordson .col-md-7,
-#page-local-edwiserreports-grade.theme_fordson .col-lg-7,
 #page-local-edwiserreports-certificates.theme_fordson .col-7,
 #page-local-edwiserreports-certificates.theme_fordson .col-sm-7,
 #page-local-edwiserreports-certificates.theme_fordson .col-md-7,
@@ -2567,11 +2433,7 @@ table.dataTable td.dataTables_empty {
 #page-local-edwiserreports-activeusers.theme_fordson .col-7,
 #page-local-edwiserreports-activeusers.theme_fordson .col-sm-7,
 #page-local-edwiserreports-activeusers.theme_fordson .col-md-7,
-#page-local-edwiserreports-activeusers.theme_fordson .col-lg-7,
-#page-local-edwiserreports-learner.theme_fordson .col-7,
-#page-local-edwiserreports-learner.theme_fordson .col-sm-7,
-#page-local-edwiserreports-learner.theme_fordson .col-md-7,
-#page-local-edwiserreports-learner.theme_fordson .col-lg-7 {
+#page-local-edwiserreports-activeusers.theme_fordson .col-lg-7 {
     padding-right: 1.0715rem;
     padding-left: 1.0715rem;
 }
@@ -2580,14 +2442,6 @@ table.dataTable td.dataTables_empty {
 #page-local-edwiserreports-index.theme_fordson .col-sm-8,
 #page-local-edwiserreports-index.theme_fordson .col-md-8,
 #page-local-edwiserreports-index.theme_fordson .col-lg-8,
-#page-local-edwiserreports-studentengagement.theme_fordson .col-8,
-#page-local-edwiserreports-studentengagement.theme_fordson .col-sm-8,
-#page-local-edwiserreports-studentengagement.theme_fordson .col-md-8,
-#page-local-edwiserreports-studentengagement.theme_fordson .col-lg-8,
-#page-local-edwiserreports-grade.theme_fordson .col-8,
-#page-local-edwiserreports-grade.theme_fordson .col-sm-8,
-#page-local-edwiserreports-grade.theme_fordson .col-md-8,
-#page-local-edwiserreports-grade.theme_fordson .col-lg-8,
 #page-local-edwiserreports-certificates.theme_fordson .col-8,
 #page-local-edwiserreports-certificates.theme_fordson .col-sm-8,
 #page-local-edwiserreports-certificates.theme_fordson .col-md-8,
@@ -2599,11 +2453,7 @@ table.dataTable td.dataTables_empty {
 #page-local-edwiserreports-activeusers.theme_fordson .col-8,
 #page-local-edwiserreports-activeusers.theme_fordson .col-sm-8,
 #page-local-edwiserreports-activeusers.theme_fordson .col-md-8,
-#page-local-edwiserreports-activeusers.theme_fordson .col-lg-8,
-#page-local-edwiserreports-learner.theme_fordson .col-8,
-#page-local-edwiserreports-learner.theme_fordson .col-sm-8,
-#page-local-edwiserreports-learner.theme_fordson .col-md-8,
-#page-local-edwiserreports-learner.theme_fordson .col-lg-8 {
+#page-local-edwiserreports-activeusers.theme_fordson .col-lg-8 {
     padding-right: 1.0715rem;
     padding-left: 1.0715rem;
 }
@@ -2612,14 +2462,6 @@ table.dataTable td.dataTables_empty {
 #page-local-edwiserreports-index.theme_fordson .col-sm-9,
 #page-local-edwiserreports-index.theme_fordson .col-md-9,
 #page-local-edwiserreports-index.theme_fordson .col-lg-9,
-#page-local-edwiserreports-studentengagement.theme_fordson .col-9,
-#page-local-edwiserreports-studentengagement.theme_fordson .col-sm-9,
-#page-local-edwiserreports-studentengagement.theme_fordson .col-md-9,
-#page-local-edwiserreports-studentengagement.theme_fordson .col-lg-9,
-#page-local-edwiserreports-grade.theme_fordson .col-9,
-#page-local-edwiserreports-grade.theme_fordson .col-sm-9,
-#page-local-edwiserreports-grade.theme_fordson .col-md-9,
-#page-local-edwiserreports-grade.theme_fordson .col-lg-9,
 #page-local-edwiserreports-certificates.theme_fordson .col-9,
 #page-local-edwiserreports-certificates.theme_fordson .col-sm-9,
 #page-local-edwiserreports-certificates.theme_fordson .col-md-9,
@@ -2631,11 +2473,7 @@ table.dataTable td.dataTables_empty {
 #page-local-edwiserreports-activeusers.theme_fordson .col-9,
 #page-local-edwiserreports-activeusers.theme_fordson .col-sm-9,
 #page-local-edwiserreports-activeusers.theme_fordson .col-md-9,
-#page-local-edwiserreports-activeusers.theme_fordson .col-lg-9,
-#page-local-edwiserreports-learner.theme_fordson .col-9,
-#page-local-edwiserreports-learner.theme_fordson .col-sm-9,
-#page-local-edwiserreports-learner.theme_fordson .col-md-9,
-#page-local-edwiserreports-learner.theme_fordson .col-lg-9 {
+#page-local-edwiserreports-activeusers.theme_fordson .col-lg-9 {
     padding-right: 1.0715rem;
     padding-left: 1.0715rem;
 }
@@ -2644,14 +2482,6 @@ table.dataTable td.dataTables_empty {
 #page-local-edwiserreports-index.theme_fordson .col-sm-10,
 #page-local-edwiserreports-index.theme_fordson .col-md-10,
 #page-local-edwiserreports-index.theme_fordson .col-lg-10,
-#page-local-edwiserreports-studentengagement.theme_fordson .col-10,
-#page-local-edwiserreports-studentengagement.theme_fordson .col-sm-10,
-#page-local-edwiserreports-studentengagement.theme_fordson .col-md-10,
-#page-local-edwiserreports-studentengagement.theme_fordson .col-lg-10,
-#page-local-edwiserreports-grade.theme_fordson .col-10,
-#page-local-edwiserreports-grade.theme_fordson .col-sm-10,
-#page-local-edwiserreports-grade.theme_fordson .col-md-10,
-#page-local-edwiserreports-grade.theme_fordson .col-lg-10,
 #page-local-edwiserreports-certificates.theme_fordson .col-10,
 #page-local-edwiserreports-certificates.theme_fordson .col-sm-10,
 #page-local-edwiserreports-certificates.theme_fordson .col-md-10,
@@ -2663,11 +2493,7 @@ table.dataTable td.dataTables_empty {
 #page-local-edwiserreports-activeusers.theme_fordson .col-10,
 #page-local-edwiserreports-activeusers.theme_fordson .col-sm-10,
 #page-local-edwiserreports-activeusers.theme_fordson .col-md-10,
-#page-local-edwiserreports-activeusers.theme_fordson .col-lg-10,
-#page-local-edwiserreports-learner.theme_fordson .col-10,
-#page-local-edwiserreports-learner.theme_fordson .col-sm-10,
-#page-local-edwiserreports-learner.theme_fordson .col-md-10,
-#page-local-edwiserreports-learner.theme_fordson .col-lg-10 {
+#page-local-edwiserreports-activeusers.theme_fordson .col-lg-10 {
     padding-right: 1.0715rem;
     padding-left: 1.0715rem;
 }
@@ -2676,14 +2502,6 @@ table.dataTable td.dataTables_empty {
 #page-local-edwiserreports-index.theme_fordson .col-sm-11,
 #page-local-edwiserreports-index.theme_fordson .col-md-11,
 #page-local-edwiserreports-index.theme_fordson .col-lg-11,
-#page-local-edwiserreports-studentengagement.theme_fordson .col-11,
-#page-local-edwiserreports-studentengagement.theme_fordson .col-sm-11,
-#page-local-edwiserreports-studentengagement.theme_fordson .col-md-11,
-#page-local-edwiserreports-studentengagement.theme_fordson .col-lg-11,
-#page-local-edwiserreports-grade.theme_fordson .col-11,
-#page-local-edwiserreports-grade.theme_fordson .col-sm-11,
-#page-local-edwiserreports-grade.theme_fordson .col-md-11,
-#page-local-edwiserreports-grade.theme_fordson .col-lg-11,
 #page-local-edwiserreports-certificates.theme_fordson .col-11,
 #page-local-edwiserreports-certificates.theme_fordson .col-sm-11,
 #page-local-edwiserreports-certificates.theme_fordson .col-md-11,
@@ -2695,11 +2513,7 @@ table.dataTable td.dataTables_empty {
 #page-local-edwiserreports-activeusers.theme_fordson .col-11,
 #page-local-edwiserreports-activeusers.theme_fordson .col-sm-11,
 #page-local-edwiserreports-activeusers.theme_fordson .col-md-11,
-#page-local-edwiserreports-activeusers.theme_fordson .col-lg-11,
-#page-local-edwiserreports-learner.theme_fordson .col-11,
-#page-local-edwiserreports-learner.theme_fordson .col-sm-11,
-#page-local-edwiserreports-learner.theme_fordson .col-md-11,
-#page-local-edwiserreports-learner.theme_fordson .col-lg-11 {
+#page-local-edwiserreports-activeusers.theme_fordson .col-lg-11 {
     padding-right: 1.0715rem;
     padding-left: 1.0715rem;
 }
@@ -2708,14 +2522,6 @@ table.dataTable td.dataTables_empty {
 #page-local-edwiserreports-index.theme_fordson .col-sm-12,
 #page-local-edwiserreports-index.theme_fordson .col-md-12,
 #page-local-edwiserreports-index.theme_fordson .col-lg-12,
-#page-local-edwiserreports-studentengagement.theme_fordson .col-12,
-#page-local-edwiserreports-studentengagement.theme_fordson .col-sm-12,
-#page-local-edwiserreports-studentengagement.theme_fordson .col-md-12,
-#page-local-edwiserreports-studentengagement.theme_fordson .col-lg-12,
-#page-local-edwiserreports-grade.theme_fordson .col-12,
-#page-local-edwiserreports-grade.theme_fordson .col-sm-12,
-#page-local-edwiserreports-grade.theme_fordson .col-md-12,
-#page-local-edwiserreports-grade.theme_fordson .col-lg-12,
 #page-local-edwiserreports-certificates.theme_fordson .col-12,
 #page-local-edwiserreports-certificates.theme_fordson .col-sm-12,
 #page-local-edwiserreports-certificates.theme_fordson .col-md-12,
@@ -2727,43 +2533,34 @@ table.dataTable td.dataTables_empty {
 #page-local-edwiserreports-activeusers.theme_fordson .col-12,
 #page-local-edwiserreports-activeusers.theme_fordson .col-sm-12,
 #page-local-edwiserreports-activeusers.theme_fordson .col-md-12,
-#page-local-edwiserreports-activeusers.theme_fordson .col-lg-12,
-#page-local-edwiserreports-learner.theme_fordson .col-12,
-#page-local-edwiserreports-learner.theme_fordson .col-sm-12,
-#page-local-edwiserreports-learner.theme_fordson .col-md-12,
-#page-local-edwiserreports-learner.theme_fordson .col-lg-12 {
+#page-local-edwiserreports-activeusers.theme_fordson .col-lg-12 {
     padding-right: 1.0715rem;
     padding-left: 1.0715rem;
 }
 
 #page-local-edwiserreports-index.theme_adaptable #scheduletab button.dropdown-toggle,
-#page-local-edwiserreports-studentengagement.theme_adaptable #scheduletab button.dropdown-toggle,
-#page-local-edwiserreports-grade.theme_adaptable #scheduletab button.dropdown-toggle,
 #page-local-edwiserreports-certificates.theme_adaptable #scheduletab button.dropdown-toggle,
 #page-local-edwiserreports-coursereport.theme_adaptable #scheduletab button.dropdown-toggle,
-#page-local-edwiserreports-activeusers.theme_adaptable #scheduletab button.dropdown-toggle,
-#page-local-edwiserreports-learner.theme_adaptable #scheduletab button.dropdown-toggle {
+#page-local-edwiserreports-activeusers.theme_adaptable #scheduletab button.dropdown-toggle {
     color: #333 !important;
 }
 
 #page-local-edwiserreports-index.theme_adaptable .dropdown-menu a,
-#page-local-edwiserreports-studentengagement.theme_adaptable .dropdown-menu a,
-#page-local-edwiserreports-grade.theme_adaptable .dropdown-menu a,
 #page-local-edwiserreports-certificates.theme_adaptable .dropdown-menu a,
 #page-local-edwiserreports-coursereport.theme_adaptable .dropdown-menu a,
-#page-local-edwiserreports-activeusers.theme_adaptable .dropdown-menu a,
-#page-local-edwiserreports-learner.theme_adaptable .dropdown-menu a {
+#page-local-edwiserreports-activeusers.theme_adaptable .dropdown-menu a {
     color: #526069;
 }
 
 #page-local-edwiserreports-index .select2-container--default,
-#page-local-edwiserreports-studentengagement .select2-container--default,
-#page-local-edwiserreports-grade .select2-container--default,
 #page-local-edwiserreports-certificates .select2-container--default,
 #page-local-edwiserreports-coursereport .select2-container--default,
-#page-local-edwiserreports-activeusers .select2-container--default,
-#page-local-edwiserreports-learner .select2-container--default {
+#page-local-edwiserreports-activeusers .select2-container--default {
     max-width: 100%;
+}
+
+#wdm-edwiserreports #todaysactivityblock svg {
+    overflow: visible !important;
 }
 
 #wdm-edwiserreports #todaysactivityblock input.input-group-addon {

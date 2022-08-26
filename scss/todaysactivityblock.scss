@@ -2,6 +2,9 @@
 
 #wdm-edwiserreports {
     #todaysactivityblock {
+        svg {
+            overflow: visible !important;
+        }
         input.input-group-addon {
             top: 0;
             right: 0;

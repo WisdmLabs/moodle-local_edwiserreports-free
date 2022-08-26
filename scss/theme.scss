@@ -62,12 +62,9 @@
     }
 }
 
-#page-local-edwiserreports-studentengagement,
-#page-local-edwiserreports-grade,
 #page-local-edwiserreports-certificates,
 #page-local-edwiserreports-coursereport,
-#page-local-edwiserreports-activeusers,
-#page-local-edwiserreports-learner {
+#page-local-edwiserreports-activeusers {
     &.theme_remui {
         .card-body {
             background: transparent;
@@ -95,12 +92,9 @@
 
 $padding: 1.0715rem;
 #page-local-edwiserreports-index,
-#page-local-edwiserreports-studentengagement,
-#page-local-edwiserreports-grade,
 #page-local-edwiserreports-certificates,
 #page-local-edwiserreports-coursereport,
-#page-local-edwiserreports-activeusers,
-#page-local-edwiserreports-learner {
+#page-local-edwiserreports-activeusers {
     &.theme_adaptable,
     &.theme_fordson,
     &.theme_moove,
