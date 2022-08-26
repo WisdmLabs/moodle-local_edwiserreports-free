@@ -634,7 +634,6 @@ $string['report/edwiserreports_activeusersblock:editadvance'] = 'Voraus bearbeit
 /* Custom Reports block related strings */
 $string['customreport'] = 'Benutzerdefinierter Bericht';
 $string['customreportedit'] = 'Benutzerdefinierte Berichte';
-$string['customreportexportpdfnote'] = 'Wenn nicht alle Spalten sichtbar sind, können Sie die CSV- oder Excel -Option verwenden, um den Bericht zu exportieren.';
 $string['reportspreview'] = 'Berichte Vorschau';
 $string['reportsfilter'] = 'Berichte Filter';
 $string['noreportspreview'] = 'Keine Vorschau vorhanden';

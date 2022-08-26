@@ -635,7 +635,6 @@ $string['report/edwiserreports_activeusersblock:editadvance'] = 'Edytuj postęp'
 /* Custom Reports block related strings */
 $string['customreport'] = 'Raport niestandardowy';
 $string['customreportedit'] = 'Raporty niestandardowe';
-$string['customreportexportpdfnote'] = 'Jeśli wszystkie kolumny nie są widoczne, możesz użyć opcji CSV lub Excel, aby wyeksportować raport.';
 $string['reportspreview'] = 'Podgląd raportów';
 $string['reportsfilter'] = 'Filtr raportów';
 $string['noreportspreview'] = 'Podgląd niedostępny';

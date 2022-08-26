@@ -634,7 +634,6 @@ $string['report/edwiserreports_activeusersblock:editadvance'] = 'Edit Advance';
 /* Custom Reports block related strings */
 $string['customreport'] = 'Custom Report';
 $string['customreportedit'] = 'Custom Reports';
-$string['customreportexportpdfnote'] = 'If all columns are not visible, you can use CSV or Excel option to export the report.';
 $string['reportspreview'] = 'Reports Preview';
 $string['reportsfilter'] = 'Reports Filter';
 $string['noreportspreview'] = 'No Preview Available';

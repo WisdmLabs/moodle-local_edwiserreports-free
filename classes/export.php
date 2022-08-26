@@ -118,11 +118,6 @@ class export {
             if ($field = $DB->get_field('edwreports_custom_reports', 'fullname', array('id' => $filter))) {
                 $header .= ' - ' . $field;
             }
-            if (count($headerrow) > 10) {
-                $help = get_string('customreportexportpdfnote', 'local_edwiserreports');
-            } else {
-                $help = '';
-            }
         } else {
             $header = get_string($this->blockname . "exportheader", "local_edwiserreports");
             $help = get_string($this->blockname . "exporthelp", "local_edwiserreports");
