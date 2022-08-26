@@ -70,6 +70,8 @@ class edwiserreports_renderable implements renderable, templatable {
         $export->secret = $authentication->get_secret_key($USER->id);
         $context = context_system::instance();
 
+        $export->downloadurl = new moodle_url("/local/edwiserreports/download.php");
+
         // Prepare reports blocks.
         $reportblocks = \local_edwiserreports\utility::get_reports_block();
         $reportblocks = new \local_edwiserreports\report_blocks($reportblocks);
