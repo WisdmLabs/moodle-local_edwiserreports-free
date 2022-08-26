@@ -885,18 +885,18 @@ $string['activitiescompleted'] = 'Activités terminées';
 
 // Whats new section.
 $string['whatsnew'] = 'Quoi de neuf';
-$string['whatsnew1title'] = 'Autorisation des utilisateurs';
-$string['whatsnew1description'] = 'Désormais, les enseignants et autres rôles utilisateur ne peuvent voir les données concernant les cours et les apprenants qui leur sont autorisés conformément à leurs autorisations de rôle utilisateur.';
+$string['whatsnew1title'] = 'Autorisations utilisateur';
+$string['whatsnew1description'] = 'Désormais, les enseignants et les autres rôles d\'utilisateur ne peuvent voir que les données concernant les cours et les apprenants qui leur sont autorisés en fonction des autorisations de leur rôle d\'utilisateur.';
 $string['whatsnew2title'] = 'Plage de dates';
-$string['whatsnew2description'] = 'Nous avons amélioré la logique depuis 7 jours, la semaine dernière, le mois dernier et l\'année dernière.Cela devrait fonctionner conformément aux normes de l\'industrie maintenant.';
+$string['whatsnew2description'] = 'Nous avons amélioré la logique pour les 7 derniers jours, la semaine dernière, le mois dernier et l\'année dernière. Cela devrait fonctionner selon les normes de l\'industrie maintenant.';
 $string['whatsnew3title'] = 'Exportation PDF';
 $string['whatsnew3description'] = 'Mise à jour de la bibliothèque d\'exportation pour résoudre les problèmes d\'alignement.';
-$string['whatsnew4title'] = 'Rapport d\'exportation, de planification et d\'engagement des cours';
-$string['whatsnew4description'] = 'Nous avons enchaîné et amélioré ces fonctionnalités.';
-$string['whatsnewli1'] = '1. Vous pouvez maintenant exporter des rapports graphiques dans différents formats: PNG, JPEG, SVG, PDF.';
-$string['whatsnewli2'] = '2. Vous pouvez désormais planifier des e-mails avec / sans filtres appliqués et également choisir le format des rapports exportés.';
-$string['whatsnewli3'] = '3. Le plan de temps étant l\'une des mesures importantes suivie pour l\'engagement a été incluse dans le rapport du rapport d\'engagement des cours.';
-$string['whatsnew5'] = 'Nous améliorons continuellement les rapports d\'Edwiser pour en faire la meilleure solution pour vous et donc pour certaines raisons de feasiblity, les fonctionnalités ci-dessus ainsi que les améliorations ci-dessus ne sont désormais disponibles que dans Edwsier Reports Pro.Ces fonctionnalités sont obsolètes à partir de la version actuelle d\'Edwiser Reports gratuitement.';
+$string['whatsnew4title'] = 'Rapport d\'exportation, de planification et d\'engagement de cours';
+$string['whatsnew4description'] = 'Nous avons amélioré et amélioré ces fonctionnalités.';
+$string['whatsnewli1'] = '1. Vous pouvez maintenant exporter des rapports graphiques dans différents formats : PNG, JPEG, SVG, PDF.';
+$string['whatsnewli2'] = '2. Vous pouvez désormais programmer des e-mails avec/sans filtres appliqués et également choisir le format des rapports exportés.';
+$string['whatsnewli3'] = '3. Le temps passé étant l\'une des mesures importantes suivies pour l\'engagement a été inclus dans le rapport d\'engagement du cours.';
+$string['whatsnew5'] = 'Nous améliorons continuellement Edwiser Reports pour en faire la meilleure solution pour vous. Ainsi, pour des raisons de faisabilité, les fonctionnalités ci-dessus ainsi que les améliorations ci-dessus ne sont désormais disponibles que dans Edwiser Reports PRO. Ces fonctionnalités sont obsolètes à partir de la version actuelle d\'Edwiser Reports Free.';
 $string['note'] = 'Noter';
-$string['whatsnew6'] = 'Vos rapports planifiés actuels sont toujours avilables et enregistrés dans les rapports Edwiser gratuitement.Vous pourrez y accéder une fois que vous aurez mis à niveau vers la version <a href="' . UPGRADE_URL . '" target="_blank"> version pro </a>.';
+$string['whatsnew6'] = 'Vos rapports programmés actuels sont toujours disponibles et enregistrés dans Edwsier Reports Free. Vous pourrez y accéder une fois que vous aurez effectué la mise à niveau vers la <a href="' . UPGRADE_URL . '" target="_blank">version Pro</a>.';
 $string['gotit'] = 'J\'ai compris';
