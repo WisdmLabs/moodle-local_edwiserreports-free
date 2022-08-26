@@ -214,6 +214,23 @@ class customreportsblock extends block_base {
             return array_values((array) $record);
         }, $records->reportsdata);
 
-        return array_merge(array($header), $data);
+        $export = array_merge(array($header), $data);
+        $count = count($header);
+        if ($count > 5) {
+            $export = (object) [
+                'data' => $export,
+                'options' => [
+                    'orientation' => 'l',
+                ]
+            ];
+            if ($count < 10) {
+                $export->options['format'] = 'a3';
+            } else if ($count < 13) {
+                $export->options['format'] = 'a2';
+            } else {
+                $export->options['format'] = 'a1';
+            }
+        }
+        return $export;
     }
 }
