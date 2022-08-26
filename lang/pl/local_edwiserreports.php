@@ -887,13 +887,18 @@ $string['activitiescompleted'] = 'Zakończone działania';
 
 // Whats new section.
 $string['whatsnew'] = 'Co nowego';
-$string['whatsnew1'] = 'Poprawiliśmy logikę dat w ciągu ostatnich 7 dni, w zeszłym tygodniu, w zeszłym miesiącu i w zeszłym roku.Powinien teraz działać zgodnie ze standardami branżowymi.';
-$string['whatsnew2'] = 'Biblioteka eksportu PDF zaktualizowana w celu rozwiązania problemów z wyrównaniem';
-$string['whatsnew3'] = 'Poprawki uprawnień użytkownika: Teraz nauczyciele i inne role użytkowników mogą zobaczyć tylko dane, które są im dozwolone zgodnie z uprawnieniami do roli użytkownika.';
-$string['whatsnew4'] = 'Zwiększyliśmy funkcjonalność eksportu, planowania, a także ulepszaliśmy raport zaangażowania kursu.';
-$string['whatsnew41'] = 'Teraz możesz eksportować raporty graficzne w różnych formatach';
-$string['whatsnew42'] = 'Funkcjonalność planowania wiadomości e -mail otrzymuje dwa ulepszenia.Możesz teraz zaplanować e -maile z/bez zastosowanych filtrów, a także wybrać, w którym formacie należy wysłać raport.';
-$string['whatsnew43'] = 'Timespent jest jedną z ważnych wskaźników śledzonych do zaangażowania, został uwzględniony w ramach raportu o zaangażowaniu.';
-$string['whatsnew5'] = 'Funkcje te są teraz dostępne w <a href="https://edwiser.org/reports/#pricing" target="_blank">Edwiser Reports PRO</a> i są przestarzałe w bieżącej wersji Raporty Edwiser za darmo.';
-$string['whatsnew6'] = 'To nie wszystko. <a href="https://edwiser.org/reports/#pricing" target="_blank">Edwiser Reports PRO</a> ma wiele nowych funkcji i raportów.';
-$string['gotit'] = 'ROZUMIEM';
+$string['whatsnew1title'] = 'Uprawnienia użytkownika';
+$string['whatsnew1description'] = 'Teraz nauczyciele i inne role użytkowników mogą zobaczyć tylko dane dotyczące kursów i uczniów, które są im dozwolone zgodnie z uprawnieniami do roli użytkownika.';
+$string['whatsnew2title'] = 'Zakres dat';
+$string['whatsnew2description'] = 'Poprawiliśmy logikę przez ostatnie 7 dni, w zeszłym tygodniu, w zeszłym miesiącu i w zeszłym roku.Powinien teraz działać zgodnie ze standardami branżowymi.';
+$string['whatsnew3title'] = 'Eksport PDF';
+$string['whatsnew3description'] = 'Zaktualizowano bibliotekę eksportową, aby rozwiązać problemy z wyrównaniem.';
+$string['whatsnew4title'] = 'Raport eksportu, planowania i angażowania kursu';
+$string['whatsnew4description'] = 'Zakładaliśmy i ulepszyliśmy te funkcje.';
+$string['whatsnewli1'] = '1. Teraz możesz eksportować raporty graficzne w różnych formatach: PNG, JPEG, SVG, PDF.';
+$string['whatsnewli2'] = '2. Możesz teraz zaplanować e -mail z / bez zastosowanych filtrów, a także wybrać format eksportowanych raportów.';
+$string['whatsnewli3'] = '3. Timespent jako jeden z ważnych wskaźników śledzonych do zaangażowania został uwzględniony w ramach raportu z zaangażowania.';
+$string['whatsnew5'] = 'Stale ulepszamy raporty Edwiser, aby było dla Ciebie najlepszym rozwiązaniem, więc z niektórych powodów, dla których powyższe funkcje wraz z powyższymi ulepszeniami są teraz dostępne tylko w Edwsier Reports Pro.Funkcje te są przestarzałe z bieżącej wersji raportów Edwiser za darmo.';
+$string['note'] = 'Notatka';
+$string['whatsnew6'] = 'Twoje obecne zaplanowane raporty są nadal zaproszone i zapisane w raportach Edwiser za darmo.Będziesz mógł uzyskać do nich dostęp po aktualizacji do wersji <a href="' . UPGRADE_URL . '" target="_blank"> w wersji pro </a>.';
+$string['gotit'] = 'Rozumiem';

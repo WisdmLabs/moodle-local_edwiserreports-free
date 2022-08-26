@@ -1,21 +1,49 @@
-<div class="edwiser-whatsnew d-none">
-    <div class="whatsnew-inner p-5 rounded">
+<div class="edwiser-whatsnew d-none"
+    style="
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 1702;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        overflow: auto;
+        padding: 4rem 0;
+    ">
+    <div class="p-5 rounded"
+    style="
+        background: white;
+        width: 51.857rem;
+        margin: auto;
+    ">
         <h1 class="text-center">{{#str}} whatsnew, local_edwiserreports {{/str}}</h1>
-        <ol class="pl-3 font-size-16">
-            <li>{{#str}} whatsnew1, local_edwiserreports {{/str}}</li>
-            <li>{{#str}} whatsnew2, local_edwiserreports {{/str}}</li>
-            <li>{{#str}} whatsnew3, local_edwiserreports {{/str}}</li>
-            <li>{{#str}} whatsnew4, local_edwiserreports {{/str}}
-                <ol>
-                    <li>{{#str}} whatsnew41, local_edwiserreports {{/str}}</li>
-                    <li>{{#str}} whatsnew42, local_edwiserreports {{/str}}</li>
-                    <li>{{#str}} whatsnew43, local_edwiserreports {{/str}}</li>
-                </ol>
-            </li>
-            <li>{{#str}} whatsnew5, local_edwiserreports {{/str}}</li>
-        </ol>
-        <label class="font-size-16">{{#str}} whatsnew6, local_edwiserreports {{/str}}</label>
-        <div class="text-center">
+        <div style="
+            font-size: 1.14rem;
+            font-weight: 400;
+            line-height: 1.3;
+        ">
+            <label style="margin-bottom: 1.86rem;">
+                <span style="font-weight: 700;">{{#str}} whatsnew1title, local_edwiserreports {{/str}}:</span> {{#str}} whatsnew1description, local_edwiserreports {{/str}}
+            </label>
+            <label style="margin-bottom: 1.86rem;">
+                <span style="font-weight: 700;">{{#str}} whatsnew2title, local_edwiserreports {{/str}}:</span> {{#str}} whatsnew2description, local_edwiserreports {{/str}}
+            </label>
+            <label style="margin-bottom: 1.86rem;">
+                <span style="font-weight: 700;">{{#str}} whatsnew3title, local_edwiserreports {{/str}}:</span> {{#str}} whatsnew3description, local_edwiserreports {{/str}}
+            </label>
+            <label style="margin-bottom: 1rem;">
+                <span style="font-weight: 700;">{{#str}} whatsnew4title, local_edwiserreports {{/str}}:</span> {{#str}} whatsnew4description, local_edwiserreports {{/str}}
+            </label>
+            <label style="padding-left: 4.08rem; margin-bottom: 1.2rem;">{{#str}} whatsnewli1, local_edwiserreports {{/str}}</label>
+            <label style="padding-left: 4.08rem; margin-bottom: 1.2rem;">{{#str}} whatsnewli2, local_edwiserreports {{/str}}</label>
+            <label style="padding-left: 4.08rem; margin-bottom: 1.2rem;">{{#str}} whatsnewli3, local_edwiserreports {{/str}}</label>
+            <label style="padding-left: 4.08rem; margin-bottom: 1.2rem; font-weight: 700;">{{#str}} whatsnew5, local_edwiserreports {{/str}}</label>
+            <label style="padding-left: 4.08rem; margin-bottom: 1.2rem;">
+                <span style="font-weight: 700;">{{#str}} note, local_edwiserreports {{/str}}:</span>{{#str}} whatsnew6, local_edwiserreports {{/str}}
+            </label>
+        </div>
+        <div class="text-center" style="margin-top: 1rem;">
             <button class="btn theme-primary-bg text-white" id="hidewhatsnew">{{#str}} gotit, local_edwiserreports {{/str}}</button>
         </div>
     </div>

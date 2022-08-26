@@ -886,13 +886,18 @@ $string['activitiescompleted'] = 'Activités terminées';
 
 // Whats new section.
 $string['whatsnew'] = 'Quoi de neuf';
-$string['whatsnew1'] = 'Nous avons amélioré la logique de la plage de dates pendant 7 jours, la semaine dernière, le mois dernier et l\'année dernière.Cela devrait fonctionner conformément aux normes de l\'industrie maintenant.';
-$string['whatsnew2'] = 'Bibliothèque d\'exportation PDF mise à jour pour résoudre les problèmes d\'alignement';
-$string['whatsnew3'] = 'Correction de l\'autorisation de l\'utilisateur: Les enseignants et autres rôles des utilisateurs ne peuvent désormais voir que les données qui leur sont autorisées conformément à leurs autorisations de rôle utilisateur.';
-$string['whatsnew4'] = 'Nous avons une exportation améliorée, des fonctionnalités de planification et également un rapport d\'amélioration de l\'engagement des cours.';
-$string['whatsnew41'] = 'Vous pouvez maintenant exporter des rapports graphiques dans divers formats';
-$string['whatsnew42'] = 'La fonctionnalité de planification des e-mails reçoit deux améliorations.Vous pouvez désormais planifier des e-mails avec / sans filtres appliqués et également choisir dans quel format le rapport doit être envoyé.';
-$string['whatsnew43'] = 'Le plan de temps étant l\'une des métriques importantes suivis pour l\'engagement a été incluse dans le rapport de l\'engagement des cours.';
-$string['whatsnew5'] = 'Ces fonctionnalités sont désormais disponibles dans <a href="https://edwiser.org/reports/#pricing" target="_blank">Edwiser Reports PRO</a> et sont obsolètes dans la version actuelle d\'Edwiser Reports gratuitement.';
-$string['whatsnew6'] = 'Ce n\'est pas tout. <a href="https://edwiser.org/reports/#pricing" target="_blank">Edwiser Reports PRO</a> a de nombreuses nouvelles fonctionnalités et rapports alignés.';
-$string['gotit'] = 'J\'AI COMPRIS';
+$string['whatsnew1title'] = 'Autorisation des utilisateurs';
+$string['whatsnew1description'] = 'Désormais, les enseignants et autres rôles utilisateur ne peuvent voir les données concernant les cours et les apprenants qui leur sont autorisés conformément à leurs autorisations de rôle utilisateur.';
+$string['whatsnew2title'] = 'Plage de dates';
+$string['whatsnew2description'] = 'Nous avons amélioré la logique depuis 7 jours, la semaine dernière, le mois dernier et l\'année dernière.Cela devrait fonctionner conformément aux normes de l\'industrie maintenant.';
+$string['whatsnew3title'] = 'Exportation PDF';
+$string['whatsnew3description'] = 'Mise à jour de la bibliothèque d\'exportation pour résoudre les problèmes d\'alignement.';
+$string['whatsnew4title'] = 'Rapport d\'exportation, de planification et d\'engagement des cours';
+$string['whatsnew4description'] = 'Nous avons enchaîné et amélioré ces fonctionnalités.';
+$string['whatsnewli1'] = '1. Vous pouvez maintenant exporter des rapports graphiques dans différents formats: PNG, JPEG, SVG, PDF.';
+$string['whatsnewli2'] = '2. Vous pouvez désormais planifier des e-mails avec / sans filtres appliqués et également choisir le format des rapports exportés.';
+$string['whatsnewli3'] = '3. Le plan de temps étant l\'une des mesures importantes suivie pour l\'engagement a été incluse dans le rapport du rapport d\'engagement des cours.';
+$string['whatsnew5'] = 'Nous améliorons continuellement les rapports d\'Edwiser pour en faire la meilleure solution pour vous et donc pour certaines raisons de feasiblity, les fonctionnalités ci-dessus ainsi que les améliorations ci-dessus ne sont désormais disponibles que dans Edwsier Reports Pro.Ces fonctionnalités sont obsolètes à partir de la version actuelle d\'Edwiser Reports gratuitement.';
+$string['note'] = 'Noter';
+$string['whatsnew6'] = 'Vos rapports planifiés actuels sont toujours avilables et enregistrés dans les rapports Edwiser gratuitement.Vous pourrez y accéder une fois que vous aurez mis à niveau vers la version <a href="' . UPGRADE_URL . '" target="_blank"> version pro </a>.';
+$string['gotit'] = 'J\'ai compris';

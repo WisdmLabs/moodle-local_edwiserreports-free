@@ -886,13 +886,18 @@ $string['activitiescompleted'] = 'Activities completed';
 
 // Whats new section.
 $string['whatsnew'] = 'What\'s New';
-$string['whatsnew1'] = 'We have improved Date range logic for Last 7 days, Last week, Last month and Last Year. It should work as per industry standards now.';
-$string['whatsnew2'] = 'PDF export library updated to resolve alignment issues';
-$string['whatsnew3'] = 'User permission fixes: Now Teachers and other user roles can only see data that is allowed to them as per their user role permissions.';
-$string['whatsnew4'] = 'We have enhanced Export, scheduling functionality and also improved Course engagement report.';
-$string['whatsnew41'] = 'Now you can export graphical reports in various formats';
-$string['whatsnew42'] = 'Email scheduling functionality receives two enhancements. You can now schedule emails with/without applied filters and also get to choose in which format the report should be sent.';
-$string['whatsnew43'] = 'Timespent being one of the important metrics tracked for engagement has been included as part of Course engagement report.';
-$string['whatsnew5'] = 'These features are now available in <a href="https://edwiser.org/reports/#pricing" target="_blank">Edwiser Reports PRO</a> and is deprecated in the current version of Edwiser Reports FREE.';
-$string['whatsnew6'] = 'That\'s not all. <a href="https://edwiser.org/reports/#pricing" target="_blank">Edwiser Reports PRO</a> has many new features and reports lined up.';
-$string['gotit'] = 'GOT IT';
+$string['whatsnew1title'] = 'User Permissions';
+$string['whatsnew1description'] = 'Now Teachers and other user roles can only see the data regarding the courses and learners that is allowed to them as per their user role permissions.';
+$string['whatsnew2title'] = 'Date Range';
+$string['whatsnew2description'] = 'We have improved the logic for Last 7 days, Last week, Last month and Last year. It should work as per industry standards now.';
+$string['whatsnew3title'] = 'PDF export';
+$string['whatsnew3description'] = 'Updated the export library to resolve the alignment issues.';
+$string['whatsnew4title'] = 'Export, Scheduling and Course Engagement Report';
+$string['whatsnew4description'] = 'We have enchaced and improved  these features.';
+$string['whatsnewli1'] = '1. Now you can export graphical reports in different formats : PNG, JPEG, SVG, PDF.';
+$string['whatsnewli2'] = '2. You can now schdeule emails with / without applioed filters and also get to choose the format of the exported reports.';
+$string['whatsnewli3'] = '3. Timespent being one of the important metrics tracked for engagement has been included as part of course engagement report.';
+$string['whatsnew5'] = 'We are continously improving Edwiser Reports to make it the best solution for you and so for some feasiblity reasons the above features along with the above improvements are now only availble in Edwsier Reports PRO. These features are deprecated from the current version of Edwiser Reports Free.';
+$string['note'] = 'Note';
+$string['whatsnew6'] = 'Your current scheduled reports are still avilable and saved in Edwsier Reports Free. You will be able to access them once you updrade to the <a href="' . UPGRADE_URL . '" target="_blank">Pro version</a>.';
+$string['gotit'] = 'Got It';
