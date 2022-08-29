@@ -65,6 +65,9 @@ class db_controller {
         $this->progress = new progress('fix_missing_course_progress');
         $this->progress->start_progress();
 
+        // Deleting course records where courseid is < 2.
+        $DB->execute('DELETE FROM {edwreports_course_progress} WHERE courseid < 2');
+
         // Get all courses.
         $courses = get_courses();
         unset($courses[1]);
