@@ -111,12 +111,24 @@ function xmldb_local_edwiserreports_upgrade($oldversion) {
 
     // Adding new column in course progress table for storing completable activities.
     $table = new xmldb_table('edwreports_course_progress');
+    if ($dbman->table_exists($table)) {
+        $field = new xmldb_field('completablemods', XMLDB_TYPE_INTEGER, 10, null, true, false, 0);
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+            $DB->set_field('edwreports_course_progress', 'pchange', true);
+        }
 
-    $field = new xmldb_field('completablemods', XMLDB_TYPE_INTEGER, 10, null, true, false, 0);
+        // Adding courseid index on course progress table.
+        $courseindex = new xmldb_index('courseid', XMLDB_INDEX_NOTUNIQUE, ['courseid']);
+        if (!$dbman->index_exists($table, $courseindex)) {
+            $dbman->add_index($table, $courseindex);
+        }
 
-    if ($dbman->table_exists($table) && !$dbman->field_exists($table, $field)) {
-        $dbman->add_field($table, $field);
-        $DB->set_field('edwreports_course_progress', 'pchange', true);
+        // Adding userid index on course progress table.
+        $courseindex = new xmldb_index('userid', XMLDB_INDEX_NOTUNIQUE, ['userid']);
+        if (!$dbman->index_exists($table, $courseindex)) {
+            $dbman->add_index($table, $courseindex);
+        }
     }
 
     // Removing activity log table.
