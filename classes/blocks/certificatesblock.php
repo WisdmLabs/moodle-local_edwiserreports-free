@@ -128,7 +128,7 @@ class certificatesblock extends block_base {
 
         $courses = $this->get_courses_of_user();
         // Temporary course table.
-        $coursetable = utility::create_temp_table('tmp_cert_courses', array_keys($courses));
+        $coursetable = utility::create_temp_table('tmp_c_c', array_keys($courses));
 
         $certificates = array();
         $customcert = $DB->get_records_sql(

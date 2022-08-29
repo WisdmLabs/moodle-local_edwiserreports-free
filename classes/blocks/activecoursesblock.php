@@ -196,7 +196,7 @@ class activecoursesblock extends block_base {
         $userstable = '';
         if (!empty($studentsids)) {
             // Create a temporary table for enrolled users.
-            $userstable = utility::create_temp_table('tmp_ac_users', $studentsids);
+            $userstable = utility::create_temp_table('tmp_ac_u', $studentsids);
         }
 
         $params = [

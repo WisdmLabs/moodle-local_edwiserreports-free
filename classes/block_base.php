@@ -529,7 +529,7 @@ class block_base {
 
         if ($cohortid) {
             // Temporary course table.
-            $coursetable = utility::create_temp_table('tmp_blockbase_courses', array_keys($allcourses));
+            $coursetable = utility::create_temp_table('tmp_bb_c', array_keys($allcourses));
 
             $fields = implode(', ', [
                 'c.id',
@@ -639,7 +639,7 @@ class block_base {
             $courses = $this->get_courses_of_user($userid);
 
             // Creating temporary table.
-            $coursetable = utility::create_temp_table('tmp_blockbase_courses', array_keys($courses));
+            $coursetable = utility::create_temp_table('tmp_bb_c', array_keys($courses));
 
             $coursejoin = "JOIN {{$coursetable}} ct ON ct.tempid = ctx.instanceid";
         }
@@ -728,7 +728,7 @@ class block_base {
         }
 
         // Temporary course table.
-        $coursetable = utility::create_temp_table('tmp_blockbase_courses', array_keys($courses));
+        $coursetable = utility::create_temp_table('tmp_bb_c', array_keys($courses));
 
         $sql = "SELECT DISTINCT u.id, $fullname fullname
                   FROM {{$coursetable}} c
