@@ -547,7 +547,7 @@ function local_edwiserreports_get_default_block_settings() {
         'courseengagement' => array(
             'classname' => 'courseengagementblock',
             'position' => $index++,
-            LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW => LOCAL_SITEREPORT_BLOCK_MEDIUM,
+            LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW => LOCAL_SITEREPORT_BLOCK_LARGE,
             LOCAL_SITEREPORT_BLOCK_TABLET_VIEW => LOCAL_SITEREPORT_BLOCK_LARGE
         ),
         'activecourses' => array(
