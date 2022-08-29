@@ -67,7 +67,12 @@ class courseprogressblock extends block_base {
             $coursecontext = context_course::instance($courseid);
 
             // Get only students.
-            $enrolledstudents = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
+            $enrolledstudents = \local_edwiserreports\utility::get_enrolled_students(
+                $courseid,
+                $coursecontext,
+                $cohortid,
+                0
+            );
 
             // Get response.
             $response = new stdClass();
