@@ -20,6 +20,10 @@
     border-radius: 0 !important;
     border: 0 !important;
     box-shadow: none !important;
+    font-size: inherit !important;
+    min-height: inherit !important;
+    cursor: inherit !important;
+    font-weight: inherit !important;
 }
 
 #wdm-activeusers-individual .dropdown-menu.withcalendar {
@@ -52,21 +56,6 @@
 
 #wdm-activeusers-individual .filter-wrapper {
     width: fit-content;
-}
-
-#wdm-activeusers-individual input.dropdown-item {
-    background-color: transparent;
-    color: inherit;
-}
-
-#wdm-activeusers-individual input.dropdown-item:hover {
-    cursor: pointer;
-    background-color: #f8f9fa;
-}
-
-#wdm-activeusers-individual input.dropdown-item.custom:focus {
-    -webkit-box-shadow: none;
-    box-shadow: none;
 }
 
 #wdm-activeusers-individual .dataTable .sorting_asc,
@@ -349,6 +338,10 @@ tr[aria-expanded="true"] .accordion-arrow.icon {
     border-radius: 0 !important;
     border: 0 !important;
     box-shadow: none !important;
+    font-size: inherit !important;
+    min-height: inherit !important;
+    cursor: inherit !important;
+    font-weight: inherit !important;
 }
 
 #page-local-edwiserreports-index #page #region-main > .card {
@@ -1669,15 +1662,15 @@ table.dataTable td.dataTables_empty {
 }
 
 .top-insights.editing .insight:first-child .card-editing .move-left {
-    display: none;
+    display: none !important;
 }
 
 .top-insights.editing .insight:nth-last-child(2) .card-editing .move-right {
-    display: none;
+    display: none !important;
 }
 
 .top-insights.editing .insight:nth-child(n+5) {
-    display: none;
+    display: none !important;
 }
 
 @media (max-width: 767px) {

@@ -43,6 +43,10 @@
             border-radius: 0 !important;
             border: 0 !important;
             box-shadow: none !important;
+            font-size: inherit !important;
+            min-height: inherit !important;
+            cursor: inherit !important;
+            font-weight: inherit !important;
         }
     }
     .dropdown-menu.withcalendar {
@@ -63,18 +67,6 @@
     }
     .filter-wrapper {
         width: fit-content;
-    }
-    input.dropdown-item {
-        background-color: transparent;
-        color: inherit;
-    }
-    input.dropdown-item:hover {
-        cursor: pointer;
-        background-color: #f8f9fa;
-    }
-    input.dropdown-item.custom:focus {
-        -webkit-box-shadow: none;
-        box-shadow: none;
     }
     // Fixing header background glitch because of block configurable_rerport plugin.
     .dataTable {

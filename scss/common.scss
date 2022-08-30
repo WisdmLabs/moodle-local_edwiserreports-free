@@ -195,6 +195,10 @@ tr[aria-expanded="true"] {
             border-radius: 0 !important;
             border: 0 !important;
             box-shadow: none !important;
+            font-size: inherit !important;
+            min-height: inherit !important;
+            cursor: inherit !important;
+            font-weight: inherit !important;
         }
     }
     #page #region-main>.card {

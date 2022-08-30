@@ -30,17 +30,17 @@
             &:first-child {
                 .card-editing {
                     .move-left {
-                        display: none;
+                        display: none !important;
                     }
                 }
             }
             &:nth-last-child(2) {
                 .card-editing .move-right {
-                    display: none;
+                    display: none !important;
                 }
             }
             &:nth-child(n+5) {
-                display: none;
+                display: none !important;
             }
         }
     }
