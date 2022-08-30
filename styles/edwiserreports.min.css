@@ -669,7 +669,7 @@ tr[aria-expanded="true"] .accordion-arrow.icon {
     transform: translateX(-50%);
     width: max-content;
     border-radius: 4px;
-    z-index: 1;
+    z-index: 2;
 }
 
 .pro-export-wrapper .pro-export-title a {
