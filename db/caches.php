@@ -27,27 +27,27 @@ defined('MOODLE_INTERNAL') || die();
 
 $definitions = array(
     'activeusers' => array(
-        'mode' => cache_store::MODE_APPLICATION,
+        'mode' => cache_store::MODE_SESSION,
         'ttl' => 1 * 60 * 60
     ),
     'courseprogress' => array(
-        'mode' => cache_store::MODE_APPLICATION,
+        'mode' => cache_store::MODE_SESSION,
         'ttl' => 1 * 60 * 60
     ),
     'activecourses' => array(
-        'mode' => cache_store::MODE_APPLICATION,
+        'mode' => cache_store::MODE_SESSION,
         'ttl' => 3 * 60 * 60
     ),
     'siteaccess' => array(
-        'mode' => cache_store::MODE_APPLICATION,
+        'mode' => cache_store::MODE_SESSION,
         'ttl' => 12 * 60 * 60
     ),
     'certificates' => array(
-        'mode' => cache_store::MODE_APPLICATION,
+        'mode' => cache_store::MODE_SESSION,
         'ttl' => 1 * 60 * 60
     ),
     'inactiveusers' => array(
-        'mode' => cache_store::MODE_APPLICATION,
+        'mode' => cache_store::MODE_SESSION,
         'ttl' => 24 * 60 * 60
     ),
     'insight' => array(
