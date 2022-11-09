@@ -1,0 +1,102 @@
+.black-friday-banner {
+    position: relative;
+    background: linear-gradient(180deg, #1C4A4B 0%, #062828 100%);
+    margin-bottom: 1rem;
+    .banner-close {
+        cursor: pointer;
+    }
+    .edwiser-logo {
+        position: absolute;
+        background: #FFFFFF;
+        img {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+    }
+    .banner-content {
+        label {
+            font-size: 1.714rem;
+        }
+        span {
+            font-size: 1.286rem;
+            color: #8EFAFF;
+        }
+        a {
+            text-transform: uppercase;
+        }
+    }
+    /* Desktop */
+    @media only screen and (min-width: 600px) {
+        .banner-close {
+            color: white;
+        }
+        .edwiser-logo {
+            position: absolute;
+            width: 10.714rem;
+            height: 100%;
+            left: 1.071rem;
+            top: 0;
+            img {
+                width: 8rem;
+            }
+        }
+        .banner-content {
+            min-height: 12.142rem;
+            padding-left: 12.785rem;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+            label {
+                padding-right: 1rem;
+            }
+            span {
+                padding-right: 15rem;
+            }
+            a {
+                margin-top: 1.514rem;
+            }
+        }
+        .edwiser-graphics {
+            position: absolute;
+            right: 2.857rem;
+            bottom: 0.714rem;
+        }
+        .banner-close {
+            position: absolute;
+            right: 0.714rem;
+            top: 0.714rem;
+        }
+    }
+    /* Small devices */
+    @media only screen and (max-width: 599px) {
+        .edwiser-logo {
+            position: absolute;
+            width: 100%;
+            top: 1rem;
+            height: 6rem;
+            img {
+                width: 10rem;
+            }
+        }
+        .edwiser-graphics {
+            display: none;
+        }
+        .banner-content {
+            padding: 8rem 1rem 1rem 1rem;
+            a {
+                margin-top: 1.514rem;
+            }
+        }
+        .edwiser-graphics {
+            position: absolute;
+            right: 2.857rem;
+            bottom: 0.714rem;
+        }
+        .banner-close {
+            position: absolute;
+            right: 0.714rem;
+            top: 1.714rem;
+        }
+    }
+}

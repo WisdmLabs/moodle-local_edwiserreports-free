@@ -1,0 +1,22 @@
+<div class="black-friday-banner">
+    <div class="edwiser-logo">
+        <img class="logo-large" src="{{logolarge}}">
+    </div>
+    <i class="banner-close fa fa-close" data-preference="{{close}}"></i>
+    <div class="banner-content">
+        <label class="text-white d-block">{{title}}</label>
+        <span class="d-block">{{{description}}}</span>
+        <a class="btn btn-warning" href="{{cta}}" target="_blank">{{action}}</a>
+    </div>
+    <img class="edwiser-graphics" src="{{graphics}}">
+</div>
+{{#js}}
+    require(['jquery'], function($) {
+        $(document).ready(function() {
+            $('.banner-close').on('click', function() {
+                $('.black-friday-banner').remove();
+                M.util.set_user_preference($(this).data('preference'), true);
+            });
+        });
+    });
+{{/js}}

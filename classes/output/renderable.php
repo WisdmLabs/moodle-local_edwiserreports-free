@@ -51,6 +51,52 @@ require_once($CFG->dirroot."/local/edwiserreports/locallib.php");
  * Elucid report renderable.
  */
 class edwiserreports_renderable implements renderable, templatable {
+
+    /**
+     * Show black friday container on the top of page.
+     *
+     * @return sdtClass
+     */
+    public function get_black_friday_sale_ribbon() {
+        $now = time();
+        $bfs = new stdClass;
+        $bfs->logolarge = new moodle_url('/local/edwiserreports/pix/logolarge.png');
+        switch (true) {
+            case $now >= 1667520000 && $now <= 1669161600;
+                if (get_user_preferences('local_edwiserreports_bfs_pre_hide', false)) {
+                    $bfs->show = false;
+                    break;
+                }
+                $bfs->show = true;
+                $bfs->title = "Play a Game with Edwiser to get ahead of the Black Friday Sale!";
+                $bfs->description = "Spin the Wheel to Win Free Access or Discounts on our Premium Moodle theme & plugins";
+                $bfs->action = "Spin and Win";
+                $bfs->cta = "https://edwiser.org/edwiser-black-friday-giveaway/?utm_source=giveaway&utm_medium=spinthewheel&utm_campaign=bfcm22";
+                $bfs->graphics = new moodle_url('/local/edwiserreports/pix/bfs/spin_graphics.png');
+                $bfs->close = 'local_edwiserreports_bfs_pre_hide';
+                user_preference_allow_ajax_update('local_edwiserreports_bfs_pre_hide', PARAM_BOOL);
+            break;
+            case $now >= 1669334400 && $now <= 1669766400;
+                if (get_user_preferences('local_edwiserreports_bfs_after_hide', false)) {
+                    $bfs->show = false;
+                    break;
+                }
+                $bfs->show = true;
+                $bfs->title = "You're missing out on in-depth course & learner performance analysis!";
+                $bfs->description = "Bridge the gap with a complete reporting solution this Black Friday Season!
+                                        Get special discounts on Edwiser Reports Pro!";
+                $bfs->action = "Upgrade Now";
+                $bfs->cta = "https://edwiser.org/reports/?utm_source=freeplugin&utm_medium=banner&utm_campaign=bfcm22";
+                $bfs->graphics = new moodle_url('/local/edwiserreports/pix/bfs/jackpot_graphics.png');
+                $bfs->close = 'local_edwiserreports_bfs_after_hide';
+                user_preference_allow_ajax_update('local_edwiserreports_bfs_after_hide', PARAM_BOOL);
+            break;
+            default:
+                $bfs->show = false;
+                break;
+        }
+        return $bfs;
+    }
     /**
      * Function to export the renderer data in a format that is suitable for a
      * edit mustache template.
@@ -71,6 +117,12 @@ class edwiserreports_renderable implements renderable, templatable {
         $context = context_system::instance();
 
         $export->downloadurl = new moodle_url("/local/edwiserreports/download.php");
+        if (is_siteadmin()) {
+            $bfs = $this->get_black_friday_sale_ribbon();
+            if ($bfs->show) {
+                $export->bfs = $bfs;
+            }
+        }
 
         // Prepare reports blocks.
         $reportblocks = \local_edwiserreports\utility::get_reports_block();
