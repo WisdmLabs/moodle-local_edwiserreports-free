@@ -24,10 +24,12 @@
 
 namespace local_edwiserreports\insights;
 
+defined('MOODLE_INTERNAL') or die;
+require_once($CFG->dirroot . '/local/edwiserreports/classes/constants.php');
+
 use context_system;
-use context_helper;
 use cache;
-use local_edwiserreports\block_base;
+
 
 /**
  * Class for insight details

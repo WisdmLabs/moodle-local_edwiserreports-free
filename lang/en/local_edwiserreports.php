@@ -23,6 +23,7 @@
  */
 
 defined('MOODLE_INTERNAL') || die();
+require_once($CFG->dirroot . '/local/edwiserreports/classes/constants.php');
 
 $string['pluginname'] = 'Edwiser Reports Free';
 $string['reportsdashboard'] = 'Edwiser Reports Free';

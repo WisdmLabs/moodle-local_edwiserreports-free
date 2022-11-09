@@ -23,10 +23,14 @@
 
 namespace local_edwiserreports;
 
+defined('MOODLE_INTERNAL') || die();
+
 use stdClass;
 use context_system;
 use context_helper;
 use context_course;
+
+require_once($CFG->dirroot . '/local/edwiserreports/classes/constants.php');
 
 /**
  * Abstract class for reports_block
