@@ -83,7 +83,7 @@ class edwiserreports_renderable implements renderable, templatable {
                 }
                 $bfs->show = true;
                 $bfs->title = "You're missing out on in-depth course & learner performance analysis!";
-                $bfs->description = "Bridge the gap with a complete reporting solution this Black Friday Season!
+                $bfs->description = "Bridge the gap with a complete reporting solution this Black Friday Season!<br>
                                         Get special discounts on Edwiser Reports Pro!";
                 $bfs->action = "Upgrade Now";
                 $bfs->cta = "https://edwiser.org/reports/?utm_source=freeplugin&utm_medium=banner&utm_campaign=bfcm22";
