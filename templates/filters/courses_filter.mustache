@@ -1,5 +1,5 @@
 <select class="course-select form-control singleselect">
     {{#courses}}
-        <option value="{{id}}">{{fullname}}</option>
+        <option value="{{id}}" {{#selected}}selected{{/selected}}>{{fullname}}</option>
     {{/courses}}
 </select>

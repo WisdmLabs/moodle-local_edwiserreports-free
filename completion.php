@@ -30,12 +30,23 @@ $context = context_system::instance();
 $component = "local_edwiserreports";
 
 // Get require param course id.
-$courseid = required_param("courseid", PARAM_INT);
+$courseid = optional_param("courseid", 0, PARAM_INT);
+
+$courses = (new local_edwiserreports\block_base)->get_courses_of_user($USER->id);
+
+if ($courseid == 0) {
+    unset($courses[SITEID]);
+    $courseid = reset($courses)->id;
+}
+
+// Invalid course.
+if (!isset($courses[$courseid])) {
+    throw new moodle_exception('invalidcourse', 'core_error');
+}
 
 // Require login for course.
-$course = get_course($courseid);
+$course = $courses[$courseid];
 require_login(get_course($courseid));
-
 local_edwiserreports_get_required_strings_for_js();
 
 // Load color themes from constants.

@@ -28,7 +28,7 @@ use renderable;
 use renderer_base;
 use stdClass;
 use templatable;
-use context_system;
+use local_edwiserreports\controller\navigation;
 use context_coursecat;
 use moodle_url;
 
@@ -85,6 +85,11 @@ class custom_reports_block implements renderable, templatable {
         }
         $export->cohorts = $cohorts;
         $export->isediting = $this->reportsid ? true : false;
+
+        $export->pageheader = get_string("customreportedit", "local_edwiserreports");
+
+        $export->navigation = navigation::instance()->get_navigation('custom');
+
         $url = '/local/edwiserreports/customreportedit.php';
         $export->createnewlink = new moodle_url($url, array('create' => true));
 

@@ -57,6 +57,11 @@ define([
                 getCourseCompletion(courseId, cohortId);
             });
 
+            // Select course filter for completion table.
+            $(PageId).find('.course-select').on('change', function() {
+                window.location = M.cfg.wwwroot + '/local/edwiserreports/completion.php?courseid=' + $(this).val();
+            });
+
             // Initialize select2.
             $(PageId).find('.singleselect').select2();
 

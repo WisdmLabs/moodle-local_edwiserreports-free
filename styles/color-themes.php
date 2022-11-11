@@ -126,6 +126,13 @@ echo "
     border-top-color: " . LOCAL_EDWISERREPORTS_COLOR_THEMES[$theme][1] . " !important;
 }
 
+.edwiserreports-tabs .tab-item.dropdown .tab-link::after {
+    border-top-color: $primarycolor !important;
+    border-bottom-color: $primarycolor !important;
+}
+.edwiserreports-tabs .tab-item.active {
+    background-color: {$primarycolor}44 !important;
+}
 ";
 
 // Select 2 colors.

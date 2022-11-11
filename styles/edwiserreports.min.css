@@ -367,6 +367,37 @@ tr[aria-expanded=true] .accordion-arrow.icon {
     display: none;
 }
 
+.edwiserreports-tabs {
+    list-style: none;
+    border-bottom: 1px solid #D9D9D9;
+    padding: 0;
+}
+.edwiserreports-tabs > .tab-item {
+    padding: 1rem 0.714rem;
+    display: inline-block;
+    border: 1px solid #D9D9D9;
+    border-bottom: 0;
+    border-radius: 5px 5px 0px 0px;
+    margin: 0 0.25rem;
+}
+.edwiserreports-tabs > .tab-item.dropdown {
+    padding: 1rem 0;
+}
+.edwiserreports-tabs > .tab-item.dropdown .tab-link {
+    padding: 0 0.714rem;
+}
+.edwiserreports-tabs > .tab-item.dropdown .tab-link::after {
+    margin-left: 1rem !important;
+}
+.edwiserreports-tabs > .tab-item.dropdown.show .dropdown-menu {
+    display: block;
+}
+.edwiserreports-tabs > .tab-item > .tab-link {
+    background-color: transparent;
+    color: #474747;
+    border: unset;
+}
+
 .export-notice-modal {
     max-width: 700px;
 }
@@ -397,6 +428,9 @@ tr[aria-expanded=true] .accordion-arrow.icon {
     align-items: center;
 }
 
+#page-local-edwiserreports-index .edwiserreports-tabs {
+    margin-top: 0 !important;
+}
 #page-local-edwiserreports-index .comparisontable {
     width: 100%;
 }
@@ -2036,28 +2070,33 @@ table.dataTable td.dataTables_empty {
     width: 150px;
 }
 
+#page-local-edwiserreports-customreportedit.theme_remui .card-body,
 #page-local-edwiserreports-certificates.theme_remui .card-body,
 #page-local-edwiserreports-coursereport.theme_remui .card-body,
 #page-local-edwiserreports-activeusers.theme_remui .card-body {
     background: transparent;
     padding: 0;
 }
+#page-local-edwiserreports-customreportedit.theme_moove #page-header,
 #page-local-edwiserreports-certificates.theme_moove #page-header,
 #page-local-edwiserreports-coursereport.theme_moove #page-header,
 #page-local-edwiserreports-activeusers.theme_moove #page-header {
     display: none;
 }
+#page-local-edwiserreports-customreportedit.theme_moove .card,
 #page-local-edwiserreports-certificates.theme_moove .card,
 #page-local-edwiserreports-coursereport.theme_moove .card,
 #page-local-edwiserreports-activeusers.theme_moove .card {
     background: transparent;
     border: none;
 }
+#page-local-edwiserreports-customreportedit.theme_boost #page-header,
 #page-local-edwiserreports-certificates.theme_boost #page-header,
 #page-local-edwiserreports-coursereport.theme_boost #page-header,
 #page-local-edwiserreports-activeusers.theme_boost #page-header {
     display: none;
 }
+#page-local-edwiserreports-customreportedit.theme_boost #region-main,
 #page-local-edwiserreports-certificates.theme_boost #region-main,
 #page-local-edwiserreports-coursereport.theme_boost #region-main,
 #page-local-edwiserreports-activeusers.theme_boost #region-main {
@@ -2065,6 +2104,10 @@ table.dataTable td.dataTables_empty {
 }
 
 #page-local-edwiserreports-index.theme_adaptable .block-cap-form .col-form-label, #page-local-edwiserreports-index.theme_fordson .block-cap-form .col-form-label, #page-local-edwiserreports-index.theme_moove .block-cap-form .col-form-label, #page-local-edwiserreports-index.theme_boost .block-cap-form .col-form-label,
+#page-local-edwiserreports-customreportedit.theme_adaptable .block-cap-form .col-form-label,
+#page-local-edwiserreports-customreportedit.theme_fordson .block-cap-form .col-form-label,
+#page-local-edwiserreports-customreportedit.theme_moove .block-cap-form .col-form-label,
+#page-local-edwiserreports-customreportedit.theme_boost .block-cap-form .col-form-label,
 #page-local-edwiserreports-certificates.theme_adaptable .block-cap-form .col-form-label,
 #page-local-edwiserreports-certificates.theme_fordson .block-cap-form .col-form-label,
 #page-local-edwiserreports-certificates.theme_moove .block-cap-form .col-form-label,
@@ -2085,6 +2128,14 @@ table.dataTable td.dataTables_empty {
 #page-local-edwiserreports-index.theme_fordson .filter-selector button.dropdown-toggle, #page-local-edwiserreports-index.theme_moove .panel-header button.dropdown-toggle,
 #page-local-edwiserreports-index.theme_moove .filter-selector button.dropdown-toggle, #page-local-edwiserreports-index.theme_boost .panel-header button.dropdown-toggle,
 #page-local-edwiserreports-index.theme_boost .filter-selector button.dropdown-toggle,
+#page-local-edwiserreports-customreportedit.theme_adaptable .panel-header button.dropdown-toggle,
+#page-local-edwiserreports-customreportedit.theme_adaptable .filter-selector button.dropdown-toggle,
+#page-local-edwiserreports-customreportedit.theme_fordson .panel-header button.dropdown-toggle,
+#page-local-edwiserreports-customreportedit.theme_fordson .filter-selector button.dropdown-toggle,
+#page-local-edwiserreports-customreportedit.theme_moove .panel-header button.dropdown-toggle,
+#page-local-edwiserreports-customreportedit.theme_moove .filter-selector button.dropdown-toggle,
+#page-local-edwiserreports-customreportedit.theme_boost .panel-header button.dropdown-toggle,
+#page-local-edwiserreports-customreportedit.theme_boost .filter-selector button.dropdown-toggle,
 #page-local-edwiserreports-certificates.theme_adaptable .panel-header button.dropdown-toggle,
 #page-local-edwiserreports-certificates.theme_adaptable .filter-selector button.dropdown-toggle,
 #page-local-edwiserreports-certificates.theme_fordson .panel-header button.dropdown-toggle,
@@ -2115,6 +2166,7 @@ table.dataTable td.dataTables_empty {
     border-radius: 0.215rem;
 }
 #page-local-edwiserreports-index.theme_fordson .row,
+#page-local-edwiserreports-customreportedit.theme_fordson .row,
 #page-local-edwiserreports-certificates.theme_fordson .row,
 #page-local-edwiserreports-coursereport.theme_fordson .row,
 #page-local-edwiserreports-activeusers.theme_fordson .row {
@@ -2125,6 +2177,10 @@ table.dataTable td.dataTables_empty {
 #page-local-edwiserreports-index.theme_fordson .col-sm-1,
 #page-local-edwiserreports-index.theme_fordson .col-md-1,
 #page-local-edwiserreports-index.theme_fordson .col-lg-1,
+#page-local-edwiserreports-customreportedit.theme_fordson .col-1,
+#page-local-edwiserreports-customreportedit.theme_fordson .col-sm-1,
+#page-local-edwiserreports-customreportedit.theme_fordson .col-md-1,
+#page-local-edwiserreports-customreportedit.theme_fordson .col-lg-1,
 #page-local-edwiserreports-certificates.theme_fordson .col-1,
 #page-local-edwiserreports-certificates.theme_fordson .col-sm-1,
 #page-local-edwiserreports-certificates.theme_fordson .col-md-1,
@@ -2144,6 +2200,10 @@ table.dataTable td.dataTables_empty {
 #page-local-edwiserreports-index.theme_fordson .col-sm-2,
 #page-local-edwiserreports-index.theme_fordson .col-md-2,
 #page-local-edwiserreports-index.theme_fordson .col-lg-2,
+#page-local-edwiserreports-customreportedit.theme_fordson .col-2,
+#page-local-edwiserreports-customreportedit.theme_fordson .col-sm-2,
+#page-local-edwiserreports-customreportedit.theme_fordson .col-md-2,
+#page-local-edwiserreports-customreportedit.theme_fordson .col-lg-2,
 #page-local-edwiserreports-certificates.theme_fordson .col-2,
 #page-local-edwiserreports-certificates.theme_fordson .col-sm-2,
 #page-local-edwiserreports-certificates.theme_fordson .col-md-2,
@@ -2163,6 +2223,10 @@ table.dataTable td.dataTables_empty {
 #page-local-edwiserreports-index.theme_fordson .col-sm-3,
 #page-local-edwiserreports-index.theme_fordson .col-md-3,
 #page-local-edwiserreports-index.theme_fordson .col-lg-3,
+#page-local-edwiserreports-customreportedit.theme_fordson .col-3,
+#page-local-edwiserreports-customreportedit.theme_fordson .col-sm-3,
+#page-local-edwiserreports-customreportedit.theme_fordson .col-md-3,
+#page-local-edwiserreports-customreportedit.theme_fordson .col-lg-3,
 #page-local-edwiserreports-certificates.theme_fordson .col-3,
 #page-local-edwiserreports-certificates.theme_fordson .col-sm-3,
 #page-local-edwiserreports-certificates.theme_fordson .col-md-3,
@@ -2182,6 +2246,10 @@ table.dataTable td.dataTables_empty {
 #page-local-edwiserreports-index.theme_fordson .col-sm-4,
 #page-local-edwiserreports-index.theme_fordson .col-md-4,
 #page-local-edwiserreports-index.theme_fordson .col-lg-4,
+#page-local-edwiserreports-customreportedit.theme_fordson .col-4,
+#page-local-edwiserreports-customreportedit.theme_fordson .col-sm-4,
+#page-local-edwiserreports-customreportedit.theme_fordson .col-md-4,
+#page-local-edwiserreports-customreportedit.theme_fordson .col-lg-4,
 #page-local-edwiserreports-certificates.theme_fordson .col-4,
 #page-local-edwiserreports-certificates.theme_fordson .col-sm-4,
 #page-local-edwiserreports-certificates.theme_fordson .col-md-4,
@@ -2201,6 +2269,10 @@ table.dataTable td.dataTables_empty {
 #page-local-edwiserreports-index.theme_fordson .col-sm-5,
 #page-local-edwiserreports-index.theme_fordson .col-md-5,
 #page-local-edwiserreports-index.theme_fordson .col-lg-5,
+#page-local-edwiserreports-customreportedit.theme_fordson .col-5,
+#page-local-edwiserreports-customreportedit.theme_fordson .col-sm-5,
+#page-local-edwiserreports-customreportedit.theme_fordson .col-md-5,
+#page-local-edwiserreports-customreportedit.theme_fordson .col-lg-5,
 #page-local-edwiserreports-certificates.theme_fordson .col-5,
 #page-local-edwiserreports-certificates.theme_fordson .col-sm-5,
 #page-local-edwiserreports-certificates.theme_fordson .col-md-5,
@@ -2220,6 +2292,10 @@ table.dataTable td.dataTables_empty {
 #page-local-edwiserreports-index.theme_fordson .col-sm-6,
 #page-local-edwiserreports-index.theme_fordson .col-md-6,
 #page-local-edwiserreports-index.theme_fordson .col-lg-6,
+#page-local-edwiserreports-customreportedit.theme_fordson .col-6,
+#page-local-edwiserreports-customreportedit.theme_fordson .col-sm-6,
+#page-local-edwiserreports-customreportedit.theme_fordson .col-md-6,
+#page-local-edwiserreports-customreportedit.theme_fordson .col-lg-6,
 #page-local-edwiserreports-certificates.theme_fordson .col-6,
 #page-local-edwiserreports-certificates.theme_fordson .col-sm-6,
 #page-local-edwiserreports-certificates.theme_fordson .col-md-6,
@@ -2239,6 +2315,10 @@ table.dataTable td.dataTables_empty {
 #page-local-edwiserreports-index.theme_fordson .col-sm-7,
 #page-local-edwiserreports-index.theme_fordson .col-md-7,
 #page-local-edwiserreports-index.theme_fordson .col-lg-7,
+#page-local-edwiserreports-customreportedit.theme_fordson .col-7,
+#page-local-edwiserreports-customreportedit.theme_fordson .col-sm-7,
+#page-local-edwiserreports-customreportedit.theme_fordson .col-md-7,
+#page-local-edwiserreports-customreportedit.theme_fordson .col-lg-7,
 #page-local-edwiserreports-certificates.theme_fordson .col-7,
 #page-local-edwiserreports-certificates.theme_fordson .col-sm-7,
 #page-local-edwiserreports-certificates.theme_fordson .col-md-7,
@@ -2258,6 +2338,10 @@ table.dataTable td.dataTables_empty {
 #page-local-edwiserreports-index.theme_fordson .col-sm-8,
 #page-local-edwiserreports-index.theme_fordson .col-md-8,
 #page-local-edwiserreports-index.theme_fordson .col-lg-8,
+#page-local-edwiserreports-customreportedit.theme_fordson .col-8,
+#page-local-edwiserreports-customreportedit.theme_fordson .col-sm-8,
+#page-local-edwiserreports-customreportedit.theme_fordson .col-md-8,
+#page-local-edwiserreports-customreportedit.theme_fordson .col-lg-8,
 #page-local-edwiserreports-certificates.theme_fordson .col-8,
 #page-local-edwiserreports-certificates.theme_fordson .col-sm-8,
 #page-local-edwiserreports-certificates.theme_fordson .col-md-8,
@@ -2277,6 +2361,10 @@ table.dataTable td.dataTables_empty {
 #page-local-edwiserreports-index.theme_fordson .col-sm-9,
 #page-local-edwiserreports-index.theme_fordson .col-md-9,
 #page-local-edwiserreports-index.theme_fordson .col-lg-9,
+#page-local-edwiserreports-customreportedit.theme_fordson .col-9,
+#page-local-edwiserreports-customreportedit.theme_fordson .col-sm-9,
+#page-local-edwiserreports-customreportedit.theme_fordson .col-md-9,
+#page-local-edwiserreports-customreportedit.theme_fordson .col-lg-9,
 #page-local-edwiserreports-certificates.theme_fordson .col-9,
 #page-local-edwiserreports-certificates.theme_fordson .col-sm-9,
 #page-local-edwiserreports-certificates.theme_fordson .col-md-9,
@@ -2296,6 +2384,10 @@ table.dataTable td.dataTables_empty {
 #page-local-edwiserreports-index.theme_fordson .col-sm-10,
 #page-local-edwiserreports-index.theme_fordson .col-md-10,
 #page-local-edwiserreports-index.theme_fordson .col-lg-10,
+#page-local-edwiserreports-customreportedit.theme_fordson .col-10,
+#page-local-edwiserreports-customreportedit.theme_fordson .col-sm-10,
+#page-local-edwiserreports-customreportedit.theme_fordson .col-md-10,
+#page-local-edwiserreports-customreportedit.theme_fordson .col-lg-10,
 #page-local-edwiserreports-certificates.theme_fordson .col-10,
 #page-local-edwiserreports-certificates.theme_fordson .col-sm-10,
 #page-local-edwiserreports-certificates.theme_fordson .col-md-10,
@@ -2315,6 +2407,10 @@ table.dataTable td.dataTables_empty {
 #page-local-edwiserreports-index.theme_fordson .col-sm-11,
 #page-local-edwiserreports-index.theme_fordson .col-md-11,
 #page-local-edwiserreports-index.theme_fordson .col-lg-11,
+#page-local-edwiserreports-customreportedit.theme_fordson .col-11,
+#page-local-edwiserreports-customreportedit.theme_fordson .col-sm-11,
+#page-local-edwiserreports-customreportedit.theme_fordson .col-md-11,
+#page-local-edwiserreports-customreportedit.theme_fordson .col-lg-11,
 #page-local-edwiserreports-certificates.theme_fordson .col-11,
 #page-local-edwiserreports-certificates.theme_fordson .col-sm-11,
 #page-local-edwiserreports-certificates.theme_fordson .col-md-11,
@@ -2334,6 +2430,10 @@ table.dataTable td.dataTables_empty {
 #page-local-edwiserreports-index.theme_fordson .col-sm-12,
 #page-local-edwiserreports-index.theme_fordson .col-md-12,
 #page-local-edwiserreports-index.theme_fordson .col-lg-12,
+#page-local-edwiserreports-customreportedit.theme_fordson .col-12,
+#page-local-edwiserreports-customreportedit.theme_fordson .col-sm-12,
+#page-local-edwiserreports-customreportedit.theme_fordson .col-md-12,
+#page-local-edwiserreports-customreportedit.theme_fordson .col-lg-12,
 #page-local-edwiserreports-certificates.theme_fordson .col-12,
 #page-local-edwiserreports-certificates.theme_fordson .col-sm-12,
 #page-local-edwiserreports-certificates.theme_fordson .col-md-12,
@@ -2350,18 +2450,21 @@ table.dataTable td.dataTables_empty {
     padding-left: 1.0715rem;
 }
 #page-local-edwiserreports-index.theme_adaptable #scheduletab button.dropdown-toggle,
+#page-local-edwiserreports-customreportedit.theme_adaptable #scheduletab button.dropdown-toggle,
 #page-local-edwiserreports-certificates.theme_adaptable #scheduletab button.dropdown-toggle,
 #page-local-edwiserreports-coursereport.theme_adaptable #scheduletab button.dropdown-toggle,
 #page-local-edwiserreports-activeusers.theme_adaptable #scheduletab button.dropdown-toggle {
     color: #333 !important;
 }
 #page-local-edwiserreports-index.theme_adaptable .dropdown-menu a,
+#page-local-edwiserreports-customreportedit.theme_adaptable .dropdown-menu a,
 #page-local-edwiserreports-certificates.theme_adaptable .dropdown-menu a,
 #page-local-edwiserreports-coursereport.theme_adaptable .dropdown-menu a,
 #page-local-edwiserreports-activeusers.theme_adaptable .dropdown-menu a {
     color: #526069;
 }
 #page-local-edwiserreports-index .select2-container--default,
+#page-local-edwiserreports-customreportedit .select2-container--default,
 #page-local-edwiserreports-certificates .select2-container--default,
 #page-local-edwiserreports-coursereport .select2-container--default,
 #page-local-edwiserreports-activeusers .select2-container--default {

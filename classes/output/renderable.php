@@ -35,6 +35,7 @@ use context_system;
 use local_edwiserreports\certificatesblock;
 use local_edwiserreports\controller\authentication;
 use local_edwiserreports\courseprogressblock;
+use local_edwiserreports\controller\navigation;
 
 $files = scandir($CFG->dirroot . "/local/edwiserreports/classes/blocks/");
 unset($files[0]);
@@ -129,6 +130,8 @@ class edwiserreports_renderable implements renderable, templatable {
         $reportblocks = new \local_edwiserreports\report_blocks($reportblocks);
         $export->blocks = $reportblocks->get_report_blocks();
 
+        $export->navigation = navigation::instance()->get_navigation('overview');
+
         $export->sesskey = sesskey();
         $export->timenow = date("Y-m-d", time());
         $export->courses = \local_edwiserreports\utility::get_courses();
@@ -179,6 +182,8 @@ class activeusers_renderable implements renderable, templatable {
 
         $output->pageheader = get_string("activeusersheader", "local_edwiserreports");
 
+        $output->navigation = navigation::instance()->get_navigation('other');
+
         if ($cohortfilter = local_edwiserreports_get_cohort_filter()) {
             $output->cohortfilters = $cohortfilter;
         }
@@ -226,6 +231,8 @@ class coursereport_renderable implements renderable, templatable {
 
         $output->pageheader = get_string("coursereportsheader", "local_edwiserreports");
 
+        $output->navigation = navigation::instance()->get_navigation('course');
+
         $output->backurl = $CFG->wwwroot."/local/edwiserreports/index.php";
 
         if ($cohortfilter = local_edwiserreports_get_cohort_filter()) {
@@ -266,6 +273,8 @@ class certificates_renderable implements renderable, templatable {
         $customcerts = $DB->get_records("customcert", array());
 
         $output->pageheader = get_string("certificatestats", "local_edwiserreports");
+
+        $output->navigation = navigation::instance()->get_navigation('other');
 
         $output->backurl = $CFG->wwwroot."/local/edwiserreports/index.php";
 
@@ -313,12 +322,27 @@ class completion_renderable implements renderable, templatable {
      * @return stdClass|array
      */
     public function export_for_template(renderer_base $output) {
-        global $CFG;
+        global $CFG, $USER;
 
-        $courseid = required_param("courseid", PARAM_INT);
-        $course = get_course($courseid);
         $output = new stdClass();
-        $output->sesskey = sesskey();
+
+        $courseid = optional_param("courseid", 0, PARAM_INT);
+
+        $courses = (new \local_edwiserreports\block_base)->get_courses_of_user($USER->id);
+        unset($courses[SITEID]);
+
+        if ($courseid == 0) {
+            $courseid = reset($courses)->id;
+        }
+
+        // Invalid course.
+        if (!isset($courses[$courseid])) {
+            throw new \moodle_exception('invalidcourse', 'core_error');
+        }
+
+        $courses[$courseid]->selected = true;
+
+        $course = $courses[$courseid];
 
         if ($cohortfilter = local_edwiserreports_get_cohort_filter()) {
             $output->cohortfilters = $cohortfilter;
@@ -334,12 +358,15 @@ class completion_renderable implements renderable, templatable {
 
         $output->pageheader = get_string("completionheader", "local_edwiserreports", array('coursename' => $course->fullname));
 
+        $output->navigation = navigation::instance()->get_navigation('course');
+
         if ($url = optional_param('backurl', '', PARAM_URL)) {
             $output->backurl = $url;
         } else {
             $output->backurl = $CFG->wwwroot."/course/view.php?id=".$courseid;
         }
 
+        $output->courses = array_values($courses);
         $output->searchicon = \local_edwiserreports\utility::image_icon('actions/search');
         $output->placeholder = get_string('searchuser', 'local_edwiserreports');
         $output->length = [10, 25, 50, 100];

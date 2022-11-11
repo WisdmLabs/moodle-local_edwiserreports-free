@@ -47,6 +47,7 @@ define([
     let SELECTOR = {
         TABLE: '.edwiserreports-table',
         FILTER: '.table-filter',
+        TAB: '.edwiserreports-tabs .dropdown',
         SEARCHTABLE: '.table-search-input input',
         PAGINATION: '.table-pagination',
         PAGINATIONITEM: '.paginate_button'
@@ -551,6 +552,22 @@ define([
         $(PANEL).find('.filter-selector').addClass(addClasses.join(' ')).removeClass(removeClasses.join(' '));
     }
 
+    /**
+     * Header navigation dropdown handler.
+     */
+    function headerNavigation() {
+        // Explicitly handling dropdown issue.
+        $('body').on('click', function(e) {
+            let button = $(e.target).closest(SELECTOR.TAB);
+            $(`${SELECTOR.TAB}.show`).not(button)
+                .closest(SELECTOR.TAB).removeClass('show');
+            if (button.length) {
+                button.closest(SELECTOR.TAB).toggleClass('show');
+            }
+            return;
+        });
+    }
+
     return {
         loader: loader,
         toPrecision: toPrecision,
@@ -559,6 +576,7 @@ define([
         dateChange: dateChange,
         stylePaginationButton: stylePaginationButton,
         handleSearchInput: handleSearchInput,
+        headerNavigation: headerNavigation,
         handleFilterSize: handleFilterSize
     };
 });

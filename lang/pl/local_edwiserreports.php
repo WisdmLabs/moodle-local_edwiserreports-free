@@ -902,3 +902,10 @@ $string['whatsnew5'] = 'Nieustannie ulepszamy Edwiser Reports, aby uczynić go n
 $string['note'] = 'Notatka';
 $string['whatsnew6'] = 'Twoje bieżące zaplanowane raporty są nadal dostępne i zapisane w Edwsier Reports Free. Będziesz mieć do nich dostęp po uaktualnieniu do <a href="' . UPGRADE_URL . '" target="_blank">wersji Pro</a>.';
 $string['gotit'] = 'Rozumiem';
+
+// Pro strings.
+$string['allcoursessummary'] = 'Podsumowanie wszystkich kursów';
+$string['courseactivitiessummary'] = 'Podsumowanie działań kursowych (Pro)';
+$string['alllearnersummary'] = 'Podsumowanie wszystkich uczniów (pro)';
+$string['learnercourseprogress'] = 'Progress kursu ucznia (Pro)';
+$string['learnercourseactivities'] = 'Działania dotyczące kursu ucznia (Pro)';

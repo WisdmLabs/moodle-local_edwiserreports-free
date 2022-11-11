@@ -901,3 +901,10 @@ $string['whatsnew5'] = 'We are continuously improving Edwiser Reports to make it
 $string['note'] = 'Note';
 $string['whatsnew6'] = 'Your current scheduled reports are still available and saved in Edwsier Reports Free. You will be able to access them once you upgrade to the <a href="' . UPGRADE_URL . '" target="_blank">Pro version</a>.';
 $string['gotit'] = 'Got It';
+
+// Pro strings.
+$string['allcoursessummary'] = 'All Courses Summary';
+$string['courseactivitiessummary'] = 'Course Activities Summary (PRO)';
+$string['alllearnersummary'] = 'All Learner Summary (PRO)';
+$string['learnercourseprogress'] = 'Learner Course Progress (PRO)';
+$string['learnercourseactivities'] = 'Learner Course Activities (PRO)';

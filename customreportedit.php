@@ -73,7 +73,7 @@ $renderable = new \local_edwiserreports\output\custom_reports_block($reportsid);
 $output = $PAGE->get_renderer($component)->render($renderable);
 
 // Set page heading.
-$PAGE->set_heading(get_string("customreportedit", "local_edwiserreports"));
+$PAGE->set_heading('');
 $PAGE->set_title(get_string("customreportedit", "local_edwiserreports"));
 
 // Print output in page.
