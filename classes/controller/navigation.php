@@ -72,23 +72,11 @@ class navigation {
                 $this->nodes['course']['visible'] = true;
                 $this->nodes['course']['nodes'][$id]['visible'] = true;
                 break;
-            case 'courseactivitystatusblock':
-            case 'visitsonsiteblock':
-            case 'timespentonsiteblock':
-            case 'timespentoncourseblock':
-                $this->nodes['learners']['visible'] = true;
-                $this->nodes['learners']['nodes']['alllearnersummary']['visible'] = true;
-                break;
-            case 'gradeblock':
+            case 'alllearnersummary':
             case 'learnercourseactivities':
-                $this->nodes['learners']['visible'] = true;
-                $this->nodes['learners']['nodes']['learnercourseactivities']['visible'] = true;
-                break;
             case 'learnercourseprogress':
-            case 'learnercourseprogressblock':
-            case 'learnertimespentonsiteblock':
                 $this->nodes['learners']['visible'] = true;
-                $this->nodes['learners']['nodes']['learnercourseprogress']['visible'] = true;
+                $this->nodes['learners']['nodes'][$id]['visible'] = true;
                 break;
         }
     }
@@ -185,28 +173,12 @@ class navigation {
             $this->show_link('coursecompletion');
         }
 
-        // Check capability of course activities summary report.
-        $capname = 'report/edwiserreports_courseactivitiessummary:view';
-        if (has_capability($capname, $context) || can_view_block($capname)) {
-            $this->show_link('courseactivitiessummary');
-        }
-
-        // Check capability of learner course progress summary report.
-        $capname = 'report/edwiserreports_learnercourseprogress:view';
-        if (has_capability($capname, $context) || can_view_block($capname)) {
-            $this->show_link('learnercourseprogress');
-        }
-
-        // Check capability of learner course actvities report.
-        $capname = 'report/edwiserreports_learnercourseactivities:view';
-        if (has_capability($capname, $context) || can_view_block($capname)) {
-            $this->show_link('learnercourseactivities');
-        }
-
-        // Check capability of all courses summary report.
-        $capname = 'report/edwiserreports_allcoursessummary:view';
-        if (has_capability($capname, $context) || can_view_block($capname)) {
+        if (is_siteadmin()) {
             $this->show_link('allcoursessummary');
+            $this->show_link('courseactivitiessummary');
+            $this->show_link('alllearnersummary');
+            $this->show_link('learnercourseprogress');
+            $this->show_link('learnercourseactivities');
         }
 
         // Prepare layout for each block.
