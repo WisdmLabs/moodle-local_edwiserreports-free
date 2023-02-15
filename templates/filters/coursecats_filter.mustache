@@ -1,0 +1,11 @@
+<select class="course-select form-control singleselect">
+    {{#coursecats}}
+        {{#visible}}
+            <optgroup label="{{name}}">
+                {{#courses}}
+                    <option value="{{id}}" {{selected}}>{{fullname}}</option>
+                {{/courses}}
+            </optgroup>
+        {{/visible}}
+    {{/coursecats}}
+</select>
