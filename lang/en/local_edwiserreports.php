@@ -905,6 +905,66 @@ $string['gotit'] = 'Got It';
 // Pro strings.
 $string['allcoursessummary'] = 'All Courses Summary';
 $string['courseactivitiessummary'] = 'Course Activities Summary (PRO)';
+$string['courseactivitycompletion'] = 'Course Activity Completion (PRO)';
 $string['alllearnersummary'] = 'All Learner Summary (PRO)';
 $string['learnercourseprogress'] = 'Learner Course Progress (PRO)';
 $string['learnercourseactivities'] = 'Learner Course Activities (PRO)';
+
+
+// Dummy data
+$string['avgvisits'] = 'Avg. visits';
+$string['avgtimespent'] = 'Avg. time spent';
+$string['totalsections'] = 'Total Sections';
+$string['highgrade'] = 'Heighest grade';
+$string['lowgrade'] = 'Lowest grade';
+$string['totallearners'] = 'Total learners';
+$string['totalmarks'] = 'Total marks';
+$string['marks'] = 'Marks';
+$string['enrolmentdate'] = 'Enrollment date';
+$string['allsections'] = 'All sections';
+$string['allmodules'] = 'All modules';
+$string['searchactivity'] = 'by activity';
+$string['courseandcategories'] = 'Course & Categories';
+$string['section'] = 'Section';
+$string['group'] = 'Group';
+$string['search'] = 'Search';
+$string['exclude'] = 'Exclude';
+$string['inactivesince1month'] = 'Inactive users since 1 Month';
+$string['inactivesince1year'] = 'Inactive users since 1 year';
+$string['show'] = 'Show';
+$string['learnerscompleted'] = 'Learners Completed';
+$string['coursecompletionrate'] = 'Course Completion Rate';
+$string['passgrade'] = 'Pass grade';
+$string['completionrate'] = 'Completion Rate';
+$string['avggrade'] = 'Avg. grade';
+$string['learner'] = 'Learner';
+$string['gradedon'] = 'Graded on';
+$string['firstaccess'] = 'First access';
+$string['notyetstarted'] = 'Not started yet';
+$string['completed'] = 'Completed';
+$string['inprogress'] = 'In Progress';
+$string['notstarted'] = 'Not Started';
+$string['inactive'] = 'Inactive';
+$string['allusers'] = 'All Users';
+$string['since1week'] = 'Since 1 Week';
+$string['since2weeks'] = 'Since 2 Weeks';
+$string['since1month'] = 'Since 1 Month';
+$string['since1year'] = 'Since 1 Year';
+$string['enrolledcourses'] = 'Enrolled courses';
+$string['inprogresscourse'] = 'In-progress courses';
+$string['completecourse'] = 'Completed courses';
+$string['completionprogress'] = 'Completion Progress';
+$string['completedassign'] = 'Completed assignments';
+$string['completedquiz'] = 'Completed quizzes';
+$string['completedscorm'] = 'Completed scorms';
+$string['lastaccesson'] = 'Last Access on';
+$string['cohort'] = 'Cohort';
+$string['active'] = 'Active';
+$string['attemptedactivities'] = 'Attempted activities';
+$string['completionstatus'] = 'Completion status';
+$string['attempts'] = 'Attempts';
+$string['suspended'] = 'Suspended';
+$string['alltime'] = 'All Time';
+$string['enrollments'] = 'Enrollments';
+
+
