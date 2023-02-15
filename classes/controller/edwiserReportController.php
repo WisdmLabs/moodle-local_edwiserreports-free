@@ -224,6 +224,7 @@ class edwiserReportController extends controllerAbstract {
         ]);
     }
 
+
     /**
      * Get data for grade graph
      *
