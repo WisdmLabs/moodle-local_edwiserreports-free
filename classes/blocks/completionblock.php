@@ -142,7 +142,13 @@ class completionblock {
      */
     public static function get_exportable_data_report($filter, $filterdata = true) {
 
-        $completions = self::get_completions($filter, optional_param('cohortid', 0, PARAM_INT));
+        $filter = json_decode($filter);
+
+        if ($filterdata == false) {
+            $filter->cohort = 0;
+        }
+
+        $completions = self::get_completions($filter->course, $filter->cohort);
 
         $export = array();
         $export[] = self::get_header();
