@@ -21,6 +21,8 @@
  * @copyright   2019 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+namespace local_edwiserreports\output;
+use plugin_renderer_base;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -98,3 +100,86 @@ class report_completion_renderer extends plugin_renderer_base {
         return $this->render_from_template('local_edwiserreports/completion', $templatecontext);
     }
 }
+
+
+
+/**
+ * Completion renderer.
+ */
+class report_courseactivitiessummary_renderer extends plugin_renderer_base {
+    /**
+     * Renders the Completion report.
+     * @param  \local_edwiserreports\output\completion_renderable $completion Object of completion renderable class
+     * @return string  Html Structure of the view page
+     */
+    public function render_courseactivitiessummary(\local_edwiserreports\output\completion_renderable $completion) {
+        $templatecontext = $completion->export_for_template($this);
+        return $this->render_from_template('local_edwiserreports/completion', $templatecontext);
+    }
+}
+
+
+
+
+/**
+ * Edwiser report renderer
+ */
+class renderer extends plugin_renderer_base {
+
+    /**
+     * Renders Course Activites Summary page.
+     * @param  courseactivitiessummary_renderable $report Object of Edwiser Reports renderable class
+     * @return string  Html Structure of the view page
+     */
+    public function render_courseactivitiessummary(courseactivitiessummary_renderable $renderable) {
+
+// exit();
+
+        $templatecontext = $renderable->export_for_template($this);
+        return $this->render_from_template('local_edwiserreports/reports/courseactivitiessummary', $templatecontext);
+    }
+
+    /**
+     * Renders Course Activity Completion page.
+     * @param  courseactivitycompletion_renderable $report Object of Edwiser Reports renderable class
+     * @return string  Html Structure of the view page
+     */
+    public function render_courseactivitycompletion(courseactivitycompletion_renderable $renderable) {
+        $templatecontext = $renderable->export_for_template($this);
+        return $this->render_from_template('local_edwiserreports/reports/courseactivitycompletion', $templatecontext);
+    }
+
+    /**
+     * Renders All Learner Summary page.
+     * @param  studentengagement_renderable $report Object of Edwiser Reports renderable class
+     * @return string  Html Structure of the view page
+     */
+    public function render_studentengagement(studentengagement_renderable $renderable) {
+        $templatecontext = $renderable->export_for_template($this);
+        return $this->render_from_template('local_edwiserreports/reports/studentengagement', $templatecontext);
+    }
+
+    /**
+     * Renders Learner Course Progress page.
+     * @param  learnercourseprogress_renderable $report Object of Edwiser Reports renderable class
+     * @return string  Html Structure of the view page
+     */
+    public function render_learnercourseprogress(learnercourseprogress_renderable $renderable) {
+        $templatecontext = $renderable->export_for_template($this);
+        return $this->render_from_template('local_edwiserreports/reports/learnercourseprogress', $templatecontext);
+    }
+
+    /**
+     * Renders Learner Course Activities page.
+     * @param  learnercourseactivities_renderable $report Object of Edwiser Reports renderable class
+     * @return string  Html Structure of the view page
+     */
+    public function render_learnercourseactivities(learnercourseactivities_renderable $renderable) {
+        $templatecontext = $renderable->export_for_template($this);
+        return $this->render_from_template('local_edwiserreports/reports/learnercourseactivities', $templatecontext);
+    }
+
+}
+
+
+
