@@ -336,11 +336,19 @@ class courseactivitycompletion extends base {
      * @return array              Array of LP Stats
      */
     public function get_summary_data($filters) {
-      global $CFG;
-        $customheader = '<div class="">
-                            <span class="font-weight-bold">Course:</span>
-                            <span> High School Biology </span>
-                        </div>';
+        global $CFG, $DB;
+
+        $course = $DB->get_record('course', ['id' => $filters->course]);
+
+        $customheader = '<div>
+            <div class="mb-1 summary-card-subtitle">
+                <span class="font-weight-bold">'. get_string('course', 'local_edwiserreports') .' : </span>
+                <span> '. $course->fullname .' </span>
+            </div>
+            <div class="summary-card-title font-weight-bold">
+                '. $filters->cm[0]['name'] .'
+            </div>
+        </div>';
 
         return array(
             'header' => array(
@@ -393,7 +401,4 @@ class courseactivitycompletion extends base {
             )
         );
     }
-
-
-
 }
