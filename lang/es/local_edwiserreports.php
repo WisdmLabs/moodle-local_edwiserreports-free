@@ -907,6 +907,7 @@ $string['learnercourseprogress'] = 'Progreso del curso del aprendizaje (Pro)';
 $string['learnercourseactivities'] = 'Actividades del curso de aprendizaje (Pro)';
 $string['clickondatapoint'] = 'Haga clic en puntos de datos para obtener más información (Pro)';
 $string['clickonchartformoreinfo'] = 'Haga clic en la tabla para obtener más información (Pro)';
+$string['proreportdescription'] = 'Los siguientes son solo datos ficticios para presentar los informes disponibles en Edwiser Reports Pro';
 
 // Dummy data.
 $string['avgvisits'] = 'Avg.visitas';
