@@ -143,7 +143,7 @@ class learnercourseprogress extends base {
     public function get_data($filters, $table = true) {
         global $DB;
 
-        for ($i=0; $i < 5; $i++) { 
+        for ($i=0; $i < 5; $i++) {
           $name = 'High School Course ';
           $response[] = [
                 "course" => $name . $i,
@@ -197,19 +197,21 @@ class learnercourseprogress extends base {
 
     /**
      * Get Exportable data for Course Completion Page
-     * @param  string $filters    Filter string
+     * @param  object $filters    Filter string
      * @param  bool   $filterdata If enabled then filter data
      * @return array              Array of LP Stats
      */
     public function get_summary_data($filters) {
-        global $CFG;
+        global $CFG, $DB;
+
+        $student = $DB->get_record('user', ['id' => $filters->learner]);
 
         return array(
             'header' => array(
                 'learner' => true,
-                'learnername' => 'John Doe',
+                'learnername' => fullname($student),
                 'isactive' => 1,
-                'lastaccess' => ''
+                'lastaccess' => date("d M Y", time())
             ),
             'body' => array(
                 array(

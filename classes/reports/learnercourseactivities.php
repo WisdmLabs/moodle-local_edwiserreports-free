@@ -130,7 +130,7 @@ class learnercourseactivities extends base {
     public function get_data($filters, $table = true) {
         global $DB;
 
-        for ($i=0; $i < 25; $i++) { 
+        for ($i=0; $i < 25; $i++) {
             $response[] = [
                 'activity' => 'Activity ' . $i,
                 'type' => 'Assignment ' . $i,
@@ -147,7 +147,6 @@ class learnercourseactivities extends base {
                 'timespent' => '00:20:30',
             ];
         }
-        
 
         return $response;
     }
@@ -195,47 +194,53 @@ class learnercourseactivities extends base {
 
     /**
      * Get Exportable data for Course Completion Page
-     * @param  string $filters    Filter string
-     * @param  bool   $filterdata If enabled then filter data
-     * @return array              Array of LP Stats
+     * @param  object $filters Filter string
+     * @return array           Array of LP Stats
      */
-    public static function get_summary_data($filters, $filterdata = true) {
+    public static function get_summary_data($filters) {
         global $DB, $CFG;
 
-        $customheader = '<div class="mb-1 summary-card-subtitle">
-                            <span class="font-weight-bold">'. get_string('course', 'local_edwiserreports') .'</span>
-                            <span> High School Biology </span>
-                        </div>';
+        $course = $DB->get_record('course', ['id' => $filters->course]);
+
+        $student = $DB->get_record('user', ['id' => $filters->learner]);
+
+        $customheader = '<div>
+            <div class="mb-1 summary-card-subtitle">
+                <span class="font-weight-bold">'. get_string('course', 'local_edwiserreports') .' : </span>
+                <span> '. $course->fullname .' </span>
+            </div>
+        </div>';
+
         return array(
             'header' => array(
                 'learner' => true,
-                'learnername' => 'John Doe',
+                'learnername' => fullname($student),
                 'isactive' => 1,
-                'lastaccess' => '12 Jan 2023',
+                'lastaccess' => date("d M Y", time()),
                 'customheaderinfo' => $customheader
             ),
             'body' => array(
                 array(
                     'title'   => get_string('visitsoncourse', 'local_edwiserreports'),
-                    'data' => 300 
+                    'data' => 300
                 ),
                 array(
                     'title'   => get_string('enrolmentdate', 'local_edwiserreports'),
-                    'data' => '01 Feb 2022'
+                    'data' => date("d M Y", time())
                 )
             ),
             'footer' => array(
-                array(                    
+                array(
                     'icon'  => file_get_contents($CFG->dirroot . '/local/edwiserreports/pix/summary-card/time.svg'),
                     'title' => get_string('timespent', 'local_edwiserreports'),
                     'data'  => '02:56:45'
                 ),
-                array(                    
+                array(
                     'icon'  => file_get_contents($CFG->dirroot . '/local/edwiserreports/pix/summary-card/marks.svg'),
                     'title' => get_string('marks', 'local_edwiserreports'),
                     'data'  => '400'
                 ),
-                array(                    
+                array(
                     'icon'  => file_get_contents($CFG->dirroot . '/local/edwiserreports/pix/summary-card/grade.svg'),
                     'title' => get_string('grade', 'local_edwiserreports'),
                     'data'  => '80%'
