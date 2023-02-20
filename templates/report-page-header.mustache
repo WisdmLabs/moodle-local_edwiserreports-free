@@ -1,7 +1,7 @@
 <div class="report-header row m-0">
-    <div class="page-title col-6 pl-0 text-left">
+    <div class="page-title col-12 col-lg-6 col-md-6 pl-0 text-left">
         <h2 class="theme-1-color">{{{pageheader}}}</h2>
-    
+
         {{#pro}}
         	<label class="selected-period">
                 Showing data for:
@@ -11,8 +11,8 @@
     </div>
 
     {{#pro}}
-	    <div id="userfilter" class="h-auto mt-2 d-inline-block mr-4" style="width:45%;">
-	        <div class="row" style="float:right;">
+	    <div id="userfilter" class="h-auto mt-2 ml-auto">
+	        <div class="row">
 	            {{{calendar}}}
 	            <div class="filter-selector d-table col-12 col-lg-3 col-md-4">
 	                <label>{{#str}} date, local_edwiserreports {{/str}}: {{#str}} enrollments, local_edwiserreports {{/str}}</label>
@@ -49,4 +49,3 @@
 
 
 </div>
-

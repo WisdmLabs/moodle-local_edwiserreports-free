@@ -27,6 +27,7 @@ define([
     'core/modal_events',
     'core/templates',
     './variables',
+    './defaultconfig',
     './selectors',
     './select2',
     './jquery.dataTables',
@@ -39,6 +40,7 @@ define([
     ModalEvents,
     Templates,
     v,
+    CFG,
     selector
 ) {
     /**
@@ -48,9 +50,34 @@ define([
         TABLE: '.edwiserreports-table',
         FILTER: '.table-filter',
         TAB: '.edwiserreports-tabs .dropdown',
+        DATESELECTED: '.selected-period span',
         SEARCHTABLE: '.table-search-input input',
         PAGINATION: '.table-pagination',
         PAGINATIONITEM: '.paginate_button'
+    };
+
+    /**
+     * All promises.
+     */
+    var PROMISE = {
+        /**
+         * Get time period label to show in the header.
+         * @param {String} timeperiod Time period.
+         * @returns {Promise}
+         */
+        GET_TIMEPERIOD_LABEL: function(timeperiod) {
+            return $.ajax({
+                url: CFG.requestUrl,
+                type: CFG.requestType,
+                dataType: CFG.requestDataType,
+                data: {
+                    action: 'get_timeperiod_label_data_ajax',
+                    secret: M.local_edwiserreports.secret,
+                    lang: $('html').attr('lang'),
+                    data: timeperiod
+                }
+            });
+        }
     };
 
     Templates.render('local_edwiserreports/insight-placeholder', {});
@@ -568,6 +595,206 @@ define([
         });
     }
 
+    /**
+     * Format epoch date in given format.
+     *
+     * @param {Integer} date   Epoch date
+     * @param {String}  format Date format
+     * @param {Boolean} utc    To return in utc format
+     * @returns {String}
+     */
+    function formatDate(date, format, utc) {
+        var MMMM = ["\x00", "January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+        ];
+        var MMM = ["\x01", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        var dddd = ["\x02", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        var ddd = ["\x03", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+        // eslint-disable-next-line require-jsdoc
+        /**
+         * ii
+         * @param {number} i Number
+         * @param {number} len length
+         * @return {string}
+         */
+        function ii(i, len) {
+            var s = i + "";
+            len = len || 2;
+            while (s.length < len) {
+                s = "0" + s;
+            }
+            return s;
+        }
+
+        var y = utc ? date.getUTCFullYear() : date.getFullYear();
+        format = format.replace(/(^|[^\\])yyyy+/g, "$1" + y);
+        format = format.replace(/(^|[^\\])yy/g, "$1" + y.toString().substr(2, 2));
+        format = format.replace(/(^|[^\\])y/g, "$1" + y);
+
+        var M = (utc ? date.getUTCMonth() : date.getMonth()) + 1;
+        format = format.replace(/(^|[^\\])MMMM+/g, "$1" + MMMM[0]);
+        format = format.replace(/(^|[^\\])MMM/g, "$1" + MMM[0]);
+        format = format.replace(/(^|[^\\])MM/g, "$1" + ii(M));
+        format = format.replace(/(^|[^\\])M/g, "$1" + M);
+
+        var d = utc ? date.getUTCDate() : date.getDate();
+        format = format.replace(/(^|[^\\])dddd+/g, "$1" + dddd[0]);
+        format = format.replace(/(^|[^\\])ddd/g, "$1" + ddd[0]);
+        format = format.replace(/(^|[^\\])dd/g, "$1" + ii(d));
+        format = format.replace(/(^|[^\\])d/g, "$1" + d);
+
+        var H = utc ? date.getUTCHours() : date.getHours();
+        format = format.replace(/(^|[^\\])HH+/g, "$1" + ii(H));
+        format = format.replace(/(^|[^\\])H/g, "$1" + H);
+
+        // eslint-disable-next-line no-nested-ternary
+        var h = H > 12 ? H - 12 : H == 0 ? 12 : H;
+        format = format.replace(/(^|[^\\])hh+/g, "$1" + ii(h));
+        format = format.replace(/(^|[^\\])h/g, "$1" + h);
+
+        var m = utc ? date.getUTCMinutes() : date.getMinutes();
+        format = format.replace(/(^|[^\\])mm+/g, "$1" + ii(m));
+        format = format.replace(/(^|[^\\])m/g, "$1" + m);
+
+        var s = utc ? date.getUTCSeconds() : date.getSeconds();
+        format = format.replace(/(^|[^\\])ss+/g, "$1" + ii(s));
+        format = format.replace(/(^|[^\\])s/g, "$1" + s);
+
+        var f = utc ? date.getUTCMilliseconds() : date.getMilliseconds();
+        format = format.replace(/(^|[^\\])fff+/g, "$1" + ii(f, 3));
+        f = Math.round(f / 10);
+        format = format.replace(/(^|[^\\])ff/g, "$1" + ii(f));
+        f = Math.round(f / 10);
+        format = format.replace(/(^|[^\\])f/g, "$1" + f);
+
+        var T = H < 12 ? "AM" : "PM";
+        format = format.replace(/(^|[^\\])TT+/g, "$1" + T);
+        format = format.replace(/(^|[^\\])T/g, "$1" + T.charAt(0));
+
+        var t = T.toLowerCase();
+        format = format.replace(/(^|[^\\])tt+/g, "$1" + t);
+        format = format.replace(/(^|[^\\])t/g, "$1" + t.charAt(0));
+
+        var tz = -date.getTimezoneOffset();
+        // eslint-disable-next-line no-nested-ternary
+        var K = utc || !tz ? "Z" : tz > 0 ? "+" : "-";
+        if (!utc) {
+            tz = Math.abs(tz);
+            var tzHrs = Math.floor(tz / 60);
+            var tzMin = tz % 60;
+            K += ii(tzHrs) + ":" + ii(tzMin);
+        }
+        format = format.replace(/(^|[^\\])K/g, "$1" + K);
+
+        var day = (utc ? date.getUTCDay() : date.getDay()) + 1;
+        format = format.replace(new RegExp(dddd[0], "g"), dddd[day]);
+        format = format.replace(new RegExp(ddd[0], "g"), ddd[day]);
+
+        format = format.replace(new RegExp(MMMM[0], "g"), MMMM[M]);
+        format = format.replace(new RegExp(MMM[0], "g"), MMM[M]);
+
+        format = format.replace(/\\(.)/g, "$1");
+
+        return format;
+    }
+
+    /**
+     * Handling report page capabilities.
+     */
+    function handleReportCapability() {
+        let contextid = $(SELECTOR.CAPEDIT).data('contextid');
+        let reportname = $(SELECTOR.CAPEDIT).data('reportname');
+        $(SELECTOR.CAPEDIT).click(function() {
+            ModalFactory.create({
+                title: M.util.get_string('editreportcapabilities', 'local_edwiserreports'),
+                body: Fragment.loadFragment(
+                    'local_edwiserreports',
+                    'get_reportscap_form',
+                    contextid, {
+                        name: reportname
+                    }
+                )
+            }).done(function(modal) {
+                var root = modal.getRoot();
+                modal.modal.addClass('modal-dialog-centered modal-lg');
+
+                root.on(ModalEvents.bodyRendered, function() {
+                    var form = modal.modal.find('.block-cap-form');
+                    modal.modal.find('#menucapabilities').on('change', function(event) {
+                        event.preventDefault();
+                        var formData = form.serializeArray();
+                        var data = {};
+                        $(formData).each(function($k, $d) {
+                            data[$d.name] = $d.value;
+                        });
+
+                        Fragment.loadFragment(
+                            'local_edwiserreports',
+                            'block_overview_display',
+                            contextid, {
+                                capvalue: data.capabilities
+                            }
+                            // eslint-disable-next-line no-unused-vars
+                        ).done(function(html, js, css) {
+                            Templates.replaceNodeContents(modal.modal.find('.cap-overview'), html, js);
+                            switchCapabilitiesBlock(modal);
+                        });
+                    });
+
+                    switchCapabilitiesBlock(modal);
+
+                    form = modal.modal.find('.block-cap-form');
+                    modal.modal.find('.save-block-caps').on('click', function(event) {
+                        event.preventDefault();
+                        var formData = form.serializeArray();
+                        var data = {};
+                        $(formData).each(function($k, $d) {
+                            data[$d.name] = $d.value;
+                        });
+
+                        // Set block capabilities
+                        setBlockCapabilities(reportname, data, function() {
+                            modal.hide();
+                        });
+                    });
+                });
+
+                root.on(ModalEvents.hidden, function() {
+                    modal.destroy();
+                });
+                modal.show();
+            });
+        });
+    }
+
+    /**
+     * Update time duration in header.
+     * @param {String} timeperiod Time period.
+     */
+    function updateTimeLabel(timeperiod) {
+        if (timeperiod == 'all') {
+            $(SELECTOR.DATESELECTED).html(M.util.get_string('alltime', 'local_edwiserreports'));
+            return;
+        }
+        PROMISE.GET_TIMEPERIOD_LABEL(timeperiod).done(function(response) {
+            let startdate = new Date(response.startdate * 86400000);
+            let enddate = new Date(response.enddate * 86400000);
+            let startDay = startdate.getDate();
+            startDay = startDay < 10 ? '0' + startDay : startDay;
+            let endDay = enddate.getDate();
+            endDay = endDay < 10 ? '0' + endDay : endDay;
+            $(SELECTOR.DATESELECTED).html(`${startDay} ${startdate.toLocaleString('default', {
+                month: 'long'
+            })} ${startdate.getFullYear()} -
+            ${endDay} ${enddate.toLocaleString('default', {
+                month: 'long'
+            })} ${enddate.getFullYear()}</span>`);
+        }).fail(function(ex) {
+            Notification.exception(ex);
+        });
+    }
+
     return {
         loader: loader,
         toPrecision: toPrecision,
@@ -577,6 +804,9 @@ define([
         stylePaginationButton: stylePaginationButton,
         handleSearchInput: handleSearchInput,
         headerNavigation: headerNavigation,
-        handleFilterSize: handleFilterSize
+        handleFilterSize: handleFilterSize,
+        formatDate: formatDate,
+        handleReportCapability: handleReportCapability,
+        updateTimeLabel: updateTimeLabel
     };
 });

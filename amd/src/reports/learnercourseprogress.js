@@ -96,9 +96,7 @@ define('local_edwiserreports/reports/learnercourseprogress', [
         /**
          * Get summary card data.
          *
-         * @param   {Integer}   courseid    Course id
-         * @param   {String}    cohortid   Cohort id all/id
-         * @param   {String}    groupid   group id all/id
+         * @param   {filter}  filter Filter object
          * @returns {PROMISE}
          */
         GET_SUMMARY_CARD_DATA: function(filter) {
@@ -110,7 +108,7 @@ define('local_edwiserreports/reports/learnercourseprogress', [
                 }
             }], false)[0];
         }
-    }
+    };
 
     /**
      * Initialize datable.
@@ -133,18 +131,17 @@ define('local_edwiserreports/reports/learnercourseprogress', [
                     dataTable.destroy();
                     dataTable = null;
                 }
-                let never = M.util.get_string('never', 'local_edwiserreports');
                 dataTable = $(SELECTOR.TABLE).DataTable({
                     data: response,
                     paging: true,
                     deferRendering: true,
                     columnDefs: [
-                        { className: "fixed-column", targets: 0 },
-                        { className: "text-left", targets: [0, 1] },
-                        { className: "text-right", targets: "_all" }
+                        {className: "fixed-column", targets: 0},
+                        {className: "text-left", targets: [0, 1]},
+                        {className: "text-right", targets: "_all"}
                     ],
                     columns: [
-                        { data: "course", width: "7rem" },
+                        {data: "course", width: "7rem"},
                         {
                             data: "status",
                             render: function(data) {
@@ -153,38 +150,23 @@ define('local_edwiserreports/reports/learnercourseprogress', [
                             width: "4rem"
                         },
                         {
-                            data: "enrolledon",
-                            render: function(data) {
-                                return `<span class="d-none">${data}</span>` +
-                                    (data == 0 ? '-' : common.formatDate(new Date(data * 1000), "d MMM yyyy"));
-                            }
+                            data: "enrolledon"
                         },
                         {
-                            data: "completedon",
-                            render: function(data) {
-                                return `<span class="d-none">${data}</span>` +
-                                    (data == 0 ? '-' : common.formatDate(new Date(data * 1000), "d MMM yyyy"));
-                            }
+                            data: "completedon"
                         },
                         {
                             data: "lastaccess",
-                            render: function(data) {
-                                return `<span class="d-none">${data}</span>` +
-                                    (data == 0 ? never : common.formatDate(new Date(data * 1000), "d MMM yyyy hh:mm TT"));
-                            },
                             width: "6rem"
                         },
-                        { data: 'progress' },
-                        { data: "grade" },
-                        { data: "totalactivities", width: "5rem" },
-                        { data: "completedactivities", width: "6rem" },
-                        { data: "attemptedactivities", width: "6rem" },
-                        { data: "visits" },
+                        {data: 'progress'},
+                        {data: "grade"},
+                        {data: "totalactivities", width: "5rem"},
+                        {data: "completedactivities", width: "6rem"},
+                        {data: "attemptedactivities", width: "6rem"},
+                        {data: "visits"},
                         {
-                            data: "timespent",
-                            render: function(data) {
-                                return common.timeFormatter(data);
-                            }
+                            data: "timespent"
                         }
                     ],
                     dom: '<"edwiserreports-table"i<t><"table-pagination"p>>',
@@ -217,7 +199,7 @@ define('local_edwiserreports/reports/learnercourseprogress', [
      */
     function customDateSelected() {
         let date = $(SELECTOR.DATEPICKERINPUT).val(); // Y-m-d format
-        let dateAlternate = $(SELECTOR.DATEPICKERINPUT).next().val().replace("to", "-"); // d M Y format
+        let dateAlternate = $(SELECTOR.DATEPICKERINPUT).next().val().replace("to", "-"); // D M Y format
         $(SELECTOR.DATEPICKERINPUT).next().val(dateAlternate);
 
         /* If correct date is not selected then return false */
@@ -304,7 +286,7 @@ define('local_edwiserreports/reports/learnercourseprogress', [
                 .done(function(response) {
                     response = JSON.parse(response);
                     common.refreshSummarycard('group', response, SELECTOR.SUMMARY, function() {
-                    //     initializeDatatable();
+                    //     InitializeDatatable();
                     });
                 });
 

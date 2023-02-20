@@ -134,12 +134,9 @@ define([
                 },
                 columnDefs: [{
                     className: "text-left",
-                    targets: 0
+                    targets: [0, 1]
                 }, {
-                    className: "text-left",
-                    targets: 1
-                }, {
-                    className: "text-center",
+                    className: "text-right",
                     targets: "_all"
                 }],
                 initComplete: function() {

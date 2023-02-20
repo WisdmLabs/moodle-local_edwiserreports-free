@@ -162,6 +162,6 @@ class base {
 
         // Based on capability show the edit button
         // If user dont have capability to see the block.
-        return can_edit_capability('report/edwiserreports_' . $capname . ':editadvance');
+        return \can_edit_capability('report/edwiserreports_' . $capname . ':editadvance');
     }
 }

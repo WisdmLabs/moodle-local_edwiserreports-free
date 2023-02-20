@@ -400,7 +400,7 @@
     border-radius: 0.215rem;
     height: 2.573rem;
     line-height: 1.571429;
-    padding: 0.429rem 1.858rem 0.429rem 1rem;
+    padding: 0.829rem 1.858rem 0.429rem 1rem;
 }
 
 .select2-container--default .select2-selection--single .select2-selection__rendered {
@@ -441,7 +441,7 @@
     margin-left: -0.286rem;
     margin-top: -0.143rem;
     position: absolute;
-    top: 50%;
+    top: 60%;
     width: 0;
 }
 

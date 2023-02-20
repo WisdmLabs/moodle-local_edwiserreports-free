@@ -34,10 +34,12 @@
     <div id="userfilter" class="h-auto mt-2">
         <div class="row">
             <div class="filter-selector col-12 col-md-3 mb-1">
+                <label>{{#str}} search, local_edwiserreports {{/str}}</label>
                 {{> local_edwiserreports/datatable/search }}
             </div>
             {{# cohortfilters }}
                 <div class="filter-selector col-12 col-md-2 mb-1">
+                    <label>{{#str}} cohort, local_edwiserreports {{/str}}</label>
                     <select class="cohort-select form-control singleselect" name="cohort-select">
                         {{#values}}
                             <option value="{{id}}">{{name}}</option>
@@ -46,6 +48,7 @@
                 </div>
             {{/ cohortfilters }}
             <div class="filter-selector col-12 col-md-3 mb-1">
+                <label>{{#str}} date, local_edwiserreports {{/str}}</label>
                 <button type="button" class="btn dropdown-toggle edwiserreports-calendar" data-toggle="dropdown" id="filter-dropdown" aria-expanded="false">
                     {{# str }} last7days, local_edwiserreports {{/ str }}
                 </button>
@@ -62,7 +65,8 @@
                     </div>
                 </div>
             </div>
-            <div class="filter-selector col-12 col-md-3 mb-1 ml-auto">
+            <div class="filter-selector col-12 table-length-input ml-auto mb-3">
+                <label>{{#str}} show, local_edwiserreports {{/str}}</label>
                 {{> local_edwiserreports/datatable/length }}
             </div>
         </div>

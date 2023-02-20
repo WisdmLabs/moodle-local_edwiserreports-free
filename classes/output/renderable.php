@@ -45,10 +45,10 @@ foreach ($files as $file) {
     require_once($CFG->dirroot . "/local/edwiserreports/classes/blocks/" . $file);
 }
 
-require_once($CFG->dirroot."/local/edwiserreports/lib.php");
-require_once($CFG->dirroot."/local/edwiserreports/classes/reports/base.php");
-require_once($CFG->dirroot."/local/edwiserreports/classes/report_blocks.php");
-require_once($CFG->dirroot."/local/edwiserreports/locallib.php");
+require_once($CFG->dirroot . "/local/edwiserreports/lib.php");
+require_once($CFG->dirroot . "/local/edwiserreports/classes/reports/base.php");
+require_once($CFG->dirroot . "/local/edwiserreports/classes/report_blocks.php");
+require_once($CFG->dirroot . "/local/edwiserreports/locallib.php");
 
 /**
  * Elucid report renderable.
@@ -78,7 +78,7 @@ class edwiserreports_renderable implements renderable, templatable {
                 $bfs->graphics = new moodle_url('/local/edwiserreports/pix/bfs/spin_graphics.png');
                 $bfs->close = 'local_edwiserreports_bfs_pre_hide';
                 user_preference_allow_ajax_update('local_edwiserreports_bfs_pre_hide', PARAM_BOOL);
-            break;
+                break;
             case $now >= 1669334400 && $now <= 1669766400;
                 if (get_user_preferences('local_edwiserreports_bfs_after_hide', false)) {
                     $bfs->show = false;
@@ -93,7 +93,7 @@ class edwiserreports_renderable implements renderable, templatable {
                 $bfs->graphics = new moodle_url('/local/edwiserreports/pix/bfs/jackpot_graphics.png');
                 $bfs->close = 'local_edwiserreports_bfs_after_hide';
                 user_preference_allow_ajax_update('local_edwiserreports_bfs_after_hide', PARAM_BOOL);
-            break;
+                break;
             default:
                 $bfs->show = false;
                 break;
@@ -142,12 +142,12 @@ class edwiserreports_renderable implements renderable, templatable {
 
         if ($export->hascustomcertpluign) {
             $PAGE->requires->js_call_amd('local_edwiserreports/block_certificatestats', 'init');
-            $export->certificateslink = new moodle_url($CFG->wwwroot."/local/edwiserreports/certificates.php");
+            $export->certificateslink = new moodle_url($CFG->wwwroot . "/local/edwiserreports/certificates.php");
         }
 
         $export->editing = isset($USER->editing) ? $USER->editing : 0;
         $export->canmanagecustomreports = has_capability('report/edwiserreports_customreports:manage', $context);
-        $export->customreportseditlink = new moodle_url($CFG->wwwroot."/local/edwiserreports/customreportedit.php");
+        $export->customreportseditlink = new moodle_url($CFG->wwwroot . "/local/edwiserreports/customreportedit.php");
 
         // Top insights.
         $insights = new \local_edwiserreports\insights\insight();
@@ -180,7 +180,7 @@ class activeusers_renderable implements renderable, templatable {
         $output = new stdClass();
         $output->sesskey = sesskey();
 
-        $output->backurl = $CFG->wwwroot."/local/edwiserreports/index.php";
+        $output->backurl = $CFG->wwwroot . "/local/edwiserreports/index.php";
 
         $output->pageheader = get_string("activeusersheader", "local_edwiserreports");
 
@@ -235,7 +235,7 @@ class coursereport_renderable implements renderable, templatable {
 
         $output->navigation = navigation::instance()->get_navigation('course');
 
-        $output->backurl = $CFG->wwwroot."/local/edwiserreports/index.php";
+        $output->backurl = $CFG->wwwroot . "/local/edwiserreports/index.php";
 
         if ($cohortfilter = local_edwiserreports_get_cohort_filter()) {
             $output->cohortfilters = $cohortfilter;
@@ -287,7 +287,7 @@ class certificates_renderable implements renderable, templatable {
 
         $output->navigation = navigation::instance()->get_navigation('other');
 
-        $output->backurl = $CFG->wwwroot."/local/edwiserreports/index.php";
+        $output->backurl = $CFG->wwwroot . "/local/edwiserreports/index.php";
 
         if (!empty($customcerts)) {
             $output->hascertificates = true;
@@ -374,7 +374,7 @@ class completion_renderable implements renderable, templatable {
         if ($url = optional_param('backurl', '', PARAM_URL)) {
             $output->backurl = $url;
         } else {
-            $output->backurl = $CFG->wwwroot."/course/view.php?id=".$courseid;
+            $output->backurl = $CFG->wwwroot . "/course/view.php?id=" . $courseid;
         }
 
         $output->courses = array_values($courses);
@@ -484,7 +484,6 @@ class courseactivitycompletion_renderable implements renderable, templatable {
             $output->activeurl = new moodle_url("/local/edwiserreports/index.php");
         }
 
-
         $filters = new stdClass();
         $filters->course = $filter['activecourse'];
         $filters->cm = $filter['activecm'];
@@ -539,7 +538,7 @@ class courseactivitiessummary_renderable implements renderable, templatable {
 
         // Course to show on grade page.
         $filter = $courseactivitiessummary->get_filter($activecourse);
-        // $output->coursecats = $filter['coursecategories'];
+        $output->coursecats = $filter['coursecategories'];
         $output->sections = $filter['sections'];
         $output->modules = $filter['modules'];
         $output->groups = $filter['groups'];
@@ -875,4 +874,3 @@ class studentengagement_renderable implements renderable, templatable {
         return $output;
     }
 }
-

@@ -34,15 +34,18 @@
     <div id="wdm-userfilter" class="h-auto my-10">
         <div class="row">
             <div class="filter-selector col-12 col-md-3 mb-1">
+                <label>{{#str}} search, local_edwiserreports {{/str}}</label>
                 {{> local_edwiserreports/datatable/search }}
             </div>
             {{# cohort }}
                 <div class="filter-selector pro-export-wrapper col-12 col-md-2 mb-1">
+                    <label>{{#str}} cohort, local_edwiserreports {{/str}}</label>
                     {{> local_edwiserreports/filters/cohorts_filter }}
                 </div>
             {{/ cohort }}
             {{# hascertificates}}
                 <div class="filter-selector col-12 col-md-3 mb-1" id="wdm-certificates-dropdown">
+                    <label>{{#str}} course, local_edwiserreports {{/str}}</label>
                     <select class="certificate-select form-control singleselect" name="certificate-select">
                         {{#certificates}}
                         <option value="{{id}}">{{coursename}}: {{name}}</option>
@@ -50,29 +53,28 @@
                     </select>
                 </div>
             {{/ hascertificates}}
-            <div class="filter-selector col-12 col-md-4 mb-1 ml-auto">
+            <div class="filter-selector col-12 table-length-input ml-auto mb-3">
+                <label>{{#str}} show, local_edwiserreports {{/str}}</label>
                 {{> local_edwiserreports/datatable/length }}
             </div>
+            {{# export }}
+                {{> local_edwiserreports/exportreports }}
+            {{/ export }}
         </div>
     </div>
     <table class="table w-100" class="table-responsive">
         <thead>
             <tr>
-                <th class="theme-3-bg text-white">{{#str}} username, local_edwiserreports {{/str}}</th>
-                <th class="theme-3-bg text-white">{{#str}} useremail, local_edwiserreports {{/str}}</th>
-                <th class="theme-3-bg text-white">{{#str}} dateofissue, local_edwiserreports {{/str}}</th>
-                <th class="theme-3-bg text-white">{{#str}} dateofenrol, local_edwiserreports {{/str}}</th>
-                <th class="theme-3-bg text-white">{{#str}} grade, local_edwiserreports {{/str}}</th>
-                <th class="theme-3-bg text-white">{{#str}} courseprogress, local_edwiserreports {{/str}}</th>
+                <th>{{#str}} username, local_edwiserreports {{/str}}</th>
+                <th>{{#str}} useremail, local_edwiserreports {{/str}}</th>
+                <th>{{#str}} dateofissue, local_edwiserreports {{/str}}</th>
+                <th>{{#str}} dateofenrol, local_edwiserreports {{/str}}</th>
+                <th>{{#str}} grade, local_edwiserreports {{/str}}</th>
+                <th>{{#str}} courseprogress, local_edwiserreports {{/str}}</th>
             </tr>
         </thead>
         <tbody></tbody>
     </table>
-    {{# export }}
-    <div class="pull-right px-5">
-        {{> local_edwiserreports/exportreports }}
-    </div>
-    {{/ export }}
 </div>
 {{#js}}
 M.local_edwiserreports = {

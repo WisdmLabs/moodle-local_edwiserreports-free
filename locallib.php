@@ -335,7 +335,7 @@ function local_edwiserreports_prepare_export_filename($params) {
  * Get required strings for js
  */
 function local_edwiserreports_get_required_strings_for_js() {
-    global $PAGE;
+    global $PAGE, $USER;
 
     $stringman = get_string_manager();
     $strings = $stringman->load_component_strings('local_edwiserreports', 'en');
@@ -354,9 +354,19 @@ function local_edwiserreports_get_required_strings_for_js() {
     $str = array(
         'loading',
         'next',
-        'previous'
+        'previous',
+        'yes',
+        'no'
     );
     $PAGE->requires->strings_for_js($str, 'moodle');
+
+    // Require string for column data.
+    $str = [
+        "notyetstarted",
+        "completed",
+        "inprogress"
+    ];
+    $PAGE->requires->strings_for_js($str, 'core_completion');
 }
 
 /**
@@ -453,4 +463,26 @@ function can_view_block($capname) {
     }
 
     return $canviewblocks;
+}
+
+/**
+ * Checking whether current user can edit capability of block.
+ * @param String $capname Capability name
+ */
+function can_edit_capability($capname) {
+    global $USER;
+
+    if (is_siteadmin($USER)) {
+        return true;
+    }
+
+    $allowedrole = get_roles_with_capability($capname, CAP_ALLOW);
+
+    foreach ($allowedrole as $role) {
+        if (has_user_role($USER->id, $role->shortname)) {
+            return true;
+        }
+    }
+
+    return false;
 }

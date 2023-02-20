@@ -1,0 +1,155 @@
+.local-edwiserreports {
+    .table-search-input {
+        border: 1px solid #ccc;
+        position: relative;
+        button {
+            transition: opacity 300ms ease-in-out;
+        }
+        input {
+            padding: 0.829rem 2.5rem 0.429rem 1rem !important;
+            height: 2.5rem;
+            border: unset !important;
+            min-height: unset !important;
+            background: white !important;
+            border-radius: 0 !important;
+            font-size: 1rem !important;
+            box-shadow: unset;
+            &.empty {
+                &~.search-button {
+                    opacity: 0.2;
+                }
+            }
+        }
+        .search-button {
+            position: absolute;
+            pointer-events: none;
+            right: 0;
+            top: 0;
+            height: 100%;
+            padding-top: 0.629rem;
+            padding-bottom: 0.329rem;
+            font-size: 1.07rem;
+        }
+    }
+    .table-length-input {
+        width: 7.5rem !important;
+        max-width: 7.5rem !important;
+    }
+    .edwiserreports-table {
+        &>div:not(.table-pagination) {
+            overflow: auto;
+            margin-bottom: 1rem;
+        }
+        table {
+            table-layout: fixed;
+            width: max-content !important;
+            min-width: 100%;
+        }
+        .fixed-column {
+            position: sticky;
+            left: 0;
+            z-index: 1;
+        }
+        th {
+            background: #C5F3F5 !important;
+        }
+        th {
+            color: rgb(107, 114, 128) !important;
+        }
+        tr {
+            &:hover {
+                td {
+                    background-color: #eee !important;
+                }
+            }
+            th,
+            td {
+                padding: 1rem;
+                padding-right: 1.2rem;
+                position: relative;
+                vertical-align: middle;
+            }
+        }
+        .table-pagination {
+            .page-item {
+                a {
+                    padding: 0.429rem 0.786rem;
+                }
+                a:focus,
+                &:active {
+                    outline: unset !important;
+                    box-shadow: unset !important;
+                }
+                &.active {
+                    border: 0 !important;
+                    a {
+                        border: 0 !important;
+                        background-color: transparent !important;
+                    }
+                }
+            }
+            .pagination-number {
+                border: 0 !important;
+                background: transparent !important;
+                a {
+                    border: 0 !important;
+                }
+                &:not(.disabled) a {
+                    text-decoration: underline;
+                }
+            }
+        }
+        .success-tag,
+        .warning-tag,
+        .danger-tag {
+            padding: 0.3rem 0.8rem;
+            border-radius: 1rem;
+            font-size: 0.857rem;
+            white-space: nowrap;
+        }
+        .success-tag {
+            color: rgb(4, 120, 87);
+            background: rgb(209, 250, 229);
+        }
+        .warning-tag {
+            color: rgb(194, 65, 12);
+            background: rgb(255, 237, 213);
+        }
+        .danger-tag {
+            color: rgb(190, 18, 60);
+            background: rgb(255, 228, 230);
+        }
+    }
+    .dataTables_wrapper {
+        .row {
+            #wdm-edwiserreports {
+                .dataTables_wrapper {
+                    div[class^="col-"] {
+                        margin: 0;
+                        padding: 0;
+                    }
+                }
+            }
+        }
+    }
+    // Fixing header background glitch because of block configurable_rerport plugin.
+    .dataTable {
+        .sorting_asc,
+        .sorting_desc,
+        .sorting {
+            background-image: none !important;
+        }
+    }
+    &.report-page {
+        .report-content {
+            table {
+                .fa.fa-search-plus {
+                    position: absolute;
+                    right: 0.2rem;
+                    top: 50%;
+                    transform: translateY(-50%);
+                }
+            }
+        }
+    }
+}

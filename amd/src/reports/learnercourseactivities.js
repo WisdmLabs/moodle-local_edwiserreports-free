@@ -113,9 +113,7 @@ define('local_edwiserreports/reports/learnercourseactivities', [
         /**
          * Get summary card data.
          *
-         * @param   {Integer}   courseid    Course id
-         * @param   {String}    cohortid   Cohort id all/id
-         * @param   {String}    groupid   group id all/id
+         * @param   {object}  filter Filter object
          * @returns {PROMISE}
          */
         GET_SUMMARY_CARD_DATA: function(filter) {
@@ -127,7 +125,7 @@ define('local_edwiserreports/reports/learnercourseactivities', [
                 }
             }], false)[0];
         }
-    }
+    };
 
     /**
      * Initialize datable.
@@ -154,13 +152,13 @@ define('local_edwiserreports/reports/learnercourseactivities', [
                     paging: true,
                     deferRendering: true,
                     columnDefs: [
-                        { className: "fixed-column", targets: 0 },
-                        { className: "text-left", targets: [0, 1] },
-                        { className: "text-right", targets: "_all" }
+                        {className: "fixed-column", targets: 0},
+                        {className: "text-left", targets: [0, 1]},
+                        {className: "text-right", targets: "_all"}
                     ],
                     columns: [
-                        { data: 'activity', width: "14rem" },
-                        { data: 'type' },
+                        {data: 'activity', width: "14rem"},
+                        {data: 'type'},
                         {
                             data: 'status',
                             render: function(data) {
@@ -169,45 +167,26 @@ define('local_edwiserreports/reports/learnercourseactivities', [
                             width: "4rem"
                         },
                         {
-                            data: 'completedon',
-                            render: function(data) {
-                                return `<span class="d-none">${data}</span>` +
-                                    (data == 0 ? '-' : common.formatDate(new Date(data * 1000), "d MMM yyyy"));
-                            }
+                            data: 'completedon'
                         },
-                        { data: 'grade' },
+                        {data: 'grade'},
                         {
-                            data: 'gradedon',
-                            render: function(data) {
-                                return `<span class="d-none">${data}</span>` +
-                                    (data == 0 ? '-' : common.formatDate(new Date(data * 1000), "d MMM yyyy"));
-                            }
+                            data: 'gradedon'
                         },
-                        { data: 'attempts' },
-                        { data: 'highestgrade', width: "4rem" },
-                        { data: 'lowestgrade', width: "4rem" },
+                        {data: 'attempts'},
+                        {data: 'highestgrade', width: "4rem"},
+                        {data: 'lowestgrade', width: "4rem"},
                         {
                             data: 'firstaccess',
-                            render: function(data) {
-                                return `<span class="d-none">${data}</span>` +
-                                    (data == 0 ? never : common.formatDate(new Date(data * 1000), "d MMM yyyy hh:mm TT"));
-                            },
                             width: "6rem"
                         },
                         {
                             data: 'lastaccess',
-                            render: function(data) {
-                                return `<span class="d-none">${data}</span>` +
-                                    (data == 0 ? never : common.formatDate(new Date(data * 1000), "d MMM yyyy hh:mm TT"));
-                            },
                             width: "6rem"
                         },
-                        { data: 'visits' },
+                        {data: 'visits'},
                         {
-                            data: 'timespent',
-                            render: function(data) {
-                                return common.timeFormatter(data);
-                            }
+                            data: 'timespent'
                         },
                     ],
                     dom: '<"edwiserreports-table"i<t><"table-pagination"p>>',
@@ -256,101 +235,6 @@ define('local_edwiserreports/reports/learnercourseactivities', [
         });
 
         $(SELECTOR.PAGE).find('.singleselect').not(SELECTOR.COURSE).select2();
-
-        // Observer course change.
-        $('body').on('change', SELECTOR.COURSE, function() {
-            filter.course = $(this).val();
-            filter.section = 0;
-            filter.module = 'all';
-
-            // Fetching summary card data here
-            PROMISE.GET_SUMMARY_CARD_DATA(filter)
-            .done(function(response) {
-                response = JSON.parse(response);
-                common.refreshSummarycard('group', response, SELECTOR.SUMMARY, function() {
-                //     initializeDatatable();
-                });
-            });
-
-            filter.learner = null;
-
-
-            // common.loader.show(SELECTOR.PAGE);
-            common.reloadFilter(
-                SELECTOR.PAGE, ['student', 'section', 'module', 'noallusers'],
-                0,
-                filter.course,
-                0,
-                function() {
-                    if ($(SELECTOR.LEARNER).find('option:first-child').length) {
-                        filter.learner = $(SELECTOR.LEARNER).find('option:first-child').attr('value');
-                    }
-                    initializeDatatable();
-                });
-        });
-
-        // Observer learner change.
-        $('body').on('change', SELECTOR.LEARNER, function() {
-            filter.learner = $(this).val();
-
-            // Fetching summary card data here
-            PROMISE.GET_SUMMARY_CARD_DATA(filter)
-            .done(function(response) {
-                response = JSON.parse(response);
-                common.refreshSummarycard('group', response, SELECTOR.SUMMARY, function() {
-                //     initializeDatatable();
-                });
-            });
-
-
-            initializeDatatable();
-        });
-
-        // Observer section change.
-        $('body').on('change', SELECTOR.SECTION, function() {
-            filter.section = $(this).val();
-            filter.module = 'all';
-
-            // Fetching summary card data here
-            PROMISE.GET_SUMMARY_CARD_DATA(filter)
-            .done(function(response) {
-                response = JSON.parse(response);
-                common.refreshSummarycard('group', response, SELECTOR.SUMMARY, function() {
-                //     initializeDatatable();
-                });
-            });
-
-            PROMISE.GET_FILTER_DATA(['module'], filter.course, filter.section)
-                .done(function(response) {
-                    response = JSON.parse(response);
-                    common.refreshFilter('module', response.module, SELECTOR.PAGE, function() {
-                        initializeDatatable();
-                    });
-                });
-            initializeDatatable();
-        });
-
-        // Observer module change.
-        $('body').on('change', SELECTOR.MODULE, function() {
-            filter.module = $(this).val();
-            initializeDatatable();
-        });
-
-        // Observer completion change.
-        $('body').on('change', SELECTOR.COMPLETION, function() {
-            filter.completion = $(this).val();
-            initializeDatatable();
-        });
-
-        // Search in table.
-        $('body').on('input', SELECTOR.SEARCH, function() {
-            dataTable.column(0).search(this.value).draw();
-        });
-
-        // Observer length change.
-        $('body').on('change', SELECTOR.LENGTH, function() {
-            dataTable.page.len(this.value).draw();
-        });
 
         initializeDatatable();
         common.handleSearchInput();

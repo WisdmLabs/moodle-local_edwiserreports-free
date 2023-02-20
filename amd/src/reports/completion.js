@@ -126,7 +126,7 @@ define('local_edwiserreports/reports/completion', [
      */
     function customDateSelected() {
         let date = $(SELECTOR.DATEPICKERINPUT).val(); // Y-m-d format
-        let dateAlternate = $(SELECTOR.DATEPICKERINPUT).next().val().replace("to", "-"); // d M Y format
+        let dateAlternate = $(SELECTOR.DATEPICKERINPUT).next().val().replace("to", "-"); // D M Y format
         $(SELECTOR.DATEPICKERINPUT).next().val(dateAlternate);
 
         /* If correct date is not selected then return false */
@@ -154,14 +154,8 @@ define('local_edwiserreports/reports/completion', [
         common.loader.show(SELECTOR.PAGE);
 
         $(SELECTOR.PAGE).find('.download-links input[name="filter"]').val(JSON.stringify(filter));
-        let statuses = [
-            `<span class="warning-tag">${M.util.get_string('notyetstarted', 'core_completion')}</span>`,
-            `<span class="success-tag">${M.util.get_string('completed', 'core_completion')}</span>`,
-            `<span class="danger-tag">${M.util.get_string('inprogress', 'core_completion')}</span>`
-        ];
-        let never = M.util.get_string('never', 'local_edwiserreports');
         PROMISES.GET_DATA(filter).done(function(response) {
-            if (dataTable != null) {
+            if (dataTable !== null) {
                 dataTable.destroy();
             }
             $(SELECTOR.PAGETITLE).text(response.name);
@@ -181,55 +175,19 @@ define('local_edwiserreports/reports/completion', [
                     }
                 },
                 columnDefs: [
-                    { className: "fixed-column", targets: 0 },
-                    { className: "text-left", targets: [0, 1, 2] },
-                    { className: "text-right", targets: "_all" }
+                    {className: "fixed-column", targets: 0},
+                    {className: "text-left", targets: [0, 1, 2]},
+                    {className: "text-right", targets: "_all"}
                 ],
                 columns: [
-                    { data: "learner" },
-                    { data: "email" },
-                    {
-                        data: "status",
-                        render: function(data) {
-                            return statuses[data];
-                        },
-                        width: "4rem"
-                    },
-                    {
-                        data: "enrolledon",
-                        render: function(data) {
-                            return `<span class="d-none">${data}</span>` +
-                                (data == 0 ? '-' : common.formatDate(new Date(data * 1000), "d MMM yyyy"));
-                        }
-                    },
-                    {
-                        data: "completedon",
-                        render: function(data) {
-                            return `<span class="d-none">${data}</span>` +
-                                (data == 0 ? '-' : common.formatDate(new Date(data * 1000), "d MMM yyyy"));
-                        }
-                    },
-                    {
-                        data: "lastaccess",
-                        render: function(data) {
-                            return `<span class="d-none">${data}</span>` +
-                                (data == 0 ? never : common.formatDate(new Date(data * 1000), "d MMM yyyy hh:mm TT"));
-                        },
-                        width: "6rem"
-                    },
-                    { data: "progress" },
-                    { data: "grade" },
-                    { data: "completedactivities", width: "5rem" },
-                    { data: "assignment", width: "6rem" },
-                    { data: "quiz", width: "5rem" },
-                    { data: "scorm", width: "5rem" },
-                    { data: "visits", width: "2rem" },
-                    {
-                        data: "timespent",
-                        render: function(data) {
-                            return common.timeFormatter(data);
-                        }
-                    }
+                    {data: "username"},
+                    {data: "enrolledon"},
+                    {data: "enrolltype"},
+                    {data: "noofvisits"},
+                    {data: "completion"},
+                    {data: "compleiontime"},
+                    {data: "grade"},
+                    {data: "lastaccess"}
                 ],
                 drawCallback: function() {
                     common.stylePaginationButton(this);
@@ -248,6 +206,10 @@ define('local_edwiserreports/reports/completion', [
 
     /**
      * Reload filters.
+     * @param {array} types Types
+     * @param {number} cohort Cohort id
+     * @param {number} course Course id
+     * @param {function} callback Callback function
      */
     function reloadFilter(types, cohort, course, callback) {
         common.loader.show(SELECTOR.PAGE);
@@ -351,7 +313,7 @@ define('local_edwiserreports/reports/completion', [
             .done(function(response) {
                 response = JSON.parse(response);
                 common.refreshSummarycard('group', response, SELECTOR.SUMMARY, function() {
-                //     initializeDatatable();
+                //     InitializeDatatable();
                 });
             });
 
@@ -365,7 +327,7 @@ define('local_edwiserreports/reports/completion', [
         $('body').on('change', SELECTOR.GROUP, function() {
             filter.group = $(this).val();
             initializeDatatable();
-            
+
         });
 
         // Observer length change.

@@ -78,7 +78,6 @@ $string['nocertificates'] = 'There is no certificate created';
 $string['nocertificatesawarded'] = 'No certificates are awarded';
 $string['unselectall'] = 'Unselect All';
 $string['selectall'] = 'Select All';
-$string['activity'] = 'Activity';
 $string['cohorts'] = 'Cohorts';
 $string['nographdata'] = 'No data';
 
@@ -96,7 +95,6 @@ $string['teachers'] = 'Teachers';
 $string['eventtoday'] = 'Events of the day';
 $string['value'] = 'Value';
 $string['count'] = 'Count';
-$string['enrollment'] = 'Enrollments';
 $string['activitycompletion'] = 'Activity Completions';
 $string['coursecompletion'] = 'Course Completions';
 $string['newregistration'] = 'New Registrations';
@@ -166,7 +164,6 @@ $string['none'] = 'None';
 /* Block Course Progress */
 $string['averagecourseprogress'] = 'Average Course Progress';
 $string['nocourses'] = 'No Courses Found';
-$string['activity'] = 'Activity';
 $string['activities'] = 'Activities';
 $string['student'] = 'Student';
 $string['students'] = 'Students';
@@ -910,8 +907,7 @@ $string['alllearnersummary'] = 'All Learner Summary (PRO)';
 $string['learnercourseprogress'] = 'Learner Course Progress (PRO)';
 $string['learnercourseactivities'] = 'Learner Course Activities (PRO)';
 
-
-// Dummy data
+// Dummy data.
 $string['avgvisits'] = 'Avg. visits';
 $string['avgtimespent'] = 'Avg. time spent';
 $string['totalsections'] = 'Total Sections';
@@ -924,14 +920,9 @@ $string['enrolmentdate'] = 'Enrollment date';
 $string['allsections'] = 'All sections';
 $string['allmodules'] = 'All modules';
 $string['searchactivity'] = 'by activity';
-$string['courseandcategories'] = 'Course & Categories';
-$string['section'] = 'Section';
-$string['group'] = 'Group';
-$string['search'] = 'Search';
 $string['exclude'] = 'Exclude';
 $string['inactivesince1month'] = 'Inactive users since 1 Month';
 $string['inactivesince1year'] = 'Inactive users since 1 year';
-$string['show'] = 'Show';
 $string['learnerscompleted'] = 'Learners Completed';
 $string['coursecompletionrate'] = 'Course Completion Rate';
 $string['passgrade'] = 'Pass grade';
@@ -944,7 +935,6 @@ $string['notyetstarted'] = 'Not started yet';
 $string['completed'] = 'Completed';
 $string['inprogress'] = 'In Progress';
 $string['notstarted'] = 'Not Started';
-$string['inactive'] = 'Inactive';
 $string['allusers'] = 'All Users';
 $string['since1week'] = 'Since 1 Week';
 $string['since2weeks'] = 'Since 2 Weeks';
@@ -958,7 +948,6 @@ $string['completedassign'] = 'Completed assignments';
 $string['completedquiz'] = 'Completed quizzes';
 $string['completedscorm'] = 'Completed scorms';
 $string['lastaccesson'] = 'Last Access on';
-$string['cohort'] = 'Cohort';
 $string['active'] = 'Active';
 $string['attemptedactivities'] = 'Attempted activities';
 $string['completionstatus'] = 'Completion status';
@@ -967,4 +956,15 @@ $string['suspended'] = 'Suspended';
 $string['alltime'] = 'All Time';
 $string['enrollments'] = 'Enrollments';
 
-
+// Filter strings.
+$string['cohort'] = 'Cohort';
+$string['group'] = 'Group';
+$string['user'] = 'User';
+$string['search'] = 'Search';
+$string['courseandcategories'] = 'Course & Categories';
+$string['enrollment'] = 'Enrollment';
+$string['show'] = 'Show';
+$string['section'] = 'Section';
+$string['activity'] = 'Activity';
+$string['inactive'] = 'Inactive';
+$string['certificate'] = 'Certificate';

@@ -36,10 +36,12 @@
     <div id="userfilter" class="h-auto mt-2">
         <div class="row">
         <div class="filter-selector col-12 col-lg-3 col-md-4 mb-1">
+            <label>{{#str}} search, local_edwiserreports {{/str}}</label>
             {{> local_edwiserreports/datatable/search }}
         </div>
         {{# cohortfilters }}
             <div class="filter-selector col-12 col-md-2 mb-1">
+                <label>{{#str}} cohort, local_edwiserreports {{/str}}</label>
                 <select class="cohort-select form-control singleselect" name="cohort-select">
                     {{#values}}
                         <option value="{{id}}">{{name}}</option>
@@ -49,10 +51,12 @@
         {{/ cohortfilters }}
         {{# groups }}
             <div class="filter-selector pro-export-wrapper col-12 col-lg-4 col-md-4 mb-1">
+                <label>{{#str}} group, local_edwiserreports {{/str}}</label>
                 {{> local_edwiserreports/filters/groups_filter }}
             </div>
         {{/ groups }}
-        <div class="filter-selector col-12 col-lg-3 col-md-4 mb-1 ml-auto">
+        <div class="filter-selector col-12 table-length-input ml-auto mb-3">
+            <label>{{#str}} show, local_edwiserreports {{/str}}</label>
             {{> local_edwiserreports/datatable/length }}
         </div>
     </div>
@@ -61,28 +65,28 @@
         <table class="table admintable w-100">
             <thead>
                 <tr>
-                    <th class="theme-3-bg text-white">
+                    <th>
                         {{#str}} coursename, local_edwiserreports {{/str}}
                     </th>
-                    <th class="theme-3-bg text-white">
+                    <th>
                         {{#str}} enrolled, local_edwiserreports {{/str}}
                     </th>
-                    <th class="theme-3-bg text-white">
+                    <th>
                         {{#str}} completed, local_edwiserreports {{/str}}
                     </th>
-                    <th class="theme-3-bg text-white">
+                    <th>
                         81% - 100%
                     </th>
-                    <th class="theme-3-bg text-white">
+                    <th>
                         61% - 80%
                     </th>
-                    <th class="theme-3-bg text-white">
+                    <th>
                         41% - 60%
                     </th>
-                    <th class="theme-3-bg text-white">
+                    <th>
                         21% - 40%
                     </th>
-                    <th class="theme-3-bg text-white">
+                    <th>
                         0% - 20%
                     </th>
                 </tr>

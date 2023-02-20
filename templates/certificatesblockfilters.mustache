@@ -1,9 +1,11 @@
 <div class="row pb-3">
     <div class="filter-selector col-12 col-md-6 mb-1">
+        <label>{{#str}} search, local_edwiserreports {{/str}}</label>
         {{> local_edwiserreports/datatable/search }}
     </div>
     {{# cohort }}
         <div class="filter-selector pro-export-wrapper col-12 col-md-6 mb-1">
+            <label>{{#str}} cohort, local_edwiserreports {{/str}}</label>
             {{> local_edwiserreports/filters/cohorts_filter }}
         </div>
     {{/ cohort }}
