@@ -831,21 +831,6 @@ class studentengagement_renderable implements renderable, templatable {
             $output->groups = $groups;
         }
 
-        // Add export icons to export array.
-        $output->export = array(
-            "id" => "studentengagement",
-            "region" => "report",
-            "downloadlinks" => $studentengagement->get_block_download_options(),
-            "downloadurl" => $CFG->wwwroot . "/local/edwiserreports/download.php",
-            "filter" => json_encode([
-                "course" => 0,
-                "cohort" => 0,
-                "group" => 0,
-                "inactive" => 0,
-                "enrolment" => "all"
-            ])
-        );
-
         // Header navigation.
         $output->navigation = navigation::instance()->get_navigation('learners');
         $output->showdaterange = true;
