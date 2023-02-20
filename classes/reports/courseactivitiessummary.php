@@ -69,40 +69,33 @@ class courseactivitiessummary extends base {
      * @return array
      */
     public function get_filter($activecourse) {
-        // $courses = $this->bb->get_courses_of_user();
-        // unset($courses[SITEID]);
+        $courses = $this->bb->get_courses_of_user();
+        unset($courses[SITEID]);
 
-        // if ($activecourse == 0) {
-        //     $activecourse = reset($courses)->id;
-        // }
+        if ($activecourse == 0) {
+            $activecourse = reset($courses)->id;
+        }
 
-        // // Invalid course.
-        // if (!isset($courses[$activecourse])) {
-        //     throw new moodle_exception('invalidcourse', 'core_error');
-        // }
+        // Invalid course.
+        if (!isset($courses[$activecourse])) {
+            throw new moodle_exception('invalidcourse', 'core_error');
+        }
 
-        // $categories = core_course_category::make_categories_list();
-        // $coursecategories = [];
-        // foreach ($categories as $id => $name) {
-        //     $coursecategories[$id] = [
-        //         'id' => $id,
-        //         'name' => $name,
-        //         'visible' => false,
-        //         'courses' => []
-        //     ];
-        // }
-        // $courses[$activecourse]->selected = 'selected';
-        // foreach ($courses as $id => $course) {
-        //     $coursecategories[$course->category]['visible'] = true;
-        //     $coursecategories[$course->category]['courses'][] = $course;
-        // }
-
-
-        $courses = array(1 => array(
-            'id' => 1,
-            'selected' => 'selected',
-            'name' => 'Dummy Course '
-        ));
+        $categories = core_course_category::make_categories_list();
+        $coursecategories = [];
+        foreach ($categories as $id => $name) {
+            $coursecategories[$id] = [
+                'id' => $id,
+                'name' => $name,
+                'visible' => false,
+                'courses' => []
+            ];
+        }
+        $courses[$activecourse]->selected = 'selected';
+        foreach ($courses as $id => $course) {
+            $coursecategories[$course->category]['visible'] = true;
+            $coursecategories[$course->category]['courses'][] = $course;
+        }
 
         $sectionlist = [[
             'id' => 0,
@@ -110,28 +103,21 @@ class courseactivitiessummary extends base {
             'selected' => 'selected'
         ]];
 
-
         $modules = [[
             'type' => 'all',
             'name' => get_string('allmodules', 'local_edwiserreports'),
             'selected' => 'selected'
         ]];
 
-
         $groups = [[
             'id' => 0,
             'name' => get_string('allgroups', 'local_edwiserreports')
         ]];
 
-        $category = [[
-            'id' => 0,
-            'name' => 'Dummy category'
-        ]];
-
         return [
             'activecourse' => 1,
             'courses' => $courses,
-            // 'coursecategories' => array_values($coursecategories),
+            'coursecategories' => array_values($coursecategories),
             'sections' => $sectionlist,
             'modules' => $modules,
             'groups' => $groups
@@ -391,17 +377,17 @@ class courseactivitiessummary extends base {
                 )
             ),
             'footer' => array(
-                array(                    
+                array(
                     'icon'  => file_get_contents($CFG->dirroot . '/local/edwiserreports/pix/summary-card/totalsections.svg'),
                     'title' => get_string('totalsections', 'local_edwiserreports'),
                     'data'  => '4'
                 ),
-                array(                    
+                array(
                     'icon'  => file_get_contents($CFG->dirroot . '/local/edwiserreports/pix/summary-card/totalactivities.svg'),
                     'title' => get_string('totalactivities', 'local_edwiserreports'),
                     'data'  => '9'
                 ),
-                array(                    
+                array(
                     'icon'  => file_get_contents($CFG->dirroot . '/local/edwiserreports/pix/summary-card/progress.svg'),
                     'title' => get_string('avgprogress', 'local_edwiserreports'),
                     'data'  => '20' . '%'

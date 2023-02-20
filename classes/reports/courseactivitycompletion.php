@@ -76,58 +76,45 @@ class courseactivitycompletion extends base {
      * @return array
      */
     public function get_filter($activecourse, $activecm) {
-        // $courses = $this->bb->get_courses_of_user();
-        // unset($courses[SITEID]);
+        $courses = $this->bb->get_courses_of_user();
+        unset($courses[SITEID]);
 
-        // if ($activecourse == 0) {
-        //     $activecourse = reset($courses)->id;
-        // }
+        if ($activecourse == 0) {
+            $activecourse = reset($courses)->id;
+        }
 
-        // // Invalid course.
-        // if (!isset($courses[$activecourse])) {
-        //     throw new moodle_exception('invalidcourse', 'core_error');
-        // }
-        // $courses[$activecourse]->selected = 'selected';
+        // Invalid course.
+        if (!isset($courses[$activecourse])) {
+            throw new moodle_exception('invalidcourse', 'core_error');
+        }
+        $courses[$activecourse]->selected = 'selected';
 
-        // // Get course modules.
-        // $cms = $this->get_cms($activecourse);
-        // if ($activecm == 0) {
-        //     $activecm = reset($cms)['id'];
-        // }
+        // Get course modules.
+        $cms = $this->get_cms($activecourse);
+        if ($activecm == 0) {
+            $activecm = reset($cms)['id'];
+        }
 
-        // // Invalid course module.
-        // if (!isset($cms[$activecm])) {
-        //     throw new moodle_exception('invalidcoursemodule', 'core_error');
-        // }
-        // $cms[$activecm]['selected'] = 'selected';
+        // Invalid course module.
+        if (!isset($cms[$activecm])) {
+            throw new moodle_exception('invalidcoursemodule', 'core_error');
+        }
+        $cms[$activecm]['selected'] = 'selected';
 
-        // $categories = core_course_category::make_categories_list();
-        // $coursecategories = [];
-        // foreach ($categories as $id => $name) {
-        //     $coursecategories[$id] = [
-        //         'id' => $id,
-        //         'name' => $name,
-        //         'visible' => false,
-        //         'courses' => []
-        //     ];
-        // }
-        // foreach ($courses as $id => $course) {
-        //     $coursecategories[$course->category]['visible'] = true;
-        //     $coursecategories[$course->category]['courses'][] = $course;
-        // }
-
-
-        $courses = array(1 => array(
-            'id' => 1,
-            'selected' => 'selected',
-            'name' => 'Dummy Course '
-        ));
-        $coursecategories['1'] = [
-            'id' => 1,
-            'name' => 'Category Biology',
-            'visible' => true,
-            'courses' => $courses
-        ];
+        $categories = core_course_category::make_categories_list();
+        $coursecategories = [];
+        foreach ($categories as $id => $name) {
+            $coursecategories[$id] = [
+                'id' => $id,
+                'name' => $name,
+                'visible' => false,
+                'courses' => []
+            ];
+        }
+        foreach ($courses as $id => $course) {
+            $coursecategories[$course->category]['visible'] = true;
+            $coursecategories[$course->category]['courses'][] = $course;
+        }
 
         $activecm = [[
             'id' => 0,
@@ -139,7 +126,6 @@ class courseactivitycompletion extends base {
             'id' => 0,
             'name' => get_string('allgroups', 'local_edwiserreports')
         ]];
-
 
         return [
             'activecourse' => $activecourse,
@@ -379,27 +365,27 @@ class courseactivitycompletion extends base {
                 )
             ),
             'footer' => array(
-                array(                    
+                array(
                     'icon'  => file_get_contents($CFG->dirroot . '/local/edwiserreports/pix/summary-card/passgrade.svg'),
                     'title' => get_string('passgrade', 'local_edwiserreports'),
                     'data'  => '40%'
                 ),
-                array(                    
+                array(
                     'icon'  => file_get_contents($CFG->dirroot . '/local/edwiserreports/pix/summary-card/grade.svg'),
                     'title' => get_string('avggrade', 'local_edwiserreports'),
                     'data'  => '60'
                 ),
-                array(                    
+                array(
                     'icon'  => file_get_contents($CFG->dirroot . '/local/edwiserreports/pix/summary-card/highgrade.svg'),
                     'title' => get_string('highgrade', 'local_edwiserreports'),
                     'data'  => '90'
                 ),
-                array(                    
+                array(
                     'icon'  => file_get_contents($CFG->dirroot . '/local/edwiserreports/pix/summary-card/lowgrade.svg'),
                     'title' => get_string('lowgrade', 'local_edwiserreports'),
                     'data'  => '25'
                 ),
-                array(                    
+                array(
                     'icon'  => file_get_contents($CFG->dirroot . '/local/edwiserreports/pix/summary-card/progress.svg'),
                     'title' => get_string('completionrate', 'local_edwiserreports'),
                     'data'  => '52%'
