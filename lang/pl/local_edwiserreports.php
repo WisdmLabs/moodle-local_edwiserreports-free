@@ -906,6 +906,8 @@ $string['courseactivitiessummary'] = 'Podsumowanie działań kursowych (Pro)';
 $string['alllearnersummary'] = 'Podsumowanie wszystkich uczniów (pro)';
 $string['learnercourseprogress'] = 'Progress kursu ucznia (Pro)';
 $string['learnercourseactivities'] = 'Działania dotyczące kursu ucznia (Pro)';
+$string['clickondatapoint'] = 'Kliknij punkty danych, aby uzyskać więcej informacji (Pro)';
+$string['clickonchartformoreinfo'] = 'Kliknij wykres, aby uzyskać więcej informacji (Pro)';
 
 // Dummy data.
 $string['avgvisits'] = 'Avg.Odwiedziny';
