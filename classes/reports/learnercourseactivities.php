@@ -43,6 +43,17 @@ class learnercourseactivities extends base {
                 array(
                     'item' => html_writer::link(
                         new moodle_url(
+                            "/local/edwiserreports/studentengagement.php",
+                        ),
+                        get_string('alllearnersummary', 'local_edwiserreports'),
+                        array(
+                            'style' => 'margin-left: 0.5rem;'
+                        )
+                    )
+                ),
+                array(
+                    'item' => html_writer::link(
+                        new moodle_url(
                             "/local/edwiserreports/learnercourseprogress.php",
                         ),
                         get_string('learnercourseprogress', 'local_edwiserreports'),

@@ -913,9 +913,6 @@ html[lang=es] .local-edwiserreports .filter-selector .edwiserreports-calendar {
 .path-local-edwiserreports [role=main] {
     position: relative;
 }
-.path-local-edwiserreports .breadcrumb {
-    display: none;
-}
 .path-local-edwiserreports #customReportBlock table td {
     padding: 10px 18px;
 }
