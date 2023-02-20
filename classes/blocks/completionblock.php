@@ -136,19 +136,13 @@ class completionblock {
 
     /**
      * Get Exportable data for Course Completion Page
-     * @param  string $filter     Filter string
+     * @param  int    $filter     Course id
      * @param  bool   $filterdata If enabled then filter data
      * @return array              Array of LP Stats
      */
     public static function get_exportable_data_report($filter, $filterdata = true) {
 
-        $filter = json_decode($filter);
-
-        if ($filterdata == false) {
-            $filter->cohort = 0;
-        }
-
-        $completions = self::get_completions($filter->course, $filter->cohort);
+        $completions = self::get_completions($filter, optional_param('cohortid', 0, PARAM_INT));
 
         $export = array();
         $export[] = self::get_header();
