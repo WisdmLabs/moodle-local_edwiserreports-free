@@ -56,7 +56,7 @@ class courseactivitiessummary extends base {
                     )
                 ),
                 array(
-                    'item' => get_string('learnercourseprogress', 'local_edwiserreports')
+                    'item' => get_string('courseactivitiessummary', 'local_edwiserreports')
                 )
             )
         );
