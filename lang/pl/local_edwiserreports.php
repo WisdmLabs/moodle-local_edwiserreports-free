@@ -958,6 +958,8 @@ $string['attempts'] = 'Próbowanie';
 $string['suspended'] = 'Zawieszony';
 $string['alltime'] = 'Cały czas';
 $string['enrollments'] = 'Zapisy';
+$string['totaltimespentoncourse'] = 'Całkowity czas spędzony na kursach';
+$string['avgtimespentoncourse'] = 'AVG czas spędzony na kursach';
 
 // Filter strings.
 $string['cohort'] = 'Kohorta';

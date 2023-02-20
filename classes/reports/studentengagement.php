@@ -53,7 +53,7 @@ class studentengagement extends block_base {
      * @return array filters array
      */
     public function get_studentengagement_courses() {
-        global $USER, $COURSE, $USER, $DB;
+        global $USER, $COURSE, $USER;
 
         $courses = $this->get_courses_of_user($USER->id);
 
@@ -67,10 +67,6 @@ class studentengagement extends block_base {
         return $courses;
     }
 
-    
-
-
-
     /**
      * Get student engagement table data based on filters
      *
@@ -79,10 +75,9 @@ class studentengagement extends block_base {
      * @return array
      */
     public function get_table_data($filter) {
-        global $COURSE;
         $response = array();
 
-        for ($i=0; $i < 20 ; $i++) { 
+        for ($i = 0; $i < 20; $i++) {
             $name = 'Student ';
             $response[] = array(
                 'student' => $name . $i,
@@ -170,8 +165,6 @@ class studentengagement extends block_base {
         ];
     }
 
-
-    
     /**
      * Get Exportable data for Course Completion Page
      * @param  string $filters    Filter string
@@ -192,19 +185,19 @@ class studentengagement extends block_base {
                 )
             ),
             'footer' => array(
-                array(                    
+                array(
                     'icon'  => file_get_contents($CFG->dirroot . '/local/edwiserreports/pix/summary-card/learners.svg'),
                     'title' => get_string('totallearners', 'local_edwiserreports'),
                     'data'  => '20'
                 ),
-                array(                    
+                array(
                     'icon'  => file_get_contents($CFG->dirroot . '/local/edwiserreports/pix/summary-card/time.svg'),
-                    'title' => get_string('totaltimespent', 'local_edwiserreports'),
+                    'title' => get_string('totaltimespentoncourse', 'local_edwiserreports'),
                     'data'  => '10:02:45'
                 ),
-                array(                    
+                array(
                     'icon'  => file_get_contents($CFG->dirroot . '/local/edwiserreports/pix/summary-card/avgtime.svg'),
-                    'title' => get_string('avgtimespent', 'local_edwiserreports'),
+                    'title' => get_string('avgtimespentoncourse', 'local_edwiserreports'),
                     'data'  => '00:30:89'
                 )
             )
