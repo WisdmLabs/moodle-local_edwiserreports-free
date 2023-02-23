@@ -372,6 +372,19 @@ class edwiserReportController extends controllerAbstract {
         echo json_encode($learnercourseactivities->get_data($params));
     }
 
+
+    /**
+     * Get all courses summary data for table.
+     *
+     * @return void
+     */
+    public function get_allcoursessummary_data_action() {
+        $data = required_param('data', PARAM_RAW);
+        $params = json_decode($data);
+        $allcoursessummary = new \local_edwiserreports\reports\allcoursessummary();
+        echo json_encode($allcoursessummary->get_data($params));
+    }
+
     /**
      * Get course activity completion data for table.
      *

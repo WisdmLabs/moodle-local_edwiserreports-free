@@ -133,8 +133,6 @@ class renderer extends plugin_renderer_base {
      */
     public function render_courseactivitiessummary(courseactivitiessummary_renderable $renderable) {
 
-// exit();
-
         $templatecontext = $renderable->export_for_template($this);
         return $this->render_from_template('local_edwiserreports/reports/courseactivitiessummary', $templatecontext);
     }
@@ -177,6 +175,17 @@ class renderer extends plugin_renderer_base {
     public function render_learnercourseactivities(learnercourseactivities_renderable $renderable) {
         $templatecontext = $renderable->export_for_template($this);
         return $this->render_from_template('local_edwiserreports/reports/learnercourseactivities', $templatecontext);
+    }
+
+
+    /**
+     * Renders All Courses Summary page.
+     * @param  allcoursessummary_renderable $report Object of Edwiser Reports renderable class
+     * @return string  Html Structure of the view page
+     */
+    public function render_allcoursessummary(allcoursessummary_renderable $renderable) {
+        $templatecontext = $renderable->export_for_template($this);
+        return $this->render_from_template('local_edwiserreports/reports/allcoursessummary', $templatecontext);
     }
 
 }

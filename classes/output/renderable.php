@@ -142,12 +142,12 @@ class edwiserreports_renderable implements renderable, templatable {
 
         if ($export->hascustomcertpluign) {
             $PAGE->requires->js_call_amd('local_edwiserreports/block_certificatestats', 'init');
-            $export->certificateslink = new moodle_url($CFG->wwwroot . "/local/edwiserreports/certificates.php");
+            $export->certificateslink = new moodle_url($CFG->wwwroot."/local/edwiserreports/certificates.php");
         }
 
         $export->editing = isset($USER->editing) ? $USER->editing : 0;
         $export->canmanagecustomreports = has_capability('report/edwiserreports_customreports:manage', $context);
-        $export->customreportseditlink = new moodle_url($CFG->wwwroot . "/local/edwiserreports/customreportedit.php");
+        $export->customreportseditlink = new moodle_url($CFG->wwwroot."/local/edwiserreports/customreportedit.php");
 
         // Top insights.
         $insights = new \local_edwiserreports\insights\insight();
@@ -180,7 +180,7 @@ class activeusers_renderable implements renderable, templatable {
         $output = new stdClass();
         $output->sesskey = sesskey();
 
-        $output->backurl = $CFG->wwwroot . "/local/edwiserreports/index.php";
+        $output->backurl = $CFG->wwwroot."/local/edwiserreports/index.php";
 
         $output->pageheader = get_string("activeusersheader", "local_edwiserreports");
 
@@ -235,7 +235,7 @@ class coursereport_renderable implements renderable, templatable {
 
         $output->navigation = navigation::instance()->get_navigation('course');
 
-        $output->backurl = $CFG->wwwroot . "/local/edwiserreports/index.php";
+        $output->backurl = $CFG->wwwroot."/local/edwiserreports/index.php";
 
         if ($cohortfilter = local_edwiserreports_get_cohort_filter()) {
             $output->cohortfilters = $cohortfilter;
@@ -287,7 +287,7 @@ class certificates_renderable implements renderable, templatable {
 
         $output->navigation = navigation::instance()->get_navigation('other');
 
-        $output->backurl = $CFG->wwwroot . "/local/edwiserreports/index.php";
+        $output->backurl = $CFG->wwwroot."/local/edwiserreports/index.php";
 
         if (!empty($customcerts)) {
             $output->hascertificates = true;
@@ -374,7 +374,7 @@ class completion_renderable implements renderable, templatable {
         if ($url = optional_param('backurl', '', PARAM_URL)) {
             $output->backurl = $url;
         } else {
-            $output->backurl = $CFG->wwwroot . "/course/view.php?id=" . $courseid;
+            $output->backurl = $CFG->wwwroot."/course/view.php?id=".$courseid;
         }
 
         $output->courses = array_values($courses);
@@ -409,6 +409,94 @@ class completion_renderable implements renderable, templatable {
     }
 }
 
+
+
+/**
+ * All courses summary renderables.
+ */
+class allcoursessummary_renderable implements renderable, templatable {
+    /**
+     * Function to export the renderer data in a format that is suitable for a
+     * edit mustache template.
+     *
+     * @param renderer_base $output Used to do a final render of any components that need to be rendered for export.
+     * @return stdClass|array
+     */
+    public function export_for_template(renderer_base $output) {
+        global $CFG, $USER;
+        require_once($CFG->dirroot . '/local/edwiserreports/classes/reports/allcoursessummary.php');
+
+        $allcoursessummary = new \local_edwiserreports\reports\allcoursessummary();
+        $authentication = new authentication();
+        $output = new stdClass();
+
+        if ($allcoursessummary->can_edit_report_capability('allcoursessummary')) {
+            $output->canedit = true;
+            $output->capdata = [
+                'contextid' => context_system::instance()->id,
+                'reportname' => 'allcoursessummary'
+            ];
+        }
+
+        // Show license notice.
+        // $output->notice = (new license())->get_license_notice();
+
+        // Secret key.
+        $output->secret = $authentication->get_secret_key($USER->id);
+
+        // Add export icons to export array.
+        $output->export = array(
+            "id" => "allcoursessummary",
+            "region" => "report",
+            "downloadlinks" => $allcoursessummary->bb->get_block_download_options(),
+            "downloadurl" => $CFG->wwwroot . "/local/edwiserreports/download.php",
+            "filter" => json_encode([
+                "cohort" => 0,
+                "group" => 0,
+                "exclude" => [],
+                "enrolment" => 'all'
+            ])
+        );
+
+        // Header navigation.
+        $output->navigation = navigation::instance()->get_navigation('course');
+        $output->showdaterange = true;
+        $output->showdatefilter = true;
+
+        $output->pageheader = get_string("allcoursessummary", "local_edwiserreports");
+        $output->breadcrumb = $allcoursessummary->get_breadcrumb();
+        $output->calendar = file_get_contents($CFG->dirroot . '/local/edwiserreports/pix/calendar.svg');
+        $filters = $allcoursessummary->get_filter();
+
+        // Cohort filter.
+        if (isset($filters['cohorts'])) {
+            $output->cohortfilters = $filters['cohorts'];
+        }
+
+        // Groups to show on grade page.
+        if (isset($filters['groups'])) {
+            $output->groups = $filters['groups'];
+        }
+
+        $output->searchicon = \local_edwiserreports\utility::image_icon('actions/search');
+        $output->placeholder = get_string('searchcourse', 'local_edwiserreports');
+        $output->length = [10, 25, 50, 100];
+        if ($CFG->branch > 311) {
+            $output->setactive = true;
+            $output->activeurl = new moodle_url("/local/edwiserreports/index.php");
+        }
+
+        $image = file_get_contents($CFG->dirroot . '/local/edwiserreports/pix/lock.svg');
+        $upgradelink = '';
+        if (is_siteadmin($USER->id)) {
+            $upgradelink = UPGRADE_URL;
+        }
+        $output->pro = $image;
+        $output->upgradelink = $upgradelink;
+
+        return $output;
+    }
+}
 
 
 /**
@@ -538,7 +626,7 @@ class courseactivitiessummary_renderable implements renderable, templatable {
 
         // Course to show on grade page.
         $filter = $courseactivitiessummary->get_filter($activecourse);
-        $output->coursecats = $filter['coursecategories'];
+        // $output->coursecats = $filter['coursecategories'];
         $output->sections = $filter['sections'];
         $output->modules = $filter['modules'];
         $output->groups = $filter['groups'];

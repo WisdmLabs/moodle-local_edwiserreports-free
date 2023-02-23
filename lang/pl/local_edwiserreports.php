@@ -78,6 +78,7 @@ $string['nocertificates'] = 'Nie ma żadnego certyfikatu';
 $string['nocertificatesawarded'] = 'Żadne certyfikaty nie są przyznawane';
 $string['unselectall'] = 'Odznacz wszystko';
 $string['selectall'] = 'Zaznacz wszystko';
+$string['activity'] = 'Działalność';
 $string['cohorts'] = 'Kohorty';
 $string['nographdata'] = 'Brak danych';
 
@@ -95,6 +96,7 @@ $string['teachers'] = 'Nauczyciele';
 $string['eventtoday'] = 'Wydarzenia dnia';
 $string['value'] = 'Wartość';
 $string['count'] = 'Liczyć';
+$string['enrollment'] = 'Zapisy';
 $string['activitycompletion'] = 'Ukończenia aktywności';
 $string['coursecompletion'] = 'Ukończenie kursu';
 $string['newregistration'] = 'Nowe rejestracje';
@@ -164,6 +166,7 @@ $string['none'] = 'Nic';
 /* Block Course Progress */
 $string['averagecourseprogress'] = 'Średni postęp kursu';
 $string['nocourses'] = 'Nie znaleziono żadnych kursów';
+$string['activity'] = 'Działalność';
 $string['activities'] = 'Zajęcia';
 $string['student'] = 'Student';
 $string['students'] = 'Studenci';

@@ -76,6 +76,10 @@ class navigation {
                 $this->nodes['course']['visible'] = true;
                 $this->nodes['course']['nodes'][$id]['visible'] = true;
                 break;
+            case 'allcoursessummarypro':
+                $this->nodes['course']['visible'] = true;
+                $this->nodes['course']['nodes'][$id]['visible'] = true;
+                break;
             case 'alllearnersummary':
             case 'learnercourseactivities':
             case 'learnercourseprogress':
@@ -103,6 +107,11 @@ class navigation {
                     'allcoursessummary' => [
                         'label' => get_string('allcoursessummary', 'local_edwiserreports'),
                         'link' => new moodle_url("/local/edwiserreports/coursereport.php"),
+                        'visible' => false
+                    ],
+                    'allcoursessummarypro' => [
+                        'label' => get_string('allcoursessummarypro', 'local_edwiserreports'),
+                        'link' => new moodle_url("/local/edwiserreports/allcoursessummary.php"),
                         'visible' => false
                     ],
                     'courseactivitiessummary' => [
@@ -184,6 +193,7 @@ class navigation {
 
         if (is_siteadmin()) {
             $this->show_link('allcoursessummary');
+            $this->show_link('allcoursessummarypro');
             $this->show_link('courseactivitiessummary');
             $this->show_link('courseactivitycompletion');
             $this->show_link('alllearnersummary');
