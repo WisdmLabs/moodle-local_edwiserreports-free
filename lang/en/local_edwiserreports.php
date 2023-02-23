@@ -984,3 +984,7 @@ $string['section'] = 'Section';
 $string['activity'] = 'Activity';
 $string['inactive'] = 'Inactive';
 $string['certificate'] = 'Certificate';
+
+$string['atleastoneactivitystarted'] = 'At least one Activity started';
+$string['highestgrade'] = 'Highest grade';
+$string['lowestgrade'] = 'Lowest grade';
