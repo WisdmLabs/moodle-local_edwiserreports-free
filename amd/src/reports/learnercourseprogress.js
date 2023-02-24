@@ -121,9 +121,9 @@ define('local_edwiserreports/reports/learnercourseprogress', [
             $(SELECTOR.FORMFILTER).val(JSON.stringify(filter));
         }
         let statuses = [
-            `<span class="warning-tag">${M.util.get_string('notyetstarted', 'core_completion')}</span>`,
+            `<span class="danger-tag">${M.util.get_string('notyetstarted', 'core_completion')}</span>`,
             `<span class="success-tag">${M.util.get_string('completed', 'core_completion')}</span>`,
-            `<span class="danger-tag">${M.util.get_string('inprogress', 'core_completion')}</span>`
+            `<span class="warning-tag">${M.util.get_string('inprogress', 'core_completion')}</span>`
         ];
         PROMISE.GET_DATA(filter)
             .done(function(response) {

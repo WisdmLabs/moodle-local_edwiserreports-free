@@ -105,7 +105,7 @@ class navigation {
                 'visible' => false,
                 'nodes' => [
                     'allcoursessummary' => [
-                        'label' => get_string('allcoursessummary', 'local_edwiserreports'),
+                        'label' => get_string('coursereports', 'local_edwiserreports'),
                         'link' => new moodle_url("/local/edwiserreports/coursereport.php"),
                         'visible' => false
                     ],

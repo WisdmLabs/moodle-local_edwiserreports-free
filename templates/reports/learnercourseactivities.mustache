@@ -31,7 +31,7 @@
 {{> local_edwiserreports/navigation }}
 {{> local_edwiserreports/breadcrumb }}
 
-    <div class="panel ed-pro-reports" >
+<div class="panel ed-pro-reports" >
 
     {{#pro}}
         <div class="upgrade-to-pro text-white">
@@ -40,6 +40,8 @@
                 {{#upgradelink}}
                     <a href="{{{upgradelink}}}" class="btn theme-primary-bg text-white ml-2 d-inline" target="_blank">{{#str}} upgradetopro, local_edwiserreports {{/str}}</a>
                 {{/upgradelink}}
+                <br>
+                <div class="text-white d-inline text-center"> {{#str}} proreportupgrademsg, local_edwiserreports {{/str}} </div>
             </div>
         </div>
     {{/pro}}
@@ -89,7 +91,7 @@
                 </div>
                 {{# export }}
                     <div style='display:none;'>
-                        {{> local_edwiserreports/exportreports }}
+                        {{> local_edwiserreports/exportspro }}
                     </div>
                 {{/ export }}
             </div>
