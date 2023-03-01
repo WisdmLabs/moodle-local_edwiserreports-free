@@ -98,7 +98,7 @@ $string['value'] = 'Value';
 $string['count'] = 'Count';
 $string['enrollment'] = 'Enrollments';
 $string['activitycompletion'] = 'Activity Completions';
-$string['coursecompletion'] = 'Course Completions';
+$string['coursecompletion'] = 'Course Completion';
 $string['newregistration'] = 'New Registrations';
 $string['timespent'] = 'Time Spent';
 $string['sessions'] = 'Sessions';
@@ -876,7 +876,7 @@ $string['categoryname'] = 'Category Name';
 // Top page insights.
 $string['newregistrations'] = 'New registrations';
 $string['courseenrolments'] = 'Course enrolments';
-$string['coursecompletions'] = 'Course completions';
+$string['coursecompletions'] = 'Course completion';
 $string['activeusers'] = 'Active users';
 $string['activitycompletions'] = 'Activity completions';
 $string['timespentoncourses'] = 'Time spent on courses';
@@ -989,6 +989,9 @@ $string['atleastoneactivitystarted'] = 'At least one Activity started';
 $string['highestgrade'] = 'Highest grade';
 $string['lowestgrade'] = 'Lowest grade';
 $string['proreportupgrademsg'] = 'These reports are also available to the user roles  - manager, course manager, teacher, and course creator';
+
+$string['showingdatafor'] = 'Showing data for:';
+
 $string['category1'] = 'Category 1';
 $string['course1'] = 'Course 1';
 $string['cohort1'] = 'Cohort 1';

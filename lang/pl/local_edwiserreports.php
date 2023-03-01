@@ -976,3 +976,99 @@ $string['section'] = 'Sekcja';
 $string['activity'] = 'Działalność';
 $string['inactive'] = 'Nieaktywny';
 $string['certificate'] = 'Certyfikat';
+
+
+// Fikcyjne dane.
+$string['avgvisits'] = 'Śr. Odwiedziny';
+$string['śr.czasu spędzonego'] = 'Śr. Czas spędzony';
+$string['totalsections'] = 'Suma sekcji';
+$string['highgrade'] = 'Najwyższa ocena';
+$string['lowgrade'] = 'Najniższa ocena';
+$string['totallearners'] = 'Liczba uczniów';
+$string['totalmarks'] = 'Suma ocen';
+$string['znaki'] = 'Znaki';
+$string['enrolmentdate'] = 'Data rejestracji';
+$string['allsections'] = 'Wszystkie sekcje';
+$string['allmodules'] = 'Wszystkie moduły';
+$string['searchactivity'] = 'według aktywności';
+$string['courseandcategories'] = 'Kurs i kategorie';
+$string['sekcja'] = 'Sekcja';
+$string['grupa'] = 'Grupa';
+$string['search'] = 'Szukaj';
+$string['wyklucz'] = 'Wyklucz';
+$string['inactivesince1month'] = 'Nieaktywni użytkownicy od 1 miesiąca';
+$string['inactivesince1year'] = 'Nieaktywni użytkownicy od 1 roku';
+$string['show'] = 'Pokaż';
+$string['learnerscompleted'] = 'Uczniowie ukończyli';
+$string['coursecompletionrate'] = 'Wskaźnik ukończenia kursu';
+$string['passgrade'] = 'Pozytywna ocena';
+$string['completionrate'] = 'Współczynnik ukończenia';
+$string['średnia ocena'] = 'Śr. stopień';
+$string['uczeń'] = 'Uczeń';
+$string['gradedon'] = 'Oceniony na';
+$string['firstaccess'] = 'Pierwszy dostęp';
+$string['notyetstarted'] = 'Jeszcze nie rozpoczęty';
+$string['completed'] = 'Completed';
+$string['inprogress'] = 'W toku';
+$string['notstarted'] = 'Nie uruchomiono';
+$string['nieaktywny'] = 'Nieaktywny';
+$string['allusers'] = 'Wszyscy użytkownicy';
+$string['since1week'] = 'Od 1 tygodnia';
+$string['since2weeks'] = 'Od 2 tygodni';
+$string['since1month'] = 'Od 1 miesiąca';
+$string['since1year'] = 'Od 1 roku';
+$string['enrolledcourses'] = 'Zarejestrowane kursy';
+$string['inprogresscourse'] = 'Kursy w toku';
+$string['completecourse'] = 'Ukończone kursy';
+$string['completionprogress'] = 'Postęp ukończenia';
+$string['completedassign'] = 'Ukończone zadania';
+$string['completedquiz'] = 'Ukończone quizy';
+$string['completedscorm'] = 'Ukończono scorma';
+$string['lastaccesson'] = 'Ostatni dostęp w dniu';
+$string['kohorta'] = 'Kohorta';
+$string['aktywny'] = 'Aktywny';
+$string['attemptedactivities'] = 'Próbowane działania';
+$string['completionstatus'] = 'Status ukończenia';
+$string['próby'] = 'Próby';
+$string['zawieszony'] = 'Zawieszony';
+$string['cały czas'] = 'Cały czas';
+$string['enrollments'] = 'Rejestracje';
+$string['totaltimespentoncourse'] = 'Całkowity czas spędzony na kursie';
+$string['avgtimespentoncourse'] = 'Średni czas spędzony na kursach';
+
+
+// pro strings.
+$string['allcoursessummary'] = 'Podsumowanie wszystkich kursów';
+$string['allcoursessummarypro'] = 'Podsumowanie wszystkich kursów (PRO)';
+$string['courseactivitiessummary'] = 'Podsumowanie zajęć z kursu (PRO)';
+$string['courseactivitycompletion'] = 'Ukończenie aktywności w kursie (PRO)';
+$string['allleearnersummary'] = 'Podsumowanie wszystkich uczestników (PRO)';
+$string['learnercourseprogress'] = 'Postęp uczestnika kursu (PRO)';
+$string['learnercourseactivities'] = 'Działania kursanta (PRO)';
+$string['clickondatapoint'] = 'Kliknij punkty danych, aby uzyskać więcej informacji (PRO)';
+$string['clickonchartformoreinfo'] = 'Kliknij wykres, aby uzyskać więcej informacji (PRO)';
+$string['proreportdescription'] = 'Poniższe dane są fikcyjnymi danymi do przedstawienia raportów dostępnych w Edwiser Reports PRO';
+
+// dummy data strings
+$string['kohorta'] = 'Kohorta';
+$string['grupa'] = 'Grupa';
+$string['użytkownik'] = 'Użytkownik';
+$string['search'] = 'Szukaj';
+$string['courseandcategories'] = 'Kurs i kategorie';
+$string['enrollment'] = 'Rejestracja';
+$string['show'] = 'Pokaż';
+$string['sekcja'] = 'Sekcja';
+$string['aktywność'] = 'Aktywność';
+$string['nieaktywny'] = 'Nieaktywny';
+$string['certyfikat'] = 'Certyfikat';
+
+$string['atleastoneactivitystarted'] = 'Rozpoczęto co najmniej jedno działanie';
+$string['highestgrade'] = 'Najwyższa ocena';
+$string['lowestgrade'] = 'Najniższa ocena';
+$string['proreportupgrademsg'] = 'Te raporty są również dostępne dla użytkowników o różnych rolach - manager, manager kursu, nauczyciel i twórca kursu';
+
+$string['showingdatafor'] = 'Wyświetlanie danych dla:';
+
+$string['kategoria1'] = 'Kategoria 1';
+$string['kurs1'] = 'Kurs 1';
+$string['kohorta1'] = 'Kohorta 1';

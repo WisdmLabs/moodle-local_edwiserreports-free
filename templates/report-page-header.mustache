@@ -4,8 +4,10 @@
 
         {{#pro}}
         	<label class="selected-period">
-                Showing data for:
-                <span class="theme-1-bg text-white d-inline-block">All Time</span>
+                {{#str}} showingdatafor, local_edwiserreports {{/str}}
+                <span class="theme-1-bg text-white d-inline-block">
+                	{{# str }} alltime, local_edwiserreports {{/ str }}
+                </span>
             </label>
 			<div>
 				<label>{{#str}} proreportdescription, local_edwiserreports {{/str}}</label>

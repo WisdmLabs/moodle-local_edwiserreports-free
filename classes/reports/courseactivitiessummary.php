@@ -69,33 +69,20 @@ class courseactivitiessummary extends base {
      * @return array
      */
     public function get_filter($activecourse) {
-        $courses = $this->bb->get_courses_of_user();
-        unset($courses[SITEID]);
 
-        if ($activecourse == 0) {
-            $activecourse = reset($courses)->id;
-        }
+        $courses = [[
+            'id' => 1,
+            'name' => 'Dummy Course',
+            'selected' => 'selected'
+        ]];
 
-        // Invalid course.
-        if (!isset($courses[$activecourse])) {
-            throw new moodle_exception('invalidcourse', 'core_error');
-        }
-
-        $categories = core_course_category::make_categories_list();
-        $coursecategories = [];
-        foreach ($categories as $id => $name) {
-            $coursecategories[$id] = [
-                'id' => $id,
-                'name' => $name,
-                'visible' => false,
-                'courses' => []
-            ];
-        }
-        $courses[$activecourse]->selected = 'selected';
-        foreach ($courses as $id => $course) {
-            $coursecategories[$course->category]['visible'] = true;
-            $coursecategories[$course->category]['courses'][] = $course;
-        }
+        $coursecategories = [
+            2 => [
+            'id' => 2,
+            'name' => 'Category 1',
+            'visible' => true,
+            'courses' => $courses
+        ]];
 
         $sectionlist = [[
             'id' => 0,
@@ -370,7 +357,7 @@ class courseactivitiessummary extends base {
             'header' => array(
                 'course' => true,
                 'coursename' => 'High School Biology',
-                'category' => 'Category  science',
+                'category' => 'Biology',
             ),
             'body' => array(
                 array(

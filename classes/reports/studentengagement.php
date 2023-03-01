@@ -94,7 +94,7 @@ class studentengagement extends block_base {
             $name = 'Student ';
             $response[] = array(
                 'student' => $name . $i,
-                'lastaccesson' => '2 Jan 2022',
+                'lastaccesson' => '2 Jan 2022 <br> 09:39 AM',
                 'email' => $name . $i . '@' . $name . $i . '.com',
                 'status' => $i % 2 != 0 ? 0 : 1,
                 'enrolledcourses' => $i . $link,

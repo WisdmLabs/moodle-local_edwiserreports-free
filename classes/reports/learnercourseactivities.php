@@ -152,8 +152,8 @@ class learnercourseactivities extends base {
                 'attempts' => 1,
                 'highestgrade' => 100,
                 'lowestgrade' => 20,
-                'firstaccess' => '01 March 2022',
-                'lastaccess' => '01 March 2023',
+                'firstaccess' => '01 March 2022 <br> 09:39 AM',
+                'lastaccess' => '01 March 2023 <br> 09:39 AM',
                 'visits' => 20,
                 'timespent' => '00:20:30',
             ];

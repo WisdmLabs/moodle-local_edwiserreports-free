@@ -76,47 +76,35 @@ class courseactivitycompletion extends base {
      * @return array
      */
     public function get_filter($activecourse, $activecm) {
-        $courses = $this->bb->get_courses_of_user();
-        unset($courses[SITEID]);
 
-        if ($activecourse == 0) {
-            $activecourse = reset($courses)->id;
-        }
+        $courses = [[
+            'id' => 1,
+            'name' => 'Dummy Course',
+            'selected' => 'selected'
+        ]];
 
-        // Invalid course.
-        if (!isset($courses[$activecourse])) {
-            throw new moodle_exception('invalidcourse', 'core_error');
-        }
-        $courses[$activecourse]->selected = 'selected';
+        $coursecategories = [
+            2 => [
+            'id' => 2,
+            'name' => 'Category 1',
+            'visible' => true,
+            'courses' => $courses
+        ]];
 
-        // Get course modules.
-        $cms = $this->get_cms($activecourse);
-        if ($activecm == 0) {
-            $activecm = reset($cms)['id'];
-        }
+        $sectionlist = [[
+            'id' => 0,
+            'name' => get_string('allsections', 'local_edwiserreports'),
+            'selected' => 'selected'
+        ]];
 
-        // Invalid course module.
-        if (!isset($cms[$activecm])) {
-            throw new moodle_exception('invalidcoursemodule', 'core_error');
-        }
-        $cms[$activecm]['selected'] = 'selected';
+        $modules = [[
+            'type' => 'all',
+            'name' => get_string('allmodules', 'local_edwiserreports'),
+            'selected' => 'selected'
+        ]];
 
-        $categories = core_course_category::make_categories_list();
-        $coursecategories = [];
-        foreach ($categories as $id => $name) {
-            $coursecategories[$id] = [
-                'id' => $id,
-                'name' => $name,
-                'visible' => false,
-                'courses' => []
-            ];
-        }
-        foreach ($courses as $id => $course) {
-            $coursecategories[$course->category]['visible'] = true;
-            $coursecategories[$course->category]['courses'][] = $course;
-        }
-
-        $activecm = [[
+        $activecm = [
+            2 => [
             'id' => 0,
             'name' => 'Announcement',
             'selected' => 'selected'
@@ -128,8 +116,8 @@ class courseactivitycompletion extends base {
         ]];
 
         return [
-            'activecourse' => $activecourse,
-            'activecm' => $activecm,
+            'activecourse' => 2,
+            'activecm' => 2,
             'courses' => $courses,
             'coursecategories' => array_values($coursecategories),
             'cms' => array_values($activecm),
@@ -207,8 +195,8 @@ class courseactivitycompletion extends base {
             'completedon' => '21 Nov 2022',
             'grade' => '300',
             'gradedon' => '1 Nov 2022',
-            'firstaccess' => '1 Sept 2022 09:39 AM',
-            'lastaccess' => '21 Nov 2022',
+            'firstaccess' => '1 Sept 2022 <br> 09:39 AM',
+            'lastaccess' => '21 Nov 2022 <br> 09:39 AM',
             'visits' => 300,
             'timespent' => '02:10:59'
           ),
@@ -219,8 +207,8 @@ class courseactivitycompletion extends base {
             'completedon' => '21 Nov 2022',
             'grade' => '300',
             'gradedon' => '1 Nov 2022',
-            'firstaccess' => '1 Sept 2022 09:39 AM',
-            'lastaccess' => '21 Nov 2022',
+            'firstaccess' => '1 Sept 2022 <br> 09:39 AM',
+            'lastaccess' => '21 Nov 2022 <br> 09:39 AM',
             'visits' => 300,
             'timespent' => '02:10:59'
           ),
@@ -231,8 +219,8 @@ class courseactivitycompletion extends base {
             'completedon' => '21 Nov 2022',
             'grade' => '300',
             'gradedon' => '1 Nov 2022',
-            'firstaccess' => '1 Sept 2022 09:39 AM',
-            'lastaccess' => '21 Nov 2022',
+            'firstaccess' => '1 Sept 2022 <br> 09:39 AM',
+            'lastaccess' => '21 Nov 2022 <br> 09:39 AM',
             'visits' => 300,
             'timespent' => '02:10:59'
           ),
@@ -243,8 +231,8 @@ class courseactivitycompletion extends base {
             'completedon' => '21 Nov 2022',
             'grade' => '300',
             'gradedon' => '1 Nov 2022',
-            'firstaccess' => '1 Sept 2022 09:39 AM',
-            'lastaccess' => '21 Nov 2022',
+            'firstaccess' => '1 Sept 2022 <br> 09:39 AM',
+            'lastaccess' => '21 Nov 2022 <br> 09:39 AM',
             'visits' => 300,
             'timespent' => '02:10:59'
           ),
@@ -255,8 +243,8 @@ class courseactivitycompletion extends base {
             'completedon' => '21 Nov 2022',
             'grade' => '300',
             'gradedon' => '1 Nov 2022',
-            'firstaccess' => '1 Sept 2022 09:39 AM',
-            'lastaccess' => '21 Nov 2022',
+            'firstaccess' => '1 Sept 2022 <br> 09:39 AM',
+            'lastaccess' => '21 Nov 2022 <br> 09:39 AM',
             'visits' => 300,
             'timespent' => '02:10:59'
           ),
@@ -267,8 +255,8 @@ class courseactivitycompletion extends base {
             'completedon' => '21 Nov 2022',
             'grade' => '300',
             'gradedon' => '1 Nov 2022',
-            'firstaccess' => '1 Sept 2022 09:39 AM',
-            'lastaccess' => '21 Nov 2022',
+            'firstaccess' => '1 Sept 2022 <br> 09:39 AM',
+            'lastaccess' => '21 Nov 2022 <br> 09:39 AM',
             'visits' => 300,
             'timespent' => '02:10:59'
           ),
@@ -279,8 +267,8 @@ class courseactivitycompletion extends base {
             'completedon' => '21 Nov 2022',
             'grade' => '300',
             'gradedon' => '1 Nov 2022',
-            'firstaccess' => '1 Sept 2022 09:39 AM',
-            'lastaccess' => '21 Nov 2022',
+            'firstaccess' => '1 Sept 2022 <br> 09:39 AM',
+            'lastaccess' => '21 Nov 2022 <br> 09:39 AM',
             'visits' => 300,
             'timespent' => '02:10:59'
           ),
@@ -291,8 +279,8 @@ class courseactivitycompletion extends base {
             'completedon' => '21 Nov 2022',
             'grade' => '300',
             'gradedon' => '1 Nov 2022',
-            'firstaccess' => '1 Sept 2022 09:39 AM',
-            'lastaccess' => '21 Nov 2022',
+            'firstaccess' => '1 Sept 2022 <br> 09:39 AM',
+            'lastaccess' => '21 Nov 2022 <br> 09:39 AM',
             'visits' => 300,
             'timespent' => '02:10:59'
           ),
@@ -338,15 +326,13 @@ class courseactivitycompletion extends base {
     public function get_summary_data($filters) {
         global $CFG, $DB;
 
-        $course = $DB->get_record('course', ['id' => $filters->course]);
-
         $customheader = '<div>
             <div class="mb-1 summary-card-subtitle">
                 <span class="font-weight-bold">'. get_string('course', 'local_edwiserreports') .' : </span>
-                <span> '. $course->fullname .' </span>
+                <span> High School Biology </span>
             </div>
             <div class="summary-card-title font-weight-bold">
-                '. $filters->cm[0]['name'] .'
+                Announcement
             </div>
         </div>';
 
