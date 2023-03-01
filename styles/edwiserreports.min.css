@@ -380,6 +380,15 @@ tr[aria-expanded=true] .accordion-arrow.icon {
     border-radius: 5px 5px 0px 0px;
     margin: 0 0.25rem;
 }
+
+.edwiserreports-table table .fa.fa-search-plus {
+    position: absolute;
+    right: 0.2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #F98012;
+}
+
 .edwiserreports-tabs > .tab-item.dropdown {
     padding: 1rem 0;
 }

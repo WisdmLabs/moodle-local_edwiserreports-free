@@ -141,7 +141,7 @@ define('local_edwiserreports/reports/allcoursessummary', [
 
         filter.enrolment = date;
         initializeDatatable();
-        common.updateTimeLabel(date);
+        // common.updateTimeLabel(date);
     }
 
     /**
@@ -242,7 +242,7 @@ define('local_edwiserreports/reports/allcoursessummary', [
     function init() {
 
         // Show time period in table info.
-        common.updateTimeLabel('all');
+        // common.updateTimeLabel('all');
 
         // Initialize select2.
         $(SELECTOR.PAGE).find('.singleselect').not(SELECTOR.EXCLUDE).select2();
@@ -334,7 +334,7 @@ define('local_edwiserreports/reports/allcoursessummary', [
 
             filter.enrolment = $(this).data('value');
             initializeDatatable();
-            common.updateTimeLabel(filter.enrolment);
+            // common.updateTimeLabel(filter.enrolment);
         });
 
         // Observer group change.
@@ -412,7 +412,7 @@ define('local_edwiserreports/reports/allcoursessummary', [
         });
 
         // Handle report page capability manager.
-        common.handleReportCapability();
+        // common.handleReportCapability();
     }
 
     return {

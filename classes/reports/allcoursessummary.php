@@ -88,15 +88,39 @@ class allcoursessummary extends base {
     public function get_data($filters, $table = true) {
         global $COURSE, $DB;
         $response = array();
+        $search = html_writer::tag('i', '', ['class' => 'fa fa-search-plus']);
+
         for ($i=1; $i < 20; $i++) {
             $data['coursename'] = 'Course ' . $i;
             $data['category'] = 'Category ' . $i;
             $data['enrolments'] = 20 + $i;
+
+            $data['enrolments'] .= html_writer::link(
+                    new moodle_url(
+                        "/local/edwiserreports/completion.php",
+                        array("courseid" => 2)
+                    ),
+                    $search,
+                    array(
+                        'style' => 'margin-left: 0.5rem;'
+                    )
+                );
+
             $data['completed'] = $i % 2 != 0 ? 0 : 1;
             $data['notstarted'] = 2;
             $data['inprogress'] = 18;
             $data['atleastoneactivitystarted'] = 5;
             $data['totalactivities'] = 5;
+            $data['totalactivities'] .= html_writer::link(
+                    new moodle_url(
+                        "/local/edwiserreports/completion.php",
+                        array("courseid" => 2)
+                    ),
+                    $search,
+                    array(
+                        'style' => 'margin-left: 0.5rem;'
+                    )
+                );
             $data['avgprogress'] = '70%';
             $data['avggrade'] = 50;
             $data['highestgrade'] = 100;

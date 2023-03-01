@@ -71,36 +71,6 @@ class learnercourseprogress extends base {
      */
     public function is_learner($userid = null) {
         global $USER;
-        // if ($userid == null) {
-        //     $userid = $USER->id;
-        // }
-        // $learner = false;
-        // // Get context.
-        // $context = context_system::instance();
-        // $learnercap = 'report/edwiserreports_learner:view';
-        // $teachmancap = 'report/edwiserreports_learnercourseprogress:view';
-        // switch (true) {
-        //     // Check capability other than student. Like manager or teacher.
-        //     case has_capability($teachmancap, $context, $userid) || can_view_block($teachmancap, $userid):
-        //         $learner = false;
-        //         // Check if user has access to any group.
-        //         $blockbase = new \local_edwiserreports\block_base();
-        //         if (empty($blockbase->get_courses_of_user($USER->id))) {
-        //             throw new moodle_exception('noaccess', 'local_edwiserreports');
-        //         }
-        //         break;
-        //     // Check capability for student.
-        //     case has_capability($learnercap, $context, $userid) || can_view_block($learnercap, $userid):
-        //         $learner = true;
-        //         // Check if user has access to any group.
-        //         if (empty(enrol_get_users_courses($USER->id))) {
-        //             throw new moodle_exception('noaccess', 'local_edwiserreports');
-        //         }
-        //         break;
-        //     default:
-        //         throw new moodle_exception(get_string('noaccess', 'local_edwiserreports'));
-        // }
-        // return $learner;
     }
 
     /**
@@ -143,6 +113,18 @@ class learnercourseprogress extends base {
     public function get_data($filters, $table = true) {
         global $DB;
 
+        $search = html_writer::tag('i', '', ['class' => 'fa fa-search-plus']);
+        $link = html_writer::link(
+                    new moodle_url(
+                        "/local/edwiserreports/learnercourseprogress.php",
+                        array("learner" => 2)
+                    ),
+                    $search,
+                    array(
+                        'style' => 'margin-left: 0.5rem;'
+                    )
+                );
+
         for ($i=0; $i < 5; $i++) {
           $name = 'High School Course ';
           $response[] = [
@@ -153,7 +135,7 @@ class learnercourseprogress extends base {
                 "lastaccess" => '12 Jan 2023',
                 "progress" => '70%',
                 "grade" => '300',
-                "totalactivities" => '20',
+                "totalactivities" => '20' . $link,
                 "completedactivities" => '20',
                 "attemptedactivities" => '20',
                 "visits" => 204,

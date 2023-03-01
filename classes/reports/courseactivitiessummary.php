@@ -213,10 +213,24 @@ class courseactivitiessummary extends base {
     public function get_data($filters, $table = true) {
         global $DB;
 
+        $search = html_writer::tag('i', '', ['class' => 'fa fa-search-plus']);
+        $name = html_writer::link(
+                    new moodle_url(
+                        "/local/edwiserreports/courseactivitycompletion.php",
+                        array(
+                            "course" => 2,
+                            "cm" => 10
+                        )
+                    ),
+                    $search,
+                    array(
+                        'style' => 'margin-left: 0.5rem;'
+                    )
+                );
 
         $response= array(
             array(
-                'activity' => 'Activity 1', // Activity name.
+                'activity' => 'Activity 1' . $name, // Activity name.
                 'type' => 'Forum',
                 'status' => 1, // Status: completed, not yet started, in progress.
                 'learnerscompleted' => 12, // Number of Learners completed activity.
@@ -232,7 +246,7 @@ class courseactivitiessummary extends base {
                 'averagevisits' => '100'
             ),
             array(
-                'activity' => 'Page activity', // Activity name.
+                'activity' => 'Page activity' . $name, // Activity name.
                 'type' => 'Page',
                 'status' => 0, // Status: completed, not yet started, in progress.
                 'learnerscompleted' => 5, // Number of Learners completed activity.
@@ -248,7 +262,7 @@ class courseactivitiessummary extends base {
                 'averagevisits' => '100'
             ),
             array(
-                'activity' => 'Activity 2', // Activity name.
+                'activity' => 'Activity 2' . $name, // Activity name.
                 'type' => 'Forum',
                 'status' => 2, // Status: completed, not yet started, in progress.
                 'learnerscompleted' => 3, // Number of Learners completed activity.
@@ -264,7 +278,7 @@ class courseactivitiessummary extends base {
                 'averagevisits' => '100'
             ),
             array(
-                'activity' => 'Assignment 3', // Activity name.
+                'activity' => 'Assignment 3' . $name, // Activity name.
                 'type' => 'Assignment',
                 'status' => 1, // Status: completed, not yet started, in progress.
                 'learnerscompleted' => 0, // Number of Learners completed activity.
@@ -280,7 +294,7 @@ class courseactivitiessummary extends base {
                 'averagevisits' => '100'
             ),
             array(
-                'activity' => 'Activity 4', // Activity name.
+                'activity' => 'Activity 4' . $name, // Activity name.
                 'type' => 'Forum',
                 'status' => 0, // Status: completed, not yet started, in progress.
                 'learnerscompleted' => 10, // Number of Learners completed activity.
@@ -296,7 +310,7 @@ class courseactivitiessummary extends base {
                 'averagevisits' => '100'
             ),
             array(
-                'activity' => 'Page activity 1', // Activity name.
+                'activity' => 'Page activity 1' . $name, // Activity name.
                 'type' => 'Page',
                 'status' => 2, // Status: completed, not yet started, in progress.
                 'learnerscompleted' => 8, // Number of Learners completed activity.

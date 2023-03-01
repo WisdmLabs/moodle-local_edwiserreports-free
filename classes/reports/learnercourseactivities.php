@@ -227,7 +227,7 @@ class learnercourseactivities extends base {
                 'learner' => true,
                 'learnername' => fullname($student),
                 'isactive' => 1,
-                'lastaccess' => date("d M Y", time()),
+                'lastaccess' => date("d M Y h:i:s A", time()),
                 'customheaderinfo' => $customheader
             ),
             'body' => array(

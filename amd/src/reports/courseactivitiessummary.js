@@ -174,7 +174,7 @@ define('local_edwiserreports/reports/courseactivitiessummary', [
                         { 
                             'data': 'activity',
                             render: function(data) {
-                                return '<span title="'+ data +'">' + data + '</span>';
+                                return data;
                             }
                             , width: "14rem"
                         },

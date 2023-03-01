@@ -77,6 +77,19 @@ class studentengagement extends block_base {
     public function get_table_data($filter) {
         $response = array();
 
+        $search = html_writer::tag('i', '', ['class' => 'fa fa-search-plus']);
+        $link = html_writer::link(
+                    new moodle_url(
+                        "/local/edwiserreports/learnercourseprogress.php",
+                        array("learner" => 2)
+                    ),
+                    $search,
+                    array(
+                        'style' => 'margin-left: 0.5rem;'
+                    )
+                );
+
+
         for ($i = 0; $i < 20; $i++) {
             $name = 'Student ';
             $response[] = array(
@@ -84,7 +97,7 @@ class studentengagement extends block_base {
                 'lastaccesson' => '2 Jan 2022',
                 'email' => $name . $i . '@' . $name . $i . '.com',
                 'status' => $i % 2 != 0 ? 0 : 1,
-                'enrolledcourses' => $i,
+                'enrolledcourses' => $i . $link,
                 'inprogresscourses' => $i,
                 'completedcourses' => 2,
                 'completionprogress' => $i + 30 . '%',

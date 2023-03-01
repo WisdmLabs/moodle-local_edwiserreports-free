@@ -57,7 +57,9 @@
                 {{# cohortfilters }}
                     <div class="filter-selector col-12 col-lg-2 col-md-4 mb-3">
                         <label>{{#str}} cohort, local_edwiserreports {{/str}}</label>
-                        {{> local_edwiserreports/filters/cohorts_filter }}
+                        <select class="cohort-select form-control singleselect"  title="">
+                            <option value="1">{{#str}} cohort1, local_edwiserreports {{/str}}</option>
+                        </select>
                     </div>
                 {{/ cohortfilters }}
                 {{# groups }}
@@ -83,13 +85,12 @@
                     </select>
                 </div>
 
-                <div class="filter-selector col-12 col-md-3 mb-1 ml-auto">
+                <div class="filter-selector col-12 table-length-input ml-auto mb-3">
+                    <label>{{#str}} show, local_edwiserreports {{/str}}</label>
                     {{> local_edwiserreports/datatable/length }}
                 </div>
                 {{# export }}
-                    <div style='display:none;'>
-                        {{> local_edwiserreports/exportspro }}                        
-                    </div>
+                    {{> local_edwiserreports/exportspro }}                        
                 {{/ export }}
             </div>
         </div>

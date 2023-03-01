@@ -253,7 +253,7 @@ class coursereport_renderable implements renderable, templatable {
         $output->breadcrumb = array(
             'items' => array(
                 array(
-                    'item' => get_string('allcoursessummary', 'local_edwiserreports')
+                    'item' => get_string('coursereports', 'local_edwiserreports')
                 )
             )
         );
@@ -547,6 +547,7 @@ class courseactivitycompletion_renderable implements renderable, templatable {
         $output->showdaterange = true;
         $output->navigation = navigation::instance()->get_navigation('course');
         $output->breadcrumb = $courseactivitycompletion->get_breadcrumb();
+        $output->calendar = file_get_contents($CFG->dirroot . '/local/edwiserreports/pix/calendar.svg');
 
         // Table filter context.
         $output->searchicon = \local_edwiserreports\utility::image_icon('actions/search');
@@ -636,6 +637,7 @@ class courseactivitiessummary_renderable implements renderable, templatable {
         $output->showdaterange = true;
         $output->navigation = navigation::instance()->get_navigation('course');
         $output->breadcrumb = $courseactivitiessummary->get_breadcrumb();
+        $output->calendar = file_get_contents($CFG->dirroot . '/local/edwiserreports/pix/calendar.svg');
 
         // Table filter context.
         $output->searchicon = \local_edwiserreports\utility::image_icon('actions/search');
@@ -730,6 +732,7 @@ class learnercourseactivities_renderable implements renderable, templatable {
         $output->pageheader = get_string("learnercourseactivities", "local_edwiserreports");
         $output->navigation = navigation::instance()->get_navigation('learners');
         $output->breadcrumb = $learnercourseactivities->get_breadcrumb();
+        $output->calendar = file_get_contents($CFG->dirroot . '/local/edwiserreports/pix/calendar.svg');
 
         // Table filter context.
         $output->searchicon = \local_edwiserreports\utility::image_icon('actions/search');
@@ -851,6 +854,7 @@ class learnercourseprogress_renderable implements renderable, templatable {
         $output->showdaterange = true;
         $output->navigation = navigation::instance()->get_navigation('learners');
         $output->breadcrumb = $learnercourseprogress->get_breadcrumb();
+        $output->calendar = file_get_contents($CFG->dirroot . '/local/edwiserreports/pix/calendar.svg');
 
         // Table filter context.
         $output->searchicon = \local_edwiserreports\utility::image_icon('actions/search');
@@ -924,6 +928,7 @@ class studentengagement_renderable implements renderable, templatable {
         $output->showdaterange = true;
         $output->pageheader = get_string('alllearnersummary', 'local_edwiserreports');
         $output->breadcrumb = $studentengagement->get_breadcrumb();
+        $output->calendar = file_get_contents($CFG->dirroot . '/local/edwiserreports/pix/calendar.svg');
 
         $output->searchicon = \local_edwiserreports\utility::image_icon('actions/search');
         $output->placeholder = get_string('searchuser', 'local_edwiserreports');
