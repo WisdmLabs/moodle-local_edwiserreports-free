@@ -120,12 +120,18 @@ class learnercourseactivities extends base {
             $coursecategories[$course->category]['courses'][] = $course;
         }
 
+        $sectionlist = [[
+            'id' => 0,
+            'name' => get_string('allsections', 'local_edwiserreports'),
+            'selected' => 'selected'
+        ]];
+
         return [
             'activecourse' => $activecourse,
             'activelearner' => $activelearner,
             'students' => array_values($users),
             'coursecategories' => array_values($coursecategories),
-            'sections' => $this->get_sections($activecourse),
+            'sections' => $sectionlist,
             'modules' => $this->get_modules($activecourse)
         ];
     }
@@ -218,7 +224,7 @@ class learnercourseactivities extends base {
         $customheader = '<div>
             <div class="mb-1 summary-card-subtitle">
                 <span class="font-weight-bold">'. get_string('course', 'local_edwiserreports') .' : </span>
-                <span> '. $course->fullname .' </span>
+                <span> High School Biology </span>
             </div>
         </div>';
 

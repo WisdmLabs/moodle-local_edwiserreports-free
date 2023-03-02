@@ -104,12 +104,13 @@ class completionblock {
             );
             $completioninfo->enrolledon = date("d M Y", $user->enrolledon);
             $completioninfo->enrolltype = $user->enrol;
+            $completioninfo->noofvisits = empty($user->visits) ? 0 : $user->visits;
+            
             $completioninfo->completion = empty($user->progress) ? "NA" : round($user->progress) . '%';
             $completioninfo->compleiontime = empty($user->completiontime) ?
                                             $notyet :
                                             date("d M Y", $user->enrolledon);
             $completioninfo->grade = round($user->grade, 2) . '%';
-            $completioninfo->noofvisits = empty($user->visits) ? 0 : $user->visits;
             $completioninfo->lastaccess = empty($user->visits) ? $never : format_time($timenow - $user->lastvisit);
             $userscompletion[] = $completioninfo;
             unset($users[$key]);

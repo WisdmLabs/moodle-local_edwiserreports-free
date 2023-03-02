@@ -193,7 +193,7 @@ class learnercourseprogress extends base {
                 'learner' => true,
                 'learnername' => fullname($student),
                 'isactive' => 1,
-                'lastaccess' => date("d M Y", time())
+                'lastaccess' => '12 Jan 2023 09:39 AM'
             ),
             'body' => array(
                 array(

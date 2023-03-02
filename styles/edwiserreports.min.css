@@ -2332,8 +2332,8 @@ table.dataTable td.dataTables_empty {
 #page-local-edwiserreports-certificates.theme_remui .card-body,
 #page-local-edwiserreports-coursereport.theme_remui .card-body,
 #page-local-edwiserreports-activeusers.theme_remui .card-body {
-    background: transparent;
-    padding: 0;
+    /*background: transparent;
+    padding: 0;*/
 }
 #page-local-edwiserreports-customreportedit.theme_moove #page-header,
 #page-local-edwiserreports-certificates.theme_moove #page-header,

@@ -463,7 +463,7 @@ class allcoursessummary_renderable implements renderable, templatable {
         $output->showdaterange = true;
         $output->showdatefilter = true;
 
-        $output->pageheader = get_string("allcoursessummary", "local_edwiserreports");
+        $output->pageheader = get_string("allcoursessummarypro", "local_edwiserreports");
         $output->breadcrumb = $allcoursessummary->get_breadcrumb();
         $output->calendar = file_get_contents($CFG->dirroot . '/local/edwiserreports/pix/calendar.svg');
         $filters = $allcoursessummary->get_filter();

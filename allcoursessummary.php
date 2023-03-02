@@ -47,19 +47,6 @@ local_edwiserreports\utility::load_color_pallets();
 // Get context.
 $context = context_system::instance();
 
-// Check capability.
-// $capname = 'report/edwiserreports_allcoursessummary:view';
-// if (!has_capability($capname, $context) &&
-//     !can_view_block($capname)) {
-//     throw new moodle_exception(get_string('noaccess', 'local_edwiserreports'));
-// }
-
-// Check if user has access to any group.
-// $blockbase = new local_edwiserreports\block_base();
-// if (empty($blockbase->get_courses_of_user($USER->id))) {
-//     throw new moodle_exception('noaccess', 'local_edwiserreports');
-// }
-
 // Add CSS for edwiserreports.
 $PAGE->requires->css('/local/edwiserreports/styles/edwiserreports.min.css');
 
@@ -86,7 +73,7 @@ $renderable = new \local_edwiserreports\output\allcoursessummary_renderable();
 $output = $PAGE->get_renderer($component)->render($renderable);
 
 $PAGE->set_heading('');
-$PAGE->set_title(get_string("allcoursessummary", "local_edwiserreports"));
+$PAGE->set_title(get_string("allcoursessummarypro", "local_edwiserreports"));
 
 // Print output for course completion page.
 echo $OUTPUT->header();
