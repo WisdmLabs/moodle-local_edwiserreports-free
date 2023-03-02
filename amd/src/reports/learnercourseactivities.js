@@ -153,7 +153,7 @@ define('local_edwiserreports/reports/learnercourseactivities', [
                     deferRendering: true,
                     columnDefs: [
                         {className: "fixed-column", targets: 0},
-                        {className: "text-left", targets: [0, 1]},
+                        {className: "text-left", targets: [0, 1, 2]},
                         {className: "text-right", targets: "_all"}
                     ],
                     columns: [

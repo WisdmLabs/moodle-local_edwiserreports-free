@@ -152,7 +152,7 @@ class learnercourseactivities extends base {
                 'activity' => 'Activity ' . $i,
                 'type' => 'Assignment ' . $i,
                 "status" => $i % 2 != 0 ? 0 : 1,
-                "completedon" => $i % 2 != 0 ? '02 Jan 2023' : 'Never',
+                "completedon" => $i % 2 != 0 ? '02 Jan 2023' : get_string('never', 'local_edwiserreports'),
                 'grade' => 80,
                 'gradedon' => '25 Dec 2022',
                 'attempts' => 1,
@@ -217,9 +217,6 @@ class learnercourseactivities extends base {
     public static function get_summary_data($filters) {
         global $DB, $CFG;
 
-        $course = $DB->get_record('course', ['id' => $filters->course]);
-
-        $student = $DB->get_record('user', ['id' => $filters->learner]);
 
         $customheader = '<div>
             <div class="mb-1 summary-card-subtitle">
@@ -231,7 +228,7 @@ class learnercourseactivities extends base {
         return array(
             'header' => array(
                 'learner' => true,
-                'learnername' => fullname($student),
+                'learnername' => 'Student 1',
                 'isactive' => 1,
                 'lastaccess' => date("d M Y h:i:s A", time()),
                 'customheaderinfo' => $customheader
