@@ -50,7 +50,7 @@
 
                         {{#course}}
                             <div class="">
-                                <span class="summary-card-subtitle font-weight-bold">Category:</span>
+                                <span class="summary-card-subtitle font-weight-bold">{{#str}} category, local_edwiserreports {{/str}} :</span>
                                 <span> {{category}} </span>
                             </div>
                             <div class="summary-card-title font-weight-bold">
@@ -68,7 +68,7 @@
                                 {{/isactive}}
                             </div>
                             <div class="">
-                                <span class="summary-card-subtitle font-weight-bold">Last access: </span>
+                                <span class="summary-card-subtitle font-weight-bold"> {{#str}} lastaccess, local_edwiserreports {{/str}} : </span>
                                 <span class="ml-2"> {{lastaccess}} </span>
                             </div>
                         {{/learner}}

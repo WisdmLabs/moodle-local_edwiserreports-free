@@ -144,7 +144,9 @@ define('local_edwiserreports/reports/courseactivitycompletion', [
                         {className: "text-right", targets: "_all"}
                     ],
                     columns: [
-                        {data: 'learner'},
+                        {data: 'learner',
+                        width: "4rem"
+                    },
                         {data: 'email'},
                         {
                             data: 'status',
@@ -159,15 +161,15 @@ define('local_edwiserreports/reports/courseactivitycompletion', [
                         {data: 'grade'},
                         {
                             data: 'gradedon',
-                            width: "6rem"
+                            width: "8rem"
                         },
                         {
                             data: 'firstaccess',
-                            width: "6rem"
+                            width: "10rem"
                         },
                         {
                             data: 'lastaccess',
-                            width: "6rem"
+                            width: "10rem"
                         },
                         {data: 'visits'},
                         {

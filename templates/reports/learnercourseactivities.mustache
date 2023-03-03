@@ -54,7 +54,9 @@
             <div class="row">
                 <div class="filter-selector col-12 col-lg-3 col-md-4 mb-3 {{^students}} d-none {{/students}}">
                     <label>{{#str}} learner, local_edwiserreports {{/str}}</label>
-                    {{> local_edwiserreports/filters/students_filter }}
+                    <select class="student-select form-control singleselect">
+                        <option value="3">Student 1</option>
+                    </select>
                 </div>
                 <div class="filter-selector col-12 col-lg-3 col-md-4 mb-3">
                     <label>{{#str}} courseandcategories, local_edwiserreports {{/str}}</label>
@@ -66,9 +68,7 @@
                 </div>
                 <div class="filter-selector col-12 col-lg-3 col-md-4 mb-3 {{^sections}}d-none{{/sections}}">
                     <label>{{#str}} section, local_edwiserreports {{/str}}</label>
-                    <select class="student-select form-control singleselect">
-                        <option value="3">Student 1</option>
-                    </select>
+                    {{> local_edwiserreports/filters/sections_filter }}
                 </div>
             </div>
         </div>

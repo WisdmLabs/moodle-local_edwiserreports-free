@@ -170,7 +170,7 @@ define('local_edwiserreports/reports/studentengagement', [
                 { className: "text-right", orderable: false, targets: "_all" }
             ],
             columns: [
-                { data: "student" },
+                { data: "student", width: "6rem" },
                 { data: "email" },
                 {
                     data: "status",
@@ -179,7 +179,7 @@ define('local_edwiserreports/reports/studentengagement', [
                     },
                     width: "4rem"
                 },
-                { data: "lastaccesson", width: "6rem" },
+                { data: "lastaccesson", width: "8rem" },
                 { data: "enrolledcourses", width: "4rem" },
                 { data: "inprogresscourses", width: "6rem" },
                 { data: "completedcourses", width: "5rem" },
@@ -190,7 +190,7 @@ define('local_edwiserreports/reports/studentengagement', [
                     render: function(data) {
                         return common.timeFormatter(data);
                     },
-                    width: "6rem"
+                    width: "8rem"
                 },
                 {
                     data: "timespentoncourse",

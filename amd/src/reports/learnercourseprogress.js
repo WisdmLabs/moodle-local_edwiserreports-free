@@ -141,7 +141,7 @@ define('local_edwiserreports/reports/learnercourseprogress', [
                         {className: "text-right", targets: "_all"}
                     ],
                     columns: [
-                        {data: "course", width: "7rem"},
+                        {data: "course", width: "12rem"},
                         {
                             data: "status",
                             render: function(data) {
@@ -150,14 +150,15 @@ define('local_edwiserreports/reports/learnercourseprogress', [
                             width: "4rem"
                         },
                         {
-                            data: "enrolledon"
+                            data: "enrolledon",
+                            width: "6rem"
                         },
                         {
                             data: "completedon"
                         },
                         {
                             data: "lastaccess",
-                            width: "6rem"
+                            width: "10rem"
                         },
                         {data: 'progress'},
                         {data: "grade"},

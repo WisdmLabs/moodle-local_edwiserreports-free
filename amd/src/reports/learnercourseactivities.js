@@ -157,8 +157,8 @@ define('local_edwiserreports/reports/learnercourseactivities', [
                         {className: "text-right", targets: "_all"}
                     ],
                     columns: [
-                        {data: 'activity', width: "14rem"},
-                        {data: 'type'},
+                        {data: 'activity', width: "10rem"},
+                        {data: 'type', width: "10rem"},
                         {
                             data: 'status',
                             render: function(data) {
@@ -171,18 +171,18 @@ define('local_edwiserreports/reports/learnercourseactivities', [
                         },
                         {data: 'grade'},
                         {
-                            data: 'gradedon'
+                            data: 'gradedon', width: "10rem"
                         },
                         {data: 'attempts'},
                         {data: 'highestgrade', width: "4rem"},
                         {data: 'lowestgrade', width: "4rem"},
                         {
                             data: 'firstaccess',
-                            width: "6rem"
+                            width: "11rem"
                         },
                         {
                             data: 'lastaccess',
-                            width: "6rem"
+                            width: "11rem"
                         },
                         {data: 'visits'},
                         {
