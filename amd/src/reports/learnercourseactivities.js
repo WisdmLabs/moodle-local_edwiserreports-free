@@ -171,18 +171,18 @@ define('local_edwiserreports/reports/learnercourseactivities', [
                         },
                         {data: 'grade'},
                         {
-                            data: 'gradedon', width: "10rem"
+                            data: 'gradedon', width: "11rem"
                         },
                         {data: 'attempts'},
                         {data: 'highestgrade', width: "4rem"},
                         {data: 'lowestgrade', width: "4rem"},
                         {
                             data: 'firstaccess',
-                            width: "11rem"
+                            width: "13rem"
                         },
                         {
                             data: 'lastaccess',
-                            width: "12rem"
+                            width: "13rem"
                         },
                         {data: 'visits'},
                         {

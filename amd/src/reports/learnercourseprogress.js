@@ -151,14 +151,14 @@ define('local_edwiserreports/reports/learnercourseprogress', [
                         },
                         {
                             data: "enrolledon",
-                            width: "8rem"
+                            width: "11rem"
                         },
                         {
                             data: "completedon"
                         },
                         {
                             data: "lastaccess",
-                            width: "10rem"
+                            width: "12rem"
                         },
                         {data: 'progress'},
                         {data: "grade"},
