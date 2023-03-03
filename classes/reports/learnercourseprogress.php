@@ -131,7 +131,7 @@ class learnercourseprogress extends base {
                 "course" => $name . $i,
                 "status" => $i % 2 != 0 ? 0 : 1,
                 "enrolledon" => '28 Sept 2022',
-                "completedon" => $i % 2 != 0 ? '02 Jan 2023' : 'Never',
+                "completedon" => $i % 2 != 0 ? '02 Jan 2023' : get_string('never', 'local_edwiserreports'),
                 "lastaccess" => '12 Jan 2023 <br> 09:39 AM',
                 "progress" => '70%',
                 "grade" => '300',
