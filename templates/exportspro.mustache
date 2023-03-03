@@ -41,13 +41,5 @@
     </div>
 </div>
 {{#js}}
-require(['jquery', 'local_edwiserreports/common', 'local_edwiserreports/email'], function($, common, email) {
-    $(document).ready(function() {
-        // Handles export dropdown.
-        common.exportDropdownHandler(".export-options");
 
-        // Initialize schedule email modal.
-        email.init();
-    });
-});
 {{/js}}

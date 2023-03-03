@@ -167,7 +167,7 @@ define('local_edwiserreports/reports/learnercourseactivities', [
                             width: "4rem"
                         },
                         {
-                            data: 'completedon'
+                            data: 'completedon', width: "8rem"
                         },
                         {data: 'grade'},
                         {
@@ -182,7 +182,7 @@ define('local_edwiserreports/reports/learnercourseactivities', [
                         },
                         {
                             data: 'lastaccess',
-                            width: "11rem"
+                            width: "12rem"
                         },
                         {data: 'visits'},
                         {

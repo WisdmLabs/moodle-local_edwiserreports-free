@@ -170,8 +170,8 @@ define('local_edwiserreports/reports/studentengagement', [
                 { className: "text-right", orderable: false, targets: "_all" }
             ],
             columns: [
-                { data: "student", width: "6rem" },
-                { data: "email" },
+                { data: "student", width: "10rem" },
+                { data: "email", width: "14rem" },
                 {
                     data: "status",
                     render: function(data) {
@@ -179,7 +179,7 @@ define('local_edwiserreports/reports/studentengagement', [
                     },
                     width: "4rem"
                 },
-                { data: "lastaccesson", width: "8rem" },
+                { data: "lastaccesson", width: "12rem" },
                 { data: "enrolledcourses", width: "4rem" },
                 { data: "inprogresscourses", width: "6rem" },
                 { data: "completedcourses", width: "5rem" },
