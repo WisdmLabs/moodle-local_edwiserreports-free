@@ -10,6 +10,9 @@ Tweaks
 -- All Leaner Summary
 -- Learner Course Progress
 -- Learner Course Activties
+- Added pro triggers in popup for following report
+-- Course overview status
+-- Course progress block
 
 v 1.5.0
 ====================================================
