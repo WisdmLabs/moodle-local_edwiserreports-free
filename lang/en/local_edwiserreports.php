@@ -988,7 +988,7 @@ $string['certificate'] = 'Certificate';
 $string['atleastoneactivitystarted'] = 'At least one Activity started';
 $string['highestgrade'] = 'Highest grade';
 $string['lowestgrade'] = 'Lowest grade';
-$string['proreportupgrademsg'] = 'These reports are also available to the user roles  - manager, course manager, teacher, and course creator';
+$string['proreportupgrademsg'] = 'This report is also available to the user roles  - manager, course manager, teacher, and course creator';
 
 $string['showingdatafor'] = 'Showing data for:';
 
