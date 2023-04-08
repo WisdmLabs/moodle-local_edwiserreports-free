@@ -85,7 +85,7 @@ $PAGE->set_url($pageurl);
 $PAGE->set_pagelayout('base');
 
 // Add theme class to body.
-$PAGE->add_body_classes(array('theme_' . $PAGE->theme->name));
+$PAGE->add_body_classes(array('theme_' . $PAGE->theme->name, 'local-edwiserreports'));
 
 // Get renderable.
 $renderable = new \local_edwiserreports\output\edwiserreports_renderable();

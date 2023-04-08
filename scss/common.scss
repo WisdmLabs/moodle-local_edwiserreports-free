@@ -279,6 +279,184 @@ tr[aria-expanded="true"] {
     }
 }
 
+
+html[lang=de] .local-edwiserreports {
+    .filter-selector {
+        .edwiserreports-calendar {
+            min-width: 11.5rem;
+        }
+    }
+}
+
+html[lang=es] .local-edwiserreports {
+    .filter-selector {
+        &.table-length-input {
+            width: 9rem !important;
+            max-width: 9rem !important;
+        }
+        .edwiserreports-calendar {
+            min-width: 10rem;
+        }
+    }
+}
+
+
+.local-edwiserreports {
+    #learnertimespentonsiteblock {
+        .filter-selector {
+            & > label {
+                left: 1rem;
+            }
+            .dropdown-toggle {
+                padding: 0.829rem 2rem 0.229rem 1rem !important;
+            }
+        }
+    }
+    .filter-selector {
+        position: relative;
+        .exclude-select {
+            &.notselected {
+                & + .select2-container {
+                    height: 100%;
+                    ul {
+                        padding: 0 !important;
+                    }
+                    .selection {
+                        display: flex;
+                        height: 100%;
+                        width: 100%;
+                        & > .select2-selection {
+                            width: 100%;
+                            height: 2.7rem;
+                        }
+                        & > .select2-selection .select2-selection__rendered {
+                            padding-left: 0.5rem;
+                        }
+                    }
+                    .select2-search__field {
+                        background: transparent;
+                        padding: 0.829rem 2.5rem 0.429rem 1rem !important;
+                        margin: 0 !important;
+                        width: 100% !important;
+                    }
+                    .select2-selection__rendered .select2-selection__clear + li {
+                        margin-top: 1rem;
+                    }
+                    .select2-selection__choice {
+                        margin: 1px;
+                    }
+                }
+            }
+            &.selected {
+                & + .select2-container {
+                    height: 100%;
+                    ul {
+                        padding: 0 0.3rem !important;
+                    }
+                    .select2-search {
+                        float: none;
+                    }
+                    .select2-search__field {
+                        background: transparent;
+                        margin-top: 1rem !important;
+                    }
+                    .select2-selection__rendered .select2-selection__clear + li {
+                        margin-top: 1rem;
+                    }
+                    .select2-selection__choice {
+                        margin: 1px;
+                    }
+                }
+            }
+        }
+        select:not(.exclude-select) .select2-container .select2-selection {
+            height: 2.7rem;
+        }
+        .dropdown-toggle {
+            border: 1px solid #ccc !important;
+        }
+        .edwiserreports-calendar {
+            padding: 0.829rem 2rem 0.229rem 1rem !important;
+            min-width: 9rem;
+            position: relative;
+            text-align: left;
+            justify-content: left !important;
+
+            &::after {
+                position: absolute;
+                content: "" !important;
+                border-color: transparent;
+                right: 0.829rem;
+                bottom: 0.829rem;
+                font-size: 0px !important;
+                border-style: solid !important;
+                border-width: 0.286rem 0.286rem 0 0.286rem !important;
+            }
+        }
+        &.pro-export-wrapper {
+            & > label {
+                background: transparent;
+            }
+        }
+        & > label {
+            position: absolute;
+            background: white;
+            left: 1.8rem;
+            z-index: 1;
+            top: -0.5rem;
+            font-size: 0.857rem;
+            color: #474747;
+        }
+    }
+    .edwiserreports-header {
+        .filter-selector {
+            & > label {
+                position: absolute;
+                background: white;
+                left: 1rem;
+                z-index: 1;
+                top: -0.5rem;
+                font-size: 0.857rem;
+                color: #474747;
+            }
+        }
+    }
+}
+
+
+.local-edwiserreports.report-page .selected-period span {
+    padding: 0.1rem 0.8rem;
+    border-radius: 1rem;
+    font-weight: 500;
+    background-color: #00A1A8 !important;
+    border-radius: 1rem;
+    font-weight: 500;
+}
+.page-title h2 {
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 30px;
+    color: #133F3F;
+}
+
+.local-edwiserreports .panel .upgrade-to-pro {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 2;
+}
+
+.local-edwiserreports .panel:not(:hover) > .upgrade-to-pro {
+    display: none;
+}
+
+.local-edwiserreports .panel {
+    position: relative;
+}
+
 #wdm-edwiserreports {
     @media (max-width: 767px) {
         &>[data-block], &>.col-12 {
@@ -579,9 +757,6 @@ tr[aria-expanded="true"] {
 .path-local-edwiserreports {
     [role="main"] {
         position: relative;
-    }
-    .breadcrumb {
-        display: none;
     }
     #customReportBlock {
         table {
@@ -943,27 +1118,6 @@ tr[aria-expanded="true"] {
     padding: 2rem 0;
 }
 
-#wdm-activeusers-individual,
-#wdm-certificates-individual,
-#wdm-courseprogress-individual,
-#wdm-completion-individual {
-    position: relative;
-    padding: 2rem 2rem 4rem 2rem;
-    background-color: white;
-    box-shadow: 0 7px 14px 0 rgba(59, 65, 94, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.07);
-    min-height: 350px;
-    margin-bottom: 1rem;
-    overflow: visible;
-    table {
-        th,
-        td {
-            &:nth-child(n+2) {
-                text-align: center;
-            }
-        }
-    }
-}
-
 #page-local-edwiserreports-old_logs {
     .progress {
         height: 1.3rem !important;
@@ -1037,7 +1191,7 @@ tr[aria-expanded="true"] {
             cursor: not-allowed !important;
         }
     }
-    input {
+    input[type="checkbox"]:not(.custom-control-input) {
         display: none !important;
         &:disabled {
             &+.checkmark {

@@ -87,6 +87,9 @@
             text-align: center;
         }
     }
+    input[type="checkbox"]:not(.custom-control-input) {
+        display: none !important;
+    }
 }
 
 #wdm-customreports-edit {

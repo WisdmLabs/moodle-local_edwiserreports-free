@@ -33,9 +33,11 @@
     <div id="userfilter" class="h-auto mt-2">
         <div class="row">
             <div class="filter-selector col-12 col-md-3 mb-1">
+                <label>{{#str}} search, local_edwiserreports {{/str}}</label>
                 {{> local_edwiserreports/datatable/search }}
             </div>
-            <div class="filter-selector col-12 col-md-3 mb-1 ml-auto">
+            <div class="filter-selector col-12 table-length-input ml-auto mb-3">
+                <label>{{#str}} show, local_edwiserreports {{/str}}</label>
                 {{> local_edwiserreports/datatable/length }}
             </div>
         </div>
@@ -43,19 +45,19 @@
     <table class="table w-100">
         <thead>
             <tr>
-                <th class="theme-3-bg text-white">
+                <th>
                     {{#str}} course {{/str}}
                 </th>
-                <th class="theme-3-bg text-white">
+                <th>
                     {{#str}} progress, core_search {{/str}}
                 </th>
-                <th class="theme-3-bg text-white">
+                <th>
                     {{#str}} activitiescompleted, local_edwiserreports {{/str}}
                 </th>
-                <th class="theme-3-bg text-white">
+                <th>
                     {{#str}} timespentoncourse, local_edwiserreports {{/str}}
                 </th>
-                <th class="theme-3-bg text-white">
+                <th>
                     {{#str}} grades, core_grades {{/str}}
                 </th>
             </tr>

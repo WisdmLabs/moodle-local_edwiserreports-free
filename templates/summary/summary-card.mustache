@@ -1,0 +1,109 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    All Courses Summary report page.
+
+    @package   local_edwiserreports/reports
+    @author    krunal kamble
+    @copyright (c) 2022 WisdmLabs (https://wisdmlabs.com/)
+    @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+
+}}
+{{!
+    @template local_edwiserreports/summary/summary-card
+
+    Context variables required for this template:
+
+    Example context (json):
+    {
+        summarycard = [
+            'body'   => [
+                'title'   => 'test',
+                'data' => 'allcoursessummary'
+            ],
+            'footer' => [
+                'title'   => 'test',
+                'data' => 'allcoursessummary'
+            ]
+        ]
+    }
+}}
+
+{{#summarycard}}
+
+    <div class="summary-card mt-2 mb-5" style="border: 1px solid #F98012;border-radius: 5px;">
+        <div class="summary-card-wrapper p-4">
+            {{#header}}
+                <div class="summary-header pb-4" style="border-bottom: 1px solid #D9D9D9;">
+                    <div class="summary-header-wrap">
+                        {{{customheaderinfo}}}
+
+                        {{#course}}
+                            <div class="">
+                                <span class="summary-card-subtitle font-weight-bold">{{#str}} category, local_edwiserreports {{/str}} :</span>
+                                <span> {{category}} </span>
+                            </div>
+                            <div class="summary-card-title font-weight-bold">
+                                {{coursename}}
+                            </div>
+                        {{/course}}
+                        {{#learner}}
+                            <div class="">
+                                <span class="summary-card-title font-weight-bold">{{learnername}}</span>
+                                {{#isactive}}
+                                    <span class="text-success p-1 pl-2 pr-2 ml-3" style="border-radius: 3px;background: #e8f8e5;"> {{#str}} active, local_edwiserreports {{/str}} </span>
+                                {{/isactive}}
+                                {{^isactive}}
+                                    <span class="text-danger p-1 pl-2 pr-2 ml-3" style="border-radius: 3px;background-color: #f7e8e6;"> {{#str}} notactive, local_edwiserreports {{/str}}</span>
+                                {{/isactive}}
+                            </div>
+                            <div class="">
+                                <span class="summary-card-subtitle font-weight-bold"> {{#str}} lastaccess, local_edwiserreports {{/str}} : </span>
+                                <span class="ml-2"> {{lastaccess}} </span>
+                            </div>
+                        {{/learner}}
+                    </div>
+                </div>
+            {{/header}}
+
+            <div class="summary-body pb-4 pt-4" style="border-bottom: 1px solid #D9D9D9;">
+                <div class="summary-body-wrap row">
+                    {{#body}}
+                        <div class="mr-3 ml-3">
+                            <span class="summary-card-subtitle font-weight-bold">{{title}} : </span>
+                            <span> {{data}} </span>
+                        </div>
+                    {{/body}}
+                </div>
+            </div>
+
+            <div class="summary-footer pt-4">
+                <div class="summary-footer-wrap row">
+                    {{#footer}}
+                        <div class="col-12 col-lg-2 col-md-4 d-flex">
+                            <div class="insight-image">
+                                {{{icon}}}
+                            </div>
+                            <div>
+                                <div class="pl-2 mb-0" style='color:#3AAA9E;font-size: 24px;line-height: 24px;'>{{data}}</div>
+                                <div class="pl-2">{{title}}</div>
+                            </div>
+                        </div>
+                    {{/footer}}
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+{{/summarycard}}

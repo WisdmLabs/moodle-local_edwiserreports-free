@@ -79,5 +79,24 @@ $functions = array(
         'description' => 'Delete Custom Report',
         'type' => 'write',
         'ajax' => true,
-    )
+    ),
+    // 'report/edwiserreports_courseactivitiessummary:view' => array(
+    //     'captype' => 'read',
+    //     'contextlevel' => CONTEXT_SYSTEM,
+    //     'archetypes' => array(
+    //         'coursecreator' => CAP_ALLOW,
+    //         'manager' => CAP_ALLOW,
+    //         'teacher' => CAP_ALLOW,
+    //         'editingteacher' => CAP_ALLOW
+    //     ),
+    // ),
+    // 'report/edwiserreports_courseactivitiessummary:editadvance' => array(
+    //     'riskbitmask' => RISK_CONFIG,
+    //     'captype' => 'write',
+    //     'contextlevel' => CONTEXT_SYSTEM,
+    //     'archetypes' => array(
+    //         'coursecreator' => CAP_ALLOW,
+    //         'manager' => CAP_ALLOW
+    //     ),
+    // ),
 );

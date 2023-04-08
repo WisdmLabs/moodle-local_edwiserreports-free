@@ -40,6 +40,23 @@ require_once($CFG->dirroot . '/local/edwiserreports/classes/block_base.php');
  * Course progress block.
  */
 class courseprogressblock extends block_base {
+
+    /**
+     * Get Breadcrumbs for Course All courses summary
+     * @return object Breadcrumbs for All courses summary
+     */
+    public function get_breadcrumb() {
+
+        return array(
+            'items' => array(
+                array(
+                    'item' => get_string('allcoursessummary', 'local_edwiserreports')
+                )
+            )
+        );
+    }
+
+    
     /**
      * Get reports data for Course Progress block
      * @param  object $params Parameters

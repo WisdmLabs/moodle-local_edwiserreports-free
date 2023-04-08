@@ -60,7 +60,7 @@ $PAGE->set_context($context);
 $PAGE->set_pagelayout('base');
 
 // Add theme class to body.
-$PAGE->add_body_classes(array('theme_' . $PAGE->theme->name));
+$PAGE->add_body_classes(array('theme_' . $PAGE->theme->name, 'local-edwiserreports', 'report-page'));
 
 // Set page url.
 $PAGE->set_url($pageurl);

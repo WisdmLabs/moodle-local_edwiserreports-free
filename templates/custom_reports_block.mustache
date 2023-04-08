@@ -36,7 +36,7 @@
     <input class="hidden" id="wdm_custom_reports_shortname" value="{{shortname}}">
     <input class="hidden" id="wdm_custom_reports_downloadenable" value="{{downloadenable}}">
     <input class="hidden" id="wdm_custom_reports_desktopenable" value="{{enabledesktop}}">
-    <div class="customreports-block-section col-12  mb-5">
+    <div class="customreports-block-section w-100 mb-5">
         <div class="">
             <div class="reports-list-header d-flex">
                 <h4 class="font-weight-bold"> {{#str}} reportslist, local_edwiserreports {{/str}} </h4>
@@ -45,6 +45,7 @@
                 <div class="pt-4">
                     <div class="row pb-3">
                         <div class="filter-selector col-12 col-md-3 mb-1">
+                            <label>{{#str}} search, local_edwiserreports {{/str}}</label>
                             {{> local_edwiserreports/datatable/search }}
                         </div>
                     </div>
@@ -57,10 +58,10 @@
             </div>
         </div>
     </div>
-    <div id="wdm-cr-create-header" class="col-12">
+    <div id="wdm-cr-create-header" class="w-100">
         <h4 class="font-weight-bold"> {{#str}} createcustomreports, local_edwiserreports {{/str}} </h4>
     </div>
-    <div class="customreports-block-section col-12">
+    <div class="customreports-block-section w-100">
         <div class="h-auto mb-5">
             <div class="reports-filter-header">
                 <h4> {{#str}} reportsfilter, local_edwiserreports {{/str}} </h4>
@@ -104,7 +105,7 @@
             </div>
         </div>
     </div>
-    <div class="customreports-block-section col-12">
+    <div class="customreports-block-section w-100">
         <div class="h-auto mb-5">
             <div class="reports-preview-header">
                 <h4 class="rp-header">

@@ -908,3 +908,167 @@ $string['courseactivitiessummary'] = 'Kursaktivitäten Zusammenfassung (Pro)';
 $string['alllearnersummary'] = 'Alle Zusammenfassung der Lernenden (Pro)';
 $string['learnercourseprogress'] = 'Fortschritt des Lernkurs (Pro)';
 $string['learnercourseactivities'] = 'Aktivitäten für Lernende Kurs (Pro)';
+$string['clickondatapoint'] = 'Klicken Sie auf Datenpunkte für weitere Informationen (Pro)';
+$string['clickonchartformoreinfo'] = 'Klicken Sie auf Diagramm für weitere Informationen (Pro)';
+$string['proreportdescription'] = 'Das Folgende sind nur Dummy -Daten, um die Berichte in Edwiser Reports Pro zu präsentieren';
+
+// Dummy data.
+$string['avgvisits'] = 'Avg.Besuche';
+$string['avgtimespent'] = 'Avg.Zeitaufwand';
+$string['totalsections'] = 'Gesamtabschnitte';
+$string['highgrade'] = 'Höchste Klasse';
+$string['lowgrade'] = 'Niedrigste Klasse';
+$string['totallearners'] = 'Gesamtlerner';
+$string['totalmarks'] = 'Gesamtnoten';
+$string['marks'] = 'Markierungen';
+$string['enrolmentdate'] = 'Registrierungsdatum';
+$string['allsections'] = 'Alle Abschnitte';
+$string['allmodules'] = 'Alle Module';
+$string['searchactivity'] = 'durch Aktivität';
+$string['exclude'] = 'Ausschließen';
+$string['inactivesince1month'] = 'Inaktive Benutzer seit 1 Monat';
+$string['inactivesince1year'] = 'Inaktive Benutzer seit 1 Jahr';
+$string['learnerscompleted'] = 'Lernende abgeschlossen';
+$string['coursecompletionrate'] = 'Kursabschlussrate';
+$string['passgrade'] = 'Bestehen';
+$string['completionrate'] = 'Abschlussquote';
+$string['avggrade'] = 'Avg.Grad';
+$string['learner'] = 'Lerner';
+$string['gradedon'] = 'Bewertet auf';
+$string['firstaccess'] = 'Erster Zugang';
+$string['notyetstarted'] = 'Noch nicht angefangen';
+$string['completed'] = 'Vollendet';
+$string['inprogress'] = 'Im Gange';
+$string['notstarted'] = 'Nicht angefangen';
+$string['allusers'] = 'Alle Nutzer';
+$string['since1week'] = 'Seit 1 Woche';
+$string['since2weeks'] = 'Seit 2 Wochen';
+$string['since1month'] = 'Seit 1 Monat';
+$string['since1year'] = 'Seit 1 Jahr';
+$string['enrolledcourses'] = 'Eingeschriebene Kurse';
+$string['inprogresscourse'] = 'Investitionskurse';
+$string['completecourse'] = 'Abgeschlossene Kurse';
+$string['completionprogress'] = 'Abschluss Fortschritt';
+$string['completedassign'] = 'Abgeschlossene Aufgaben';
+$string['completedquiz'] = 'Fertigstellungsquiz';
+$string['completedscorm'] = 'Fertige Schämer';
+$string['lastaccesson'] = 'Letzter Zugriff auf';
+$string['active'] = 'Aktiv';
+$string['attemptedactivities'] = 'Versuchte Aktivitäten';
+$string['completionstatus'] = 'Abschlussstatus';
+$string['attempts'] = 'Versuche';
+$string['suspended'] = 'Ausgesetzt';
+$string['alltime'] = 'Alle Zeit';
+$string['enrollments'] = 'Einschreibungen';
+$string['totaltimespentoncourse'] = 'Gesamtzeit für Kurs (en)';
+$string['avgtimespentoncourse'] = 'AVG -Zeit für Kurs (en)';
+
+// Filter strings.
+$string['cohort'] = 'Kohorte';
+$string['group'] = 'Gruppe';
+$string['user'] = 'Benutzer';
+$string['search'] = 'Suchen';
+$string['courseandcategories'] = 'Kurs & Kategorien';
+$string['enrollment'] = 'Einschreibung';
+$string['show'] = 'Zeigen';
+$string['section'] = 'Abschnitt';
+$string['activity'] = 'Aktivität';
+$string['inactive'] = 'Inaktiv';
+$string['certificate'] = 'Zertifikat';
+
+
+// Domme data.
+$string['avgvisits'] = 'Gem. bezoeken';
+$string['avgtimespent'] = 'Gem. tijd besteed';
+$string['totalsections'] = 'Totaal aantal secties';
+$string['highgrade'] = 'Hoogste cijfer';
+$string['lowgrade'] = 'Laagste cijfer';
+$string['totallearners'] = 'Totaal aantal leerlingen';
+$string['totalmarks'] = 'Totaal aantal punten';
+$string['marks'] = 'Marks';
+$string['enrolmentdate'] = 'Inschrijvingsdatum';
+$string['allsections'] = 'Alle secties';
+$string['allmodules'] = 'Alle modules';
+$string['searchactivity'] = 'op activiteit';
+$string['courseandcategories'] = 'Cursus & categorieën';
+$string['section'] = 'Sectie';
+$string['group'] = 'Groep';
+$string['search'] = 'Zoeken';
+$string['exclude'] = 'Uitsluiten';
+$string['inactivesince1month'] = 'Inactieve gebruikers sinds 1 maand';
+$string['inactivesince1year'] = 'Inactieve gebruikers sinds 1 jaar';
+$string['show'] = 'Toon';
+$string['learnerscompleted'] = 'Learners voltooid';
+$string['coursecompletionrate'] = 'Cursusvoltooiingspercentage';
+$string['passgrade'] = 'Slagcijfer';
+$string['completionrate'] = 'Voltooiingspercentage';
+$string['avggrade'] = 'Gem. cijfer';
+$string['leerling'] = 'Leerling';
+$string['gradedon'] = 'Beoordeeld op';
+$string['firstaccess'] = 'Eerste toegang';
+$string['notyetstarted'] = 'Nog niet gestart';
+$string['completed'] = 'Voltooid';
+$string['inprogress'] = 'In uitvoering';
+$string['notstarted'] = 'Niet gestart';
+$string['inactive'] = 'Inactief';
+$string['allusers'] = 'Alle gebruikers';
+$string['since1week'] = 'Sinds 1 week';
+$string['since2weeks'] = 'Sinds 2 weken';
+$string['since1month'] = 'Sinds 1 maand';
+$string['since1year'] = 'Sinds 1 jaar';
+$string['enrolledcourses'] = 'Ingeschreven cursussen';
+$string['inprogresscourse'] = 'Lopende cursussen';
+$string['completecourse'] = 'Voltooide cursussen';
+$string['completionprogress'] = 'Voortgang voltooiing';
+$string['completedassign'] = 'Voltooide opdrachten';
+$string['completedquiz'] = 'Voltooide quizzen';
+$string['completedscorm'] = 'Voltooide scorms';
+$string['lastaccesson'] = 'Laatste toegang op';
+$string['cohort'] = 'Cohort';
+$string['active'] = 'Actief';
+$string['attemptedactivities'] = 'Poging tot activiteiten';
+$string['completionstatus'] = 'Voltooiingsstatus';
+$string['pogingen'] = 'Pogingen';
+$string['suspended'] = 'Suspended';
+$string['alltime'] = 'Altijd';
+$string['enrollments'] = 'Inschrijvingen';
+$string['totaltimespentoncourse'] = 'Totale tijd besteed aan cursus(sen)';
+$string['avgtimespentoncourse'] = 'Gemiddelde tijd besteed aan cursus(sen)';
+
+
+// Pro-strings.
+$string['allcoursessummary'] = 'Overzicht van alle cursussen';
+$string['allcoursessummarypro'] = 'Overzicht van alle cursussen (PRO)';
+$string['courseactivitiessummary'] = 'Overzicht cursusactiviteiten (PRO)';
+$string['courseactivitycompletion'] = 'Cursusactiviteit voltooid (PRO)';
+$string['alllearnersummary'] = 'Overzicht van alle leerlingen (PRO)';
+$string['learnercourseprogress'] = 'Learner Course Progress (PRO)';
+$string['learnercourseactivities'] = 'Learner Course Activities (PRO)';
+$string['clickondatapoint'] = 'Klik op datapunten voor meer info (PRO)';
+$string['clickonchartformoreinfo'] = 'Klik op grafiek voor meer info (PRO)';
+$string['proreportdescription'] = 'Het volgende zijn slechts dummygegevens om de beschikbare rapporten in Edwiser Reports PRO te presenteren';
+
+
+// dummy data.
+$string['cohort'] = 'Cohort';
+$string['group'] = 'Groep';
+$string['user'] = 'Gebruiker';
+$string['search'] = 'Zoeken';
+$string['courseandcategories'] = 'Cursus & categorieën';
+$string['enrollment'] = 'Inschrijven';
+$string['show'] = 'Toon';
+$string['section'] = 'Sectie';
+$string['activity'] = 'Activiteit';
+$string['inactive'] = 'Inactief';
+$string['certificaat'] = 'Certificaat';
+
+$string['atleastoneactivitystarted'] = 'Minstens één activiteit gestart';
+$string['highestgrade'] = 'Hoogste cijfer';
+$string['lowestgrade'] = 'Laagste cijfer';
+$string['proreportupgrademsg'] = 'Deze rapporten zijn ook beschikbaar voor de gebruikersrollen: manager, cursusmanager, docent en maker van de cursus';
+
+$string['showingdatafor'] = 'Gegevens tonen voor:';
+
+$string['category1'] = 'Categorie 1';
+$string['course1'] = 'Cursus 1';
+$string['cohort1'] = 'Cohort 1';

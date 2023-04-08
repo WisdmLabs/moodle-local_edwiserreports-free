@@ -41,10 +41,9 @@
         <label class="h5 selected-period theme-1-bg text-white">{{#str}} loading, local_edwiserreports {{/str}}</label>
     </div>
     <div class="ml-auto filter-wrapper text-right mt-2">
-        <h6 class="d-inline-block font-weight-600">
-            {{#str}} showdatafor, local_edwiserreports {{/str}}
-        </h6>
+
         <div class="filter-selector d-inline-block ml-1">
+            <label>{{#str}} date, local_edwiserreports {{/str}}</label>
             <button type="button" class="btn dropdown-toggle text-left edwiserreports-calendar" data-toggle="dropdown" aria-expanded="false">
                 {{#str}} last7days, local_edwiserreports {{/str}}
             </button>
@@ -200,7 +199,6 @@
                                         }
                                     },
                                     drawCallback: function() {
-                                        $(tableId).find('th').addClass('theme-3-bg text-white');
                                         common.stylePaginationButton(this);
                                     }
                                 });

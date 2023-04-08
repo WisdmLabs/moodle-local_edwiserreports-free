@@ -93,6 +93,30 @@ define([
                 offsetX: 0,
                 offsetY: 0,
             },
+            custom: function({ series, seriesIndex, dataPointIndex, w }) {
+                let tooltip = `
+                <div class="apexcharts-tooltip-title" style="font-family: Helvetica, Arial, sans-serif; font-size: 12px;">
+                    ${common.formatDate(new Date(w.config.xaxis.categories[dataPointIndex]), "d MMM yyyy")}
+                </div>`;
+                for (let index = 0; index < w.config.series.length; index++) {
+                    const element = w.config.series[index];
+                    if (element.data.length == 0) {
+                        continue;
+                    }
+                    tooltip += `<div class="apexcharts-tooltip-series-group apexcharts-active" style="order: ${index}; display: flex;">
+                        <span class="apexcharts-tooltip-marker" style="background-color: ${w.config.colors[index]};"></span>
+                        <div class="apexcharts-tooltip-text" style="font-family: Helvetica, Arial, sans-serif; font-size: 12px;">
+                            <div class="apexcharts-tooltip-y-group">
+                                <span class="apexcharts-tooltip-text-y-label">${w.config.series[index].name}: </span>
+                                <span class="apexcharts-tooltip-text-y-value">${w.config.series[index].data[dataPointIndex]}</span>
+                            </div>
+                        </div>
+                    </div>`;
+                }
+                return tooltip + `
+                    <span style="color: black; font-size: 0.871rem; order: 4; padding: 0px 15px;">${M.util.get_string('clickondatapoint', 'local_edwiserreports')}</span>
+                `;
+            }
         },
         stroke: {
             curve: 'smooth',

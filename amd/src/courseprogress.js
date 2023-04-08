@@ -184,7 +184,7 @@ define([
                     className: "text-left",
                     targets: 0
                 }, {
-                    className: "text-center modal-trigger",
+                    className: "text-right modal-trigger",
                     targets: "_all"
                 }],
                 language: {

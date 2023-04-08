@@ -29,15 +29,20 @@
     }
 }}
 {{> local_edwiserreports/navigation }}
+{{> local_edwiserreports/breadcrumb }}
+
 {{> local_edwiserreports/report-page-header }}
+
 <div id="wdm-completion-individual" class="table-responsive" data-sesskey="{{sesskey}}">
     <div id="userfilter" class="h-auto mt-2">
-        <div class="row">
+        <div class="row mr-2">
             <div class="filter-selector col-12 col-md-3 mb-1">
+                <label>{{#str}} search, local_edwiserreports {{/str}}</label>
                 {{> local_edwiserreports/datatable/search }}
             </div>
             {{# cohortfilters }}
                 <div class="filter-selector col-12 col-md-2 mb-1">
+                    <label>{{#str}} cohort, local_edwiserreports {{/str}}</label>
                     <select class="cohort-select form-control singleselect" name="cohort-select">
                         {{#values}}
                             <option value="{{id}}">{{name}}</option>
@@ -46,9 +51,11 @@
                 </div>
             {{/ cohortfilters }}
             <div class="filter-selector col-12 col-lg-3 col-md-4 mb-1">
+                <label>{{#str}} course, local_edwiserreports {{/str}}</label>
                 {{> local_edwiserreports/filters/courses_filter }}
             </div>
-            <div class="filter-selector col-12 col-md-3 mb-1 ml-auto">
+            <div class="filter-selector col-12 table-length-input ml-auto mb-3">
+                <label>{{#str}} show, local_edwiserreports {{/str}}</label>
                 {{> local_edwiserreports/datatable/length }}
             </div>
         </div>
@@ -56,28 +63,28 @@
     <table class="table w-100">
         <thead>
             <tr>
-                <th class="theme-3-bg text-white">
+                <th>
                     {{#str}} fullname, local_edwiserreports {{/str}}
                 </th>
-                <th class="text-center theme-3-bg text-white">
+                <th class="text-center">
                     {{#str}} enrolledon, local_edwiserreports {{/str}}
                 </th>
-                <th class="text-center theme-3-bg text-white">
+                <th class="text-center">
                     {{#str}} enrolltype, local_edwiserreports {{/str}}
                 </th>
-                <th class="text-center theme-3-bg text-white">
+                <th class="text-center">
                     {{#str}} noofvisits, local_edwiserreports {{/str}}
                 </th>
-                <th class="text-center theme-3-bg text-white">
+                <th class="text-center">
                     {{#str}} coursecompletion, local_edwiserreports {{/str}}
                 </th>
-                <th class="text-center theme-3-bg text-white">
+                <th class="text-center">
                     {{#str}} completiontime, local_edwiserreports {{/str}}
                 </th>
-                <th class="text-center theme-3-bg text-white">
+                <th class="text-center">
                     {{#str}} grade, local_edwiserreports {{/str}}
                 </th>
-                <th class="text-center theme-3-bg text-white">
+                <th class="text-center">
                     {{#str}} lastaccess, local_edwiserreports {{/str}}
                 </th>
             </tr>

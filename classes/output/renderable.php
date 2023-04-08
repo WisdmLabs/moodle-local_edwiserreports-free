@@ -26,6 +26,7 @@ namespace local_edwiserreports\output;
 
 defined('MOODLE_INTERNAL') || die();
 
+use html_writer;
 use moodle_url;
 use renderable;
 use renderer_base;
@@ -44,9 +45,10 @@ foreach ($files as $file) {
     require_once($CFG->dirroot . "/local/edwiserreports/classes/blocks/" . $file);
 }
 
-require_once($CFG->dirroot."/local/edwiserreports/lib.php");
-require_once($CFG->dirroot."/local/edwiserreports/classes/report_blocks.php");
-require_once($CFG->dirroot."/local/edwiserreports/locallib.php");
+require_once($CFG->dirroot . "/local/edwiserreports/lib.php");
+require_once($CFG->dirroot . "/local/edwiserreports/classes/reports/base.php");
+require_once($CFG->dirroot . "/local/edwiserreports/classes/report_blocks.php");
+require_once($CFG->dirroot . "/local/edwiserreports/locallib.php");
 
 /**
  * Elucid report renderable.
@@ -76,7 +78,7 @@ class edwiserreports_renderable implements renderable, templatable {
                 $bfs->graphics = new moodle_url('/local/edwiserreports/pix/bfs/spin_graphics.png');
                 $bfs->close = 'local_edwiserreports_bfs_pre_hide';
                 user_preference_allow_ajax_update('local_edwiserreports_bfs_pre_hide', PARAM_BOOL);
-            break;
+                break;
             case $now >= 1669334400 && $now <= 1669766400;
                 if (get_user_preferences('local_edwiserreports_bfs_after_hide', false)) {
                     $bfs->show = false;
@@ -91,7 +93,7 @@ class edwiserreports_renderable implements renderable, templatable {
                 $bfs->graphics = new moodle_url('/local/edwiserreports/pix/bfs/jackpot_graphics.png');
                 $bfs->close = 'local_edwiserreports_bfs_after_hide';
                 user_preference_allow_ajax_update('local_edwiserreports_bfs_after_hide', PARAM_BOOL);
-            break;
+                break;
             default:
                 $bfs->show = false;
                 break;
@@ -247,6 +249,15 @@ class coursereport_renderable implements renderable, templatable {
             $output->setactive = true;
             $output->activeurl = new moodle_url("/local/edwiserreports/index.php");
         }
+
+        $output->breadcrumb = array(
+            'items' => array(
+                array(
+                    'item' => get_string('coursereports', 'local_edwiserreports')
+                )
+            )
+        );
+
         return $output;
     }
 }
@@ -374,6 +385,570 @@ class completion_renderable implements renderable, templatable {
             $output->setactive = true;
             $output->activeurl = new moodle_url("/local/edwiserreports/completion.php", array('courseid' => $course->id));
         }
+
+        $output->breadcrumb = array(
+            'items' => array(
+                array(
+                    'item' => html_writer::link(
+                        new moodle_url(
+                            "/local/edwiserreports/allcoursessummary.php",
+                        ),
+                        get_string('allcoursessummary', 'local_edwiserreports'),
+                        array(
+                            'style' => 'margin-left: 0.5rem;'
+                        )
+                    )
+                ),
+                array(
+                    'item' => get_string('coursecompletion', 'local_edwiserreports')
+                )
+            )
+        );
+
+        return $output;
+    }
+}
+
+
+
+/**
+ * All courses summary renderables.
+ */
+class allcoursessummary_renderable implements renderable, templatable {
+    /**
+     * Function to export the renderer data in a format that is suitable for a
+     * edit mustache template.
+     *
+     * @param renderer_base $output Used to do a final render of any components that need to be rendered for export.
+     * @return stdClass|array
+     */
+    public function export_for_template(renderer_base $output) {
+        global $CFG, $USER;
+        require_once($CFG->dirroot . '/local/edwiserreports/classes/reports/allcoursessummary.php');
+
+        $allcoursessummary = new \local_edwiserreports\reports\allcoursessummary();
+        $authentication = new authentication();
+        $output = new stdClass();
+
+        if ($allcoursessummary->can_edit_report_capability('allcoursessummary')) {
+            $output->canedit = true;
+            $output->capdata = [
+                'contextid' => context_system::instance()->id,
+                'reportname' => 'allcoursessummary'
+            ];
+        }
+
+        // Show license notice.
+        // $output->notice = (new license())->get_license_notice();
+
+        // Secret key.
+        $output->secret = $authentication->get_secret_key($USER->id);
+
+        // Add export icons to export array.
+        $output->export = array(
+            "id" => "allcoursessummary",
+            "region" => "report",
+            "downloadlinks" => $allcoursessummary->bb->get_block_download_options(),
+            "downloadurl" => $CFG->wwwroot . "/local/edwiserreports/download.php",
+            "filter" => json_encode([
+                "cohort" => 0,
+                "group" => 0,
+                "exclude" => [],
+                "enrolment" => 'all'
+            ])
+        );
+
+        // Header navigation.
+        $output->navigation = navigation::instance()->get_navigation('course');
+        $output->showdaterange = true;
+        $output->showdatefilter = true;
+
+        $output->pageheader = get_string("allcoursessummarypro", "local_edwiserreports");
+        $output->breadcrumb = $allcoursessummary->get_breadcrumb();
+        $output->calendar = file_get_contents($CFG->dirroot . '/local/edwiserreports/pix/calendar.svg');
+        $filters = $allcoursessummary->get_filter();
+
+        // Cohort filter.
+        if (isset($filters['cohorts'])) {
+            $output->cohortfilters = $filters['cohorts'];
+        }
+
+        // Groups to show on grade page.
+        if (isset($filters['groups'])) {
+            $output->groups = $filters['groups'];
+        }
+
+        $output->searchicon = \local_edwiserreports\utility::image_icon('actions/search');
+        $output->placeholder = get_string('searchcourse', 'local_edwiserreports');
+        $output->length = [10, 25, 50, 100];
+        if ($CFG->branch > 311) {
+            $output->setactive = true;
+            $output->activeurl = new moodle_url("/local/edwiserreports/index.php");
+        }
+
+        $image = file_get_contents($CFG->dirroot . '/local/edwiserreports/pix/lock.svg');
+        $upgradelink = '';
+        if (is_siteadmin($USER->id)) {
+            $upgradelink = UPGRADE_URL;
+        }
+        $output->pro = $image;
+        $output->upgradelink = $upgradelink;
+
+        return $output;
+    }
+}
+
+
+/**
+ * Course Activity Completion page renderables.
+ */
+class courseactivitycompletion_renderable implements renderable, templatable {
+    /**
+     * Function to export the renderer data in a format that is suitable for a
+     * edit mustache template.
+     *
+     * @param renderer_base $output Used to do a final render of any components that need to be rendered for export.
+     * @return stdClass|array
+     */
+    public function export_for_template(renderer_base $output) {
+        global $USER, $CFG;
+
+        $courseactivitycompletion = new \local_edwiserreports\reports\courseactivitycompletion();
+        $authentication = new authentication();
+        $output = new stdClass();
+
+        // Show license notice.
+        // $output->notice = (new license())->get_license_notice();
+
+        // Secret key.
+        $output->secret = $authentication->get_secret_key($USER->id);
+        if ($courseactivitycompletion->can_edit_report_capability('courseactivitycompletion')) {
+            $output->canedit = true;
+            $output->capdata = [
+                'contextid' => context_system::instance()->id,
+                'reportname' => 'courseactivitycompletion'
+            ];
+        }
+
+        // Selected Course.
+        $activecourse = optional_param('course', 0, PARAM_INT);
+
+        // Selected Module.
+        $activecm = optional_param('cm', 0, PARAM_INT);
+
+        // Course to show on grade page.
+        $filter = $courseactivitycompletion->get_filter($activecourse, $activecm);
+        $output->coursecats = $filter['coursecategories'];
+        $output->cms = $filter['cms'];
+        $output->groups = $filter['groups'];
+
+        // Header navigation.
+        $output->pageheader = get_string("courseactivitycompletion", "local_edwiserreports");
+        $output->showdaterange = true;
+        $output->navigation = navigation::instance()->get_navigation('course');
+        $output->breadcrumb = $courseactivitycompletion->get_breadcrumb();
+        $output->calendar = file_get_contents($CFG->dirroot . '/local/edwiserreports/pix/calendar.svg');
+
+        // Table filter context.
+        $output->searchicon = \local_edwiserreports\utility::image_icon('actions/search');
+        $output->placeholder = get_string('searchuser', 'local_edwiserreports');
+        $output->length = [10, 25, 50, 100];
+
+        // Add export icons to export array.
+        $output->export = array(
+            "id" => "courseactivitycompletion",
+            "region" => "report",
+            "downloadlinks" => $courseactivitycompletion->bb->get_block_download_options(),
+            "downloadurl" => $CFG->wwwroot . "/local/edwiserreports/download.php",
+            "filter" => json_encode([
+                "course" => $filter['activecourse'],
+                "cm" => $filter['activecm'],
+                "group" => 0,
+                "enrolment" => "all"
+            ])
+        );
+
+        if ($CFG->branch > 311) {
+            $output->setactive = true;
+            $output->activeurl = new moodle_url("/local/edwiserreports/index.php");
+        }
+
+        $filters = new stdClass();
+        $filters->course = $filter['activecourse'];
+        $filters->cm = $filter['activecm'];
+        $output->summarycard = $courseactivitycompletion->get_summary_data($filters);
+
+        $image = file_get_contents($CFG->dirroot . '/local/edwiserreports/pix/lock.svg');
+        $upgradelink = '';
+        if (is_siteadmin($USER->id)) {
+            $upgradelink = UPGRADE_URL;
+        }
+        $output->pro = $image;
+        $output->upgradelink = $upgradelink;
+
+        return $output;
+    }
+}
+
+/**
+ * Course activities summary page renderables.
+ */
+class courseactivitiessummary_renderable implements renderable, templatable {
+    /**
+     * Function to export the renderer data in a format that is suitable for a
+     * edit mustache template.
+     *
+     * @param renderer_base $output Used to do a final render of any components that need to be rendered for export.
+     * @return stdClass|array
+     */
+    public function export_for_template(renderer_base $output) {
+        global $USER, $CFG;
+        require_once($CFG->dirroot . '/local/edwiserreports/classes/reports/courseactivitiessummary.php');
+
+        $courseactivitiessummary = new \local_edwiserreports\reports\courseactivitiessummary();
+        $authentication = new authentication();
+        $output = new stdClass();
+
+        // Show license notice.
+        // $output->notice = (new license())->get_license_notice();
+
+        // Secret key.
+        $output->secret = $authentication->get_secret_key($USER->id);
+        if ($courseactivitiessummary->can_edit_report_capability('courseactivitiessummary')) {
+            $output->canedit = true;
+            $output->capdata = [
+                'contextid' => context_system::instance()->id,
+                'reportname' => 'courseactivitiessummary'
+            ];
+        }
+
+        // Courses.
+        $activecourse = optional_param('course', 0, PARAM_INT);
+
+        // Course to show on grade page.
+        $filter = $courseactivitiessummary->get_filter($activecourse);
+        // $output->coursecats = $filter['coursecategories'];
+        $output->sections = $filter['sections'];
+        $output->modules = $filter['modules'];
+        $output->groups = $filter['groups'];
+
+        // Header navigation.
+        $output->pageheader = get_string("courseactivitiessummary", "local_edwiserreports");
+        $output->showdaterange = true;
+        $output->navigation = navigation::instance()->get_navigation('course');
+        $output->breadcrumb = $courseactivitiessummary->get_breadcrumb();
+        $output->calendar = file_get_contents($CFG->dirroot . '/local/edwiserreports/pix/calendar.svg');
+
+        // Table filter context.
+        $output->searchicon = \local_edwiserreports\utility::image_icon('actions/search');
+        $output->placeholder = get_string('searchactivity', 'local_edwiserreports');
+        $output->length = [10, 25, 50, 100];
+
+        // Add export icons to export array.
+        $output->export = array(
+            "id" => "courseactivitiessummary",
+            "region" => "report",
+            "downloadlinks" => $courseactivitiessummary->bb->get_block_download_options(),
+            "downloadurl" => $CFG->wwwroot . "/local/edwiserreports/download.php",
+            "filter" => json_encode([
+                "course" => $filter['activecourse'],
+                "section" => 0,
+                "module" => "all",
+                "group" => 0,
+                "enrolment" => "all",
+                "exclude" => []
+            ])
+        );
+
+        if ($CFG->branch > 311) {
+            $output->setactive = true;
+            $output->activeurl = new moodle_url("/local/edwiserreports/index.php");
+        }
+
+
+        $filters = new stdClass();
+        $filters->course = $filter['activecourse'];
+        $output->summarycard = $courseactivitiessummary->get_summary_data($filters);
+
+        $image = file_get_contents($CFG->dirroot . '/local/edwiserreports/pix/lock.svg');
+        $upgradelink = '';
+        if (is_siteadmin($USER->id)) {
+            $upgradelink = UPGRADE_URL;
+        }
+        $output->pro = $image;
+        $output->upgradelink = $upgradelink;
+
+        return $output;
+    }
+}
+
+/**
+ * Learner course progress page renderables.
+ */
+class learnercourseactivities_renderable implements renderable, templatable {
+
+    /**
+     * Function to export the renderer data in a format that is suitable for a
+     * edit mustache template.
+     *
+     * @param renderer_base $output Used to do a final render of any components that need to be rendered for export.
+     * @return stdClass|array
+     */
+    public function export_for_template(renderer_base $output) {
+        global $USER, $CFG;
+
+        $learnercourseactivities = new \local_edwiserreports\reports\learnercourseactivities();
+        $authentication = new authentication();
+        $output = new stdClass();
+
+        // Show license notice.
+        // $output->notice = (new license())->get_license_notice();
+
+        // Secret key.
+        $output->secret = $authentication->get_secret_key($USER->id);
+
+        if ($learnercourseactivities->can_edit_report_capability('learnercourseactivities')) {
+            $output->canedit = true;
+            $output->capdata = [
+                'contextid' => context_system::instance()->id,
+                'reportname' => 'learnercourseactivities'
+            ];
+        }
+
+        // Active course.
+        $activecourse = optional_param('course', 0, PARAM_INT);
+
+        // Active learner.
+        $activelearner = optional_param('learner', 0, PARAM_INT);
+
+        // Course to show on grade page.
+        $filter = $learnercourseactivities->get_filter($activecourse, $activelearner);
+        $output->coursecats = $filter['coursecategories'];
+        $output->students = $filter['students'];
+        $output->sections = $filter['sections'];
+        $output->modules = $filter['modules'];
+
+        // Header navigation.
+        $output->pageheader = get_string("learnercourseactivities", "local_edwiserreports");
+        $output->navigation = navigation::instance()->get_navigation('learners');
+        $output->breadcrumb = $learnercourseactivities->get_breadcrumb();
+        $output->calendar = file_get_contents($CFG->dirroot . '/local/edwiserreports/pix/calendar.svg');
+
+        // Table filter context.
+        $output->searchicon = \local_edwiserreports\utility::image_icon('actions/search');
+        $output->placeholder = get_string('searchactivity', 'local_edwiserreports');
+        $output->length = [10, 25, 50, 100];
+
+        // Add export icons to export array.
+        $output->export = array(
+            "id" => "learnercourseactivities",
+            "region" => "report",
+            "downloadlinks" => $learnercourseactivities->bb->get_block_download_options(),
+            "downloadurl" => $CFG->wwwroot . "/local/edwiserreports/download.php",
+            "filter" => json_encode([
+                "course" => $filter['activecourse'],
+                "learner" => $filter['activelearner'],
+                "section" => 0,
+                "module" => "all",
+                "completion" => "all"
+            ])
+        );
+
+        if ($CFG->branch > 311) {
+            $output->setactive = true;
+            $output->activeurl = new moodle_url("/local/edwiserreports/index.php");
+        }
+
+        $filters = new stdClass();
+        $filters->course = $filter['activecourse'];
+        $filters->learner = $filter['activelearner'];
+        $output->summarycard = $learnercourseactivities->get_summary_data($filters);
+
+        $image = file_get_contents($CFG->dirroot . '/local/edwiserreports/pix/lock.svg');
+        $upgradelink = '';
+        if (is_siteadmin($USER->id)) {
+            $upgradelink = UPGRADE_URL;
+        }
+        $output->pro = $image;
+        $output->upgradelink = $upgradelink;
+
+        return $output;
+    }
+}
+
+
+/**
+ * Learner course progress page renderables.
+ */
+class learnercourseprogress_renderable implements renderable, templatable {
+
+    /**
+     * If this is true then course progress will be shown of current user only.
+     *
+     * @var bool
+     */
+    public $learner;
+
+    /**
+     * Constructor
+     *
+     * @param boolean $learner True if current user is learner
+     */
+    public function __construct($learner = true) {
+        $this->learner = $learner;
+    }
+    /**
+     * Function to export the renderer data in a format that is suitable for a
+     * edit mustache template.
+     *
+     * @param renderer_base $output Used to do a final render of any components that need to be rendered for export.
+     * @return stdClass|array
+     */
+    public function export_for_template(renderer_base $output) {
+        global $USER, $CFG;
+
+        $learnercourseprogress = new \local_edwiserreports\reports\learnercourseprogress();
+        $authentication = new authentication();
+        $output = new stdClass();
+
+        // Show license notice.
+        // $output->notice = (new license())->get_license_notice();
+
+        // Secret key.
+        $output->secret = $authentication->get_secret_key($USER->id);
+
+        if (!$this->learner) {
+            $activelearner = optional_param('learner', 0, PARAM_INT);
+
+            // Course to show on grade page.
+            $filter = $learnercourseprogress->get_filter($activelearner);
+
+            $activelearner = $filter['activelearner'];
+            $output->students = $filter['learners'];
+
+            // Add export icons to export array.
+            $output->export = array(
+                "id" => "learnercourseprogress",
+                "region" => "report",
+                "downloadlinks" => $learnercourseprogress->bb->get_block_download_options(),
+                "downloadurl" => $CFG->wwwroot . "/local/edwiserreports/download.php",
+                "filter" => json_encode([
+                    "learner" => $activelearner,
+                    "enrolment" => 'all'
+                ])
+            );
+
+            if ($learnercourseprogress->can_edit_report_capability('learnercourseprogress')) {
+                $output->canedit = true;
+                $output->capdata = [
+                    'contextid' => context_system::instance()->id,
+                    'reportname' => 'learnercourseprogress'
+                ];
+            }
+        }
+
+        $output->learner = $this->learner;
+
+        // Header navigation.
+        $output->pageheader = get_string("learnercourseprogress", "local_edwiserreports");
+        $output->showdaterange = true;
+        $output->navigation = navigation::instance()->get_navigation('learners');
+        $output->breadcrumb = $learnercourseprogress->get_breadcrumb();
+        $output->calendar = file_get_contents($CFG->dirroot . '/local/edwiserreports/pix/calendar.svg');
+
+        // Table filter context.
+        $output->searchicon = \local_edwiserreports\utility::image_icon('actions/search');
+        $output->placeholder = get_string('searchcourse', 'local_edwiserreports');
+        $output->length = [10, 25, 50, 100];
+
+        if ($CFG->branch > 311) {
+            $output->setactive = true;
+            $output->activeurl = new moodle_url("/local/edwiserreports/index.php");
+        }
+
+        $filters = new stdClass();
+        // $filters->course = $filter['activecourse'];
+        $filters->learner = $filter['activelearner'];
+        $output->summarycard = $learnercourseprogress->get_summary_data($filters);
+
+        $image = file_get_contents($CFG->dirroot . '/local/edwiserreports/pix/lock.svg');
+        $upgradelink = '';
+        if (is_siteadmin($USER->id)) {
+            $upgradelink = UPGRADE_URL;
+        }
+        $output->pro = $image;
+        $output->upgradelink = $upgradelink;
+
+        return $output;
+    }
+}
+
+
+/**
+ * Student engagement renderables.
+ */
+class studentengagement_renderable implements renderable, templatable {
+    /**
+     * Function to export the renderer data in a format that is suitable for a
+     * edit mustache template.
+     *
+     * @param renderer_base $output Used to do a final render of any components that need to be rendered for export.
+     * @return stdClass|array
+     */
+    public function export_for_template(renderer_base $output) {
+        global $USER, $CFG;
+
+        // Getting secret key for service authentication.
+        $authentication = new authentication();
+
+        $studentengagement = new \local_edwiserreports\reports\studentengagement();
+        $output = new stdClass();
+
+        // Show license notice.
+        // $output->notice = (new license())->get_license_notice();
+
+        // Secret key.
+        $output->secret = $authentication->get_secret_key($USER->id);
+
+        // Courses for filter.
+        $output->courses = $studentengagement->get_studentengagement_courses();
+
+        // Fetch cohort filters.
+        if ($cohortfilters = local_edwiserreports_get_cohort_filter()) {
+            $output->cohortfilters = $cohortfilters;
+        }
+
+        // Groups to show on grade page.
+        if ($groups = $studentengagement->get_default_group_filter()) {
+            $output->groups = $groups;
+        }
+
+        // Header navigation.
+        $output->navigation = navigation::instance()->get_navigation('learners');
+        $output->showdaterange = true;
+        $output->pageheader = get_string('alllearnersummary', 'local_edwiserreports');
+        $output->breadcrumb = $studentengagement->get_breadcrumb();
+        $output->calendar = file_get_contents($CFG->dirroot . '/local/edwiserreports/pix/calendar.svg');
+
+        $output->searchicon = \local_edwiserreports\utility::image_icon('actions/search');
+        $output->placeholder = get_string('searchuser', 'local_edwiserreports');
+        $output->length = [10, 25, 50, 100];
+        if ($CFG->branch > 311) {
+            $output->setactive = true;
+            $output->activeurl = new moodle_url("/local/edwiserreports/index.php");
+        }
+
+        $filters = new stdClass();
+        $output->summarycard = $studentengagement->get_summary_data($filters);
+
+        $image = file_get_contents($CFG->dirroot . '/local/edwiserreports/pix/lock.svg');
+        $upgradelink = '';
+        if (is_siteadmin($USER->id)) {
+            $upgradelink = UPGRADE_URL;
+        }
+        $output->pro = $image;
+        $output->upgradelink = $upgradelink;
+
         return $output;
     }
 }

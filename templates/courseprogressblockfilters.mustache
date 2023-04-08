@@ -1,14 +1,17 @@
 <div class="row">
     {{# cohort }}
         <div class="filter-selector pro-export-wrapper col-12 col-md-6 mb-1">
+            <label>{{#str}} cohort, local_edwiserreports {{/str}}</label>
             {{> local_edwiserreports/filters/cohorts_filter }}
         </div>
     {{/ cohort }}
     <div class="filter-selector col-12 col-md-6 mb-1">
+        <label>{{#str}} course, local_edwiserreports {{/str}}</label>
         {{> local_edwiserreports/filters/courses_filter }}
     </div>
     {{# group }}
         <div class="filter-selector pro-export-wrapper col-12 col-md-6 mb-1">
+            <label>{{#str}} group, local_edwiserreports {{/str}}</label>
             {{> local_edwiserreports/filters/groups_filter }}
         </div>
     {{/ group }}

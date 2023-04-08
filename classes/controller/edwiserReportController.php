@@ -224,6 +224,7 @@ class edwiserReportController extends controllerAbstract {
         ]);
     }
 
+
     /**
      * Get data for grade graph
      *
@@ -334,4 +335,81 @@ class edwiserReportController extends controllerAbstract {
             'enddate' => $enddate / 86400
         ]);
     }
+
+    /**
+     * Get course activities summary data for table.
+     *
+     * @return void
+     */
+    public function get_courseactivitiessummary_data_action() {
+        $data = required_param('data', PARAM_RAW);
+        $params = json_decode($data);
+        $courseactivitiessummary = new \local_edwiserreports\reports\courseactivitiessummary();
+        echo json_encode($courseactivitiessummary->get_data($params));
+    }
+
+    /**
+     * Get learner course progress data for table.
+     *
+     * @return void
+     */
+    public function get_learnercourseprogress_data_action() {
+        $data = required_param('data', PARAM_RAW);
+        $params = json_decode($data);
+        $learnercourseprogress = new \local_edwiserreports\reports\learnercourseprogress();
+        echo json_encode($learnercourseprogress->get_data($params));
+    }
+
+    /**
+     * Get learner course activities data for table.
+     *
+     * @return void
+     */
+    public function get_learnercourseactivities_data_action() {
+        $data = required_param('data', PARAM_RAW);
+        $params = json_decode($data);
+        $learnercourseactivities = new \local_edwiserreports\reports\learnercourseactivities();
+        echo json_encode($learnercourseactivities->get_data($params));
+    }
+
+
+    /**
+     * Get all courses summary data for table.
+     *
+     * @return void
+     */
+    public function get_allcoursessummary_data_action() {
+        $data = required_param('data', PARAM_RAW);
+        $params = json_decode($data);
+        $allcoursessummary = new \local_edwiserreports\reports\allcoursessummary();
+        echo json_encode($allcoursessummary->get_data($params));
+    }
+
+    /**
+     * Get course activity completion data for table.
+     *
+     * @return void
+     */
+    public function get_courseactivitycompletion_data_action() {
+        $data = required_param('data', PARAM_RAW);
+        $params = json_decode($data);
+        $courseactivitycompletion = new \local_edwiserreports\reports\courseactivitycompletion();
+        echo json_encode($courseactivitycompletion->get_data($params));
+    }
+
+
+    /**
+     * Get table data for student engagement table.
+     */
+    public function get_studentengagement_table_data_ajax_action() {
+        // Get data.
+        $data = json_decode(required_param('data', PARAM_RAW));
+
+        $studentengagement = new \local_edwiserreports\reports\studentengagement();
+
+        // Response for ajax action.
+        echo json_encode($studentengagement->get_table_data($data->filter));
+    }
+
+
 }

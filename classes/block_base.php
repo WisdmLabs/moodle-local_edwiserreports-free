@@ -254,6 +254,70 @@ class block_base {
         }
     }
 
+
+        /**
+     * Get block data download link list for dropdown.
+     * @param  bool  $graphical If true then return graphical export option
+     * @param  bool  $email     If true then add email option in dropdown.
+     * @return array
+     */
+    public function get_block_download_options($graphical = false, $email = true) {
+        // If block is graphical then export options to export block image.
+        if ($graphical == true) {
+            $return = [[
+                'name' => 'pdfimage',
+                'label' => get_string('exporttopdf', 'local_edwiserreports'),
+                'type' => 'button'
+            ], [
+                'name' => 'png',
+                'label' => get_string('exporttopng', 'local_edwiserreports'),
+                'type' => 'button'
+            ], [
+                'name' => 'jpeg',
+                'label' => get_string('exporttojpeg', 'local_edwiserreports'),
+                'type' => 'button'
+            ], [
+                'name' => 'svg',
+                'label' => get_string('exporttosvg', 'local_edwiserreports'),
+                'type' => 'button'
+            ]];
+            if ($email == true) {
+                $return[] = [
+                    'name' => 'email',
+                    'label' => get_string('sendoveremail', 'local_edwiserreports'),
+                    'type' => 'button',
+                    'graphical' => 'graphical'
+                ];
+            }
+            return $return;
+        }
+
+        // Tabular report.
+        $return = [[
+            'name' => 'pdf',
+            'label' => get_string('exporttopdf', 'local_edwiserreports'),
+            'type' => 'submit'
+        ], [
+            'name' => 'csv',
+            'label' => get_string('exporttocsv', 'local_edwiserreports'),
+            'type' => 'submit'
+        ], [
+            'name' => 'excel',
+            'label' => get_string('exporttoexcel', 'local_edwiserreports'),
+            'type' => 'submit'
+        ]];
+        if ($email == true) {
+            $return[] = [
+                'name' => 'email',
+                'label' => get_string('sendoveremail', 'local_edwiserreports'),
+                'type' => 'button'
+            ];
+        }
+        return $return;
+    }
+
+
+
     /**
      * Get date range for timeperiod.
      * @param String $timeperiod Timeperiod

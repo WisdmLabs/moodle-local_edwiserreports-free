@@ -32,6 +32,17 @@ $component = "local_edwiserreports";
 
 require_login();
 
+// Require CSS for index page.
+$PAGE->requires->css('/local/edwiserreports/styles/edwiserreports.min.css');
+
+// Set page context.
+$PAGE->set_context($context);
+
+local_edwiserreports_get_required_strings_for_js();
+
+// Load color themes from constants.
+local_edwiserreports\utility::load_color_pallets();
+
 // Check capability.
 if (!has_capability('report/local_edwiserreports:view', $context)) {
     throw new moodle_exception(get_string('noaccess', 'local_edwiserreports'));
@@ -48,20 +59,11 @@ if (!has_capability('report/edwiserreports_customreports:manage', $context)) {
     throw new moodle_exception('restrictaccess', 'error');
 }
 
-local_edwiserreports_get_required_strings_for_js();
-
-// Load color themes from constants.
-local_edwiserreports\utility::load_color_pallets();
+// Add theme class to body.
+$PAGE->add_body_classes(array('theme_' . $PAGE->theme->name, 'local-edwiserreports', 'report-page'));
 
 // Page URL.
 $pageurl = new moodle_url($CFG->wwwroot."/local/edwiserreports/customreportedit.php");
-
-// Require CSS for index page.
-$PAGE->requires->css('/local/edwiserreports/styles/edwiserreports.min.css');
-
-// Set page context.
-$PAGE->set_context($context);
-
 // Set page URL.
 $PAGE->set_url($pageurl);
 

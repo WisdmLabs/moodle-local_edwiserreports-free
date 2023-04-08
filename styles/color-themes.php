@@ -52,6 +52,8 @@ $mainclass = ".theme-primary-";
 // For SVG.
 echo ".theme-primary-fill { fill: $primarycolor !important; }\n";
 echo ".theme-secondary-fill { fill: " . $secondarycolor . "60 !important; }\n";
+echo ".theme-primary-stroke { stroke: $primarycolor !important; }\n";
+echo ".theme-primary-stroke { stroke: $primarycolor !important; }\n";
 
 // Date dropdown color.
 echo "

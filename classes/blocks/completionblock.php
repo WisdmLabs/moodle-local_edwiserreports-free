@@ -59,7 +59,7 @@ class completionblock {
         $enrolledstudents = utility::get_enrolled_students($courseid, false, $cohortid);
         $course = get_course($courseid);
 
-        $usertable = utility::create_temp_table("cc_u", array_keys($enrolledstudents));
+        $usertable = utility::create_temp_table("cc_u2", array_keys($enrolledstudents));
 
         $fullname = $DB->sql_fullname("u.firstname", "u.lastname");
         $sql = " SELECT u.id, u.email, $fullname fullname, e.enrol, ue.timecreated enrolledon, ecp.progress,
@@ -77,7 +77,7 @@ class completionblock {
                           WHERE lsl.courseid = :courseid
                             AND lsl.action = :action
                           GROUP BY lsl.userid
-                          ORDER BY lsl.userid) logs ON u.id = logs.userid
+                          ) logs ON u.id = logs.userid
                   WHERE c.id = :course
                     AND u.deleted = :deleted";
         $params = [
@@ -104,16 +104,20 @@ class completionblock {
             );
             $completioninfo->enrolledon = date("d M Y", $user->enrolledon);
             $completioninfo->enrolltype = $user->enrol;
+            $completioninfo->noofvisits = empty($user->visits) ? 0 : $user->visits;
+            
             $completioninfo->completion = empty($user->progress) ? "NA" : round($user->progress) . '%';
             $completioninfo->compleiontime = empty($user->completiontime) ?
                                             $notyet :
-                                            date("d M Y", $user->enrolledon);
+                                            date("d M Y", $user->completiontime);
             $completioninfo->grade = round($user->grade, 2) . '%';
-            $completioninfo->noofvisits = empty($user->visits) ? 0 : $user->visits;
             $completioninfo->lastaccess = empty($user->visits) ? $never : format_time($timenow - $user->lastvisit);
             $userscompletion[] = $completioninfo;
             unset($users[$key]);
         }
+
+        // DROP userstable
+        utility::drop_temp_table($usertable);
         return $userscompletion;
     }
 
@@ -136,19 +140,13 @@ class completionblock {
 
     /**
      * Get Exportable data for Course Completion Page
-     * @param  string $filter     Filter string
+     * @param  int    $filter     Course id
      * @param  bool   $filterdata If enabled then filter data
      * @return array              Array of LP Stats
      */
     public static function get_exportable_data_report($filter, $filterdata = true) {
 
-        $filter = json_decode($filter);
-
-        if ($filterdata == false) {
-            $filter->cohort = 0;
-        }
-
-        $completions = self::get_completions($filter->course, $filter->cohort);
+        $completions = self::get_completions($filter, optional_param('cohortid', 0, PARAM_INT));
 
         $export = array();
         $export[] = self::get_header();

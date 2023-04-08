@@ -1,0 +1,144 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    Course Activity Completion report page.
+
+    @package   local_edwiserreports/reports
+    @author    Yogesh Shirsath
+    @copyright (c) 2022 WisdmLabs (https://wisdmlabs.com/)
+    @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+
+}}
+{{!
+    @template local_edwiserreports/reports/courseactivitycompletion
+
+    Context variables required for this template:
+
+    Example context (json):
+    {
+    }
+}}
+{{> local_edwiserreports/navigation }}
+{{> local_edwiserreports/breadcrumb }}
+
+<div class="panel">
+
+    {{#pro}}
+        <div class="upgrade-to-pro text-white">
+            <div class="upgrade-notice text-center pt-5 mt-5">
+                <h4 class="text-white d-inline">{{#str}} unlockthisfeature, local_edwiserreports {{/str}}</h4>
+                {{#upgradelink}}
+                    <a href="{{{upgradelink}}}" class="btn theme-primary-bg text-white ml-2 d-inline" target="_blank">{{#str}} upgradetopro, local_edwiserreports {{/str}}</a>
+                {{/upgradelink}}
+                <br>
+                <div class='mt-4'>
+                    <div class="text-white d-inline text-center"> {{#str}} proreportupgrademsg, local_edwiserreports {{/str}} </div>
+                </div>
+            </div>
+        </div>
+    {{/pro}}
+
+    {{> local_edwiserreports/report-page-header }}
+    <div class="report-content" id="courseactivitycompletion" data-sesskey="{{sesskey}}">
+        <div id="userfilter" class="h-auto mt-2">
+            <div class="row">
+                <div class="filter-selector col-12 col-lg-3 col-md-4 mb-3">
+                    <label>{{#str}} courseandcategories, local_edwiserreports {{/str}}</label>
+                    <select class="course-select form-control singleselect">
+                        <optgroup label="Biology">
+                        <option value="1" selected>High School Biology</option>
+                        </optgroup>
+                    </select>
+                </div>
+                <div class="filter-selector col-12 col-lg-3 col-md-4 mb-3">
+                    <label>{{#str}} activity, local_edwiserreports {{/str}}</label>
+                    {{> local_edwiserreports/filters/cms_filter }}
+                </div>
+                <div class="filter-selector col-12 col-lg-3 col-md-4 mb-3 {{^groups}}d-none{{/groups}}">
+                    <label>{{#str}} group, local_edwiserreports {{/str}}</label>
+                    {{> local_edwiserreports/filters/groups_filter }}
+                </div>
+            </div>
+        </div>
+
+        {{> local_edwiserreports/summary/summary-card }}
+
+        <div id="userfilter" class="h-auto mt-2">
+            <div class="row">
+                <div class="filter-selector col-12 col-lg-3 col-md-4 mb-3">
+                    <label>{{#str}} search, local_edwiserreports {{/str}}</label>
+                    {{> local_edwiserreports/datatable/search }}
+                </div>
+                <div class="filter-selector col-12 table-length-input ml-auto mb-3">
+                    <label>{{#str}} show, local_edwiserreports {{/str}}</label>
+                    {{> local_edwiserreports/datatable/length }}
+                </div>
+                {{# export }}
+                    {{> local_edwiserreports/exportspro }}
+                {{/ export }}
+            </div>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        {{#str}} learner, local_edwiserreports {{/str}}
+                    </th>
+                    <th>
+                        {{#str}} email, local_edwiserreports {{/str}}
+                    </th>
+                    <th>
+                        {{#str}} status, local_edwiserreports {{/str}}
+                    </th>
+                    <th>
+                        {{#str}} completedon, local_edwiserreports {{/str}}
+                    </th>
+                    <th>
+                        {{#str}} grade, local_edwiserreports {{/str}}
+                    </th>
+                    <th>
+                        {{#str}} gradedon, local_edwiserreports {{/str}}
+                    </th>
+                    <th>
+                        {{#str}} firstaccess, local_edwiserreports {{/str}}
+                    </th>
+                    <th>
+                        {{#str}} lastaccess, local_edwiserreports {{/str}}
+                    </th>
+                    <th>
+                        {{#str}} visits, local_edwiserreports {{/str}}
+                    </th>
+                    <th>
+                        {{#str}} timespent, local_edwiserreports {{/str}}
+                    </th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+{{#setactive}}
+    {{> local_edwiserreports/setactivenav }}
+{{/setactive}}
+
+{{#js}}
+M.local_edwiserreports = {
+    secret: '{{{secret}}}'
+};
+
+M.util.js_pending('local_edwiserreports/reports/courseactivitycompletion');
+require(['local_edwiserreports/reports/courseactivitycompletion'], function(amd) {
+    amd.init();
+    M.util.js_complete('local_edwiserreports/reports/courseactivitycompletion');
+});
+{{/js}}

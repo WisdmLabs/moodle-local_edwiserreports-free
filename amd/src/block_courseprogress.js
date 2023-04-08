@@ -158,20 +158,20 @@ define([
                     enabled: false
                 },
                 tooltip: {
-                    custom: function({
-                        series,
-                        seriesIndex,
-                        dataPointIndex,
-                        w
-                    }) {
+                    custom: function({series, seriesIndex, dataPointIndex, w}) {
                         let value = series[seriesIndex];
                         let tooltip = value < 2 ? donutChart.tooltipStrings.single : donutChart.tooltipStrings.plural;
                         let label = w.config.labels[seriesIndex];
                         let color = w.config.colors[seriesIndex];
-                        return `<div class="custom-donut-tooltip" style="color: ${color};">
-                                <span style="font-weight: 500;"> ${label}:</span>
-                                <span style="font-weight: 700;"> ${value} ${tooltip}</span>
-                            </div>`;
+                        return `<div class="custom-donut-tooltip" style="text-align:center">
+                                    <div style="color: ${color};">
+                                        <span style="font-weight: 500;"> ${label}:</span>
+                                        <span style="font-weight: 700;"> ${value} ${tooltip} </span>
+                                    </div>
+                                    <span style="color: black; font-size: 0.871rem;">
+                                        ${M.util.get_string('clickonchartformoreinfo', 'local_edwiserreports')}
+                                    </span>
+                                </div>`;
                     }
                 },
                 legend: {

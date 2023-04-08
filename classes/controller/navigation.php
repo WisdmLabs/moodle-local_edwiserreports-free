@@ -72,6 +72,14 @@ class navigation {
                 $this->nodes['course']['visible'] = true;
                 $this->nodes['course']['nodes'][$id]['visible'] = true;
                 break;
+            case 'courseactivitycompletion':
+                $this->nodes['course']['visible'] = true;
+                $this->nodes['course']['nodes'][$id]['visible'] = true;
+                break;
+            case 'allcoursessummarypro':
+                $this->nodes['course']['visible'] = true;
+                $this->nodes['course']['nodes'][$id]['visible'] = true;
+                break;
             case 'alllearnersummary':
             case 'learnercourseactivities':
             case 'learnercourseprogress':
@@ -97,13 +105,23 @@ class navigation {
                 'visible' => false,
                 'nodes' => [
                     'allcoursessummary' => [
-                        'label' => get_string('allcoursessummary', 'local_edwiserreports'),
+                        'label' => get_string('coursereports', 'local_edwiserreports'),
                         'link' => new moodle_url("/local/edwiserreports/coursereport.php"),
+                        'visible' => false
+                    ],
+                    'allcoursessummarypro' => [
+                        'label' => get_string('allcoursessummarypro', 'local_edwiserreports'),
+                        'link' => new moodle_url("/local/edwiserreports/allcoursessummary.php"),
                         'visible' => false
                     ],
                     'courseactivitiessummary' => [
                         'label' => get_string('courseactivitiessummary', 'local_edwiserreports'),
-                        'link' => UPGRADE_URL,
+                        'link' => new moodle_url("/local/edwiserreports/courseactivitiessummary.php"),
+                        'visible' => false
+                    ],
+                    'courseactivitycompletion' => [
+                        'label' => get_string('courseactivitycompletion', 'local_edwiserreports'),
+                        'link' => new moodle_url("/local/edwiserreports/courseactivitycompletion.php"),
                         'visible' => false
                     ],
                     'coursecompletion' => [
@@ -119,17 +137,17 @@ class navigation {
                 'nodes' => [
                     'alllearnersummary' => [
                         'label' => get_string('alllearnersummary', 'local_edwiserreports'),
-                        'link' => UPGRADE_URL,
+                        'link' => new moodle_url("/local/edwiserreports/studentengagement.php"),
                         'visible' => false
                     ],
                     'learnercourseprogress' => [
                         'label' => get_string('learnercourseprogress', 'local_edwiserreports'),
-                        'link' => UPGRADE_URL,
+                        'link' => new moodle_url("/local/edwiserreports/learnercourseprogress.php"),
                         'visible' => false
                     ],
                     'learnercourseactivities' => [
                         'label' => get_string('learnercourseactivities', 'local_edwiserreports'),
-                        'link' => UPGRADE_URL,
+                        'link' => new moodle_url("/local/edwiserreports/learnercourseactivities.php"),
                         'visible' => false
                     ]
                 ]
@@ -175,7 +193,9 @@ class navigation {
 
         if (is_siteadmin()) {
             $this->show_link('allcoursessummary');
+            $this->show_link('allcoursessummarypro');
             $this->show_link('courseactivitiessummary');
+            $this->show_link('courseactivitycompletion');
             $this->show_link('alllearnersummary');
             $this->show_link('learnercourseprogress');
             $this->show_link('learnercourseactivities');
