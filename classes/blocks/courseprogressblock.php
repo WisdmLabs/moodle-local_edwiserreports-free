@@ -162,6 +162,9 @@ class courseprogressblock extends block_base {
 
         $courses = $this->get_courses_of_user($USER->id);
 
+
+
+
         unset($courses[$COURSE->id]);
 
         $this->block->hascourses = count($courses) > 0;
@@ -304,7 +307,7 @@ class courseprogressblock extends block_base {
                         'backurl' => new moodle_url('/local/edwiserreports/coursereport.php#progress')
                     )
                 ),
-                $course->fullname
+                format_string($course->fullname, true, ['context' => \context_system::instance()])
             );
 
             // Get only enrolled student.
@@ -358,7 +361,7 @@ class courseprogressblock extends block_base {
             }
 
             $courseid = $course->id;
-            $coursename = $course->fullname;
+            $coursename = format_string($course->fullname, true, ['context' => \context_system::instance()]);
             $res->completed0to20 = self::get_userlist_popup_link(
                 $courseid,
                 $coursename,
@@ -544,7 +547,7 @@ class courseprogressblock extends block_base {
             $export[] = array(
                 fullname($student),
                 $student->email,
-                $course->fullname,
+                format_string($course->fullname, true, ['context' => \context_system::instance()]),
                 $completed,
                 $completion["progresspercentage"] . "%"
             );
@@ -561,8 +564,10 @@ class courseprogressblock extends block_base {
         global $COURSE;
 
         $cohortid = optional_param("cohortid", 0, PARAM_INT);
+        $rtl = optional_param("filter", 0, PARAM_INT);
         $export = array();
-        $export[] = self::get_header_report();
+        $export[] = $rtl ? array_reverse(self::get_header_report()) : self::get_header_report();
+
 
         $blockobj = new self();
         $courses = $blockobj->get_courses_of_user();
@@ -571,19 +576,21 @@ class courseprogressblock extends block_base {
             'cohortid' => $cohortid,
             'tabledata' => true
         );
+
         foreach ($courses as $course) {
             $blockobj = new self();
             $params->courseid = $course->id;
             $courseprogress = $blockobj->get_data($params);
             $enrolledstudents = \local_edwiserreports\utility::get_enrolled_students($course->id, false, $cohortid);
 
-            $export[] = array_merge(
+            $data = array_merge(
                 array(
-                    $course->fullname,
+                    format_string($course->fullname, true, ['context' => \context_system::instance()]),
                     count($enrolledstudents)
                 ),
                 array_reverse($courseprogress->data)
             );
+            $export[] = $rtl ? array_reverse($data) : $data;
         }
 
         return $export;

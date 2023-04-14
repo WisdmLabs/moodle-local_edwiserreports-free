@@ -64,7 +64,7 @@ class custom_reports_block implements renderable, templatable {
         $selectedcohorts = array("0");
         if ($export->reportsid = $this->reportsid) {
             $customreport = $DB->get_record('edwreports_custom_reports', array('id' => $this->reportsid));
-            $export->fullname = $customreport->fullname;
+            $export->fullname = format_string($customreport->fullname, true, ['context' => \context_system::instance()]);
             $export->shortname = $customreport->shortname;
             $reportsdata = json_decode($customreport->data);
             $export->downloadenable = $reportsdata->downloadenable ? true : false;
@@ -180,7 +180,7 @@ class custom_reports_block implements renderable, templatable {
             if ($skip) {
                 continue;
             }
-            $fielddata['text'] = $name . ' (' . get_string('custom', 'local_edwiserreports') . ') (PRO)';
+            $fielddata['text'] = format_string($name, true, ['context' => \context_system::instance()]) . ' (' . get_string('custom', 'local_edwiserreports') . ') (PRO)';
             $userfields[] = $fielddata;
         }
         return $userfields;

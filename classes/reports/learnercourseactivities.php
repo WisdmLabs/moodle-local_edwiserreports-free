@@ -199,7 +199,7 @@ class learnercourseactivities extends base {
             'data' => $obj->get_data($filter, false),
             'options' => [
                 'content' => get_string('learnercourseactivitiespdfcontent', 'local_edwiserreports', [
-                    'course' => $course->fullname,
+                    'course' => format_string($course->fullname, true, ['context' => \context_system::instance()]),
                     'student' => fullname($user)
                 ]),
                 'format' => 'a3',

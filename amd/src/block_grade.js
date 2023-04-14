@@ -32,6 +32,10 @@ define([
     common,
     CFG
 ) {
+    /**
+     * rtl for rtl lang support.
+     */
+    let rtl = $('html').attr('dir') == 'rtl' ? 1 : 0;
 
     /**
      * Chart.
@@ -41,7 +45,9 @@ define([
     /**
      * Default position.
      */
-    var position = 'right';
+    // var position = 'right';
+    var position = rtl ? 'left' : 'right';
+
 
     /**
      * Pie chart default config.

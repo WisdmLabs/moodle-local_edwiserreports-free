@@ -450,7 +450,7 @@ class utility {
         $response = array();
         foreach ($lps as $key => $lp) {
             $res = new stdClass();
-            $res->fullname = $lp['name'];
+            $res->fullname = format_string($lp['name'], true, ['context' => \context_system::instance()]);
             $res->shortname = $lp['shortname'];
 
             // Prepare selector checkbox to select courses.
@@ -519,7 +519,7 @@ class utility {
 
             // Prepare response object.
             $res = new stdClass();
-            $res->fullname = $course->fullname;
+            $res->fullname = format_string($course->fullname, true, ['context' => \context_system::instance()]);
             $res->shortname = $course->shortname;
 
             // Prepare selector checkbox to select courses.
@@ -597,7 +597,7 @@ class utility {
                     if ($course = $DB->get_record('course', array('id' => $cid))) {
                         $courseinfo = new \stdClass();
                         $courseinfo->id = $course->id;
-                        $courseinfo->fullname = $course->fullname;
+                        $courseinfo->fullname = format_string($course->fullname, true, ['context' => \context_system::instance()]);
                         array_push($coursesarr, $courseinfo);
                     }
                 }
@@ -917,7 +917,7 @@ class utility {
         // Prepare the list of capabilities to choose from.
         if ($block->classname == 'customreportsblock') {
             $capname = 'report/edwiserreports_customreportsblock-' . $block->id . ':view';
-            $capabilitychoices[$capname] = $block->fullname;
+            $capabilitychoices[$capname] = format_string($block->fullname, true, ['context' => \context_system::instance()]);
         } else {
             foreach ($context->get_capabilities() as $cap) {
                 if (strpos($cap->name, 'report/edwiserreports_' . $block->classname) !== false) {

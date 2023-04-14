@@ -349,7 +349,7 @@ class activeusersblock extends block_base {
                 if ($action == "completions" || $action == "enrolments") {
                     if ($DB->record_exists('course', array('id' => $record->courseid))) {
                         $course = get_course($record->courseid);
-                        $userdata->coursename = $course->fullname;
+                        $userdata->coursename = format_string($course->fullname, true, ['context' => \context_system::instance()]);
                     } else {
                         $userdata->coursename = get_string('eventcoursedeleted');
                     }
@@ -557,8 +557,9 @@ class activeusersblock extends block_base {
 
         $blockobj = new self();
         $blockobj->graphajax = false;
-        $export[] = self::get_header_report();
         $cohortid = optional_param('cohortid', 0, PARAM_INT);
+        $rtl = get_string('thisdirection', 'langconfig') == 'rtl' ? 1 : 0;
+        $export[] = $rtl ? array_reverse(self::get_header_report()) : self::get_header_report();
 
         // Generate active users data label.
         $blockobj->generate_labels($filter);
@@ -567,10 +568,14 @@ class activeusersblock extends block_base {
 
         foreach ($dates as $date) {
             $label = date("d F Y", $date * 86400);
+            $activeusers = $rtl ? array_reverse(self::get_usersdata($label, $date, "activeusers", $cohortid)): self::get_usersdata($label, $date, "activeusers", $cohortid);
+            $enrolments = $rtl ? array_reverse(self::get_usersdata($label, $date, "enrolments", $cohortid)) : self::get_usersdata($label, $date, "enrolments", $cohortid);
+            $completions = $rtl ? array_reverse(self::get_usersdata($label, $date, "completions", $cohortid)) : self::get_usersdata($label, $date, "completions", $cohortid);
+
             $export = array_merge($export,
-                self::get_usersdata($label, $date, "activeusers", $cohortid),
-                self::get_usersdata($label, $date, "enrolments", $cohortid),
-                self::get_usersdata($label, $date, "completions", $cohortid)
+                $activeusers,
+                $enrolments,
+                $completions
             );
         }
 

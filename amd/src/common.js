@@ -122,9 +122,37 @@ define([
         $('#wdm-edwiserreports').removeClass('d-none');
 
         setupBlockEditing();
-
+        setupRtlSupport();
         setupBlockHiding($('#wdm-edwiserreports').data("editing"));
     });
+
+    /**
+     * Check if RTL is enabled and then convert arrows direction
+     */
+    function setupRtlSupport() {
+
+        setTimeout(function(){
+            var attr = $('html').attr('dir');
+            // For some browsers, `attr` is undefined; for others,
+            // `attr` is false.  Check for both.
+            if (typeof attr !== 'undefined' && attr !== false && attr == 'rtl') {
+                $('.dropdown-item.custom').css({'direction':'ltr','text-align': 'right'});
+
+                $('.insight-wrapper .fa-arrow-left').removeClass("fa-arrow-left").addClass("fa-arrow-right rtl-support");
+                $('.insight-wrapper .fa-arrow-right:not(.rtl-support)').removeClass("fa-arrow-right").addClass("fa-arrow-left rtl-support");
+            }
+        }, 1000);
+
+        setTimeout(function(){
+            // removing datatbles next previous blank as it can not be done by thier attributes
+            $('.edwiserreports-table .page-item.next a').empty();
+            $('.edwiserreports-table .page-item.previous a').empty();
+
+        }, 2000);
+
+    }
+
+
 
     /**
      * Setup block hiding

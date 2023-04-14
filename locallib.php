@@ -211,6 +211,8 @@ function local_edwiserreports_get_cohort_filter() {
     // Users visibility check.
     foreach ($allcohorts['cohorts'] as $key => $value) {
         if (cohort_can_view_cohort($key, $usercontext)) {
+            $tempval = $value;
+            $tempval->name = format_string($value->name, true, ['context' => \context_system::instance()]);
             $cohorts[] = $value;
         }
     }
@@ -219,6 +221,7 @@ function local_edwiserreports_get_cohort_filter() {
         // Returning false if no cohorts are present.
         return false;
     }
+
 
     $cohortfilter = new stdClass();
     $cohortfilter->values = array_merge([['id' => 0, 'name' => get_string('allcohorts', 'local_edwiserreports')]], $cohorts);

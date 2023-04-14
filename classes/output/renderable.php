@@ -367,7 +367,7 @@ class completion_renderable implements renderable, templatable {
             "filter" => $courseid
         ));
 
-        $output->pageheader = get_string("completionheader", "local_edwiserreports", array('coursename' => $course->fullname));
+        $output->pageheader = get_string("completionheader", "local_edwiserreports", array('coursename' => format_string($course->fullname, true, ['context' => \context_system::instance()])));
 
         $output->navigation = navigation::instance()->get_navigation('course');
 
@@ -733,6 +733,7 @@ class learnercourseactivities_renderable implements renderable, templatable {
         $output->navigation = navigation::instance()->get_navigation('learners');
         $output->breadcrumb = $learnercourseactivities->get_breadcrumb();
         $output->calendar = file_get_contents($CFG->dirroot . '/local/edwiserreports/pix/calendar.svg');
+        // $output->showcompletiondatefilter = 1;
 
         // Table filter context.
         $output->searchicon = \local_edwiserreports\utility::image_icon('actions/search');

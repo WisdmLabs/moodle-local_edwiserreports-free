@@ -30,6 +30,11 @@ define([
 ], function($, Notification, ApexCharts, CFG, common) {
 
     /**
+     * rtl for rtl lang support.
+     */
+    let rtl = $('html').attr('dir') == 'rtl' ? 1 : 0;
+
+    /**
      * Initialize
      * @param {function} invalidUser Callback function
      */
@@ -39,7 +44,7 @@ define([
         var panelBody = CFG.getPanel("#courseprogressblock", "body");
         var selectedCourse = panelBody + " .course-select";
         var loader = panelBody + " .loader";
-        var position = 'right';
+        var position = rtl ? 'left' : 'right';
         var donutChart = {
             data: [0, 0, 0, 0, 0, 0],
             labels: [
@@ -73,6 +78,9 @@ define([
             }
             let width = $(panel).find('.apexcharts-canvas').width();
             let newPosition = width >= 400 ? 'right' : 'bottom';
+
+
+
             if (newPosition == position) {
                 return;
             }

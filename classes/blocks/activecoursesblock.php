@@ -87,7 +87,7 @@ class activecoursesblock extends block_base {
      *
      * @return array
      */
-    public function filter_active_courses($data) {
+    public function filter_active_courses($data, $rtl) {
         $userid = $this->get_current_user();
         $courses = $this->get_courses_of_user($userid);
         unset($courses[SITEID]);
@@ -95,7 +95,7 @@ class activecoursesblock extends block_base {
         $filtered = [];
         foreach ($data as $key => $value) {
             if (in_array($key, $courses)) {
-                $filtered[] = $value;
+                $filtered[] = $rtl ? array_reverse($value) : $value;
             }
         }
         return $filtered;
@@ -106,18 +106,18 @@ class activecoursesblock extends block_base {
      * @param  object $params Parameteres
      * @return object         Response for Active Courses
      */
-    public function get_data($params = false) {
+    public function get_data($params = false, $rtl = 0) {
         $response = new stdClass();
 
         if (!$data = $this->cache->get('activecoursesdata')) {
             $data = get_config('local_edwiserreports', 'activecoursesdata');
             if (!$data || !$data = json_decode($data, true)) {
-                $data = $this->get_course_data();
+                $data = $this->get_course_data($rtl);
             } else {
-                $data = $this->filter_active_courses($data);
+                $data = $this->filter_active_courses($data, $rtl);
             }
             $this->cache->set('activecoursesdata', $data);
-        }
+        } 
 
         $response->data = $data;
         return $response;
@@ -127,7 +127,7 @@ class activecoursesblock extends block_base {
      * Get Active Courses data
      * @return array         Array of course active records
      */
-    public function get_course_data() {
+    public function get_course_data($rtl=0) {
         global $DB;
 
         $userid = $this->get_current_user();
@@ -161,11 +161,11 @@ class activecoursesblock extends block_base {
             if (empty($enrolledstudents)) {
                 continue;
             }
-
+            
             // Create a record for responce.
             $res = array(
                 $count++,
-                $course->fullname
+                format_string($course->fullname, true, ['context' => \context_system::instance()])
             );
 
             $res[] = count($enrolledstudents);
@@ -179,8 +179,9 @@ class activecoursesblock extends block_base {
 
             $res[] = self::get_courseview_count($course->id, array_keys($enrolledstudents));
             $res[] = $completedusers;
-            $response[] = $res;
+            $response[] = $rtl ? array_reverse($res) : $res;
         }
+
         return $response;
     }
 
@@ -238,16 +239,26 @@ class activecoursesblock extends block_base {
      * @return array Array of exportable data
      */
     public static function get_exportable_data_block() {
+        $rtl = get_string('thisdirection', 'langconfig') == 'rtl' ? 1 : 0;
 
         $export = array();
-        $header = self::get_header();
+        $header = $rtl ? array_reverse(self::get_header()) : self::get_header();
 
         $classobj = new self();
-        $activecoursesdata = $classobj->get_data();
+        $activecoursesdata = $classobj->get_data(false);
         $exportdata = array_map(function ($data) {
             array_splice($data, 0, 1);
             return $data;
         }, $activecoursesdata->data);
+
+        if($rtl){
+            $newdata = [];
+            foreach ($exportdata as $value) {
+                $newdata[] = $rtl ? array_reverse($value) : $value;
+            }
+            $exportdata = $newdata;
+        }
+
         $export = array_merge(
             array($header),
             $exportdata

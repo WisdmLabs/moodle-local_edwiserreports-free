@@ -192,7 +192,7 @@ class certificatesblock extends block_base {
             $certificates[] = array(
                 "id" => $certificate->id,
                 "name" => $certificate->name,
-                "coursename" => $course->fullname,
+                "coursename" => format_string($course->fullname, true, ['context' => \context_system::instance()]),
                 "issued" => count($issued),
                 "notissued" => $notawareded
             );

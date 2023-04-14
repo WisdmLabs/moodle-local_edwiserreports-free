@@ -45,7 +45,7 @@ class customreportsblock extends block_base {
      * @param  object $params Parameters
      * @return object         Response object
      */
-    public function get_data($params = false) {
+    public function get_data($params = false, $rtl = 0) {
         global $DB;
 
         $fields = $params->fields;
@@ -100,7 +100,12 @@ class customreportsblock extends block_base {
                     }
                 }
                 if (!in_array($record, $records)) {
-                    $records[] = $record;
+                    $dummyrecord = array();
+                    foreach ($record as $fieldname => $fieldvalue) {
+                        $dummyrecord[$fieldname] = format_string($fieldvalue, true, ['context' => \context_system::instance()]);
+                    }
+                    // $records[] = $record;
+                    $records[] = $rtl ? array_reverse($dummyrecord) : $dummyrecord;
                 }
             }
             $record = $recordset->current();
@@ -170,8 +175,8 @@ class customreportsblock extends block_base {
 
         // Layout related data.
         $this->layout->id = 'customreportsblock-' . $customreport->id;
-        $this->layout->name = $customreport->fullname;
-        $this->layout->info = $customreport->fullname;
+        $this->layout->name = format_string($customreport->fullname, true, ['context' => \context_system::instance()]);
+        $this->layout->info = format_string($customreport->fullname, true, ['context' => \context_system::instance()]);
         $this->layout->downloadlinks = $reportsdata->downloadenable ? $this->get_block_download_links() : false;
         $this->layout->iscustomblock = true;
         $this->layout->params = json_encode($reportsdata);
@@ -203,13 +208,16 @@ class customreportsblock extends block_base {
      */
     public function get_exportable_data_block($reportsid) {
         global $DB;
+        // $rtl = optional_param("rtl", 0, PARAM_INT);
+        $rtl = get_string('thisdirection', 'langconfig') == 'rtl' ? 1 : 0;
+
         $customreport = $DB->get_record('edwreports_custom_reports', array('id' => $reportsid));
         $params = json_decode($customreport->data);
         $params->fields = $params->selectedfield;
         unset($params->selectedfield);
 
-        $records = $this->get_data($params);
-        $header = array_column($records->columns, 'title');
+        $records = $this->get_data($params, $rtl);
+        $header = $rtl ? array_reverse(array_column($records->columns, 'title')) : array_column($records->columns, 'title');
         $data = array_map(function($record) {
             return array_values((array) $record);
         }, $records->reportsdata);

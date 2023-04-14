@@ -128,7 +128,7 @@ class courseengagementblock extends block_base {
         $engagement = new stdClass();
 
         // Get course name with course url.
-        $engagement->coursename = html_writer::tag('a', $course->fullname, ['href' => $courseurl, 'class' => 'course-link']);
+        $engagement->coursename = html_writer::tag('a', format_string($course->fullname, true, ['context' => \context_system::instance()]), ['href' => $courseurl, 'class' => 'course-link']);
 
         // Course category.
         $engagement->category = $category;
@@ -249,7 +249,7 @@ class courseengagementblock extends block_base {
             array(
                 "class" => "modal-trigger",
                 "data-courseid" => $course->id,
-                "data-coursename" => $course->fullname,
+                "data-coursename" => format_string($course->fullname, true, ['context' => \context_system::instance()]),
                 "data-action" => $attrname
             )
         );

@@ -29,6 +29,12 @@ define([
     './dataTables.bootstrap4',
     './select2'
 ], function($, ModalFactory, ModalEvents, Fragment, V, common) {
+
+    /**
+     * rtl for rtl lang support.
+     */
+    let rtl = $('html').attr('dir') == 'rtl' ? 1 : 0;
+
     /**
      * Initialize
      * @param {integer} CONTEXTID Current page context id
@@ -129,8 +135,8 @@ define([
                                 emptyTable: M.util.get_string('nousers', 'local_edwiserreports'),
                                 zeroRecords: M.util.get_string('zerorecords', 'local_edwiserreports'),
                                 paginate: {
-                                    previous: M.util.get_string('previous', 'moodle'),
-                                    next: M.util.get_string('next', 'moodle')
+                                    previous: " ",
+                                    next: " "
                                 }
                             },
                             dom: '<"edwiserreports-table"i<t><"table-pagination"p>>',
@@ -157,7 +163,8 @@ define([
 
             var data = JSON.stringify({
                 courseid: "all",
-                cohortid: cohortId
+                cohortid: cohortId,
+                rtl: rtl,
             });
 
             datatable = $(CourseProgressTable).DataTable({
@@ -193,8 +200,8 @@ define([
                     emptyTable: M.util.get_string('nocourses', 'local_edwiserreports'),
                     zeroRecords: M.util.get_string('zerorecords', 'local_edwiserreports'),
                     paginate: {
-                        previous: M.util.get_string('previous', 'moodle'),
-                        next: M.util.get_string('next', 'moodle')
+                        previous: " ",
+                        next: " "
                     }
                 },
                 drawCallback: function() {

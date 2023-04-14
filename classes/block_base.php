@@ -536,6 +536,7 @@ class block_base {
             $courses[$id] = $course;
         }
 
+
         return $courses;
     }
 
@@ -556,7 +557,14 @@ class block_base {
 
         // Admin or Manager.
         if (is_siteadmin($userid) || has_capability('moodle/site:configview', context_system::instance(), $userid)) {
-            return get_courses();
+            $courses = get_courses();
+            $coursesarr = [];
+            foreach ($courses as $course) {
+                $tempcourse = $course;
+                $tempcourse->fullname = format_string($tempcourse->fullname, true, ['context' => \context_system::instance()]);
+                $coursesarr[$course->id] = $tempcourse;
+            }
+            return $coursesarr;
         }
 
         $visiblecourses = [];
@@ -572,7 +580,14 @@ class block_base {
         $allcourses = enrol_get_all_users_courses($userid);
         $this->filter_courses($allcourses, $visiblecourses, $userid);
 
-        return $visiblecourses;
+        $coursesarr = [];
+        foreach ($visiblecourses as $course) {
+            $tempcourse = $course;
+            $tempcourse->fullname = format_string($tempcourse->fullname, true, ['context' => \context_system::instance()]);
+            $coursesarr[$course->id] = $tempcourse;
+        }
+
+        return $coursesarr;
     }
 
     /**

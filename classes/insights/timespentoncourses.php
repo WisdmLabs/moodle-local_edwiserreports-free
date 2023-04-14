@@ -49,8 +49,8 @@ trait timespentoncourses {
         $oldenddate
     ) {
 
-        $currenttimespent = 53100;
-        $oldtimespent = 50280;
+        $currenttimespent = 13100;
+        $oldtimespent = 20280;
 
         return [$currenttimespent, $oldtimespent];
     }

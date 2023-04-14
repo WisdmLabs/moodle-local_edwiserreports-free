@@ -137,6 +137,9 @@ $string['minute'] = 'minute';
 $string['minutes'] = 'minutes';
 $string['second'] = 'second';
 $string['seconds'] = 'seconds';
+$string['hourshort'] = 'h';
+$string['minuteshort'] = 'min';
+$string['secondshort'] = 's';
 $string['zerorecords'] = 'No matching records found';
 $string['nodata'] = 'No data';
 $string['tableinfo'] = 'Showing _START_ to _END_ of _TOTAL_ entries';
@@ -904,14 +907,14 @@ $string['gotit'] = 'Got It';
 
 // Pro strings.
 $string['allcoursessummary'] = 'All Courses Summary';
-$string['allcoursessummarypro'] = 'All Courses Summary (PRO)';
-$string['courseactivitiessummary'] = 'Course Activities Summary (PRO)';
-$string['courseactivitycompletion'] = 'Course Activity Completion (PRO)';
-$string['alllearnersummary'] = 'All Learner Summary (PRO)';
-$string['learnercourseprogress'] = 'Learner Course Progress (PRO)';
-$string['learnercourseactivities'] = 'Learner Course Activities (PRO)';
-$string['clickondatapoint'] = 'Click on data points for more info (PRO)';
-$string['clickonchartformoreinfo'] = 'Click on chart for more info (PRO)';
+$string['allcoursessummarypro'] = 'All Courses Summary ';
+$string['courseactivitiessummary'] = 'Course Activities Summary ';
+$string['courseactivitycompletion'] = 'Course Activity Completion';
+$string['alllearnersummary'] = 'All Learner Summary ';
+$string['learnercourseprogress'] = 'Learner Course Progress ';
+$string['learnercourseactivities'] = 'Learner Course Activities ';
+$string['clickondatapoint'] = 'Click on data points for more info ';
+$string['clickonchartformoreinfo'] = 'Click on chart for more info ';
 $string['proreportdescription'] = 'The following is just dummy data to present the reports available in Edwiser Reports PRO';
 
 // Dummy data.

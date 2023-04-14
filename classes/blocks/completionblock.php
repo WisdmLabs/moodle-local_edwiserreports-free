@@ -145,14 +145,17 @@ class completionblock {
      * @return array              Array of LP Stats
      */
     public static function get_exportable_data_report($filter, $filterdata = true) {
+        $cohortid = optional_param("cohortid", 0, PARAM_INT);
+        $rtl = optional_param("rtl", 0, PARAM_INT);
 
         $completions = self::get_completions($filter, optional_param('cohortid', 0, PARAM_INT));
 
         $export = array();
-        $export[] = self::get_header();
+        $export[] = $rtl ? array_reverse(self::get_header()) : self::get_header();
         foreach ($completions as $completion) {
             $completion->username = strip_tags($completion->username);
-            $export[] = array_values((array)$completion);
+            $data = array_values((array)$completion);
+            $export[] = $rtl ? array_reverse($data) : $data;
         }
         return $export;
     }

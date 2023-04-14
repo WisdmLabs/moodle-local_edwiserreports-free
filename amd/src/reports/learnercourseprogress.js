@@ -177,8 +177,8 @@ define('local_edwiserreports/reports/learnercourseprogress', [
                         emptyTable: M.util.get_string('emptytable', 'local_edwiserreports'),
                         zeroRecords: M.util.get_string('zerorecords', 'local_edwiserreports'),
                         paginate: {
-                            previous: "&#9666",
-                            next: "&#9656"
+                            previous: " ",
+                            next: " "
                         }
                     },
                     drawCallback: function() {
