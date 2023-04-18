@@ -102,7 +102,7 @@ class courseengagementblock extends block_base {
         foreach ($courses as $course) {
             $engagedata[] = $this->get_engagement(
                 $course,
-                $categories[$course->category]->name
+                format_string($categories[$course->category]->name, true, ['context' => \context_system::instance()])
             );
         }
         return $engagedata;

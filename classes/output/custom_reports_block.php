@@ -83,6 +83,16 @@ class custom_reports_block implements renderable, templatable {
             $cohortobj = cohort_get_cohorts($catcontext->id);
             $cohorts = array_merge($cohorts, $cohortobj["cohorts"]);
         }
+
+        $tempcohorts = [];
+        foreach ($cohorts as $cohort) {
+            $tempcohort = $cohort;
+            $tempcohort->name = format_string($cohort->name, true, ['context' => \context_system::instance()]);
+            $tempcohorts[] = $tempcohort;
+        }
+
+        $cohorts = $tempcohorts;
+
         $export->cohorts = $cohorts;
         $export->isediting = $this->reportsid ? true : false;
 
@@ -97,6 +107,14 @@ class custom_reports_block implements renderable, templatable {
         $courses = get_courses();
         $export->selectedcourses = json_encode($selectedcourses);
         $export->selectedcohorts = json_encode($selectedcohorts);
+
+        $tempcourses = [];
+        foreach ($courses as $course) {
+            $tempcourses[$course->id] = $course;
+            $tempcourses[$course->id]->fullname = format_string($course->fullname, true, ['context' => \context_system::instance()]);
+        }
+
+        $courses = $tempcourses;
 
         // Remove system course.
         unset($courses[1]);

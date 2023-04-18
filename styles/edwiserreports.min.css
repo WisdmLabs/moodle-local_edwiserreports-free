@@ -2253,8 +2253,13 @@ table.dataTable thead .sorting::after {
     vertical-align: middle;
 }
 .local-edwiserreports .edwiserreports-table .table-pagination .page-item a {
-    padding: 0.429rem 0.786rem;
+    padding: 0.3rem 0.786rem !important;
 }
+.local-edwiserreports .edwiserreports-table .table-pagination .previous.page-item a,
+.local-edwiserreports .edwiserreports-table .table-pagination .next.page-item a {
+    padding: 0.45rem 0.786rem !important;
+}
+
 .local-edwiserreports .edwiserreports-table .table-pagination .page-item a:focus, .local-edwiserreports .edwiserreports-table .table-pagination .page-item:active {
     outline: unset !important;
     box-shadow: unset !important;
@@ -4405,12 +4410,21 @@ span.flatpickr-weekday {
 }
 
 
+
+.edw-act-completion .edw-act-completion-cal{
+    margin-right: 0px !important;
+}
+
 /* RTL comaptibility  */
 
 html[dir=rtl] #wdm-edwiserreports .apexcharts-yaxis {
     transform: translate(0px, 0px);
 }
 
+
+html[dir=rtl] .edw-act-completion .edw-act-completion-cal{
+    margin-left: 0px !important;
+}
 
 html[dir=rtl] .dropdown-item.custom input{
     direction: ltr;

@@ -222,13 +222,17 @@ class utility {
 
         // Get records for courses.
         $courses = $DB->get_records('course', array(), '', '*');
+        $newcourses = [];
+
         foreach (array_keys($courses) as $courseid) {
             $enrolledstudents = self::get_enrolled_students($courseid);
             if ($courseid == 1 || empty($enrolledstudents)) {
                 unset($courses[$courseid]);
             }
+            $newcourses[$course->id] = $course;
+            $newcourses[$course->id]['fullname'] = format_string($course->fullname, true, ['context' => \context_course::instance($course->id)]);
         }
-        return array_values($courses);
+        return array_values($newcourses);
     }
 
     /**
