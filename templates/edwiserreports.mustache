@@ -133,6 +133,15 @@
                     <div class="panel-body px-3 py-0">
                         <div class="block-filters position-relative pb-1">{{{ filters }}}</div>
                         {{{ blockview }}}
+
+
+                        {{# pro }}
+                            <div class="panel-footer p-3">
+                                <a href="" class="btn theme-primary-text theme-primary-border ml-auto">
+                                {{#str}} viewdetails, local_edwiserreports {{/str}}</a>
+                            </div>
+                        {{/ pro }}
+
                         {{#iscustomblock}}
                             <div class="table-responsive">
                                 <table class="table customreportdata w-full"></table>
@@ -194,8 +203,8 @@
                                         emptyTable: "{{#str}}nodata, local_edwiserreports{{/str}}",
                                         zeroRecords: "{{#str}}zerorecords, local_edwiserreports{{/str}}",
                                         paginate: {
-                                            previous: "{{#str}}previous{{/str}}",
-                                            next: "{{#str}}next{{/str}}"
+                                            previous: " ",
+                                            next: " "
                                         }
                                     },
                                     drawCallback: function() {
@@ -208,6 +217,19 @@
                                     table.search(this.value).draw();
                                 });
                             }
+
+                            setTimeout(function(){
+                                $('.edwiserreports-table .page-item.next a').empty();
+                                $('.edwiserreports-table .page-item.previous a').empty();
+                                var attr = $('html').attr('dir');
+                                // For some browsers, `attr` is undefined; for others,
+                                // `attr` is false.  Check for both.
+                                if (typeof attr !== 'undefined' && attr !== false && attr == 'rtl') {
+                                    $('.edwiserreports-table .page-item.next a:before').css({'border-left': '11px solid transparent', 'border-bottom': '6px solid transparent','border-top': '6px solid transparent','border-left-color': '#ccc','border-right-width': '0px'});
+                                    $('.edwiserreports-table .page-item.previous a:before').css({'border-bottom': '6px solid transparent','border-top': '6px solid transparent','border-right':' 10px solid transparent','border-right-color': '#ccc','border-left-width': '0px'});
+                                }
+                            }, 1000);
+
                             common.loader.hide(tableId);
                         });
                     });

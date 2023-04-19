@@ -82,6 +82,11 @@ $string['activity'] = 'Activity';
 $string['cohorts'] = 'Cohorts';
 $string['nographdata'] = 'No data';
 
+
+$string['viewdetails'] = 'View Details';
+
+
+
 // Breakdown the tooltip string to display in 2 lines.
 $string['cpblocktooltip1'] = '{$a->per} course completed';
 $string['cpblocktooltip2'] = 'by {$a->val} users';

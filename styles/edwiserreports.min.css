@@ -2257,7 +2257,7 @@ table.dataTable thead .sorting::after {
 }
 .local-edwiserreports .edwiserreports-table .table-pagination .previous.page-item a,
 .local-edwiserreports .edwiserreports-table .table-pagination .next.page-item a {
-    padding: 0.45rem 0.786rem !important;
+    padding: 0.51rem 0.786rem !important;
 }
 
 .local-edwiserreports .edwiserreports-table .table-pagination .page-item a:focus, .local-edwiserreports .edwiserreports-table .table-pagination .page-item:active {
@@ -4414,6 +4414,9 @@ span.flatpickr-weekday {
 .edw-act-completion .edw-act-completion-cal{
     margin-right: 0px !important;
 }
+.edw-act-completion{
+    width: 33%;
+}
 
 /* RTL comaptibility  */
 
@@ -4636,5 +4639,11 @@ html[dir=rtl] .insight-wrap .insight-direction .value{
 html[dir=rtl] .insight-wrap .insight-direction .value .icon{
     margin-right: 0px !important;
 }
+
+html[dir=rtl] .dataTables_wrapper table.dataTable thead > tr > th {
+    padding: 10px 10px 10px 30px;
+}
+
+
 
 /* RTL comaptibility  END*/

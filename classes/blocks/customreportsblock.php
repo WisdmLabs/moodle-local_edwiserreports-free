@@ -75,7 +75,7 @@ class customreportsblock extends block_base {
         }
 
         // Main query to execute the custom query reports.
-        $sql = "SELECT $customfields
+        $sql = "SELECT DISTINCT $customfields
                 FROM {user} u
                 $cohortsjoin
                 JOIN {role_assignments} ra ON ra.userid = u.id

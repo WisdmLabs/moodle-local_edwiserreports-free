@@ -109,7 +109,8 @@ class export {
      */
     public function get_html_for_pdf2($data) {
         global $DB;
-
+        $rtl = get_string('thisdirection', 'langconfig') == 'rtl' ? 1 : 0;
+        $help = '';
         $headerrow = array_shift($data);
         if (strpos($this->blockname, 'customreportsblock') !== false) {
             $params = explode('-', $this->blockname);
@@ -130,7 +131,19 @@ class export {
             )
         );
 
-        echo html_writer::tag("p", $help);
+        // echo html_writer::tag("p", $help);
+        $htmlhelp = html_writer::tag("p",
+            $help
+        );
+        if($rtl){
+            $htmlhelp = html_writer::tag("p",
+                $help,
+                array(
+                    "style" => "direction:rtl; text-align:right;"
+                )
+            );
+        }
+        echo $htmlhelp;
 
         echo '<table style="font-size: 11px;" border="1px" cellpadding="3">';
 
