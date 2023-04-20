@@ -2253,11 +2253,11 @@ table.dataTable thead .sorting::after {
     vertical-align: middle;
 }
 .local-edwiserreports .edwiserreports-table .table-pagination .page-item a {
-    padding: 0.3rem 0.786rem !important;
+    padding: 3px 10px !important;
 }
 .local-edwiserreports .edwiserreports-table .table-pagination .previous.page-item a,
 .local-edwiserreports .edwiserreports-table .table-pagination .next.page-item a {
-    padding: 0.51rem 0.786rem !important;
+    padding: 8px 11px !important;
 }
 
 .local-edwiserreports .edwiserreports-table .table-pagination .page-item a:focus, .local-edwiserreports .edwiserreports-table .table-pagination .page-item:active {
@@ -4410,12 +4410,11 @@ span.flatpickr-weekday {
 }
 
 
-
 .edw-act-completion .edw-act-completion-cal{
     margin-right: 0px !important;
 }
 .edw-act-completion{
-    width: 33%;
+    width: 20rem;
 }
 
 /* RTL comaptibility  */
@@ -4644,6 +4643,12 @@ html[dir=rtl] .dataTables_wrapper table.dataTable thead > tr > th {
     padding: 10px 10px 10px 30px;
 }
 
+html[dir=rtl] .local-edwiserreports #learnertimespentonsiteblock .filter-selector > label{
+    left: unset;
+}
 
+html [dir=rtl] #todaysactivityblock .flatpickr-input{
+    direction: ltr;
+}
 
 /* RTL comaptibility  END*/

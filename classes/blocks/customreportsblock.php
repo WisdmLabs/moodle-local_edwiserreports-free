@@ -90,6 +90,7 @@ class customreportsblock extends block_base {
                 AND ct.contextlevel = :contextlevel
                 AND r.archetype = :archetype
                 AND u.deleted = 0";
+
         $recordset = $DB->get_recordset_sql($sql, $params);
         $records = array();
         if ($recordset->valid()) {

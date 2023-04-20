@@ -568,16 +568,37 @@ class activeusersblock extends block_base {
 
         foreach ($dates as $date) {
             $label = date("d F Y", $date * 86400);
-            $activeusers = $rtl ? array_reverse(self::get_usersdata($label, $date, "activeusers", $cohortid)): self::get_usersdata($label, $date, "activeusers", $cohortid);
-            $enrolments = $rtl ? array_reverse(self::get_usersdata($label, $date, "enrolments", $cohortid)) : self::get_usersdata($label, $date, "enrolments", $cohortid);
-            $completions = $rtl ? array_reverse(self::get_usersdata($label, $date, "completions", $cohortid)) : self::get_usersdata($label, $date, "completions", $cohortid);
+            $activeusers = self::get_usersdata($label, $date, "activeusers", $cohortid);
+            $enrolments = self::get_usersdata($label, $date, "enrolments", $cohortid);
+            $completions = self::get_usersdata($label, $date, "completions", $cohortid);
 
-            $export = array_merge($export,
+            if($rtl){
+                $tempactiveusers = array();
+                $tempenrolments = array();
+                $tempcompletions = array();
+                foreach ($activeusers as $activeuser) {
+                    $tempactiveusers[] = array_reverse($activeuser);
+                }
+                foreach ($enrolments as $enrolment) {
+                    $tempenrolments[] = array_reverse($enrolment);
+                }
+                foreach ($completions as $completion) {
+                    $tempcompletions[] = array_reverse($completion);
+                }
+
+                $activeusers = $tempactiveusers;
+                $enrolments = $tempenrolments;
+                $completions = $tempcompletions;
+            }
+
+            $export = array_merge(
+                $export,
                 $activeusers,
                 $enrolments,
                 $completions
             );
         }
+
 
         return (object) [
             'data' => $export,

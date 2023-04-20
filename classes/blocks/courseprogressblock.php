@@ -537,20 +537,25 @@ class courseprogressblock extends block_base {
      * @return array          Array of exportable data
      */
     public function get_exportable_data_block($filter) {
+        $rtl = get_string('thisdirection', 'langconfig') == 'rtl' ? 1 : 0;
+
         $export = array();
-        $export[] = self::get_header();
+        $export[] = $rtl ? array_reverse(self::get_header()) : self::get_header();
+
         $course = get_course($filter);
         $enrolledstudents = \local_edwiserreports\utility::get_enrolled_students($course->id, false);
         foreach ($enrolledstudents as $student) {
             $completion = \local_edwiserreports\utility::get_course_completion_info($course, $student->id);
             $completed = $completion["completedactivities"] . "/" . $completion["totalactivities"];
-            $export[] = array(
+            $data = array(
                 fullname($student),
                 $student->email,
                 format_string($course->fullname, true, ['context' => \context_system::instance()]),
                 $completed,
                 $completion["progresspercentage"] . "%"
             );
+
+            $export[] = $rtl ? array_reverse($data) : $data;
         }
 
         return $export;
@@ -567,7 +572,6 @@ class courseprogressblock extends block_base {
         $rtl = optional_param("filter", 0, PARAM_INT);
         $export = array();
         $export[] = $rtl ? array_reverse(self::get_header_report()) : self::get_header_report();
-
 
         $blockobj = new self();
         $courses = $blockobj->get_courses_of_user();
