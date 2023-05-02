@@ -104,6 +104,7 @@ class activeusersblock extends block_base {
         $this->layout->morelink = new moodle_url($CFG->wwwroot . "/local/edwiserreports/activeusers.php");
         $this->layout->downloadlinks = $this->get_block_download_links(true);
         $this->layout->filters = $this->get_activeusers_filter();
+        $this->layout->morelink = 1;
 
         // Selected default filters.
         $this->layout->filter = 'last7days';

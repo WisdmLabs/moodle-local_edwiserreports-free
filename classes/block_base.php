@@ -217,6 +217,7 @@ class block_base {
             // If user dont have capability to see the block.
             $this->layout->caneditadv = has_capability('report/edwiserreports_' . $blockname . ':editadvance', $context);
         } else {
+            $this->layout->customreport = 1;
             $this->layout->caneditadv = has_capability('report/edwiserreports_customreports:manage', $context);
         }
 

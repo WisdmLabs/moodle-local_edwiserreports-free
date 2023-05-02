@@ -156,12 +156,13 @@ define('local_edwiserreports/reports/courseactivitycompletion', [
                             width: "4rem"
                         },
                         {
-                            data: 'completedon'
+                            data: 'completedon',
+                            width: "10rem"
                         },
                         {data: 'grade'},
                         {
                             data: 'gradedon',
-                            width: "8rem"
+                            width: "10rem"
                         },
                         {
                             data: 'firstaccess',

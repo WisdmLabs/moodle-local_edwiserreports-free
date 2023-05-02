@@ -44,6 +44,11 @@ define([
     selector
 ) {
     /**
+     * Direction parameter.
+     */
+    var direction = $('html').attr('dir');
+
+    /**
      * Selectors list.
      */
     let SELECTOR = {
@@ -458,37 +463,108 @@ define([
      * @param {Object} opts Options
      * @returns {String}
      */
-    function timeFormatter(seconds, opts) {
+    // function timeFormatter(seconds, opts) {
+    //     seconds = Number(seconds);
+    //     var h = Math.floor(seconds / 3600);
+    //     var m = Math.floor(seconds % 3600 / 60);
+    //     var s = Math.floor(seconds % 3600 % 60);
+
+    //     if (typeof opts == 'object' && opts.dataPointIndex !== undefined && opts.dataPointIndex !== -1) {
+    //         var time = [];
+    //         var short = opts.short !== undefined && opts.short;
+    //         if (h > 0) {
+    //             if (short) {
+    //                 time.push(h + " " + "h.");
+    //             } else {
+    //                 time.push(h + " " + (h == 1 ? M.util.get_string('hour', 'local_edwiserreports') :
+    //                     M.util.get_string('hours', 'local_edwiserreports')));
+    //             }
+    //         }
+    //         if (m > 0) {
+    //             if (short) {
+    //                 time.push(m + " " + "min.");
+    //             } else {
+    //                 time.push(m + " " + (m == 1 ? M.util.get_string('minute', 'local_edwiserreports') :
+    //                     M.util.get_string('minutes', 'local_edwiserreports')));
+    //             }
+    //         }
+    //         if (s > 0) {
+    //             if (short) {
+    //                 time.push(s + " " + "sec.");
+    //             } else {
+    //                 time.push(s + " " + (s == 1 ? M.util.get_string('second', 'local_edwiserreports') :
+    //                     M.util.get_string('seconds', 'local_edwiserreports')));
+    //             }
+    //         }
+    //         if (time.length == 0) {
+    //             time.push(0);
+    //         }
+    //         return time.join(', ');
+    //     }
+    //     return timePlainFormat(h, m, s);
+    // }
+
+
+    function timeFormatter(seconds, opts, rtl=0) {
         seconds = Number(seconds);
         var h = Math.floor(seconds / 3600);
         var m = Math.floor(seconds % 3600 / 60);
         var s = Math.floor(seconds % 3600 % 60);
 
+        if(rtl == 0){
+            rtl = $('html').attr('dir') == 'rtl' ? 1 : 0;
+        }
+
+
         if (typeof opts == 'object' && opts.dataPointIndex !== undefined && opts.dataPointIndex !== -1) {
             var time = [];
             var short = opts.short !== undefined && opts.short;
-            if (h > 0) {
-                if (short) {
-                    time.push(h + " " + "h.");
-                } else {
-                    time.push(h + " " + (h == 1 ? M.util.get_string('hour', 'local_edwiserreports') :
-                        M.util.get_string('hours', 'local_edwiserreports')));
+
+            if(rtl == 1){
+                if (s > 0) {
+                    if (short) {
+                        time.push(M.util.get_string('secondshort', 'local_edwiserreports')+ " " + s  );
+                    } else {
+                        time.push(M.util.get_string(s == 1 ? 'second' : 'seconds', 'local_edwiserreports')+ " " + s  );
+                    }
                 }
-            }
-            if (m > 0) {
-                if (short) {
-                    time.push(m + " " + "min.");
-                } else {
-                    time.push(m + " " + (m == 1 ? M.util.get_string('minute', 'local_edwiserreports') :
-                        M.util.get_string('minutes', 'local_edwiserreports')));
+                
+                if (m > 0) {
+                    if (short) {
+                        time.push(M.util.get_string('minuteshort', 'local_edwiserreports')+ " " + m);
+                    } else {
+                        time.push(M.util.get_string(m == 1 ? 'minute' : 'minutes', 'local_edwiserreports')+ " " + m);
+                    }
                 }
-            }
-            if (s > 0) {
-                if (short) {
-                    time.push(s + " " + "sec.");
-                } else {
-                    time.push(s + " " + (s == 1 ? M.util.get_string('second', 'local_edwiserreports') :
-                        M.util.get_string('seconds', 'local_edwiserreports')));
+                if (h > 0) {
+                    if (short) {
+                        time.push( M.util.get_string('hourshort', 'local_edwiserreports')+ " " + h);
+                    } else {
+                        time.push( M.util.get_string(h == 1 ? 'hour' : 'hours', 'local_edwiserreports')+ " " + h);
+                    }
+                }
+                
+            } else {
+                if (h > 0) {
+                    if (short) {
+                        time.push(h + " " + M.util.get_string('hourshort', 'local_edwiserreports'));
+                    } else {
+                        time.push(h + " " + M.util.get_string(h == 1 ? 'hour' : 'hours', 'local_edwiserreports'));
+                    }
+                }
+                if (m > 0) {
+                    if (short) {
+                        time.push(m + " " + M.util.get_string('minuteshort', 'local_edwiserreports'));
+                    } else {
+                        time.push(m + " " + M.util.get_string(m == 1 ? 'minute' : 'minutes', 'local_edwiserreports'));
+                    }
+                }
+                if (s > 0) {
+                    if (short) {
+                        time.push(s + " " + M.util.get_string('secondshort', 'local_edwiserreports'));
+                    } else {
+                        time.push(s + " " + M.util.get_string(s == 1 ? 'second' : 'seconds', 'local_edwiserreports'));
+                    }
                 }
             }
             if (time.length == 0) {
@@ -496,7 +572,7 @@ define([
             }
             return time.join(', ');
         }
-        return timePlainFormat(h, m, s);
+        return rtl ? timePlainFormat(s, m, h) : timePlainFormat(h, m, s);
     }
 
     /**
@@ -812,12 +888,29 @@ define([
             startDay = startDay < 10 ? '0' + startDay : startDay;
             let endDay = enddate.getDate();
             endDay = endDay < 10 ? '0' + endDay : endDay;
-            $(SELECTOR.DATESELECTED).html(`${startDay} ${startdate.toLocaleString('default', {
-                month: 'long'
-            })} ${startdate.getFullYear()} -
-            ${endDay} ${enddate.toLocaleString('default', {
-                month: 'long'
-            })} ${enddate.getFullYear()}</span>`);
+            // $(SELECTOR.DATESELECTED).html(`${startDay} ${startdate.toLocaleString('default', {
+            //     month: 'long'
+            // })} ${startdate.getFullYear()} -
+            // ${endDay} ${enddate.toLocaleString('default', {
+            //     month: 'long'
+            // })} ${enddate.getFullYear()}</span>`);
+
+
+            var date = `${startDay} ${startdate.toLocaleString('default', { month: 'long' })} ${startdate.getFullYear()} -
+            ${endDay} ${enddate.toLocaleString('default', { month: 'long' })} ${enddate.getFullYear()}</span>`;
+            if(direction == 'rtl'){
+                // format for rtl : yyyy mm dd
+                startdate = startdate.getFullYear() + ' ' + startdate.toLocaleString('default', { month: 'long' }) + ' ' + startDay;
+                enddate = enddate.getFullYear() + ' ' + enddate.toLocaleString('default', { month: 'long' }) + ' ' + endDay;
+                date = enddate + '-' + startdate;
+
+                // Making direction ltr for date selector and aligning text to right
+                $(SELECTOR.DATESELECTED).css({'direction':'ltr','text-align': 'right'});
+            }
+            $(SELECTOR.DATESELECTED).html(date);
+
+
+
         }).fail(function(ex) {
             Notification.exception(ex);
         });

@@ -31,9 +31,31 @@ define([
 ], function($, ModalFactory, ModalEvents, Fragment, V, common) {
 
     /**
+     * Selectors list.
+     */
+    var SELECTOR = {
+        PANEL: '#wdm-courseprogress-individual',
+        COHORT: '.cohort-select',
+        COURSE: '.course-select',
+        GROUP: '.group-select',
+        STUDENT: '.student-select',
+        GRAPH: '.graph',
+        GRAPHLABEL: '.graph-label',
+        FORMFILTER: '.download-links [name="filter"]',
+        FILTERS: '.filters'
+    };
+
+    /**
      * rtl for rtl lang support.
      */
     let rtl = $('html').attr('dir') == 'rtl' ? 1 : 0;
+
+    /**
+     * Filter for ajax.
+     */
+    var filter = {
+        rtl: rtl
+    };
 
     /**
      * Initialize
@@ -46,6 +68,7 @@ define([
         var ModalTrigger = CourseProgressTable + " a.modal-trigger";
         var datatable = null;
         var modalTable = null;
+        $(SELECTOR.PANEL).find(SELECTOR.FORMFILTER).val(rtl);
 
         // Cohort variable.
         var cohortId = 0;
@@ -191,6 +214,7 @@ define([
                     className: "text-left",
                     targets: 0
                 }, {
+                    // className: rtl ? "text-left modal-trigger" : "text-right modal-trigger",
                     className: "text-right modal-trigger",
                     targets: "_all"
                 }],

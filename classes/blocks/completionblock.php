@@ -55,6 +55,8 @@ class completionblock {
         global $DB;
         $timenow = time();
 
+        $rtl = get_string('thisdirection', 'langconfig') == 'rtl' ? 1 : 0;
+
         // Get only enrolled students.
         $enrolledstudents = utility::get_enrolled_students($courseid, false, $cohortid);
         $course = get_course($courseid);
@@ -102,16 +104,15 @@ class completionblock {
                     "title" => $user->email
                 )
             );
-            $completioninfo->enrolledon = date("d M Y", $user->enrolledon);
+            $completioninfo->enrolledon = $rtl ? date("Y M d", $user->enrolledon) : date("d M Y", $user->enrolledon);
             $completioninfo->enrolltype = $user->enrol;
             $completioninfo->noofvisits = empty($user->visits) ? 0 : $user->visits;
             
             $completioninfo->completion = empty($user->progress) ? "NA" : round($user->progress) . '%';
             $completioninfo->compleiontime = empty($user->completiontime) ?
-                                            $notyet :
-                                            date("d M Y", $user->completiontime);
+                                            $notyet : date("d M Y", $user->completiontime);
             $completioninfo->grade = round($user->grade, 2) . '%';
-            $completioninfo->lastaccess = empty($user->visits) ? $never : format_time($timenow - $user->lastvisit);
+            $completioninfo->lastaccess = empty($user->visits) ? 0 : format_time($timenow - $user->lastvisit);
             $userscompletion[] = $completioninfo;
             unset($users[$key]);
         }

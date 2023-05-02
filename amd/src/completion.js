@@ -25,6 +25,29 @@ define([
     './select2'
 ], function($, V, common) {
     /* eslint-disable no-unused-vars */
+
+    /**
+     * Selectors list.
+     */
+    var SELECTOR = {
+        PANEL: '#wdm-completion-individual',
+        FORMFILTER: '.download-links [name="filter"]',
+        FORMRTL: '.download-links [name="rtl"]',
+        FILTERS: '.filters'
+    };
+
+    /**
+     * rtl for rtl lang support.
+     */
+    let rtl = $('html').attr('dir') == 'rtl' ? 1 : 0;
+
+    /**
+     * Filter for ajax.
+     */
+    var filter = {
+        rtl: rtl
+    };
+
     /**
      * Initialize
      * @param {integer} CONTEXTID Current page context id
@@ -47,6 +70,7 @@ define([
 
             // Get course id
             var courseId = $(PageId).find('.download-links input[name="filter"]').val();
+            $(SELECTOR.PANEL).find(SELECTOR.FORMRTL).val(rtl);
 
             getCourseCompletion(courseId, cohortId);
 
@@ -115,7 +139,16 @@ define([
                 columns: [{
                     "data": "username"
                 }, {
-                    "data": "enrolledon"
+                    "data": "enrolledon",
+                    render: function(data) {
+                        let rtl = $('html').attr('dir') == 'rtl' ? 1 : 0;
+                        if(rtl){
+                            return '<label style="direction:ltr;">' + data + '</label>';
+                        } else {
+                            return data;
+                        }
+                    },
+                    width: "10rem"
                 }, {
                     "data": "enrolltype"
                 }, {
@@ -123,11 +156,31 @@ define([
                 }, {
                     "data": "completion"
                 }, {
-                    "data": "compleiontime"
+                    "data": "compleiontime",
+                    render: function(data) {
+                        let rtl = $('html').attr('dir') == 'rtl' ? 1 : 0;
+
+                        if(rtl){
+                            return '<label style="direction:ltr;">' + data + '</label>';
+                        } else {
+                            return data;
+                        }
+                    },
+                    width: "10rem"
                 }, {
                     "data": "grade"
                 }, {
-                    "data": "lastaccess"
+                    "data": "lastaccess",
+                    render: function(data) {
+                        let rtl = $('html').attr('dir') == 'rtl' ? 1 : 0;
+                        if(rtl && data != 0){
+                            let datearr = data.split(" ");
+                            return '<label style="direction:ltr;">' + datearr[2] + ' ' + datearr[1] + ' ' + datearr[0] + '</label>';
+                        } else {
+                            return M.util.get_string('never', 'local_edwiserreports');
+                        }
+                    },
+                    width: "10rem"
                 }],
                 drawCallback: function() {
                     common.stylePaginationButton(this);

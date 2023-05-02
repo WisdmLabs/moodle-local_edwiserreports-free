@@ -42,6 +42,8 @@ class learnertimespentonsiteblock extends block_base {
         $this->layout->info = get_string('learnertimespentonsiteblockhelp', 'local_edwiserreports');
         $this->layout->filters = $OUTPUT->render_from_template('local_edwiserreports/learnertimespentonsiteblockfilters', []);
         $this->layout->pro = $this->image_icon('lock');
+        $this->layout->morelink = 1;
+
 
         // Add block view in layout.
         $this->layout->blockview = $this->render_block('learnertimespentonsiteblock', $this->block);

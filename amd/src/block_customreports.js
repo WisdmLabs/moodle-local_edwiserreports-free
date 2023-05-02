@@ -76,6 +76,25 @@ define([
     var component = 'local_edwiserreports';
 
     /**
+     * Selectors list.
+     */
+    var SELECTOR = {
+        // PANEL: '#wdm-completion-individual',
+        FORMFILTER: '.download-links [name="filter"]',
+        FORMRTL: '.download-links [name="rtl"]',
+        FILTERS: '.filters'
+    };
+
+    /**
+     * rtl for rtl lang support.
+     */
+    let rtl = $('html').attr('dir') == 'rtl' ? 1 : 0;
+
+
+    $(panel).find(SELECTOR.FORMRTL).val(rtl);
+
+
+    /**
      * Get checkbox selector for table.
      * @param {String} tableSelector Table id
      * @returns {String} Checkbox selector
@@ -218,8 +237,37 @@ define([
             bSort: false,
             drawCallback: function() {
                 common.stylePaginationButton(this);
+
+                // RTL support for arrows
+                setTimeout(function(){
+                    $('.edwiserreports-table .page-item.next a').empty();
+                    $('.edwiserreports-table .page-item.previous a').empty();
+                    var attr = $('html').attr('dir');
+                    // For some browsers, `attr` is undefined; for others,
+                    // `attr` is false.  Check for both.
+                    if (typeof attr !== 'undefined' && attr !== false && attr == 'rtl') {
+                        $('.edwiserreports-table .page-item.next a:before').css({'border-left': '11px solid transparent', 'border-bottom': '6px solid transparent','border-top': '6px solid transparent','border-left-color': '#ccc','border-right-width': '0px'});
+                        $('.edwiserreports-table .page-item.previous a:before').css({'border-bottom': '6px solid transparent','border-top': '6px solid transparent','border-right':' 10px solid transparent','border-right-color': '#ccc','border-left-width': '0px'});
+                    }
+                }, 1000);
+
+                // all themes support for arrows
+                setTimeout(function(){
+
+                    // removing datatbles next previous blank as it can not be done by thier attributes
+        
+                }, 2000);
+
+
             }
         }).columns.adjust();
+
+        setTimeout(function(){
+            $('.edwiserreports-table .page-item.next a').empty();
+            $('.edwiserreports-table .page-item.previous a').empty();
+        }, 3000);
+
+
     };
 
     /**

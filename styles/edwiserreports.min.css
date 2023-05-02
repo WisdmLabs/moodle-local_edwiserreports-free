@@ -885,6 +885,23 @@ html[lang=es] .local-edwiserreports .filter-selector .edwiserreports-calendar {
     border-left: 0.5rem solid transparent;
 }
 
+.blocksetting .pro-export-title::after {
+    content: " ";
+    position: absolute;
+    top: 75%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-top: 0.5rem solid;
+    border-right: 0.5rem solid transparent;
+    border-left: 0.5rem solid transparent;
+}
+
+.blocksetting .pro-export-title{
+    margin: 6px;
+    padding: 9px 20px !important;
+    border-radius: 5px;
+}
+
 .more-details .pro-export {
     position: relative;
     opacity: 0.3;
@@ -2257,7 +2274,7 @@ table.dataTable thead .sorting::after {
 }
 .local-edwiserreports .edwiserreports-table .table-pagination .previous.page-item a,
 .local-edwiserreports .edwiserreports-table .table-pagination .next.page-item a {
-    padding: 8px 11px !important;
+    padding: 6px 10px !important;
 }
 
 .local-edwiserreports .edwiserreports-table .table-pagination .page-item a:focus, .local-edwiserreports .edwiserreports-table .table-pagination .page-item:active {
@@ -4417,6 +4434,17 @@ span.flatpickr-weekday {
     width: 20rem;
 }
 
+#wdm-edwiserreports .edwiserReport-block > div .panel.has-footer{
+    padding-bottom: 4.7rem !important;
+}
+#wdm-edwiserreports .edwiserReport-block > div .panel .panel-footer {
+    position: absolute;
+    bottom: 0;
+    text-align: right;
+    width: 100%;
+}
+
+
 /* RTL comaptibility  */
 
 html[dir=rtl] #wdm-edwiserreports .apexcharts-yaxis {
@@ -4522,7 +4550,12 @@ html[dir=rtl] .local-edwiserreports .filter-selector .edwiserreports-calendar{
     text-align: left;
     justify-content: left !important;
 }
-
+html[dir=rtl] .local-edwiserreports .edw-act-completion .filter-selector .edwiserreports-calendar{
+    width: 14rem !important;
+}
+html[dir=rtl] .edw-act-completion{
+    width: unset;
+}
 
 html[dir=rtl] .edwiserreports-table table.dataTable thead .sorting::before,
 html[dir=rtl] .edwiserreports-table table.dataTable thead .sorting::after,
@@ -4640,15 +4673,60 @@ html[dir=rtl] .insight-wrap .insight-direction .value .icon{
 }
 
 html[dir=rtl] .dataTables_wrapper table.dataTable thead > tr > th {
-    padding: 10px 10px 10px 30px;
+    padding: 16px 10px 16px 30px;
 }
 
 html[dir=rtl] .local-edwiserreports #learnertimespentonsiteblock .filter-selector > label{
     left: unset;
 }
 
-html [dir=rtl] #todaysactivityblock .flatpickr-input{
+html[dir=rtl] #todaysactivityblock .flatpickr-input{
     direction: ltr;
 }
 
+html[dir=rtl] .pro-export-wrapper .pro-export-title::after{
+    left: 15%;
+}
+html[dir=rtl] .dropdown-menu{
+    left: unset;
+}
+
+html[dir=rtl] .insight-card .pro-lock{
+    position: absolute;
+    right: unset;
+    top: 1rem;
+    left: 1rem;
+}
+
+html[dir=rtl] #wdm-edwiserreports .edwiserReport-block > div .panel .panel-footer{
+    position: absolute;
+    bottom: 0;
+    text-align: left;
+    width: 100%;
+}
+html[dir=rtl] #courseprogressblock .apexcharts-legend{
+    border: 1px solid #d8d8d8;
+}
+
+
 /* RTL comaptibility  END*/
+
+#cr-list-table .pro-export-wrapper{
+    position: unset;
+}
+
+.pro-export-wrapper .pro-export-title::after{
+    left: 65%;
+}
+
+#cr-list-table{
+    position: relative;
+}
+
+.dataTables_wrapper table.dataTable thead > tr > th {
+    /* padding: 16px 10px 16px 30px;
+     */
+     padding-top: 16px;
+     padding-bottom: 16px;
+}
+

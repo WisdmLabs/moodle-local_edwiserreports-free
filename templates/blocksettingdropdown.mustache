@@ -48,9 +48,22 @@
         </a>
         {{^pro}}
         {{# caneditadv }}
-        <a href="#" class="dropdown-item" data-contextid="{{contextid}}" data-blockname="{{id}}" data-action="editcap">
-            {{#str}} editcapability, local_edwiserreports {{/str}}
-        </a>
+            {{^ customreport }}
+            <a href="#" class="dropdown-item" data-contextid="{{contextid}}" data-blockname="{{id}}" data-action="editcap">
+                {{#str}} editcapability, local_edwiserreports {{/str}}
+            </a>
+            {{/ customreport }}
+
+            {{# customreport }}
+            <div class="pro-export-title p-3 theme-1-bg text-white">
+                {{#str}} availableinprolink, local_edwiserreports {{/str}}
+            </div>
+            <span class="dropdown-item disabled" data-contextid="" data-blockname="" data-action="" style="padding: 0.25rem 1.5rem;">
+                {{#str}} editcapability, local_edwiserreports {{/str}}
+            </span>
+            {{/ customreport }}
+
+
         {{/ caneditadv }}
         {{/pro}}
     </div>

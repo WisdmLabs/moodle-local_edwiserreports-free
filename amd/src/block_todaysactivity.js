@@ -26,6 +26,14 @@ define([
     './defaultconfig',
     './common'
 ], function($, Notification, ApexCharts, CFG, common) {
+
+	/**
+	* 
+	*/
+	var rtl = $('html').attr('dir') == 'rtl' ? 1 : 0;
+
+
+
     /**
      * Initialize
      * @param {function} invalidUser Callback function
@@ -51,7 +59,7 @@ define([
                  * date filter in todays activity block
                  */
                 $(flatpickrCalender).flatpickr({
-                    dateFormat: "d M Y",
+                    dateFormat: rtl ? "Y M d" : "d M Y",
                     maxDate: "today",
                     defaultDate: ["today"],
                     // eslint-disable-next-line no-unused-vars

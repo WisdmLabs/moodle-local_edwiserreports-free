@@ -76,6 +76,7 @@ class studentengagement extends block_base {
      */
     public function get_table_data($filter) {
         $response = array();
+        $rtl = get_string('thisdirection', 'langconfig') == 'rtl' ? 1 : 0;
 
         $search = html_writer::tag('i', '', ['class' => 'fa fa-search-plus']);
         $link = html_writer::link(
@@ -94,7 +95,7 @@ class studentengagement extends block_base {
             $name = 'Student ';
             $response[] = array(
                 'student' => $name . $i,
-                'lastaccesson' => '2 Jan 2022 <br> 09:39 AM',
+                'lastaccesson' => $rtl ? '<label style="direction:ltr;"> 2023 Jan 12 <br>AM 39:09 </label>' : '2 Jan 2022 <br> 09:39 AM',
                 'email' => $name . $i . '@' . $name . $i . '.com',
                 'status' => $i % 2 != 0 ? 0 : 1,
                 'enrolledcourses' => $i . $link,

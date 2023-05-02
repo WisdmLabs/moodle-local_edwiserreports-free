@@ -187,7 +187,8 @@ define([
                 return;
             }
             let width = $(SELECTOR.PANEL).find(SELECTOR.GRAPH).width();
-            let newPosition = width >= 400 ? 'right' : 'bottom';
+            let newPosition = width >= 400 ? ( rtl ? 'left' : 'right' ) : 'bottom';
+
             if (newPosition == position) {
                 return;
             }

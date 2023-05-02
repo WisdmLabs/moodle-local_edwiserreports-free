@@ -80,7 +80,7 @@
     {{# blocks }}
         <div class="{{{extraclasses}}} mb-5 edwiserReport-block {{# hiddenblock }} block-hidden {{/ hiddenblock}}" data-block="{{id}}">
             <div id="{{id}}" data-sesskey="{{sesskey}}" data-blockname="{{name}}">
-                <div class="panel m-0 pt-0 px-0 pb-3">
+                <div class="panel {{# morelink }}has-footer{{/ morelink }} m-0 pt-0 px-0 pb-3">
                     {{#pro}}
                         <div class="upgrade-to-pro text-white">
                             <div class="upgrade-notice text-center pt-5 mt-5">
@@ -134,20 +134,18 @@
                         <div class="block-filters position-relative pb-1">{{{ filters }}}</div>
                         {{{ blockview }}}
 
-
-                        {{# pro }}
-                            <div class="panel-footer p-3">
-                                <a href="" class="btn theme-primary-text theme-primary-border ml-auto">
-                                {{#str}} viewdetails, local_edwiserreports {{/str}}</a>
-                            </div>
-                        {{/ pro }}
-
                         {{#iscustomblock}}
                             <div class="table-responsive">
                                 <table class="table customreportdata w-full"></table>
                             </div>
                         {{/iscustomblock}}
                     </div>
+                    {{# morelink }}
+                        <div class="panel-footer p-3">
+                            <a href="" class="btn theme-primary-text theme-primary-border ml-auto">
+                            {{#str}} viewdetails, local_edwiserreports {{/str}}</a>
+                        </div>
+                    {{/ morelink }}
                 </div>
             </div>
         </div>

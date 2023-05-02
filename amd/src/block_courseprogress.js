@@ -77,9 +77,7 @@ define([
                 return;
             }
             let width = $(panel).find('.apexcharts-canvas').width();
-            let newPosition = width >= 400 ? 'right' : 'bottom';
-
-
+            let newPosition = width >= 400 ? ( rtl ? 'left' : 'right') : 'bottom';
 
             if (newPosition == position) {
                 return;
