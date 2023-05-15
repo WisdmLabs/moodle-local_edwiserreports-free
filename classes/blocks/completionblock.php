@@ -110,9 +110,10 @@ class completionblock {
             
             $completioninfo->completion = empty($user->progress) ? "NA" : round($user->progress) . '%';
             $completioninfo->compleiontime = empty($user->completiontime) ?
-                                            $notyet : date("d M Y", $user->completiontime);
+                                            $notyet : ( $rtl ? date("Y M d", $user->completiontime) : date("d M Y", $user->completiontime));
             $completioninfo->grade = round($user->grade, 2) . '%';
-            $completioninfo->lastaccess = empty($user->visits) ? 0 : format_time($timenow - $user->lastvisit);
+            $completioninfo->lastaccess = empty($user->lastvisit) ? 0 : format_time($timenow - $user->lastvisit);
+
             $userscompletion[] = $completioninfo;
             unset($users[$key]);
         }

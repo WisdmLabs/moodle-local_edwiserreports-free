@@ -51,6 +51,7 @@ class customreportsblock extends block_base {
         $fields = $params->fields;
         $courses = $params->courses;
         $cohorts = $params->cohorts;
+        $rtl = get_string('thisdirection', 'langconfig') == 'rtl' ? 1 : 0;
 
         // Get selected fields in query format.
         list($customfields, $header, $columns, $resultfunc) = $this->create_query_fields($fields);
@@ -97,7 +98,7 @@ class customreportsblock extends block_base {
             foreach ($recordset as $record) {
                 if (!empty($resultfunc)) {
                     foreach ($resultfunc as $id => $func) {
-                        $record->$id = $func($record->$id);
+                        $record->$id = $func($record->$id, $rtl);
                     }
                 }
                 if (!in_array($record, $records)) {

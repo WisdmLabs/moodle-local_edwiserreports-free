@@ -173,8 +173,8 @@ define('local_edwiserreports/reports/allcoursessummary', [
                         { className: "text-right", targets: "_all" }
                     ],
                     columns: [
-                        { "data": "coursename", width: "14rem" },
-                        { "data": "category", width: "14rem" },
+                        { "data": "coursename", width: "10rem" },
+                        { "data": "category", width: "10rem" },
                         { "data": "enrolments" },
                         { "data": "completed" },
                         { "data": "notstarted" },

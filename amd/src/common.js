@@ -567,13 +567,17 @@ define([
                     }
                 }
             }
+
             if (time.length == 0) {
                 time.push(0);
             }
+
             return time.join(', ');
         }
+
         return rtl ? timePlainFormat(s, m, h) : timePlainFormat(h, m, s);
     }
+
 
     /**
      * Render insight card.

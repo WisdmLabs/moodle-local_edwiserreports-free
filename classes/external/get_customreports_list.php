@@ -58,6 +58,9 @@ trait get_customreports_list {
     public static function get_customreports_list($params) {
         global $DB;
         $table = 'edwreports_custom_reports';
+        $dir = get_string('thisdirection', 'langconfig');
+        $rtl = $rtl ? $rtl : ($dir == 'rtl' ? 1 : 0);
+
         $data = array();
 
         $sql = 'SELECT ecr.*, u.firstname, u.lastname
@@ -69,8 +72,8 @@ trait get_customreports_list {
             $crdata = new stdClass();
             $crdata->fullname = format_string($customreport->fullname, true, ['context' => \context_system::instance()]);
             $crdata->createdby = $customreport->firstname . ' ' . $customreport->lastname;
-            $crdata->datecreated = date('d-m-Y', $customreport->timecreated);
-            $crdata->datemodified = $customreport->timemodified ? date('d-m-Y', $customreport->timemodified) : '-';
+            $crdata->datecreated = $rtl ? date('Y-m-d', $customreport->timecreated) : date('d-m-Y', $customreport->timecreated);
+            $crdata->datemodified = $customreport->timemodified ? ($rtl ? date('Y-m-d', $customreport->timemodified) : date('d-m-Y', $customreport->timemodified)) : '-';
             $crdata->managehtml = self::create_manage_html($customreport);
             $data[] = $crdata;
         }
@@ -129,7 +132,7 @@ trait get_customreports_list {
 
                 <span class ="pro-export-wrapper">
                     <div class="pro-export-title p-3 theme-1-bg text-white">
-                        {{#str}} availableinprolink, local_edwiserreports {{/str}}
+                    ' . get_string('availableinprolink', 'local_edwiserreports', UPGRADE_URL) . '
                     </div>
                     <i class="icon fa fa-cog fa-fw " aria-label="Actions menu" style="vertical-align:-3px; font-size:19px;color:black;"></i>
                 </span>

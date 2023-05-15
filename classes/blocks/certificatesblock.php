@@ -278,7 +278,7 @@ class certificatesblock extends block_base {
         $enrolmentdate = get_string("notenrolled", "local_edwiserreports");
         $progressper = 0;
         if ($enrolment) {
-            $enrolmentdate = $rtl ? '<div style="direction:ltr;">' . date("y M d", $enrolment->timemodified) . '</div>' : date("d M y", $enrolment->timemodified);
+            $enrolmentdate = $rtl ? '<div style="direction:ltr;">' . date("Y M d", $enrolment->timemodified) . '</div>' : date("d M Y", $enrolment->timemodified);
 
             // $enrolmentdate = date("d M y", $enrolment->timemodified);
             $completion = \local_edwiserreports\utility::get_course_completion_info($course, $user->id);
