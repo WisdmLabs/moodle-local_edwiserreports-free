@@ -4771,7 +4771,10 @@ html[dir=rtl] #cr-list-table .pro-export-wrapper .pro-export-title {
 html[dir=rtl] #cr-list-table .pro-export-wrapper .pro-export-title::after{
     left: 8%;
     /* left: unset; */
-} 
+}
+html[dir=rtl] .local-edwiserreports .pull-right {
+    float: right;
+}
 
 /* RTL comaptibility  END*/
 
@@ -4810,7 +4813,7 @@ html[dir=rtl] #cr-list-table .pro-export-wrapper .pro-export-title::after{
 #wdm-edwiserreports .icon.fa.fa-plus.fa-fw{
     color: white;
 }
-.pull-right {
+.local-edwiserreports .pull-right {
     float: right;
 }
 .local-edwiserreports .dropdown-menu form {
