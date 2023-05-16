@@ -1003,3 +1003,4 @@ $string['showingdatafor'] = 'Showing data for:';
 $string['category1'] = 'Category 1';
 $string['course1'] = 'Course 1';
 $string['cohort1'] = 'Cohort 1';
+$string['configureaccess'] = 'Configure access to others than admin';

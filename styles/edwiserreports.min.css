@@ -4773,7 +4773,7 @@ html[dir=rtl] #cr-list-table .pro-export-wrapper .pro-export-title::after{
     /* left: unset; */
 }
 html[dir=rtl] .local-edwiserreports .pull-right {
-    float: right;
+    float: left;
 }
 
 /* RTL comaptibility  END*/
@@ -4813,7 +4813,7 @@ html[dir=rtl] .local-edwiserreports .pull-right {
 #wdm-edwiserreports .icon.fa.fa-plus.fa-fw{
     color: white;
 }
-.local-edwiserreports .pull-right {
+.local-edwiserreports .pull-right{
     float: right;
 }
 .local-edwiserreports .dropdown-menu form {

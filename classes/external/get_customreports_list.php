@@ -132,7 +132,7 @@ trait get_customreports_list {
 
                 <span class ="pro-export-wrapper">
                     <div class="pro-export-title p-3 theme-1-bg text-white">
-                    ' . get_string('availableinprolink', 'local_edwiserreports', UPGRADE_URL) . '
+                    ' . get_string('configureaccess', 'local_edwiserreports', UPGRADE_URL) . '<br>' .get_string('availableinprolink', 'local_edwiserreports', UPGRADE_URL) . '
                     </div>
                     <i class="icon fa fa-cog fa-fw " aria-label="Actions menu" style="vertical-align:-3px; font-size:19px;color:black;"></i>
                 </span>
