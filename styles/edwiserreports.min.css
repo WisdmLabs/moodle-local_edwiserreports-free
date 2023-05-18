@@ -4832,8 +4832,8 @@ html[dir=rtl] .local-edwiserreports .pull-right {
 }
 
 /*  Do not add any height for pro messages. */
-.local-edwiserreports .download-links.pro-highlight button{
-    height: auto;
+.local-edwiserreports .pro-highlight button{
+    height: auto !important;
 }
 
 html:not([dir=rtl]) #gradeblock .apexcharts-inner.apexcharts-graphical{
