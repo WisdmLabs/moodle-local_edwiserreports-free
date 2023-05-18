@@ -220,6 +220,11 @@ define([
                     dataPointIndex: 0,
                     'short': true
                 }, rtl).replaceAll(',', ' ');
+                
+                // If rtl then the same date format is not supported so to make it ompatible with rtl we need to replace 'min' with 'h' string
+                // if(rtl){
+                //     // response.insight.insight.value = response.insight.insight.value.replce('');    
+                // }
                 response.insight.details.data[0].value = common.timeFormatter(response.insight.details.data[0].value, {
                     dataPointIndex: 0
                 }, rtl);

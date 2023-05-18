@@ -217,7 +217,7 @@ class learnercourseactivities extends base {
      */
     public static function get_summary_data($filters) {
         global $DB, $CFG;
-
+        $rtl = get_string('thisdirection', 'langconfig') == 'rtl' ? 1 : 0;
 
         $customheader = '<div>
             <div class="mb-1 summary-card-subtitle">
@@ -231,7 +231,7 @@ class learnercourseactivities extends base {
                 'learner' => true,
                 'learnername' => 'Student 1',
                 'isactive' => 1,
-                'lastaccess' => date("d M Y h:i:s A", time()),
+                'lastaccess' => $rtl ? '<label style="direction:ltr;">' . date("A s:i:h Y m d", time()) . '</label>' : date("d M Y h:i:s A", time()),
                 'customheaderinfo' => $customheader
             ),
             'body' => array(
@@ -241,14 +241,14 @@ class learnercourseactivities extends base {
                 ),
                 array(
                     'title'   => get_string('enrolmentdate', 'local_edwiserreports'),
-                    'data' => date("d M Y", time())
+                    'data' => $rtl ? '<label style="direction:ltr;">' . date("Y M d", time()) . '</label>' : date("d M Y", time())
                 )
             ),
             'footer' => array(
                 array(
                     'icon'  => file_get_contents($CFG->dirroot . '/local/edwiserreports/pix/summary-card/time.svg'),
                     'title' => get_string('timespent', 'local_edwiserreports'),
-                    'data'  => '02:56:45'
+                    'data'  => $rtl ? '<label style="direction:ltr;">' . '45:56:02' . '</label>' : '02:56:45'
                 ),
                 array(
                     'icon'  => file_get_contents($CFG->dirroot . '/local/edwiserreports/pix/summary-card/marks.svg'),

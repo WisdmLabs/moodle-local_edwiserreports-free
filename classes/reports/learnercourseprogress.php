@@ -131,7 +131,7 @@ class learnercourseprogress extends base {
           $response[] = [
                 "course" => $name . $i,
                 "status" => $i % 2 != 0 ? 0 : 1,
-                "enrolledon" => '28 Sept 2022',
+                "enrolledon" => $rtl ? '<label style="direction:ltr;"> 2022 Sept 28 </label>' : '28 Sept 2022',
                 "completedon" => $i % 2 != 0 ? ($rtl ? '<label style="direction:ltr;"> 2023 Jan 02 </label>' : '02 Jan 2023') : get_string('never', 'local_edwiserreports'),
                 "lastaccess" => $rtl ? '<label style="direction:ltr;"> 2023 Jan 12 <br>AM 39:09 </label>' : '12 Jan 2023 <br> 09:39 AM',
                 "progress" => '70%',

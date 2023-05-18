@@ -1537,6 +1537,9 @@ table.dataTable th {
     clear: both;
     overflow-x: scroll;
 }
+.local-edwiserreports .table-responsive{
+    overflow-x: unset;
+}
 
 .dataTables_filter > .form-control[type=search] {
     margin-left: 0;
@@ -4547,7 +4550,8 @@ html[dir=rtl] #timespentonsiteblock .insight .insight-value,
 html[dir=rtl] #timespentonsiteblock .apexcharts-tooltip-text .apexcharts-tooltip-text-y-value,
 html[dir=rtl] #timespentoncourseblock .apexcharts-tooltip-text .apexcharts-tooltip-text-y-value,
 html[dir=rtl] .erp-time-rtl{
-    direction: ltr;
+    /* direction: ltr; */
+    direction: initial;
     /* text-align: left; */
     padding-left: 0px !important;
 }
@@ -4735,7 +4739,7 @@ html[dir=rtl] #todaysactivityblock .flatpickr-input{
 }
 
 html[dir=rtl] .pro-export-wrapper .pro-export-title::after{
-    left: 8%;
+    /* left: 8%; */
 }
 html[dir=rtl] .dropdown-menu{
     left: unset;
@@ -4826,10 +4830,19 @@ html[dir=rtl] .local-edwiserreports .pull-right {
 .local-edwiserreports .download-links button{
     height: 34px;
 }
-#gradeblock .apexcharts-inner.apexcharts-graphical{
+
+/*  Do not add any height for pro messages. */
+.local-edwiserreports .download-links.pro-highlight button{
+    height: auto;
+}
+
+html:not([dir=rtl]) #gradeblock .apexcharts-inner.apexcharts-graphical{
     transform: translate(0px, 0);
 }
 
+.local-edwiserreports div[role="main"]{
+    padding-bottom: 70px !important;
+}
 
 .local-edwiserreports .breadcrumb-item+.breadcrumb-item::before{
     content: "/" !important;

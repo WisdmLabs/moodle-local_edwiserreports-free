@@ -162,14 +162,8 @@ class courseprogressblock extends block_base {
         global $OUTPUT, $USER, $COURSE, $USER;
 
         $courses = $this->get_courses_of_user($USER->id);
-
-
-
-
         unset($courses[$COURSE->id]);
-
         $this->block->hascourses = count($courses) > 0;
-
         if (!$this->block->hascourses) {
             return '';
         }

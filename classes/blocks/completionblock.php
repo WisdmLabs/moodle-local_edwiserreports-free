@@ -118,6 +118,7 @@ class completionblock {
             unset($users[$key]);
         }
 
+
         // DROP userstable
         utility::drop_temp_table($usertable);
         return $userscompletion;
