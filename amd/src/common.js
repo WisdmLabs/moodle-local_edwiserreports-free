@@ -463,116 +463,116 @@ define([
      * @param {Object} opts Options
      * @returns {String}
      */
-    // function timeFormatter(seconds, opts) {
-    //     seconds = Number(seconds);
-    //     var h = Math.floor(seconds / 3600);
-    //     var m = Math.floor(seconds % 3600 / 60);
-    //     var s = Math.floor(seconds % 3600 % 60);
-
-    //     if (typeof opts == 'object' && opts.dataPointIndex !== undefined && opts.dataPointIndex !== -1) {
-    //         var time = [];
-    //         var short = opts.short !== undefined && opts.short;
-    //         if (h > 0) {
-    //             if (short) {
-    //                 time.push(h + " " + "h.");
-    //             } else {
-    //                 time.push(h + " " + (h == 1 ? M.util.get_string('hour', 'local_edwiserreports') :
-    //                     M.util.get_string('hours', 'local_edwiserreports')));
-    //             }
-    //         }
-    //         if (m > 0) {
-    //             if (short) {
-    //                 time.push(m + " " + "min.");
-    //             } else {
-    //                 time.push(m + " " + (m == 1 ? M.util.get_string('minute', 'local_edwiserreports') :
-    //                     M.util.get_string('minutes', 'local_edwiserreports')));
-    //             }
-    //         }
-    //         if (s > 0) {
-    //             if (short) {
-    //                 time.push(s + " " + "sec.");
-    //             } else {
-    //                 time.push(s + " " + (s == 1 ? M.util.get_string('second', 'local_edwiserreports') :
-    //                     M.util.get_string('seconds', 'local_edwiserreports')));
-    //             }
-    //         }
-    //         if (time.length == 0) {
-    //             time.push(0);
-    //         }
-    //         return time.join(', ');
-    //     }
-    //     return timePlainFormat(h, m, s);
-    // }
-
-
     function timeFormatter(seconds, opts, rtl=0) {
         seconds = Number(seconds);
         var h = Math.floor(seconds / 3600);
         var m = Math.floor(seconds % 3600 / 60);
         var s = Math.floor(seconds % 3600 % 60);
 
-        if(rtl == 0){
-            rtl = $('html').attr('dir') == 'rtl' ? 1 : 0;
-        }
-
+        rtl = $('html').attr('dir') == 'rtl' ? 1 : 0;
 
         if (typeof opts == 'object' && opts.dataPointIndex !== undefined && opts.dataPointIndex !== -1) {
             var time = [];
             var short = opts.short !== undefined && opts.short;
 
-            if(rtl == 1){
-                if (s > 0) {
-                    if (short) {
-                        time.push(M.util.get_string('secondshort', 'local_edwiserreports')+ " " + s  );
-                    } else {
-                        time.push(M.util.get_string(s == 1 ? 'second' : 'seconds', 'local_edwiserreports')+ " " + s  );
-                    }
-                }
+            // if(rtl == 1){
+            //     if (s > 0) {
+            //     // if (s > 0 && !dummydata) {
+            //         if (short) {
+            //             time.push(M.util.get_string('secondshort', 'local_edwiserreports')+ " " + s  );
+
+            //         } else {
+            //             time.push(M.util.get_string(s == 1 ? 'second' : 'seconds', 'local_edwiserreports')+ " " + s  );
+            //         }
+            //     }
                 
-                if (m > 0) {
-                    if (short) {
-                        time.push(M.util.get_string('minuteshort', 'local_edwiserreports')+ " " + m);
-                    } else {
-                        time.push(M.util.get_string(m == 1 ? 'minute' : 'minutes', 'local_edwiserreports')+ " " + m);
-                    }
-                }
+            //     if (m > 0) {
+            //         if (short) {
+            //             // If rtl then the same date format is not supported so to make it ompatible with rtl we need to replace 'min' with 'h' string
+            //             time.push(M.util.get_string('minuteshort', 'local_edwiserreports')+ " " + m);
+            //         } else {
+            //             time.push(M.util.get_string(m == 1 ? 'minute' : 'minutes', 'local_edwiserreports')+ " " + m);
+            //         }
+            //     }
+            //     if (h > 0) {
+            //         if (short) {
+            //             // If rtl then the same date format is not supported so to make it ompatible with rtl we need to replace 'min' with 'h' string
+            //             time.push( M.util.get_string('hourshortminuteshort', 'local_edwiserreports')+ " " + h);
+            //         } else {
+            //             time.push( M.util.get_string(h == 1 ? 'hour' : 'hours', 'local_edwiserreports')+ " " + h);
+            //         }
+            //     }
+
+            // } else {
                 if (h > 0) {
                     if (short) {
-                        time.push( M.util.get_string('hourshort', 'local_edwiserreports')+ " " + h);
+                        if(rtl == 1){
+                            time.push(h + " " + M.util.get_string('minuteshort', 'local_edwiserreports'));
+                        } else {
+                            time.push(h + " " + M.util.get_string('hourshort', 'local_edwiserreports'));
+                        }
                     } else {
-                        time.push( M.util.get_string(h == 1 ? 'hour' : 'hours', 'local_edwiserreports')+ " " + h);
-                    }
-                }
-                
-            } else {
-                if (h > 0) {
-                    if (short) {
-                        time.push(h + " " + M.util.get_string('hourshort', 'local_edwiserreports'));
-                    } else {
-                        time.push(h + " " + M.util.get_string(h == 1 ? 'hour' : 'hours', 'local_edwiserreports'));
+                        if(rtl == 1){
+                            if(m > 0){
+                                time.push( m + " " + M.util.get_string(h == 1 ? 'hour' : 'hours', 'local_edwiserreports'));
+                            }
+                        } else{
+                            time.push( h + " " + M.util.get_string(h == 1 ? 'hour' : 'hours', 'local_edwiserreports'));
+                        }
                     }
                 }
                 if (m > 0) {
                     if (short) {
-                        time.push(m + " " + M.util.get_string('minuteshort', 'local_edwiserreports'));
+                        if(rtl == 1){
+                            time.push(m + " " + M.util.get_string('hourshort', 'local_edwiserreports'));
+                        }else{
+                            time.push(m + " " + M.util.get_string('minuteshort', 'local_edwiserreports'));
+                        }
                     } else {
-                        time.push(m + " " + M.util.get_string(m == 1 ? 'minute' : 'minutes', 'local_edwiserreports'));
+                        if(rtl == 1){
+                            if(h > 0){
+                                // time.push(M.util.get_string(m == 1 ? 'minute' : 'minutes', 'local_edwiserreports') + " " + h);
+                                longmin = M.util.get_string(m == 1 ? 'minute' : 'minutes', 'local_edwiserreports') + " " + h;
+                            }
+                        } else {
+                            time.push(m + " " + M.util.get_string(m == 1 ? 'minute' : 'minutes', 'local_edwiserreports'));
+                        }
                     }
                 }
                 if (s > 0) {
                     if (short) {
-                        time.push(s + " " + M.util.get_string('secondshort', 'local_edwiserreports'));
+                        if(rtl == 1){
+                            time.push(M.util.get_string('secondshort', 'local_edwiserreports') + " " + s);
+                        } else {
+                            time.push(s + " " + M.util.get_string('secondshort', 'local_edwiserreports'));
+                        }
                     } else {
-                        time.push(s + " " + M.util.get_string(s == 1 ? 'second' : 'seconds', 'local_edwiserreports'));
+                        if(rtl == 1){
+                            // time.push(M.util.get_string(s == 1 ? 'second' : 'seconds', 'local_edwiserreports') + " " + s);
+                            longsec = M.util.get_string(s == 1 ? 'second' : 'seconds', 'local_edwiserreports') + " " + s;
+                        } else {
+                            time.push( s + " " + M.util.get_string(s == 1 ? 'second' : 'seconds', 'local_edwiserreports'));
+                        }
                     }
                 }
+            // }
+
+            if(! short && rtl ){
+                // longmin = time[1];
+                // longsec = time[2];
+                // unset(time[2]);
+                // unset(time[1]);
+                time.push(longsec);
+                time.push(longmin);
             }
+
 
             if (time.length == 0) {
                 time.push(0);
             }
 
-            return time.join(', ');
+            return time.join(' ');
+            
         }
 
         return rtl ? timePlainFormat(s, m, h) : timePlainFormat(h, m, s);

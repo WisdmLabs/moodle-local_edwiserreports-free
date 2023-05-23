@@ -136,9 +136,13 @@ html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .pag
     background-color: " . LOCAL_EDWISERREPORTS_COLOR_THEMES[$theme][1] . " !important;
 }
 
-.panel-header .dropdown-menu .pro-highlight span::after,
+.panel-header .dropdown-menu .pro-highlight button::after,
 .pro-export-title::after {
     border-top-color: " . LOCAL_EDWISERREPORTS_COLOR_THEMES[$theme][1] . " !important;
+}
+
+.pro-export-title{
+    font-size: 14px;
 }
 
 .edwiserreports-tabs .tab-item.dropdown .tab-link::after {

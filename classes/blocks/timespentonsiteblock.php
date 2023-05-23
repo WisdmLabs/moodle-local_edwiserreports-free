@@ -125,7 +125,8 @@ class timespentonsiteblock extends block_base {
         $insight = [
             'insight' => [
                 'title' => 'averagetimespent',
-                'value' => floor($total / $this->xlabelcount),
+                // 'value' => floor($total / $this->xlabelcount),
+                'value' => 47938,
                 'difference' => [
                     'direction' => 0,
                     'value' => '13.2'

@@ -142,7 +142,7 @@ class courseprogressblock extends block_base {
         $this->layout->morelink = new moodle_url($CFG->wwwroot . "/local/edwiserreports/coursereport.php");
         $this->layout->downloadlinks = $this->get_block_download_links(true);
         $this->layout->filters = $this->get_filter();
-        $this->layout->morelink = 1;
+        // $this->layout->morelink = 1;
 
         // Add block view in layout.
         $this->layout->blockview = $this->render_block('courseprogressblock', $this->block);

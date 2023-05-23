@@ -568,7 +568,7 @@ class activeusersblock extends block_base {
         $dates = array_keys($blockobj->dates);
 
         foreach ($dates as $date) {
-            $label = date("d F Y", $date * 86400);
+            $label = $rtl ? date("Y F d", $date * 86400) : date("d F Y", $date * 86400);
             $activeusers = self::get_usersdata($label, $date, "activeusers", $cohortid);
             $enrolments = self::get_usersdata($label, $date, "enrolments", $cohortid);
             $completions = self::get_usersdata($label, $date, "completions", $cohortid);

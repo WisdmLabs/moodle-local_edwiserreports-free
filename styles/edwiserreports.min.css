@@ -828,9 +828,11 @@ html[lang=es] .local-edwiserreports .filter-selector .edwiserreports-calendar {
     bottom: 0;
     left: 30%;
 }
-#wdm-edwiserreports .edwiserReport-block > div .panel .panel-header .dropdown.blockoptions .dropdown-menu .dropdown-item.pro-highlight span::after {
+#wdm-edwiserreports .edwiserReport-block > div .panel .panel-header .dropdown.blockoptions .dropdown-menu .dropdown-item.pro-highlight button::after {
     content: " ";
     position: absolute;
+    right: 50%;
+    bottom: -7px;
     border-top: 0.5rem solid;
     border-right: 0.5rem solid transparent;
     border-left: 0.5rem solid transparent;
@@ -874,7 +876,8 @@ html[lang=es] .local-edwiserreports .filter-selector .edwiserreports-calendar {
 .pro-export-wrapper .pro-export-title a {
     text-decoration: underline;
 }
-.pro-export-wrapper .pro-export-title::after {
+.pro-export-wrapper .pro-export-title::after,
+.pro-export-title::after {
     content: " ";
     position: absolute;
     top: 100%;
@@ -895,6 +898,21 @@ html[lang=es] .local-edwiserreports .filter-selector .edwiserreports-calendar {
     border-right: 0.5rem solid transparent;
     border-left: 0.5rem solid transparent;
 }
+
+.custom-report-block-setting-pro.pro-export-title::after{
+    top: 84%;
+}
+.custom-report-block-setting-pro a, .pro-export-title a{
+    display: inline;
+    text-decoration: underline;
+    color: #62a8eb !important;
+    pointer-events: all;
+    cursor: pointer;
+}
+.custom-report-block-setting-pro{
+    text-align: center;
+}
+
 
 .blocksetting .pro-export-title{
     margin: 6px;
@@ -4498,12 +4516,17 @@ span.flatpickr-weekday {
 }
 
 
+
+
 /* RTL comaptibility  */
 
 html[dir=rtl] #wdm-edwiserreports .apexcharts-yaxis {
     transform: translate(0px, 0px);
 }
 
+html[dir=rtl] .detail-title{
+    float: right;
+}
 
 html[dir=rtl] .edw-act-completion .edw-act-completion-cal{
     margin-left: 0px !important;
@@ -4551,7 +4574,7 @@ html[dir=rtl] #timespentonsiteblock .apexcharts-tooltip-text .apexcharts-tooltip
 html[dir=rtl] #timespentoncourseblock .apexcharts-tooltip-text .apexcharts-tooltip-text-y-value,
 html[dir=rtl] .erp-time-rtl{
     /* direction: ltr; */
-    direction: initial;
+    /* direction: initial; */
     /* text-align: left; */
     padding-left: 0px !important;
 }
@@ -4570,7 +4593,7 @@ html[dir=rtl] .edwiserreports-header .edwiserreport-title .selected-period{
 }
 
 html[dir=rtl] .insight .details-wrap .detail{
-    display: flex;
+    /* display: flex; */
 }
 
 html[dir=rtl] .summary-card .summary-card-subtitle{
@@ -4793,8 +4816,8 @@ html[dir=rtl] .local-edwiserreports .pull-right {
     transform: translateX(-90%);
 }
 #cr-list-table .pro-export-wrapper .pro-export-title::after{
-    /* left: 65%; */
-    left: unset;
+    left: 90%;
+    /* left: unset; */
 }
 
 #cr-list-table{

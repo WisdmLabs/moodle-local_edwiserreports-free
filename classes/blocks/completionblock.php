@@ -51,7 +51,7 @@ class completionblock {
      * @param  int   $cohortid Cohort Id
      * @return array           Array of users with course Completion
      */
-    public static function get_completions($courseid, $cohortid) {
+    public static function get_completions($courseid, $cohortid, $isexportdata) {
         global $DB;
         $timenow = time();
 
@@ -112,8 +112,12 @@ class completionblock {
             $completioninfo->compleiontime = empty($user->completiontime) ?
                                             $notyet : ( $rtl ? date("Y M d", $user->completiontime) : date("d M Y", $user->completiontime));
             $completioninfo->grade = round($user->grade, 2) . '%';
-            $completioninfo->lastaccess = empty($user->lastvisit) ? 0 : format_time($timenow - $user->lastvisit);
-
+            // $completioninfo->lastaccess = empty($user->lastvisit) ? 0 : format_time($timenow - $user->lastvisit);
+            // $completioninfo->lastaccess = empty($user->lastvisit) ? 0 : ($rtl ? date('A i:h Y M d', $user->lastvisit) : date('d M Y h:i A', $user->lastvisit));
+            $completioninfo->lastaccess = empty($user->lastvisit) ? 0 : $user->lastvisit;
+            if($isexportdata){
+                $completioninfo->lastaccess = empty($user->lastvisit) ? 0 : ($rtl ? date('Y M d', $user->lastvisit) . '<br>' . date('A i:h ', $user->lastvisit) : date('d M Y h:i A', $user->lastvisit));
+            }
             $userscompletion[] = $completioninfo;
             unset($users[$key]);
         }
@@ -151,7 +155,7 @@ class completionblock {
         $cohortid = optional_param("cohortid", 0, PARAM_INT);
         $rtl = optional_param("rtl", 0, PARAM_INT);
 
-        $completions = self::get_completions($filter, optional_param('cohortid', 0, PARAM_INT));
+        $completions = self::get_completions($filter, optional_param('cohortid', 0, PARAM_INT), 1);
 
         $export = array();
         $export[] = $rtl ? array_reverse(self::get_header()) : self::get_header();

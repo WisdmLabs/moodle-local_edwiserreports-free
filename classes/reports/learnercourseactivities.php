@@ -231,7 +231,7 @@ class learnercourseactivities extends base {
                 'learner' => true,
                 'learnername' => 'Student 1',
                 'isactive' => 1,
-                'lastaccess' => $rtl ? '<label style="direction:ltr;">' . date("A s:i:h Y m d", time()) . '</label>' : date("d M Y h:i:s A", time()),
+                'lastaccess' => $rtl ? '<label style="direction:ltr;">' . date("A s:i:h Y M d", time()) . '</label>' : date("d M Y h:i:s A", time()),
                 'customheaderinfo' => $customheader
             ),
             'body' => array(

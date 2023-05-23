@@ -306,12 +306,14 @@ define([
                 response = JSON.parse(response);
 
                 $.each(response.dates, function(idx, val) {
+                    rtl = $('html').attr('dir') == 'rtl' ? 1 : 0;
+                    
                     date = new Date(val * 86400 * 1000);
                     day = date.getDate();
                     month = months[date.getMonth()];
                     year = date.getFullYear();
                     ActiveUsers[idx] = {
-                        date: `${(day < 10 ? '0' + day : day)} ${month} ${year}`,
+                        date: rtl ? '<div style="direction:ltr;">' + `${year} ${month} ${(day < 10 ? '0' + day : day)}` + '</div>' : `${(day < 10 ? '0' + day : day)} ${month} ${year}`,
                         filter: response.dates[idx],
                         activeusers: response.data.activeUsers[idx],
                         courseenrolment: response.data.enrolments[idx],
