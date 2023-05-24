@@ -51,7 +51,7 @@ class completionblock {
      * @param  int   $cohortid Cohort Id
      * @return array           Array of users with course Completion
      */
-    public static function get_completions($courseid, $cohortid, $isexportdata) {
+    public static function get_completions($courseid, $cohortid, $isexportdata = 0) {
         global $DB;
         $timenow = time();
 

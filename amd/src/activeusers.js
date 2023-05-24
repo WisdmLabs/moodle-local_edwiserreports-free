@@ -236,6 +236,26 @@ define([
         function selectedCustomDate() {
             let date = $(SELECTOR.DATEPICKERINPUT).val(); // Y-m-d format
             let dateAlternate = $(SELECTOR.DATEPICKERINPUT).next().val().replace("to", "-"); // Date d M Y format.
+
+            // RTL support
+            // Split string in 2 parts
+            let stringarr = dateAlternate.split('-');
+            // Formating date for rtl
+            if(filter.dir == 'rtl'){
+                // format for rtl : yyyy mm dd
+                let startdate = stringarr[0].split(' ');
+                let enddate = stringarr[1].split(' ');
+
+                startdate = startdate[2] + ' ' + startdate[1] + ' ' + startdate[0];
+                enddate = enddate[3] + ' ' + enddate[2] + ' ' + enddate[1];
+                dateAlternate = enddate + '-' + startdate;
+
+                // Making direction ltr for date selector and aligning text to right
+                $(SELECTOR.DATE).css({'direction':'ltr','text-align': 'right'});
+                $(SELECTOR.DATEPICKERINPUT).css({'direction':'ltr','text-align': 'right'});
+            }
+
+
             $(SELECTOR.DATEPICKERINPUT).next().val(dateAlternate);
 
             /* If correct date is not selected then return false */
