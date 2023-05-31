@@ -461,6 +461,9 @@ tr[aria-expanded=true] .accordion-arrow.icon {
     }
 
 
+
+
+
     .local-edwiserreports div[role="main"]{
         padding-bottom: 110px !important;
     }
@@ -2879,7 +2882,7 @@ table.dataTable thead .sorting_desc_disabled{
 
 @media (max-width: 320px) {
 
-    .local-edwiserreports div[role="main"]{
+    .main-area-bg:not(.pagelayout-login) div[role="main"]{
         padding-bottom: 110px !important;
     }
 
@@ -4892,7 +4895,7 @@ html:not([dir=rtl]) #gradeblock .apexcharts-inner.apexcharts-graphical{
 }
 
 .local-edwiserreports div[role="main"]{
-    padding-bottom: 70px !important;
+    padding-bottom: 90px !important;
 }
 
 .local-edwiserreports .breadcrumb-item+.breadcrumb-item::before{
