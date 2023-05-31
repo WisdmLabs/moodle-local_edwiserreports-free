@@ -4522,8 +4522,8 @@ span.flatpickr-weekday {
 
 
 
-.local-edwiserreports .dir-rtl .fa-arrow-left,
-.local-edwiserreports .dir-rtl .fa-arrow-right{
+.local-edwiserreports.dir-rtl .fa-arrow-left,
+.local-edwiserreports.dir-rtl .fa-arrow-right{
     transform: unset !important;
 }
 
