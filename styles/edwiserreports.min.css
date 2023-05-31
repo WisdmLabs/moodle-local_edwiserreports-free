@@ -1869,9 +1869,9 @@ table.dataTable td.dataTables_empty {
     z-index: 0;
 }
 
-table.dataTable thead .sorting_asc::before{
+.local-edwiserreports table.dataTable thead .sorting_asc::before{
     margin-top: -5px !important;
-    content: '';
+    content: "" !important;
     display: block;
     width: 0px;
     height: 0px;
@@ -1881,10 +1881,15 @@ table.dataTable thead .sorting_asc::before{
     border-bottom-color: #133F3F;
     border-top-width: 0px;
 }
-table.dataTable thead .sorting::before,
-table.dataTable thead .sorting_desc::before{
+
+table.dataTable thead .sorting_desc_disabled{
+
+}
+
+.local-edwiserreports table.dataTable thead .sorting::before,
+.local-edwiserreports table.dataTable thead .sorting_desc::before{
     margin-top: -5px !important;
-    /* content: "\f0d8" !important; */
+    content: "" !important;
     content: '';
     display: block;
     width: 0px;
@@ -1896,9 +1901,9 @@ table.dataTable thead .sorting_desc::before{
     border-top-width: 0px;
 }
 
-table.dataTable thead .sorting_desc::after{
+.local-edwiserreports table.dataTable thead .sorting_desc::after{
     margin-top: 5px !important;
-    /* content: "\f0d7" !important; */
+    content: "" !important;
     content: '';
     display: block;
     width: 0px;
@@ -1910,10 +1915,10 @@ table.dataTable thead .sorting_desc::after{
     border-bottom-width: 0px;
 }
 
-table.dataTable thead .sorting::after,
-table.dataTable thead .sorting_asc::after {
+.local-edwiserreports table.dataTable thead .sorting::after,
+.local-edwiserreports table.dataTable thead .sorting_asc::after {
     margin-top: 5px !important;
-    /* content: "\f0d7" !important; */
+    content: "" !important;
     content: '';
     display: block;
     width: 0px;
@@ -4517,6 +4522,12 @@ span.flatpickr-weekday {
 
 
 
+.local-edwiserreports .dir-rtl .fa-arrow-left,
+.local-edwiserreports .dir-rtl .fa-arrow-right{
+    transform: unset !important;
+}
+
+
 
 /* RTL comaptibility  */
 
@@ -4577,6 +4588,10 @@ html[dir=rtl] .erp-time-rtl{
     /* direction: initial; */
     /* text-align: left; */
     padding-left: 0px !important;
+}
+
+html[dir=rtl] .erp-time-rtl{
+    direction: ltr;
 }
 
 /* html[dir=rtl] .timespentoncourses .insight-value{
