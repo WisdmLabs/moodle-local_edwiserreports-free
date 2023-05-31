@@ -460,10 +460,6 @@ tr[aria-expanded=true] .accordion-arrow.icon {
         display: flex;
     }
 
-
-
-
-
     .local-edwiserreports div[role="main"]{
         padding-bottom: 110px !important;
     }
@@ -2883,7 +2879,12 @@ table.dataTable thead .sorting_desc_disabled{
 @media (max-width: 320px) {
 
     .main-area-bg:not(.pagelayout-login) div[role="main"]{
-        padding-bottom: 110px !important;
+        padding-bottom: 130px !important;
+    }
+
+    .download-link-wrap{
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
     }
 
 }
@@ -2906,6 +2907,9 @@ table.dataTable thead .sorting_desc_disabled{
     }
     html[dir=rtl] .learner-dropdown{
         right: -50px;
+    }
+    .local-edwiserreports div[role="main"]{
+        padding-bottom: 120px !important;
     }
 
 }
@@ -4895,8 +4899,15 @@ html:not([dir=rtl]) #gradeblock .apexcharts-inner.apexcharts-graphical{
 }
 
 .local-edwiserreports div[role="main"]{
-    padding-bottom: 90px !important;
+    padding-bottom: 100px !important;
 }
+
+form.download-links.more-details > button,
+form.download-links.more-details > .pro-export-wrapper {
+    padding-top: 10px;
+}
+
+
 
 .local-edwiserreports .breadcrumb-item+.breadcrumb-item::before{
     content: "/" !important;
