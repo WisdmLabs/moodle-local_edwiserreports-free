@@ -2877,6 +2877,13 @@ table.dataTable thead .sorting_desc_disabled{
     padding: 20px 30px;
 }
 
+@media (max-width: 320px) {
+
+    .local-edwiserreports div[role="main"]{
+        padding-bottom: 110px !important;
+    }
+
+}
 @media (max-width: 480px) {
     #wdm-edwiserreports #todaysactivityblock .card-block .row > div {
         width: 100%;
