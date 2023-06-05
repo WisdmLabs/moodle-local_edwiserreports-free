@@ -1895,7 +1895,6 @@ table.dataTable thead .sorting_desc_disabled{
 .local-edwiserreports table.dataTable thead .sorting_desc::before{
     margin-top: -5px !important;
     content: "" !important;
-    content: '';
     display: block;
     width: 0px;
     height: 0px;
