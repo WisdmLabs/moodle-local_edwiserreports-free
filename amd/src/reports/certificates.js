@@ -125,8 +125,8 @@ define('local_edwiserreports/reports/certificates', [
                         emptyTable: M.util.get_string('nocertificatesawarded', 'local_edwiserreports'),
                         zeroRecords: M.util.get_string('zerorecords', 'local_edwiserreports'),
                         paginate: {
-                            previous: "&#9666",
-                            next: "&#9656"
+                            previous: " ",
+                            next: " "
                         }
                     },
                     // eslint-disable-next-line no-unused-vars

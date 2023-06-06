@@ -1,3 +1,16 @@
+v 1.7.0
+====================================================
+Features
+- Added Multilang Filter support to plugin.
+- Added RTL support.
+
+Tweaks
+- Added 4.2 compatibility.
+- Added RemUI v2 theme compatibility.
+- Updated dummy data on learner course activties block and custom reports section.
+- Added capabilties trigger for custom reports
+- Added theme color to navigation dropdown. 
+
 v 1.6.0
 ====================================================
 Tweaks

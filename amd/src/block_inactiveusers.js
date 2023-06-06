@@ -62,8 +62,8 @@ define([
                     emptyTable: M.util.get_string('noinactiveusers', 'local_edwiserreports'),
                     zeroRecords: M.util.get_string('zerorecords', 'local_edwiserreports'),
                     paginate: {
-                        previous: M.util.get_string('previous', 'moodle'),
-                        next: M.util.get_string('next', 'moodle')
+                        previous: " ",
+                        next: " "
                     }
                 },
                 columnDefs: [{

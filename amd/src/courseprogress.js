@@ -29,6 +29,34 @@ define([
     './dataTables.bootstrap4',
     './select2'
 ], function($, ModalFactory, ModalEvents, Fragment, V, common) {
+
+    /**
+     * Selectors list.
+     */
+    var SELECTOR = {
+        PANEL: '#wdm-courseprogress-individual',
+        COHORT: '.cohort-select',
+        COURSE: '.course-select',
+        GROUP: '.group-select',
+        STUDENT: '.student-select',
+        GRAPH: '.graph',
+        GRAPHLABEL: '.graph-label',
+        FORMFILTER: '.download-links [name="filter"]',
+        FILTERS: '.filters'
+    };
+
+    /**
+     * rtl for rtl lang support.
+     */
+    let rtl = $('html').attr('dir') == 'rtl' ? 1 : 0;
+
+    /**
+     * Filter for ajax.
+     */
+    var filter = {
+        rtl: rtl
+    };
+
     /**
      * Initialize
      * @param {integer} CONTEXTID Current page context id
@@ -40,6 +68,7 @@ define([
         var ModalTrigger = CourseProgressTable + " a.modal-trigger";
         var datatable = null;
         var modalTable = null;
+        $(SELECTOR.PANEL).find(SELECTOR.FORMFILTER).val(rtl);
 
         // Cohort variable.
         var cohortId = 0;
@@ -129,8 +158,8 @@ define([
                                 emptyTable: M.util.get_string('nousers', 'local_edwiserreports'),
                                 zeroRecords: M.util.get_string('zerorecords', 'local_edwiserreports'),
                                 paginate: {
-                                    previous: M.util.get_string('previous', 'moodle'),
-                                    next: M.util.get_string('next', 'moodle')
+                                    previous: " ",
+                                    next: " "
                                 }
                             },
                             dom: '<"edwiserreports-table"i<t><"table-pagination"p>>',
@@ -157,7 +186,8 @@ define([
 
             var data = JSON.stringify({
                 courseid: "all",
-                cohortid: cohortId
+                cohortid: cohortId,
+                rtl: rtl,
             });
 
             datatable = $(CourseProgressTable).DataTable({
@@ -184,6 +214,7 @@ define([
                     className: "text-left",
                     targets: 0
                 }, {
+                    // className: rtl ? "text-left modal-trigger" : "text-right modal-trigger",
                     className: "text-right modal-trigger",
                     targets: "_all"
                 }],
@@ -193,8 +224,8 @@ define([
                     emptyTable: M.util.get_string('nocourses', 'local_edwiserreports'),
                     zeroRecords: M.util.get_string('zerorecords', 'local_edwiserreports'),
                     paginate: {
-                        previous: M.util.get_string('previous', 'moodle'),
-                        next: M.util.get_string('next', 'moodle')
+                        previous: " ",
+                        next: " "
                     }
                 },
                 drawCallback: function() {

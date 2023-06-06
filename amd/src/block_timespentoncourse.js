@@ -177,6 +177,8 @@ define([
             .done(function(response) {
                 let data = Object.assign({}, barChartDefault);
 
+                var rtl = $('html').attr('dir') == 'rtl' ? 1 : 0;
+
                 data.series = [{
                     name: M.util.get_string('timespentoncourse', 'local_edwiserreports'),
                     data: response.timespent,
@@ -197,10 +199,10 @@ define([
                 response.insight.insight.value = common.timeFormatter(response.insight.insight.value, {
                     dataPointIndex: 0,
                     'short': true
-                }).replaceAll(',', ' ');
+                }, rtl).replaceAll(',', ' ');
                 response.insight.details.data[0].value = common.timeFormatter(response.insight.details.data[0].value, {
                     dataPointIndex: 0
-                });
+                }, rtl);
                 common.insight(SELECTOR.INSIGHT, response.insight);
                 renderGraph($(SELECTOR.PANEL).find(SELECTOR.GRAPH), data);
             }).fail(function(exception) {

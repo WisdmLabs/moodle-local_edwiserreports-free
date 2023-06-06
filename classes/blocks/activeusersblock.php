@@ -104,6 +104,7 @@ class activeusersblock extends block_base {
         $this->layout->morelink = new moodle_url($CFG->wwwroot . "/local/edwiserreports/activeusers.php");
         $this->layout->downloadlinks = $this->get_block_download_links(true);
         $this->layout->filters = $this->get_activeusers_filter();
+        // $this->layout->morelink = 1;
 
         // Selected default filters.
         $this->layout->filter = 'last7days';
@@ -349,7 +350,7 @@ class activeusersblock extends block_base {
                 if ($action == "completions" || $action == "enrolments") {
                     if ($DB->record_exists('course', array('id' => $record->courseid))) {
                         $course = get_course($record->courseid);
-                        $userdata->coursename = $course->fullname;
+                        $userdata->coursename = format_string($course->fullname, true, ['context' => \context_system::instance()]);
                     } else {
                         $userdata->coursename = get_string('eventcoursedeleted');
                     }
@@ -557,8 +558,9 @@ class activeusersblock extends block_base {
 
         $blockobj = new self();
         $blockobj->graphajax = false;
-        $export[] = self::get_header_report();
         $cohortid = optional_param('cohortid', 0, PARAM_INT);
+        $rtl = get_string('thisdirection', 'langconfig') == 'rtl' ? 1 : 0;
+        $export[] = $rtl ? array_reverse(self::get_header_report()) : self::get_header_report();
 
         // Generate active users data label.
         $blockobj->generate_labels($filter);
@@ -566,13 +568,38 @@ class activeusersblock extends block_base {
         $dates = array_keys($blockobj->dates);
 
         foreach ($dates as $date) {
-            $label = date("d F Y", $date * 86400);
-            $export = array_merge($export,
-                self::get_usersdata($label, $date, "activeusers", $cohortid),
-                self::get_usersdata($label, $date, "enrolments", $cohortid),
-                self::get_usersdata($label, $date, "completions", $cohortid)
+            $label = $rtl ? date("Y F d", $date * 86400) : date("d F Y", $date * 86400);
+            $activeusers = self::get_usersdata($label, $date, "activeusers", $cohortid);
+            $enrolments = self::get_usersdata($label, $date, "enrolments", $cohortid);
+            $completions = self::get_usersdata($label, $date, "completions", $cohortid);
+
+            if($rtl){
+                $tempactiveusers = array();
+                $tempenrolments = array();
+                $tempcompletions = array();
+                foreach ($activeusers as $activeuser) {
+                    $tempactiveusers[] = array_reverse($activeuser);
+                }
+                foreach ($enrolments as $enrolment) {
+                    $tempenrolments[] = array_reverse($enrolment);
+                }
+                foreach ($completions as $completion) {
+                    $tempcompletions[] = array_reverse($completion);
+                }
+
+                $activeusers = $tempactiveusers;
+                $enrolments = $tempenrolments;
+                $completions = $tempcompletions;
+            }
+
+            $export = array_merge(
+                $export,
+                $activeusers,
+                $enrolments,
+                $completions
             );
         }
+
 
         return (object) [
             'data' => $export,

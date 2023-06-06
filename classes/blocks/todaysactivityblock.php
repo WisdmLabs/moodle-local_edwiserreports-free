@@ -191,11 +191,20 @@ class todaysactivityblock extends block_base {
      */
     public function get_todaysactivity($date) {
         global $DB;
+        $rtl = get_string('thisdirection', 'langconfig') == 'rtl' ? 1 : 0;
 
         // Set time according to the filter.
         if ($date) {
-            $starttime = strtotime($date);
-            $endtime = $starttime + 24 * 60 * 60;
+            if($rtl){
+                $split = str_split($date);
+                $date = $split[9] . $split[10] . ' ' . $split[5] . $split[6] . $split[7] . ' ' . $split[0] . $split[1] . $split[2] . $split[3];
+                $starttime = strtotime($date);
+                $endtime = $starttime + 24 * 60 * 60;
+            } else {
+                $starttime = strtotime($date);
+                $endtime = $starttime + 24 * 60 * 60;
+            }
+            
         } else {
             $endtime = time();
             $starttime = strtotime(date("Ymd", $endtime));

@@ -199,6 +199,8 @@ define([
         PROMISE.GET_TIMESPENTONSITE(filter)
             .done(function(response) {
                 let data = Object.assign({}, lineChartDefault);
+                var rtl = $('html').attr('dir') == 'rtl' ? 1 : 0;
+
                 data.series = [{
                     name: M.util.get_string('timespentonsite', 'local_edwiserreports'),
                     data: response.timespent,
@@ -217,10 +219,15 @@ define([
                 response.insight.insight.value = common.timeFormatter(response.insight.insight.value, {
                     dataPointIndex: 0,
                     'short': true
-                }).replaceAll(',', ' ');
+                }, rtl).replaceAll(',', ' ');
+                
+                // If rtl then the same date format is not supported so to make it ompatible with rtl we need to replace 'min' with 'h' string
+                // if(rtl){
+                //     // response.insight.insight.value = response.insight.insight.value.replce('');    
+                // }
                 response.insight.details.data[0].value = common.timeFormatter(response.insight.details.data[0].value, {
                     dataPointIndex: 0
-                });
+                }, rtl);
                 common.insight(SELECTOR.INSIGHT, response.insight);
                 renderGraph($(SELECTOR.PANEL).find(SELECTOR.GRAPH), data);
             }).fail(function(ex) {

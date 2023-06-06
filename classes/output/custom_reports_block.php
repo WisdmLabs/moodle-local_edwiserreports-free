@@ -64,7 +64,7 @@ class custom_reports_block implements renderable, templatable {
         $selectedcohorts = array("0");
         if ($export->reportsid = $this->reportsid) {
             $customreport = $DB->get_record('edwreports_custom_reports', array('id' => $this->reportsid));
-            $export->fullname = $customreport->fullname;
+            $export->fullname = format_string($customreport->fullname, true, ['context' => \context_system::instance()]);
             $export->shortname = $customreport->shortname;
             $reportsdata = json_decode($customreport->data);
             $export->downloadenable = $reportsdata->downloadenable ? true : false;
@@ -83,6 +83,16 @@ class custom_reports_block implements renderable, templatable {
             $cohortobj = cohort_get_cohorts($catcontext->id);
             $cohorts = array_merge($cohorts, $cohortobj["cohorts"]);
         }
+
+        $tempcohorts = [];
+        foreach ($cohorts as $cohort) {
+            $tempcohort = $cohort;
+            $tempcohort->name = format_string($cohort->name, true, ['context' => \context_system::instance()]);
+            $tempcohorts[] = $tempcohort;
+        }
+
+        $cohorts = $tempcohorts;
+
         $export->cohorts = $cohorts;
         $export->isediting = $this->reportsid ? true : false;
 
@@ -97,6 +107,14 @@ class custom_reports_block implements renderable, templatable {
         $courses = get_courses();
         $export->selectedcourses = json_encode($selectedcourses);
         $export->selectedcohorts = json_encode($selectedcohorts);
+
+        $tempcourses = [];
+        foreach ($courses as $course) {
+            $tempcourses[$course->id] = $course;
+            $tempcourses[$course->id]->fullname = format_string($course->fullname, true, ['context' => \context_system::instance()]);
+        }
+
+        $courses = $tempcourses;
 
         // Remove system course.
         unset($courses[1]);
@@ -133,6 +151,8 @@ class custom_reports_block implements renderable, templatable {
      */
     public function get_custom_report_custom_user_fields($userfields) {
         global $DB, $CFG;
+        $rtl = get_string('thisdirection', 'langconfig');
+        $rtl = $rtl == 'rtl' ? 1: 0;
         // Social labels.
         $socialstringplugin = $CFG->branch < 311 ? 'moodle' : 'profilefield_social';
         $social = [
@@ -180,7 +200,7 @@ class custom_reports_block implements renderable, templatable {
             if ($skip) {
                 continue;
             }
-            $fielddata['text'] = $name . ' (' . get_string('custom', 'local_edwiserreports') . ') (PRO)';
+            $fielddata['text'] = format_string($name, true, ['context' => \context_system::instance()]) . ' (' . get_string('custom', 'local_edwiserreports') . ') (PRO)';
             $userfields[] = $fielddata;
         }
         return $userfields;
@@ -257,8 +277,8 @@ class custom_reports_block implements renderable, templatable {
                 'text' => get_string('courseenroldate', 'local_edwiserreports'),
                 'dbkey' => 'ra.timemodified',
                 'selected' => in_array('courseenroldate', $selectedfield),
-                'resultfunc' => function($value) {
-                    return $value ? date('d M Y', $value) : get_string('na', 'local_edwiserreports');
+                'resultfunc' => function($value, $rtl) {
+                    return $value ? ($rtl ? '<div style="direction:ltr">' . date('Y M d', $value) .'</div>' : date('d M Y', $value)) : get_string('na', 'local_edwiserreports');
                 }
             ),
             array(
@@ -300,8 +320,8 @@ class custom_reports_block implements renderable, templatable {
                 'text' => get_string('completiontime', 'local_edwiserreports'),
                 'dbkey' => 'ec.completiontime',
                 'selected' => in_array('completiontime', $selectedfield),
-                'resultfunc' => function($value) {
-                    return $value ? date('d M Y', $value) : get_string('na', 'local_edwiserreports');
+                'resultfunc' => function($value, $rtl) {
+                    return $value ? ($rtl ? '<div style="direction:ltr">' . date('Y M d', $value) .'</div>' : date('d M Y', $value)) : get_string('na', 'local_edwiserreports');
                 }
             ),
             array(
@@ -315,8 +335,8 @@ class custom_reports_block implements renderable, templatable {
                 'text' => get_string('coursestartdate', 'local_edwiserreports'),
                 'dbkey' => 'c.startdate',
                 'selected' => in_array('coursestartdate', $selectedfield),
-                'resultfunc' => function($value) {
-                    return $value ? date('d M Y', $value) : get_string('na', 'local_edwiserreports');
+                'resultfunc' => function($value, $rtl) {
+                    return $value ? ($rtl ? '<div style="direction:ltr">' . date('Y M d', $value) .'</div>' : date('d M Y', $value)) : get_string('na', 'local_edwiserreports');
                 }
             ),
             array(
@@ -324,8 +344,8 @@ class custom_reports_block implements renderable, templatable {
                 'text' => get_string('courseenddate', 'local_edwiserreports'),
                 'dbkey' => 'c.enddate',
                 'selected' => in_array('courseenddate', $selectedfield),
-                'resultfunc' => function($value) {
-                    return $value ? date('d M Y', $value) : get_string('na', 'local_edwiserreports');
+                'resultfunc' => function($value, $rtl) {
+                    return $value ? ($rtl ? '<div style="direction:ltr">' . date('Y M d', $value) .'</div>' : date('d M Y', $value)) : get_string('na', 'local_edwiserreports');
                 }
             ),
             array(

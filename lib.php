@@ -227,7 +227,7 @@ function local_edwiserreports_output_fragment_get_blockscap_form($block) {
     $output .= html_writer::end_tag('label');
     $output .= html_writer::end_tag('div');
     $output .= html_writer::start_tag('div', array('class' => 'col-md-9'));
-    $output .= html_writer::tag('label', $capabilities[$capvalue], array('class' => 'col-form-label d-inline h4'));
+    // $output .= html_writer::tag('label', $capabilities[$capvalue], array('class' => 'col-form-label d-inline h4'));
     $output .= html_writer::select($capabilities, 'capabilities', $capvalue, null, array('class' => $hidden . ' h4'));
     $output .= html_writer::end_tag('label');
     $output .= html_writer::end_tag('div');

@@ -44,6 +44,11 @@ define([
     selector
 ) {
     /**
+     * Direction parameter.
+     */
+    var direction = $('html').attr('dir');
+
+    /**
      * Selectors list.
      */
     let SELECTOR = {
@@ -122,9 +127,37 @@ define([
         $('#wdm-edwiserreports').removeClass('d-none');
 
         setupBlockEditing();
-
+        setupRtlSupport();
         setupBlockHiding($('#wdm-edwiserreports').data("editing"));
     });
+
+    /**
+     * Check if RTL is enabled and then convert arrows direction
+     */
+    function setupRtlSupport() {
+
+        setTimeout(function(){
+            var attr = $('html').attr('dir');
+            // For some browsers, `attr` is undefined; for others,
+            // `attr` is false.  Check for both.
+            if (typeof attr !== 'undefined' && attr !== false && attr == 'rtl') {
+                $('.dropdown-item.custom').css({'direction':'ltr','text-align': 'right'});
+
+                $('.insight-wrapper .fa-arrow-left').removeClass("fa-arrow-left").addClass("fa-arrow-right rtl-support");
+                $('.insight-wrapper .fa-arrow-right:not(.rtl-support)').removeClass("fa-arrow-right").addClass("fa-arrow-left rtl-support");
+            }
+        }, 1000);
+
+        setTimeout(function(){
+            // removing datatbles next previous blank as it can not be done by thier attributes
+            $('.edwiserreports-table .page-item.next a').empty();
+            $('.edwiserreports-table .page-item.previous a').empty();
+
+        }, 2000);
+
+    }
+
+
 
     /**
      * Setup block hiding
@@ -430,46 +463,121 @@ define([
      * @param {Object} opts Options
      * @returns {String}
      */
-    function timeFormatter(seconds, opts) {
+    function timeFormatter(seconds, opts, rtl=0) {
         seconds = Number(seconds);
         var h = Math.floor(seconds / 3600);
         var m = Math.floor(seconds % 3600 / 60);
         var s = Math.floor(seconds % 3600 % 60);
 
+        rtl = $('html').attr('dir') == 'rtl' ? 1 : 0;
+
         if (typeof opts == 'object' && opts.dataPointIndex !== undefined && opts.dataPointIndex !== -1) {
             var time = [];
             var short = opts.short !== undefined && opts.short;
-            if (h > 0) {
-                if (short) {
-                    time.push(h + " " + "h.");
-                } else {
-                    time.push(h + " " + (h == 1 ? M.util.get_string('hour', 'local_edwiserreports') :
-                        M.util.get_string('hours', 'local_edwiserreports')));
+
+            // if(rtl == 1){
+            //     if (s > 0) {
+            //     // if (s > 0 && !dummydata) {
+            //         if (short) {
+            //             time.push(M.util.get_string('secondshort', 'local_edwiserreports')+ " " + s  );
+
+            //         } else {
+            //             time.push(M.util.get_string(s == 1 ? 'second' : 'seconds', 'local_edwiserreports')+ " " + s  );
+            //         }
+            //     }
+                
+            //     if (m > 0) {
+            //         if (short) {
+            //             // If rtl then the same date format is not supported so to make it ompatible with rtl we need to replace 'min' with 'h' string
+            //             time.push(M.util.get_string('minuteshort', 'local_edwiserreports')+ " " + m);
+            //         } else {
+            //             time.push(M.util.get_string(m == 1 ? 'minute' : 'minutes', 'local_edwiserreports')+ " " + m);
+            //         }
+            //     }
+            //     if (h > 0) {
+            //         if (short) {
+            //             // If rtl then the same date format is not supported so to make it ompatible with rtl we need to replace 'min' with 'h' string
+            //             time.push( M.util.get_string('hourshortminuteshort', 'local_edwiserreports')+ " " + h);
+            //         } else {
+            //             time.push( M.util.get_string(h == 1 ? 'hour' : 'hours', 'local_edwiserreports')+ " " + h);
+            //         }
+            //     }
+
+            // } else {
+                if (h > 0) {
+                    if (short) {
+                        if(rtl == 1){
+                            time.push(h + " " + M.util.get_string('minuteshort', 'local_edwiserreports'));
+                        } else {
+                            time.push(h + " " + M.util.get_string('hourshort', 'local_edwiserreports'));
+                        }
+                    } else {
+                        if(rtl == 1){
+                            if(m > 0){
+                                time.push( m + " " + M.util.get_string(h == 1 ? 'hour' : 'hours', 'local_edwiserreports'));
+                            }
+                        } else{
+                            time.push( h + " " + M.util.get_string(h == 1 ? 'hour' : 'hours', 'local_edwiserreports'));
+                        }
+                    }
                 }
-            }
-            if (m > 0) {
-                if (short) {
-                    time.push(m + " " + "min.");
-                } else {
-                    time.push(m + " " + (m == 1 ? M.util.get_string('minute', 'local_edwiserreports') :
-                        M.util.get_string('minutes', 'local_edwiserreports')));
+                if (m > 0) {
+                    if (short) {
+                        if(rtl == 1){
+                            time.push(m + " " + M.util.get_string('hourshort', 'local_edwiserreports'));
+                        }else{
+                            time.push(m + " " + M.util.get_string('minuteshort', 'local_edwiserreports'));
+                        }
+                    } else {
+                        if(rtl == 1){
+                            if(h > 0){
+                                // time.push(M.util.get_string(m == 1 ? 'minute' : 'minutes', 'local_edwiserreports') + " " + h);
+                                longmin = M.util.get_string(m == 1 ? 'minute' : 'minutes', 'local_edwiserreports') + " " + h;
+                            }
+                        } else {
+                            time.push(m + " " + M.util.get_string(m == 1 ? 'minute' : 'minutes', 'local_edwiserreports'));
+                        }
+                    }
                 }
-            }
-            if (s > 0) {
-                if (short) {
-                    time.push(s + " " + "sec.");
-                } else {
-                    time.push(s + " " + (s == 1 ? M.util.get_string('second', 'local_edwiserreports') :
-                        M.util.get_string('seconds', 'local_edwiserreports')));
+                if (s > 0) {
+                    if (short) {
+                        if(rtl == 1){
+                            time.push(M.util.get_string('secondshort', 'local_edwiserreports') + " " + s);
+                        } else {
+                            time.push(s + " " + M.util.get_string('secondshort', 'local_edwiserreports'));
+                        }
+                    } else {
+                        if(rtl == 1){
+                            // time.push(M.util.get_string(s == 1 ? 'second' : 'seconds', 'local_edwiserreports') + " " + s);
+                            longsec = M.util.get_string(s == 1 ? 'second' : 'seconds', 'local_edwiserreports') + " " + s;
+                        } else {
+                            time.push( s + " " + M.util.get_string(s == 1 ? 'second' : 'seconds', 'local_edwiserreports'));
+                        }
+                    }
                 }
+            // }
+
+            if(! short && rtl ){
+                // longmin = time[1];
+                // longsec = time[2];
+                // unset(time[2]);
+                // unset(time[1]);
+                time.push(longsec);
+                time.push(longmin);
             }
+
+
             if (time.length == 0) {
                 time.push(0);
             }
-            return time.join(', ');
+
+            return time.join(' ');
+            
         }
-        return timePlainFormat(h, m, s);
+
+        return rtl ? timePlainFormat(s, m, h) : timePlainFormat(h, m, s);
     }
+
 
     /**
      * Render insight card.
@@ -784,12 +892,29 @@ define([
             startDay = startDay < 10 ? '0' + startDay : startDay;
             let endDay = enddate.getDate();
             endDay = endDay < 10 ? '0' + endDay : endDay;
-            $(SELECTOR.DATESELECTED).html(`${startDay} ${startdate.toLocaleString('default', {
-                month: 'long'
-            })} ${startdate.getFullYear()} -
-            ${endDay} ${enddate.toLocaleString('default', {
-                month: 'long'
-            })} ${enddate.getFullYear()}</span>`);
+            // $(SELECTOR.DATESELECTED).html(`${startDay} ${startdate.toLocaleString('default', {
+            //     month: 'long'
+            // })} ${startdate.getFullYear()} -
+            // ${endDay} ${enddate.toLocaleString('default', {
+            //     month: 'long'
+            // })} ${enddate.getFullYear()}</span>`);
+
+
+            var date = `${startDay} ${startdate.toLocaleString('default', { month: 'long' })} ${startdate.getFullYear()} -
+            ${endDay} ${enddate.toLocaleString('default', { month: 'long' })} ${enddate.getFullYear()}</span>`;
+            if(direction == 'rtl'){
+                // format for rtl : yyyy mm dd
+                startdate = startdate.getFullYear() + ' ' + startdate.toLocaleString('default', { month: 'long' }) + ' ' + startDay;
+                enddate = enddate.getFullYear() + ' ' + enddate.toLocaleString('default', { month: 'long' }) + ' ' + endDay;
+                date = enddate + '-' + startdate;
+
+                // Making direction ltr for date selector and aligning text to right
+                $(SELECTOR.DATESELECTED).css({'direction':'ltr','text-align': 'right'});
+            }
+            $(SELECTOR.DATESELECTED).html(date);
+
+
+
         }).fail(function(ex) {
             Notification.exception(ex);
         });

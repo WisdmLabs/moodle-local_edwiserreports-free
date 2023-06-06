@@ -146,20 +146,21 @@ class learnercourseactivities extends base {
      */
     public function get_data($filters, $table = true) {
         global $DB;
+        $rtl = get_string('thisdirection', 'langconfig') == 'rtl' ? 1 : 0;
 
         for ($i=0; $i < 25; $i++) {
             $response[] = [
                 'activity' => 'Activity ' . $i,
                 'type' => 'Assignment ' . $i,
                 "status" => $i % 2 != 0 ? 0 : 1,
-                "completedon" => $i % 2 != 0 ? '02 Jan 2023' : get_string('never', 'local_edwiserreports'),
+                "completedon" => $i % 2 != 0 ? ($rtl ? '<label style="direction:ltr;">2023 Jan 02 </label>' : '02 Jan 2023') : get_string('never', 'local_edwiserreports'),
                 'grade' => 80,
-                'gradedon' => '25 Dec 2022',
+                'gradedon' => $rtl ? '<label style="direction:ltr;">2023 Dec 02 </label>' : '25 Dec 2022',
                 'attempts' => 1,
                 'highestgrade' => 100,
                 'lowestgrade' => 20,
-                'firstaccess' => '01 March 2022 <br> 09:39 AM',
-                'lastaccess' => '01 March 2023 <br> 09:39 AM',
+                'firstaccess' => $rtl ? '<label style="direction:ltr;">2022 March 02 <br>AM 39:09</label>' : '01 March 2022 <br> 09:39 AM',
+                'lastaccess' => $rtl ? '<label style="direction:ltr;">2022 Dec 02 <br>AM 39:09</label>' : '01 March 2023 <br> 09:39 AM',
                 'visits' => 20,
                 'timespent' => '00:20:30',
             ];
@@ -199,7 +200,7 @@ class learnercourseactivities extends base {
             'data' => $obj->get_data($filter, false),
             'options' => [
                 'content' => get_string('learnercourseactivitiespdfcontent', 'local_edwiserreports', [
-                    'course' => $course->fullname,
+                    'course' => format_string($course->fullname, true, ['context' => \context_system::instance()]),
                     'student' => fullname($user)
                 ]),
                 'format' => 'a3',
@@ -216,7 +217,7 @@ class learnercourseactivities extends base {
      */
     public static function get_summary_data($filters) {
         global $DB, $CFG;
-
+        $rtl = get_string('thisdirection', 'langconfig') == 'rtl' ? 1 : 0;
 
         $customheader = '<div>
             <div class="mb-1 summary-card-subtitle">
@@ -230,7 +231,7 @@ class learnercourseactivities extends base {
                 'learner' => true,
                 'learnername' => 'Student 1',
                 'isactive' => 1,
-                'lastaccess' => date("d M Y h:i:s A", time()),
+                'lastaccess' => $rtl ? '<label style="direction:ltr;">' . date("A s:i:h Y M d", time()) . '</label>' : date("d M Y h:i:s A", time()),
                 'customheaderinfo' => $customheader
             ),
             'body' => array(
@@ -240,14 +241,14 @@ class learnercourseactivities extends base {
                 ),
                 array(
                     'title'   => get_string('enrolmentdate', 'local_edwiserreports'),
-                    'data' => date("d M Y", time())
+                    'data' => $rtl ? '<label style="direction:ltr;">' . date("Y M d", time()) . '</label>' : date("d M Y", time())
                 )
             ),
             'footer' => array(
                 array(
                     'icon'  => file_get_contents($CFG->dirroot . '/local/edwiserreports/pix/summary-card/time.svg'),
                     'title' => get_string('timespent', 'local_edwiserreports'),
-                    'data'  => '02:56:45'
+                    'data'  => $rtl ? '<label style="direction:ltr;">' . '45:56:02' . '</label>' : '02:56:45'
                 ),
                 array(
                     'icon'  => file_get_contents($CFG->dirroot . '/local/edwiserreports/pix/summary-card/marks.svg'),

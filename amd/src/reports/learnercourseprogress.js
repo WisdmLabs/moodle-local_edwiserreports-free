@@ -151,14 +151,16 @@ define('local_edwiserreports/reports/learnercourseprogress', [
                         },
                         {
                             data: "enrolledon",
-                            width: "11rem"
+                            width: "12rem"
                         },
                         {
-                            data: "completedon"
+                            data: "completedon",
+                            width: "12rem"
+
                         },
                         {
                             data: "lastaccess",
-                            width: "12rem"
+                            width: "13rem"
                         },
                         {data: 'progress'},
                         {data: "grade"},
@@ -177,8 +179,8 @@ define('local_edwiserreports/reports/learnercourseprogress', [
                         emptyTable: M.util.get_string('emptytable', 'local_edwiserreports'),
                         zeroRecords: M.util.get_string('zerorecords', 'local_edwiserreports'),
                         paginate: {
-                            previous: "&#9666",
-                            next: "&#9656"
+                            previous: " ",
+                            next: " "
                         }
                     },
                     drawCallback: function() {

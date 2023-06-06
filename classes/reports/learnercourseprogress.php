@@ -112,6 +112,7 @@ class learnercourseprogress extends base {
      */
     public function get_data($filters, $table = true) {
         global $DB;
+        $rtl = get_string('thisdirection', 'langconfig') == 'rtl' ? 1 : 0;
 
         $search = html_writer::tag('i', '', ['class' => 'fa fa-search-plus']);
         $link = html_writer::link(
@@ -130,9 +131,9 @@ class learnercourseprogress extends base {
           $response[] = [
                 "course" => $name . $i,
                 "status" => $i % 2 != 0 ? 0 : 1,
-                "enrolledon" => '28 Sept 2022',
-                "completedon" => $i % 2 != 0 ? '02 Jan 2023' : get_string('never', 'local_edwiserreports'),
-                "lastaccess" => '12 Jan 2023 <br> 09:39 AM',
+                "enrolledon" => $rtl ? '<label style="direction:ltr;"> 2022 Sept 28 </label>' : '28 Sept 2022',
+                "completedon" => $i % 2 != 0 ? ($rtl ? '<label style="direction:ltr;"> 2023 Jan 02 </label>' : '02 Jan 2023') : get_string('never', 'local_edwiserreports'),
+                "lastaccess" => $rtl ? '<label style="direction:ltr;"> 2023 Jan 12 <br>AM 39:09 </label>' : '12 Jan 2023 <br> 09:39 AM',
                 "progress" => '70%',
                 "grade" => '300',
                 "totalactivities" => '20' . $link,
@@ -187,13 +188,14 @@ class learnercourseprogress extends base {
         global $CFG, $DB;
 
         $student = $DB->get_record('user', ['id' => $filters->learner]);
+        $rtl = get_string('thisdirection', 'langconfig') == 'rtl' ? 1 : 0;
 
         return array(
             'header' => array(
                 'learner' => true,
                 'learnername' => fullname($student),
                 'isactive' => 1,
-                'lastaccess' => '12 Jan 2023 09:39 AM'
+                'lastaccess' => $rtl ? '<span style="direction:ltr;">AM 39:9 2023 Jan 12</span>' : '12 Jan 2023 09:39 AM'
             ),
             'body' => array(
                 array(

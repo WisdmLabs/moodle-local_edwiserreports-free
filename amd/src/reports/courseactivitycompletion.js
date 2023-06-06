@@ -156,12 +156,13 @@ define('local_edwiserreports/reports/courseactivitycompletion', [
                             width: "4rem"
                         },
                         {
-                            data: 'completedon'
+                            data: 'completedon',
+                            width: "10rem"
                         },
                         {data: 'grade'},
                         {
                             data: 'gradedon',
-                            width: "8rem"
+                            width: "10rem"
                         },
                         {
                             data: 'firstaccess',
@@ -183,8 +184,8 @@ define('local_edwiserreports/reports/courseactivitycompletion', [
                         emptyTable: M.util.get_string('emptytable', 'local_edwiserreports'),
                         zeroRecords: M.util.get_string('zerorecords', 'local_edwiserreports'),
                         paginate: {
-                            previous: "&#9666",
-                            next: "&#9656"
+                            previous: " ",
+                            next: " "
                         }
                     },
                     drawCallback: function() {

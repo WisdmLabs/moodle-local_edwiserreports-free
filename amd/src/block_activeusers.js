@@ -223,6 +223,7 @@ define([
                     invalidUser('activeusersblock', response);
                     return;
                 }
+
                 activeUsersData.graph.data = response.data;
                 activeUsersData.graph.labels = response.dates.map(date => date * 86400000);
                 common.insight('#activeusersblock .insight', response.insight);

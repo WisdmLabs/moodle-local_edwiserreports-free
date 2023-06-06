@@ -67,7 +67,7 @@ trait save_customreports_data {
 
         $customreports = new stdClass();
         if (!isset($params->action) || $params->action != 'enabledesktop') {
-            $customreports->fullname = $params->reportname;
+            $customreports->fullname = format_string($params->reportname, true, ['context' => \context_system::instance()]);
             $customreports->shortname = $params->reportshortname;
             $customreports->createdby = $USER->id;
             $params->querydata->downloadenable = isset($params->downloadenable) ? $params->downloadenable : 0;
@@ -100,7 +100,7 @@ trait save_customreports_data {
 
         $response["reportsdata"] = json_encode(array(
             'reportsid' => $reportsid,
-            'reportname' => $customreports->fullname,
+            'reportname' => format_string($customreports->fullname, true, ['context' => \context_system::instance()]),
             'reportshortname' => $customreports->shortname,
             'downloadenable' => isset($params->querydata->downloadenable) ? $params->querydata->downloadenable : 0,
             'enabledesktop' => $customreports->enabledesktop ? true : false

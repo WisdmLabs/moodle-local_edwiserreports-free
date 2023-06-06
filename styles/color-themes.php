@@ -61,6 +61,19 @@ echo "
     border-top-color: $primarycolor !important;
 }
 
+.local-edwiserreports .edwiserreports-table .table-pagination .page-item.previous a::before,
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .page-item.next a::before{
+    border-right-color: $primarycolor !important;
+}
+.local-edwiserreports .edwiserreports-table .table-pagination .page-item.next a::before,
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .page-item.previous a::before{
+    border-left-color: $primarycolor !important;
+}
+
+.filter-selector .dropdown-toggle::after {
+    border-top-color: $primarycolor !important;
+}
+
 .filter-selector .dropdown-menu .dropdown-item.active,
 .filter-selector .dropdown-menu .dropdown-item.active input,
 .filter-selector .dropdown-menu .dropdown-item:hover {
@@ -123,9 +136,13 @@ echo "
     background-color: " . LOCAL_EDWISERREPORTS_COLOR_THEMES[$theme][1] . " !important;
 }
 
-.panel-header .dropdown-menu .pro-highlight span::after,
+.panel-header .dropdown-menu .pro-highlight button::after,
 .pro-export-title::after {
     border-top-color: " . LOCAL_EDWISERREPORTS_COLOR_THEMES[$theme][1] . " !important;
+}
+
+.pro-export-title{
+    font-size: 14px;
 }
 
 .edwiserreports-tabs .tab-item.dropdown .tab-link::after {

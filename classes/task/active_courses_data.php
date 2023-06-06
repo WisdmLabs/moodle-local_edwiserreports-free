@@ -109,7 +109,7 @@ class active_courses_data extends \core\task\scheduled_task {
             // Create a record for responce.
             $res = array(
                 $count++,
-                $course->fullname
+                format_string($course->fullname, true, ['context' => \context_system::instance()])
             );
 
             $res[] = count($enrolledstudents);

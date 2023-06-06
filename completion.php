@@ -87,7 +87,7 @@ $renderable = new \local_edwiserreports\output\completion_renderable();
 $output = $PAGE->get_renderer($component)->render($renderable);
 
 $PAGE->set_heading('');
-$PAGE->set_title(get_string("completionheader", "local_edwiserreports", array('coursename' => $course->fullname)));
+$PAGE->set_title(get_string("completionheader", "local_edwiserreports", array('coursename' => format_string($course->fullname, true, ['context' => \context_system::instance()]))));
 
 // Print output for course completion page.
 echo $OUTPUT->header();

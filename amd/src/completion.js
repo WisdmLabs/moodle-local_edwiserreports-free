@@ -25,6 +25,29 @@ define([
     './select2'
 ], function($, V, common) {
     /* eslint-disable no-unused-vars */
+
+    /**
+     * Selectors list.
+     */
+    var SELECTOR = {
+        PANEL: '#wdm-completion-individual',
+        FORMFILTER: '.download-links [name="filter"]',
+        FORMRTL: '.download-links [name="rtl"]',
+        FILTERS: '.filters'
+    };
+
+    /**
+     * rtl for rtl lang support.
+     */
+    let rtl = $('html').attr('dir') == 'rtl' ? 1 : 0;
+
+    /**
+     * Filter for ajax.
+     */
+    var filter = {
+        rtl: rtl
+    };
+
     /**
      * Initialize
      * @param {integer} CONTEXTID Current page context id
@@ -47,6 +70,7 @@ define([
 
             // Get course id
             var courseId = $(PageId).find('.download-links input[name="filter"]').val();
+            $(SELECTOR.PANEL).find(SELECTOR.FORMRTL).val(rtl);
 
             getCourseCompletion(courseId, cohortId);
 
@@ -108,14 +132,23 @@ define([
                     emptyTable: M.util.get_string('nostudentsenrolled', 'local_edwiserreports'),
                     zeroRecords: M.util.get_string('zerorecords', 'local_edwiserreports'),
                     paginate: {
-                        previous: M.util.get_string('previous', 'moodle'),
-                        next: M.util.get_string('next', 'moodle')
+                        previous: " ",
+                        next: " "
                     }
                 },
                 columns: [{
                     "data": "username"
                 }, {
-                    "data": "enrolledon"
+                    "data": "enrolledon",
+                    render: function(data) {
+                        let rtl = $('html').attr('dir') == 'rtl' ? 1 : 0;
+                        if(rtl){
+                            return '<label style="direction:ltr;">' + data + '</label>';
+                        } else {
+                            return data;
+                        }
+                    },
+                    width: "10rem"
                 }, {
                     "data": "enrolltype"
                 }, {
@@ -123,11 +156,46 @@ define([
                 }, {
                     "data": "completion"
                 }, {
-                    "data": "compleiontime"
+                    "data": "compleiontime",
+                    render: function(data) {
+                        let rtl = $('html').attr('dir') == 'rtl' ? 1 : 0;
+
+                        if(rtl){
+                            return '<label style="direction:ltr;">' + data + '</label>';
+                        } else {
+                            return data;
+                        }
+                    },
+                    width: "10rem"
                 }, {
                     "data": "grade"
                 }, {
-                    "data": "lastaccess"
+                    "data": "lastaccess",
+                    render: function(data) {
+                        // let rtl = $('html').attr('dir') == 'rtl' ? 1 : 0;
+                        // if(data != 0){
+                            // if(rtl){
+//                                 let datearr = data.split(" ");
+//                                 return '<label style="direction:ltr;">' + datearr[2] + ' ' + datearr[1] + ' ' + datearr[0] + '</label>';
+//                             } else {
+                        //         return '<label style="direction:ltr;">' + data + '</label>';
+                        //     }
+                        // } else {
+                        //     return M.util.get_string('never', 'local_edwiserreports');
+                        // }
+
+                        let tempdate = common.formatDate(new Date(data * 1000), "d MMM yyyy hh:mm TT").substring(0,11) + '<br>' + common.formatDate(new Date(data * 1000), "d MMM yyyy hh:mm TT").substring(11,20);
+                        let rtl = $('html').attr('dir') == 'rtl' ? 1 : 0;
+
+                        if(rtl){
+                            tempdate = common.formatDate(new Date(data * 1000), "TT mm:hh yyyy MMM d").substring(8, 20) + '<br>' + common.formatDate(new Date(data * 1000), "TT mm:hh yyyy MMM d").substring(0,8);
+                        }
+
+                        return `<p class="erp-time-rtl"><span class="d-none">${data}</span>` +
+                            (data == 0 ? M.util.get_string('never', 'local_edwiserreports') : tempdate) + '</p>';
+
+                    },
+                    width: "10rem"
                 }],
                 drawCallback: function() {
                     common.stylePaginationButton(this);

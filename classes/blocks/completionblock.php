@@ -51,9 +51,11 @@ class completionblock {
      * @param  int   $cohortid Cohort Id
      * @return array           Array of users with course Completion
      */
-    public static function get_completions($courseid, $cohortid) {
+    public static function get_completions($courseid, $cohortid, $isexportdata = 0) {
         global $DB;
         $timenow = time();
+
+        $rtl = get_string('thisdirection', 'langconfig') == 'rtl' ? 1 : 0;
 
         // Get only enrolled students.
         $enrolledstudents = utility::get_enrolled_students($courseid, false, $cohortid);
@@ -102,19 +104,24 @@ class completionblock {
                     "title" => $user->email
                 )
             );
-            $completioninfo->enrolledon = date("d M Y", $user->enrolledon);
+            $completioninfo->enrolledon = $rtl ? date("Y M d", $user->enrolledon) : date("d M Y", $user->enrolledon);
             $completioninfo->enrolltype = $user->enrol;
             $completioninfo->noofvisits = empty($user->visits) ? 0 : $user->visits;
             
             $completioninfo->completion = empty($user->progress) ? "NA" : round($user->progress) . '%';
             $completioninfo->compleiontime = empty($user->completiontime) ?
-                                            $notyet :
-                                            date("d M Y", $user->completiontime);
+                                            $notyet : ( $rtl ? date("Y M d", $user->completiontime) : date("d M Y", $user->completiontime));
             $completioninfo->grade = round($user->grade, 2) . '%';
-            $completioninfo->lastaccess = empty($user->visits) ? $never : format_time($timenow - $user->lastvisit);
+            // $completioninfo->lastaccess = empty($user->lastvisit) ? 0 : format_time($timenow - $user->lastvisit);
+            // $completioninfo->lastaccess = empty($user->lastvisit) ? 0 : ($rtl ? date('A i:h Y M d', $user->lastvisit) : date('d M Y h:i A', $user->lastvisit));
+            $completioninfo->lastaccess = empty($user->lastvisit) ? 0 : $user->lastvisit;
+            if($isexportdata){
+                $completioninfo->lastaccess = empty($user->lastvisit) ? 0 : ($rtl ? date('Y M d', $user->lastvisit) . '<br>' . date('A i:h ', $user->lastvisit) : date('d M Y h:i A', $user->lastvisit));
+            }
             $userscompletion[] = $completioninfo;
             unset($users[$key]);
         }
+
 
         // DROP userstable
         utility::drop_temp_table($usertable);
@@ -145,14 +152,17 @@ class completionblock {
      * @return array              Array of LP Stats
      */
     public static function get_exportable_data_report($filter, $filterdata = true) {
+        $cohortid = optional_param("cohortid", 0, PARAM_INT);
+        $rtl = optional_param("rtl", 0, PARAM_INT);
 
-        $completions = self::get_completions($filter, optional_param('cohortid', 0, PARAM_INT));
+        $completions = self::get_completions($filter, optional_param('cohortid', 0, PARAM_INT), 1);
 
         $export = array();
-        $export[] = self::get_header();
+        $export[] = $rtl ? array_reverse(self::get_header()) : self::get_header();
         foreach ($completions as $completion) {
             $completion->username = strip_tags($completion->username);
-            $export[] = array_values((array)$completion);
+            $data = array_values((array)$completion);
+            $export[] = $rtl ? array_reverse($data) : $data;
         }
         return $export;
     }

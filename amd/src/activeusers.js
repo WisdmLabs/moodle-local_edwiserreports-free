@@ -190,8 +190,8 @@ define([
                                 emptyTable: M.util.get_string('nousers', 'local_edwiserreports'),
                                 zeroRecords: M.util.get_string('zerorecords', 'local_edwiserreports'),
                                 paginate: {
-                                    previous: M.util.get_string('previous', 'moodle'),
-                                    next: M.util.get_string('next', 'moodle')
+                                    previous: " ",
+                                    next: " "
                                 }
                             },
                             drawCallback: function() {
@@ -236,6 +236,26 @@ define([
         function selectedCustomDate() {
             let date = $(SELECTOR.DATEPICKERINPUT).val(); // Y-m-d format
             let dateAlternate = $(SELECTOR.DATEPICKERINPUT).next().val().replace("to", "-"); // Date d M Y format.
+
+            // RTL support
+            // Split string in 2 parts
+            let stringarr = dateAlternate.split('-');
+            // Formating date for rtl
+            if(filter.dir == 'rtl'){
+                // format for rtl : yyyy mm dd
+                let startdate = stringarr[0].split(' ');
+                let enddate = stringarr[1].split(' ');
+
+                startdate = startdate[2] + ' ' + startdate[1] + ' ' + startdate[0];
+                enddate = enddate[3] + ' ' + enddate[2] + ' ' + enddate[1];
+                dateAlternate = enddate + '-' + startdate;
+
+                // Making direction ltr for date selector and aligning text to right
+                $(SELECTOR.DATE).css({'direction':'ltr','text-align': 'right'});
+                $(SELECTOR.DATEPICKERINPUT).css({'direction':'ltr','text-align': 'right'});
+            }
+
+
             $(SELECTOR.DATEPICKERINPUT).next().val(dateAlternate);
 
             /* If correct date is not selected then return false */
@@ -306,12 +326,14 @@ define([
                 response = JSON.parse(response);
 
                 $.each(response.dates, function(idx, val) {
+                    rtl = $('html').attr('dir') == 'rtl' ? 1 : 0;
+                    
                     date = new Date(val * 86400 * 1000);
                     day = date.getDate();
                     month = months[date.getMonth()];
                     year = date.getFullYear();
                     ActiveUsers[idx] = {
-                        date: `${(day < 10 ? '0' + day : day)} ${month} ${year}`,
+                        date: rtl ? '<div style="direction:ltr;">' + `${year} ${month} ${(day < 10 ? '0' + day : day)}` + '</div>' : `${(day < 10 ? '0' + day : day)} ${month} ${year}`,
                         filter: response.dates[idx],
                         activeusers: response.data.activeUsers[idx],
                         courseenrolment: response.data.enrolments[idx],
@@ -344,8 +366,8 @@ define([
                                 emptyTable: M.util.get_string('noactiveusers', 'local_edwiserreports'),
                                 zeroRecords: M.util.get_string('zerorecords', 'local_edwiserreports'),
                                 paginate: {
-                                    previous: M.util.get_string('previous', 'moodle'),
-                                    next: M.util.get_string('next', 'moodle')
+                                    previous: " ",
+                                    next: " "
                                 }
                             },
                             columnDefs: [{

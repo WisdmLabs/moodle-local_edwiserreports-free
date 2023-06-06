@@ -191,8 +191,8 @@ class certificatesblock extends block_base {
 
             $certificates[] = array(
                 "id" => $certificate->id,
-                "name" => $certificate->name,
-                "coursename" => $course->fullname,
+                "name" => format_string($certificate->name, true, ['context' => \context_system::instance()]),
+                "coursename" => format_string($course->fullname, true, ['context' => \context_system::instance()]),
                 "issued" => count($issued),
                 "notissued" => $notawareded
             );
@@ -255,7 +255,8 @@ class certificatesblock extends block_base {
      * @return object         Certificate information
      */
     public function get_certinfo($course, $issue) {
-        global $DB;
+        global $DB;        
+        $rtl = get_string('thisdirection', 'langconfig') == 'rtl' ? 1 : 0;
 
         $enrolsql = "SELECT ue.id, ue.timemodified
             FROM {user_enrolments} ue
@@ -277,7 +278,9 @@ class certificatesblock extends block_base {
         $enrolmentdate = get_string("notenrolled", "local_edwiserreports");
         $progressper = 0;
         if ($enrolment) {
-            $enrolmentdate = date("d M y", $enrolment->timemodified);
+            $enrolmentdate = $rtl ? '<div style="direction:ltr;">' . date("Y M d", $enrolment->timemodified) . '</div>' : date("d M Y", $enrolment->timemodified);
+
+            // $enrolmentdate = date("d M y", $enrolment->timemodified);
             $completion = \local_edwiserreports\utility::get_course_completion_info($course, $user->id);
 
             if (isset($completion["progresspercentage"])) {
@@ -309,7 +312,9 @@ class certificatesblock extends block_base {
         $certinfo = new stdClass();
         $certinfo->username = fullname($user);
         $certinfo->email = $user->email;
-        $certinfo->issuedate = date("d M y", $issue->timecreated);
+        // $certinfo->issuedate = date("d M y", $issue->timecreated);
+        $certinfo->issuedate = $rtl ? '<div style="direction:ltr;">' . date("y M d", $issue->timecreated) . '</div>' : date("d M y", $issue->timecreated);
+
         $certinfo->dateenrolled = $enrolmentdate;
         $certinfo->grade = $gradeval . '%';
         $certinfo->courseprogress = $courseprogresshtml;
@@ -353,13 +358,18 @@ class certificatesblock extends block_base {
     public static function get_exportable_data_block() {
         $cert = new self();
         $certificates = $cert->get_certificate_list(0);
+        $rtl = get_string('thisdirection', 'langconfig') == 'rtl' ? 1 : 0;
+
         foreach ($certificates as $key => $certificate) {
             unset($certificate["id"]);
-            $certificates[$key] = array_values($certificate);
+            // $certificates[$key] = array_values($certificate);
+            $certificates[$key] = $rtl ? array_reverse(array_values($certificate)) : array_values($certificate);
         }
 
+        $header = $rtl ? array(array_reverse(self::get_headers())) : array(self::get_headers());
+
         $certificates = array_merge(
-            array(self::get_headers()),
+            $header,
             $certificates
         );
         return $certificates;
@@ -374,17 +384,21 @@ class certificatesblock extends block_base {
         $cohortid = optional_param("cohortid", 0, PARAM_INT);
         $blockobj = new self();
         $record = $blockobj->get_issued_users($certid, $cohortid);
+        $rtl = get_string('thisdirection', 'langconfig') == 'rtl' ? 1 : 0;
 
         $users = array();
 
         foreach ($record->data as $key => $user) {
             $user->courseprogress = strip_tags($user->courseprogress);
-            $users[$key] = array_values((array) $user);
+            // $users[$key] = array_values((array) $user);
+            $users[$key] = $rtl ? array_values(array_reverse((array) $user)) : array_values((array) $user);
         }
+        $header = $rtl ? array(array_reverse(self::get_headers_report())) : array(self::get_headers_report());
 
-        $out = array_merge(array(
-            self::get_headers_report()
-        ), $users);
+        $out = array_merge(
+            $header,
+            $users
+        );
 
         return (object) [
             'data' => $out,

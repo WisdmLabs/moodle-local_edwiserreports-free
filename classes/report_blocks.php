@@ -47,6 +47,7 @@ class report_blocks {
         \local_edwiserreports\utility::rearrange_block_with_preferences($blocks);
         $context = context_system::instance();
 
+        
         // Prepare layout for each block.
         foreach ($blocks as $block) {
             // If user dont have capability to see the block.
@@ -97,6 +98,9 @@ class report_blocks {
             ) {
                 $layout->hasmenu = true;
             }
+
+            // Avilable in pro link
+            $layout->prolink = get_string('availableinprolink', 'local_edwiserreports', UPGRADE_URL);
 
             $blockbase->set_block_size($block);
 

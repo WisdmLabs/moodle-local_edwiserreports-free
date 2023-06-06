@@ -188,8 +188,8 @@ define([
                                 emptyTable: M.util.get_string('nodata', 'local_edwiserreports'),
                                 zeroRecords: M.util.get_string('zerorecords', 'local_edwiserreports'),
                                 paginate: {
-                                    previous: M.util.get_string('previous', 'moodle'),
-                                    next: M.util.get_string('next', 'moodle')
+                                    previous: " ",
+                                    next: " "
                                 }
                             },
                             bInfo: false,
@@ -203,6 +203,24 @@ define([
                         });
                         $(cfSave).prop('disabled', false);
                     }
+
+
+                    // RTL support for arrows
+                    setTimeout(function(){
+
+
+
+                        $('.edwiserreports-table .page-item.next a').empty();
+                        $('.edwiserreports-table .page-item.previous a').empty();
+                        var attr = $('html').attr('dir');
+                        // For some browsers, `attr` is undefined; for others,
+                        // `attr` is false.  Check for both.
+                        if (typeof attr !== 'undefined' && attr !== false && attr == 'rtl') {
+                            $('.edwiserreports-table .page-item.next a:before').css({'border-left': '11px solid transparent', 'border-bottom': '6px solid transparent','border-top': '6px solid transparent','border-left-color': '#ccc','border-right-width': '0px'});
+                            $('.edwiserreports-table .page-item.previous a:before').css({'border-bottom': '6px solid transparent','border-top': '6px solid transparent','border-right':' 10px solid transparent','border-right-color': '#ccc','border-left-width': '0px'});
+                        }
+                    }, 1000);
+
                 }
             }).always(function() {
                 reportsDataLoaded = true;
@@ -378,8 +396,8 @@ define([
                             emptyTable: M.util.get_string('nodata', 'local_edwiserreports'),
                             zeroRecords: M.util.get_string('zerorecords', 'local_edwiserreports'),
                             paginate: {
-                                previous: M.util.get_string('previous', 'moodle'),
-                                next: M.util.get_string('next', 'moodle')
+                                previous: " ",
+                                next: " "
                             }
                         },
                         order: [

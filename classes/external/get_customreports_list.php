@@ -58,6 +58,9 @@ trait get_customreports_list {
     public static function get_customreports_list($params) {
         global $DB;
         $table = 'edwreports_custom_reports';
+        $dir = get_string('thisdirection', 'langconfig');
+        $rtl = $rtl ? $rtl : ($dir == 'rtl' ? 1 : 0);
+
         $data = array();
 
         $sql = 'SELECT ecr.*, u.firstname, u.lastname
@@ -67,10 +70,10 @@ trait get_customreports_list {
         $customreports = $DB->get_records_sql($sql);
         foreach ($customreports as $customreport) {
             $crdata = new stdClass();
-            $crdata->fullname = $customreport->fullname;
+            $crdata->fullname = format_string($customreport->fullname, true, ['context' => \context_system::instance()]);
             $crdata->createdby = $customreport->firstname . ' ' . $customreport->lastname;
-            $crdata->datecreated = date('d-m-Y', $customreport->timecreated);
-            $crdata->datemodified = $customreport->timemodified ? date('d-m-Y', $customreport->timemodified) : '-';
+            $crdata->datecreated = $rtl ? date('Y-m-d', $customreport->timecreated) : date('d-m-Y', $customreport->timecreated);
+            $crdata->datemodified = $customreport->timemodified ? ($rtl ? date('Y-m-d', $customreport->timemodified) : date('d-m-Y', $customreport->timemodified)) : '-';
             $crdata->managehtml = self::create_manage_html($customreport);
             $data[] = $crdata;
         }
@@ -100,13 +103,13 @@ trait get_customreports_list {
         $enabledesktopstr = get_string('enabledesktop', 'local_edwiserreports');
         $disabledesktopstr = get_string('disabledesktop', 'local_edwiserreports');
         $tooltipstr = $customreport->enabledesktop ? $disabledesktopstr : $enabledesktopstr;
-        $html = '<div>
+        $html = '<div style="text-align:left;">
             <span>
                 <input type="checkbox" id="wdm-desktopenable-' . $customreport->id . '" class="d-none
                 custom-field-checkbox" ' . $enabledesktop . ' data-reportsid="' . $customreport->id . '"
                 >
                 <a href="' .$editurl. '"
-                    class = "px-3"
+                    class = "p-1"
                    data-toggle="tooltip" data-action="hide"
                    title="' . $tooltipstr . '"
                    data-titlehide="' . $enabledesktopstr . '"
@@ -117,15 +120,23 @@ trait get_customreports_list {
                     <span class="hide-svg">' . \local_edwiserreports\utility::image_icon('actions/hide') . '</span>
                 </a>
                 <a href="' .$editurl. '" data-toggle="tooltip"
-                class = "px-3"
+                class = "p-1"
                 title="' . get_string('editreports', 'local_edwiserreports') . '">
                     <span class="edit-svg">' . \local_edwiserreports\utility::image_icon('actions/edit') . '</span>
                 </a>
                 <a href="#" data-toggle="tooltip" data-reportsid="' . $customreport->id . '"
-                class = "px-3"
+                class = "p-1"
                 title="' . get_string('deletereports', 'local_edwiserreports') . '" data-action="delete">
                     <span class="delete-svg">' . \local_edwiserreports\utility::image_icon('actions/delete') . '</span>
                 </a>
+
+                <span class ="pro-export-wrapper">
+                    <div class="pro-export-title p-3 theme-1-bg text-white">
+                    ' . get_string('configureaccess', 'local_edwiserreports', UPGRADE_URL) . '<br>' .get_string('availableinprolink', 'local_edwiserreports', UPGRADE_URL) . '
+                    </div>
+                    <i class="icon fa fa-cog fa-fw " aria-label="Actions menu" style="vertical-align:-3px; font-size:19px;color:black;"></i>
+                </span>
+
             </span>
         </div>';
         return $html;
