@@ -26,13 +26,16 @@ define([
     './chart/apexcharts',
     './common',
     './defaultconfig',
+    'local_edwiserreports/jquery',
+    'local_edwiserreports/flatpickr',
     './select2'
 ], function(
     $,
     Notification,
     ApexCharts,
     Common,
-    CFG
+    CFG,
+    Oldjquery,
 ) {
 
     /**
@@ -222,8 +225,7 @@ define([
      * Initialize event listeners.
      */
     function initEvents() {
-
-        $(SELECTOR.PANEL).find(SELECTOR.DATEPICKERINPUT).flatpickr({
+        Oldjquery(SELECTOR.PANEL).find(SELECTOR.DATEPICKERINPUT).flatpickr({
             mode: 'range',
             altInput: true,
             altFormat: "d/m/Y",

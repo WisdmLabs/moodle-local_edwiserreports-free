@@ -280,7 +280,7 @@ define('local_edwiserreports/chart/svg', [], function() {
                 this.g = parseInt(match[2], 16);
                 this.b = parseInt(match[3], 16);
             }
-        } else if (_typeof(color) === 'object') {
+        } else if (typeof(color) === 'object') {
             this.r = color.r;
             this.g = color.g;
             this.b = color.b;
@@ -969,7 +969,7 @@ define('local_edwiserreports/chart/svg', [], function() {
              * @return target || this
              */
             animate: function animate(o, ease, delay) {
-                if (_typeof(o) === 'object') {
+                if (typeof(o) === 'object') {
                     ease = o.ease;
                     delay = o.delay;
                     o = o.duration;
@@ -1429,7 +1429,7 @@ define('local_edwiserreports/chart/svg', [], function() {
         // Add animatable attributes
         attr: function attr(a, v, relative) {
             // apply attributes individually
-            if (_typeof(a) === 'object') {
+            if (typeof(a) === 'object') {
                 for (var key in a) {
                     this.attr(key, a[key]);
                 }
@@ -1451,7 +1451,7 @@ define('local_edwiserreports/chart/svg', [], function() {
     });
     SVG.Box = SVG.invent({
         create: function create(x, y, width, height) {
-            if (_typeof(x) === 'object' && !(x instanceof SVG.Element)) {
+            if (typeof(x) === 'object' && !(x instanceof SVG.Element)) {
                 // chromes getBoundingClientRect has no x and y property
                 return SVG.Box.call(this, x.left != null ? x.left : x.x, x.top != null ? x.top : x.y, x.width, x.height);
             } else if (arguments.length == 4) {
@@ -1531,7 +1531,7 @@ define('local_edwiserreports/chart/svg', [], function() {
         create: function create(source) {
             var base = arrayToMatrix([1, 0, 0, 1, 0, 0]); // ensure source as object
 
-            source = source instanceof SVG.Element ? source.matrixify() : typeof source === 'string' ? arrayToMatrix(source.split(SVG.regex.delimiter).map(parseFloat)) : arguments.length == 6 ? arrayToMatrix([].slice.call(arguments)) : Array.isArray(source) ? arrayToMatrix(source) : _typeof(source) === 'object' ? source : base; // merge source
+            source = source instanceof SVG.Element ? source.matrixify() : typeof source === 'string' ? arrayToMatrix(source.split(SVG.regex.delimiter).map(parseFloat)) : arguments.length == 6 ? arrayToMatrix([].slice.call(arguments)) : Array.isArray(source) ? arrayToMatrix(source) : typeof(source) === 'object' ? source : base; // merge source
 
             for (var i = abcdef.length - 1; i >= 0; --i) {
                 this[abcdef[i]] = source[abcdef[i]] != null ? source[abcdef[i]] : base[abcdef[i]];
@@ -1638,7 +1638,7 @@ define('local_edwiserreports/chart/svg', [], function() {
             source = Array.isArray(x) ? {
                 x: x[0],
                 y: x[1]
-            } : _typeof(x) === 'object' ? {
+            } : typeof(x) === 'object' ? {
                 x: x.x,
                 y: x.y
             } : x != null ? {
@@ -1684,7 +1684,7 @@ define('local_edwiserreports/chart/svg', [], function() {
                 }
 
                 return a;
-            } else if (_typeof(a) === 'object') {
+            } else if (typeof(a) === 'object') {
                 // apply every attribute individually if an object is passed
                 for (var v_ in a) {
                     this.attr(v_, a[v_]);
@@ -1756,7 +1756,7 @@ define('local_edwiserreports/chart/svg', [], function() {
                 matrix;
             // act as a getter
 
-            if (_typeof(o) !== 'object') {
+            if (typeof(o) !== 'object') {
                 // get current matrix
                 matrix = new SVG.Matrix(target).extract();
                 return typeof o === 'string' ? matrix[o] : matrix;
@@ -1822,7 +1822,7 @@ define('local_edwiserreports/chart/svg', [], function() {
                 for (var i = 0, len = this.arguments.length; i < len; ++i) {
                     this[this.arguments[i]] = source[i];
                 }
-            } else if (_typeof(source) === 'object') {
+            } else if (typeof(source) === 'object') {
                 for (var i = 0, len = this.arguments.length; i < len; ++i) {
                     this[this.arguments[i]] = source[this.arguments[i]];
                 }
@@ -1854,7 +1854,7 @@ define('local_edwiserreports/chart/svg', [], function() {
                 return this.node.style.cssText || '';
             } else if (arguments.length < 2) {
                 // apply every style individually if an object is passed
-                if (_typeof(s) === 'object') {
+                if (typeof(s) === 'object') {
                     for (var v_ in s) {
                         this.style(v_, s[v_]);
                     }
@@ -3240,7 +3240,7 @@ define('local_edwiserreports/chart/svg', [], function() {
         // Remember arbitrary data
         remember: function remember(k, v) {
             // remember every item in an object individually
-            if (_typeof(arguments[0]) === 'object') {
+            if (typeof(arguments[0]) === 'object') {
                 for (var v_ in k) {
                     this.remember(v_, k[v_]);
                 }

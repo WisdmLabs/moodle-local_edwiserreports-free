@@ -26,9 +26,10 @@ define('local_edwiserreports/reports/completion', [
     'core/notification',
     'local_edwiserreports/common',
     'local_edwiserreports/defaultconfig',
+    'local_edwiserreports/jquery',
     'local_edwiserreports/select2',
     'local_edwiserreports/flatpickr'
-], function($, Ajax, Notification, common, CFG) {
+], function($, Ajax, Notification, common, CFG,Oldjquery) {
 
     /**
      * Selectors list.
@@ -243,7 +244,7 @@ define('local_edwiserreports/reports/completion', [
             allowClear: true
         });
 
-        flatpickr = $(SELECTOR.DATEPICKERINPUT).flatpickr({
+        flatpickr = Oldjquery(SELECTOR.DATEPICKERINPUT).flatpickr({
             mode: 'range',
             altInput: true,
             altFormat: "d M Y",

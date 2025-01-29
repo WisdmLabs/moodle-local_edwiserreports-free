@@ -26,6 +26,7 @@ define('local_edwiserreports/reports/learnercourseactivities', [
     'core/ajax',
     'local_edwiserreports/common',
     'local_edwiserreports/defaultconfig',
+    'local_edwiserreports/jquery',
     'local_edwiserreports/select2',
     'local_edwiserreports/flatpickr'
 ], function(
@@ -33,7 +34,8 @@ define('local_edwiserreports/reports/learnercourseactivities', [
     Notification,
     Ajax,
     common,
-    CFG
+    CFG,
+    Oldjquery
 ) {
 
     /**

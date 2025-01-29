@@ -602,3 +602,25 @@ function local_edwiserreports_get_default_block_settings() {
 
     return $blocks;
 }
+function local_edwiserreports_user_preferences(): array {
+    return [
+        'local_edwiserreports_insights_order' => [
+            'type' => PARAM_TEXT,
+            'null' => NULL_NOT_ALLOWED,
+            'default' => false,
+            'permissioncallback' => [core_user::class, 'is_current_user'],
+        ],
+        'local_edwiserreports_bfs_pre_hide' => [
+            'type' => PARAM_TEXT,
+            'null' => NULL_NOT_ALLOWED,
+            'default' => false,
+            'permissioncallback' => [core_user::class, 'is_current_user'],
+        ],
+        'local_edwiserreports_bfs_after_hide' => [
+            'type' => PARAM_TEXT,
+            'null' => NULL_NOT_ALLOWED,
+            'default' => false,
+            'permissioncallback' => [core_user::class, 'is_current_user'],
+        ]
+    ];
+}

@@ -28,10 +28,11 @@ define([
     'core/templates',
     './variables',
     './common',
+    'local_edwiserreports/jquery',
     './jquery.dataTables',
     './dataTables.bootstrap4',
     './flatpickr'
-], function($, ModalFactory, ModalEvents, Notification, Fragment, Templates, V, common) {
+], function($, ModalFactory, ModalEvents, Notification, Fragment, Templates, V, common, Oldjquery) {
 
     var filter = 'last7days';
 
@@ -212,7 +213,7 @@ define([
          * Create Calender in dropdown tp select range.
          */
         function createDropdownCalendar() {
-            flatpickr = $(SELECTOR.DATEPICKERINPUT).flatpickr({
+            flatpickr = Oldjquery(SELECTOR.DATEPICKERINPUT).flatpickr({
                 mode: 'range',
                 altInput: true,
                 altFormat: "d M Y",
@@ -327,7 +328,7 @@ define([
 
                 $.each(response.dates, function(idx, val) {
                     rtl = $('html').attr('dir') == 'rtl' ? 1 : 0;
-                    
+
                     date = new Date(val * 86400 * 1000);
                     day = date.getDate();
                     month = months[date.getMonth()];

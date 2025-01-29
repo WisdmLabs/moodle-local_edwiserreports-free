@@ -30,10 +30,11 @@ define('local_edwiserreports/reports/activeusers', [
     'core/templates',
     'local_edwiserreports/variables',
     'local_edwiserreports/common',
+    'local_edwiserreports/jquery',
     'local_edwiserreports/jquery.dataTables',
     'local_edwiserreports/dataTables.bootstrap4',
     'local_edwiserreports/flatpickr'
-], function($, ModalFactory, ModalEvents, Notification, Fragment, Templates, V, common) {
+], function($, ModalFactory, ModalEvents, Notification, Fragment, Templates, V, common, Oldjquery) {
 
     /**
      * Selector list.
@@ -150,7 +151,7 @@ define('local_edwiserreports/reports/activeusers', [
      * Create Calender in dropdown tp select range.
      */
     function createDropdownCalendar() {
-        flatpickr = $(SELECTOR.DATEPICKERINPUT).flatpickr({
+        flatpickr = Oldjquery(SELECTOR.DATEPICKERINPUT).flatpickr({
             mode: 'range',
             altInput: true,
             altFormat: "d M Y",
