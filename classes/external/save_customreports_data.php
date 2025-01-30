@@ -43,7 +43,7 @@ trait save_customreports_data {
     public static function save_customreports_data_parameters() {
         return new external_function_parameters(
             array (
-                'params' => new external_value(PARAM_RAW, 'Prameters', 'local_edwiserreports')
+                'params' => new external_value(PARAM_RAW, 'Prameters', VALUE_DEFAULT, 'local_edwiserreports')
             )
         );
     }
@@ -117,9 +117,9 @@ trait save_customreports_data {
     public static function save_customreports_data_returns() {
         return new \external_single_structure(
             array(
-                'success' => new external_value(PARAM_BOOL, 'Status', null),
-                'reportsdata' => new external_value(PARAM_RAW, 'Custom Reports Data', ''),
-                'errormsg' => new external_value(PARAM_TEXT, 'ERROR message if any', '')
+                'success' => new external_value(PARAM_BOOL, 'Status', VALUE_DEFAULT,  null),
+                'reportsdata' => new external_value(PARAM_RAW, 'Custom Reports Data', VALUE_DEFAULT,  ''),
+                'errormsg' => new external_value(PARAM_TEXT, 'ERROR message if any', VALUE_DEFAULT, '')
             )
         );
     }

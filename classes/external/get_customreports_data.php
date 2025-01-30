@@ -43,7 +43,7 @@ trait get_customreports_data {
     public static function get_customreports_data_parameters() {
         return new external_function_parameters(
             array (
-                'params' => new external_value(PARAM_RAW, 'Prameters', 'local_edwiserreports')
+                'params' => new external_value(PARAM_RAW, 'Prameters', VALUE_DEFAULT, 'local_edwiserreports')
             )
         );
     }
@@ -84,8 +84,8 @@ trait get_customreports_data {
     public static function get_customreports_data_returns() {
         return new \external_single_structure(
             array(
-                'success' => new external_value(PARAM_BOOL, 'Status', null),
-                'data' => new external_value(PARAM_RAW, 'Reports Data', 0)
+                'success' => new external_value(PARAM_BOOL, 'Status',  VALUE_DEFAULT, null),
+                'data' => new external_value(PARAM_RAW, 'Reports Data', VALUE_DEFAULT, 0)
             )
         );
     }
