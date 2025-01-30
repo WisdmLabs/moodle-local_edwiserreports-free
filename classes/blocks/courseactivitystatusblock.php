@@ -32,6 +32,20 @@ use stdClass;
 class courseactivitystatusblock extends block_base {
 
     /**
+     * Get the first site access data.
+     *
+     * @var null
+     */
+    public $firstsiteaccess;
+
+    /**
+     * Current time
+     *
+     * @var int
+     */
+    public $enddate;
+
+    /**
      * Active users block labels
      *
      * @var array
@@ -45,6 +59,12 @@ class courseactivitystatusblock extends block_base {
      */
     public $xlabelcount;
 
+    /**
+     * Cache
+     *
+     * @var object
+     */
+    public $cache;
 
     /**
      * Dates main array.
@@ -52,6 +72,49 @@ class courseactivitystatusblock extends block_base {
      * @var array
      */
     public $dates = [];
+    /**
+     * Cache for the visits on site block.
+     *
+     * @var object
+     */
+    public $sessioncache;
+
+
+    /**
+     * Flag indicating whether the active users data is pre-calculated.
+     *
+     * @var bool
+     */
+    public $precalculated;
+
+    /**
+     * The start date for the data being analyzed.
+     *
+     * @var int
+     */
+    public $startdate;
+
+
+    /**
+     * Instantiate object
+     *
+     * @param int $blockid Block id
+     */
+    public function __construct($blockid = false) {
+        parent::__construct($blockid);
+        // Set cache for student engagement block.
+        $this->sessioncache = cache::make('local_edwiserreports', 'courseactivitystatus');
+        $this->precalculated = get_config('local_edwiserreports', 'precalculated');
+    }
+
+    /**
+     * Return true if current block is graphical block.
+     *
+     * @return boolean
+     */
+    public function is_graphical() {
+        return true;
+    }
 
     /**
      * Preapre layout for Visits on site

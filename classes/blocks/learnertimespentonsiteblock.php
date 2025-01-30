@@ -30,6 +30,62 @@ namespace local_edwiserreports;
 class learnertimespentonsiteblock extends block_base {
 
     /**
+     * Dates main array.
+     *
+     * @var array
+     */
+    public $dates = [];
+
+    /**
+     * No. of labels for active users.
+     *
+     * @var int
+     */
+    public $xlabelcount;
+
+    /**
+     * The $singleday property represents a single day for which the time spent on the site is being tracked.
+     */
+    public $singleday;
+
+    /**
+     * The $startday property represents the start day for which the time spent on the site is being tracked.
+     */
+
+    public $startday;
+
+    /**
+     * The $endday property represents the end day for which the time spent on the site is being tracked.
+     */
+    public $endday;
+
+    /**
+     * The $timespent property represents the total time spent by a learner on the site.
+     */
+    public $timespent;
+
+    /**
+     * Active users block labels
+     *
+     * @var array
+     */
+    public $labels;
+
+    /**
+     * The start date for the data being analyzed.
+     *
+     * @var int
+     */
+    public $startdate;
+
+    /**
+     * The start date for the data being analyzed.
+     *
+     * @var int
+     */
+    public $enddate;
+
+    /**
      * Preapre layout for Visits on site
      * @return object Layout object
      */

@@ -35,6 +35,13 @@ use cache;
 class activecoursesblock extends block_base {
 
     /**
+     * Cache
+     *
+     * @var object
+     */
+    public $cache;
+
+    /**
      * Initialize the block.
      */
     public function __construct() {
@@ -117,8 +124,7 @@ class activecoursesblock extends block_base {
                 $data = $this->filter_active_courses($data, $rtl);
             }
             $this->cache->set('activecoursesdata', $data);
-        } 
-
+        }
         $response->data = $data;
         return $response;
     }
@@ -161,7 +167,7 @@ class activecoursesblock extends block_base {
             if (empty($enrolledstudents)) {
                 continue;
             }
-            
+
             // Create a record for responce.
             $res = array(
                 $count++,
@@ -251,7 +257,7 @@ class activecoursesblock extends block_base {
             return $data;
         }, $activecoursesdata->data);
 
-        if($rtl){
+        if ($rtl) {
             $newdata = [];
             foreach ($exportdata as $value) {
                 $newdata[] = $rtl ? array_reverse($value) : $value;

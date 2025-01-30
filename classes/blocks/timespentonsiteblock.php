@@ -51,6 +51,19 @@ class timespentonsiteblock extends block_base {
     public $dates = [];
 
     /**
+     * The start date for the data being analyzed.
+     *
+     * @var int
+     */
+    public $startdate;
+
+    /**
+     * The start date for the data being analyzed.
+     *
+     * @var int
+     */
+    public $enddate;
+    /**
      * Preapre layout for timespent on site
      * @return object Layout object
      */

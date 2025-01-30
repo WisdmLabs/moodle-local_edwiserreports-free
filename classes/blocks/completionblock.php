@@ -107,7 +107,6 @@ class completionblock {
             $completioninfo->enrolledon = $rtl ? date("Y M d", $user->enrolledon) : date("d M Y", $user->enrolledon);
             $completioninfo->enrolltype = $user->enrol;
             $completioninfo->noofvisits = empty($user->visits) ? 0 : $user->visits;
-            
             $completioninfo->completion = empty($user->progress) ? "NA" : round($user->progress) . '%';
             $completioninfo->compleiontime = empty($user->completiontime) ?
                                             $notyet : ( $rtl ? date("Y M d", $user->completiontime) : date("d M Y", $user->completiontime));
@@ -115,13 +114,12 @@ class completionblock {
             // $completioninfo->lastaccess = empty($user->lastvisit) ? 0 : format_time($timenow - $user->lastvisit);
             // $completioninfo->lastaccess = empty($user->lastvisit) ? 0 : ($rtl ? date('A i:h Y M d', $user->lastvisit) : date('d M Y h:i A', $user->lastvisit));
             $completioninfo->lastaccess = empty($user->lastvisit) ? 0 : $user->lastvisit;
-            if($isexportdata){
+            if ($isexportdata) {
                 $completioninfo->lastaccess = empty($user->lastvisit) ? 0 : ($rtl ? date('Y M d', $user->lastvisit) . '<br>' . date('A i:h ', $user->lastvisit) : date('d M Y h:i A', $user->lastvisit));
             }
             $userscompletion[] = $completioninfo;
             unset($users[$key]);
         }
-
 
         // DROP userstable
         utility::drop_temp_table($usertable);

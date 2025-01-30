@@ -56,7 +56,6 @@ class courseprogressblock extends block_base {
         );
     }
 
-    
     /**
      * Get reports data for Course Progress block
      * @param  object $params Parameters

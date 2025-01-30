@@ -90,7 +90,7 @@ class allcoursessummary extends base {
         $response = array();
         $search = html_writer::tag('i', '', ['class' => 'fa fa-search-plus']);
 
-        for ($i=1; $i < 20; $i++) {
+        for ($i = 1; $i < 20; $i++) {
             $data['coursename'] = 'Course ' . $i;
             $data['category'] = 'Category ' . $i;
             $data['enrolments'] = 20 + $i;
