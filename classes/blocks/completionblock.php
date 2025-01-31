@@ -110,7 +110,7 @@ class completionblock {
             $completioninfo->completion = empty($user->progress) ? "NA" : round($user->progress) . '%';
             $completioninfo->compleiontime = empty($user->completiontime) ?
                                             $notyet : ( $rtl ? date("Y M d", $user->completiontime) : date("d M Y", $user->completiontime));
-            $completioninfo->grade = round($user->grade, 2) . '%';
+            $completioninfo->grade = isset($user->grade) ? round($user->grade, 2) . '%' : '0%';
             // $completioninfo->lastaccess = empty($user->lastvisit) ? 0 : format_time($timenow - $user->lastvisit);
             // $completioninfo->lastaccess = empty($user->lastvisit) ? 0 : ($rtl ? date('A i:h Y M d', $user->lastvisit) : date('d M Y h:i A', $user->lastvisit));
             $completioninfo->lastaccess = empty($user->lastvisit) ? 0 : $user->lastvisit;
