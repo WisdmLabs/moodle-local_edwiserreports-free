@@ -365,6 +365,8 @@ html[lang=es] .local-edwiserreports {
                     }
                     .select2-selection__choice {
                         margin: 1px;
+                        padding-left: 18px;
+                        padding-right: 15px;
                     }
                 }
             }
@@ -1101,15 +1103,15 @@ html[lang=es] .local-edwiserreports {
             border: 1px solid #E5E5E5;
         }
         .apexcharts-legend-series {
+            font-size: 1rem;
+            font-weight: 400;
+            margin: 5px 0 !important;
             &:first-child {
                 margin-top: 0 !important;
             }
             &:last-child {
                 margin-bottom: 0 !important;
             }
-            font-size: 1rem;
-            font-weight: 400;
-            margin: 5px 0 !important;
         }
     }
 }
