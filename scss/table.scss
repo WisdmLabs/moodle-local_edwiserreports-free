@@ -119,6 +119,16 @@
             color: rgb(190, 18, 60);
             background: rgb(255, 228, 230);
         }
+        .sorting_asc,
+        .sorting_desc,
+        .sorting {
+            &::before{
+                font-size: 18px !important;
+            }
+            &::after{
+                font-size: 18px !important;
+            }
+        }
     }
     .dataTables_wrapper {
         .row {

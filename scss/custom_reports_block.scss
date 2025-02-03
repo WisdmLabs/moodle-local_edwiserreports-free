@@ -90,6 +90,12 @@
     input[type="checkbox"]:not(.custom-control-input) {
         display: none !important;
     }
+    .pro-export-wrapper .pro-export-title{
+        transform: translateX(-90%);
+        &::after{
+            left: 90%;
+        }
+    }
 }
 
 #wdm-customreports-edit {

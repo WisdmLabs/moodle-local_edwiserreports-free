@@ -1328,3 +1328,7 @@ html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .pag
 .local-edwiserreports div[role="main"]{
     padding-bottom: 110px !important;
 }
+
+#page-local-edwiserreports-learnercourseactivities #userfilter .filter-selector .edwiserreports-calendar{
+    min-width: 14rem;
+}
