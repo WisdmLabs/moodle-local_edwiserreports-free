@@ -1329,6 +1329,11 @@ html[lang=es] .local-edwiserreports .filter-selector .edwiserreports-calendar {
     justify-content: right;
     padding-right: 0;
 }
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    top: 50% !important;
+    transform: translateY(-50%);
+}
 #wdm-edwiserreports #courseprogressblock .col-md-3 {
     display: none;
 }

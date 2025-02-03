@@ -1268,3 +1268,7 @@ $button-width: 3.5rem;
         padding-right: 0;
     }
 }
+.select2-container--default .select2-selection--single .select2-selection__arrow{
+    top: 50% !important;
+    transform: translateY(-50%);
+}
