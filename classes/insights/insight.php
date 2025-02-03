@@ -151,7 +151,7 @@ class insight {
         }
         $visible = $additional = [];
         $preference = get_user_preferences('local_edwiserreports_insights_order');
-        $preference = json_decode($preference ?: '[]');
+        $preference = is_string($preference) ? json_decode($preference) : null;
         if ($preference !== null) {
             foreach ($preference as $key) {
                 if (isset($insights[$key])) {
