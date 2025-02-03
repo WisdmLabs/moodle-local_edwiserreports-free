@@ -684,6 +684,9 @@ html[lang=es] .local-edwiserreports {
                 .panel-help {
                     color: rgba(82, 96, 105, 0.5) !important;
                 }
+                .panel-footer{
+                    text-align: right;
+                }
             }
         }
     }
@@ -1271,4 +1274,8 @@ $button-width: 3.5rem;
 .select2-container--default .select2-selection--single .select2-selection__arrow{
     top: 50% !important;
     transform: translateY(-50%);
+}
+
+.edwiserreports-table table .fa.fa-search-plus{
+    color: #F98012;
 }
