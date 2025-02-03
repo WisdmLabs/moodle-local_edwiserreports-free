@@ -679,6 +679,11 @@ html[lang=es] .local-edwiserreports {
                     .panel-title {
                         z-index: 1;
                     }
+                    .dropdown-toggle{
+                        border: 1px solid gainsboro;
+                        padding: 5px 9px;
+                        border-radius: 5px;
+                    }
                 }
                 height: 100%;
                 .panel-help {
@@ -1278,4 +1283,48 @@ $button-width: 3.5rem;
 
 .edwiserreports-table table .fa.fa-search-plus{
     color: #F98012;
+}
+
+
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .page-item.previous a,
+.local-edwiserreports .edwiserreports-table .table-pagination .page-item.next a {
+    padding: 6px 10px !important;
+    &::before{
+        content: '';
+        display: block;
+        width: 0px;
+        height: 0px;
+        border-left: 11px solid transparent;
+        border-bottom: 6px solid transparent;
+        border-top: 6px solid transparent;
+        border-left-color: #ccc;
+        border-right-width: 0px;
+    }
+}
+.local-edwiserreports .edwiserreports-table .table-pagination .page-item.previous a,
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .page-item.next a {
+    padding: 6px 10px !important;
+    &::before{
+        content: '';
+        display: block;
+        width: 0px;
+        height: 0px;
+        border-bottom: 6px solid transparent;
+        border-top: 6px solid transparent;
+        border-right: 10px solid transparent;
+        border-right-color: #ccc;
+        border-left-width: 0px;
+    }
+}
+
+.local-edwiserreports .edwiserreports-table .table-pagination .page-item a{
+    padding: 3px 10px !important;
+}
+
+.local-edwiserreports .pull-right{
+    float: right;
+}
+
+.local-edwiserreports div[role="main"]{
+    padding-bottom: 110px !important;
 }
