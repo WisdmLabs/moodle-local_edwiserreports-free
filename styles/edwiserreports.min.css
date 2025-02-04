@@ -486,6 +486,7 @@ tr[aria-expanded=true] .accordion-arrow.icon {
     padding: 0.1rem 0.8rem;
     border-radius: 1rem;
     font-weight: 500;
+    direction: ltr;
 }
 #page-local-edwiserreports-index .filter-wrapper {
     width: fit-content;
@@ -1412,6 +1413,10 @@ html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .pag
     float: right;
 }
 
+html[dir=rtl] .local-edwiserreports .pull-right {
+    float: left;
+}
+
 .local-edwiserreports div[role=main] {
     padding-bottom: 110px !important;
 }
@@ -1426,6 +1431,44 @@ html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .pag
 .local-edwiserreports .dropdown-menu form .dropdown-item {
     padding-top: 9px;
     padding-bottom: 9px;
+}
+
+html[dir=rtl] .local-edwiserreports .filter-selector > label {
+    right: 2.1rem;
+    left: unset;
+    z-index: 1;
+    top: -0.5rem;
+}
+html[dir=rtl] .local-edwiserreports .filter-selector .dropdown-menu {
+    right: unset !important;
+    left: 0 !important;
+}
+html[dir=rtl] .local-edwiserreports .edwiserreports-calendar {
+    text-align: right;
+}
+html[dir=rtl] .local-edwiserreports .edwiserreports-calendar::after {
+    left: 0.829rem;
+    right: unset;
+}
+html[dir=rtl] .local-edwiserreports .insight-card .pro-lock {
+    right: unset;
+    left: 1rem;
+}
+html[dir=rtl] .local-edwiserreports .apexcharts-canvas {
+    direction: ltr !important;
+}
+html[dir=rtl] .local-edwiserreports .apexcharts-legend {
+    text-align: left;
+}
+html[dir=rtl] .local-edwiserreports .top-insights .insight-wrapper .card-editing .fa-arrow-right, html[dir=rtl] .local-edwiserreports .top-insights .insight-wrapper .card-editing .fa-arrow-left {
+    transform: rotate(0deg);
+}
+html[dir=rtl] .local-edwiserreports .modal .path-admin-tool-capability .comparisontable thead th div > a {
+    top: -3.75em;
+    width: unset;
+}
+html[dir=rtl] .local-edwiserreports .panel .panel-footer {
+    text-align: left !important;
 }
 #wdm-edwiserreports #courseprogressblock .col-md-3 {
     display: none;
@@ -1537,6 +1580,14 @@ html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .pag
 }
 #cr-list-table .pro-export-wrapper .pro-export-title::after {
     left: 90%;
+}
+
+html[dir=rtl] #cr-list-table .pro-export-wrapper .pro-export-title {
+    transform: translateX(-7%);
+}
+html[dir=rtl] #cr-list-table .pro-export-wrapper .pro-export-title::after {
+    right: 90%;
+    left: unset;
 }
 
 #wdm-customreports-edit .customreports-block-section > div {
@@ -2003,6 +2054,13 @@ table.dataTable td.dataTables_empty {
     width: 1px;
     background-color: rgba(0, 0, 0, 0.2);
 }
+
+html[dir=rtl] .insight-card .insight-details::before {
+    content: " ";
+    position: absolute;
+    right: 0;
+    left: unset;
+}
 #wdm-edwiserreports[data-editing="1"] #learnerblock .graph-header-background {
     display: none;
 }
@@ -2407,6 +2465,24 @@ table.dataTable td.dataTables_empty {
     right: 0.2rem;
     top: 50%;
     transform: translateY(-50%);
+}
+
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .sorting_asc,
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .sorting_desc,
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .sorting {
+    padding: 16px 10px 16px 30px !important;
+}
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .sorting_asc::before,
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .sorting_desc::before,
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .sorting::before {
+    right: unset;
+    left: 1em;
+}
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .sorting_asc::after,
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .sorting_desc::after,
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .sorting::after {
+    right: unset;
+    left: 1em;
 }
 #page-local-edwiserreports-index.theme_remui #page #region-main > .card {
     background: transparent;

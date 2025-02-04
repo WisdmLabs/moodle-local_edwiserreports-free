@@ -205,3 +205,13 @@
         }
     }
 }
+html[dir=rtl] .insight-card{
+    .insight-details {
+        &::before {
+            content: " ";
+            position: absolute;
+            right: 0;
+            left: unset;
+        }
+    }
+}

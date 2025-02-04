@@ -164,3 +164,20 @@
         }
     }
 }
+html[dir=rtl] .local-edwiserreports{
+    .edwiserreports-table{
+        .sorting_asc,
+        .sorting_desc,
+        .sorting {
+            padding: 16px 10px 16px 30px !important;
+            &::before{
+                right: unset;
+                left: 1em;
+            }
+            &::after{
+                right: unset;
+                left: 1em;
+            }
+        }
+    }
+}

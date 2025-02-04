@@ -98,6 +98,15 @@
     }
 }
 
+html[dir=rtl] #cr-list-table {
+    .pro-export-wrapper .pro-export-title{
+        transform: translateX(-7%);
+        &::after{
+            right: 90%;
+            left: unset;
+        }
+    }
+}
 #wdm-customreports-edit {
     .customreports-block-section>div {
         position: relative;

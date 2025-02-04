@@ -272,6 +272,7 @@ tr[aria-expanded="true"] {
         padding: 0.1rem 0.8rem;
         border-radius: 1rem;
         font-weight: 500;
+        direction: ltr;
     }
     .filter-wrapper {
         width: fit-content;
@@ -1345,6 +1346,9 @@ html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .pag
 .local-edwiserreports .pull-right{
     float: right;
 }
+html[dir=rtl] .local-edwiserreports .pull-right{
+    float: left;
+}
 
 .local-edwiserreports div[role="main"]{
     padding-bottom: 110px !important;
@@ -1359,5 +1363,75 @@ html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .pag
     .dropdown-item{
         padding-top: 9px;
         padding-bottom: 9px;
+    }
+}
+
+
+html[dir=rtl] .local-edwiserreports{
+    .filter-selector{
+        & > label {
+            right: 2.1rem;
+            left: unset;
+            z-index: 1;
+            top: -0.5rem;
+        }
+         .dropdown-menu {
+            right: unset !important;
+            left: 0 !important;
+        }
+    }
+
+    .edwiserreports-calendar{
+        text-align: right;
+        &::after{
+            left: 0.829rem;
+            right: unset;
+        }
+    }
+    .insight-card{
+        .pro-lock{
+            right: unset;
+            left: 1rem;
+        }
+    }
+
+    .apexcharts-legend-marker{
+        // margin-right: unset !important;
+        // margin-left: 3px !important;
+    }
+    .apexcharts-canvas{
+        direction: ltr !important;
+    }
+    .apexcharts-legend{
+        text-align: left;
+    }
+
+    .top-insights{
+        .insight-wrapper .card-editing{
+            .fa-arrow-right,.fa-arrow-left{
+                transform: rotate(0deg);
+            }
+        }
+    }
+    .modal {
+        .path-admin-tool-capability {
+            .comparisontable {
+                thead {
+                    th {
+                        div {
+                            >a {
+                                top: -3.75em;
+                                width: unset;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .panel{
+        .panel-footer{
+            text-align: left !important;
+        }
     }
 }
