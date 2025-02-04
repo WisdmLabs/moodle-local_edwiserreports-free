@@ -14,6 +14,11 @@
                 padding: 0;
             }
         }
+        .blocksetting .pro-export-title{
+            &::after{
+                top: 84% !important;
+            }
+        }
     }
     &.theme_moove {
         .card {

@@ -727,6 +727,21 @@ html[lang=es] .local-edwiserreports {
         }
     }
 }
+.blocksetting .pro-export-title {
+    margin: 6px;
+    padding: 9px 20px !important;
+    border-radius: 5px;
+    &::after{
+        content: " ";
+        position: absolute;
+        top: 75%;
+        left: 50%;
+        transform: translateX(-50%);
+        border-top: 0.5rem solid;
+        border-right: 0.5rem solid transparent;
+        border-left: 0.5rem solid transparent;
+    }
+}
 
 .more-details {
     .pro-export {
