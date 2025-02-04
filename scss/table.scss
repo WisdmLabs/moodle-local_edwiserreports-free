@@ -122,6 +122,7 @@
         .sorting_asc,
         .sorting_desc,
         .sorting {
+            padding-right: 24px !important;
             &::before{
                 font-size: 18px !important;
             }

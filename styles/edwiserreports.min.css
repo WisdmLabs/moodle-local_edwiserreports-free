@@ -819,7 +819,7 @@ html[lang=es] .local-edwiserreports .filter-selector .edwiserreports-calendar {
     border-radius: 5px;
     position: absolute;
     bottom: 0;
-    left: 30%;
+    left: 50%;
 }
 #wdm-edwiserreports .edwiserReport-block > div .panel .panel-header .dropdown.blockoptions .dropdown-menu .dropdown-item.pro-highlight span::after {
     content: " ";
@@ -1347,6 +1347,10 @@ html[lang=es] .local-edwiserreports .filter-selector .edwiserreports-calendar {
     color: #F98012;
 }
 
+.select2-container.select2-container--open {
+    direction: ltr !important;
+}
+
 html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .page-item.previous a,
 .local-edwiserreports .edwiserreports-table .table-pagination .page-item.next a {
     padding: 6px 10px !important;
@@ -1395,6 +1399,14 @@ html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .pag
 
 #page-local-edwiserreports-learnercourseactivities #userfilter .filter-selector .edwiserreports-calendar {
     min-width: 14rem;
+}
+
+.local-edwiserreports .dropdown-menu form {
+    padding: 0px;
+}
+.local-edwiserreports .dropdown-menu form .dropdown-item {
+    padding-top: 9px;
+    padding-bottom: 9px;
 }
 #wdm-edwiserreports #courseprogressblock .col-md-3 {
     display: none;
@@ -2346,6 +2358,11 @@ table.dataTable td.dataTables_empty {
 .local-edwiserreports .edwiserreports-table .danger-tag {
     color: rgb(190, 18, 60);
     background: rgb(255, 228, 230);
+}
+.local-edwiserreports .edwiserreports-table .sorting_asc,
+.local-edwiserreports .edwiserreports-table .sorting_desc,
+.local-edwiserreports .edwiserreports-table .sorting {
+    padding-right: 24px !important;
 }
 .local-edwiserreports .edwiserreports-table .sorting_asc::before,
 .local-edwiserreports .edwiserreports-table .sorting_desc::before,

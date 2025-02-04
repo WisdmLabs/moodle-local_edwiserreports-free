@@ -647,7 +647,7 @@ html[lang=es] .local-edwiserreports {
                                         border-radius: 5px;
                                         position: absolute;
                                         bottom: 0;
-                                        left: 30%;
+                                        left: 50%;
                                         &::after {
                                             content: " ";
                                             position: absolute;
@@ -1285,6 +1285,9 @@ $button-width: 3.5rem;
     color: #F98012;
 }
 
+.select2-container.select2-container--open{
+    direction: ltr !important;
+}
 
 html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .page-item.previous a,
 .local-edwiserreports .edwiserreports-table .table-pagination .page-item.next a {
@@ -1331,4 +1334,12 @@ html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .pag
 
 #page-local-edwiserreports-learnercourseactivities #userfilter .filter-selector .edwiserreports-calendar{
     min-width: 14rem;
+}
+
+.local-edwiserreports .dropdown-menu form{
+    padding: 0px;
+    .dropdown-item{
+        padding-top: 9px;
+        padding-bottom: 9px;
+    }
 }
