@@ -1092,6 +1092,9 @@ html[lang=es] .local-edwiserreports .filter-selector .edwiserreports-calendar {
 .modal .comparisontable .switch-capability label {
     cursor: pointer;
 }
+.modal .comparisontable .switch-capability input[type=radio] {
+    display: none !important;
+}
 
 #page-local-edwiserreports-index .insight-danger {
     color: #DC0000;

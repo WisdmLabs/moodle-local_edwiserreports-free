@@ -988,6 +988,9 @@ html[lang=es] .local-edwiserreports {
             label {
                 cursor: pointer;
             }
+            input[type="radio"]{
+                display: none !important;
+            }
         }
     }
 }
