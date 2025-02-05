@@ -1203,9 +1203,11 @@ html[lang=es] .local-edwiserreports .filter-selector .edwiserreports-calendar {
     padding: 1.2rem;
     margin-bottom: 0.3rem;
 }
-#gradeblock .apexcharts-legend.position-right,
+#gradeblock .apexcharts-legend.position-right, #gradeblock .apexcharts-legend.position-left,
 #courseprogressblock .apexcharts-legend.position-right,
-#learnercourseprogressblock [data-charttype=donut] .apexcharts-legend.position-right {
+#courseprogressblock .apexcharts-legend.position-left,
+#learnercourseprogressblock [data-charttype=donut] .apexcharts-legend.position-right,
+#learnercourseprogressblock [data-charttype=donut] .apexcharts-legend.position-left {
     border: 1px solid #E5E5E5;
 }
 #gradeblock .apexcharts-legend .apexcharts-legend-series,
@@ -1443,10 +1445,11 @@ html[dir=rtl] .local-edwiserreports .filter-selector .dropdown-menu {
     right: unset !important;
     left: 0 !important;
 }
-html[dir=rtl] .local-edwiserreports .edwiserreports-calendar {
+html[dir=rtl] .local-edwiserreports .filter-selector .edwiserreports-calendar {
     text-align: right;
+    padding: 0.829rem 1rem 0.229rem 2rem !important;
 }
-html[dir=rtl] .local-edwiserreports .edwiserreports-calendar::after {
+html[dir=rtl] .local-edwiserreports .filter-selector .edwiserreports-calendar::after {
     left: 0.829rem;
     right: unset;
 }
@@ -1469,6 +1472,12 @@ html[dir=rtl] .local-edwiserreports .modal .path-admin-tool-capability .comparis
 }
 html[dir=rtl] .local-edwiserreports .panel .panel-footer {
     text-align: left !important;
+}
+html[dir=rtl] .local-edwiserreports #todaysactivityblock .flatpickr-input {
+    direction: ltr;
+}
+html[dir=rtl] .local-edwiserreports #cr-preview-table_wrapper table td, html[dir=rtl] .local-edwiserreports .customreportdata td {
+    direction: ltr;
 }
 #wdm-edwiserreports #courseprogressblock .col-md-3 {
     display: none;

@@ -1126,7 +1126,8 @@ html[lang=es] .local-edwiserreports {
         border-radius: 4px;
         padding: 1.2rem;
         margin-bottom: 0.3rem;
-        &.position-right {
+        &.position-right,
+        &.position-left {
             border: 1px solid #E5E5E5;
         }
         .apexcharts-legend-series {
@@ -1379,13 +1380,13 @@ html[dir=rtl] .local-edwiserreports{
             right: unset !important;
             left: 0 !important;
         }
-    }
-
-    .edwiserreports-calendar{
-        text-align: right;
-        &::after{
-            left: 0.829rem;
-            right: unset;
+        .edwiserreports-calendar{
+            text-align: right;
+            padding: 0.829rem 1rem 0.229rem 2rem !important;
+            &::after{
+                left: 0.829rem;
+                right: unset;
+            }
         }
     }
     .insight-card{
@@ -1433,5 +1434,13 @@ html[dir=rtl] .local-edwiserreports{
         .panel-footer{
             text-align: left !important;
         }
+    }
+
+    #todaysactivityblock .flatpickr-input {
+        direction: ltr;
+    }
+
+    #cr-preview-table_wrapper table td,.customreportdata td{
+        direction: ltr;
     }
 }
