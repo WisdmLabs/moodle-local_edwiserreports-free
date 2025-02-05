@@ -1479,6 +1479,12 @@ html[dir=rtl] .local-edwiserreports #todaysactivityblock .flatpickr-input {
 html[dir=rtl] .local-edwiserreports #cr-preview-table_wrapper table td, html[dir=rtl] .local-edwiserreports .customreportdata td {
     direction: ltr;
 }
+html[dir=rtl] .local-edwiserreports .erp-time-rtl {
+    direction: ltr;
+}
+html[dir=rtl] .local-edwiserreports #learnertimespentonsiteblock .filter-selector > label {
+    left: unset;
+}
 #wdm-edwiserreports #courseprogressblock .col-md-3 {
     display: none;
 }

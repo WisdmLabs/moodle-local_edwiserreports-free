@@ -1443,4 +1443,11 @@ html[dir=rtl] .local-edwiserreports{
     #cr-preview-table_wrapper table td,.customreportdata td{
         direction: ltr;
     }
+
+    .erp-time-rtl{
+        direction: ltr;
+    }
+    #learnertimespentonsiteblock .filter-selector > label{
+        left: unset;
+    }
 }
