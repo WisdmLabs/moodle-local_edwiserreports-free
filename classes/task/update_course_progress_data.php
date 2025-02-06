@@ -37,6 +37,11 @@ use local_edwiserreports\controller\progress;
 class update_course_progress_data extends \core\task\scheduled_task {
 
     /**
+     * Holds the progress object for the update course progress task.
+     */
+    public $progress;
+
+    /**
      * Can run cron task.
      *
      * @return boolean

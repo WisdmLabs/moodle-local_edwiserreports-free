@@ -61,6 +61,7 @@ class edwiserreports_renderable implements renderable, templatable {
      * @return sdtClass
      */
     public function get_black_friday_sale_ribbon() {
+        global $CFG;
         $now = time();
         $bfs = new stdClass;
         $bfs->logolarge = new moodle_url('/local/edwiserreports/pix/logolarge.png');
@@ -77,7 +78,9 @@ class edwiserreports_renderable implements renderable, templatable {
                 $bfs->cta = "https://edwiser.org/edwiser-black-friday-giveaway/?utm_source=giveaway&utm_medium=spinthewheel&utm_campaign=bfcm22";
                 $bfs->graphics = new moodle_url('/local/edwiserreports/pix/bfs/spin_graphics.png');
                 $bfs->close = 'local_edwiserreports_bfs_pre_hide';
-                user_preference_allow_ajax_update('local_edwiserreports_bfs_pre_hide', PARAM_BOOL);
+                if ($CFG->branch <= '402') {
+                    user_preference_allow_ajax_update('local_edwiserreports_bfs_pre_hide', PARAM_BOOL);
+                }
                 break;
             case $now >= 1669334400 && $now <= 1669766400;
                 if (get_user_preferences('local_edwiserreports_bfs_after_hide', false)) {
@@ -92,7 +95,9 @@ class edwiserreports_renderable implements renderable, templatable {
                 $bfs->cta = "https://edwiser.org/reports/?utm_source=freeplugin&utm_medium=banner&utm_campaign=bfcm22";
                 $bfs->graphics = new moodle_url('/local/edwiserreports/pix/bfs/jackpot_graphics.png');
                 $bfs->close = 'local_edwiserreports_bfs_after_hide';
-                user_preference_allow_ajax_update('local_edwiserreports_bfs_after_hide', PARAM_BOOL);
+                if ($CFG->branch <= '402') {
+                    user_preference_allow_ajax_update('local_edwiserreports_bfs_after_hide', PARAM_BOOL);
+                }
                 break;
             default:
                 $bfs->show = false;
@@ -110,7 +115,9 @@ class edwiserreports_renderable implements renderable, templatable {
     public function export_for_template(renderer_base $output) {
         global $CFG, $PAGE, $USER;
 
-        user_preference_allow_ajax_update('local_edwiserreports_insights_order', PARAM_TEXT);
+        if ($CFG->branch <= '402') {
+            user_preference_allow_ajax_update('local_edwiserreports_insights_order', PARAM_TEXT);
+        }
 
         $output = null;
         $export = new stdClass();

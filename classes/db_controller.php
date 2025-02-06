@@ -47,6 +47,11 @@ class db_controller {
     public $progresstable = false;
 
     /**
+     * Holds the progress object for the update course progress task.
+     */
+    public $progress;
+
+    /**
      * Custructor for course progress database
      */
     public function __construct() {

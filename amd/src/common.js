@@ -141,7 +141,7 @@ define([
             // For some browsers, `attr` is undefined; for others,
             // `attr` is false.  Check for both.
             if (typeof attr !== 'undefined' && attr !== false && attr == 'rtl') {
-                $('.dropdown-item.custom').css({'direction':'ltr','text-align': 'right'});
+                // $('.dropdown-item.custom').css({'direction':'ltr','text-align': 'right'});
 
                 $('.insight-wrapper .fa-arrow-left').removeClass("fa-arrow-left").addClass("fa-arrow-right rtl-support");
                 $('.insight-wrapper .fa-arrow-right:not(.rtl-support)').removeClass("fa-arrow-right").addClass("fa-arrow-left rtl-support");
@@ -485,7 +485,7 @@ define([
             //             time.push(M.util.get_string(s == 1 ? 'second' : 'seconds', 'local_edwiserreports')+ " " + s  );
             //         }
             //     }
-                
+
             //     if (m > 0) {
             //         if (short) {
             //             // If rtl then the same date format is not supported so to make it ompatible with rtl we need to replace 'min' with 'h' string
@@ -572,7 +572,7 @@ define([
             }
 
             return time.join(' ');
-            
+
         }
 
         return rtl ? timePlainFormat(s, m, h) : timePlainFormat(h, m, s);

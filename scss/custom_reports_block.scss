@@ -90,13 +90,36 @@
     input[type="checkbox"]:not(.custom-control-input) {
         display: none !important;
     }
+    .pro-export-wrapper .pro-export-title{
+        transform: translateX(-90%);
+        &::after{
+            left: 90%;
+        }
+    }
 }
 
+html[dir=rtl] #cr-list-table {
+    .pro-export-wrapper .pro-export-title{
+        transform: translateX(-7%);
+        &::after{
+            right: 90%;
+            left: unset;
+        }
+    }
+}
 #wdm-customreports-edit {
     .customreports-block-section>div {
         position: relative;
         height: 100%;
         transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        .reports-filter-body{
+            .select2-selection .select2-selection__rendered{
+                .select2-selection__choice{
+                    padding-left: 18px;
+                    padding-right: 15px;
+                }
+            }
+        }
     }
     // Fixing header background glitch because of block configurable_rerport plugin.
     .dataTable {

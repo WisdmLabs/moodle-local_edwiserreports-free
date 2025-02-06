@@ -80,10 +80,42 @@ class activeusersblock extends block_base {
     public $dates = [];
 
     /**
+     * The start date for the data being analyzed.
+     *
+     * @var int
+     */
+    public $startdate;
+
+    /**
+     * The start date for the data being analyzed.
+     *
+     * @var int
+     */
+    public $enddate;
+
+    /**
+     * The filter to be applied to the active users data.
+     *
+     * @var string
+     */
+    public $filter;
+
+
+    public $cohortid;
+
+    public $graphajax;
+
+    /**
      * Instantiate object
      *
      * @param int $blockid Block id
      */
+    /**
+     * Flag indicating whether the active users data is pre-calculated.
+     *
+     * @var bool
+     */
+    public $precalculated;
     public function __construct($blockid = false) {
         parent::__construct($blockid);
         // Set cache for active users block.
@@ -573,7 +605,7 @@ class activeusersblock extends block_base {
             $enrolments = self::get_usersdata($label, $date, "enrolments", $cohortid);
             $completions = self::get_usersdata($label, $date, "completions", $cohortid);
 
-            if($rtl){
+            if ($rtl) {
                 $tempactiveusers = array();
                 $tempenrolments = array();
                 $tempcompletions = array();

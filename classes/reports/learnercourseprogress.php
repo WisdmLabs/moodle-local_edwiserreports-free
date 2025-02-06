@@ -126,22 +126,22 @@ class learnercourseprogress extends base {
                     )
                 );
 
-        for ($i=0; $i < 5; $i++) {
-          $name = 'High School Course ';
-          $response[] = [
-                "course" => $name . $i,
-                "status" => $i % 2 != 0 ? 0 : 1,
-                "enrolledon" => $rtl ? '<label style="direction:ltr;"> 2022 Sept 28 </label>' : '28 Sept 2022',
-                "completedon" => $i % 2 != 0 ? ($rtl ? '<label style="direction:ltr;"> 2023 Jan 02 </label>' : '02 Jan 2023') : get_string('never', 'local_edwiserreports'),
-                "lastaccess" => $rtl ? '<label style="direction:ltr;"> 2023 Jan 12 <br>AM 39:09 </label>' : '12 Jan 2023 <br> 09:39 AM',
-                "progress" => '70%',
-                "grade" => '300',
-                "totalactivities" => '20' . $link,
-                "completedactivities" => '20',
-                "attemptedactivities" => '20',
-                "visits" => 204,
-                "timespent" => '02:30:45'
-            ];
+        for ($i = 0; $i < 5; $i++) {
+            $name = 'High School Course ';
+            $response[] = [
+                    "course" => $name . $i,
+                    "status" => $i % 2 != 0 ? 0 : 1,
+                    "enrolledon" => $rtl ? '<label style="direction:ltr;"> 2022 Sept 28 </label>' : '28 Sept 2022',
+                    "completedon" => $i % 2 != 0 ? ($rtl ? '<label style="direction:ltr;"> 2023 Jan 02 </label>' : '02 Jan 2023') : get_string('never', 'local_edwiserreports'),
+                    "lastaccess" => $rtl ? '<label style="direction:ltr;"> 2023 Jan 12 <br>AM 39:09 </label>' : '12 Jan 2023 <br> 09:39 AM',
+                    "progress" => '70%',
+                    "grade" => '300',
+                    "totalactivities" => '20' . $link,
+                    "completedactivities" => '20',
+                    "attemptedactivities" => '20',
+                    "visits" => 204,
+                    "timespent" => '02:30:45'
+                ];
 
         }
 

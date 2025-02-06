@@ -30,6 +30,11 @@ use local_edwiserreports\block_base;
 class base {
 
     /**
+     * An instance of the block_base class.
+     */
+    public $bb;
+
+    /**
      * Initialization
      */
     public function __construct() {

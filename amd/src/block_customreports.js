@@ -23,10 +23,11 @@ define([
     './defaultconfig',
     './variables',
     './common',
+    'local_edwiserreports/jquery',
     './flatpickr',
     './jquery.dataTables',
     './dataTables.bootstrap4'
-], function($, config, v, common) {
+], function($, config, v, common, Oldjquery) {
     /**
      * Selector datable variable
      * @type {object | null}
@@ -255,7 +256,7 @@ define([
                 setTimeout(function(){
 
                     // removing datatbles next previous blank as it can not be done by thier attributes
-        
+
                 }, 2000);
 
 
@@ -294,7 +295,7 @@ define([
     /**
      *  Create flatpicker to select custom date range
      */
-    $(panel).find('.custom-flatpicker').flatpickr({
+    Oldjquery(panel).find('.custom-flatpicker').flatpickr({
         altInput: true,
         altFormat: "d/m/Y",
         dateFormat: "Y-m-d",

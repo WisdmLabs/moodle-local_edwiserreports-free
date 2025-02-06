@@ -19,7 +19,7 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 define([
-    'jquery',
+    'local_edwiserreports/jquery',
     './common',
     './insights',
     './defaultconfig',
@@ -57,7 +57,7 @@ define([
     timespentoncourse,
     courseactivitystatus,
     learnercourseprogress,
-    learnertimespentonsite
+    learnertimespentonsite,
 ) {
 
     /**
@@ -217,7 +217,7 @@ define([
             $(SELECTOR.DATEPICKERINPUT).css({'direction':'ltr','text-align': 'right'});
         }
 
-        
+
         $(SELECTOR.DATEPICKERINPUT).next().val(dateAlternate);
 
         /* If correct date is not selected then return false */

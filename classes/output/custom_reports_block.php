@@ -37,6 +37,10 @@ use moodle_url;
  */
 class custom_reports_block implements renderable, templatable {
     /**
+     * @var int $reportsid Reports ID
+     */
+    private $reportsid;
+    /**
      * Constructor to create custom reports edit page
      * @param Integer $reportsid Reports ID
      */

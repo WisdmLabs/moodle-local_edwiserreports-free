@@ -119,6 +119,17 @@
             color: rgb(190, 18, 60);
             background: rgb(255, 228, 230);
         }
+        .sorting_asc,
+        .sorting_desc,
+        .sorting {
+            padding-right: 24px !important;
+            &::before{
+                font-size: 18px !important;
+            }
+            &::after{
+                font-size: 18px !important;
+            }
+        }
     }
     .dataTables_wrapper {
         .row {
@@ -149,6 +160,23 @@
                     top: 50%;
                     transform: translateY(-50%);
                 }
+            }
+        }
+    }
+}
+html[dir=rtl] .local-edwiserreports{
+    .edwiserreports-table{
+        .sorting_asc,
+        .sorting_desc,
+        .sorting {
+            padding: 16px 10px 16px 30px !important;
+            &::before{
+                right: unset;
+                left: 1em;
+            }
+            &::after{
+                right: unset;
+                left: 1em;
             }
         }
     }

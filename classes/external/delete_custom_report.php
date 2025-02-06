@@ -43,7 +43,7 @@ trait delete_custom_report {
     public static function delete_custom_report_parameters() {
         return new external_function_parameters(
             array (
-                'params' => new external_value(PARAM_RAW, 'Prameters', 'local_edwiserreports')
+                'params' => new external_value(PARAM_RAW, 'Prameters', VALUE_DEFAULT, 'local_edwiserreports')
             )
         );
     }
@@ -89,8 +89,8 @@ trait delete_custom_report {
     public static function delete_custom_report_returns() {
         return new \external_single_structure(
             array(
-                'success' => new external_value(PARAM_BOOL, 'Status', null),
-                'message' => new external_value(PARAM_TEXT, 'Message', '')
+                'success' => new external_value(PARAM_BOOL, 'Status', VALUE_DEFAULT, null),
+                'message' => new external_value(PARAM_TEXT, 'Message', VALUE_DEFAULT, '')
             )
         );
     }

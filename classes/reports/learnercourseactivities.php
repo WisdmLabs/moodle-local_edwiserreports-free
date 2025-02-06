@@ -148,7 +148,7 @@ class learnercourseactivities extends base {
         global $DB;
         $rtl = get_string('thisdirection', 'langconfig') == 'rtl' ? 1 : 0;
 
-        for ($i=0; $i < 25; $i++) {
+        for ($i = 0; $i < 25; $i++) {
             $response[] = [
                 'activity' => 'Activity ' . $i,
                 'type' => 'Assignment ' . $i,

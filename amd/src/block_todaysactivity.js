@@ -24,11 +24,13 @@ define([
     'core/notification',
     './chart/apexcharts',
     './defaultconfig',
-    './common'
-], function($, Notification, ApexCharts, CFG, common) {
+    './common',
+    'local_edwiserreports/jquery',
+    './flatpickr'
+], function($, Notification, ApexCharts, CFG, common, Oldjquery) {
 
 	/**
-	* 
+	*
 	*/
 	var rtl = $('html').attr('dir') == 'rtl' ? 1 : 0;
 
@@ -58,7 +60,7 @@ define([
                  * Generate flatpicker for
                  * date filter in todays activity block
                  */
-                $(flatpickrCalender).flatpickr({
+                Oldjquery(flatpickrCalender).flatpickr({
                     dateFormat: rtl ? "Y M d" : "d M Y",
                     maxDate: "today",
                     defaultDate: ["today"],

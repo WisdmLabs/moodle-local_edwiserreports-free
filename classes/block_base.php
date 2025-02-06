@@ -49,6 +49,11 @@ class block_base {
     public $block;
 
     /**
+     * The ID of the block.
+     * @var int
+     */
+    public $blockid;
+    /**
      * Constructor to prepate data
      * @param Integer $blockid Block id
      */
@@ -256,7 +261,7 @@ class block_base {
     }
 
 
-        /**
+    /**
      * Get block data download link list for dropdown.
      * @param  bool  $graphical If true then return graphical export option
      * @param  bool  $email     If true then add email option in dropdown.

@@ -102,8 +102,8 @@ trait complete_edwiserreports_installation {
     public static function complete_edwiserreports_installation_returns() {
         return new \external_single_structure(
             array(
-                'success' => new external_value(PARAM_RAW, 'Success Status', null),
-                'value' => new external_value(PARAM_RAW, 'Config Value', 0)
+                'success' => new external_value(PARAM_RAW, 'Success Status', VALUE_DEFAULT, null),
+                'value' => new external_value(PARAM_RAW, 'Config Value', VALUE_DEFAULT, 0)
             )
         );
     }

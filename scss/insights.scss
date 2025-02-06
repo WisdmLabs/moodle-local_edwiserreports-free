@@ -26,6 +26,9 @@
                         }
                     }
                 }
+                .btn.bg-secondary{
+                    background-color: #ced4da!important;
+                }
             }
             &:first-child {
                 .card-editing {
@@ -199,6 +202,16 @@
             bottom: 15%;
             width: 1px;
             background-color: rgba(0, 0, 0, 0.2);
+        }
+    }
+}
+html[dir=rtl] .insight-card{
+    .insight-details {
+        &::before {
+            content: " ";
+            position: absolute;
+            right: 0;
+            left: unset;
         }
     }
 }

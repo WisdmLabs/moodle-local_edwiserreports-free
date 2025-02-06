@@ -82,7 +82,7 @@ class courseactivitiessummary extends base {
             'name' => 'Category 1',
             'visible' => true,
             'courses' => $courses
-        ]];
+            ]];
 
         $sectionlist = [[
             'id' => 0,
@@ -215,7 +215,7 @@ class courseactivitiessummary extends base {
                     )
                 );
 
-        $response= array(
+        $response = array(
             array(
                 'activity' => 'Activity 1' . $name, // Activity name.
                 'type' => 'Forum',

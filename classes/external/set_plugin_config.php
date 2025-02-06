@@ -43,8 +43,8 @@ trait set_plugin_config {
     public static function set_plugin_config_parameters() {
         return new external_function_parameters(
             array (
-                'pluginname' => new external_value(PARAM_RAW, 'Plugin Name', 'local_edwiserreports', 0),
-                'configname' => new external_value(PARAM_RAW, 'Config Name', '', 0),
+                'pluginname' => new external_value(PARAM_RAW, 'Plugin Name', VALUE_DEFAULT, 'local_edwiserreports', 0),
+                'configname' => new external_value(PARAM_RAW, 'Config Name', VALUE_DEFAULT, '', 0),
                 'value' => new external_value(PARAM_RAW, 'Value of config', VALUE_DEFAULT, true)
             )
         );
@@ -72,7 +72,7 @@ trait set_plugin_config {
     public static function set_plugin_config_returns() {
         return new \external_single_structure(
             array(
-                'success' => new external_value(PARAM_BOOL, 'Status', null)
+                'success' => new external_value(PARAM_BOOL, 'Status', VALUE_DEFAULT, null)
             )
         );
     }

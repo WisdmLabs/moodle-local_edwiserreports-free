@@ -135,7 +135,7 @@ class export {
         $htmlhelp = html_writer::tag("p",
             $help
         );
-        if($rtl){
+        if ($rtl) {
             $htmlhelp = html_writer::tag("p",
                 $help,
                 array(

@@ -69,6 +69,13 @@ foreach (scandir($CFG->dirroot . '/local/edwiserreports/externaljs/build/') as $
     $PAGE->requires->js(new moodle_url('/local/edwiserreports/externaljs/build/' . $file));
 }
 
+$newpreferenceapply = false;
+
+if ($CFG->branch > '402') {
+    $newpreferenceapply = true;
+}
+
+$PAGE->requires->data_for_js('edwrnewpreferenceapply', $newpreferenceapply);
 // Require JS for index page.
 $PAGE->requires->js_call_amd('local_edwiserreports/main', 'init');
 

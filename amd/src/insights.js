@@ -111,7 +111,14 @@ define([
         $(SELECTOR.ONLYINSIGHT).each(function(index, insight) {
             order.push($(insight).data('id'));
         });
-        M.util.set_user_preference('local_edwiserreports_insights_order', JSON.stringify(order));
+        // eslint-disable-next-line no-undef
+        if (edwrnewpreferenceapply) {
+            require(['core_user/repository'], function(UserRepository) {
+                UserRepository.setUserPreference('local_edwiserreports_insights_order', JSON.stringify(order));
+            });
+        } else {
+            M.util.set_user_preference('local_edwiserreports_insights_order', JSON.stringify(order));
+        }
         common.loader.hide(SELECTOR.CONTAINER);
     }
 

@@ -225,12 +225,13 @@ class courseengagementblock extends block_base {
         $engagement->timespent = $this->get_course_engagement_link(
             "timespent",
             $course,
-            sprintf("%02d:%02d:%02d", floor($seconds / 3600), ($seconds / 60) % 60, $seconds % 60)
+            sprintf("%02d:%02d:%02d", (int)floor($seconds / 3600), (int)($seconds / 60) % 60, (int)$seconds % 60)
         );
 
         // Generate Average timespent on course.
-        $seconds = round($seconds / $enrolments[$course->id % 10]);
-        $engagement->averagetimespent = sprintf("%02d:%02d:%02d", floor($seconds / 3600), ($seconds / 60) % 60, $seconds % 60);
+        $seconds = (int)round($seconds / $enrolments[$course->id % 10]);
+
+        $engagement->averagetimespent = sprintf("%02d:%02d:%02d", (int)floor($seconds / 3600), (int)($seconds / 60) % 60, (int)$seconds % 60);
 
         // Return engagement object.
         return $engagement;

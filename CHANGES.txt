@@ -1,3 +1,9 @@
+v 1.8.0
+====================================================
+Tweaks
+- Added 4.5 compatibility.
+
+
 v 1.7.0
 ====================================================
 Features
@@ -9,7 +15,7 @@ Tweaks
 - Added RemUI v2 theme compatibility.
 - Updated dummy data on learner course activties block and custom reports section.
 - Added capabilties trigger for custom reports
-- Added theme color to navigation dropdown. 
+- Added theme color to navigation dropdown.
 
 v 1.6.0
 ====================================================

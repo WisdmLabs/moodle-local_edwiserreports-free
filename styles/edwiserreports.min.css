@@ -380,15 +380,6 @@ tr[aria-expanded=true] .accordion-arrow.icon {
     border-radius: 5px 5px 0px 0px;
     margin: 0 0.25rem;
 }
-
-.edwiserreports-table table .fa.fa-search-plus {
-    position: absolute;
-    right: 0.2rem;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #F98012;
-}
-
 .edwiserreports-tabs > .tab-item.dropdown {
     padding: 1rem 0;
 }
@@ -459,11 +450,6 @@ tr[aria-expanded=true] .accordion-arrow.icon {
     #page-local-edwiserreports-index .edwiserreports-header {
         display: flex;
     }
-
-    .local-edwiserreports div[role="main"]{
-        padding-bottom: 110px !important;
-    }
-
 }
 #page-local-edwiserreports-index .edwiserreports-header .filter-selector {
     position: relative;
@@ -500,6 +486,7 @@ tr[aria-expanded=true] .accordion-arrow.icon {
     padding: 0.1rem 0.8rem;
     border-radius: 1rem;
     font-weight: 500;
+    direction: ltr;
 }
 #page-local-edwiserreports-index .filter-wrapper {
     width: fit-content;
@@ -575,6 +562,8 @@ html[lang=es] .local-edwiserreports .filter-selector .edwiserreports-calendar {
 }
 .local-edwiserreports .filter-selector .exclude-select.selected + .select2-container .select2-selection__choice {
     margin: 1px;
+    padding-left: 18px;
+    padding-right: 15px;
 }
 .local-edwiserreports .filter-selector select:not(.exclude-select) .select2-container .select2-selection {
     height: 2.7rem;
@@ -831,13 +820,11 @@ html[lang=es] .local-edwiserreports .filter-selector .edwiserreports-calendar {
     border-radius: 5px;
     position: absolute;
     bottom: 0;
-    left: 30%;
+    left: 50%;
 }
-#wdm-edwiserreports .edwiserReport-block > div .panel .panel-header .dropdown.blockoptions .dropdown-menu .dropdown-item.pro-highlight button::after {
+#wdm-edwiserreports .edwiserReport-block > div .panel .panel-header .dropdown.blockoptions .dropdown-menu .dropdown-item.pro-highlight span::after {
     content: " ";
     position: absolute;
-    right: 50%;
-    bottom: -7px;
     border-top: 0.5rem solid;
     border-right: 0.5rem solid transparent;
     border-left: 0.5rem solid transparent;
@@ -859,8 +846,16 @@ html[lang=es] .local-edwiserreports .filter-selector .edwiserreports-calendar {
 #wdm-edwiserreports .edwiserReport-block > div .panel .panel-header .panel-title {
     z-index: 1;
 }
+#wdm-edwiserreports .edwiserReport-block > div .panel .panel-header .dropdown-toggle {
+    border: 1px solid gainsboro;
+    padding: 5px 9px;
+    border-radius: 5px;
+}
 #wdm-edwiserreports .edwiserReport-block > div .panel .panel-help {
     color: rgba(82, 96, 105, 0.5) !important;
+}
+#wdm-edwiserreports .edwiserReport-block > div .panel .panel-footer {
+    text-align: right;
 }
 
 .pro-export-wrapper {
@@ -881,8 +876,7 @@ html[lang=es] .local-edwiserreports .filter-selector .edwiserreports-calendar {
 .pro-export-wrapper .pro-export-title a {
     text-decoration: underline;
 }
-.pro-export-wrapper .pro-export-title::after,
-.pro-export-title::after {
+.pro-export-wrapper .pro-export-title::after {
     content: " ";
     position: absolute;
     top: 100%;
@@ -893,6 +887,11 @@ html[lang=es] .local-edwiserreports .filter-selector .edwiserreports-calendar {
     border-left: 0.5rem solid transparent;
 }
 
+.blocksetting .pro-export-title {
+    margin: 6px;
+    padding: 9px 20px !important;
+    border-radius: 5px;
+}
 .blocksetting .pro-export-title::after {
     content: " ";
     position: absolute;
@@ -902,27 +901,6 @@ html[lang=es] .local-edwiserreports .filter-selector .edwiserreports-calendar {
     border-top: 0.5rem solid;
     border-right: 0.5rem solid transparent;
     border-left: 0.5rem solid transparent;
-}
-
-.custom-report-block-setting-pro.pro-export-title::after{
-    top: 84%;
-}
-.custom-report-block-setting-pro a, .pro-export-title a{
-    display: inline;
-    text-decoration: underline;
-    color: #62a8eb !important;
-    pointer-events: all;
-    cursor: pointer;
-}
-.custom-report-block-setting-pro{
-    text-align: center;
-}
-
-
-.blocksetting .pro-export-title{
-    margin: 6px;
-    padding: 9px 20px !important;
-    border-radius: 5px;
 }
 
 .more-details .pro-export {
@@ -1115,6 +1093,9 @@ html[lang=es] .local-edwiserreports .filter-selector .edwiserreports-calendar {
 .modal .comparisontable .switch-capability label {
     cursor: pointer;
 }
+.modal .comparisontable .switch-capability input[type=radio] {
+    display: none !important;
+}
 
 #page-local-edwiserreports-index .insight-danger {
     color: #DC0000;
@@ -1222,9 +1203,11 @@ html[lang=es] .local-edwiserreports .filter-selector .edwiserreports-calendar {
     padding: 1.2rem;
     margin-bottom: 0.3rem;
 }
-#gradeblock .apexcharts-legend.position-right,
+#gradeblock .apexcharts-legend.position-right, #gradeblock .apexcharts-legend.position-left,
 #courseprogressblock .apexcharts-legend.position-right,
-#learnercourseprogressblock [data-charttype=donut] .apexcharts-legend.position-right {
+#courseprogressblock .apexcharts-legend.position-left,
+#learnercourseprogressblock [data-charttype=donut] .apexcharts-legend.position-right,
+#learnercourseprogressblock [data-charttype=donut] .apexcharts-legend.position-left {
     border: 1px solid #E5E5E5;
 }
 #gradeblock .apexcharts-legend .apexcharts-legend-series,
@@ -1376,6 +1359,132 @@ html[lang=es] .local-edwiserreports .filter-selector .edwiserreports-calendar {
     justify-content: right;
     padding-right: 0;
 }
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    top: 50% !important;
+    transform: translateY(-50%);
+}
+
+.edwiserreports-table table .fa.fa-search-plus {
+    color: #F98012;
+}
+
+.select2-container.select2-container--open {
+    direction: ltr !important;
+}
+
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .page-item.previous a,
+.local-edwiserreports .edwiserreports-table .table-pagination .page-item.next a {
+    padding: 6px 10px !important;
+}
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .page-item.previous a::before,
+.local-edwiserreports .edwiserreports-table .table-pagination .page-item.next a::before {
+    content: "";
+    display: block;
+    width: 0px;
+    height: 0px;
+    border-left: 11px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-top: 6px solid transparent;
+    border-left-color: #ccc;
+    border-right-width: 0px;
+}
+
+.local-edwiserreports .edwiserreports-table .table-pagination .page-item.previous a,
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .page-item.next a {
+    padding: 6px 10px !important;
+}
+.local-edwiserreports .edwiserreports-table .table-pagination .page-item.previous a::before,
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .page-item.next a::before {
+    content: "";
+    display: block;
+    width: 0px;
+    height: 0px;
+    border-bottom: 6px solid transparent;
+    border-top: 6px solid transparent;
+    border-right: 10px solid transparent;
+    border-right-color: #ccc;
+    border-left-width: 0px;
+}
+
+.local-edwiserreports .edwiserreports-table .table-pagination .page-item a {
+    padding: 3px 10px !important;
+}
+
+.local-edwiserreports .pull-right {
+    float: right;
+}
+
+html[dir=rtl] .local-edwiserreports .pull-right {
+    float: left;
+}
+
+.local-edwiserreports div[role=main] {
+    padding-bottom: 110px !important;
+}
+
+#page-local-edwiserreports-learnercourseactivities #userfilter .filter-selector .edwiserreports-calendar {
+    min-width: 14rem;
+}
+
+.local-edwiserreports .dropdown-menu form {
+    padding: 0px;
+}
+.local-edwiserreports .dropdown-menu form .dropdown-item {
+    padding-top: 9px;
+    padding-bottom: 9px;
+}
+
+html[dir=rtl] .local-edwiserreports .filter-selector > label {
+    right: 2.1rem;
+    left: unset;
+    z-index: 1;
+    top: -0.5rem;
+}
+html[dir=rtl] .local-edwiserreports .filter-selector .dropdown-menu {
+    right: unset !important;
+    left: 0 !important;
+}
+html[dir=rtl] .local-edwiserreports .filter-selector .edwiserreports-calendar {
+    text-align: right;
+    padding: 0.829rem 1rem 0.229rem 2rem !important;
+}
+html[dir=rtl] .local-edwiserreports .filter-selector .edwiserreports-calendar::after {
+    left: 0.829rem;
+    right: unset;
+}
+html[dir=rtl] .local-edwiserreports .insight-card .pro-lock {
+    right: unset;
+    left: 1rem;
+}
+html[dir=rtl] .local-edwiserreports .apexcharts-canvas {
+    direction: ltr !important;
+}
+html[dir=rtl] .local-edwiserreports .apexcharts-legend {
+    text-align: left;
+}
+html[dir=rtl] .local-edwiserreports .top-insights .insight-wrapper .card-editing .fa-arrow-right, html[dir=rtl] .local-edwiserreports .top-insights .insight-wrapper .card-editing .fa-arrow-left {
+    transform: rotate(0deg);
+}
+html[dir=rtl] .local-edwiserreports .modal .path-admin-tool-capability .comparisontable thead th div > a {
+    top: -3.75em;
+    width: unset;
+}
+html[dir=rtl] .local-edwiserreports .panel .panel-footer {
+    text-align: left !important;
+}
+html[dir=rtl] .local-edwiserreports #todaysactivityblock .flatpickr-input {
+    direction: ltr;
+}
+html[dir=rtl] .local-edwiserreports #cr-preview-table_wrapper table td, html[dir=rtl] .local-edwiserreports .customreportdata td {
+    direction: ltr;
+}
+html[dir=rtl] .local-edwiserreports .erp-time-rtl {
+    direction: ltr;
+}
+html[dir=rtl] .local-edwiserreports #learnertimespentonsiteblock .filter-selector > label {
+    left: unset;
+}
 #wdm-edwiserreports #courseprogressblock .col-md-3 {
     display: none;
 }
@@ -1481,11 +1590,29 @@ html[lang=es] .local-edwiserreports .filter-selector .edwiserreports-calendar {
 #cr-list-table input[type=checkbox]:not(.custom-control-input) {
     display: none !important;
 }
+#cr-list-table .pro-export-wrapper .pro-export-title {
+    transform: translateX(-90%);
+}
+#cr-list-table .pro-export-wrapper .pro-export-title::after {
+    left: 90%;
+}
+
+html[dir=rtl] #cr-list-table .pro-export-wrapper .pro-export-title {
+    transform: translateX(-7%);
+}
+html[dir=rtl] #cr-list-table .pro-export-wrapper .pro-export-title::after {
+    right: 90%;
+    left: unset;
+}
 
 #wdm-customreports-edit .customreports-block-section > div {
     position: relative;
     height: 100%;
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+#wdm-customreports-edit .customreports-block-section > div .reports-filter-body .select2-selection .select2-selection__rendered .select2-selection__choice {
+    padding-left: 18px;
+    padding-right: 15px;
 }
 #wdm-customreports-edit .dataTable .sorting_asc,
 #wdm-customreports-edit .dataTable .sorting_desc,
@@ -1559,9 +1686,6 @@ table.dataTable th {
 .table-responsive > div.dataTables_wrapper > div.row:nth-child(2) {
     clear: both;
     overflow-x: scroll;
-}
-.local-edwiserreports .table-responsive{
-    overflow-x: unset;
 }
 
 .dataTables_filter > .form-control[type=search] {
@@ -1788,6 +1912,9 @@ table.dataTable td.dataTables_empty {
         transform: rotate(90deg);
     }
 }
+.top-insights.editing .insight .card-editing .btn.bg-secondary {
+    background-color: #ced4da !important;
+}
 .top-insights.editing .insight:first-child .card-editing .move-left {
     display: none !important;
 }
@@ -1874,72 +2001,6 @@ table.dataTable td.dataTables_empty {
     z-index: 0;
 }
 
-.local-edwiserreports table.dataTable thead .sorting_asc::before{
-    margin-top: -5px !important;
-    content: "" !important;
-    display: block;
-    width: 0px;
-    height: 0px;
-    border-bottom: 6px solid transparent;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    border-bottom-color: #133F3F;
-    border-top-width: 0px;
-}
-
-table.dataTable thead .sorting_desc_disabled{
-
-}
-
-.local-edwiserreports table.dataTable thead .sorting::before,
-.local-edwiserreports table.dataTable thead .sorting_desc::before{
-    margin-top: -5px !important;
-    content: "" !important;
-    display: block;
-    width: 0px;
-    height: 0px;
-    border-bottom: 6px solid transparent;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    border-bottom-color: #8fbdbe;
-    border-top-width: 0px;
-}
-
-.local-edwiserreports table.dataTable thead .sorting_desc::after{
-    margin-top: 5px !important;
-    content: "" !important;
-    content: '';
-    display: block;
-    width: 0px;
-    height: 0px;
-    border-top: 6px solid transparent;
-    border-right: 5px solid transparent;
-    border-left: 5px solid transparent;
-    border-top-color: #133f3f;
-    border-bottom-width: 0px;
-}
-
-.local-edwiserreports table.dataTable thead .sorting::after,
-.local-edwiserreports table.dataTable thead .sorting_asc::after {
-    margin-top: 5px !important;
-    content: "" !important;
-    content: '';
-    display: block;
-    width: 0px;
-    height: 0px;
-    border-top: 6px solid transparent;
-    border-right: 5px solid transparent;
-    border-left: 5px solid transparent;
-    border-top-color: #8fbdbe;
-    border-bottom-width: 0px;
-}
-
-/* .local-edwiserreports .edwiserreports-table th {
-    color: #133F3F !important;
-} */
-
-
-
 .insight-wrap {
     align-items: center;
     flex-wrap: wrap;
@@ -1999,7 +2060,7 @@ table.dataTable thead .sorting_desc_disabled{
     display: flex;
     align-items: center;
 }
-/* .insight-card .insight-details::before {
+.insight-card .insight-details::before {
     content: " ";
     position: absolute;
     left: 0;
@@ -2007,17 +2068,14 @@ table.dataTable thead .sorting_desc_disabled{
     bottom: 15%;
     width: 1px;
     background-color: rgba(0, 0, 0, 0.2);
-} */
-
-.insight-divider {
-    margin: 12px;
-    left: 0;
-    top: 15%;
-    bottom: 15%;
-    width: 1px;
-    background-color: rgba(0, 0, 0, 0.2);
 }
 
+html[dir=rtl] .insight-card .insight-details::before {
+    content: " ";
+    position: absolute;
+    right: 0;
+    left: unset;
+}
 #wdm-edwiserreports[data-editing="1"] #learnerblock .graph-header-background {
     display: none;
 }
@@ -2350,13 +2408,8 @@ table.dataTable thead .sorting_desc_disabled{
     vertical-align: middle;
 }
 .local-edwiserreports .edwiserreports-table .table-pagination .page-item a {
-    padding: 3px 10px !important;
+    padding: 0.429rem 0.786rem;
 }
-.local-edwiserreports .edwiserreports-table .table-pagination .previous.page-item a,
-.local-edwiserreports .edwiserreports-table .table-pagination .next.page-item a {
-    padding: 6px 10px !important;
-}
-
 .local-edwiserreports .edwiserreports-table .table-pagination .page-item a:focus, .local-edwiserreports .edwiserreports-table .table-pagination .page-item:active {
     outline: unset !important;
     box-shadow: unset !important;
@@ -2398,6 +2451,21 @@ table.dataTable thead .sorting_desc_disabled{
     color: rgb(190, 18, 60);
     background: rgb(255, 228, 230);
 }
+.local-edwiserreports .edwiserreports-table .sorting_asc,
+.local-edwiserreports .edwiserreports-table .sorting_desc,
+.local-edwiserreports .edwiserreports-table .sorting {
+    padding-right: 24px !important;
+}
+.local-edwiserreports .edwiserreports-table .sorting_asc::before,
+.local-edwiserreports .edwiserreports-table .sorting_desc::before,
+.local-edwiserreports .edwiserreports-table .sorting::before {
+    font-size: 18px !important;
+}
+.local-edwiserreports .edwiserreports-table .sorting_asc::after,
+.local-edwiserreports .edwiserreports-table .sorting_desc::after,
+.local-edwiserreports .edwiserreports-table .sorting::after {
+    font-size: 18px !important;
+}
 .local-edwiserreports .dataTables_wrapper .row #wdm-edwiserreports .dataTables_wrapper div[class^=col-] {
     margin: 0;
     padding: 0;
@@ -2413,6 +2481,24 @@ table.dataTable thead .sorting_desc_disabled{
     top: 50%;
     transform: translateY(-50%);
 }
+
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .sorting_asc,
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .sorting_desc,
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .sorting {
+    padding: 16px 10px 16px 30px !important;
+}
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .sorting_asc::before,
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .sorting_desc::before,
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .sorting::before {
+    right: unset;
+    left: 1em;
+}
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .sorting_asc::after,
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .sorting_desc::after,
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .sorting::after {
+    right: unset;
+    left: 1em;
+}
 #page-local-edwiserreports-index.theme_remui #page #region-main > .card {
     background: transparent;
     padding: 0;
@@ -2422,6 +2508,9 @@ table.dataTable thead .sorting_desc_disabled{
 }
 #page-local-edwiserreports-index.theme_remui #page #region-main {
     padding: 0;
+}
+#page-local-edwiserreports-index.theme_remui .blocksetting .pro-export-title::after {
+    top: 84% !important;
 }
 #page-local-edwiserreports-index.theme_moove .card {
     background: transparent;
@@ -2456,8 +2545,8 @@ table.dataTable thead .sorting_desc_disabled{
 #page-local-edwiserreports-certificates.theme_remui .card-body,
 #page-local-edwiserreports-coursereport.theme_remui .card-body,
 #page-local-edwiserreports-activeusers.theme_remui .card-body {
-    /*background: transparent;
-    padding: 0;*/
+    background: transparent;
+    padding: 0;
 }
 #page-local-edwiserreports-customreportedit.theme_moove #page-header,
 #page-local-edwiserreports-certificates.theme_moove #page-header,
@@ -2875,18 +2964,6 @@ table.dataTable thead .sorting_desc_disabled{
     padding: 20px 30px;
 }
 
-@media (max-width: 320px) {
-
-    .main-area-bg:not(.pagelayout-login) div[role="main"]{
-        padding-bottom: 130px !important;
-    }
-
-    .download-link-wrap{
-        padding-left: 1rem !important;
-        padding-right: 1rem !important;
-    }
-
-}
 @media (max-width: 480px) {
     #wdm-edwiserreports #todaysactivityblock .card-block .row > div {
         width: 100%;
@@ -2904,13 +2981,6 @@ table.dataTable thead .sorting_desc_disabled{
         margin-top: 1rem;
         text-align: center;
     }
-    html[dir=rtl] .learner-dropdown{
-        right: -50px;
-    }
-    .local-edwiserreports div[role="main"]{
-        padding-bottom: 120px !important;
-    }
-
 }
 @media (min-width: 768px) and (max-width: 830px) {
     #wdm-edwiserreports .edwiserReport-block.col-md-6 #todaysactivityblock .card-block .row > div {
@@ -4520,412 +4590,3 @@ span.flatpickr-weekday {
 .has-success.select2-drop-active.select2-drop.select2-drop-above {
     border-top-color: #11c26d;
 }
-
-
-.edw-act-completion .edw-act-completion-cal{
-    margin-right: 0px !important;
-}
-.edw-act-completion{
-    width: 20rem;
-}
-
-#wdm-edwiserreports .edwiserReport-block > div .panel.has-footer{
-    padding-bottom: 4.7rem !important;
-}
-#wdm-edwiserreports .edwiserReport-block > div .panel .panel-footer {
-    position: absolute;
-    bottom: 0;
-    text-align: right;
-    width: 100%;
-}
-
-
-
-.local-edwiserreports.dir-rtl .fa-arrow-left,
-.local-edwiserreports.dir-rtl .fa-arrow-right{
-    transform: unset !important;
-}
-
-
-
-/* RTL comaptibility  */
-
-html[dir=rtl] #wdm-edwiserreports .apexcharts-yaxis {
-    transform: translate(0px, 0px);
-}
-
-html[dir=rtl] .detail-title{
-    float: right;
-}
-
-html[dir=rtl] .edw-act-completion .edw-act-completion-cal{
-    margin-left: 0px !important;
-}
-
-html[dir=rtl] .dropdown-item.custom input{
-    direction: ltr;
-    text-align: right;
-}
-
-html[dir=rtl] #todaysactivityblock .apexcharts-xaxis-texts-g,
-html[dir=rtl] #siteaccessblock .apexcharts-xaxis-texts-g{
-    transform: translate(-35px, 30px);
-}
-
-html[dir=rtl] .summary-card-filtertags{
-    direction: ltr;
-}
-
-/* html[dir=rtl] #timespentoncourseblock .apexcharts-xaxis-texts-g{
-    transform: translate(-3rem, 3rem);
-}
-html[dir=rtl] #learnercourseprogressblock .apexcharts-xaxis-texts-g{
-    transform: translate(-4rem, 4rem);
-} */
-
-/* .apexcharts-xaxis-texts-g */
-html[dir=rtl] #timespentoncourseblock .apexcharts-xaxis-texts-g,
-html[dir=rtl] #learnercourseprogressblock .apexcharts-xaxis-texts-g{
-    direction: ltr;
-}
-
-
-html[dir=rtl] .local-edwiserreports.report-page.theme_remui .dropdown-menu.withcalendar{
-    right: auto !important;
-    left: 0 !important;
-}
-
-html[dir=rtl] .timespentoncourses .insight-value,
-html[dir=rtl] #timespentoncourseblock .insight .insight-details .detail span,
-html[dir=rtl] #timespentoncourseblock .insight .insight-value,
-html[dir=rtl] #timespentonsiteblock .insight .insight-details .detail span,
-html[dir=rtl] #timespentonsiteblock .insight .insight-value,
-html[dir=rtl] #timespentonsiteblock .apexcharts-tooltip-text .apexcharts-tooltip-text-y-value,
-html[dir=rtl] #timespentoncourseblock .apexcharts-tooltip-text .apexcharts-tooltip-text-y-value,
-html[dir=rtl] .erp-time-rtl{
-    /* direction: ltr; */
-    /* direction: initial; */
-    /* text-align: left; */
-    padding-left: 0px !important;
-}
-
-html[dir=rtl] .erp-time-rtl{
-    direction: ltr;
-}
-
-/* html[dir=rtl] .timespentoncourses .insight-value{
-    direction: ltr;
-} */
-
-html[dir=rtl] #cr-preview-table_wrapper table td,
-html[dir=rtl] .customreportdata td {
-    direction: ltr;
-}
-
-html[dir=rtl] .edwiserreports-header .edwiserreport-title .selected-period{
-    direction: ltr;
-}
-
-html[dir=rtl] .insight .details-wrap .detail{
-    /* display: flex; */
-}
-
-html[dir=rtl] .summary-card .summary-card-subtitle{
-    display: inline-flex;
-}
-html[dir=rtl] .local-edwiserreports.report-page .report-content table .fa.fa-search-plus{
-    position: absolute;
-    left: 0.2rem;
-    right: unset;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #F98012;
-}
-
-html[dir=rtl] .local-edwiserreports .filter-selector .edwiserreports-calendar::after{
-    position: absolute;
-    content: "" !important;
-    border-color: transparent;
-    left: 0.829rem;
-    right: unset;
-    bottom: 0.829rem;
-    font-size: 0px !important;
-    border-style: solid !important;
-    border-width: 0.286rem 0.286rem 0 0.286rem !important;
-}
-
-html[dir=rtl] .local-edwiserreports .filter-selector .edwiserreports-calendar{
-    padding: 0.829rem 1rem 0.229rem 2rem !important;
-    min-width: 9rem;
-    position: relative;
-    text-align: left;
-    justify-content: left !important;
-}
-html[dir=rtl] .local-edwiserreports .edw-act-completion .filter-selector .edwiserreports-calendar{
-    width: 14rem !important;
-}
-html[dir=rtl] .edw-act-completion{
-    width: unset;
-}
-
-html[dir=rtl] .edwiserreports-table table.dataTable thead .sorting::before,
-html[dir=rtl] .edwiserreports-table table.dataTable thead .sorting::after,
-html[dir=rtl] .edwiserreports-table table.dataTable thead .sorting_asc::before,
-html[dir=rtl] .edwiserreports-table table.dataTable thead .sorting_asc::after,
-html[dir=rtl] .edwiserreports-table table.dataTable thead .sorting_desc::before,
-html[dir=rtl] .edwiserreports-table table.dataTable thead .sorting_desc::after,
-html[dir=rtl] .edwiserreports-table table.dataTable thead .sorting_asc_disabled::before,
-html[dir=rtl] .edwiserreports-table table.dataTable thead .sorting_asc_disabled::after,
-html[dir=rtl] .edwiserreports-table table.dataTable thead .sorting_desc_disabled::before,
-html[dir=rtl] .edwiserreports-table table.dataTable thead .sorting_desc_disabled::after{
-    top: 50% !important;
-    transform: translateY(-50%) !important;
-    font-family: "FontAwesome" !important;
-    position: absolute;
-    left: 0.1rem !important;
-    right: unset !important;
-}
-
-html[dir=rtl] #page-local-edwiserreports-index .edwiserreports-header .filter-selector .dropdown-menu{
-    right: unset !important;
-    left: 0 !important;
-}
-
-html[dir=rtl] #wdm-edwiserreports .block-filters .dropdown-menu{
-    position: absolute;
-    transform: translate3d(-90px, 41px, 0px) !important;
-    top: 0px;
-    right: 0px !important;
-    left: unset !important;
-    will-change: transform;
-}
-
-html[dir=rtl] #wdm-edwiserreports .edwiserReport-block > div .panel .panel-footer{
-    position: absolute;
-    bottom: 0;
-    text-align: left;
-    width: 100%;
-}
-
-html[dir=rtl] #wdm-edwiserreports .apexcharts-legend-series .apexcharts-legend-marker{
-    margin-left: 5px;
-}
-html[dir=rtl] .local-edwiserreports .filter-selector > label {
-    position: absolute;
-    background: white;
-    right: 2.1rem;
-    left: unset;
-    z-index: 1;
-    top: -0.5rem;
-    font-size: 0.857rem;
-    color: #474747;
-}
-
-html[dir=rtl] .path-admin-tool-capability .comparisontable thead th div>a{
-    position: absolute;
-    bottom: 9em;
-    top: unset;
-    right: 1em;
-    width: 150px;
-    text-align: left;
-    margin-bottom: 0em;
-}
-html[dir=rtl] .apexcharts-tooltip-text{
-    margin-right: 3px;
-}
-html[dir=rtl] .erp-completion-calendar{
-    width: 14rem;
-}
-html[dir=rtl] .local-edwiserreports .report-actions .dropdown-menu.show{
-    transform: translate3d(6rem, 30px, 0px) !important;
-}
-html[dir=rtl] .local-edwiserreports .dropdown.export-options .dropdown-menu::after,
-html[dir=rtl] .local-edwiserreports .dropdown.export-options .dropdown-menu::before {
-    content: " ";
-    position: absolute;
-    right: unset;
-    left: 0.5rem;
-    top: -0.6rem;
-    border-bottom: 0.8rem solid white;
-    border-right: 0.6rem solid transparent;
-    border-left: 0.6rem solid transparent;
-}
-html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .page-item.previous a::before,
-.local-edwiserreports .edwiserreports-table .table-pagination .page-item.next a::before {
-    content: '';
-    display: block;
-    width: 0px;
-    height: 0px;
-    border-left: 11px solid transparent;
-    border-bottom: 6px solid transparent;
-    border-top: 6px solid transparent;
-    border-left-color: #ccc;
-    border-right-width: 0px;
-}
-.local-edwiserreports .edwiserreports-table .table-pagination .page-item.previous a::before,
-html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .page-item.next a::before {
-    content: '';
-    display: block;
-    width: 0px;
-    height: 0px;
-    border-bottom: 6px solid transparent;
-    border-top: 6px solid transparent;
-    border-right: 10px solid transparent;
-    border-right-color: #ccc;
-    border-left-width: 0px;
-}
-
-html[dir=rtl] .insight-wrap .insight-direction .value{
-    padding-right: 0px;
-}
-
-html[dir=rtl] .insight-wrap .insight-direction .value .icon{
-    margin-right: 0px !important;
-}
-
-html[dir=rtl] .dataTables_wrapper table.dataTable thead > tr > th {
-    padding: 16px 10px 16px 30px;
-}
-
-html[dir=rtl] .local-edwiserreports #learnertimespentonsiteblock .filter-selector > label{
-    left: unset;
-}
-
-html[dir=rtl] #todaysactivityblock .flatpickr-input{
-    direction: ltr;
-}
-
-html[dir=rtl] .pro-export-wrapper .pro-export-title::after{
-    /* left: 8%; */
-}
-html[dir=rtl] .dropdown-menu{
-    left: unset;
-}
-
-html[dir=rtl] .insight-card .pro-lock{
-    position: absolute;
-    right: unset;
-    top: 1rem;
-    left: 1rem;
-}
-
-html[dir=rtl] #wdm-edwiserreports .edwiserReport-block > div .panel .panel-footer{
-    position: absolute;
-    bottom: 0;
-    text-align: left;
-    width: 100%;
-}
-html[dir=rtl] #courseprogressblock .apexcharts-legend,
-html[dir=rtl] #gradeblock .apexcharts-legend{
-    border: 1px solid #d8d8d8;
-}
-
-html[dir=rtl] .local-edwiserreports .pro-export-wrapper label {
-    /* background: #f3f7f9; */
-    /* background-color: #f3f7f9; */
-    background-color: rgb(255 255 255 / 50%);
-}
-
-html[dir=rtl] #cr-list-table .pro-export-wrapper .pro-export-title {
-    transform: translateX(-7%);
-}
-html[dir=rtl] #cr-list-table .pro-export-wrapper .pro-export-title::after{
-    left: 8%;
-    /* left: unset; */
-}
-html[dir=rtl] .local-edwiserreports .pull-right {
-    float: left;
-}
-
-/* RTL comaptibility  END*/
-
-#cr-list-table .pro-export-wrapper{
-    /* position: unset; */
-}
-
-.pro-export-wrapper .pro-export-title::after{
-    /* left: 65%; */
-}
-#cr-list-table .pro-export-wrapper .pro-export-title {
-    transform: translateX(-90%);
-}
-#cr-list-table .pro-export-wrapper .pro-export-title::after{
-    left: 90%;
-    /* left: unset; */
-}
-
-#cr-list-table{
-    position: relative;
-}
-
-.dataTables_wrapper table.dataTable thead > tr > th {
-    /* padding: 16px 10px 16px 30px;
-     */
-     padding-top: 16px;
-     padding-bottom: 16px;
-}
-
-.local-edwiserreports .pro-export-wrapper label {
-    /* background: #f3f7f9; */
-    /* background-color: #f3f7f9; */
-    background-color: rgb(255 255 255 / 50%);
-}
-
-#wdm-edwiserreports .icon.fa.fa-plus.fa-fw{
-    color: white;
-}
-.local-edwiserreports .pull-right{
-    float: right;
-}
-.local-edwiserreports .dropdown-menu form {
-    padding: 0px;
-}
-.local-edwiserreports .dropdown-menu form .dropdown-item {
-    padding-top: 9px;
-    padding-bottom: 9px;
-}
-.local-edwiserreports .download-links button{
-    height: 34px;
-}
-
-/*  Do not add any height for pro messages. */
-.local-edwiserreports .pro-highlight button{
-    height: auto !important;
-}
-
-html:not([dir=rtl]) #gradeblock .apexcharts-inner.apexcharts-graphical{
-    transform: translate(0px, 0);
-}
-
-.local-edwiserreports div[role="main"]{
-    padding-bottom: 100px !important;
-}
-
-form.download-links.more-details > button,
-form.download-links.more-details > .pro-export-wrapper {
-    padding-top: 10px;
-}
-
-
-
-.local-edwiserreports .breadcrumb-item+.breadcrumb-item::before{
-    content: "/" !important;
-}
-
-/* REM UI V2 compatibility */
-.insight-wrapper button.bg-secondary{
-    background-color: #ced4da!important;
-}
-.insight-wrapper button.bg-secondary:hover {
-    background-color: #b1bbc4!important;
-}
-.panel .panel-header button.dropdown-toggle{
-    border: 1px solid gainsboro;
-    padding: 5px 9px;
-    border-radius: 5px;
-}
-.switch-capability input.d-none{
-    display: none !important;
-}
-
-/* END REM UI V2 compatibility */

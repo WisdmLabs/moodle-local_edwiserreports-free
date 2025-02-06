@@ -41,6 +41,13 @@ require_once($CFG->dirroot.'/grade/report/grader/lib.php');
 class certificatesblock extends block_base {
 
     /**
+     * Cache
+     *
+     * @var object
+     */
+    public $cache;
+
+    /**
      * Initialize the block.
      */
     public function __construct() {

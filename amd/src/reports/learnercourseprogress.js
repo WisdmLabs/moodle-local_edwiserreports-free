@@ -26,6 +26,7 @@ define('local_edwiserreports/reports/learnercourseprogress', [
     'core/notification',
     'local_edwiserreports/common',
     'local_edwiserreports/defaultconfig',
+    'local_edwiserreports/jquery',
     'local_edwiserreports/select2',
     'local_edwiserreports/flatpickr'
 ], function(
@@ -33,7 +34,8 @@ define('local_edwiserreports/reports/learnercourseprogress', [
     ajax,
     Notification,
     common,
-    CFG
+    CFG,
+    Oldjquery
 ) {
 
     /**
@@ -237,7 +239,7 @@ define('local_edwiserreports/reports/learnercourseprogress', [
 
         $(SELECTOR.PAGE).find('.singleselect').select2();
 
-        flatpickr = $(SELECTOR.DATEPICKERINPUT).flatpickr({
+        flatpickr = Oldjquery(SELECTOR.DATEPICKERINPUT).flatpickr({
             mode: 'range',
             altInput: true,
             altFormat: "d M Y",
