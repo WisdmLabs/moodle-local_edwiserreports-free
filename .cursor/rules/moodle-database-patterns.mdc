@@ -1,0 +1,78 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Moodle Database Patterns
+
+## Purpose
+Ensure consistent and efficient database interactions using Moodle's database abstraction layer.
+
+## Instructions
+When working with databases in Moodle PHP code, follow these patterns:
+
+1. **Use Moodle's Database API**: Always use `$DB` global object, never direct MySQL functions
+2. **Parameterized Queries**: Use `$DB->get_records_sql()` with parameters for complex queries
+3. **Simple Queries**: Use `$DB->get_records()`, `$DB->get_record()`, `$DB->insert_record()`, etc.
+4. **Transactions**: Use `$DB->transaction_start()` and `$DB->transaction_commit()` for multi-table operations
+5. **Error Handling**: Always check return values and use `$DB->get_last_error()` for debugging
+6. **Performance**: Use `$DB->set_debug()` sparingly, prefer logging for production
+7. **Table Prefix**: Never hardcode table names, use `$CFG->prefix` if needed
+8. **Record Objects**: Return stdClass objects, not arrays for consistency
+
+## Examples
+
+```php
+<?php
+// File: ./includes/database_example.php
+
+/**
+ * Example of proper database usage in Moodle
+ */
+function get_user_courses($userid) {
+    global $DB;
+    
+    // Simple query with conditions
+    $courses = $DB->get_records('enrol', ['userid' => $userid], 'timecreated DESC');
+    
+    // Complex query with parameters
+    $sql = "SELECT c.*, e.timecreated 
+            FROM {course} c 
+            JOIN {enrol} e ON c.id = e.courseid 
+            WHERE e.userid = :userid 
+            AND e.status = :status";
+    
+    $params = [
+        'userid' => $userid,
+        'status' => ENROL_USER_ACTIVE
+    ];
+    
+    $courses = $DB->get_records_sql($sql, $params);
+    
+    // Transaction example
+    $transaction = $DB->start_delegated_transaction();
+    try {
+        $DB->insert_record('user_log', [
+            'userid' => $userid,
+            'action' => 'course_access',
+            'time' => time()
+        ]);
+        
+        $DB->update_record('user', [
+            'id' => $userid,
+            'lastaccess' => time()
+        ]);
+        
+        $transaction->allow_commit();
+    } catch (Exception $e) {
+        $transaction->rollback($e);
+        throw $e;
+    }
+    
+    return $courses;
+}
+```
+
+## Exceptions
+- Direct SQL may be needed for complex reporting queries
+- Third-party plugins may use different database patterns

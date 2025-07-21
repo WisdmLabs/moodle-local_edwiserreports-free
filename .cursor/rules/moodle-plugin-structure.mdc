@@ -1,0 +1,79 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Moodle Plugin Structure
+
+## Purpose
+Ensure proper organization and structure for Moodle plugins following Moodle's plugin architecture.
+
+## Instructions
+When creating or modifying Moodle plugins, follow these structural guidelines:
+
+1. **Plugin Types**: Follow Moodle's plugin type conventions (mod, block, local, auth, etc.)
+2. **Directory Structure**: Use standard Moodle plugin directory layout
+3. **Version File**: Always include `version.php` with proper version information
+4. **Language Files**: Include language strings in `lang/en/` directory
+5. **Capabilities**: Define capabilities in `db/access.php` or `db/capabilities.php`
+6. **Database Schema**: Use `db/install.xml` for database tables
+7. **Settings**: Use `settings.php` for admin settings
+8. **Lib Functions**: Place helper functions in `lib.php`
+9. **Classes**: Use `classes/` directory for PHP classes
+10. **Templates**: Use `templates/` directory for renderable templates
+
+## Examples
+
+```php
+<?php
+// File: ./version.php
+
+defined('MOODLE_INTERNAL') || die();
+
+$plugin->component = 'local_myplugin';
+$plugin->version = 2024120100;
+$plugin->requires = 2022112800; // Moodle 4.1
+$plugin->maturity = MATURITY_STABLE;
+$plugin->release = '1.0.0';
+```
+
+```php
+<?php
+// File: ./db/access.php
+
+defined('MOODLE_INTERNAL') || die();
+
+$capabilities = [
+    'local/myplugin:manage' => [
+        'riskbitmask' => RISK_SPAM,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => [
+            'manager' => CAP_ALLOW
+        ]
+    ]
+];
+```
+
+```php
+<?php
+// File: ./lib.php
+
+defined('MOODLE_INTERNAL') || die();
+
+/**
+ * Get plugin data
+ *
+ * @param int $userid User ID
+ * @return stdClass Plugin data
+ */
+function local_myplugin_get_data($userid) {
+    global $DB;
+    
+    return $DB->get_record('local_myplugin_data', ['userid' => $userid]);
+}
+```
+
+## Exceptions
+- Custom plugins may have different requirements based on functionality
+- Legacy plugins may not follow all conventions but should be updated when possible

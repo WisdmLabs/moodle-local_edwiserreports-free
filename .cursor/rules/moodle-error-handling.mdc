@@ -1,0 +1,108 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Moodle Error Handling
+
+## Purpose
+Ensure consistent and proper error handling across all Moodle PHP code for better debugging and user experience.
+
+## Instructions
+When implementing error handling in Moodle PHP code, follow these practices:
+
+1. **Use Moodle Exceptions**: Use `moodle_exception` and specific exception types
+2. **Parameter Validation**: Use `required_param()`, `optional_param()` with proper validation
+3. **Debugging**: Use `debugging()` for development, `error_log()` for critical errors
+4. **User Feedback**: Provide meaningful error messages using language strings
+5. **Graceful Degradation**: Handle errors gracefully without breaking the user experience
+6. **Logging**: Use Moodle's logging system for important events and errors
+7. **Context Information**: Include relevant context in error messages
+8. **Error Recovery**: Implement recovery mechanisms where possible
+
+## Examples
+
+```php
+<?php
+// File: ./includes/error_handling_example.php
+
+/**
+ * Example of proper error handling in Moodle
+ */
+function process_user_action($userid, $action) {
+    global $DB, $USER;
+    
+    try {
+        // Parameter validation
+        $userid = required_param('userid', PARAM_INT);
+        $action = required_param('action', PARAM_ALPHA);
+        
+        // Validate user exists
+        $user = $DB->get_record('user', ['id' => $userid], '*', MUST_EXIST);
+        
+        // Check permissions
+        if (!has_capability('moodle/user:edit', context_user::instance($userid))) {
+            throw new moodle_exception('nopermission', 'core');
+        }
+        
+        // Perform action with error handling
+        switch ($action) {
+            case 'update':
+                $result = update_user_profile($userid);
+                break;
+            case 'delete':
+                $result = delete_user_data($userid);
+                break;
+            default:
+                throw new moodle_exception('invalidaction', 'core');
+        }
+        
+        // Log successful action
+        \core\event\user_action_performed::create([
+            'objectid' => $userid,
+            'relateduserid' => $USER->id,
+            'other' => ['action' => $action]
+        ])->trigger();
+        
+        return $result;
+        
+    } catch (dml_exception $e) {
+        // Database errors
+        debugging('Database error: ' . $e->getMessage(), DEBUG_DEVELOPER);
+        throw new moodle_exception('databaseerror', 'core');
+        
+    } catch (moodle_exception $e) {
+        // Re-throw Moodle exceptions
+        throw $e;
+        
+    } catch (Exception $e) {
+        // Unexpected errors
+        error_log('Unexpected error in process_user_action: ' . $e->getMessage());
+        throw new moodle_exception('unknownerror', 'core');
+    }
+}
+
+/**
+ * Graceful error handling with user feedback
+ */
+function display_user_data($userid) {
+    try {
+        $userdata = get_user_data($userid);
+        echo format_string($userdata->name);
+        
+    } catch (moodle_exception $e) {
+        // Show user-friendly error
+        echo html_writer::div(
+            get_string('error_loading_user', 'core'),
+            'alert alert-warning'
+        );
+        
+        // Log detailed error for administrators
+        debugging('Error loading user data: ' . $e->getMessage(), DEBUG_DEVELOPER);
+    }
+}
+```
+
+## Exceptions
+- Critical system errors may require different handling approaches
+- Third-party integrations may have specific error handling requirements

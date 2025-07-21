@@ -1,0 +1,64 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Moodle Security Practices
+
+## Purpose
+Ensure all PHP code follows Moodle security best practices to prevent vulnerabilities and maintain data integrity.
+
+## Instructions
+When writing PHP code for Moodle, implement these security practices:
+
+1. **Input Validation**: Always validate and sanitize user input using Moodle's validation functions
+2. **SQL Injection Prevention**: Use parameterized queries with `$DB->get_records_sql()` or `$DB->execute()`
+3. **XSS Prevention**: Use `format_string()` and `format_text()` for output, never output raw user data
+4. **CSRF Protection**: Include `require_sesskey()` in forms and actions that modify data
+5. **Capability Checks**: Always check user capabilities before performing actions
+6. **File Upload Security**: Validate file types, sizes, and use `moodle_exception` for errors
+7. **Session Security**: Use Moodle's session management, never manipulate `$_SESSION` directly
+8. **Password Handling**: Never store passwords in plain text, use Moodle's password hashing
+
+## Examples
+
+```php
+<?php
+// File: ./includes/security_example.php
+
+/**
+ * Example of secure form processing
+ */
+function process_user_data() {
+    global $DB, $USER;
+    
+    // CSRF protection
+    require_sesskey();
+    
+    // Capability check
+    require_capability('moodle/user:editownprofile', context_user::instance($USER->id));
+    
+    // Input validation
+    $userid = required_param('userid', PARAM_INT);
+    $name = required_param('name', PARAM_TEXT);
+    $email = required_param('email', PARAM_EMAIL);
+    
+    // SQL injection prevention
+    $user = $DB->get_record('user', ['id' => $userid], '*', MUST_EXIST);
+    
+    // XSS prevention in output
+    echo format_string($user->firstname);
+    echo format_text($user->description, FORMAT_HTML);
+    
+    // Secure file upload
+    $file = file_get_submitted_draftfileid('userfile');
+    if ($file) {
+        $context = context_user::instance($USER->id);
+        file_save_draft_area_files($file, $context->id, 'user', 'profile', 0);
+    }
+}
+```
+
+## Exceptions
+- Third-party integrations may require different security approaches
+- Legacy code should be updated to follow these practices when modified

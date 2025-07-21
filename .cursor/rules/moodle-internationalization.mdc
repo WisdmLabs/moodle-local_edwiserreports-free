@@ -1,0 +1,35 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+---
+name: Moodle Internationalization (i18n)
+---
+
+# Moodle Internationalization (i18n)
+
+## Purpose
+Ensure all user-facing text is translatable and follows Moodle's i18n best practices.
+
+## Instructions
+- Use `get_string()` for all user-visible text
+- Store language strings in `lang/en/` and other language folders
+- Use descriptive, unique string identifiers
+- Support pluralization using Moodle's string API
+- Avoid hardcoding text in PHP, JS, and templates
+- Test plugins with multiple languages and RTL support
+- Document new strings for translators
+
+## Examples
+```php
+// File: ./lang/en/myplugin.php
+$string['welcome'] = 'Welcome to My Plugin!';
+
+// File: ./index.php
+echo get_string('welcome', 'myplugin');
+```
+
+## Exceptions
+- Debug or log messages may remain in English
+- Third-party libraries may not be translatable

@@ -1,0 +1,80 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+name: Moodle PHP Coding Standards
+---
+
+# Moodle PHP Coding Standards
+
+## Purpose
+Ensure consistent PHP coding standards across all Moodle-related PHP files in the project.
+
+## Instructions
+When working with PHP files in this Moodle project, follow these coding standards:
+
+1. **PSR-12 Compliance**: Follow PSR-12 coding standards for all PHP code
+2. **Moodle Coding Style**: Adhere to Moodle's specific coding conventions
+3. **Indentation**: Use 4 spaces for indentation, never tabs
+4. **Line Length**: Keep lines under 132 characters when possible
+5. **Naming Conventions**:
+   - Classes: PascalCase (e.g., `MoodlePlugin`)
+   - Methods: camelCase (e.g., `getUserData()`)
+   - Variables: camelCase (e.g., `$userData`)
+   - Constants: UPPER_CASE (e.g., `MOODLE_VERSION`)
+6. **File Structure**: Always include proper PHP opening tag `<?php` and no closing tag
+7. **Comments**: Use PHPDoc blocks for classes, methods, and functions
+8. **Error Handling**: Use Moodle's exception handling patterns
+
+## Examples
+
+```php
+<?php
+// File: ./includes/classes/moodle_plugin.php
+
+/**
+ * Example Moodle plugin class following coding standards
+ *
+ * @package    moodle
+ * @category   core
+ * @copyright  2024 Your Name
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class moodle_plugin {
+    
+    /** @var string Plugin name */
+    private $pluginname;
+    
+    /**
+     * Constructor
+     *
+     * @param string $pluginname The name of the plugin
+     */
+    public function __construct($pluginname) {
+        $this->pluginname = $pluginname;
+    }
+    
+    /**
+     * Get plugin data
+     *
+     * @return array Plugin data
+     * @throws moodle_exception If plugin not found
+     */
+    public function getPluginData() {
+        if (empty($this->pluginname)) {
+            throw new moodle_exception('pluginnotfound', 'core');
+        }
+        
+        return [
+            'name' => $this->pluginname,
+            'version' => MOODLE_VERSION
+        ];
+    }
+}
+```
+
+## Exceptions
+- Legacy code may not follow all standards but should be updated when modified
+- Third-party libraries should maintain their original coding style

@@ -1,0 +1,33 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+---
+name: Moodle File and Media Handling
+---
+
+# Moodle File and Media Handling
+
+## Purpose
+Ensure secure, efficient, and consistent handling of files and media in Moodle.
+
+## Instructions
+- Use Moodle's File API for all file operations
+- Store files in Moodle's file storage, not the local filesystem
+- Validate file types, sizes, and permissions
+- Use file pickers for user uploads
+- Use `get_file_storage()` and related APIs for file access
+- Sanitize file names and paths
+- Document file areas and usage
+- Use context IDs for file scoping
+
+## Examples
+```php
+// File: ./lib.php
+$fs = get_file_storage();
+$files = $fs->get_area_files($contextid, 'mod_myplugin', 'attachment', $itemid);
+```
+
+## Exceptions
+- Temporary files may be stored in temp directories

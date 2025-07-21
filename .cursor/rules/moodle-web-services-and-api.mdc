@@ -1,0 +1,45 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+---
+name: Moodle Web Services and API Development
+---
+
+# Moodle Web Services and API Development
+
+## Purpose
+Ensure secure, maintainable, and standards-compliant web services and APIs in Moodle.
+
+## Instructions
+- Use Moodle's web service API for exposing functionality
+- Define external functions in `db/services.php` and `externallib.php`
+- Use parameter validation and capability checks in all API endpoints
+- Return data in standard formats (JSON, XML)
+- Document all API endpoints and parameters
+- Use tokens or OAuth2 for authentication
+- Log API usage and errors
+- Version APIs for backward compatibility
+
+## Examples
+```php
+// File: ./db/services.php
+$services = [
+    'myplugin_service' => [
+        'functions' => ['myplugin_get_data'],
+        'restrictedusers' => 0,
+        'enabled' => 1,
+    ],
+];
+
+// File: ./externallib.php
+function myplugin_get_data_parameters() {
+    return new external_function_parameters([
+        'id' => new external_value(PARAM_INT, 'User ID'),
+    ]);
+}
+```
+
+## Exceptions
+- Internal-only APIs may skip authentication with justification

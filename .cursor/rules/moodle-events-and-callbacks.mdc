@@ -1,0 +1,41 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+---
+name: Moodle Events and Callbacks
+---
+
+# Moodle Events and Callbacks
+
+## Purpose
+Ensure extensibility and modularity by using Moodle's event and callback systems.
+
+## Instructions
+- Use Moodle's event API to trigger and observe events
+- Define custom events in `db/events.php`
+- Use `core\event` classes for core events
+- Register observers in `db/events.php`
+- Use callbacks for plugin extensibility (e.g., `myplugin_callback()`)
+- Document all custom events and callbacks
+- Avoid direct function calls between plugins; use events or callbacks
+
+## Examples
+```php
+// File: ./db/events.php
+$observers = [
+    [
+        'eventname'   => '\core\event\user_loggedin',
+        'callback'    => 'local_myplugin_user_loggedin',
+    ],
+];
+
+// File: ./lib.php
+function local_myplugin_user_loggedin($event) {
+    // Handle user login event
+}
+```
+
+## Exceptions
+- Performance-critical code may use direct calls with justification

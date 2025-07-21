@@ -1,0 +1,83 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Moodle Performance Optimization
+
+## Purpose
+Ensure PHP code follows Moodle performance best practices for optimal execution speed and resource usage.
+
+## Instructions
+When writing PHP code for Moodle, implement these performance optimizations:
+
+1. **Database Queries**: Minimize database calls, use bulk operations when possible
+2. **Caching**: Use Moodle's caching API (`cache::make()`) for expensive operations
+3. **Memory Management**: Avoid loading large datasets into memory, use pagination
+4. **File Operations**: Use Moodle's file API, avoid direct file system access
+5. **Session Handling**: Minimize session writes, use `$SESSION` sparingly
+6. **Output Buffering**: Use `ob_start()` and `ob_end_flush()` for large outputs
+7. **Error Logging**: Use `debugging()` instead of `error_log()` in production
+8. **Plugin Loading**: Lazy load plugins and dependencies when possible
+
+## Examples
+
+```php
+<?php
+// File: ./includes/performance_example.php
+
+/**
+ * Example of performance-optimized code
+ */
+function get_optimized_course_data($courseids) {
+    global $DB;
+    
+    // Use caching for expensive operations
+    $cache = cache::make('core', 'course_data');
+    $cachekey = 'course_data_' . md5(serialize($courseids));
+    
+    $cacheddata = $cache->get($cachekey);
+    if ($cacheddata !== false) {
+        return $cacheddata;
+    }
+    
+    // Bulk database query instead of multiple queries
+    list($insql, $params) = $DB->get_in_or_equal($courseids, SQL_PARAMS_NAMED);
+    $sql = "SELECT c.*, COUNT(e.userid) as enrolled_users
+            FROM {course} c
+            LEFT JOIN {enrol} e ON c.id = e.courseid
+            WHERE c.id $insql
+            GROUP BY c.id";
+    
+    $courses = $DB->get_records_sql($sql, $params);
+    
+    // Cache the result for 5 minutes
+    $cache->set($cachekey, $courses, 300);
+    
+    return $courses;
+}
+
+/**
+ * Efficient file handling
+ */
+function process_files_efficiently($contextid) {
+    $fs = get_file_storage();
+    
+    // Use file iterator for large file sets
+    $files = $fs->get_area_files($contextid, 'mod_assign', 'submission');
+    
+    foreach ($files as $file) {
+        if ($file->is_directory()) {
+            continue;
+        }
+        
+        // Process file without loading entire content into memory
+        $content = $file->get_content();
+        // Process content in chunks if large
+    }
+}
+```
+
+## Exceptions
+- Development environments may use different performance settings
+- Debugging may require bypassing some optimizations

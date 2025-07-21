@@ -1,0 +1,34 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+---
+name: Moodle Configuration Management
+---
+
+# Moodle Configuration Management
+
+## Purpose
+Ensure all configuration is managed securely and consistently using Moodle's APIs.
+
+## Instructions
+- Use `get_config()` and `set_config()` for plugin and site settings
+- Store configuration in the `config_plugins` or `config` tables
+- Provide admin settings pages using `settings.php`
+- Validate and sanitize all configuration values
+- Document all configuration options
+- Avoid storing sensitive data in plain text
+- Use Moodle's capabilities to restrict access to settings
+
+## Examples
+```php
+// File: ./settings.php
+$settings->add(new admin_setting_configtext('myplugin/apikey', get_string('apikey', 'myplugin'), '', ''));
+
+// File: ./lib.php
+$apikey = get_config('myplugin', 'apikey');
+```
+
+## Exceptions
+- Temporary runtime settings may use $SESSION

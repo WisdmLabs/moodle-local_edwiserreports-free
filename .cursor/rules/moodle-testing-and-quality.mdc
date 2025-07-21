@@ -1,0 +1,35 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Moodle Testing and Quality Assurance
+
+## Purpose
+Ensure all PHP code is robust, reliable, and maintainable through comprehensive testing and quality practices.
+
+## Instructions
+- Write unit tests using Moodle's PHPUnit integration for all new code
+- Organize tests in the `tests/` directory of each plugin or component
+- Use data providers for testing multiple scenarios
+- Mock dependencies using Moodle's test helpers
+- Ensure code coverage for critical paths and edge cases
+- Use Behat for acceptance and integration tests where UI is involved
+- Run tests automatically before merging code
+- Fix or skip failing tests only with documented reasons
+
+## Examples
+```php
+// File: ./mod/myplugin/tests/myplugin_test.php
+class mod_myplugin_testcase extends advanced_testcase {
+    public function test_plugin_returns_expected_value() {
+        $this->resetAfterTest(true);
+        $result = myplugin_function();
+        $this->assertEquals('expected', $result);
+    }
+}
+```
+
+## Exceptions
+- Legacy code may be covered by integration tests only
+- Third-party libraries may use their own test suites

@@ -1,0 +1,41 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+---
+name: Moodle Scheduled Tasks and Background Processing
+---
+
+# Moodle Scheduled Tasks and Background Processing
+
+## Purpose
+Ensure long-running and periodic operations are handled using Moodle's scheduled_task API.
+
+## Instructions
+- Define scheduled tasks in `db/tasks.php`
+- Extend `core\task\scheduled_task` for custom tasks
+- Use `adhoc_task` for one-off background jobs
+- Document task frequency and purpose
+- Use locking to prevent concurrent execution
+- Log task execution and errors
+- Test tasks in both CLI and web environments
+
+## Examples
+```php
+// File: ./db/tasks.php
+$tasks = [
+    [
+        'classname' => '\mod_myplugin\task\sync',
+        'blocking'  => 0,
+        'minute'    => 'R',
+        'hour'      => '*',
+        'day'       => '*',
+        'month'     => '*',
+        'dayofweek' => '*',
+    ],
+];
+```
+
+## Exceptions
+- Short operations may use synchronous execution
