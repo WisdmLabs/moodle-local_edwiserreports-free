@@ -4590,3 +4590,40 @@ span.flatpickr-weekday {
 .has-success.select2-drop-active.select2-drop.select2-drop-above {
     border-top-color: #11c26d;
 }
+
+/* Dropdown width and positioning fix */
+.field-group-wrap {
+    position: relative;
+}
+
+.field-group{
+    display: flex;
+    justify-content: space-between;
+}
+
+.field.ml-3.mr-3.show {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    /* width: 100%;
+    min-width: 100%; */
+    max-width: 100%;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    z-index: 1000;
+}
+
+/* Button styles for download reports */
+.local-edwiserreports .row> button , .local-edwiserreports.report-page .row> .pro-export-wrapper {
+    width : fit-content;
+}
+
+/* resolves options and calender issues*/
+.panel .row > * {
+    width: max-content;
+}
+
+.download-label{
+    margin-bottom : 10px !important;
+}

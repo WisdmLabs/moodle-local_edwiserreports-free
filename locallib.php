@@ -24,6 +24,10 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+// Include the required JS for tooltips.
+global $PAGE;
+$PAGE->requires->js_call_amd('local_edwiserreports/tooltip', 'init'); 
+
 require_once($CFG->dirroot . "/cohort/lib.php");
 require_once($CFG->dirroot . "/local/edwiserreports/classes/constants.php");
 
