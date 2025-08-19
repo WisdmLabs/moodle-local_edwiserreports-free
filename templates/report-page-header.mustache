@@ -1,5 +1,5 @@
 <div class="report-header row m-0">
-    <div class="page-title col-12 col-lg-6 col-md-6 pl-0 text-left">
+    <div class="page-title col-12 col-lg-6 col-md-6 pl-0 ps-0 text-left text-start">
         <h2 class="theme-1-color">{{{pageheader}}}</h2>
 
         {{#pro}}
@@ -16,15 +16,15 @@
     </div>
 
     {{#pro}}
-	    <div id="userfilter" class="h-auto mt-2 ml-auto">
+        <div id="userfilter" class="h-auto mt-2 ml-auto ms-auto">
 	        <div class="row">
 	            {{{calendar}}}
 	            <div class="filter-selector d-table col-12 col-lg-3 col-md-4">
 	                <label>{{#str}} date, local_edwiserreports {{/str}}: {{#str}} enrollments, local_edwiserreports {{/str}}</label>
-	                <button type="button" class="btn dropdown-toggle edwiserreports-calendar" data-toggle="dropdown" id="filter-dropdown" aria-expanded="false">
+					<button type="button" class="btn dropdown-toggle edwiserreports-calendar" data-toggle="dropdown" data-bs-toggle="dropdown" id="filter-dropdown" aria-expanded="false">
 	                    {{# str }} alltime, local_edwiserreports {{/ str }}
 	                </button>
-	                <div class="dropdown-menu dropdown-scrollable" aria-labelledby="filter-dropdown" role="menu">
+					<ul class="dropdown-menu dropdown-scrollable dropdown-menu-end" aria-labelledby="filter-dropdown" role="menu">
 	                    <div class="dropdown-calendar"></div>
 	                    <div class="dropdown-body">
 	                        <a class="dropdown-item active" role="menuitem" data-value="all" href="javascript:void(0)">
@@ -46,7 +46,7 @@
 	                            <input class="border-0 p-0 bg-transparent flatpickr" placeholder="{{#str}} customdate, local_edwiserreports {{/str}}" 0="data-input" />
 	                        </a>
 	                    </div>
-	                </div>
+					</ul>
 	            </div>
 	        </div>
 	    </div>

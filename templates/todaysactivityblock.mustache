@@ -28,9 +28,9 @@
     {
     }
 }}
-<div class="card bg-transparent">
-    <div class="card-block">
-        <div class="row mx-0">
+<div class="bg-transparent">
+    <div>
+    <div class="row mx-0">
             <div class="col-5">
                 <div class="bold mb-1">
                     {{#str}} todayslogin, local_edwiserreports {{/str}}
@@ -59,63 +59,63 @@
                 </div>
             </div>
             <div class="col-7">
-                <table class="summary ml-auto">
+                <table class="summary bg-white ml-auto ms-auto">
                     <thead class="border-bottom">
                         <tr>
-                            <th class="text-left">
+                            <th class="text-left text-start">
                                 {{#str}} eventtoday, local_edwiserreports {{/str}}
                             </th>
-                            <th class="text-right ">
+                            <th class="text-right text-end ">
                                 {{#str}} count, local_edwiserreports {{/str}}
                             </th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td class="text-left">
+                            <td class="text-left text-start">
                                 {{#str}} enrollment, local_edwiserreports {{/str}}
                             </td>
-                            <td class="text-right" id="todays-enrollments">
+                            <td class="text-right text-end" id="todays-enrollments">
                                 <span class="data">0</span>
                             </td>
                         </tr>
                         <tr>
-                            <td class="text-left">
+                            <td class="text-left text-start">
                                 {{#str}} activitycompletion, local_edwiserreports {{/str}}
                             </td>
-                            <td class="text-right" id="todays-activitycompletions">
+                            <td class="text-right text-end" id="todays-activitycompletions">
                                 <span class="data">0</span>
                             </td>
                         </tr>
                         <tr>
-                            <td class="text-left">
+                            <td class="text-left text-start">
                                 {{#str}} coursecompletion, local_edwiserreports {{/str}}
                             </td>
-                            <td class="text-right" id="todays-coursecompletions">
+                            <td class="text-right text-end" id="todays-coursecompletions">
                                 <span class="data">0</span>
                             </td>
                         </tr>
                         <tr>
-                            <td class="text-left">
+                            <td class="text-left text-start">
                                 {{#str}} newregistration, local_edwiserreports {{/str}}
                             </td>
-                            <td class="text-right" id="todays-registrations">
+                            <td class="text-right text-end" id="todays-registrations">
                                 <span class="data">0</span>
                             </td>
                         </tr>
                         <tr>
-                            <td class="text-left">
+                            <td class="text-left text-start">
                                 {{#str}} visits, local_edwiserreports {{/str}}
                             </td>
-                            <td class="text-right" id="todays-visits">
+                            <td class="text-right text-end" id="todays-visits">
                                 <span class="data">0</span>
                             </td>
                         </tr>
                         <tr class="d-none">
-                            <td class="text-left">
+                            <td class="text-left text-start">
                                 {{#str}} timespent, local_edwiserreports {{/str}}
                             </td>
-                            <td class="text-right" id="todays-timespend">
+                            <td class="text-right text-end" id="todays-timespend">
                                 <span class="data">00:00:00</span>
                             </td>
                         </tr>

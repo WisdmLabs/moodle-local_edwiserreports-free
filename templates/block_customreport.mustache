@@ -31,15 +31,15 @@
 }}
 <div id="customReportBlock" data-sesskey="{{sesskey}}">
     <div class="panel h-auto mb-0">
-        <div class="panel-header clearfix">
+    <div class="panel-header clearfix">
             <div class="panel-title px-0">
                 <strong>
                     {{#str}} downloadcustomtreport, local_edwiserreports {{/str}}
                 </strong>
             </div>
         </div>
-        <div class="panel-body p-0">
-            <table class="wdmCustomReportsFilters">
+    <div class="panel-body p-0">
+            <table class="wdmCustomReportsFilters w-100 bg-white">
                 <tr>
                     <td>
                         <b>{{#str}} selectreporttype, local_edwiserreports {{/str}} :</b>
@@ -47,9 +47,9 @@
                     {{! Dropdown to get reports type }}
                     <td class="dropdown">
                         <button type="button"
-                                class="btn btn-default dropdown-toggle mb-5"
+                                class="btn btn-default btn-secondary dropdown-toggle mb-5"
                                 id="customReportDrodown"
-                                data-toggle="dropdown"
+                                data-toggle="dropdown" data-bs-toggle="dropdown"
                                 aria-expanded="true"
                                 data-val="course">
                                 {{#str}} selectreporttype, local_edwiserreports {{/str}}
@@ -102,7 +102,7 @@
             <div class="rootContainer" style="display: none;">
                 <div class="customReportSelectors mt-10">
                     {{! Course table }}
-                    <table class="table course-table w-100">
+                    <table class="table course-table w-100 bg-white">
                         <thead>
                             <tr>
                                 <th class="bg-secondary">
@@ -129,7 +129,7 @@
                     </table>
 
                     {{! Leanring Program }}
-                    <table class="table lp-table w-100">
+                    <table class="table lp-table w-100 bg-white">
                         <th class="bg-secondary">
                             <span class="checkbox-custom"><input type="checkbox" name="selectAllCustom"><label class="selectAllCustomReports" for="selectAllCustom"></label></span>
                         </th>

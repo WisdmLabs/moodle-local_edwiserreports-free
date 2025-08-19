@@ -2131,6 +2131,7 @@ html[dir=rtl] .insight-card .insight-details::before {
     width: 100%;
     height: 100%;
     opacity: 0.15;
+    z-index: 0;
 }
 #wdm-edwiserreports #learnerblock .timespentonlms .apexcharts-tooltip,
 #wdm-edwiserreports #learnerblock .courseprogress .apexcharts-tooltip {
@@ -2323,6 +2324,7 @@ html[dir=rtl] .insight-card .insight-details::before {
     width: 100%;
     height: 100%;
     opacity: 0.15;
+    z-index: 0;
 }
 #wdm-edwiserreports #studentengagementblock .timespentoncourse .apexcharts-tooltip,
 #wdm-edwiserreports #studentengagementblock .timespentonlms .apexcharts-tooltip {
@@ -2383,7 +2385,7 @@ html[dir=rtl] .insight-card .insight-details::before {
 }
 .local-edwiserreports .edwiserreports-table table {
     table-layout: fixed;
-    width: max-content !important;
+    /* width: max-content !important; */
     min-width: 100%;
 }
 .local-edwiserreports .edwiserreports-table .fixed-column {
@@ -3826,7 +3828,6 @@ span.flatpickr-weekday {
 
 .flatpickr-time input:focus {
     outline: 0;
-    border: 0;
 }
 
 .flatpickr-time .flatpickr-time-separator,
@@ -4605,8 +4606,6 @@ span.flatpickr-weekday {
     position: absolute;
     top: 100%;
     left: 0;
-    /* width: 100%;
-    min-width: 100%; */
     max-width: 100%;
     background-color: #fff;
     border: 1px solid #ccc;
@@ -4615,15 +4614,72 @@ span.flatpickr-weekday {
 }
 
 /* Button styles for download reports */
-.local-edwiserreports .row> button , .local-edwiserreports.report-page .row> .pro-export-wrapper {
+.local-edwiserreports .row> button , .local-edwiserreports.report-page .row> .pro-export-wrapper , .download-label {
     width : fit-content;
 }
-
-/* resolves options and calender issues*/
-.panel .row > * {
-    width: max-content;
-}
-
 .download-label{
     margin-bottom : 10px !important;
 }
+
+.ed-pro-reports .row>* {
+    width: auto !important;
+}
+
+#userfilter .row>*:not(.table-length-input) {
+    width: fit-content !important;
+    max-width: 300px !important;
+}
+
+.local-edwiserreports .icon {
+    color: #fff;
+}
+
+.local-edwiserreports .card{
+    border: none !important;
+}
+
+.local-edwiserreports #page-footer .footer-container hr {
+    border-top: none;
+}
+
+#DataTables_Table_0 {
+    table-layout: auto;
+    width: max-content !important;
+}
+/* Course tab reports: keep left filter block compact across pages */
+.local-edwiserreports.report-page :is(#allcoursessummary, #courseactivitiessummary, #courseactivitycompletion, #completion) .report-content #userfilter,
+.local-edwiserreports.report-page :is(#allcoursessummary, #courseactivitiessummary, #courseactivitycompletion, #completion) .report-content #userfilter2 {
+  max-width: 720px;   /* adjust 640–800px to taste */
+  width: 100%;
+  margin-right: auto; /* keeps right-side Date/Show on the right */
+}
+
+
+.local-edwiserreports.report-page .report-content :is(#userfilter, #userfilter2) .row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.local-edwiserreports.report-page .report-content .filter-selector {
+  flex: 1 1 300px;    /* two per row; wraps on small screens */
+}
+
+.local-edwiserreports.report-page .report-content .filter-selector .select2,
+.local-edwiserreports.report-page .report-content .filter-selector .select2-container {
+  width: 100% !important;  /* control fills its column */
+}
+
+/* First user filter width adjustment */
+#allcoursesummary .report-content #userfilter:first-of-type > .row:first-child {
+    width: 80% !important;
+}
+
+.summary-body-wrap.row>*{
+    width: max-content !important;
+}
+
+.report-header ~ .row>* {
+    width: 100% !important;
+}
+  

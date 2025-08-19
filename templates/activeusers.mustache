@@ -49,21 +49,21 @@
             {{/ cohortfilters }}
             <div class="filter-selector col-12 col-md-3 mb-1">
                 <label>{{#str}} date, local_edwiserreports {{/str}}</label>
-                <button type="button" class="btn dropdown-toggle edwiserreports-calendar" data-toggle="dropdown" id="filter-dropdown" aria-expanded="false">
+                <button type="button" class="btn dropdown-toggle edwiserreports-calendar" data-toggle="dropdown" data-bs-toggle="dropdown" id="filter-dropdown" aria-expanded="false">
                     {{# str }} last7days, local_edwiserreports {{/ str }}
                 </button>
-                <div class="dropdown-menu dropdown-scrollable" aria-labelledby="filter-dropdown" role="menu">
-                    <div class="dropdown-calendar"></div>
-                    <div class="dropdown-body">
+                <ul class="dropdown-menu dropdown-scrollable dropdown-menu-end" aria-labelledby="filter-dropdown" role="menu">
+                    <li><div class="dropdown-calendar"></div></li>
+                    <li><div class="dropdown-body">
                         <a class="dropdown-item active" role="menuitem" data-value="last7days" href="javascript:void(0)">{{#str}} last7days, local_edwiserreports {{/str}}</a>
                         <a class="dropdown-item" role="menuitem" data-value="weekly" href="javascript:void(0)">{{#str}} lastweek, local_edwiserreports {{/str}}</a>
                         <a class="dropdown-item" role="menuitem" data-value="monthly" href="javascript:void(0)">{{#str}} lastmonth, local_edwiserreports {{/str}}</a>
                         <a class="dropdown-item" role="menuitem" data-value="yearly" href="javascript:void(0)">{{#str}} lastyear, local_edwiserreports {{/str}}</a>
                         <a class="dropdown-item custom" role="menuitem" href="javascript:void(0)">
-                            <input class="border-0 p-0 bg-transparent flatpickr" placeholder="{{#str}} customdate, local_edwiserreports {{/str}}" 0="data-input" />
+                            <input class="border-0 p-0 bg-transparent flatpickr form-control" placeholder="{{#str}} customdate, local_edwiserreports {{/str}}" 0="data-input" />
                         </a>
-                    </div>
-                </div>
+                    </div></li>
+                </ul>
             </div>
             <div class="filter-selector col-12 table-length-input ml-auto mb-3">
                 <label>{{#str}} show, local_edwiserreports {{/str}}</label>
@@ -75,7 +75,7 @@
         {{> local_edwiserreports/activeuserstable }}
     </div>
     {{# export }}
-        <div class="pull-right px-5">
+        <div class="pull-right float-end px-5">
             {{> local_edwiserreports/exportreports }}
         </div>
     {{/ export }}

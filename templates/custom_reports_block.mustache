@@ -51,7 +51,7 @@
                     </div>
                     <div class="reports-list-content d-none justify-content-center align-items-center">
                         <div class="table-responsive">
-                            <table id="cr-list-table" class="datatable table"></table>
+                            <table id="cr-list-table" class="datatable table w-100 bg-white"></table>
                         </div>
                     </div>
                 </div>
@@ -92,7 +92,7 @@
                     <div class="field ml-3 mr-3" aria-control="{{key}}-field-group">
                         {{#fieldsarray}}
                         <div class="{{id}} p-2">
-                            <div class="checkbox-edwiserreports {{#disabled}}disabled{{/disabled}}" {{#disabled}}title="{{#str}} unlockthisfeature, local_edwiserreports {{/str}}"{{/disabled}}>
+                    <div class="checkbox-edwiserreports {{#disabled}}disabled{{/disabled}}" {{#disabled}}title="{{#str}} unlockthisfeature, local_edwiserreports {{/str}}"{{/disabled}}>
                                 <input type="checkbox" id="{{id}}" class="custom-field-checkbox" value="{{id}}" {{#selected}}checked{{/selected}} {{#disabled}}disabled{{/disabled}}>
                                 <label for="{{id}}" class="checkmark"></label>
                                 <label for="{{id}}" class="mb-0">{{text}}</label>
@@ -124,7 +124,7 @@
                     </div>
                     <div class="reports-preview-content d-none justify-content-center align-items-center">
                         <div class="table-responsive">
-                            <table id="cr-preview-table" class="datatable table"></table>
+                            <table id="cr-preview-table" class="datatable table w-100 bg-white"></table>
                         </div>
                     </div>
                     <div class="border reports-preview-content empty d-flex justify-content-center align-items-center">
@@ -132,7 +132,7 @@
                     </div>
                 </div>
             </div>
-            <div class="reports-preview-footer py-1 text-right">
+            <div class="reports-preview-footer py-1 text-right text-end">
                 <button id="wdm-custom-reports-save" class="btn theme-primary-bg text-white" disabled>
                     {{#isediting}}
                         {{#str}} updatereports, local_edwiserreports {{/str}}

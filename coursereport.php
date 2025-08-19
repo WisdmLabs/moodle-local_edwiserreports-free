@@ -53,6 +53,8 @@ $pageurl = new moodle_url($CFG->wwwroot . "/local/edwiserreports/coursereport.ph
 // Add CSS for edwiserreports.
 $PAGE->requires->css('/local/edwiserreports/styles/edwiserreports.min.css');
 
+$PAGE->requires->js_call_amd('local_edwiserreports/tooltip', 'init'); 
+
 // Set page context.
 $PAGE->set_context($context);
 

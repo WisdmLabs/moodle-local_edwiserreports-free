@@ -30,17 +30,17 @@
     }
 }}
 <div id="customQueryReportBlock" data-sesskey="{{sesskey}}">
-    <div class="panel h-auto mb-0">
-        <div class="panel-header clearfix">
+  <div class="panel h-auto mb-0">
+  <div class="panel-header clearfix">
             <div class="panel-title px-0">
                 <strong>
                     {{#str}} customqueryreport, local_edwiserreports {{/str}}
                 </strong>
             </div>
         </div>
-        <div class="panel-body">
-          <div id="edw_custom_reporttype" class="col-12 px-0 text-right">
-              <div class="btn-group" data-toggle="buttons" role="group">
+  <div class="panel-body">
+          <div id="edw_custom_reporttype" class="col-12 px-0 text-right text-end">
+              <div class="btn-group" data-toggle="buttons" data-bs-toggle="buttons" role="group">
                   <label class="btn btn-outline btn-primary active">
                       <input type="radio" name="reporttype" value="courses" checked="" class="d-none">
                       {{#str}} course, local_edwiserreports {{/str}}
@@ -104,10 +104,10 @@
             <div class="userfields example-wrap reportfields">
               <h5 class="example-title">
                 <strong> {{#str}} userfields, local_edwiserreports {{/str}} </strong>
-                <a class="unselect-userfields pull-right text-sm" href="javascript:void(0)">
+                <a class="unselect-userfields pull-right float-end text-sm" href="javascript:void(0)">
                     <small>{{#str}} unselectall, local_edwiserreports {{/str}}</small>
                 </a>
-                <a class="select-userfields pull-right text-sm hidden" href="javascript:void(0)">
+                <a class="select-userfields pull-right float-end text-sm hidden d-none" href="javascript:void(0)">
                     <small>{{#str}} selectall, local_edwiserreports {{/str}}</small>
                 </a>
               </h5>
@@ -125,10 +125,10 @@
             <div class="coursefields example-wrap reportfields">
                 <h5 class="example-title">
                     <strong> {{#str}} coursefields, local_edwiserreports {{/str}} </strong>
-                    <a class="unselect-coursefields pull-right text-sm" href="javascript:void(0)">
+                    <a class="unselect-coursefields pull-right float-end text-sm" href="javascript:void(0)">
                         <small>{{#str}} unselectall, local_edwiserreports {{/str}}</small>
                     </a>
-                    <a class="select-coursefields pull-right text-sm hidden" href="javascript:void(0)">
+                    <a class="select-coursefields pull-right float-end text-sm hidden d-none" href="javascript:void(0)">
                         <small>{{#str}} selectall, local_edwiserreports {{/str}}</small>
                     </a>
                 </h5>
@@ -147,10 +147,10 @@
             <div class="lpreportfields example-wrap reportfields">
               <h5 class="example-title">
                   <strong> {{#str}} lpfields, local_edwiserreports {{/str}} </strong>
-                  <a class="unselect-lpreportfields pull-right text-sm" href="javascript:void(0)">
+                  <a class="unselect-lpreportfields pull-right float-end text-sm" href="javascript:void(0)">
                   <small>{{#str}} unselectall, local_edwiserreports {{/str}}</small>
                   </a>
-                  <a class="select-lpreportfields pull-right text-sm hidden" href="javascript:void(0)">
+                  <a class="select-lpreportfields pull-right float-end text-sm hidden d-none" href="javascript:void(0)">
                       <small>{{#str}} selectall, local_edwiserreports {{/str}}</small>
                   </a>
               </h5>
@@ -166,13 +166,13 @@
               </div>
             </div>
 
-            <div class="activityreportfields example-wrap reportfields hidden">
+            <div class="activityreportfields example-wrap reportfields hidden d-none">
               <h5 class="example-title">
                   <strong> {{#str}} activityfields, local_edwiserreports {{/str}} </strong>
-                  <a class="unselect-lpreportfields pull-right text-sm" href="javascript:void(0)">
+                  <a class="unselect-lpreportfields pull-right float-end text-sm" href="javascript:void(0)">
                   <small>{{#str}} unselectall, local_edwiserreports {{/str}}</small>
                   </a>
-                  <a class="select-lpreportfields pull-right text-sm hidden" href="javascript:void(0)">
+                  <a class="select-lpreportfields pull-right float-end text-sm hidden d-none" href="javascript:void(0)">
                       <small>{{#str}} selectall, local_edwiserreports {{/str}}</small>
                   </a>
               </h5>
@@ -190,7 +190,7 @@
 
               <div class="row">
               <div class="col-md-3">
-                    <div class="text-right mt-30">
+                    <div class="text-right text-end mt-30">
                       <form action="{{downloadurl}}" target="_blank" method="post" id="customQueryReportsForm">
                           <input type="hidden" name="lps">
                           <input type="hidden" name="courses">
@@ -212,19 +212,19 @@
                 </div>
               </div>
               <div class="col-md-5 mt-30">
-                <div class="coursealert alert alert-danger hidden" role="alert">
+                <div class="coursealert alert alert-danger hidden d-none" role="alert">
                   <button type="button" class="close" data-hide="alert" aria-label="Close">
                     <span aria-hidden="true">×</span>
                   </button>
                   {{#str}} selectatleastonecvourse, local_edwiserreports {{/str}}
                 </div>
-                <div class="enroldatealert alert alert-danger hidden" role="alert">
+                <div class="enroldatealert alert alert-danger hidden d-none" role="alert">
                   <button type="button" class="close" data-hide="alert" aria-label="Close">
                     <span aria-hidden="true">×</span>
                   </button>
                   {{#str}} enroldatealert, local_edwiserreports {{/str}}
                 </div>
-                <div class="completiondatealert alert alert-danger hidden" role="alert">
+                <div class="completiondatealert alert alert-danger hidden d-none" role="alert">
                   <button type="button" class="close" data-hide="alert" aria-label="Close">
                     <span aria-hidden="true">×</span>
                   </button>
