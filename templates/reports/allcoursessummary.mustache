@@ -55,7 +55,7 @@
             <div class="row" style="width:82%">
                 
                 {{# cohortfilters }}
-                    <div class="filter-selector col-12 col-lg-2 col-md-4 mb-3">
+                    <div class="filter-selector col-12 col-lg-2 col-md-4 mb-3" id = "cohort-filter-selector" style="max-width:200px !important;">
                         <label>{{#str}} cohort, local_edwiserreports {{/str}}</label>
                         <select class="cohort-select form-control singleselect"  title="">
                             <option value="1">{{#str}} cohort1, local_edwiserreports {{/str}}</option>
@@ -63,7 +63,7 @@
                     </div>
                 {{/ cohortfilters }}
                 {{# groups }}
-                    <div class="filter-selector col-12 col-lg-4 col-md-4 mb-3">
+                    <div class="filter-selector col-12 col-lg-4 col-md-4 mb-3" id="groups-filter-selector" style="max-width:400px !important;">
                         <label>{{#str}} group, local_edwiserreports {{/str}}</label>
                         {{> local_edwiserreports/filters/groups_filter }}
                     </div>

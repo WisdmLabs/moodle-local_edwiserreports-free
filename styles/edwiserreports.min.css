@@ -4592,6 +4592,8 @@ span.flatpickr-weekday {
     border-top-color: #11c26d;
 }
 
+/* Updated CSS */
+
 /* Dropdown width and positioning fix */
 .field-group-wrap {
     position: relative;
@@ -4616,6 +4618,8 @@ span.flatpickr-weekday {
 /* Button styles for download reports */
 .local-edwiserreports .row> button , .local-edwiserreports.report-page .row> .pro-export-wrapper , .download-label {
     width : fit-content;
+    padding-inline: 4px;
+    padding-block: 1px;
 }
 .download-label{
     margin-bottom : 10px !important;
@@ -4625,13 +4629,20 @@ span.flatpickr-weekday {
     width: auto !important;
 }
 
-#userfilter .row>*:not(.table-length-input) {
+/* Apply to userfilters EXCEPT when inside #wdm-completion-individual */
+#userfilter:not(#wdm-completion-individual #userfilter) .row>*:not(.table-length-input) {
     width: fit-content !important;
     max-width: 300px !important;
 }
 
-.local-edwiserreports .icon {
+
+#wdm-edwiserreports :not(.panel-header) .icon {
     color: #fff;
+}
+
+/* Override white color for panel header icons */
+#wdm-edwiserreports .panel-header .icon {
+    color: inherit; /* or specify a different color like #333, #666, etc. */
 }
 
 .local-edwiserreports .card{
@@ -4658,17 +4669,25 @@ span.flatpickr-weekday {
 .local-edwiserreports.report-page .report-content :is(#userfilter, #userfilter2) .row {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  /* gap: 1rem; */
+}
+
+/* Large screens (laptop and above) - no wrap */
+@media (min-width: 1200px) {
+    .local-edwiserreports.report-page .report-content :is(#userfilter, #userfilter2) .row {
+        flex-wrap: nowrap;
+    }
 }
 
 .local-edwiserreports.report-page .report-content .filter-selector {
-  flex: 1 1 300px;    /* two per row; wraps on small screens */
+  flex: 1 1 280px;    /* two per row; wraps on small screens */
 }
 
 .local-edwiserreports.report-page .report-content .filter-selector .select2,
 .local-edwiserreports.report-page .report-content .filter-selector .select2-container {
-  width: 100% !important;  /* control fills its column */
+  width: 100% !important;  
 }
+
 
 /* First user filter width adjustment */
 #allcoursesummary .report-content #userfilter:first-of-type > .row:first-child {
@@ -4682,4 +4701,24 @@ span.flatpickr-weekday {
 .report-header ~ .row>* {
     width: 100% !important;
 }
-  
+
+#courseactivitiessummary #userfilter:first-of-type > .row>* {
+    width: 100% !important;
+    max-width:none !important;
+}
+
+#wdm-edwiserreports .panel-header .row>* {
+    width: fit-content !important;
+}
+
+.local-edwiserreports .fa-plus.fa-fw {
+    color: #fff;
+}
+
+#cr-preview-table {
+    table-layout: auto !important;
+}
+
+.customreportdata{
+    table-layout: auto !important;
+}
