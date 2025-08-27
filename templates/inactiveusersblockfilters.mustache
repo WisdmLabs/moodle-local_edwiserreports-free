@@ -4,8 +4,8 @@
         {{> local_edwiserreports/datatable/search }}
     </div>
     <div class="filter-selector col-12 col-md-6 mb-1 d-flex">
-    <button type="button" class="btn btn-sm dropdown-toggle ml-auto ms-auto" data-toggle="dropdown" data-bs-toggle="dropdown" aria-expanded="true">{{#str}}never, local_edwiserreports{{/str}}</button>
-    <ul class="dropdown-menu dropdown-sm" role="menu" x-placement="top-start">
+        <button type="button" class="btn btn-sm dropdown-toggle ml-auto ms-auto" data-toggle="dropdown" data-bs-toggle="dropdown" aria-expanded="false">{{#str}}never, local_edwiserreports{{/str}}</button>
+        <ul class="dropdown-menu dropdown-sm" role="menu" x-placement="top-start">
             <a class="active dropdown-item" href="javascript:void(0)" data-value="never" role="menuitem">
                 {{#str}}never, local_edwiserreports{{/str}}
             </a>
@@ -18,6 +18,6 @@
             <a class="dropdown-item" href="javascript:void(0)" data-value="6month" role="menuitem">
                 {{#str}}before6month, local_edwiserreports{{/str}}
             </a>
-        </div>
+        </ul>
     </div>
 </div>

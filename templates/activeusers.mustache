@@ -83,3 +83,106 @@
 {{#setactive}}
     {{> local_edwiserreports/setactivenav }}
 {{/setactive}}
+
+<script>
+// Enhanced dropdown toggle with Moodle version compatibility
+document.addEventListener('DOMContentLoaded', function() {
+    // Get the dropdown button and menu
+    var button = document.getElementById('filter-dropdown');
+    var menu = button ? button.nextElementSibling : null;
+    
+    if (!button || !menu || !menu.classList.contains('dropdown-menu')) {
+        return;
+    }
+    
+    // Detect Moodle version and Bootstrap version
+    var hasBootstrap5 = typeof bootstrap !== 'undefined' && bootstrap.Dropdown;
+    var hasBootstrap4 = typeof $ !== 'undefined' && $.fn && $.fn.dropdown;
+    
+    // Function to show dropdown
+    function showDropdown() {
+        if (hasBootstrap5) {
+            // Bootstrap 5 method
+            var bsDropdown = new bootstrap.Dropdown(button);
+            bsDropdown.show();
+        } else if (hasBootstrap4) {
+            // Bootstrap 4 method
+            $(button).dropdown('show');
+        } else {
+            // Fallback: manual show
+            menu.classList.add('show');
+        }
+    }
+    
+    // Function to hide dropdown
+    function hideDropdown() {
+        if (hasBootstrap5) {
+            // Bootstrap 5 method
+            var bsDropdown = bootstrap.Dropdown.getInstance(button);
+            if (bsDropdown) {
+                bsDropdown.hide();
+            }
+        } else if (hasBootstrap4) {
+            // Bootstrap 4 method
+            $(button).dropdown('hide');
+        } else {
+            // Fallback: manual hide
+            menu.classList.remove('show');
+        }
+    }
+    
+    // Add click handler to the button
+    button.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        // Check if dropdown is currently visible
+        var isVisible = menu.classList.contains('show') || 
+                       button.getAttribute('aria-expanded') === 'true';
+        
+        if (isVisible) {
+            hideDropdown();
+        } else {
+            showDropdown();
+        }
+    });
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.filter-selector')) {
+            hideDropdown();
+        }
+    });
+    
+    // Handle dropdown item clicks
+    menu.addEventListener('click', function(e) {
+        var item = e.target.closest('.dropdown-item');
+        if (!item || item.classList.contains('custom')) {
+            return;
+        }
+        
+        e.preventDefault();
+        e.stopPropagation();
+        
+        var value = item.dataset.value;
+        var text = item.textContent;
+        
+        // Update button text
+        button.innerHTML = text;
+        
+        // Update active state
+        menu.querySelectorAll('.dropdown-item').forEach(function(el) {
+            el.classList.remove('active');
+        });
+        item.classList.add('active');
+        
+        // Hide dropdown
+        hideDropdown();
+        
+        // Try to trigger existing functionality
+        if (typeof window.activeUsersFilterChange === 'function') {
+            window.activeUsersFilterChange(value);
+        }
+    });
+});
+</script>

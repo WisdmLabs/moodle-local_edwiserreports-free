@@ -84,7 +84,16 @@ define([
             });
 
             // Get inactive users data on load
-            getInactiveUsersData($(dropdown).data("value"));
+            var defaultFilter = "never"; // Set default filter
+            
+            // Initialize dropdown button text
+            $(dropdownToggle).html($(dropdown).first().html());
+            
+            // Set initial active state
+            $(dropdown).removeClass('active');
+            $(dropdown).first().addClass('active');
+            
+            getInactiveUsersData(defaultFilter);
 
             /**
              * On click of dropdown get inactive user list based on filter
@@ -92,16 +101,22 @@ define([
             $(dropdown).on("click", function() {
                 // Get filter
                 var filter = $(this).data("value");
-                $(panel).find('.download-links input[name="filter"]').val(filter);
-
+                
+                // Update active state
+                $(dropdown).removeClass('active');
+                $(this).addClass('active');
+                
                 // Set dropdown button value
                 $(dropdownToggle).html($(this).html());
+                
+                // Set filter value in download links
+                $(panel).find('.download-links input[name="filter"]').val(filter);
 
                 // Change export data url
                 cfg.changeExportUrl(filter, exportUrlLink, V.filterReplaceFlag);
 
                 // Get inactive users
-                getInactiveUsersData($(this).data("value"));
+                getInactiveUsersData(filter);
             });
 
             // Search in table.
@@ -137,6 +152,21 @@ define([
                         invalidUser('inactiveusersblock', response);
                         return;
                     }
+                    
+                    // Check if we have valid data
+                    if (!response.data || !Array.isArray(response.data)) {
+                        Notification.exception(new Error('Invalid data format received'));
+                        return;
+                    }
+                    
+                    // Check if data is empty
+                    if (response.data.length === 0) {
+                        // Clear the table and show empty message
+                        inActiveUsersTable.clear().draw();
+                        return;
+                    }
+                    
+                    // Clear and populate the table
                     inActiveUsersTable.clear();
                     inActiveUsersTable.rows.add(response.data);
                     inActiveUsersTable.draw();

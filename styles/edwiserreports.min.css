@@ -4621,6 +4621,7 @@ span.flatpickr-weekday {
     padding-inline: 4px;
     padding-block: 1px;
 }
+
 .download-label{
     margin-bottom : 10px !important;
 }
@@ -4653,7 +4654,7 @@ span.flatpickr-weekday {
     border-top: none;
 }
 
-#DataTables_Table_0 {
+#DataTables_Table_0, #wdm-edwiserreports table {
     table-layout: auto;
     width: max-content !important;
 }
@@ -4721,4 +4722,73 @@ span.flatpickr-weekday {
 
 .customreportdata{
     table-layout: auto !important;
+}
+
+.local-edwiserreports .dropdown.blocksetting , .local-edwiserreports .dropdown.blockoptions {
+    z-index: 100;
+}
+
+button.learnertimespentonsite-calendar{
+    width: auto !important;
+}
+
+#page-local-edwiserreports-activeusers .select2-container--default {
+    width: 150px !important;
+}
+
+#wdm-courseprogress-individual .select2-container--default {
+    width: 150px !important;
+}
+
+.block-filters .pro-export-wrapper .pro-export-title{
+    z-index:100;
+}
+
+/* Boost theme specific RTL dropdown triangle fix */
+html[dir=rtl] .theme_boost .edwiserReport-block .dropdown.blockoptions .dropdown-menu::after,
+html[dir=rtl] .theme_boost .edwiserReport-block .dropdown.blockoptions .dropdown-menu::before {
+    right: unset !important;
+    left: 0.5rem !important;
+    transform: translate(-0.1rem, -0.2rem) !important;
+}
+
+/* Boost theme specific RTL dropdown triangle fix - more specific selector */
+html[dir=rtl] .theme_boost #wdm-edwiserreports .edwiserReport-block > div .panel .panel-header .dropdown.blockoptions .dropdown-menu::after,
+html[dir=rtl] .theme_boost #wdm-edwiserreports .edwiserReport-block > div .panel .panel-header .dropdown.blockoptions .dropdown-menu::before {
+    right: unset !important;
+    left: 0.5rem !important;
+    transform: translate(-0.1rem, -0.2rem) !important;
+}
+
+html[dir=rtl] .local-edwiserreports #cr-preview-table_wrapper table td {
+    direction: rtl;
+}
+
+.theme_boost .edwiserreports-header .withcalender {
+    left: 0 !important;
+    right: auto !important;
+    transform: none !important;
+    top: 100% !important;
+    position: absolute !important;
+}
+
+html[lang=de] #learnertimespentonsiteblock .panel-title {
+    font-size: small !important;
+}
+
+html[lang=es] #learnertimespentonsiteblock .panel-title {
+    font-size: small !important;
+}
+
+html[lang=es] #activeusersblock .panel-title {
+    font-size: small !important;
+}
+
+html[lang=es] #activeusersblock .insight-details {
+    font-size: x-small !important;
+}
+
+
+html[lang=de] .edwiserReport-block .upgrade-to-pro .text-white {
+    font-size: 18px !important;
 }

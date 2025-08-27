@@ -563,7 +563,8 @@ class courseprogressblock extends block_base {
         global $COURSE;
 
         $cohortid = optional_param("cohortid", 0, PARAM_INT);
-        $rtl = optional_param("filter", 0, PARAM_INT);
+        // Check if current language is RTL
+        $rtl = (get_string('thisdirection', 'langconfig') === 'rtl');
         $export = array();
         $export[] = $rtl ? array_reverse(self::get_header_report()) : self::get_header_report();
 
