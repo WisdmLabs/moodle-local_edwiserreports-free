@@ -906,7 +906,7 @@ $string['whatsnew6'] = 'Vos rapports programmés actuels sont toujours disponibl
 $string['gotit'] = 'J\'ai compris';
 
 // Pro strings.
-$string['allcoursessummary'] = 'Tous les cours Résumé';
+$string['allcoursessummary'] = 'Tous les cours Résumé (Pro)';
 $string['courseactivitiessummary'] = 'Résumé des activités de cours (Pro)';
 $string['alllearnersummary'] = 'Tout résumé de l\'apprenant (Pro)';
 $string['learnercourseprogress'] = 'Progrès du cours des apprenants (Pro)';
@@ -1039,7 +1039,7 @@ $string['avgtimespentoncourse'] = 'Temps moyen passé sur le(s) cours';
 
 
 // pro strings.
-$string['allcoursessummary'] = 'Résumé de tous les cours';
+$string['allcoursessummary'] = 'Résumé de tous les cours (PRO)';
 $string['allcoursessummarypro'] = 'Résumé de tous les cours (PRO)';
 $string['courseactivitiessummary'] = 'Résumé des activités du cours (PRO)';
 $string['courseactivitycompletion'] = 'Achèvement de l\'activité de cours (PRO)';

@@ -906,7 +906,7 @@ $string['whatsnew6'] = 'Ihre aktuellen geplanten Berichte sind weiterhin verfüg
 $string['gotit'] = 'Ich habs';
 
 // Pro strings.
-$string['allcoursessummary'] = 'Alle Kurse Zusammenfassung';
+$string['allcoursessummary'] = 'Alle Kurse Zusammenfassung (Pro)';
 $string['courseactivitiessummary'] = 'Kursaktivitäten Zusammenfassung (Pro)';
 $string['alllearnersummary'] = 'Alle Zusammenfassung der Lernenden (Pro)';
 $string['learnercourseprogress'] = 'Fortschritt des Lernkurs (Pro)';
@@ -1040,7 +1040,7 @@ $string['avgtimespentoncourse'] = 'Gemiddelde tijd besteed aan cursus(sen)';
 
 
 // Pro-strings.
-$string['allcoursessummary'] = 'Overzicht van alle cursussen';
+$string['allcoursessummary'] = 'Overzicht van alle cursussen (PRO)';
 $string['allcoursessummarypro'] = 'Overzicht van alle cursussen (PRO)';
 $string['courseactivitiessummary'] = 'Overzicht cursusactiviteiten (PRO)';
 $string['courseactivitycompletion'] = 'Cursusactiviteit voltooid (PRO)';

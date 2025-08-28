@@ -911,7 +911,7 @@ $string['whatsnew6'] = 'Your current scheduled reports are still available and s
 $string['gotit'] = 'Got It';
 
 // Pro strings.
-$string['allcoursessummary'] = 'All Courses Summary';
+$string['allcoursessummary'] = 'All Courses Summary (PRO)';
 $string['allcoursessummarypro'] = 'All Courses Summary (PRO)';
 $string['courseactivitiessummary'] = 'Course Activities Summary (PRO)';
 $string['courseactivitycompletion'] = 'Course Activity Completion (PRO)';
