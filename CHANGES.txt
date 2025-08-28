@@ -1,3 +1,15 @@
+v 1.9.0
+====================================================
+Tweaks
+- Moodle 5.0 and above Compatible.
+- Minor UI Changes related to:
+-- Table layouts.
+-- Input fields and dropdowns.
+- Changes in Language Strings
+
+Fix
+- Fixed Inactive Users Block rendering.
+
 v 1.8.0
 ====================================================
 Tweaks
