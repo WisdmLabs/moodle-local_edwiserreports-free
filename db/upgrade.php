@@ -36,6 +36,84 @@ function xmldb_local_edwiserreports_upgrade($oldversion) {
 
     $dbman = $DB->get_manager();
 
+    // Handle case where tables might already exist during installation.
+    // This can happen if plugin was partially installed or database state is inconsistent.
+    // Moodle standard: Check and create tables only if they don't exist.
+    if ($oldversion == 0) {
+        // Initial installation - ensure all tables from install.xml exist.
+        // If they already exist, we skip creation (Moodle standard behavior).
+        
+        // Check and create edwreports_blocks table if it doesn't exist.
+        $table = new xmldb_table('edwreports_blocks');
+        if (!$dbman->table_exists($table)) {
+            $table->add_field('id', XMLDB_TYPE_INTEGER, 10, null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null);
+            $table->add_field('blockname', XMLDB_TYPE_CHAR, 255, null, XMLDB_NOTNULL, null, null, null, '');
+            $table->add_field('classname', XMLDB_TYPE_CHAR, 255, null, XMLDB_NOTNULL, null, null, null, '');
+            $table->add_field('blocktype', XMLDB_TYPE_INTEGER, 1, null, XMLDB_NOTNULL, null, null, null, 0);
+            $table->add_field('blockdata', XMLDB_TYPE_CHAR, 255, null, null, null, null, null);
+            $table->add_field('timecreated', XMLDB_TYPE_INTEGER, 10, null, XMLDB_NOTNULL, null, null, null, 0);
+            $table->add_field('timemodified', XMLDB_TYPE_INTEGER, 10, null, null, null, null, null, 0);
+            $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
+            $dbman->create_table($table);
+        }
+
+        // Check and create edwreports_schedemails table if it doesn't exist.
+        $table = new xmldb_table('edwreports_schedemails');
+        if (!$dbman->table_exists($table)) {
+            $table->add_field('id', XMLDB_TYPE_INTEGER, 10, null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null);
+            $table->add_field('blockname', XMLDB_TYPE_TEXT, null, null, null, null, null, null);
+            $table->add_field('component', XMLDB_TYPE_TEXT, null, null, null, null, null, null);
+            $table->add_field('emaildata', XMLDB_TYPE_TEXT, null, null, null, null, null, null);
+            $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
+            $dbman->create_table($table);
+        }
+
+        // Check and create edwreports_course_progress table if it doesn't exist.
+        $table = new xmldb_table('edwreports_course_progress');
+        if (!$dbman->table_exists($table)) {
+            $table->add_field('id', XMLDB_TYPE_INTEGER, 10, null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null);
+            $table->add_field('courseid', XMLDB_TYPE_INTEGER, 10, null, XMLDB_NOTNULL, null, null, null);
+            $table->add_field('userid', XMLDB_TYPE_INTEGER, 10, null, XMLDB_NOTNULL, null, null, null);
+            $table->add_field('completedmodules', XMLDB_TYPE_TEXT, null, null, null, null, null, null);
+            $table->add_field('totalmodules', XMLDB_TYPE_INTEGER, 10, null, XMLDB_NOTNULL, null, null, null, 0);
+            $table->add_field('completablemods', XMLDB_TYPE_INTEGER, 10, null, XMLDB_NOTNULL, null, null, null, 0);
+            $table->add_field('progress', XMLDB_TYPE_INTEGER, 5, null, XMLDB_NOTNULL, null, null, null, 0);
+            $table->add_field('completiontime', XMLDB_TYPE_INTEGER, 10, null, null, null, null, null);
+            $table->add_field('pchange', XMLDB_TYPE_INTEGER, 2, null, XMLDB_NOTNULL, null, null, null, 1);
+            $table->add_field('criteria', XMLDB_TYPE_INTEGER, 2, null, XMLDB_NOTNULL, null, null, null, 0);
+            $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
+            $table->add_index('courseid', XMLDB_INDEX_NOTUNIQUE, array('courseid'));
+            $table->add_index('userid', XMLDB_INDEX_NOTUNIQUE, array('userid'));
+            $dbman->create_table($table);
+        }
+
+        // Check and create edwreports_custom_reports table if it doesn't exist.
+        $table = new xmldb_table('edwreports_custom_reports');
+        if (!$dbman->table_exists($table)) {
+            $table->add_field('id', XMLDB_TYPE_INTEGER, 10, null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null);
+            $table->add_field('shortname', XMLDB_TYPE_TEXT, null, null, XMLDB_NOTNULL, null, null, null);
+            $table->add_field('fullname', XMLDB_TYPE_TEXT, null, null, XMLDB_NOTNULL, null, null, null);
+            $table->add_field('createdby', XMLDB_TYPE_INTEGER, 10, null, XMLDB_NOTNULL, null, null, null);
+            $table->add_field('data', XMLDB_TYPE_TEXT, null, null, XMLDB_NOTNULL, null, null, null);
+            $table->add_field('enabledesktop', XMLDB_TYPE_INTEGER, 2, null, XMLDB_NOTNULL, null, null, null, 0);
+            $table->add_field('timecreated', XMLDB_TYPE_INTEGER, 10, null, XMLDB_NOTNULL, null, null, null, 0);
+            $table->add_field('timemodified', XMLDB_TYPE_INTEGER, 10, null, XMLDB_NOTNULL, null, null, null, 0);
+            $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
+            $dbman->create_table($table);
+        }
+
+        // Check and create edwreports_authentication table if it doesn't exist.
+        $table = new xmldb_table('edwreports_authentication');
+        if (!$dbman->table_exists($table)) {
+            $table->add_field('id', XMLDB_TYPE_INTEGER, 10, null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null);
+            $table->add_field('userid', XMLDB_TYPE_INTEGER, 10, null, XMLDB_NOTNULL, null, null, null);
+            $table->add_field('secret', XMLDB_TYPE_TEXT, null, null, XMLDB_NOTNULL, null, null, null);
+            $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
+            $table->add_key('unique', XMLDB_KEY_UNIQUE, array('userid'));
+            $dbman->create_table($table);
+        }
+    }
+
     // Check the old version.
     if (2020030400 <= $oldversion) {
         // Table name to be removed.

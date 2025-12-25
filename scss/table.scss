@@ -49,6 +49,7 @@
             position: sticky;
             left: 0;
             z-index: 1;
+            padding-right: 27px !important;
         }
         th {
             background: #C5F3F5 !important;
@@ -85,6 +86,38 @@
                     a {
                         border: 0 !important;
                         background-color: transparent !important;
+                    }
+                }
+                // Previous button: ← Previous
+                &.previous {
+                    a {
+                        padding: 6px 10px !important;
+                        &::before {
+                            content: "←";
+                            margin-right: 0.25rem;
+                            display: inline-block;
+                            vertical-align: middle;
+                            // Remove any border-based arrow styles
+                            border: none !important;
+                            width: auto !important;
+                            height: auto !important;
+                        }
+                    }
+                }
+                // Next button: Next →
+                &.next {
+                    a {
+                        padding: 6px 10px !important;
+                        &::after {
+                            content: "→";
+                            margin-left: 0.25rem;
+                            display: inline-block;
+                            vertical-align: middle;
+                            // Remove any border-based arrow styles
+                            border: none !important;
+                            width: auto !important;
+                            height: auto !important;
+                        }
                     }
                 }
             }
@@ -177,6 +210,26 @@ html[dir=rtl] .local-edwiserreports{
             &::after{
                 right: unset;
                 left: 1em;
+            }
+        }
+        .table-pagination {
+            .page-item {
+                // RTL: Previous button should have right arrow
+                &.previous {
+                    a {
+                        &::before {
+                            content: "→";
+                        }
+                    }
+                }
+                // RTL: Next button should have left arrow
+                &.next {
+                    a {
+                        &::after {
+                            content: "←";
+                        }
+                    }
+                }
             }
         }
     }

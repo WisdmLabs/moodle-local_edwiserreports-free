@@ -246,19 +246,21 @@ tr[aria-expanded="true"] {
         }
         .filter-selector {
             position: relative;
-            .dropdown-menu {
-                right: 0 !important;
-                left: auto !important;
-                transform: none !important;
-                top: 100% !important;
-            }
         }
     }
     .dropdown-menu.withcalendar {
-        width: 310px;
+        width: -webkit-fill-available;
         display: flex;
+        .dropdown-calendar{
+            right: 0;
+        }
         .dropdown-body {
             display: none;
+            // Reset any inherited styles from parent
+            width: auto !important;
+            flex: none !important;
+            right: auto !important;
+            left: auto !important;
         }
         .dropdown-calendar {
             user-select: none;
@@ -280,6 +282,13 @@ tr[aria-expanded="true"] {
     }
 }
 
+// LTR only: Apply dropdown menu positioning only when NOT RTL
+html:not([dir=rtl]) #page-local-edwiserreports-index .edwiserreports-header .filter-selector .dropdown-menu {
+    right: 0 !important;
+    left: auto !important;
+    transform: none !important;
+    top: 100% !important;
+}
 
 html[lang=de] .local-edwiserreports {
     .filter-selector {
@@ -1309,36 +1318,7 @@ $button-width: 3.5rem;
     direction: ltr !important;
 }
 
-html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .page-item.previous a,
-.local-edwiserreports .edwiserreports-table .table-pagination .page-item.next a {
-    padding: 6px 10px !important;
-    &::before{
-        content: '';
-        display: block;
-        width: 0px;
-        height: 0px;
-        border-left: 11px solid transparent;
-        border-bottom: 6px solid transparent;
-        border-top: 6px solid transparent;
-        border-left-color: #ccc;
-        border-right-width: 0px;
-    }
-}
-.local-edwiserreports .edwiserreports-table .table-pagination .page-item.previous a,
-html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .page-item.next a {
-    padding: 6px 10px !important;
-    &::before{
-        content: '';
-        display: block;
-        width: 0px;
-        height: 0px;
-        border-bottom: 6px solid transparent;
-        border-top: 6px solid transparent;
-        border-right: 10px solid transparent;
-        border-right-color: #ccc;
-        border-left-width: 0px;
-    }
-}
+// Old border-based arrow styles removed - now using simple text arrows in table.scss
 
 .local-edwiserreports .edwiserreports-table .table-pagination .page-item a{
     padding: 3px 10px !important;
@@ -1370,15 +1350,20 @@ html[dir=rtl] .local-edwiserreports .pull-right{
 
 html[dir=rtl] .local-edwiserreports{
     .filter-selector{
+        .dropdown-menu {
+            // Apply positioning only to first child (dropdown-calendar), not to dropdown-body
+            > .dropdown-calendar:first-child {
+                position: relative;
+                right: -163px !important;
+                left: auto !important;
+                transform: none !important;
+            }
+        }
         & > label {
             right: 2.1rem;
             left: unset;
             z-index: 1;
             top: -0.5rem;
-        }
-         .dropdown-menu {
-            right: unset !important;
-            left: 0 !important;
         }
         .edwiserreports-calendar{
             text-align: right;
@@ -1396,10 +1381,6 @@ html[dir=rtl] .local-edwiserreports{
         }
     }
 
-    .apexcharts-legend-marker{
-        // margin-right: unset !important;
-        // margin-left: 3px !important;
-    }
     .apexcharts-canvas{
         direction: ltr !important;
     }
