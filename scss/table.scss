@@ -44,18 +44,36 @@
             table-layout: fixed;
             width: max-content !important;
             min-width: 100%;
+            &.dataTable {
+                thead {
+                    tr {
+                        th {
+                            height: 70px;
+                        }
+                    }
+                }
+                tbody {
+                    tr {
+                        td {
+                            height: 70px;
+                        }
+                    }
+                }
+            }
         }
         .fixed-column {
             position: sticky;
             left: 0;
             z-index: 1;
-            padding-right: 27px !important;
         }
         th {
             background: #C5F3F5 !important;
-        }
-        th {
             color: rgb(107, 114, 128) !important;
+        }
+        .sorting_asc,
+        .sorting_desc,
+        .sorting {
+            padding-right: 24px !important;
         }
         tr {
             &:hover {
@@ -88,47 +106,12 @@
                         background-color: transparent !important;
                     }
                 }
-                // Previous button: ← Previous
-                &.previous {
-                    a {
-                        padding: 6px 10px !important;
-                        &::before {
-                            content: "←";
-                            margin-right: 0.25rem;
-                            display: inline-block;
-                            vertical-align: middle;
-                            // Remove any border-based arrow styles
-                            border: none !important;
-                            width: auto !important;
-                            height: auto !important;
-                        }
-                    }
-                }
-                // Next button: Next →
-                &.next {
-                    a {
-                        padding: 6px 10px !important;
-                        &::after {
-                            content: "→";
-                            margin-left: 0.25rem;
-                            display: inline-block;
-                            vertical-align: middle;
-                            // Remove any border-based arrow styles
-                            border: none !important;
-                            width: auto !important;
-                            height: auto !important;
-                        }
-                    }
-                }
             }
             .pagination-number {
                 border: 0 !important;
                 background: transparent !important;
                 a {
                     border: 0 !important;
-                }
-                &:not(.disabled) a {
-                    text-decoration: underline;
                 }
             }
         }
@@ -151,17 +134,6 @@
         .danger-tag {
             color: rgb(190, 18, 60);
             background: rgb(255, 228, 230);
-        }
-        .sorting_asc,
-        .sorting_desc,
-        .sorting {
-            padding-right: 24px !important;
-            &::before{
-                font-size: 18px !important;
-            }
-            &::after{
-                font-size: 18px !important;
-            }
         }
     }
     .dataTables_wrapper {
@@ -192,43 +164,7 @@
                     right: 0.2rem;
                     top: 50%;
                     transform: translateY(-50%);
-                }
-            }
-        }
-    }
-}
-html[dir=rtl] .local-edwiserreports{
-    .edwiserreports-table{
-        .sorting_asc,
-        .sorting_desc,
-        .sorting {
-            padding: 16px 10px 16px 30px !important;
-            &::before{
-                right: unset;
-                left: 1em;
-            }
-            &::after{
-                right: unset;
-                left: 1em;
-            }
-        }
-        .table-pagination {
-            .page-item {
-                // RTL: Previous button should have right arrow
-                &.previous {
-                    a {
-                        &::before {
-                            content: "→";
-                        }
-                    }
-                }
-                // RTL: Next button should have left arrow
-                &.next {
-                    a {
-                        &::after {
-                            content: "←";
-                        }
-                    }
+                     color: #F98012;
                 }
             }
         }

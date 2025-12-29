@@ -506,6 +506,9 @@ html[lang=es] .local-edwiserreports {
     .panel-body {
         min-height: 200px;
     }
+    :not(.panel-header) .icon {
+        color: #fff;
+    }
     input.dropdown-item {
         background-color: transparent;
         color: inherit;
@@ -1431,4 +1434,205 @@ html[dir=rtl] .local-edwiserreports{
     #learnertimespentonsiteblock .filter-selector > label{
         left: unset;
     }
+}
+
+.ed-pro-reports .row>* {
+    width: auto !important;
+}
+
+.panel.card.ed-pro-reports,
+.ed-pro-reports.panel.card,
+.ed-pro-reports.card,
+.panel.card.ed-reports-pro,
+.ed-reports-pro.panel.card,
+.ed-reports-pro.card {
+    border: none !important;
+}
+
+.local-edwiserreports.report-page .report-content .filter-selector .select2, .local-edwiserreports.report-page .report-content .filter-selector .select2-container {
+    width: 100% !important;
+}
+
+.local-edwiserreports.report-page .report-content .filter-selector {
+    flex: 1 1 280px;
+}
+
+#userfilter:not(#wdm-completion-individual #userfilter) .row>*:not(.table-length-input) {
+    width: fit-content !important;
+    max-width: 300px !important;
+}
+
+.summary-body-wrap.row>* {
+    width: max-content !important;
+}
+
+.local-edwiserreports .row> button, .local-edwiserreports.report-page .row> .pro-export-wrapper, .download-label {
+    width: fit-content;
+    padding-inline: 4px;
+    padding-block: 1px;
+}
+
+.local-edwiserreports .edwiserreports-table .table-pagination .page-item.previous .page-link,
+.local-edwiserreports .edwiserreports-table .table-pagination .page-item.previous.disabled .page-link,
+.local-edwiserreports .edwiserreports-table .table-pagination .page-item.previous a,
+.local-edwiserreports .edwiserreports-table .table-pagination .page-item.previous.disabled a,
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .page-item.next .page-link,
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .page-item.next.disabled .page-link,
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .page-item.next a,
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .page-item.next.disabled a {
+    position: relative;
+    &::after {
+        content: none !important;
+    }
+    &::before {
+        content: "" !important;
+        display: block !important;
+        width: 0px !important;
+        height: 0px !important;
+        border-bottom: 6px solid transparent !important;
+        border-top: 6px solid transparent !important;
+        border-right: 10px solid transparent !important;
+        border-left-width: 0px !important;
+        position: absolute !important;
+        left: 50% !important;
+        top: 50% !important;
+        transform: translate(-50%, -50%) !important;
+    }
+}
+
+// Disabled previous/next buttons - light orange arrow
+.local-edwiserreports .edwiserreports-table .table-pagination .page-item.previous.disabled .page-link::before,
+.local-edwiserreports .edwiserreports-table .table-pagination .page-item.previous.disabled a::before,
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .page-item.next.disabled .page-link::before,
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .page-item.next.disabled a::before {
+    border-right-color: rgba(249, 128, 18, 0.5) !important;
+}
+
+// Active previous/next buttons - vibrant orange arrow
+.local-edwiserreports .edwiserreports-table .table-pagination .page-item.previous:not(.disabled) .page-link::before,
+.local-edwiserreports .edwiserreports-table .table-pagination .page-item.previous:not(.disabled) a::before,
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .page-item.next:not(.disabled) .page-link::before,
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .page-item.next:not(.disabled) a::before {
+    border-right-color: #F98012 !important;
+}
+
+.local-edwiserreports .edwiserreports-table .table-pagination .page-item.next .page-link,
+.local-edwiserreports .edwiserreports-table .table-pagination .page-item.next.disabled .page-link,
+.local-edwiserreports .edwiserreports-table .table-pagination .page-item.next a,
+.local-edwiserreports .edwiserreports-table .table-pagination .page-item.next.disabled a,
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .page-item.previous .page-link,
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .page-item.previous.disabled .page-link,
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .page-item.previous a,
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .page-item.previous.disabled a {
+    position: relative;
+    &::after {
+        content: none !important;
+    }
+    &::before {
+        content: "" !important;
+        display: block !important;
+        width: 0px !important;
+        height: 0px !important;
+        border-bottom: 6px solid transparent !important;
+        border-top: 6px solid transparent !important;
+        border-left: 10px solid transparent !important;
+        border-right-width: 0px !important;
+        position: absolute !important;
+        left: 50% !important;
+        top: 50% !important;
+        transform: translate(-50%, -50%) !important;
+    }
+}
+
+// Disabled next/previous buttons - light orange arrow
+.local-edwiserreports .edwiserreports-table .table-pagination .page-item.next.disabled .page-link::before,
+.local-edwiserreports .edwiserreports-table .table-pagination .page-item.next.disabled a::before,
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .page-item.previous.disabled .page-link::before,
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .page-item.previous.disabled a::before {
+    border-left-color: rgba(249, 128, 18, 0.5) !important;
+}
+
+// Active next/previous buttons - vibrant orange arrow
+.local-edwiserreports .edwiserreports-table .table-pagination .page-item.next:not(.disabled) .page-link::before,
+.local-edwiserreports .edwiserreports-table .table-pagination .page-item.next:not(.disabled) a::before,
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .page-item.previous:not(.disabled) .page-link::before,
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .page-item.previous:not(.disabled) a::before {
+    border-left-color: #F98012 !important;
+}
+
+.mx-2 {
+    margin-right: 0.5rem !important;
+    margin-left: 0.5rem !important;
+}
+
+.mx-4 {
+    margin-right: 1.5rem !important;
+    margin-left: 1.5rem !important;
+}
+
+// Pagination buttons styling
+.local-edwiserreports .edwiserreports-table .table-pagination .page-item {
+    .page-link {
+        padding: 0.429rem 0.786rem;
+        border-radius: 0.25rem;
+        // min-width: 2.5rem;
+        min-height: 2.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    // Disabled previous/next buttons - light orange background and border
+    &.previous.disabled .page-link,
+    &.next.disabled .page-link {
+        background-color: rgba(249, 128, 18, 0.1) !important;
+        border: 1px solid rgba(249, 128, 18, 0.3) !important;
+        padding: 0.429rem 0.786rem !important;
+    }
+    
+    // Active previous/next buttons - white background, orange border
+    &.previous:not(.disabled) .page-link,
+    &.next:not(.disabled) .page-link {
+        background-color: #fff !important;
+        border: 1px solid #F98012 !important;
+        padding: 0.429rem 0.786rem !important;
+    }
+    
+    // Active page - no border, no background, dark text
+    &.active .page-link {
+        border: none !important;
+        background-color: transparent !important;
+        color: #333 !important;
+        padding: 0.429rem 0.786rem !important;
+    }
+    
+    // Pagination number buttons - white background, orange border, orange text
+    &.pagination-number .page-link {
+        background-color: #fff !important;
+        border: 1px solid #F98012 !important;
+        color: #F98012 !important;
+        margin-right: 1.5rem !important;
+    }
+    
+}
+
+// LTR: Add margin to first number after previous button (arrow)
+html[dir=ltr] .local-edwiserreports .edwiserreports-table .table-pagination .page-item.previous + .page-item .page-link {
+    margin-left: 0.5rem !important;
+}
+
+// RTL: Add margin to second-to-last number (before next button) - only in RTL
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .page-item:not(.next):nth-last-child(2) .page-link {
+    margin-left: 0.5rem !important;
+}
+
+.field.ml-3.mr-3.show {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    max-width: 100%;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    z-index: 1000;
 }

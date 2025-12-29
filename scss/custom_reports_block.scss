@@ -65,6 +65,10 @@
     }
 }
 
+.field-group-wrap {
+    position: relative;
+}
+
 .field-group.open i {
     transform: rotate(90deg);
 }
@@ -77,6 +81,10 @@
 
 .field:not(.show) {
     display: none;
+}
+
+#cr-preview-table {
+    table-layout: auto !important;
 }
 
 #cr-list-table {
