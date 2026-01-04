@@ -138,11 +138,12 @@ define([
      */
     function showTimeLabel(date) {
         PROMISE.GET_TIMEPERIOD_LABEL(date).done(function(response) {
+            // Use UTC methods to avoid timezone issues
             let startdate = new Date(response.startdate * 86400000);
             let enddate = new Date(response.enddate * 86400000);
-            let startDay = startdate.getDate();
+            let startDay = startdate.getUTCDate();
             startDay = startDay < 10 ? '0' + startDay : startDay;
-            let endDay = enddate.getDate();
+            let endDay = enddate.getUTCDate();
             endDay = endDay < 10 ? '0' + endDay : endDay;
 
             // $(SELECTOR.DATESELECTED).html(`
@@ -153,15 +154,21 @@ define([
             //     month: 'long'
             // })} ${enddate.getFullYear()}`);
 
-            let customdate = `${startDay} ${startdate.toLocaleString('default', { month: 'long' })} ${startdate.getFullYear()}` + ' - ' +
-            `${endDay} ${enddate.toLocaleString('default', { month: 'long' })} ${enddate.getFullYear()}`;
+            // Use UTC methods for month and year to avoid timezone issues
+            let startMonth = startdate.toLocaleString('default', { month: 'long', timeZone: 'UTC' });
+            let startYear = startdate.getUTCFullYear();
+            let endMonth = enddate.toLocaleString('default', { month: 'long', timeZone: 'UTC' });
+            let endYear = enddate.getUTCFullYear();
+            
+            let customdate = `${startDay} ${startMonth} ${startYear}` + ' - ' +
+            `${endDay} ${endMonth} ${endYear}`;
             // RTL support
             let dirattr = $('html').attr('dir');
             // Formating date for rtl
             if(dirattr == 'rtl'){
                 // format for rtl : yyyy mm dd
-                startdate = startdate.getFullYear() + ' ' + startdate.toLocaleString('default', { month: 'long' }) + ' ' + startDay;
-                enddate = enddate.getFullYear() + ' ' + enddate.toLocaleString('default', { month: 'long' }) + ' ' + endDay;
+                startdate = startYear + ' ' + startMonth + ' ' + startDay;
+                enddate = endYear + ' ' + endMonth + ' ' + endDay;
                 customdate = enddate + '-' + startdate;
 
                 // Making direction ltr for date selector and aligning text to right

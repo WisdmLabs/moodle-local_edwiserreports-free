@@ -378,18 +378,29 @@ class block_base {
         switch ($timeperiod) {
             case 'last7days':
                 // Last 7 days. Except today.
-                $enddate = floor(strtotime('yesterday') / 86400 + 1) * 86400;
-                $days = LOCAL_SITEREPORT_WEEKLY_DAYS - 1;
+                // End date should be end of yesterday (23:59:59)
+                $enddate = strtotime('yesterday 23:59:59');
+                // Start date should be 7 days before yesterday (including yesterday = 7 days total)
+                // So we need 6 days before yesterday
+                $days = LOCAL_SITEREPORT_WEEKLY_DAYS - 1; // 6 days
+                // Calculate start date as beginning of the day (00:00:00)
+                $startdate = strtotime('-' . $days . ' days', strtotime('yesterday 00:00:00'));
                 break;
             case 'weekly':
                 // Weekly days. From Last Week. Sunday to Saturday.
-                $enddate = floor(strtotime('last saturday') / 86400 + 1) * 86400;
-                $days = LOCAL_SITEREPORT_WEEKLY_DAYS - 1;
+                // End date should be end of last saturday (23:59:59)
+                $enddate = strtotime('last saturday 23:59:59');
+                $days = LOCAL_SITEREPORT_WEEKLY_DAYS - 1; // 6 days
+                // Calculate start date as beginning of last sunday (00:00:00)
+                $startdate = strtotime('-' . $days . ' days', strtotime('last saturday 00:00:00'));
                 break;
             case 'monthly':
                 // Monthly days. Last Months 1st day to last day.
-                $enddate = strtotime('last day of previous month');
-                $days = $enddate / 86400 - strtotime('first day of previous month') / 86400;
+                // End date should be end of last day of previous month (23:59:59)
+                $enddate = strtotime('last day of previous month 23:59:59');
+                // Start date should be beginning of first day of previous month (00:00:00)
+                $startdate = strtotime('first day of previous month 00:00:00');
+                $days = ($enddate - $startdate) / 86400;
                 break;
             case 'yearly':
                 // Yearly days.
@@ -400,28 +411,42 @@ class block_base {
                 if ($month < 4) {
                     $year--;
                 }
-                $enddate = strtotime("$year-03-31") + 86400;
-                $days = ($enddate / 86400) - (strtotime(($year - 1) . "-04-01") / 86400) - 1;
+                // End date should be end of March 31st (23:59:59)
+                $enddate = strtotime("$year-03-31 23:59:59");
+                // Start date should be beginning of April 1st of previous year (00:00:00)
+                $startdate = strtotime(($year - 1) . "-04-01 00:00:00");
+                $days = ($enddate - $startdate) / 86400;
                 break;
             default:
                 // Explode dates from custom date filter.
                 $dates = explode(" to ", $timeperiod);
                 if (count($dates) == 2) {
-                    $startdate = strtotime($dates[0] . " 00:00:00") + 86400;
+                    $startdate = strtotime($dates[0] . " 00:00:00");
+                    // End date should be end of the selected day
+                    // Use start of next day minus 1 second to avoid timezone issues
                     $enddate = strtotime($dates[1] . " 23:59:59");
+                    // Ensure enddate represents the end of the selected day, not the start of next day
+                    // Floor to day boundary to avoid timezone conversion issues
+                    $enddate = floor($enddate / 86400) * 86400 + 86399;
                 }
 
                 // If it has correct startdat and end date then count xlabel.
                 if (isset($startdate) && isset($enddate)) {
-                    $days = round(($enddate - $startdate) / LOCAL_SITEREPORT_ONEDAY);
+                    // Calculate days based on day numbers to avoid rounding issues
+                    // This ensures we get the exact number of days between start and end (inclusive)
+                    $startday = floor($startdate / LOCAL_SITEREPORT_ONEDAY);
+                    $endday = floor($enddate / LOCAL_SITEREPORT_ONEDAY);
+                    $days = ($endday - $startday);
                 } else {
                     $days = LOCAL_SITEREPORT_WEEKLY_DAYS; // Default one week.
                 }
                 break;
         }
 
-        // Calculating startdate.
-        $startdate = $enddate - ($days * 86400);
+        // Calculating startdate only if not already set (for non-custom dates).
+        if (!isset($startdate)) {
+            $startdate = $enddate - ($days * 86400);
+        }
 
         // Returning startdate and enddate.
         return [$startdate, $enddate, $days];

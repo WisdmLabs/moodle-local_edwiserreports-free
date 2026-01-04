@@ -42,7 +42,7 @@
         }
         table {
             table-layout: fixed;
-            width: max-content !important;
+            width: max-content;
             min-width: 100%;
             &.dataTable {
                 thead {

@@ -322,6 +322,9 @@ html[lang=es] .local-edwiserreports {
             }
         }
     }
+    button.learnertimespentonsite-calendar {
+        width: auto !important;
+    }
     .filter-selector {
         position: relative;
         .exclude-select {
@@ -505,6 +508,12 @@ html[lang=es] .local-edwiserreports {
     }
     .panel-body {
         min-height: 200px;
+    }
+    .panel-header .row>* {
+        width: fit-content !important;
+    }
+    .panel-header .icon {
+        color: inherit !important;
     }
     :not(.panel-header) .icon {
         color: #fff;
@@ -1424,9 +1433,9 @@ html[dir=rtl] .local-edwiserreports{
         direction: ltr;
     }
 
-    #cr-preview-table_wrapper table td,.customreportdata td{
-        direction: ltr;
-    }
+    // #cr-preview-table_wrapper table td,.customreportdata td{
+    //     direction: ltr;
+    // }
 
     .erp-time-rtl{
         direction: ltr;
@@ -1462,9 +1471,9 @@ html[dir=rtl] .local-edwiserreports{
     max-width: 300px !important;
 }
 
-.summary-body-wrap.row>* {
-    width: max-content !important;
-}
+// .summary-body-wrap.row>* {
+//     width: max-content !important;
+// }
 
 .local-edwiserreports .row> button, .local-edwiserreports.report-page .row> .pro-export-wrapper, .download-label {
     width: fit-content;
@@ -1493,10 +1502,10 @@ html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .pag
         border-top: 6px solid transparent !important;
         border-right: 10px solid transparent !important;
         border-left-width: 0px !important;
-        position: absolute !important;
-        left: 50% !important;
-        top: 50% !important;
-        transform: translate(-50%, -50%) !important;
+        // position: absolute !important;
+        // left: 50% !important;
+        // top: 50% !important;
+        // transform: translate(-50%, -50%) !important;
     }
 }
 
@@ -1537,10 +1546,10 @@ html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .pag
         border-top: 6px solid transparent !important;
         border-left: 10px solid transparent !important;
         border-right-width: 0px !important;
-        position: absolute !important;
-        left: 50% !important;
-        top: 50% !important;
-        transform: translate(-50%, -50%) !important;
+        // position: absolute !important;
+        // left: 50% !important;
+        // top: 50% !important;
+        // transform: translate(-50%, -50%) !important;
     }
 }
 

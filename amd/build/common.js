@@ -242,8 +242,9 @@ define([
             $('.insight-wrapper .fa-arrow-left:not(.rtl-support)').removeClass("fa-arrow-left").addClass("fa-arrow-right rtl-support");
             $('.insight-wrapper .fa-arrow-right:not(.rtl-support)').removeClass("fa-arrow-right").addClass("fa-arrow-left rtl-support");
         }
-        $('.edwiserreports-table .page-item.next a').empty();
-        $('.edwiserreports-table .page-item.previous a').empty();
+        // Hide previous/next text only for custom report tables (customreportdata)
+        $('.customreportdata').closest('.edwiserreports-table').find('.page-item.next a').empty();
+        $('.customreportdata').closest('.edwiserreports-table').find('.page-item.previous a').empty();
     }, 1000);
     }
 

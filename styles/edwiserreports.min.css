@@ -519,6 +519,9 @@ html[lang=es] .local-edwiserreports .filter-selector .edwiserreports-calendar {
 .local-edwiserreports #learnertimespentonsiteblock .filter-selector .dropdown-toggle {
     padding: 0.829rem 2rem 0.229rem 1rem !important;
 }
+.local-edwiserreports button.learnertimespentonsite-calendar {
+    width: auto !important;
+}
 .local-edwiserreports .filter-selector {
     position: relative;
 }
@@ -687,6 +690,12 @@ html[lang=es] .local-edwiserreports .filter-selector .edwiserreports-calendar {
 }
 #wdm-edwiserreports .panel-body {
     min-height: 200px;
+}
+#wdm-edwiserreports .panel-header .row > * {
+    width: fit-content !important;
+}
+#wdm-edwiserreports .panel-header .icon {
+    color: inherit !important;
 }
 #wdm-edwiserreports :not(.panel-header) .icon {
     color: #fff;
@@ -1455,9 +1464,6 @@ html[dir=rtl] .local-edwiserreports .panel .panel-footer {
 html[dir=rtl] .local-edwiserreports #todaysactivityblock .flatpickr-input {
     direction: ltr;
 }
-html[dir=rtl] .local-edwiserreports #cr-preview-table_wrapper table td, html[dir=rtl] .local-edwiserreports .customreportdata td {
-    direction: ltr;
-}
 html[dir=rtl] .local-edwiserreports .erp-time-rtl {
     direction: ltr;
 }
@@ -1489,10 +1495,6 @@ html[dir=rtl] .local-edwiserreports #learnertimespentonsiteblock .filter-selecto
 #userfilter:not(#wdm-completion-individual #userfilter) .row > *:not(.table-length-input) {
     width: fit-content !important;
     max-width: 300px !important;
-}
-
-.summary-body-wrap.row > * {
-    width: max-content !important;
 }
 
 .local-edwiserreports .row > button, .local-edwiserreports.report-page .row > .pro-export-wrapper, .download-label {
@@ -1537,10 +1539,6 @@ html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .pag
     border-top: 6px solid transparent !important;
     border-right: 10px solid transparent !important;
     border-left-width: 0px !important;
-    position: absolute !important;
-    left: 50% !important;
-    top: 50% !important;
-    transform: translate(-50%, -50%) !important;
 }
 
 .local-edwiserreports .edwiserreports-table .table-pagination .page-item.previous.disabled .page-link::before,
@@ -1593,10 +1591,6 @@ html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .pag
     border-top: 6px solid transparent !important;
     border-left: 10px solid transparent !important;
     border-right-width: 0px !important;
-    position: absolute !important;
-    left: 50% !important;
-    top: 50% !important;
-    transform: translate(-50%, -50%) !important;
 }
 
 .local-edwiserreports .edwiserreports-table .table-pagination .page-item.next.disabled .page-link::before,
@@ -1769,10 +1763,6 @@ html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .pag
 
 .field:not(.show) {
     display: none;
-}
-
-#cr-preview-table {
-    table-layout: auto !important;
 }
 
 #cr-list-table {
@@ -2580,7 +2570,7 @@ html[dir=rtl] .insight-card .insight-details::before {
 }
 .local-edwiserreports .edwiserreports-table table {
     table-layout: fixed;
-    width: max-content !important;
+    width: max-content;
     min-width: 100%;
 }
 .local-edwiserreports .edwiserreports-table table.dataTable thead tr th {
