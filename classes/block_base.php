@@ -403,18 +403,25 @@ class block_base {
                 $days = ($enddate - $startdate) / 86400;
                 break;
             case 'yearly':
-                // Yearly days.
-                // Ex. Date is 1960-04-31. Then period will be from 1958-04-01 to 1959-03-31.
-                // Ex. Date is 1960-05-01. Then period will be from 1959-04-01 to 1960-03-31.
-                $month = date('m');
-                $year = date('Y');
-                if ($month < 4) {
-                    $year--;
+                // Yearly days - Last financial year (April 1 to March 31).
+                // Ex. If today is 2026-01-06 (month < 4), then period will be from 2024-04-01 to 2025-03-31.
+                // Ex. If today is 2026-06-15 (month >= 4), then period will be from 2025-04-01 to 2026-03-31.
+                $currentmonth = date('m');
+                $currentyear = date('Y');
+                if ($currentmonth < 4) {
+                    // We're in new financial year, so last completed FY ended in previous calendar year
+                    $endyear = $currentyear - 1;
+                    $startyear = $endyear - 1;
+                } else {
+                    // We're still in current financial year, so last completed FY ended in current calendar year
+                    $endyear = $currentyear;
+                    $startyear = $endyear - 1;
                 }
-                // End date should be end of March 31st (23:59:59)
-                $enddate = strtotime("$year-03-31 23:59:59");
+                // End date should be end of March 31st
+                // Use start of April 1st minus 1 second to ensure we include the full last day
+                $enddate = strtotime("$endyear-04-01 00:00:00") - 1;
                 // Start date should be beginning of April 1st of previous year (00:00:00)
-                $startdate = strtotime(($year - 1) . "-04-01 00:00:00");
+                $startdate = strtotime("$startyear-04-01 00:00:00");
                 $days = ($enddate - $startdate) / 86400;
                 break;
             default:

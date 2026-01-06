@@ -27,4 +27,3 @@ define([], function() {
         DATECHANGE: 'edwiserreport:datechange'
     };
 });
-

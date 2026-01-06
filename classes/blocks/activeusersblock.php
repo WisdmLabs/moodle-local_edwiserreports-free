@@ -209,11 +209,35 @@ class activeusersblock extends block_base {
         // Get start and end date.
         list($this->startdate, $this->enddate, $this->xlabelcount) = $this->get_date_range($timeperiod);
 
-        // Get all lables.
-        for ($i = $this->xlabelcount; $i >= 0; $i--) {
-            $time = $this->enddate - $i * LOCAL_SITEREPORT_ONEDAY;
-            $this->dates[floor($time / LOCAL_SITEREPORT_ONEDAY)] = 0;
+        // Get all labels from startdate to enddate (inclusive).
+        // Calculate day numbers directly from timestamps
+        $startday = floor($this->startdate / LOCAL_SITEREPORT_ONEDAY);
+        $endday = floor($this->enddate / LOCAL_SITEREPORT_ONEDAY);
+        
+        // For yearly filter, ensure we start from April 1st, not March 31st
+        // Check if the startday corresponds to March 31st and skip it
+        if ($timeperiod == 'yearly') {
+            $startdaydate = date('Y-m-d', $startday * LOCAL_SITEREPORT_ONEDAY);
+            // If startday is March 31st, move to next day (April 1st)
+            if (strpos($startdaydate, '-03-31') !== false) {
+                $startday = $startday + 1;
+            }
+            // Also verify that we're starting from April 1st by checking the date
+            $verifydate = date('m-d', $startday * LOCAL_SITEREPORT_ONEDAY);
+            if ($verifydate != '04-01') {
+                // Force startday to be April 1st of the start year
+                $startyear = (int)date('Y', $this->startdate);
+                $april1timestamp = strtotime("$startyear-04-01 00:00:00");
+                $startday = floor($april1timestamp / LOCAL_SITEREPORT_ONEDAY);
+            }
         }
+        
+        for ($day = $startday; $day <= $endday; $day++) {
+            $this->dates[$day] = 0;
+        }
+        
+        // Update xlabelcount to match actual number of days.
+        $this->xlabelcount = count($this->dates);
     }
 
     /**
@@ -549,7 +573,7 @@ class activeusersblock extends block_base {
                        $cohortjoin
                  WHERE cc.completiontime IS NOT NULL
                     AND cc.completiontime >= :starttime
-                    AND cc.completiontime < :endtime
+                    AND cc.completiontime <= :endtime
                        $cohortcondition
                  GROUP BY FLOOR(cc.completiontime/86400)";
 
