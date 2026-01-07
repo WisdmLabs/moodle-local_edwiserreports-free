@@ -403,26 +403,55 @@ class block_base {
                 $days = ($enddate - $startdate) / 86400;
                 break;
             case 'yearly':
-                // Yearly days - Last financial year (April 1 to March 31).
-                // Ex. If today is 2026-01-06 (month < 4), then period will be from 2024-04-01 to 2025-03-31.
-                // Ex. If today is 2026-06-15 (month >= 4), then period will be from 2025-04-01 to 2026-03-31.
-                $currentmonth = date('m');
-                $currentyear = date('Y');
-                if ($currentmonth < 4) {
-                    // We're in new financial year, so last completed FY ended in previous calendar year
-                    $endyear = $currentyear - 1;
-                    $startyear = $endyear - 1;
+                // Yearly days - Financial year from April to March.
+                // "Last Year" means the last complete financial year (April to March).
+                // E.g., If current date is January 2026, show 01 April 2024 to 31 March 2025.
+                // E.g., If current date is May 2026, show 01 April 2024 to 31 March 2025 (previous complete financial year).
+                $month = date('m');
+                $year = date('Y');
+                
+                // Calculate the last complete financial year.
+                // If we're before April, the last complete financial year ended last year.
+                // If we're in April or later, the last complete financial year ended in March of this year.
+                if ($month < 4) {
+                    // Before April: Last complete financial year ended last year's March.
+                    // E.g., Jan 2026 → Financial year 2024-25 (01 April 2024 to 31 March 2025).
+                    // End date: 31 March 2025 23:59:59
+                    $endyear = $year - 1;
+                    $enddate = strtotime("$endyear-03-31 23:59:59");
+                    // Start date: 01 April 2024 00:00:00
+                    $startyear = $year - 2;
+                    $startdate = strtotime("$startyear-04-01 00:00:00");
                 } else {
-                    // We're still in current financial year, so last completed FY ended in current calendar year
-                    $endyear = $currentyear;
-                    $startyear = $endyear - 1;
+                    // April or later: Last complete financial year ended in March of this year.
+                    // E.g., May 2026 → Financial year 2025-26 (01 April 2025 to 31 March 2026) is current.
+                    // But "last year" means previous complete: 01 April 2024 to 31 March 2025.
+                    // End date: 31 March 2025 23:59:59
+                    $endyear = $year - 1;
+                    $enddate = strtotime("$endyear-03-31 23:59:59");
+                    // Start date: 01 April 2024 00:00:00
+                    $startyear = $year - 2;
+                    $startdate = strtotime("$startyear-04-01 00:00:00");
                 }
-                // End date should be end of March 31st
-                // Use start of April 1st minus 1 second to ensure we include the full last day
-                $enddate = strtotime("$endyear-04-01 00:00:00") - 1;
-                // Start date should be beginning of April 1st of previous year (00:00:00)
-                $startdate = strtotime("$startyear-04-01 00:00:00");
-                $days = ($enddate - $startdate) / 86400;
+                // Calculate days: from 01 April to 31 March (inclusive) = 365 days
+                // Calculate day numbers - ensure we get the correct day for 01 April
+                $startday = floor($startdate / LOCAL_SITEREPORT_ONEDAY);
+                $endday = floor($enddate / LOCAL_SITEREPORT_ONEDAY);
+                
+                // Verify and fix: ensure startday is for 01 April, not 31 March
+                // Check what date the calculated startday represents
+                $calculatedstartdate = $startday * LOCAL_SITEREPORT_ONEDAY;
+                $calculateddate = date('Y-m-d', $calculatedstartdate);
+                $expecteddate = "$startyear-04-01";
+                
+                // If timezone caused off-by-one error, adjust
+                if ($calculateddate != $expecteddate) {
+                    // Recalculate startday directly from expected date
+                    $startdatefixed = strtotime($expecteddate . " 00:00:00 UTC");
+                    $startday = floor($startdatefixed / LOCAL_SITEREPORT_ONEDAY);
+                }
+                
+                $days = ($endday - $startday) + 1; // +1 for inclusive range
                 break;
             default:
                 // Explode dates from custom date filter.

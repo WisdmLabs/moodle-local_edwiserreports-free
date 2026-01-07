@@ -414,12 +414,18 @@ class custom_reports_block implements renderable, templatable {
             array(
                 'id' => 'attemptstart',
                 'text' => get_string('attemptstart', 'local_edwiserreports'),
-                'dbkey' => 'FROM_UNIXTIME(qa.timestart, "%D %M %Y %h:%i:%m")'
+                'dbkey' => 'qa.timestart',
+                'resultfunc' => function($value, $rtl) {
+                    return $value ? ($rtl ? '<div style="direction:ltr">' . date('Y M d H:i:s', $value) .'</div>' : date('d M Y H:i:s', $value)) : get_string('na', 'local_edwiserreports');
+                }
             ),
             array(
                 'id' => 'attemptfinish',
                 'text' => get_string('attemptfinish', 'local_edwiserreports'),
-                'dbkey' => 'FROM_UNIXTIME(qa.timefinish, "%D %M %Y %h:%i:%m")'
+                'dbkey' => 'qa.timefinish',
+                'resultfunc' => function($value, $rtl) {
+                    return $value ? ($rtl ? '<div style="direction:ltr">' . date('Y M d H:i:s', $value) .'</div>' : date('d M Y H:i:s', $value)) : get_string('na', 'local_edwiserreports');
+                }
             ),
         );
         return $activityfields;

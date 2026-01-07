@@ -209,35 +209,31 @@ class activeusersblock extends block_base {
         // Get start and end date.
         list($this->startdate, $this->enddate, $this->xlabelcount) = $this->get_date_range($timeperiod);
 
-        // Get all labels from startdate to enddate (inclusive).
-        // Calculate day numbers directly from timestamps
-        $startday = floor($this->startdate / LOCAL_SITEREPORT_ONEDAY);
-        $endday = floor($this->enddate / LOCAL_SITEREPORT_ONEDAY);
-        
-        // For yearly filter, ensure we start from April 1st, not March 31st
-        // Check if the startday corresponds to March 31st and skip it
+        // Get all labels.
+        // For yearly filter, calculate day numbers directly from date strings to avoid timezone issues
         if ($timeperiod == 'yearly') {
-            $startdaydate = date('Y-m-d', $startday * LOCAL_SITEREPORT_ONEDAY);
-            // If startday is March 31st, move to next day (April 1st)
-            if (strpos($startdaydate, '-03-31') !== false) {
-                $startday = $startday + 1;
+            $month = date('m');
+            $year = date('Y');
+            if ($month < 4) {
+                $startyear = $year - 2;
+                $endyear = $year - 1;
+            } else {
+                $startyear = $year - 2;
+                $endyear = $year - 1;
             }
-            // Also verify that we're starting from April 1st by checking the date
-            $verifydate = date('m-d', $startday * LOCAL_SITEREPORT_ONEDAY);
-            if ($verifydate != '04-01') {
-                // Force startday to be April 1st of the start year
-                $startyear = (int)date('Y', $this->startdate);
-                $april1timestamp = strtotime("$startyear-04-01 00:00:00");
-                $startday = floor($april1timestamp / LOCAL_SITEREPORT_ONEDAY);
-            }
+            // Calculate day numbers directly from date strings (UTC) to avoid timezone issues
+            $startday = floor(strtotime("$startyear-04-01 00:00:00 UTC") / LOCAL_SITEREPORT_ONEDAY);
+            $endday = floor(strtotime("$endyear-03-31 23:59:59 UTC") / LOCAL_SITEREPORT_ONEDAY);
+        } else {
+            // For other filters, use the calculated timestamps
+            $startday = floor($this->startdate / LOCAL_SITEREPORT_ONEDAY);
+            $endday = floor($this->enddate / LOCAL_SITEREPORT_ONEDAY);
         }
         
+        // Generate dates from startday to endday (inclusive).
         for ($day = $startday; $day <= $endday; $day++) {
             $this->dates[$day] = 0;
         }
-        
-        // Update xlabelcount to match actual number of days.
-        $this->xlabelcount = count($this->dates);
     }
 
     /**
@@ -308,8 +304,13 @@ class activeusersblock extends block_base {
         // Generate active users data label.
         $this->generate_labels($this->filter);
 
-        // Get cache key.
-        $cachekey = $this->generate_cache_key("activeusers-response", $this->filter . '-' . $this->graphajax, $this->cohortid);
+        // Get cache key. Include date range for yearly filter to ensure cache invalidation when date calculation changes.
+        $filterkey = $this->filter . '-' . $this->graphajax;
+        if ($this->filter == 'yearly') {
+            // Include start and end date in cache key to invalidate cache when date range changes.
+            $filterkey .= '-' . $this->startdate . '-' . $this->enddate;
+        }
+        $cachekey = $this->generate_cache_key("activeusers-response", $filterkey, $this->cohortid);
 
         // If response is in cache then return from cache.
         if (!$response = $this->cache->get($cachekey)) {
@@ -573,7 +574,7 @@ class activeusersblock extends block_base {
                        $cohortjoin
                  WHERE cc.completiontime IS NOT NULL
                     AND cc.completiontime >= :starttime
-                    AND cc.completiontime <= :endtime
+                    AND cc.completiontime < :endtime
                        $cohortcondition
                  GROUP BY FLOOR(cc.completiontime/86400)";
 
