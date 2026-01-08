@@ -1471,9 +1471,9 @@ html[dir=rtl] .local-edwiserreports{
     max-width: 300px !important;
 }
 
-// .summary-body-wrap.row>* {
-//     width: max-content !important;
-// }
+.summary-body-wrap.row>* {
+    width: max-content !important;
+}
 
 .local-edwiserreports .row> button, .local-edwiserreports.report-page .row> .pro-export-wrapper, .download-label {
     width: fit-content;

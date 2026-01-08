@@ -1497,6 +1497,10 @@ html[dir=rtl] .local-edwiserreports #learnertimespentonsiteblock .filter-selecto
     max-width: 300px !important;
 }
 
+.summary-body-wrap.row > * {
+    width: max-content !important;
+}
+
 .local-edwiserreports .row > button, .local-edwiserreports.report-page .row > .pro-export-wrapper, .download-label {
     width: fit-content;
     padding-inline: 4px;
@@ -1765,8 +1769,18 @@ html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .pag
     display: none;
 }
 
+#cr-preview-table {
+    width: 100% !important;
+}
+
+#wdm-edwiserreports .table {
+    min-width: 100%;
+    width: max-content !important;
+}
+
 #cr-list-table {
     min-width: 100%;
+    width: 100% !important;
 }
 #cr-list-table th:last-child,
 #cr-list-table td:last-child {
@@ -2570,7 +2584,7 @@ html[dir=rtl] .insight-card .insight-details::before {
 }
 .local-edwiserreports .edwiserreports-table table {
     table-layout: fixed;
-    width: max-content;
+    width: max-content !important;
     min-width: 100%;
 }
 .local-edwiserreports .edwiserreports-table table.dataTable thead tr th {
