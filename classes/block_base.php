@@ -368,123 +368,103 @@ class block_base {
     /**
      * Get date range for timeperiod.
      * @param String $timeperiod Timeperiod
+     * @return array [startdate, enddate, days]
      */
     public function get_date_range($timeperiod) {
-
-        // Default enddate.
-        $enddate = floor(strtotime('yesterday') / 86400 + 1) * 86400;
+        // Get current date info using server timezone.
+        $today = strtotime('today 00:00:00');
+        $yesterday = strtotime('yesterday 00:00:00');
 
         // Switch between timeperiod.
         switch ($timeperiod) {
             case 'last7days':
                 // Last 7 days. Except today.
-                // End date should be end of yesterday (23:59:59)
-                $enddate = strtotime('yesterday 23:59:59');
-                // Start date should be 7 days before yesterday (including yesterday = 7 days total)
-                // So we need 6 days before yesterday
-                $days = LOCAL_SITEREPORT_WEEKLY_DAYS - 1; // 6 days
-                // Calculate start date as beginning of the day (00:00:00)
-                $startdate = strtotime('-' . $days . ' days', strtotime('yesterday 00:00:00'));
+                // Example: If today is 1 Feb, show 25 Jan to 31 Jan (7 days).
+                $days = LOCAL_SITEREPORT_WEEKLY_DAYS; // 7 days
+                $enddate = $yesterday + 86399; // End of yesterday (23:59:59).
+                $startdate = $yesterday - (($days - 1) * 86400); // 6 days before yesterday.
                 break;
+
             case 'weekly':
                 // Weekly days. From Last Week. Sunday to Saturday.
-                // End date should be end of last saturday (23:59:59)
-                $enddate = strtotime('last saturday 23:59:59');
-                $days = LOCAL_SITEREPORT_WEEKLY_DAYS - 1; // 6 days
-                // Calculate start date as beginning of last sunday (00:00:00)
-                $startdate = strtotime('-' . $days . ' days', strtotime('last saturday 00:00:00'));
+                // Example: If today is Sunday 1 Feb, show Sunday 25 Jan to Saturday 31 Jan.
+                $dayofweek = date('w'); // 0 = Sunday, 6 = Saturday.
+                if ($dayofweek == 0) {
+                    // Today is Sunday, last Saturday was yesterday.
+                    $lastsaturday = $yesterday;
+                } else {
+                    // Calculate last Saturday.
+                    $lastsaturday = strtotime('last saturday 00:00:00');
+                }
+                $enddate = $lastsaturday + 86399; // End of Saturday (23:59:59).
+                $startdate = $lastsaturday - (6 * 86400); // Sunday = 6 days before Saturday.
+                $days = 7;
                 break;
+
             case 'monthly':
-                // Monthly days. Last Months 1st day to last day.
-                // End date should be end of last day of previous month (23:59:59)
-                $enddate = strtotime('last day of previous month 23:59:59');
-                // Start date should be beginning of first day of previous month (00:00:00)
+                // Monthly days. Last Month's 1st day to last day.
+                // Example: If today is 1 Feb, show 1 Jan to 31 Jan.
                 $startdate = strtotime('first day of previous month 00:00:00');
-                $days = ($enddate - $startdate) / 86400;
+                $enddate = strtotime('last day of previous month 23:59:59');
+                // Calculate days in previous month.
+                $days = (int) date('t', $startdate);
                 break;
+
             case 'yearly':
                 // Yearly days - Financial year from April to March.
                 // "Last Year" means the last complete financial year (April to March).
-                // E.g., If current date is January 2026, show 01 April 2024 to 31 March 2025.
-                // E.g., If current date is May 2026, show 01 April 2024 to 31 March 2025 (previous complete financial year).
-                $month = date('m');
-                $year = date('Y');
-                
-                // Calculate the last complete financial year.
-                // If we're before April, the last complete financial year ended last year.
-                // If we're in April or later, the last complete financial year ended in March of this year.
+                $month = (int) date('m');
+                $year = (int) date('Y');
+
                 if ($month < 4) {
                     // Before April: Last complete financial year ended last year's March.
-                    // E.g., Jan 2026 → Financial year 2024-25 (01 April 2024 to 31 March 2025).
-                    // End date: 31 March 2025 23:59:59
-                    $endyear = $year - 1;
-                    $enddate = strtotime("$endyear-03-31 23:59:59");
-                    // Start date: 01 April 2024 00:00:00
+                    // E.g., Feb 2026 → Financial year 2024-25 (01 April 2024 to 31 March 2025).
                     $startyear = $year - 2;
-                    $startdate = strtotime("$startyear-04-01 00:00:00");
+                    $endyear = $year - 1;
                 } else {
                     // April or later: Last complete financial year ended in March of this year.
-                    // E.g., May 2026 → Financial year 2025-26 (01 April 2025 to 31 March 2026) is current.
-                    // But "last year" means previous complete: 01 April 2024 to 31 March 2025.
-                    // End date: 31 March 2025 23:59:59
-                    $endyear = $year - 1;
-                    $enddate = strtotime("$endyear-03-31 23:59:59");
-                    // Start date: 01 April 2024 00:00:00
-                    $startyear = $year - 2;
-                    $startdate = strtotime("$startyear-04-01 00:00:00");
+                    // E.g., May 2026 → Financial year 2025-26 (01 April 2025 to 31 March 2026).
+                    $startyear = $year - 1;
+                    $endyear = $year;
                 }
-                // Calculate days: from 01 April to 31 March (inclusive) = 365 days
-                // Calculate day numbers - ensure we get the correct day for 01 April
-                $startday = floor($startdate / LOCAL_SITEREPORT_ONEDAY);
-                $endday = floor($enddate / LOCAL_SITEREPORT_ONEDAY);
-                
-                // Verify and fix: ensure startday is for 01 April, not 31 March
-                // Check what date the calculated startday represents
-                $calculatedstartdate = $startday * LOCAL_SITEREPORT_ONEDAY;
-                $calculateddate = date('Y-m-d', $calculatedstartdate);
-                $expecteddate = "$startyear-04-01";
-                
-                // If timezone caused off-by-one error, adjust
-                if ($calculateddate != $expecteddate) {
-                    // Recalculate startday directly from expected date
-                    $startdatefixed = strtotime($expecteddate . " 00:00:00 UTC");
-                    $startday = floor($startdatefixed / LOCAL_SITEREPORT_ONEDAY);
-                }
-                
-                $days = ($endday - $startday) + 1; // +1 for inclusive range
+
+                // Use UTC to avoid timezone issues with day number calculations.
+                $startdate = strtotime("$startyear-04-01 00:00:00 UTC");
+                $enddate = strtotime("$endyear-03-31 23:59:59 UTC");
+
+                // Calculate days (365 or 366 for leap year).
+                $startday = (int) floor($startdate / LOCAL_SITEREPORT_ONEDAY);
+                $endday = (int) floor($enddate / LOCAL_SITEREPORT_ONEDAY);
+                $days = $endday - $startday + 1;
                 break;
+
             default:
-                // Explode dates from custom date filter.
+                // Custom date range from flatpickr (format: "Y-m-d to Y-m-d").
                 $dates = explode(" to ", $timeperiod);
                 if (count($dates) == 2) {
-                    $startdate = strtotime($dates[0] . " 00:00:00");
-                    // End date should be end of the selected day
-                    // Use start of next day minus 1 second to avoid timezone issues
-                    $enddate = strtotime($dates[1] . " 23:59:59");
-                    // Ensure enddate represents the end of the selected day, not the start of next day
-                    // Floor to day boundary to avoid timezone conversion issues
-                    $enddate = floor($enddate / 86400) * 86400 + 86399;
-                }
+                    // Parse dates using UTC to avoid timezone offset issues.
+                    // This ensures "2026-01-01" always gives day number for 1 Jan, not 31 Dec.
+                    $startdatestr = trim($dates[0]);
+                    $enddatestr = trim($dates[1]);
 
-                // If it has correct startdat and end date then count xlabel.
-                if (isset($startdate) && isset($enddate)) {
-                    // Calculate days based on day numbers to avoid rounding issues
-                    // This ensures we get the exact number of days between start and end (inclusive)
-                    $startday = floor($startdate / LOCAL_SITEREPORT_ONEDAY);
-                    $endday = floor($enddate / LOCAL_SITEREPORT_ONEDAY);
-                    $days = ($endday - $startday);
+                    // Use UTC explicitly for consistent day number calculation.
+                    $startdate = strtotime($startdatestr . " 00:00:00 UTC");
+                    $enddate = strtotime($enddatestr . " 23:59:59 UTC");
+
+                    // Calculate days based on day numbers.
+                    $startday = (int) floor($startdate / LOCAL_SITEREPORT_ONEDAY);
+                    $endday = (int) floor($enddate / LOCAL_SITEREPORT_ONEDAY);
+                    $days = $endday - $startday + 1; // +1 for inclusive range.
                 } else {
-                    $days = LOCAL_SITEREPORT_WEEKLY_DAYS; // Default one week.
+                    // Invalid format, default to 7 days ending yesterday.
+                    $days = LOCAL_SITEREPORT_WEEKLY_DAYS;
+                    $enddate = $yesterday + 86399;
+                    $startdate = $yesterday - (($days - 1) * 86400);
                 }
                 break;
         }
 
-        // Calculating startdate only if not already set (for non-custom dates).
-        if (!isset($startdate)) {
-            $startdate = $enddate - ($days * 86400);
-        }
-
-        // Returning startdate and enddate.
+        // Returning startdate, enddate, and days count.
         return [$startdate, $enddate, $days];
     }
 

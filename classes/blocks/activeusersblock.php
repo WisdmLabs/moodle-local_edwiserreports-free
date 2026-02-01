@@ -202,34 +202,20 @@ class activeusersblock extends block_base {
 
     /**
      * Generate labels for active users block.
+     * @param string $timeperiod Time period filter
      */
     public function generate_labels($timeperiod) {
         $this->dates = [];
 
-        // Get start and end date.
+        // Get start and end date from the centralized date range function.
         list($this->startdate, $this->enddate, $this->xlabelcount) = $this->get_date_range($timeperiod);
 
-        // Get all labels.
-        // For yearly filter, calculate day numbers directly from date strings to avoid timezone issues
-        if ($timeperiod == 'yearly') {
-            $month = date('m');
-            $year = date('Y');
-            if ($month < 4) {
-                $startyear = $year - 2;
-                $endyear = $year - 1;
-            } else {
-                $startyear = $year - 2;
-                $endyear = $year - 1;
-            }
-            // Calculate day numbers directly from date strings (UTC) to avoid timezone issues
-            $startday = floor(strtotime("$startyear-04-01 00:00:00 UTC") / LOCAL_SITEREPORT_ONEDAY);
-            $endday = floor(strtotime("$endyear-03-31 23:59:59 UTC") / LOCAL_SITEREPORT_ONEDAY);
-        } else {
-            // For other filters, use the calculated timestamps
-            $startday = floor($this->startdate / LOCAL_SITEREPORT_ONEDAY);
-            $endday = floor($this->enddate / LOCAL_SITEREPORT_ONEDAY);
-        }
-        
+        // Calculate day numbers from timestamps.
+        // Since get_date_range now uses UTC for yearly and custom filters,
+        // the day numbers will be consistent.
+        $startday = (int) floor($this->startdate / LOCAL_SITEREPORT_ONEDAY);
+        $endday = (int) floor($this->enddate / LOCAL_SITEREPORT_ONEDAY);
+
         // Generate dates from startday to endday (inclusive).
         for ($day = $startday; $day <= $endday; $day++) {
             $this->dates[$day] = 0;

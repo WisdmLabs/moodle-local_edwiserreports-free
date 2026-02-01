@@ -1132,7 +1132,7 @@ define([
 
     /**
      * Update time duration in header.
-     * @param {String} date Time period.
+     * @param {String} timeperiod Time period.
      */
     function updateTimeLabel(timeperiod) {
         if (timeperiod == 'all') {
@@ -1140,28 +1140,34 @@ define([
             return;
         }
         PROMISE.GET_TIMEPERIOD_LABEL(timeperiod).done(function(response) {
+            // Use UTC methods to avoid timezone issues with day numbers.
             let startdate = new Date(response.startdate * 86400000);
             let enddate = new Date(response.enddate * 86400000);
-            let startDay = startdate.getDate();
+
+            // Use UTC methods to get correct day, month, year.
+            let startDay = startdate.getUTCDate();
             startDay = startDay < 10 ? '0' + startDay : startDay;
-            let endDay = enddate.getDate();
+            let endDay = enddate.getUTCDate();
             endDay = endDay < 10 ? '0' + endDay : endDay;
 
-            var date = `${startDay} ${startdate.toLocaleString('default', { month: 'long' })} ${startdate.getFullYear()} -
-            ${endDay} ${enddate.toLocaleString('default', { month: 'long' })} ${enddate.getFullYear()}</span>`;
-            if(direction == 'rtl'){
-                // format for rtl : yyyy mm dd
-                startdate = startdate.getFullYear() + ' ' + startdate.toLocaleString('default', { month: 'long' }) + ' ' + startDay;
-                enddate = enddate.getFullYear() + ' ' + enddate.toLocaleString('default', { month: 'long' }) + ' ' + endDay;
-                date = enddate + '-' + startdate;
+            // Use UTC timezone for month names.
+            let startMonth = startdate.toLocaleString('default', { month: 'long', timeZone: 'UTC' });
+            let startYear = startdate.getUTCFullYear();
+            let endMonth = enddate.toLocaleString('default', { month: 'long', timeZone: 'UTC' });
+            let endYear = enddate.getUTCFullYear();
 
-                // Making direction ltr for date selector and aligning text to right
-                $(SELECTOR.DATESELECTED).css({'direction':'ltr','text-align': 'right'});
+            var date = `${startDay} ${startMonth} ${startYear} - ${endDay} ${endMonth} ${endYear}`;
+
+            if (direction == 'rtl') {
+                // Format for rtl: yyyy mm dd.
+                let startStr = startYear + ' ' + startMonth + ' ' + startDay;
+                let endStr = endYear + ' ' + endMonth + ' ' + endDay;
+                date = endStr + ' - ' + startStr;
+
+                // Making direction ltr for date selector and aligning text to right.
+                $(SELECTOR.DATESELECTED).css({'direction': 'ltr', 'text-align': 'right'});
             }
             $(SELECTOR.DATESELECTED).html(date);
-
-            // $(SELECTOR.DATESELECTED).html('<div style="display:flex;"><div>' + `${startDay} ${startdate.toLocaleString('default', { month: 'long' })} ${startdate.getFullYear()}` + '</div> - <div>' +
-            // `${endDay} ${enddate.toLocaleString('default', { month: 'long' })} ${enddate.getFullYear()}</span>` + '</div>');
         }).fail(function(ex) {
             Notification.exception(ex);
         });
