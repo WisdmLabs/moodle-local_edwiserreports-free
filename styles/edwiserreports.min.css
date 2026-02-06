@@ -1908,11 +1908,23 @@ table.dataTable td.dataTables_empty {
     background-color: #fff !important;
 }
 
-html[dir=rtl] .edwiserreports-table th.sorting:before {
+html[dir=rtl] .edwiserreports-table th.sorting:before,
+html[dir=rtl] .edwiserreports-table th.sorting_asc:before,
+html[dir=rtl] .edwiserreports-table th.sorting_desc:before {
     left: 20rem;
+    opacity: .6;
 }
-html[dir=rtl] .edwiserreports-table th.sorting:after {
+html[dir=rtl] .edwiserreports-table th.sorting:after,
+html[dir=rtl] .edwiserreports-table th.sorting_asc:after,
+html[dir=rtl] .edwiserreports-table th.sorting_desc:after {
     left: 30rem;
+    opacity: .6;
+}
+html[dir=rtl] .edwiserreports-table th.sorting_asc:before {
+    opacity: 1;
+}
+html[dir=rtl] .edwiserreports-table th.sorting_desc:after {
+    opacity: 1;
 }
 .edwiserreports-table .table-filter [type=search] {
     margin-left: 0;
