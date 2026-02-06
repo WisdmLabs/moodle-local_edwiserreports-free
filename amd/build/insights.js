@@ -50,9 +50,14 @@ define([
     };
 
     /**
-     * Filter object.
+     * Date filter selector matching the dropdown in edwiserreports.mustache.
      */
-    let filter = 'weekly';
+    let DATE_FILTER_SELECTOR = '.edwiserreports-calendar + .dropdown-menu .dropdown-item.active';
+
+    /**
+     * Filter object. Default will be read from dropdown on init.
+     */
+    let filter = 'last7days';
 
     /**
      * Promise list.
@@ -304,6 +309,11 @@ define([
      */
     function init() {
         $(document).ready(function() {
+            // Read the active date filter from the dropdown so default data matches the UI.
+            var activeFilter = $(DATE_FILTER_SELECTOR).data('value');
+            if (activeFilter) {
+                filter = activeFilter;
+            }
             initEvents();
             $(SELECTOR.ONLYINSIGHT).each(function(index, insight) {
                 updateInsight($(insight).data('id'));
