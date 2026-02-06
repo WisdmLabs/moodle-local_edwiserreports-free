@@ -1908,6 +1908,12 @@ table.dataTable td.dataTables_empty {
     background-color: #fff !important;
 }
 
+html[dir=rtl] .edwiserreports-table th.sorting:before {
+    left: 20rem;
+}
+html[dir=rtl] .edwiserreports-table th.sorting:after {
+    left: 30rem;
+}
 .edwiserreports-table .table-filter [type=search] {
     margin-left: 0;
 }

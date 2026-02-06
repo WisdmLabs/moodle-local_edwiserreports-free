@@ -86,6 +86,14 @@ table.dataTable td.dataTables_empty {
     background-color: #fff !important;
 }
 
+// RTL fix for sorting icons in data tables.
+html[dir=rtl] .edwiserreports-table th.sorting:before {
+    left: 20rem;
+}
+html[dir=rtl] .edwiserreports-table th.sorting:after {
+    left: 30rem;
+}
+
 // Data table.
 .edwiserreports-table {
     .table-filter {
