@@ -2697,6 +2697,9 @@ html[dir=rtl] .insight-card .insight-details::before {
 #page-local-edwiserreports-index.theme_adaptable .insight-wrap .insight-direction, #page-local-edwiserreports-index.theme_fordson .insight-wrap .insight-direction, #page-local-edwiserreports-index.theme_boost .insight-wrap .insight-direction {
     margin-top: 0.3rem !important;
 }
+#page-local-edwiserreports-index.theme_boost .dropdown-menu.dropdown-menu-right.dropdown-menu-end.show {
+    right: 1.17rem !important;
+}
 #page-local-edwiserreports-index.theme_adaptable .blockoptions button {
     border: 0;
 }

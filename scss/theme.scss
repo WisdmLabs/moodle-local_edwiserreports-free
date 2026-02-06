@@ -36,6 +36,12 @@
             margin-top: 0.3rem !important;
         }
     }
+    // RTL fix for Boost theme dropdown alignment.
+    &.theme_boost {
+        .dropdown-menu.dropdown-menu-right.dropdown-menu-end.show {
+            right: 1.17rem !important;
+        }
+    }
     &.theme_adaptable {
         .blockoptions {
             button {
