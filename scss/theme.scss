@@ -36,10 +36,13 @@
             margin-top: 0.3rem !important;
         }
     }
-    // RTL fix for Boost theme dropdown alignment.
+    // RTL fix for Boost theme dropdown alignment — apply only for RTL pages.
     &.theme_boost {
-        .dropdown-menu.dropdown-menu-right.dropdown-menu-end.show {
-            right: 1.17rem !important;
+        // Only when document direction is RTL.
+        html[dir="rtl"] & {
+            .dropdown-menu.dropdown-menu-right.dropdown-menu-end.show {
+                right: 1.17rem !important;
+            }
         }
     }
     &.theme_adaptable {
