@@ -379,33 +379,31 @@ class block_base {
         switch ($timeperiod) {
             case 'last7days':
                 // Last 7 days. Except today.
-                // Example: If today is 1 Feb, show 25 Jan to 31 Jan (7 days).
-                $days = LOCAL_SITEREPORT_WEEKLY_DAYS; // 7 days
-                $enddate = $yesterday + 86399; // End of yesterday (23:59:59).
-                $startdate = $yesterday - (($days - 1) * 86400); // 6 days before yesterday.
+                // Use UTC to avoid timezone offset issues between server and client.
+                // End date should be end of yesterday (23:59:59 UTC)
+                $enddate = strtotime('yesterday 23:59:59 UTC');
+                // Start date should be 7 days before yesterday (including yesterday = 7 days total)
+                // So we need 6 days before yesterday
+                $days = LOCAL_SITEREPORT_WEEKLY_DAYS - 1; // 6 days
+                // Calculate start date as beginning of the day (00:00:00 UTC)
+                $startdate = strtotime('-' . $days . ' days', strtotime('yesterday 00:00:00 UTC'));
                 break;
-
             case 'weekly':
                 // Weekly days. From Last Week. Sunday to Saturday.
-                // Example: If today is Sunday 1 Feb, show Sunday 25 Jan to Saturday 31 Jan.
-                $dayofweek = date('w'); // 0 = Sunday, 6 = Saturday.
-                if ($dayofweek == 0) {
-                    // Today is Sunday, last Saturday was yesterday.
-                    $lastsaturday = $yesterday;
-                } else {
-                    // Calculate last Saturday.
-                    $lastsaturday = strtotime('last saturday 00:00:00');
-                }
-                $enddate = $lastsaturday + 86399; // End of Saturday (23:59:59).
-                $startdate = $lastsaturday - (6 * 86400); // Sunday = 6 days before Saturday.
-                $days = 7;
+                // Use UTC to avoid timezone offset issues between server and client.
+                // End date should be end of last saturday (23:59:59 UTC)
+                $enddate = strtotime('last saturday 23:59:59 UTC');
+                $days = LOCAL_SITEREPORT_WEEKLY_DAYS - 1; // 6 days
+                // Calculate start date as beginning of last sunday (00:00:00 UTC)
+                $startdate = strtotime('-' . $days . ' days', strtotime('last saturday 00:00:00 UTC'));
                 break;
 
             case 'monthly':
-                // Monthly days. Last Month's 1st day to last day.
-                // Example: If today is 1 Feb, show 1 Jan to 31 Jan.
-                $startdate = strtotime('first day of previous month 00:00:00');
-                $enddate = strtotime('last day of previous month 23:59:59');
+                // Last month = previous calendar month, 1st to last day.
+                // Use UTC to avoid timezone offset issues between server and client.
+                // Example: Today 9 Feb 2026 → 1 Jan 2026 to 31 Jan 2026.
+                $startdate = strtotime('first day of previous month 00:00:00 UTC');
+                $enddate = strtotime('last day of previous month 23:59:59 UTC');
                 // Calculate days in previous month.
                 $days = (int) date('t', $startdate);
                 break;

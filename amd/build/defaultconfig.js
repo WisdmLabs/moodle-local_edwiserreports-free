@@ -28,7 +28,16 @@ define(["jquery", "local_edwiserreports/variables", "local_edwiserreports/select
 
         // Get color theme.
         getColorTheme: function() {
-            return edwiser_reports_color_themes;
+            // Prefer global variable if present (legacy).
+            if (typeof edwiser_reports_color_themes !== 'undefined') {
+                return edwiser_reports_color_themes;
+            }
+            // Fallback to Moodle config object if data_for_js populated M.cfg.
+            if (typeof M !== 'undefined' && M.cfg && typeof M.cfg.edwiser_reports_color_themes !== 'undefined') {
+                return M.cfg.edwiser_reports_color_themes;
+            }
+            // Default empty object to avoid ReferenceError.
+            return {};
         },
 
         // Todays Activity Block
