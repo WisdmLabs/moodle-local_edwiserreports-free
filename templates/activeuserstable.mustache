@@ -28,19 +28,19 @@
     {
     }
 }}
-<table class="table w-100 admintable">
-    <thead>
+<table class="table w-100 bg-white admintable table-striped table-hover align-middle">
+    <thead class="thead-light">
         <tr>
-            <th>
+            <th scope="col">
                 {{#str}} date, local_edwiserreports {{/str}}
             </th>
-            <th>
+            <th scope="col">
                 {{#str}} noofactiveusers, local_edwiserreports {{/str}}
             </th>
-            <th>
+            <th scope="col">
                 {{#str}} noofenrolledusers, local_edwiserreports {{/str}}
             </th>
-            <th>
+            <th scope="col">
                 {{#str}} noofcompletedusers, local_edwiserreports {{/str}}
             </th>
         </tr>
@@ -53,17 +53,17 @@
                 {{{date}}}
             </td>
             <td>
-                <a href="javascript:void(0)" class="w-full text-decoration-none" data-action="activeusers" data-filter="{{filter}}">
+                <a href="javascript:void(0)" class="w-full text-decoration-none link-primary" data-action="activeusers" data-filter="{{filter}}">
                     {{activeusers}}
                 </a>
             </td>
             <td>
-                <a href="javascript:void(0)" class="w-full text-decoration-none" data-action="enrolments" data-filter="{{filter}}">
+                <a href="javascript:void(0)" class="w-full text-decoration-none link-primary" data-action="enrolments" data-filter="{{filter}}">
                     {{courseenrolment}}
                 </a>
             </td>
             <td>
-                <a href="javascript:void(0)" class="w-full text-decoration-none" data-action="completions" data-filter="{{filter}}">
+                <a href="javascript:void(0)" class="w-full text-decoration-none link-primary" data-action="completions" data-filter="{{filter}}">
                     {{coursecompletion}}
                 </a>
             </td>

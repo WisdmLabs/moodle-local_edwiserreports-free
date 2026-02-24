@@ -65,6 +65,10 @@
     }
 }
 
+.field-group-wrap {
+    position: relative;
+}
+
 .field-group.open i {
     transform: rotate(90deg);
 }
@@ -79,8 +83,20 @@
     display: none;
 }
 
+#cr-preview-table {
+    // Override width: max-content !important from .local-edwiserreports .edwiserreports-table table
+    width: 100% !important;
+}
+
+#wdm-edwiserreports .table {
+    min-width: 100%;
+    width: max-content !important;
+}
+
 #cr-list-table {
     min-width: 100%;
+    // Override width: max-content !important from .local-edwiserreports .edwiserreports-table table
+    width: 100% !important;
     th,
     td {
         &:last-child {

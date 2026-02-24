@@ -189,6 +189,8 @@ class insight {
             $insight = $this->insights[$id];
             $insight['id'] = $id;
             $insight['present'] = true;
+            // Add RTL information for template
+            $insight['rtl'] = (get_string('thisdirection', 'langconfig') === 'rtl');
             return $insight;
         }
         return [

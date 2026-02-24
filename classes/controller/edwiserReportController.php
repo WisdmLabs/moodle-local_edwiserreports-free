@@ -326,13 +326,14 @@ class edwiserReportController extends controllerAbstract {
         $base = new \local_edwiserreports\block_base();
         list($startdate, $enddate) = $base->get_date_range($timeperiod);
 
-        if ($timeperiod == 'yearly') {
-            $startdate--;
-            $enddate--;
-        }
+        // Convert timestamps to day numbers for JavaScript.
+        // Use floor division by 86400 (seconds in a day) to get consistent day numbers.
+        $startday = (int) floor($startdate / LOCAL_SITEREPORT_ONEDAY);
+        $endday = (int) floor($enddate / LOCAL_SITEREPORT_ONEDAY);
+
         echo json_encode([
-            'startdate' => $startdate / 86400,
-            'enddate' => $enddate / 86400
+            'startdate' => $startday,
+            'enddate' => $endday
         ]);
     }
 

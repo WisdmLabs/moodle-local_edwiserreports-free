@@ -4,7 +4,13 @@
   "description": "",
   "main": "gulpfile.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "gulp default",
+    "styles": "gulp sass",
+    "watch": "gulp watch",
+    "clean": "gulp clean",
+    "uglify": "gulp uglify",
+    "externaljs": "gulp externaljs"
   },
   "author": "",
   "license": "ISC",

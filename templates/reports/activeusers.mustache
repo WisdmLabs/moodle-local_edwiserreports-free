@@ -49,7 +49,7 @@
             {{/ cohortfilters }}
             <div class="filter-selector col-12 col-md-3 mb-3">
                 <label>{{#str}} date, local_edwiserreports {{/str}}</label>
-                <button type="button" class="btn dropdown-toggle edwiserreports-calendar" data-toggle="dropdown" id="filter-dropdown" aria-expanded="false">
+                <button type="button" class="btn dropdown-toggle edwiserreports-calendar" data-toggle="dropdown" data-bs-toggle="dropdown" id="filter-dropdown" aria-expanded="false">
                     {{# str }} last7days, local_edwiserreports {{/ str }}
                 </button>
                 <div class="dropdown-menu dropdown-scrollable" aria-labelledby="filter-dropdown" role="menu">
@@ -60,7 +60,7 @@
                         <a class="dropdown-item" role="menuitem" data-value="monthly" href="javascript:void(0)">{{#str}} lastmonth, local_edwiserreports {{/str}}</a>
                         <a class="dropdown-item" role="menuitem" data-value="yearly" href="javascript:void(0)">{{#str}} lastyear, local_edwiserreports {{/str}}</a>
                         <a class="dropdown-item custom" role="menuitem" href="javascript:void(0)">
-                            <input class="border-0 p-0 bg-transparent flatpickr" placeholder="{{#str}} customdate, local_edwiserreports {{/str}}" 0="data-input" />
+                            <input class="border-0 p-0 bg-transparent flatpickr" placeholder="{{#str}} customdate, local_edwiserreports {{/str}}" data-input />
                         </a>
                     </div>
                 </div>

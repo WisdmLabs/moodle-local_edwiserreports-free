@@ -29,12 +29,12 @@ class authentication {
     /**
      * Delete secret key of user using userid or secret key.
      *
-     * @param int    $userid User id
-     * @param string $secret Secret key
+     * @param int|null    $userid User id
+     * @param string|null $secret Secret key
      *
      * @return bool
      */
-    public function delete_secret_key(int $userid = null, string $secret = null) {
+    public function delete_secret_key(?int $userid = null, ?string $secret = null) {
         global $USER, $DB;
 
         // Delete secret key record using secret key.
@@ -55,11 +55,11 @@ class authentication {
      * If user id is false then secret key will be created for currently logged in user.
      * First existing secret key of user will be deleted.
      *
-     * @param int $userid User id
+     * @param int|null $userid User id
      *
      * @return string Secret key
      */
-    public function create_secret_key(int $userid = null): string {
+    public function create_secret_key(?int $userid = null): string {
         global $USER, $DB;
         if ($userid === null) {
             $userid = $USER->id;
@@ -81,11 +81,11 @@ class authentication {
     /**
      * Get existing secret key using user id.
      *
-     * @param int $userid User id
+     * @param int|null $userid User id
      *
      * @return string Secret key
      */
-    public function get_secret_key(int $userid = null): string {
+    public function get_secret_key(?int $userid = null): string {
         global $USER, $DB;
         if ($userid === null) {
             $userid = $USER->id;

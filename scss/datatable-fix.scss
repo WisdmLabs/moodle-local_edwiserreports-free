@@ -86,6 +86,27 @@ table.dataTable td.dataTables_empty {
     background-color: #fff !important;
 }
 
+// RTL fix for sorting icons in data tables.
+html[dir=rtl] .edwiserreports-table th.sorting:before,
+html[dir=rtl] .edwiserreports-table th.sorting_asc:before,
+html[dir=rtl] .edwiserreports-table th.sorting_desc:before {
+    left: 20rem;
+    opacity: .6;
+}
+html[dir=rtl] .edwiserreports-table th.sorting:after,
+html[dir=rtl] .edwiserreports-table th.sorting_asc:after,
+html[dir=rtl] .edwiserreports-table th.sorting_desc:after {
+    left: 30rem;
+    opacity: .6;
+}
+// RTL: Highlight the active sorting arrow with full opacity.
+html[dir=rtl] .edwiserreports-table th.sorting_asc:before {
+    opacity: 1;
+}
+html[dir=rtl] .edwiserreports-table th.sorting_desc:after {
+    opacity: 1;
+}
+
 // Data table.
 .edwiserreports-table {
     .table-filter {

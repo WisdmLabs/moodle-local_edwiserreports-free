@@ -52,10 +52,13 @@ class completionblock {
      * @return array           Array of users with course Completion
      */
     public static function get_completions($courseid, $cohortid, $isexportdata = 0) {
-        global $DB;
+        global $DB, $USER;
         $timenow = time();
 
         $rtl = get_string('thisdirection', 'langconfig') == 'rtl' ? 1 : 0;
+        
+        // Get user timezone for consistent date formatting (matches browser timezone in JavaScript)
+        $usertimezone = \core_date::get_user_timezone($USER);
 
         // Get only enrolled students.
         $enrolledstudents = utility::get_enrolled_students($courseid, false, $cohortid);
@@ -115,7 +118,35 @@ class completionblock {
             // $completioninfo->lastaccess = empty($user->lastvisit) ? 0 : ($rtl ? date('A i:h Y M d', $user->lastvisit) : date('d M Y h:i A', $user->lastvisit));
             $completioninfo->lastaccess = empty($user->lastvisit) ? 0 : $user->lastvisit;
             if ($isexportdata) {
-                $completioninfo->lastaccess = empty($user->lastvisit) ? 0 : ($rtl ? date('Y M d', $user->lastvisit) . '<br>' . date('A i:h ', $user->lastvisit) : date('d M Y h:i A', $user->lastvisit));
+                // Format to match JavaScript table display exactly
+                // JavaScript LTR: "d MMM yyyy hh:mm TT" → "7 Jan 2026<br>02:25 PM"
+                // JavaScript RTL: "TT mm:hh yyyy MMM d" → "2026 Jan 7<br>PM 02:25"
+                if (empty($user->lastvisit)) {
+                    $completioninfo->lastaccess = 0;
+                } else {
+                    // Use user timezone to match JavaScript browser timezone behavior
+                    $dt = new \DateTime('@' . $user->lastvisit);
+                    $dt->setTimezone(new \DateTimeZone($usertimezone));
+                    
+                    // Get month abbreviation (Jan, Feb, etc.) to match JavaScript MMM format
+                    $monthnames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                    $day = $dt->format('j'); // Day without leading zero (1-31)
+                    $month = $monthnames[(int)$dt->format('n') - 1]; // Month abbreviation
+                    $year = $dt->format('Y'); // 4-digit year
+                    $hour = $dt->format('h'); // 12-hour format with leading zero (01-12)
+                    $minute = $dt->format('i'); // Minutes with leading zero (00-59)
+                    $ampm = $dt->format('A'); // AM/PM
+                    
+                    if ($rtl) {
+                        // RTL format matching JavaScript: "TT mm:hh yyyy MMM d"
+                        // Output: "2026 Jan 7<br>PM 02:25"
+                        $completioninfo->lastaccess = $year . ' ' . $month . ' ' . $day . '<br>' . $ampm . ' ' . $minute . ':' . $hour;
+                    } else {
+                        // LTR format matching JavaScript: "d MMM yyyy hh:mm TT"
+                        // Output: "7 Jan 2026<br>02:25 PM"
+                        $completioninfo->lastaccess = $day . ' ' . $month . ' ' . $year . '<br>' . $hour . ':' . $minute . ' ' . $ampm;
+                    }
+                }
             }
             $userscompletion[] = $completioninfo;
             unset($users[$key]);

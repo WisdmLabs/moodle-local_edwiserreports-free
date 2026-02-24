@@ -119,6 +119,10 @@ class edwiserreports_renderable implements renderable, templatable {
             user_preference_allow_ajax_update('local_edwiserreports_insights_order', PARAM_TEXT);
         }
 
+        // Ensure tooltips are initialized globally for the main reports page.
+         $PAGE->requires->js_call_amd('local_edwiserreports/tooltip', 'init');
+
+
         $output = null;
         $export = new stdClass();
         $authentication = new authentication();

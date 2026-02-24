@@ -22,10 +22,20 @@
         {{# editing }}
             <div class="card-editing btn-group d-flex">
                 <button class="btn bg-secondary move-left" data-id="{{id}}">
-                    <i class="fa fa-arrow-left"></i>
+                    {{#rtl}}
+                        <i class="fa fa-arrow-right rtl-support"></i>
+                    {{/rtl}}
+                    {{^rtl}}
+                        <i class="fa fa-arrow-left"></i>
+                    {{/rtl}}
                 </button>
                 <button class="btn bg-secondary move-right" data-id="{{id}}">
-                    <i class="fa fa-arrow-right"></i>
+                    {{#rtl}}
+                        <i class="fa fa-arrow-left rtl-support"></i>
+                    {{/rtl}}
+                    {{^rtl}}
+                        <i class="fa fa-arrow-right"></i>
+                    {{/rtl}}
                 </button>
                 <button class="btn bg-secondary edit-hide" data-id="{{id}}">
                     <i class="fa fa-eye"></i>

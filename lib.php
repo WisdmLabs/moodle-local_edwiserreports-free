@@ -35,6 +35,68 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot."/local/edwiserreports/locallib.php");
 
 /**
+ * Auto-fix installation - Checks if tables exist and sets plugin version
+ * This is called automatically when lib.php is loaded to prevent "table already exists" errors
+ * Moodle standard: This ensures plugin is treated as upgrade if tables exist
+ */
+function local_edwiserreports_auto_fix_installation() {
+    global $DB;
+    
+    // Only run if we have database connection and config table exists
+    try {
+        if (!$DB->get_manager()) {
+            return;
+        }
+        
+        // Check if config_plugins table exists (Moodle is installed)
+        $tables = $DB->get_tables();
+        if (!isset($tables['config_plugins'])) {
+            return; // Moodle not fully installed yet
+        }
+        
+        $component = 'local_edwiserreports';
+        $dbman = $DB->get_manager();
+        
+        // Check if any of our tables exist
+        $tables = array(
+            'edwreports_blocks',
+            'edwreports_schedemails',
+            'edwreports_course_progress',
+            'edwreports_custom_reports',
+            'edwreports_authentication'
+        );
+        
+        $tablesexist = false;
+        foreach ($tables as $tablename) {
+            $table = new xmldb_table($tablename);
+            if ($dbman->table_exists($table)) {
+                $tablesexist = true;
+                break;
+            }
+        }
+        
+        // If tables exist but plugin version is not set, set it to trigger upgrade path
+        if ($tablesexist) {
+            $installedversion = $DB->get_field('config_plugins', 'value', 
+                array('name' => 'version', 'plugin' => $component));
+            
+            if (empty($installedversion)) {
+                // Set version to an old version to trigger upgrade path instead of fresh install
+                set_config('version', 2019091100, $component);
+            }
+        }
+    } catch (Exception $e) {
+        // Silently fail - database might not be ready yet
+        return;
+    }
+}
+
+// Auto-fix on lib.php load (but only if not in installation process)
+if (!defined('MOODLE_INSTALLING') || !MOODLE_INSTALLING) {
+    local_edwiserreports_auto_fix_installation();
+}
+
+/**
  * Get Users List Fragments for diffrent pages
  * @param [array] $args Array of arguments
  * @return [string] HTML table

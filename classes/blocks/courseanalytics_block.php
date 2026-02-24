@@ -210,11 +210,20 @@ class courseanalytics_block extends utility {
         $cohortid = optional_param("cohortid", 0, PARAM_INT);
         $action = required_param("action", PARAM_TEXT);
 
+        // Check if current language is RTL
+        $rtl = (get_string('thisdirection', 'langconfig') === 'rtl');
+
         $coursecontext = context_course::instance($courseid);
         $enrolledstudents = get_enrolled_users($coursecontext, 'moodle/course:isincompletionreports');
 
         $export = array();
         $header = self::get_header_report($action);
+        
+        // Apply RTL to header if needed
+        if ($rtl && $header) {
+            $header = array_reverse($header);
+        }
+        
         switch($action) {
             case "visits" :
                 $response = self::get_recentvisits($courseid, $enrolledstudents, $cohortid);
@@ -233,6 +242,10 @@ class courseanalytics_block extends utility {
         foreach ($response as $r => $val) {
             foreach ($val as $c => $v) {
                 $response[$r][$c] = strip_tags($v);
+            }
+            // Apply RTL to each row if needed
+            if ($rtl) {
+                $response[$r] = array_reverse($response[$r]);
             }
         }
         $export = array_merge(array($header), $response);

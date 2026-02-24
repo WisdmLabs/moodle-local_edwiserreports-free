@@ -368,62 +368,101 @@ class block_base {
     /**
      * Get date range for timeperiod.
      * @param String $timeperiod Timeperiod
+     * @return array [startdate, enddate, days]
      */
     public function get_date_range($timeperiod) {
-
-        // Default enddate.
-        $enddate = floor(strtotime('yesterday') / 86400 + 1) * 86400;
+        // Get current date info using server timezone.
+        $today = strtotime('today 00:00:00');
+        $yesterday = strtotime('yesterday 00:00:00');
 
         // Switch between timeperiod.
         switch ($timeperiod) {
             case 'last7days':
                 // Last 7 days. Except today.
-                $enddate = floor(strtotime('yesterday') / 86400 + 1) * 86400;
-                $days = LOCAL_SITEREPORT_WEEKLY_DAYS - 1;
+                // Use UTC to avoid timezone offset issues between server and client.
+                // End date should be end of yesterday (23:59:59 UTC)
+                $enddate = strtotime('yesterday 23:59:59 UTC');
+                // Start date should be 7 days before yesterday (including yesterday = 7 days total)
+                // So we need 6 days before yesterday
+                $days = LOCAL_SITEREPORT_WEEKLY_DAYS - 1; // 6 days
+                // Calculate start date as beginning of the day (00:00:00 UTC)
+                $startdate = strtotime('-' . $days . ' days', strtotime('yesterday 00:00:00 UTC'));
                 break;
             case 'weekly':
                 // Weekly days. From Last Week. Sunday to Saturday.
-                $enddate = floor(strtotime('last saturday') / 86400 + 1) * 86400;
-                $days = LOCAL_SITEREPORT_WEEKLY_DAYS - 1;
+                // Use UTC to avoid timezone offset issues between server and client.
+                // End date should be end of last saturday (23:59:59 UTC)
+                $enddate = strtotime('last saturday 23:59:59 UTC');
+                $days = LOCAL_SITEREPORT_WEEKLY_DAYS - 1; // 6 days
+                // Calculate start date as beginning of last sunday (00:00:00 UTC)
+                $startdate = strtotime('-' . $days . ' days', strtotime('last saturday 00:00:00 UTC'));
                 break;
+
             case 'monthly':
-                // Monthly days. Last Months 1st day to last day.
-                $enddate = strtotime('last day of previous month');
-                $days = $enddate / 86400 - strtotime('first day of previous month') / 86400;
+                // Last month = previous calendar month, 1st to last day.
+                // Use UTC to avoid timezone offset issues between server and client.
+                // Example: Today 9 Feb 2026 → 1 Jan 2026 to 31 Jan 2026.
+                $startdate = strtotime('first day of previous month 00:00:00 UTC');
+                $enddate = strtotime('last day of previous month 23:59:59 UTC');
+                // Calculate days in previous month.
+                $days = (int) date('t', $startdate);
                 break;
+
             case 'yearly':
-                // Yearly days.
-                // Ex. Date is 1960-04-31. Then period will be from 1958-04-01 to 1959-03-31.
-                // Ex. Date is 1960-05-01. Then period will be from 1959-04-01 to 1960-03-31.
-                $month = date('m');
-                $year = date('Y');
+                // Yearly days - Financial year from April to March.
+                // "Last Year" means the last complete financial year (April to March).
+                $month = (int) date('m');
+                $year = (int) date('Y');
+
                 if ($month < 4) {
-                    $year--;
-                }
-                $enddate = strtotime("$year-03-31") + 86400;
-                $days = ($enddate / 86400) - (strtotime(($year - 1) . "-04-01") / 86400) - 1;
-                break;
-            default:
-                // Explode dates from custom date filter.
-                $dates = explode(" to ", $timeperiod);
-                if (count($dates) == 2) {
-                    $startdate = strtotime($dates[0] . " 00:00:00") + 86400;
-                    $enddate = strtotime($dates[1] . " 23:59:59");
+                    // Before April: Last complete financial year ended last year's March.
+                    // E.g., Feb 2026 → Financial year 2024-25 (01 April 2024 to 31 March 2025).
+                    $startyear = $year - 2;
+                    $endyear = $year - 1;
+                } else {
+                    // April or later: Last complete financial year ended in March of this year.
+                    // E.g., May 2026 → Financial year 2025-26 (01 April 2025 to 31 March 2026).
+                    $startyear = $year - 1;
+                    $endyear = $year;
                 }
 
-                // If it has correct startdat and end date then count xlabel.
-                if (isset($startdate) && isset($enddate)) {
-                    $days = round(($enddate - $startdate) / LOCAL_SITEREPORT_ONEDAY);
+                // Use UTC to avoid timezone issues with day number calculations.
+                $startdate = strtotime("$startyear-04-01 00:00:00 UTC");
+                $enddate = strtotime("$endyear-03-31 23:59:59 UTC");
+
+                // Calculate days (365 or 366 for leap year).
+                $startday = (int) floor($startdate / LOCAL_SITEREPORT_ONEDAY);
+                $endday = (int) floor($enddate / LOCAL_SITEREPORT_ONEDAY);
+                $days = $endday - $startday + 1;
+                break;
+
+            default:
+                // Custom date range from flatpickr (format: "Y-m-d to Y-m-d").
+                $dates = explode(" to ", $timeperiod);
+                if (count($dates) == 2) {
+                    // Parse dates using UTC to avoid timezone offset issues.
+                    // This ensures "2026-01-01" always gives day number for 1 Jan, not 31 Dec.
+                    $startdatestr = trim($dates[0]);
+                    $enddatestr = trim($dates[1]);
+
+                    // Use UTC explicitly for consistent day number calculation.
+                    $startdate = strtotime($startdatestr . " 00:00:00 UTC");
+                    $enddate = strtotime($enddatestr . " 23:59:59 UTC");
+
+                    // Calculate days based on day numbers.
+                    $startday = (int) floor($startdate / LOCAL_SITEREPORT_ONEDAY);
+                    $endday = (int) floor($enddate / LOCAL_SITEREPORT_ONEDAY);
+                    $days = $endday - $startday + 1; // +1 for inclusive range.
                 } else {
-                    $days = LOCAL_SITEREPORT_WEEKLY_DAYS; // Default one week.
+                    // Invalid format, default to 7 days ending yesterday.
+                    $days = LOCAL_SITEREPORT_WEEKLY_DAYS;
+                    $enddate = $yesterday + 86399;
+                    $startdate = $yesterday - (($days - 1) * 86400);
                 }
                 break;
         }
 
-        // Calculating startdate.
-        $startdate = $enddate - ($days * 86400);
-
-        // Returning startdate and enddate.
+        // Returning startdate, enddate, and days count.
         return [$startdate, $enddate, $days];
     }
 

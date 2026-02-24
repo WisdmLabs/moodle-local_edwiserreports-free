@@ -202,17 +202,23 @@ class activeusersblock extends block_base {
 
     /**
      * Generate labels for active users block.
+     * @param string $timeperiod Time period filter
      */
     public function generate_labels($timeperiod) {
         $this->dates = [];
 
-        // Get start and end date.
+        // Get start and end date from the centralized date range function.
         list($this->startdate, $this->enddate, $this->xlabelcount) = $this->get_date_range($timeperiod);
 
-        // Get all lables.
-        for ($i = $this->xlabelcount; $i >= 0; $i--) {
-            $time = $this->enddate - $i * LOCAL_SITEREPORT_ONEDAY;
-            $this->dates[floor($time / LOCAL_SITEREPORT_ONEDAY)] = 0;
+        // Calculate day numbers from timestamps.
+        // Since get_date_range now uses UTC for yearly and custom filters,
+        // the day numbers will be consistent.
+        $startday = (int) floor($this->startdate / LOCAL_SITEREPORT_ONEDAY);
+        $endday = (int) floor($this->enddate / LOCAL_SITEREPORT_ONEDAY);
+
+        // Generate dates from startday to endday (inclusive).
+        for ($day = $startday; $day <= $endday; $day++) {
+            $this->dates[$day] = 0;
         }
     }
 
@@ -284,8 +290,13 @@ class activeusersblock extends block_base {
         // Generate active users data label.
         $this->generate_labels($this->filter);
 
-        // Get cache key.
-        $cachekey = $this->generate_cache_key("activeusers-response", $this->filter . '-' . $this->graphajax, $this->cohortid);
+        // Get cache key. Include date range for yearly filter to ensure cache invalidation when date calculation changes.
+        $filterkey = $this->filter . '-' . $this->graphajax;
+        if ($this->filter == 'yearly') {
+            // Include start and end date in cache key to invalidate cache when date range changes.
+            $filterkey .= '-' . $this->startdate . '-' . $this->enddate;
+        }
+        $cachekey = $this->generate_cache_key("activeusers-response", $filterkey, $this->cohortid);
 
         // If response is in cache then return from cache.
         if (!$response = $this->cache->get($cachekey)) {
