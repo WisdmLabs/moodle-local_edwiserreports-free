@@ -1,5 +1,5 @@
 <div class="report-header row m-0">
-    <div class="page-title col-12 col-lg-6 col-md-6 pl-0 ps-0 text-left text-start">
+    <div class="page-title col-12 col-lg-6 col-md-6 ps-0 ps-0 text-start text-start">
         <h2 class="theme-1-color">{{{pageheader}}}</h2>
 
         {{#pro}}
@@ -16,10 +16,10 @@
     </div>
 
     {{#pro}}
-        <div id="userfilter" class="h-auto mt-2 ml-auto ms-auto" style="width:auto">
+        <div id="userfilter" class="h-auto mt-2 ms-auto ms-auto" style="width:auto">
 	        <div class="row">
 	            {{{calendar}}}
-	            <div class="filter-selector d-table col-12 col-lg-3 col-md-4">
+	            <div class="filter-selector d-flex flex-column col-12 col-lg-3 col-md-4">
 	                <label>{{#str}} date, local_edwiserreports {{/str}}: {{#str}} enrollments, local_edwiserreports {{/str}}</label>
 					<button type="button" class="btn dropdown-toggle edwiserreports-calendar" data-toggle="dropdown" data-bs-toggle="dropdown" id="filter-dropdown" aria-expanded="false">
 	                    {{# str }} alltime, local_edwiserreports {{/ str }}

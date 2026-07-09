@@ -24,7 +24,7 @@ define('local_edwiserreports/reports/allcoursessummary', [
     'jquery',
     'core/ajax',
     'core/notification',
-    'core/modal_factory',
+    'local_edwiserreports/modal_factory_compat',
     'core/modal_events',
     'core/fragment',
     'local_edwiserreports/defaultconfig',
@@ -170,8 +170,8 @@ define('local_edwiserreports/reports/allcoursessummary', [
                     dom: '<"edwiserreports-table"<"p-2"i><t><"table-pagination"p>>',
                     columnDefs: [
                         { className: "fixed-column", targets: 0 },
-                        { className: "text-left", targets: [0, 1, 2] },
-                        { className: "text-right", targets: "_all" }
+                        { className: "text-start", targets: [0, 1, 2] },
+                        { className: "text-end", targets: "_all" }
                     ],
                     columns: [
                         { "data": "coursename", width: "10rem" },
@@ -203,8 +203,8 @@ define('local_edwiserreports/reports/allcoursessummary', [
                     ],
                     columnDefs: [
                         { className: "fixed-column", targets: 0 },
-                        { className: "text-left", targets: [0, 1] },
-                        { className: "text-right", targets: "_all" }
+                        { className: "text-start", targets: [0, 1] },
+                        { className: "text-end", targets: "_all" }
                     ],
                     language: {
                         info: M.util.get_string('tableinfo', 'local_edwiserreports'),
@@ -294,7 +294,7 @@ define('local_edwiserreports/reports/allcoursessummary', [
             initializeDatatable();
         });
 
-        flatpickr = Oldjquery(SELECTOR.DATEPICKERINPUT).flatpickr({
+        flatpickr = window.flatpickr(Oldjquery(SELECTOR.DATEPICKERINPUT)[0], {
             mode: 'range',
             altInput: true,
             altFormat: "d M Y",

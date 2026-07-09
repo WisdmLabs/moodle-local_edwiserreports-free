@@ -23,7 +23,7 @@
 /* eslint-disable no-console */
 define('local_edwiserreports/reports/activeusers', [
     'jquery',
-    'core/modal_factory',
+    'local_edwiserreports/modal_factory_compat',
     'core/modal_events',
     'core/notification',
     'core/fragment',
@@ -151,7 +151,7 @@ define('local_edwiserreports/reports/activeusers', [
      * Create Calender in dropdown tp select range.
      */
     function createDropdownCalendar() {
-        flatpickr = Oldjquery(SELECTOR.DATEPICKERINPUT).flatpickr({
+        flatpickr = window.flatpickr(Oldjquery(SELECTOR.DATEPICKERINPUT)[0], {
             mode: 'range',
             altInput: true,
             altFormat: "d M Y",
@@ -262,7 +262,7 @@ define('local_edwiserreports/reports/activeusers', [
                         },
                         columnDefs: [{
                                 "targets": 0,
-                                "className": "text-left"
+                                "className": "text-start"
                             },
                             {
                                 "targets": "_all",

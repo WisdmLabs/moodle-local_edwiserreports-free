@@ -23,7 +23,7 @@ define([
     'jquery',
     'core/notification',
     'core/fragment',
-    'core/modal_factory',
+    'local_edwiserreports/modal_factory_compat',
     'core/modal_events',
     'core/ajax',
     'core/templates',

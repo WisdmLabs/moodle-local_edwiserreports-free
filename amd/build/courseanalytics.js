@@ -141,7 +141,7 @@ define([
                     }
                 },
                 columnDefs: [{
-                    className: "text-left",
+                    className: "text-start",
                     targets: 0
                 }, {
                     className: "text-center",

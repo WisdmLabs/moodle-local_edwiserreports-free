@@ -21,7 +21,7 @@
 define([
     'jquery',
     'core/ajax',
-    'core/modal_factory',
+    'local_edwiserreports/modal_factory_compat',
     'core/modal_events',
     'core/templates',
     'core/notification',

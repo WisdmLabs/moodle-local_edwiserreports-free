@@ -19,10 +19,12 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 define([
-    'local_edwiserreports/jquery',
+    'jquery',
+    'core/notification',
     './common',
     './insights',
     './defaultconfig',
+    'local_edwiserreports/flatpickr',
     './block_siteaccess',
     './block_activecourses',
     './block_activeusers',
@@ -40,9 +42,11 @@ define([
     './block_learnertimespentonsite'
 ], function(
     $,
+    Notification,
     common,
     insights,
     CFG,
+    flatpickrLib,
     siteAccess,
     activeCourses,
     activeUsers,
@@ -57,7 +61,7 @@ define([
     timespentoncourse,
     courseactivitystatus,
     learnercourseprogress,
-    learnertimespentonsite,
+    learnertimespentonsite
 ) {
 
     /**
@@ -138,46 +142,28 @@ define([
      */
     function showTimeLabel(date) {
         PROMISE.GET_TIMEPERIOD_LABEL(date).done(function(response) {
-            // Use UTC methods to avoid timezone issues
             let startdate = new Date(response.startdate * 86400000);
             let enddate = new Date(response.enddate * 86400000);
             let startDay = startdate.getUTCDate();
             startDay = startDay < 10 ? '0' + startDay : startDay;
             let endDay = enddate.getUTCDate();
             endDay = endDay < 10 ? '0' + endDay : endDay;
-
-            // $(SELECTOR.DATESELECTED).html(`
-            // ${startDay} ${startdate.toLocaleString('default', {
-            //     month: 'long'
-            // })} ${startdate.getFullYear()} -
-            // ${endDay} ${enddate.toLocaleString('default', {
-            //     month: 'long'
-            // })} ${enddate.getFullYear()}`);
-
-            // Use UTC methods for month and year to avoid timezone issues
             let startMonth = startdate.toLocaleString('default', { month: 'long', timeZone: 'UTC' });
             let startYear = startdate.getUTCFullYear();
             let endMonth = enddate.toLocaleString('default', { month: 'long', timeZone: 'UTC' });
             let endYear = enddate.getUTCFullYear();
-            
-            let customdate = `${startDay} ${startMonth} ${startYear}` + ' - ' +
-            `${endDay} ${endMonth} ${endYear}`;
-            // RTL support
+
+            let customdate = startDay + ' ' + startMonth + ' ' + startYear + ' - ' +
+            endDay + ' ' + endMonth + ' ' + endYear;
             let dirattr = $('html').attr('dir');
-            // Formating date for rtl
             if(dirattr == 'rtl'){
-                // format for rtl : yyyy mm dd
                 startdate = startYear + ' ' + startMonth + ' ' + startDay;
                 enddate = endYear + ' ' + endMonth + ' ' + endDay;
                 customdate = enddate + '-' + startdate;
-
-                // Making direction ltr for date selector and aligning text to right
                 $(SELECTOR.DATE).css({'direction':'ltr','text-align': 'right'});
                 $(SELECTOR.DATEPICKERINPUT).css({'direction':'ltr','text-align': 'right'});
             }
-
             $(SELECTOR.DATESELECTED).html(customdate);
-
         }).fail(function(ex) {
             Notification.exception(ex);
         });
@@ -190,9 +176,7 @@ define([
      */
     function throwDateEvent(date, label) {
         let dateChangeEvent = new CustomEvent('edwiserreport:datechange', {
-            detail: {
-                date: date
-            }
+            detail: { date: date }
         });
         document.dispatchEvent(dateChangeEvent);
         showTimeLabel(date, label);
@@ -202,46 +186,75 @@ define([
      * After Select Custom date get active users details.
      */
     function customDateSelected() {
-        let date = $(SELECTOR.DATEPICKERINPUT).val(); // Y-m-d format
-        let dateAlternate = $(SELECTOR.DATEPICKERINPUT).next().val().replace("to", "-"); // Date d M Y format.
-
-        // RTL support
+        let date = $(SELECTOR.DATEPICKERINPUT).val();
+        let dateAlternate = $(SELECTOR.DATEPICKERINPUT).next().val().replace("to", "-");
         let dirattr = $('html').attr('dir');
-        // Split string in 2 parts
         let stringarr = dateAlternate.split('-');
-        // Formating date for rtl
         if(dirattr == 'rtl'){
-            // format for rtl : yyyy mm dd
             let startdate = stringarr[0].split(' ');
             let enddate = stringarr[1].split(' ');
-
             startdate = startdate[2] + ' ' + startdate[1] + ' ' + startdate[0];
             enddate = enddate[3] + ' ' + enddate[2] + ' ' + enddate[1];
             dateAlternate = enddate + '-' + startdate;
-
-            // Making direction ltr for date selector and aligning text to right
             $(SELECTOR.DATE).css({'direction':'ltr','text-align': 'right'});
             $(SELECTOR.DATEPICKERINPUT).css({'direction':'ltr','text-align': 'right'});
         }
-
-
         $(SELECTOR.DATEPICKERINPUT).next().val(dateAlternate);
-
-        /* If correct date is not selected then return false */
         if (!date.includes(" to ")) {
             flatpickr.clear();
             return;
         }
-
-        // Set active class to custom date selector item.
         $(SELECTOR.DATEITEM).removeClass('active');
         $(SELECTOR.DATEITEM + '.custom').addClass('active');
-
-        // Show custom date to dropdown button.
         $(SELECTOR.DATE).html(dateAlternate);
-
-        // Throw date change event.
         throwDateEvent(date, dateAlternate);
+    }
+
+    /**
+     * Initialize flatpickr calendar.
+     */
+    function initFlatpickr() {
+        var fp = flatpickrLib || window.flatpickr;
+        if (!fp) {
+            console.error('Flatpickr library not available');
+            return false;
+        }
+        var inputElement = $(SELECTOR.DATEPICKERINPUT)[0];
+        if (!inputElement) {
+            console.error('Flatpickr input element not found');
+            return false;
+        }
+        flatpickr = fp(inputElement, {
+            mode: 'range',
+            altInput: true,
+            altFormat: "d M Y",
+            dateFormat: "Y-m-d",
+            maxDate: "today",
+            appendTo: $(SELECTOR.DATEPICKER).get(0),
+            onOpen: function() {
+                var cal = this.calendarContainer;
+                var $menu = $(SELECTOR.DATEMENU);
+                $menu.addClass('withcalendar');
+                var container = $menu.find('.dropdown-calendar')[0];
+                if (container && cal) {
+                    container.appendChild(cal);
+                    // positionCalendar() runs after onOpen, so we override it after the call stack clears
+                    setTimeout(function() {
+                        cal.style.setProperty('position', 'absolute', 'important');
+                        cal.style.setProperty('top', '0', 'important');
+                        cal.style.setProperty('left', '0', 'important');
+                        cal.style.setProperty('right', 'auto', 'important');
+                        cal.style.setProperty('box-shadow', 'none', 'important');
+                        cal.style.setProperty('border', '0', 'important');
+                    }, 0);
+                }
+            },
+            onClose: function() {
+                $(SELECTOR.DATEMENU).removeClass('withcalendar');
+                customDateSelected();
+            }
+        });
+        return true;
     }
 
     /**
@@ -249,65 +262,45 @@ define([
      */
     var init = function() {
         $(document).ready(function() {
-
             insights.init();
-
             let currentDate = $(SELECTOR.DATEITEM + '.active').data('value');
-
-            // Show time period in header.
-            showTimeLabel(
-                currentDate,
-                $(SELECTOR.DATEITEM + '.active').text()
-            );
-
+            showTimeLabel(currentDate, $(SELECTOR.DATEITEM + '.active').text());
             common.handleSearchInput();
-
-            // Forcefully applying first option to select dropdown element.
             $('.singleselect').each(function(index, select) {
                 $(select).val($(select).find('option:nth-child(1)').val());
             });
-
             blocks.forEach(block => {
-                block.init(validateUser);
-            });
-
-            flatpickr = $(SELECTOR.DATEPICKERINPUT).flatpickr({
-                mode: 'range',
-                altInput: true,
-                altFormat: "d M Y",
-                dateFormat: "Y-m-d",
-                maxDate: "today",
-                appendTo: $(SELECTOR.DATEPICKER).get(0),
-                onOpen: function() {
-                    $(SELECTOR.DATEMENU).addClass('withcalendar');
-                    $(SELECTOR.DATE).dropdown('update');
-                },
-                onClose: function() {
-                    $(SELECTOR.DATEMENU).removeClass('withcalendar');
-                    customDateSelected();
+                try {
+                    block.init(validateUser);
+                } catch (e) {
+                    console.error(e);
                 }
             });
 
-            /* Date selector listener */
-            $('body').on('click', SELECTOR.DATEITEM + ":not(.custom)", function() {
-                // Set custom selected item as active.
-                $(SELECTOR.DATEITEM).removeClass('active');
-                $(this).addClass('active');
-
-                // Show selected item on dropdown button.
-                $(SELECTOR.DATE).html($(this).text());
-
-                // Clear custom date.
-                flatpickr.clear();
-
-                // Throw date change event.
-                throwDateEvent($(this).data('value'), $(this).text());
-            });
+            if (initFlatpickr()) {
+                $('body').on('click', SELECTOR.DATEITEM + ":not(.custom)", function() {
+                    $(SELECTOR.DATEITEM).removeClass('active');
+                    $(this).addClass('active');
+                    $(SELECTOR.DATE).html($(this).text());
+                    if (flatpickr) {
+                        flatpickr.clear();
+                    }
+                    throwDateEvent($(this).data('value'), $(this).text());
+                });
+                $('body').on('click', SELECTOR.DATEITEM + '.custom', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    var input = $(this).find('.flatpickr')[0];
+                    if (input && input._flatpickr) {
+                        input._flatpickr.open();
+                    } else if (input) {
+                        input.focus();
+                    }
+                    return false;
+                });
+            }
         });
     };
 
-    // Must return the init function
-    return {
-        init: init
-    };
+    return { init: init };
 });

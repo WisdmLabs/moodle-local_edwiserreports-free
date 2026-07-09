@@ -177,8 +177,8 @@ define('local_edwiserreports/reports/completion', [
                 },
                 columnDefs: [
                     {className: "fixed-column", targets: 0},
-                    {className: "text-left", targets: [0, 1, 2]},
-                    {className: "text-right", targets: "_all"}
+                    {className: "text-start", targets: [0, 1, 2]},
+                    {className: "text-end", targets: "_all"}
                 ],
                 columns: [
                     {data: "username"},
@@ -244,7 +244,7 @@ define('local_edwiserreports/reports/completion', [
             allowClear: true
         });
 
-        flatpickr = Oldjquery(SELECTOR.DATEPICKERINPUT).flatpickr({
+        flatpickr = window.flatpickr(Oldjquery(SELECTOR.DATEPICKERINPUT)[0], {
             mode: 'range',
             altInput: true,
             altFormat: "d M Y",

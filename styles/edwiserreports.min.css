@@ -455,7 +455,7 @@ tr[aria-expanded=true] .accordion-arrow.icon {
     position: relative;
 }
 #page-local-edwiserreports-index .dropdown-menu.withcalendar {
-    width: -webkit-fill-available;
+    width: 308px;
     display: flex;
 }
 #page-local-edwiserreports-index .dropdown-menu.withcalendar .dropdown-calendar {
@@ -481,7 +481,7 @@ tr[aria-expanded=true] .accordion-arrow.icon {
     right: auto !important;
     box-shadow: none !important;
     border: 0 !important;
-    position: unset;
+    position: absolute !important;
 }
 #page-local-edwiserreports-index .selected-period {
     padding: 0.1rem 0.8rem;
@@ -517,7 +517,10 @@ html[lang=es] .local-edwiserreports .filter-selector .edwiserreports-calendar {
     left: 1rem;
 }
 .local-edwiserreports #learnertimespentonsiteblock .filter-selector .dropdown-toggle {
-    padding: 0.829rem 2rem 0.229rem 1rem !important;
+    padding: 0.6rem 2.2rem 0.6rem 1rem !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .local-edwiserreports button.learnertimespentonsite-calendar {
     width: auto !important;
@@ -583,18 +586,22 @@ html[lang=es] .local-edwiserreports .filter-selector .edwiserreports-calendar {
     border: 1px solid #ccc !important;
 }
 .local-edwiserreports .filter-selector .edwiserreports-calendar {
-    padding: 0.829rem 2rem 0.229rem 1rem !important;
+    padding: 0.6rem 2.2rem 0.6rem 1rem !important;
     min-width: 9rem;
     position: relative;
     text-align: left;
-    justify-content: left !important;
+    justify-content: flex-start !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .local-edwiserreports .filter-selector .edwiserreports-calendar::after {
     position: absolute;
     content: "" !important;
     border-color: transparent;
     right: 0.829rem;
-    bottom: 0.829rem;
+    top: 50%;
+    margin-top: -0.143rem;
     font-size: 0px !important;
     border-style: solid !important;
     border-width: 0.286rem 0.286rem 0 0.286rem !important;
@@ -628,6 +635,36 @@ html[lang=es] .local-edwiserreports .filter-selector .edwiserreports-calendar {
     background-color: #00A1A8 !important;
     border-radius: 1rem;
     font-weight: 500;
+}
+
+.local-edwiserreports.report-page .dropdown-menu.withcalendar {
+    width: -webkit-fill-available;
+    display: flex;
+}
+.local-edwiserreports.report-page .dropdown-menu.withcalendar .dropdown-calendar {
+    right: 0;
+}
+.local-edwiserreports.report-page .dropdown-menu.withcalendar .dropdown-body {
+    display: none;
+    width: auto !important;
+    flex: none !important;
+    right: auto !important;
+    left: auto !important;
+}
+.local-edwiserreports.report-page .dropdown-menu.withcalendar .dropdown-calendar {
+    user-select: none;
+    height: 300px;
+    width: 308px;
+    float: left;
+    position: relative;
+}
+.local-edwiserreports.report-page .dropdown-menu.withcalendar .dropdown-calendar .flatpickr-calendar {
+    top: 0 !important;
+    left: 0 !important;
+    right: auto !important;
+    box-shadow: none !important;
+    border: 0 !important;
+    position: unset;
 }
 
 .page-title h2 {
@@ -1435,7 +1472,10 @@ html[dir=rtl] .local-edwiserreports .filter-selector > label {
 }
 html[dir=rtl] .local-edwiserreports .filter-selector .edwiserreports-calendar {
     text-align: right;
-    padding: 0.829rem 1rem 0.229rem 2rem !important;
+    padding: 0.6rem 1rem 0.6rem 2.2rem !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 html[dir=rtl] .local-edwiserreports .filter-selector .edwiserreports-calendar::after {
     left: 0.829rem;
@@ -2164,6 +2204,9 @@ html[dir=rtl] .edwiserreports-table th.sorting_desc:after {
 .top-insights .insight.add-insight .insight-wrapper .dropdown .dropdown-toggle {
     height: 100%;
     width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .top-insights .insight.add-insight .insight-wrapper .dropdown .dropdown-toggle:after {
     display: none;
@@ -4785,4 +4828,42 @@ span.flatpickr-weekday {
 
 .has-success.select2-drop-active.select2-drop.select2-drop-above {
     border-top-color: #11c26d;
+}
+/* Moodle 5.x RTL fix: summary-card-filtertags */
+html[dir=rtl] .summary-card-filtertags {
+    direction: rtl;
+    text-align: right;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+/* Moodle 5.x fix: calendar SVG inline with label */
+.local-edwiserreports .filter-selector svg,
+.filter-selector svg.edw-calendar {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 4px;
+}
+
+/* Remove row wrapper negative margins inside userfilter */
+#userfilter .row {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+/* Fix date filter label width */
+.report-actions #userfilter .filter-selector {
+    padding-left: 0;
+    padding-right: 0;
+    width: 174px;
+    min-width: 160px;
+}
+
+/* Moodle 5.x fix: flatpickr calendar above navbar */
+.flatpickr-calendar {
+    z-index: 1060 !important;
+}
+.flatpickr-calendar.open {
+    z-index: 1060 !important;
 }

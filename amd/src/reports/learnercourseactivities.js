@@ -155,8 +155,8 @@ define('local_edwiserreports/reports/learnercourseactivities', [
                     deferRendering: true,
                     columnDefs: [
                         {className: "fixed-column", targets: 0},
-                        {className: "text-left", targets: [0, 1, 2]},
-                        {className: "text-right", targets: "_all"}
+                        {className: "text-start", targets: [0, 1, 2]},
+                        {className: "text-end", targets: "_all"}
                     ],
                     columns: [
                         {data: 'activity', width: "10rem"},
@@ -230,7 +230,7 @@ define('local_edwiserreports/reports/learnercourseactivities', [
                     return state.text;
                 }
                 var $state = $(
-                    '<span class="pl-3 d-block">' + state.text + '</span>'
+                    '<span class="ps-3 d-block">' + state.text + '</span>'
                 );
                 return $state;
             }

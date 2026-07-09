@@ -139,8 +139,8 @@ define('local_edwiserreports/reports/learnercourseprogress', [
                     deferRendering: true,
                     columnDefs: [
                         {className: "fixed-column", targets: 0},
-                        {className: "text-left", targets: [0, 1]},
-                        {className: "text-right", targets: "_all"}
+                        {className: "text-start", targets: [0, 1]},
+                        {className: "text-end", targets: "_all"}
                     ],
                     columns: [
                         {data: "course", width: "12rem"},
@@ -239,7 +239,7 @@ define('local_edwiserreports/reports/learnercourseprogress', [
 
         $(SELECTOR.PAGE).find('.singleselect').select2();
 
-        flatpickr = Oldjquery(SELECTOR.DATEPICKERINPUT).flatpickr({
+        flatpickr = window.flatpickr(Oldjquery(SELECTOR.DATEPICKERINPUT)[0], {
             mode: 'range',
             altInput: true,
             altFormat: "d M Y",

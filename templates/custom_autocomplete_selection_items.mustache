@@ -29,10 +29,10 @@
     }
 }}
 {{#items}}
-    <span role="listitem" data-value="{{value}}" aria-selected="true" class="badge badge-info mb-3 mr-1" style="font-size: 100%">
+    <span role="listitem" data-value="{{value}}" aria-selected="true" class="badge bg-info text-white mb-3 me-1" style="font-size: 100%">
         <span aria-hidden="true">× </span>{{{label}}}
     </span>
 {{/items}}
 {{^items}}
-    <span class="mb-3 mr-1">{{noSelectionString}}</span>
+    <span class="mb-3 me-1">{{noSelectionString}}</span>
 {{/items}}

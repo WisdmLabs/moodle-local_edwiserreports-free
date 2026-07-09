@@ -318,7 +318,10 @@ html[lang=es] .local-edwiserreports {
                 left: 1rem;
             }
             .dropdown-toggle {
-                padding: 0.829rem 2rem 0.229rem 1rem !important;
+                padding: 0.6rem 2.2rem 0.6rem 1rem !important;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
         }
     }
@@ -391,18 +394,22 @@ html[lang=es] .local-edwiserreports {
             border: 1px solid #ccc !important;
         }
         .edwiserreports-calendar {
-            padding: 0.829rem 2rem 0.229rem 1rem !important;
+            padding: 0.6rem 2.2rem 0.6rem 1rem !important;
             min-width: 9rem;
             position: relative;
             text-align: left;
             justify-content: left !important;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
 
             &::after {
                 position: absolute;
                 content: "" !important;
                 border-color: transparent;
                 right: 0.829rem;
-                bottom: 0.829rem;
+                top: 50%;
+                margin-top: -0.143rem;
                 font-size: 0px !important;
                 border-style: solid !important;
                 border-width: 0.286rem 0.286rem 0 0.286rem !important;
@@ -446,6 +453,25 @@ html[lang=es] .local-edwiserreports {
     background-color: #00A1A8 !important;
     border-radius: 1rem;
     font-weight: 500;
+}
+.local-edwiserreports.report-page .dropdown-menu.withcalendar {
+    width: -webkit-fill-available;
+    display: flex;
+    .dropdown-calendar {
+        right: 0;
+        user-select: none;
+        @include calendar-size;
+        .flatpickr-calendar {
+            @include calendar-position;
+        }
+    }
+    .dropdown-body {
+        display: none;
+        width: auto !important;
+        flex: none !important;
+        right: auto !important;
+        left: auto !important;
+    }
 }
 .page-title h2 {
     font-weight: 400;

@@ -20,7 +20,7 @@
  */
 define([
     'jquery',
-    'core/modal_factory',
+    'local_edwiserreports/modal_factory_compat',
     'core/modal_events',
     'core/fragment',
     './variables',
@@ -211,11 +211,11 @@ define([
                     "data": "completed0to20"
                 }],
                 columnDefs: [{
-                    className: "text-left",
+                    className: "text-start",
                     targets: 0
                 }, {
-                    // className: rtl ? "text-left modal-trigger" : "text-right modal-trigger",
-                    className: "text-right modal-trigger",
+                    // className: rtl ? "text-start modal-trigger" : "text-end modal-trigger",
+                    className: "text-end modal-trigger",
                     targets: "_all"
                 }],
                 language: {

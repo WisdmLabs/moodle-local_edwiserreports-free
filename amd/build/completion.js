@@ -201,10 +201,10 @@ define([
                     common.stylePaginationButton(this);
                 },
                 columnDefs: [{
-                    className: "text-left",
+                    className: "text-start",
                     targets: [0, 1]
                 }, {
-                    className: "text-right",
+                    className: "text-end",
                     targets: "_all"
                 }],
                 initComplete: function() {

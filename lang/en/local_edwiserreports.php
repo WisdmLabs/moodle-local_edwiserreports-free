@@ -1004,3 +1004,13 @@ $string['category1'] = 'Category 1';
 $string['course1'] = 'Course 1';
 $string['cohort1'] = 'Cohort 1';
 $string['configureaccess'] = 'Configure access to others than admin';
+
+// Cache definition strings (required by Moodle 5.x)
+$string['cachedef_activeusers'] = 'Edwiser Reports Active Users Cache';
+$string['cachedef_courseprogress'] = 'Edwiser Reports Course Progress Cache';
+$string['cachedef_activecourses'] = 'Edwiser Reports Active Courses Cache';
+$string['cachedef_siteaccess'] = 'Edwiser Reports Site Access Cache';
+$string['cachedef_certificates'] = 'Edwiser Reports Certificates Cache';
+$string['cachedef_inactiveusers'] = 'Edwiser Reports Inactive Users Cache';
+$string['cachedef_insight'] = 'Edwiser Reports Insight Cache';
+

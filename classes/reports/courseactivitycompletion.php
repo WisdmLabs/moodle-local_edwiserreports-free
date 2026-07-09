@@ -330,10 +330,10 @@ class courseactivitycompletion extends base {
 
         $customheader = '<div>
             <div class="mb-1 summary-card-subtitle">
-                <span class="font-weight-bold">'. get_string('course', 'local_edwiserreports') .' : </span>
+                <span class="fw-bold">'. get_string('course', 'local_edwiserreports') .' : </span>
                 <span> High School Biology </span>
             </div>
-            <div class="summary-card-title font-weight-bold">
+            <div class="summary-card-title fw-bold">
                 Announcement
             </div>
         </div>';

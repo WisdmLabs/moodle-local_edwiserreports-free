@@ -169,8 +169,8 @@ define('local_edwiserreports/reports/courseactivitiessummary', [
                     deferRendering: true,
                     columnDefs: [
                         { className: "fixed-column", targets: 0 },
-                        { className: "text-left", targets: [0, 1, 2] },
-                        { className: "text-right", targets: "_all" }
+                        { className: "text-start", targets: [0, 1, 2] },
+                        { className: "text-end", targets: "_all" }
                     ],
                     columns: [
                         { 
@@ -297,7 +297,7 @@ define('local_edwiserreports/reports/courseactivitiessummary', [
                     return state.text;
                 }
                 var $state = $(
-                    '<span class="pl-3 d-block">' + state.text + '</span>'
+                    '<span class="ps-3 d-block">' + state.text + '</span>'
                 );
                 return $state;
             }
@@ -307,7 +307,7 @@ define('local_edwiserreports/reports/courseactivitiessummary', [
             allowClear: true
         });
 
-        flatpickr = Oldjquery(SELECTOR.DATEPICKERINPUT).flatpickr({
+        flatpickr = window.flatpickr(Oldjquery(SELECTOR.DATEPICKERINPUT)[0], {
             mode: 'range',
             altInput: true,
             altFormat: "d M Y",

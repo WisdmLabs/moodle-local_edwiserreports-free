@@ -1,3 +1,10 @@
+v 2.0.1
+====================================================
+Bug Fixes
+- Fixed stale non-minified AMD build files (amd/build/*.js) that still referenced the removed core/modal_factory module, causing "No define call for core/modal_factory" JS errors on Moodle 5.x.
+- Regenerated all non-minified amd/build/*.js debug copies from amd/src to match the already-updated production amd/build/*.min.js files (Bootstrap 5 RTL/LTR class updates, flatpickr API updates).
+- Added missing amd/build/modal_factory_compat.js (non-minified) file.
+
 v 2.0.0
 ====================================================
 Tweaks

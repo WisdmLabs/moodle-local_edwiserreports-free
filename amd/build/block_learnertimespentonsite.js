@@ -225,7 +225,7 @@ define([
      * Initialize event listeners.
      */
     function initEvents() {
-        Oldjquery(SELECTOR.PANEL).find(SELECTOR.DATEPICKERINPUT).flatpickr({
+        window.flatpickr(Oldjquery(SELECTOR.PANEL).find(SELECTOR.DATEPICKERINPUT)[0], {
             mode: 'range',
             altInput: true,
             altFormat: "d/m/Y",

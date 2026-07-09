@@ -167,9 +167,9 @@ define('local_edwiserreports/reports/studentengagement', [
             columnDefs: [
 
                 { className: "fixed-column", targets: 0 },
-                { className: "text-left", targets: [0, 1, 2] },
+                { className: "text-start", targets: [0, 1, 2] },
                 { orderable: true, targets: [0, 1, 2, 3] },
-                { className: "text-right", orderable: false, targets: "_all" }
+                { className: "text-end", orderable: false, targets: "_all" }
             ],
             columns: [
                 { data: "student", width: "10rem" },
@@ -295,7 +295,7 @@ define('local_edwiserreports/reports/studentengagement', [
             reloadFilter(['course', 'group'], $(SELECTOR.COHORT).val(), $(SELECTOR.COURSE).val(), $(SELECTOR.GROUP).val());
         });
 
-        flatpickr = Oldjquery(SELECTOR.DATEPICKERINPUT).flatpickr({
+        flatpickr = window.flatpickr(Oldjquery(SELECTOR.DATEPICKERINPUT)[0], {
             mode: 'range',
             altInput: true,
             altFormat: "d M Y",
