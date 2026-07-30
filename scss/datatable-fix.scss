@@ -144,3 +144,11 @@ html[dir=rtl] .edwiserreports-table th.sorting_desc:after {
         }
     }
 }
+
+/* RTL fix: text alignment for dataTables info ("Showing X to Y of Z entries") */
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .dataTables_info {
+    text-align: left !important;
+}
+html[dir=rtl] .local-edwiserreports .dataTables_wrapper .dataTables_info {
+    float: left !important;
+}

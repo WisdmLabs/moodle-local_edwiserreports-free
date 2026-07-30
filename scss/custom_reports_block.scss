@@ -162,3 +162,40 @@ html[dir=rtl] #cr-list-table {
         }
     }
 }
+
+// Pill-shaped Create New Report / Reset buttons in the custom reports preview footer.
+.reports-preview-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+
+    #wdm-custom-reports-save,
+    a.theme-primary-text.theme-primary-border {
+        border-radius: 50px;
+        padding: 10px 28px;
+        font-weight: 500;
+        font-size: 0.95rem;
+        line-height: 1.2;
+        border-width: 1px;
+        border-style: solid;
+        transition: opacity 0.15s ease-in-out;
+
+        &:hover {
+            opacity: 0.85;
+        }
+
+        &:disabled {
+            opacity: 0.5;
+        }
+    }
+
+    #wdm-custom-reports-save {
+        border-color: transparent;
+    }
+
+    a.theme-primary-text.theme-primary-border {
+        background-color: #fff;
+        text-decoration: none;
+    }
+}

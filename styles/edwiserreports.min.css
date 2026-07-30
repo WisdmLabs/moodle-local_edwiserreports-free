@@ -17,6 +17,7 @@
 #wdm-activeusers-individual .dropdown-item input {
     border-radius: 0 !important;
     border: 0 !important;
+    text-align: right;
     box-shadow: none !important;
     font-size: inherit !important;
     min-height: inherit !important;
@@ -4866,4 +4867,151 @@ html[dir=rtl] .summary-card-filtertags {
 }
 .flatpickr-calendar.open {
     z-index: 1060 !important;
+}
+
+/* Fix 1: Save Custom Report modal buttons visibility + styling.
+   core/modal_save_cancel already renders a working footer with Save/Cancel
+   buttons, so we only need to (a) make sure it can never collapse to
+   display:none, and (b) restyle those buttons to match the plugin's pill
+   button (Create New Report / Reset). No hardcoded LTR-only colors here -
+   theme-primary-* classes drive the color so this follows whatever primary
+   color is set in the report settings, and margin/justify-content are
+   logical so they mirror correctly under dir="rtl". */
+.modal-save-cancel .modal-footer,
+.modal-dialog .modal-footer {
+    display: flex !important;
+    justify-content: flex-end !important;
+    align-items: center !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    gap: 12px;
+    padding: 15px !important;
+    border-top: 1px solid #dee2e6 !important;
+    background-color: #f8f9fa !important;
+}
+.modal-save-cancel .modal-footer .btn,
+.modal-dialog .modal-footer .btn {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    visibility: visible !important;
+    opacity: 1 !important;
+    padding: 10px 28px !important;
+    margin: 0 !important;
+    font-weight: 500 !important;
+    font-size: 0.95rem;
+    border-radius: 50px !important;
+    border-width: 1px !important;
+    border-style: solid !important;
+    cursor: pointer !important;
+    transition: opacity 0.15s ease-in-out;
+}
+.modal-save-cancel .modal-footer .btn:hover,
+.modal-dialog .modal-footer .btn:hover {
+    opacity: 0.85;
+}
+.modal-save-cancel .modal-footer [data-action=save],
+.modal-dialog .modal-footer .btn[data-action=save] {
+    border-color: transparent !important;
+}
+.modal-save-cancel .modal-footer [data-action=cancel],
+.modal-dialog .modal-footer .btn[data-action=cancel] {
+    background-color: #fff !important;
+}
+
+/* RTL: form rows inside the modal (Report Name / Short Name / checkboxes) use
+   Bootstrap's row/col grid, which already mirrors under dir="rtl". The one
+   thing that does not auto-mirror is the help-popover placement, which is a
+   literal physical side rather than a logical one - see customreportsblock.js,
+   which flips data-placement to "left" for RTL before the popover is triggered. */
+html[dir=rtl] .modal-save-cancel .modal-footer,
+html[dir=rtl] .modal-dialog .modal-footer {
+    justify-content: flex-end !important;
+}
+
+/* Fix 2: RTL text alignment for dataTables info ("Showing X to Y of Z entries") */
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .dataTables_info {
+    text-align: left !important;
+}
+html[dir=rtl] .local-edwiserreports .dataTables_wrapper .dataTables_info {
+    float: left !important;
+}
+
+/* Fix 3: Icon and dropdown alignment - calendar icon with dropdown */
+.local-edwiserreports .filter-selector .input-group,
+.local-edwiserreports .filter-selector .edwiserreports-calendar-wrapper {
+    display: flex !important;
+    align-items: center !important;
+}
+.local-edwiserreports .filter-selector .edwiserreports-calendar {
+    display: inline-flex !important;
+    align-items: center !important;
+}
+.local-edwiserreports .filter-selector svg,
+.local-edwiserreports .filter-selector .fa-calendar,
+.local-edwiserreports .filter-selector .calendar-icon {
+    margin-right: 8px !important;
+    vertical-align: middle !important;
+}
+html[dir=rtl] .local-edwiserreports .filter-selector svg,
+html[dir=rtl] .local-edwiserreports .filter-selector .fa-calendar,
+html[dir=rtl] .local-edwiserreports .filter-selector .calendar-icon {
+    margin-right: 0 !important;
+    margin-left: 8px !important;
+}
+/* Ensure dropdown and icon are on same line */
+.local-edwiserreports .filter-selector .dropdown,
+.local-edwiserreports .filter-selector .dropdown-toggle {
+    display: inline-flex !important;
+    align-items: center !important;
+}
+
+/* report-page-header.mustache: the calendar icon used to be a loose sibling of
+   the whole label+button column, so it lined up with the label instead of the
+   button. It now lives inside .edwiserreports-calendar-wrapper next to the
+   button - this just flex-centers that pair and gives the icon breathing room. */
+.local-edwiserreports .filter-selector .edwiserreports-calendar-wrapper {
+    flex-shrink: 0;
+}
+.local-edwiserreports .filter-selector .edwiserreports-calendar-wrapper svg {
+    flex-shrink: 0;
+    width: 13px;
+    height: 14px;
+}
+.local-edwiserreports .filter-selector .edwiserreports-calendar-wrapper .edwiserreports-calendar {
+    width: 100%;
+}
+
+/* Pill-shaped Create New Report / Reset buttons in the custom reports preview footer. */
+.reports-preview-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+}
+.reports-preview-footer #wdm-custom-reports-save,
+.reports-preview-footer a.theme-primary-text.theme-primary-border {
+  border-radius: 50px;
+  padding: 10px 28px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  line-height: 1.2;
+  border-width: 1px;
+  border-style: solid;
+  transition: opacity 0.15s ease-in-out;
+}
+.reports-preview-footer #wdm-custom-reports-save:hover,
+.reports-preview-footer a.theme-primary-text.theme-primary-border:hover {
+  opacity: 0.85;
+}
+.reports-preview-footer #wdm-custom-reports-save:disabled,
+.reports-preview-footer a.theme-primary-text.theme-primary-border:disabled {
+  opacity: 0.5;
+}
+.reports-preview-footer #wdm-custom-reports-save {
+  border-color: transparent;
+}
+.reports-preview-footer a.theme-primary-text.theme-primary-border {
+  background-color: #fff;
+  text-decoration: none;
 }

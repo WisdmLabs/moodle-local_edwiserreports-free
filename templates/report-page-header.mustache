@@ -18,35 +18,37 @@
     {{#pro}}
         <div id="userfilter" class="h-auto mt-2 ms-auto ms-auto" style="width:auto">
 	        <div class="row">
-	            {{{calendar}}}
 	            <div class="filter-selector d-flex flex-column col-12 col-lg-3 col-md-4">
 	                <label>{{#str}} date, local_edwiserreports {{/str}}: {{#str}} enrollments, local_edwiserreports {{/str}}</label>
-					<button type="button" class="btn dropdown-toggle edwiserreports-calendar" data-toggle="dropdown" data-bs-toggle="dropdown" id="filter-dropdown" aria-expanded="false">
-	                    {{# str }} alltime, local_edwiserreports {{/ str }}
-	                </button>
-					<ul class="dropdown-menu dropdown-scrollable dropdown-menu-end" aria-labelledby="filter-dropdown" role="menu">
-	                    <div class="dropdown-calendar"></div>
-	                    <div class="dropdown-body">
-	                        <a class="dropdown-item active" role="menuitem" data-value="all" href="javascript:void(0)">
-	                            {{#str}} alltime, local_edwiserreports {{/str}}
-	                        </a>
-	                        <a class="dropdown-item" role="menuitem" data-value="last7days" href="javascript:void(0)">
-	                            {{#str}} enrolled, local_edwiserreports {{/str}} {{#str}} last7days, local_edwiserreports {{/str}}
-	                        </a>
-	                        <a class="dropdown-item" role="menuitem" data-value="weekly" href="javascript:void(0)">
-	                            {{#str}} enrolled, local_edwiserreports {{/str}} {{#str}} lastweek, local_edwiserreports {{/str}}
-	                        </a>
-	                        <a class="dropdown-item" role="menuitem" data-value="monthly" href="javascript:void(0)">
-	                            {{#str}} enrolled, local_edwiserreports {{/str}} {{#str}} lastmonth, local_edwiserreports {{/str}}
-	                        </a>
-	                        <a class="dropdown-item" role="menuitem" data-value="yearly" href="javascript:void(0)">
-	                            {{#str}} enrolled, local_edwiserreports {{/str}} {{#str}} lastyear, local_edwiserreports {{/str}}
-	                        </a>
-	                        <a class="dropdown-item custom" role="menuitem" href="javascript:void(0)">
-	                            <input class="border-0 p-0 bg-transparent flatpickr" placeholder="{{#str}} customdate, local_edwiserreports {{/str}}" data-input />
-	                        </a>
-	                    </div>
-					</ul>
+					<div class="edwiserreports-calendar-wrapper d-flex align-items-center position-relative">
+						{{{calendar}}}
+						<button type="button" class="btn dropdown-toggle edwiserreports-calendar" data-toggle="dropdown" data-bs-toggle="dropdown" id="filter-dropdown" aria-expanded="false">
+		                    {{# str }} alltime, local_edwiserreports {{/ str }}
+		                </button>
+						<ul class="dropdown-menu dropdown-scrollable dropdown-menu-end" aria-labelledby="filter-dropdown" role="menu">
+	                    	<div class="dropdown-calendar"></div>
+	                    	<div class="dropdown-body">
+	                        	<a class="dropdown-item active" role="menuitem" data-value="all" href="javascript:void(0)">
+	                            	{{#str}} alltime, local_edwiserreports {{/str}}
+	                        	</a>
+	                        	<a class="dropdown-item" role="menuitem" data-value="last7days" href="javascript:void(0)">
+	                            	{{#str}} enrolled, local_edwiserreports {{/str}} {{#str}} last7days, local_edwiserreports {{/str}}
+	                        	</a>
+	                        	<a class="dropdown-item" role="menuitem" data-value="weekly" href="javascript:void(0)">
+	                            	{{#str}} enrolled, local_edwiserreports {{/str}} {{#str}} lastweek, local_edwiserreports {{/str}}
+	                        	</a>
+	                        	<a class="dropdown-item" role="menuitem" data-value="monthly" href="javascript:void(0)">
+	                            	{{#str}} enrolled, local_edwiserreports {{/str}} {{#str}} lastmonth, local_edwiserreports {{/str}}
+	                        	</a>
+	                        	<a class="dropdown-item" role="menuitem" data-value="yearly" href="javascript:void(0)">
+	                            	{{#str}} enrolled, local_edwiserreports {{/str}} {{#str}} lastyear, local_edwiserreports {{/str}}
+	                        	</a>
+	                        	<a class="dropdown-item custom" role="menuitem" href="javascript:void(0)">
+	                            	<input class="border-0 p-0 bg-transparent flatpickr" placeholder="{{#str}} customdate, local_edwiserreports {{/str}}" data-input />
+	                        	</a>
+	                    	</div>
+						</ul>
+					</div>
 	            </div>
 	        </div>
 	    </div>

@@ -1671,3 +1671,48 @@ html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .pag
     box-sizing: border-box;
     z-index: 1000;
 }
+
+/* Fix: Icon and dropdown alignment - calendar icon with dropdown */
+.local-edwiserreports .filter-selector .input-group,
+.local-edwiserreports .filter-selector .edwiserreports-calendar-wrapper {
+    display: flex !important;
+    align-items: center !important;
+}
+.local-edwiserreports .filter-selector .edwiserreports-calendar {
+    display: inline-flex !important;
+    align-items: center !important;
+}
+.local-edwiserreports .filter-selector svg,
+.local-edwiserreports .filter-selector .fa-calendar,
+.local-edwiserreports .filter-selector .calendar-icon {
+    margin-right: 8px !important;
+    vertical-align: middle !important;
+}
+html[dir=rtl] .local-edwiserreports .filter-selector svg,
+html[dir=rtl] .local-edwiserreports .filter-selector .fa-calendar,
+html[dir=rtl] .local-edwiserreports .filter-selector .calendar-icon {
+    margin-right: 0 !important;
+    margin-left: 8px !important;
+}
+/* Ensure dropdown and icon are on same line */
+.local-edwiserreports .filter-selector .dropdown,
+.local-edwiserreports .filter-selector .dropdown-toggle {
+    display: inline-flex !important;
+    align-items: center !important;
+}
+
+/* report-page-header.mustache: the calendar icon used to be a loose sibling of
+   the whole label+button column, so it lined up with the label instead of the
+   button. It now lives inside .edwiserreports-calendar-wrapper next to the
+   button - this just flex-centers that pair and gives the icon breathing room. */
+.local-edwiserreports .filter-selector .edwiserreports-calendar-wrapper {
+    flex-shrink: 0;
+}
+.local-edwiserreports .filter-selector .edwiserreports-calendar-wrapper svg {
+    flex-shrink: 0;
+    width: 13px;
+    height: 14px;
+}
+.local-edwiserreports .filter-selector .edwiserreports-calendar-wrapper .edwiserreports-calendar {
+    width: 100%;
+}

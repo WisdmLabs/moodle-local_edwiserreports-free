@@ -272,7 +272,24 @@ define([
         }).done(function(modal) {
             var root = modal.getRoot();
             root.find('.modal-dialog').addClass('modal-lg');
-            modal.getFooter().find('[data-action="save"]').removeClass('btn-primary').addClass('theme-primary-bg text-white');
+
+            // Match the Create New Report / Reset pill buttons: filled with
+            // the theme color for Save, outlined for Cancel.
+            modal.getFooter().find('[data-action="save"]')
+                .removeClass('btn-primary')
+                .addClass('theme-primary-bg text-white');
+            modal.getFooter().find('[data-action="cancel"]')
+                .removeClass('btn-secondary')
+                .addClass('theme-primary-text theme-primary-border bg-white');
+
+            // Popover placement is a physical side ("right"), not a logical
+            // one, so it needs to be flipped by hand for RTL languages or the
+            // popovers fly off past the edge of the modal instead of landing
+            // next to the field they describe.
+            if ($('html').attr('dir') === 'rtl') {
+                root.find('[data-toggle="popover"]').attr('data-placement', 'left');
+            }
+
             modal.show();
 
             // Destroying modal on hide event.

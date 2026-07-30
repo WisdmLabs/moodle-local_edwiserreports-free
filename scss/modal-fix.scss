@@ -10,3 +10,63 @@
         outline: -webkit-focus-ring-color auto 0 !important;
     }
 }
+
+/* Fix: Save Custom Report modal buttons visibility + styling.
+   core/modal_save_cancel already renders a working footer with Save/Cancel
+   buttons, so we only need to (a) make sure it can never collapse to
+   display:none, and (b) restyle those buttons to match the plugin's pill
+   button (Create New Report / Reset). No hardcoded LTR-only colors here -
+   theme-primary-* classes drive the color so this follows whatever primary
+   color is set in the report settings, and margin/justify-content are
+   logical so they mirror correctly under dir="rtl". */
+.modal-save-cancel .modal-footer,
+.modal-dialog .modal-footer {
+    display: flex !important;
+    justify-content: flex-end !important;
+    align-items: center !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    gap: 12px;
+    padding: 15px !important;
+    border-top: 1px solid #dee2e6 !important;
+    background-color: #f8f9fa !important;
+}
+.modal-save-cancel .modal-footer .btn,
+.modal-dialog .modal-footer .btn {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    visibility: visible !important;
+    opacity: 1 !important;
+    padding: 10px 28px !important;
+    margin: 0 !important;
+    font-weight: 500 !important;
+    font-size: 0.95rem;
+    border-radius: 50px !important;
+    border-width: 1px !important;
+    border-style: solid !important;
+    cursor: pointer !important;
+    transition: opacity 0.15s ease-in-out;
+}
+.modal-save-cancel .modal-footer .btn:hover,
+.modal-dialog .modal-footer .btn:hover {
+    opacity: 0.85;
+}
+.modal-save-cancel .modal-footer [data-action="save"],
+.modal-dialog .modal-footer .btn[data-action="save"] {
+    border-color: transparent !important;
+}
+.modal-save-cancel .modal-footer [data-action="cancel"],
+.modal-dialog .modal-footer .btn[data-action="cancel"] {
+    background-color: #fff !important;
+}
+
+/* RTL: form rows inside the modal (Report Name / Short Name / checkboxes) use
+   Bootstrap's row/col grid, which already mirrors under dir="rtl". The one
+   thing that does not auto-mirror is the help-popover placement, which is a
+   literal physical side rather than a logical one - see customreportsblock.js,
+   which flips data-placement to "left" for RTL before the popover is triggered. */
+html[dir="rtl"] .modal-save-cancel .modal-footer,
+html[dir="rtl"] .modal-dialog .modal-footer {
+    justify-content: flex-end !important;
+}
