@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -14,41 +13,65 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 /**
- * Plugin administration pages are defined here.
+ * Block service call and rendering defined in this file.
  *
  * @copyright   2021 wisdmlabs <support@wisdmlabs.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-/* eslint-disable no-console */
+/* eslint-disable no-unused-vars */
 define([
     'jquery',
-    'core/notification',
     './chart/apexcharts',
     './common',
     './defaultconfig',
-    'local_edwiserreports/jquery',
-    'local_edwiserreports/flatpickr',
-    './select2'
+    'core/notification'
 ], function(
     $,
-    Notification,
     ApexCharts,
-    Common,
+    common,
     CFG,
-    Oldjquery,
+    Notification
 ) {
 
     /**
-     * Charts list.
+     * DOM element selectors list.
      */
-    var chart = null;
+    let SELECTOR = {
+        PANEL: '#learnertimespentonsiteblock',
+        GRAPH: '#apex-chart-learnertimespentonsite-block'
+    };
+
+    let PROMISE = {
+        /**
+         * Get timespent on site using filters.
+         * @param {Object} filter Filter data
+         * @returns {PROMISE}
+         */
+        GET_TIMESPENTONSITE: function(filter) {
+            return $.ajax({
+                url: CFG.requestUrl,
+                type: CFG.requestType,
+                dataType: CFG.requestDataType,
+                data: {
+                    action: 'get_learnertimespentonsite_graph_data_ajax',
+                    secret: M.local_edwiserreports.secret,
+                    lang: $('html').attr('lang')
+                },
+            });
+        }
+    };
 
     /**
      * Filter for ajax.
      */
-    var filter = {
+    let filter = {
         date: 'weekly'
     };
+
+    /**
+     * Chart object.
+     */
+    let chart = null;
 
     /**
      * Line chart default config.
@@ -91,6 +114,10 @@ define([
             onDatasetHover: {
                 highlightDataSeries: false,
             },
+            y: {
+                formatter: undefined,
+                title: {},
+            },
             items: {
                 display: 'flex'
             },
@@ -100,9 +127,6 @@ define([
                 offsetX: 0,
                 offsetY: 0,
             },
-            y: {
-                title: {}
-            }
         },
         stroke: {
             curve: 'smooth',
@@ -139,45 +163,18 @@ define([
         dataLabels: {
             enabled: false
         },
-        colors: [CFG.getColorTheme()[2]]
-    };
-
-    /**
-     * Selectors list.
-     */
-    var SELECTOR = {
-        PANEL: '#learnertimespentonsiteblock',
-        GRAPH: '#apex-chart-learnertimespentonsite-block'
-    };
-
-    /**
-     * All promises.
-     */
-    var PROMISE = {
-        /**
-         * Get timespent on site using filters.
-         * @returns {PROMISE}
-         */
-        GET_TIMESPENTONSITE: function() {
-            return $.ajax({
-                url: CFG.requestUrl,
-                type: CFG.requestType,
-                dataType: CFG.requestDataType,
-                data: {
-                    action: 'get_learnertimespentonsite_graph_data_ajax',
-                    secret: M.local_edwiserreports.secret,
-                    lang: $('html').attr('lang')
-                },
-            });
-        },
+        colors: [CFG.getColorTheme()[2]],
+        noData: {
+            text: M.util.get_string('nographdata', 'local_edwiserreports')
+        }
     };
 
     /**
      * Load graph
+     * @param {function} invalidUser Function to be called when user is invalid
      */
-    function loadGraph() {
-        let data;
-        Common.loader.show(SELECTOR.PANEL);
+    function loadGraph(invalidUser) {
+        common.loader.show(SELECTOR.PANEL);
 
         /**
          * Render graph.
@@ -188,51 +185,76 @@ define([
             if (chart !== null) {
                 chart.destroy();
             }
-            chart = new ApexCharts(graph.get(0), data);
-            chart.render();
+
+            var domElement = graph.get(0);
+            if (!domElement) {
+                var retryGraph = $(SELECTOR.PANEL).find(SELECTOR.GRAPH);
+                domElement = retryGraph.get(0);
+                if (!domElement) {
+                    common.loader.hide(SELECTOR.PANEL);
+                    return;
+                }
+            }
+
+            try {
+                chart = new ApexCharts(domElement, data);
+                chart.render();
+            } catch (e) {
+                common.loader.hide(SELECTOR.PANEL);
+                return;
+            }
+
             setTimeout(function() {
-                Common.loader.hide(SELECTOR.PANEL);
+                common.loader.hide(SELECTOR.PANEL);
             }, 1000);
         }
+
         PROMISE.GET_TIMESPENTONSITE(filter)
             .done(function(response) {
-                data = Object.assign({}, lineChartDefault);
-                data.yaxis = {
-                    labels: {
-                        formatter: Common.timeFormatter
-                    }
-                };
-                data.xaxis.categories = response.labels;
+                if (!response) {
+                    common.loader.hide(SELECTOR.PANEL);
+                    return;
+                }
+
+                if (!response.timespent) {
+                    common.loader.hide(SELECTOR.PANEL);
+                    return;
+                }
+
+                if (!response.labels) {
+                    common.loader.hide(SELECTOR.PANEL);
+                    return;
+                }
+
+                let data = $.extend(true, {}, lineChartDefault);
+
                 data.series = [{
                     name: M.util.get_string('timespentonlms', 'local_edwiserreports'),
                     data: response.timespent,
                 }];
+
+                data.yaxis = {
+                    labels: {
+                        formatter: common.timeFormatter
+                    }
+                };
+
+                data.xaxis.categories = response.labels;
+
                 data.chart.toolbar.show = response.labels.length > 30;
                 data.chart.zoom.enabled = response.labels.length > 30;
-                data.tooltip.y.title.formatter = (title) => {
+
+                data.tooltip.y.title.formatter = () => {
                     return M.util.get_string('time', 'local_edwiserreports') + ': ';
                 };
-                $(SELECTOR.PANEL).find('.panel-body').attr('data-charttype', 'line');
-                renderGraph($(SELECTOR.PANEL).find(SELECTOR.GRAPH), data);
-                Common.loader.hide(SELECTOR.PANEL);
-            }).fail(function(exception) {
-                Notification.exception(exception);
-                Common.loader.hide(SELECTOR.PANEL);
-            });
-    }
 
-    /**
-     * Initialize event listeners.
-     */
-    function initEvents() {
-        window.flatpickr(Oldjquery(SELECTOR.PANEL).find(SELECTOR.DATEPICKERINPUT)[0], {
-            mode: 'range',
-            altInput: true,
-            altFormat: "d/m/Y",
-            dateFormat: "Y-m-d",
-            maxDate: "today",
-            appendTo: $(SELECTOR.PANEL).find(SELECTOR.DATEPICKER).get(0)
-        });
+                var graphElement = $(SELECTOR.PANEL).find(SELECTOR.GRAPH);
+
+                renderGraph(graphElement, data);
+            }).fail(function(xhr, status, error) {
+                Notification.exception(xhr);
+                common.loader.hide(SELECTOR.PANEL);
+            });
     }
 
     /**
@@ -240,14 +262,16 @@ define([
      * @param {function} invalidUser Callback function
      */
     function init(invalidUser) {
-        if ($(SELECTOR.PANEL).length == 0) {
+
+        if (!$(SELECTOR.PANEL).length) {
             return;
         }
 
-        initEvents();
-
-        loadGraph();
+        loadGraph(invalidUser);
     }
+
+
+    // Must return the init function
     return {
         init: init
     };

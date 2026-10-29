@@ -71,7 +71,7 @@
     {{/showwhatsnew}}
     {{# canmanagecustomreports }}
         <div class="col-12 mb-5">
-            <a href="{{customreportseditlink}}" class="btn theme-primary-bg text-white pull-right float-end">
+            <a href="{{customreportseditlink}}" class="btn theme-primary-bg text-white float-end float-end">
                 <i class="icon fa fa-plus fa-fw " aria-hidden="true"></i>
                 {{#str}} createcustomreports, local_edwiserreports {{/str}}
             </a>
@@ -96,7 +96,7 @@
                         <div class="panel-title theme-1-text p-0">
                             <strong class="mb-1">
                                 {{{name}}}
-                                <a href="javascript:void(0)" data-title="{{info}}" title="{{info}}" class="small panel-help" data-toggle="tooltip" data-bs-toggle="tooltip" data-trigger="hover" data-placement="top" data-bs-placement="top">
+                                <a href="javascript:void(0)" data-title="{{info}}" title="{{info}}" class="small panel-help" data-toggle="tooltip" data-bs-toggle="tooltip" data-trigger="hover" data-bs-trigger="hover" data-placement="top" data-bs-placement="top">
                                     {{{infoicon}}}
                                 </a>
                             </strong>
@@ -108,7 +108,7 @@
                                         <button role="button" type="button" class="btn" data-toggle="dropdown" data-bs-toggle="dropdown">
                                             <i class="fa fa-ellipsis-v theme-primary-text"></i>
                                         </button>
-                                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-end" style="">
+                                        <div class="dropdown-menu dropdown-menu-end" style="">
                                             {{# morelink }}
                                                 <a href="{{{.}}}" class="dropdown-item m-0">{{#str}} more, core_calendar {{/str}}</a>
                                             {{/ morelink }}
@@ -217,7 +217,7 @@
     {{/ blocks }}
     {{# canmanagecustomreports }}
         <div class="col-12 mb-5">
-            <a href="{{customreportseditlink}}" class="btn theme-primary-bg text-white pull-right float-end">
+            <a href="{{customreportseditlink}}" class="btn theme-primary-bg text-white float-end float-end">
                 <i class="icon fa fa-plus fa-fw " aria-hidden="true"></i>
                 {{#str}} createcustomreports, local_edwiserreports {{/str}}
             </a>

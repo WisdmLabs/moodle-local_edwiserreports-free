@@ -33,7 +33,7 @@
 	<div style="display: none;">
         <input type="hidden" name="reportsid" value="{{#reportsid}}{{.}}{{/reportsid}}{{^reportsid}}0{{/reportsid}}" />
     </div>
-    <div id="fitem_id_crb_reportname" class="form-group row fitem">
+    <div id="fitem_id_crb_reportname" class="mb-3 row fitem">
         <div class="col-md-3 d-flex align-items-center">
             <label class="col-form-label d-inline" for="id_crb_reportname">
                 {{#str}} reportname, local_edwiserreports {{/str}}
@@ -48,13 +48,13 @@
                 </abbr>
                 <a class="btn btn-link p-0"
                    role="button"
-                   data-container="body"
-                   data-toggle="popover"
-                   data-placement="right"
-                   data-content="{{content}}"
-                   data-html="true"
+                   data-container="body" data-bs-container="body"
+                   data-toggle="popover" data-bs-toggle="popover"
+                   data-placement="right" data-bs-placement="right"
+                   data-content="{{content}}" data-bs-content="{{content}}"
+                   data-html="true" data-bs-html="true"
                    tabindex="0"
-                   data-trigger="focus">
+                   data-trigger="focus" data-bs-trigger="focus">
                     <i class="icon fa fa-question-circle text-info fa-fw "
                        title="{{#str}} reportname, local_edwiserreports {{/str}}"
                        aria-label="{{#str}} reportname, local_edwiserreports {{/str}}">
@@ -62,12 +62,12 @@
                 </a>
             </span>
         </div>
-        <div class="col-md-9 form-inline felement" data-fieldtype="text">
+        <div class="col-md-9 d-flex flex-wrap align-items-center felement" data-fieldtype="text">
             <input type="text" class="form-control " name="reportname" id="id_crb_reportname" size="50" maxlength="254" value="{{reportname}}">
             <div class="form-control-feedback invalid-feedback" id="id_error_crb_reportname"></div>
         </div>
     </div>
-    <div id="fitem_id_crb_reportshortname" class="form-group row fitem">
+    <div id="fitem_id_crb_reportshortname" class="mb-3 row fitem">
         <div class="col-md-3 d-flex align-items-center">
             <label class="col-form-label d-inline" for="id_crb_reportshortname">
                 {{#str}} reportshortname, local_edwiserreports {{/str}}
@@ -81,13 +81,13 @@
                 </abbr>
                 <a class="btn btn-link p-0"
                    role="button"
-                   data-container="body"
-                   data-toggle="popover"
-                   data-placement="right"
-                   data-content="{{content}}"
-                   data-html="true"
+                   data-container="body" data-bs-container="body"
+                   data-toggle="popover" data-bs-toggle="popover"
+                   data-placement="right" data-bs-placement="right"
+                   data-content="{{content}}" data-bs-content="{{content}}"
+                   data-html="true" data-bs-html="true"
                    tabindex="0"
-                   data-trigger="focus">
+                   data-trigger="focus" data-bs-trigger="focus">
                     <i class="icon fa fa-question-circle text-info fa-fw "
                        title="{{#str}} reportshortname, local_edwiserreports {{/str}}"
                        aria-label="{{#str}} reportshortname, local_edwiserreports {{/str}}">
@@ -95,12 +95,12 @@
                 </a>
             </span>
         </div>
-        <div class="col-md-9 form-inline felement" data-fieldtype="text">
+        <div class="col-md-9 d-flex flex-wrap align-items-center felement" data-fieldtype="text">
             <input type="text" class="form-control " name="reportshortname" id="id_crb_reportshortname" size="50" maxlength="254"  value="{{reportshortname}}">
             <div class="form-control-feedback invalid-feedback" id="id_error_crb_reportshortname"></div>
         </div>
     </div>
-    <div class="form-group row fitem">
+    <div class="mb-3 row fitem">
         <div class="col-md-3 d-flex align-items-center">
             <label class="col-form-label d-inline" for="crb_download_enable">
                 {{#str}} downloadenable, local_edwiserreports {{/str}}
@@ -108,13 +108,13 @@
             <span class="text-nowrap">
                 <a class="btn btn-link p-0"
                    role="button"
-                   data-container="body"
-                   data-toggle="popover"
-                   data-placement="right"
-                   data-content="{{content}}"
-                   data-html="true"
+                   data-container="body" data-bs-container="body"
+                   data-toggle="popover" data-bs-toggle="popover"
+                   data-placement="right" data-bs-placement="right"
+                   data-content="{{content}}" data-bs-content="{{content}}"
+                   data-html="true" data-bs-html="true"
                    tabindex="0"
-                   data-trigger="focus">
+                   data-trigger="focus" data-bs-trigger="focus">
                     <i class="icon fa fa-question-circle text-info fa-fw "
                        title="{{#str}} downloadenable, local_edwiserreports {{/str}}"
                        aria-label="{{#str}} downloadenable, local_edwiserreports {{/str}}">
@@ -122,7 +122,7 @@
                 </a>
             </span>
         </div>
-        <div class="col-md-9 form-inline felement" data-fieldtype="select">
+        <div class="col-md-9 d-flex flex-wrap align-items-center felement" data-fieldtype="select">
             <div class="checkbox-edwiserreports">
                 <input type="checkbox" class="custom-field-checkbox" name="downloadenable" value="1"
                 id="crb_download_enable" {{#downloadenable}}checked{{/downloadenable}}>
@@ -130,7 +130,7 @@
             </div>
         </div>
     </div>
-    <div class="form-group row fitem">
+    <div class="mb-3 row fitem">
         <div class="col-md-3 d-flex align-items-center">
             <label class="col-form-label d-inline" for="crb_desktop_enable">
                 {{#str}} enabledesktop, local_edwiserreports {{/str}}
@@ -138,13 +138,13 @@
             <span class="text-nowrap">
                 <a class="btn btn-link p-0"
                    role="button"
-                   data-container="body"
-                   data-toggle="popover"
-                   data-placement="right"
-                   data-content="{{content}}"
-                   data-html="true"
+                   data-container="body" data-bs-container="body"
+                   data-toggle="popover" data-bs-toggle="popover"
+                   data-placement="right" data-bs-placement="right"
+                   data-content="{{content}}" data-bs-content="{{content}}"
+                   data-html="true" data-bs-html="true"
                    tabindex="0"
-                   data-trigger="focus">
+                   data-trigger="focus" data-bs-trigger="focus">
                     <i class="icon fa fa-question-circle text-info fa-fw "
                        title="{{#str}} enabledesktop, local_edwiserreports {{/str}}"
                        aria-label="{{#str}} enabledesktop, local_edwiserreports {{/str}}">
@@ -152,7 +152,7 @@
                 </a>
             </span>
         </div>
-        <div class="col-md-9 form-inline felement" data-fieldtype="checkbox">
+        <div class="col-md-9 d-flex flex-wrap align-items-center felement" data-fieldtype="checkbox">
             <div class="checkbox-edwiserreports">
                 <input type="checkbox" class="custom-field-checkbox" name="enabledesktop" value="1"
                 id="crb_desktop_enable" {{#enabledesktop}}checked{{/enabledesktop}}>

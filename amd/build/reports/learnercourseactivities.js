@@ -156,7 +156,7 @@ define('local_edwiserreports/reports/learnercourseactivities', [
                     columnDefs: [
                         {className: "fixed-column", targets: 0},
                         {className: "text-start", targets: [0, 1, 2]},
-                        {className: "text-end", targets: "_all"}
+                        {className: "text-end", targets: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]}
                     ],
                     columns: [
                         {data: 'activity', width: "10rem"},

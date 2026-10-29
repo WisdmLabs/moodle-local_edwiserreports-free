@@ -17,7 +17,7 @@
 #wdm-activeusers-individual .dropdown-item input {
     border-radius: 0 !important;
     border: 0 !important;
-    text-align: right;
+    text-align: start;
     box-shadow: none !important;
     font-size: inherit !important;
     min-height: inherit !important;
@@ -456,7 +456,7 @@ tr[aria-expanded=true] .accordion-arrow.icon {
     position: relative;
 }
 #page-local-edwiserreports-index .dropdown-menu.withcalendar {
-    width: 308px;
+    width: -webkit-fill-available;
     display: flex;
 }
 #page-local-edwiserreports-index .dropdown-menu.withcalendar .dropdown-calendar {
@@ -482,7 +482,7 @@ tr[aria-expanded=true] .accordion-arrow.icon {
     right: auto !important;
     box-shadow: none !important;
     border: 0 !important;
-    position: absolute !important;
+    position: unset;
 }
 #page-local-edwiserreports-index .selected-period {
     padding: 0.1rem 0.8rem;
@@ -591,7 +591,7 @@ html[lang=es] .local-edwiserreports .filter-selector .edwiserreports-calendar {
     min-width: 9rem;
     position: relative;
     text-align: left;
-    justify-content: flex-start !important;
+    justify-content: left !important;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -644,15 +644,6 @@ html[lang=es] .local-edwiserreports .filter-selector .edwiserreports-calendar {
 }
 .local-edwiserreports.report-page .dropdown-menu.withcalendar .dropdown-calendar {
     right: 0;
-}
-.local-edwiserreports.report-page .dropdown-menu.withcalendar .dropdown-body {
-    display: none;
-    width: auto !important;
-    flex: none !important;
-    right: auto !important;
-    left: auto !important;
-}
-.local-edwiserreports.report-page .dropdown-menu.withcalendar .dropdown-calendar {
     user-select: none;
     height: 300px;
     width: 308px;
@@ -666,6 +657,13 @@ html[lang=es] .local-edwiserreports .filter-selector .edwiserreports-calendar {
     box-shadow: none !important;
     border: 0 !important;
     position: unset;
+}
+.local-edwiserreports.report-page .dropdown-menu.withcalendar .dropdown-body {
+    display: none;
+    width: auto !important;
+    flex: none !important;
+    right: auto !important;
+    left: auto !important;
 }
 
 .page-title h2 {
@@ -1109,7 +1107,7 @@ html[lang=es] .local-edwiserreports .filter-selector .edwiserreports-calendar {
     animation: spin 0.8s linear infinite;
 }
 
-.modal-body .form-group {
+.modal-body .fitem {
     margin-right: 0;
     margin-left: 0;
 }
@@ -1435,6 +1433,15 @@ html[lang=es] .local-edwiserreports .filter-selector .edwiserreports-calendar {
     padding: 3px 10px !important;
 }
 
+.local-edwiserreports .edwiserreports-table .table-pagination .pagination {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 0;
+}
+
 .local-edwiserreports .pull-right {
     float: right;
 }
@@ -1473,10 +1480,7 @@ html[dir=rtl] .local-edwiserreports .filter-selector > label {
 }
 html[dir=rtl] .local-edwiserreports .filter-selector .edwiserreports-calendar {
     text-align: right;
-    padding: 0.6rem 1rem 0.6rem 2.2rem !important;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    padding: 0.829rem 1rem 0.229rem 2rem !important;
 }
 html[dir=rtl] .local-edwiserreports .filter-selector .edwiserreports-calendar::after {
     left: 0.829rem;
@@ -1536,6 +1540,19 @@ html[dir=rtl] .local-edwiserreports #learnertimespentonsiteblock .filter-selecto
 #userfilter:not(#wdm-completion-individual #userfilter) .row > *:not(.table-length-input) {
     width: fit-content !important;
     max-width: 300px !important;
+}
+
+#activeusers .filter-selector.date-filter {
+    width: fit-content !important;
+    max-width: none !important;
+}
+#activeusers .filter-selector.date-filter .edwiserreports-calendar {
+    width: 100%;
+    min-width: 12rem;
+}
+
+html[dir=rtl] #activeusers .filter-selector.date-filter .edwiserreports-calendar {
+    text-align: right;
 }
 
 .summary-body-wrap.row > * {
@@ -1690,15 +1707,6 @@ html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .pag
     background-color: #fff !important;
     border: 1px solid #F98012 !important;
     color: #F98012 !important;
-    margin-right: 1.5rem !important;
-}
-
-html[dir=ltr] .local-edwiserreports .edwiserreports-table .table-pagination .page-item.previous + .page-item .page-link {
-    margin-left: 0.5rem !important;
-}
-
-html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .page-item:not(.next):nth-last-child(2) .page-link {
-    margin-left: 0.5rem !important;
 }
 
 .field.ml-3.mr-3.show {
@@ -1710,6 +1718,132 @@ html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .pag
     border: 1px solid #ccc;
     box-sizing: border-box;
     z-index: 1000;
+}
+
+.local-edwiserreports .filter-selector .input-group,
+.local-edwiserreports .filter-selector .edwiserreports-calendar-wrapper {
+    display: flex !important;
+    align-items: center !important;
+}
+
+.local-edwiserreports .filter-selector .edwiserreports-calendar {
+    display: inline-flex !important;
+    align-items: center !important;
+}
+
+.local-edwiserreports .filter-selector svg,
+.local-edwiserreports .filter-selector .fa-calendar,
+.local-edwiserreports .filter-selector .calendar-icon {
+    margin-right: 8px !important;
+    vertical-align: middle !important;
+}
+
+html[dir=rtl] .local-edwiserreports .filter-selector svg,
+html[dir=rtl] .local-edwiserreports .filter-selector .fa-calendar,
+html[dir=rtl] .local-edwiserreports .filter-selector .calendar-icon {
+    margin-right: 0 !important;
+    margin-left: 8px !important;
+}
+
+.local-edwiserreports .filter-selector .dropdown,
+.local-edwiserreports .filter-selector .dropdown-toggle {
+    display: inline-flex !important;
+    align-items: center !important;
+}
+
+.local-edwiserreports .filter-selector .edwiserreports-calendar-wrapper {
+    flex-shrink: 0;
+}
+
+.local-edwiserreports .filter-selector .edwiserreports-calendar-wrapper svg {
+    flex-shrink: 0;
+    width: 13px;
+    height: 14px;
+}
+
+.local-edwiserreports .filter-selector .edwiserreports-calendar-wrapper .edwiserreports-calendar {
+    width: 100%;
+}
+
+html[dir=ltr] .local-edwiserreports .filter-selector .dropdown-menu .dropdown-item,
+html[dir=ltr] .local-edwiserreports .filter-selector .dropdown-menu .dropdown-item.custom,
+html[dir=ltr] .local-edwiserreports .filter-selector .dropdown-menu form .dropdown-item,
+html:not([dir=rtl]) .local-edwiserreports .filter-selector .dropdown-menu .dropdown-item,
+html:not([dir=rtl]) .local-edwiserreports .filter-selector .dropdown-menu .dropdown-item.custom,
+html:not([dir=rtl]) .local-edwiserreports .filter-selector .dropdown-menu form .dropdown-item,
+html[dir=ltr] body .filter-selector .dropdown-menu .dropdown-item,
+html:not([dir=rtl]) body .filter-selector .dropdown-menu .dropdown-item {
+    text-align: left !important;
+}
+
+html[dir=rtl] .local-edwiserreports .filter-selector .dropdown-menu .dropdown-item,
+html[dir=rtl] .local-edwiserreports .filter-selector .dropdown-menu .dropdown-item.custom,
+html[dir=rtl] .local-edwiserreports .filter-selector .dropdown-menu form .dropdown-item,
+html[dir=rtl] body .filter-selector .dropdown-menu .dropdown-item {
+    text-align: right !important;
+}
+
+.local-edwiserreports .filter-selector .dropdown-menu {
+    text-align: inherit;
+}
+
+html[dir=rtl] .local-edwiserreports .filter-selector .dropdown-menu .dropdown-item.custom input,
+html[dir=rtl] .local-edwiserreports .filter-selector .dropdown-menu .dropdown-item input.flatpickr,
+html[dir=rtl] .filter-selector .dropdown-menu .dropdown-item.custom input,
+html[dir=rtl] body .filter-selector .dropdown-menu .dropdown-item.custom input {
+    direction: rtl !important;
+    text-align: right !important;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+html[dir=ltr] .local-edwiserreports .filter-selector .dropdown-menu .dropdown-item.custom input,
+html[dir=ltr] .local-edwiserreports .filter-selector .dropdown-menu .dropdown-item input.flatpickr,
+html[dir=ltr] .filter-selector .dropdown-menu .dropdown-item.custom input,
+html:not([dir=rtl]) .filter-selector .dropdown-menu .dropdown-item.custom input {
+    direction: ltr !important;
+    text-align: left !important;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+html[dir=rtl] .local-edwiserreports .filter-selector .dropdown-menu .dropdown-item.custom input::placeholder,
+html[dir=rtl] .filter-selector .dropdown-menu .dropdown-item.custom input::placeholder {
+    text-align: right !important;
+    direction: rtl !important;
+}
+
+.report-page-header-filter.filter-selector > label {
+    left: 2.15rem !important;
+    text-align: left !important;
+    width: auto !important;
+    white-space: nowrap !important;
+}
+
+html[dir=rtl] .report-page-header-filter.filter-selector > label {
+    left: auto !important;
+    right: 2.15rem !important;
+    text-align: right !important;
+}
+
+.local-edwiserreports .filter-selector {
+    position: relative;
+}
+
+.local-edwiserreports .filter-selector > label {
+    position: absolute;
+    background: white;
+    left: 0.75rem;
+    z-index: 1;
+    top: -0.5rem;
+    font-size: 0.857rem;
+    color: #474747;
+    padding: 0 0.25rem;
+}
+
+html[dir=rtl] .local-edwiserreports .filter-selector > label {
+    left: auto;
+    right: 0.75rem;
 }
 #wdm-edwiserreports #courseprogressblock .col-md-3 {
     display: none;
@@ -1764,11 +1898,13 @@ html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .pag
 
 .reports-filter-body .select2-container {
     width: 100% !important;
-    height: 100% !important;
+    height: auto !important;
+    min-height: 38px;
 }
 .reports-filter-body .select2-selection--single,
 .reports-filter-body .select2-selection--multiple {
-    height: 100% !important;
+    height: auto !important;
+    min-height: 38px;
 }
 .reports-filter-body .select2-selection__rendered {
     word-wrap: break-word !important;
@@ -1783,13 +1919,20 @@ html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .pag
 }
 .reports-filter-body .field-group + .field {
     position: absolute;
-    z-index: 1;
+    z-index: 10;
     background: white;
     left: 0;
-    right: 0;
+    min-width: 100%;
+    width: max-content;
     max-height: 200px;
     overflow-y: auto;
+    white-space: nowrap;
     box-shadow: 0 7px 14px 0 rgba(59, 65, 94, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.07);
+}
+
+html[dir=rtl] .reports-filter-body .field-group + .field {
+    left: auto;
+    right: 0;
 }
 
 .field-group-wrap {
@@ -1860,16 +2003,73 @@ html[dir=rtl] #cr-list-table .pro-export-wrapper .pro-export-title::after {
     background-image: none !important;
 }
 
-#wdm-customreports-save-form .form-group .text-nowrap abbr[title] {
+#wdm-customreports-save-form .fitem .text-nowrap abbr[title] {
     text-decoration: none !important;
 }
-#wdm-customreports-save-form .form-group .text-nowrap {
+#wdm-customreports-save-form .fitem .text-nowrap {
     align-self: center;
     margin-left: auto;
 }
-#wdm-customreports-save-form .form-group .text-nowrap * {
+#wdm-customreports-save-form .fitem .text-nowrap * {
     margin-top: 0;
     margin-bottom: 0;
+}
+
+html[dir=rtl] #wdm-customreports-save-form .fitem > .col-md-3 {
+    display: flex !important;
+    flex-direction: row-reverse !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+}
+html[dir=rtl] #wdm-customreports-save-form .fitem > .col-md-3 label {
+    margin-right: 0 !important;
+    margin-left: 0.5rem !important;
+}
+html[dir=rtl] #wdm-customreports-save-form .fitem > .col-md-3 .text-nowrap {
+    margin-left: 0 !important;
+    margin-right: auto !important;
+    display: inline-flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 4px !important;
+}
+html[dir=rtl] #wdm-customreports-save-form .fitem > .col-md-3 .text-nowrap abbr,
+html[dir=rtl] #wdm-customreports-save-form .fitem > .col-md-3 .text-nowrap a {
+    display: inline-flex !important;
+    align-items: center !important;
+}
+
+.reports-preview-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+}
+.reports-preview-footer #wdm-custom-reports-save,
+.reports-preview-footer a.theme-primary-text.theme-primary-border {
+    border-radius: 50px;
+    padding: 10px 28px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    line-height: 1.2;
+    border-width: 1px;
+    border-style: solid;
+    transition: opacity 0.15s ease-in-out;
+}
+.reports-preview-footer #wdm-custom-reports-save:hover,
+.reports-preview-footer a.theme-primary-text.theme-primary-border:hover {
+    opacity: 0.85;
+}
+.reports-preview-footer #wdm-custom-reports-save:disabled,
+.reports-preview-footer a.theme-primary-text.theme-primary-border:disabled {
+    opacity: 0.5;
+}
+.reports-preview-footer #wdm-custom-reports-save {
+    border-color: transparent;
+}
+.reports-preview-footer a.theme-primary-text.theme-primary-border {
+    background-color: #fff;
+    text-decoration: none;
 }
 table.dataTable {
     border-bottom: 0 !important;
@@ -1905,6 +2105,26 @@ table.dataTable thead .sorting_desc_disabled:after {
     position: absolute;
     top: 50%;
     right: 1em;
+}
+table.dataTable .sorting:before,
+table.dataTable .sorting_asc:before,
+table.dataTable .sorting_desc:before,
+table.dataTable .sorting_asc_disabled:before,
+table.dataTable .sorting_desc_disabled:before {
+    content: "\f0de";
+    opacity: 0.2;
+}
+table.dataTable .sorting:after,
+table.dataTable .sorting_asc:after,
+table.dataTable .sorting_desc:after,
+table.dataTable .sorting_asc_disabled:after,
+table.dataTable .sorting_desc_disabled:after {
+    content: "\f0dd";
+    opacity: 0.2;
+}
+table.dataTable .sorting_asc:before,
+table.dataTable .sorting_desc:after {
+    opacity: 1;
 }
 table.dataTable tr,
 table.dataTable td {
@@ -1951,22 +2171,24 @@ table.dataTable td.dataTables_empty {
 
 html[dir=rtl] .edwiserreports-table th.sorting:before,
 html[dir=rtl] .edwiserreports-table th.sorting_asc:before,
-html[dir=rtl] .edwiserreports-table th.sorting_desc:before {
-    left: 20rem;
-    opacity: .6;
-}
+html[dir=rtl] .edwiserreports-table th.sorting_desc:before,
 html[dir=rtl] .edwiserreports-table th.sorting:after,
 html[dir=rtl] .edwiserreports-table th.sorting_asc:after,
 html[dir=rtl] .edwiserreports-table th.sorting_desc:after {
-    left: 30rem;
-    opacity: .6;
+    left: 1em;
+    right: auto;
+    opacity: 0.6;
 }
-html[dir=rtl] .edwiserreports-table th.sorting_asc:before {
-    opacity: 1;
-}
+
+html[dir=rtl] .edwiserreports-table th.sorting_asc:before,
 html[dir=rtl] .edwiserreports-table th.sorting_desc:after {
     opacity: 1;
 }
+
+html[dir=rtl] .dataTables_wrapper table.dataTable thead > tr > th {
+    padding: 10px 10px 10px 30px;
+}
+
 .edwiserreports-table .table-filter [type=search] {
     margin-left: 0;
 }
@@ -1993,6 +2215,14 @@ html[dir=rtl] .edwiserreports-table th.sorting_desc:after {
 .edwiserreports-table .table-pagination .dataTables_paginate .paginate_button:hover a {
     outline: 0 !important;
     background: transparent !important;
+}
+
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .dataTables_info {
+    text-align: right !important;
+}
+
+html[dir=rtl] .local-edwiserreports .dataTables_wrapper .dataTables_info {
+    float: right !important;
 }
 .fi {
     width: 20px;
@@ -2205,9 +2435,6 @@ html[dir=rtl] .edwiserreports-table th.sorting_desc:after {
 .top-insights .insight.add-insight .insight-wrapper .dropdown .dropdown-toggle {
     height: 100%;
     width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 .top-insights .insight.add-insight .insight-wrapper .dropdown .dropdown-toggle:after {
     display: none;
@@ -2415,6 +2642,57 @@ html[dir=rtl] .insight-card .insight-details::before {
 
 .path-local-edwiserreports .modal-dialog:focus {
     outline: -webkit-focus-ring-color auto 0 !important;
+}
+
+.modal-save-cancel .modal-footer,
+.modal-dialog .modal-footer {
+    display: flex !important;
+    justify-content: flex-end !important;
+    align-items: center !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    gap: 12px;
+    padding: 15px !important;
+    border-top: 1px solid #dee2e6 !important;
+    background-color: #f8f9fa !important;
+}
+
+.modal-save-cancel .modal-footer .btn,
+.modal-dialog .modal-footer .btn {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    visibility: visible !important;
+    opacity: 1 !important;
+    padding: 10px 28px !important;
+    margin: 0 !important;
+    font-weight: 500 !important;
+    font-size: 0.95rem;
+    border-radius: 50px !important;
+    border-width: 1px !important;
+    border-style: solid !important;
+    cursor: pointer !important;
+    transition: opacity 0.15s ease-in-out;
+}
+
+.modal-save-cancel .modal-footer .btn:hover,
+.modal-dialog .modal-footer .btn:hover {
+    opacity: 0.85;
+}
+
+.modal-save-cancel .modal-footer [data-action=save],
+.modal-dialog .modal-footer .btn[data-action=save] {
+    border-color: transparent !important;
+}
+
+.modal-save-cancel .modal-footer [data-action=cancel],
+.modal-dialog .modal-footer .btn[data-action=cancel] {
+    background-color: #fff !important;
+}
+
+html[dir=rtl] .modal-save-cancel .modal-footer,
+html[dir=rtl] .modal-dialog .modal-footer {
+    justify-content: flex-end !important;
 }
 .pie-progress-sm {
     max-width: 100px;
@@ -2637,8 +2915,9 @@ html[dir=rtl] .insight-card .insight-details::before {
     font-size: 1.07rem;
 }
 .local-edwiserreports .table-length-input {
-    width: 7.5rem !important;
-    max-width: 7.5rem !important;
+    min-width: 8.5rem;
+    width: auto !important;
+    max-width: none !important;
 }
 .local-edwiserreports .edwiserreports-table > div:not(.table-pagination) {
     overflow: auto;
@@ -2736,6 +3015,21 @@ html[dir=rtl] .insight-card .insight-details::before {
     transform: translateY(-50%);
     color: #F98012;
 }
+
+html[dir=rtl] .local-edwiserreports .table-search-input input {
+    padding: 0.829rem 1rem 0.429rem 2.5rem !important;
+}
+html[dir=rtl] .local-edwiserreports .table-search-input .search-button {
+    right: auto;
+    left: 0;
+}
+html[dir=rtl] .local-edwiserreports .edwiserreports-table table {
+    width: 100% !important;
+}
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .fixed-column {
+    left: auto;
+    right: 0;
+}
 #page-local-edwiserreports-index.theme_remui #page #region-main > .card {
     background: transparent;
     padding: 0;
@@ -2759,7 +3053,7 @@ html[dir=rtl] .insight-card .insight-details::before {
 #page-local-edwiserreports-index.theme_adaptable .insight-wrap .insight-direction, #page-local-edwiserreports-index.theme_fordson .insight-wrap .insight-direction, #page-local-edwiserreports-index.theme_boost .insight-wrap .insight-direction {
     margin-top: 0.3rem !important;
 }
-html[dir="rtl"] #page-local-edwiserreports-index.theme_boost .dropdown-menu.dropdown-menu-right.dropdown-menu-end.show {
+html[dir=rtl] #page-local-edwiserreports-index.theme_boost .dropdown-menu.dropdown-menu-right.dropdown-menu-end.show {
     right: 1.17rem !important;
 }
 #page-local-edwiserreports-index.theme_adaptable .blockoptions button {
@@ -3259,6 +3553,7 @@ html[dir="rtl"] #page-local-edwiserreports-index.theme_boost .dropdown-menu.drop
     }
 }
 
+@charset "UTF-8";
 .flatpickr-calendar {
     background: transparent;
     opacity: 0;
@@ -3616,7 +3911,7 @@ html[dir="rtl"] #page-local-edwiserreports-index.theme_boost .dropdown-menu.drop
 
 .flatpickr-current-month .numInputWrapper {
     width: 6ch;
-    width: 7ch\0 ;
+    width: 7ch�;
     display: inline-block;
 }
 
@@ -4829,189 +5124,4 @@ span.flatpickr-weekday {
 
 .has-success.select2-drop-active.select2-drop.select2-drop-above {
     border-top-color: #11c26d;
-}
-/* Moodle 5.x RTL fix: summary-card-filtertags */
-html[dir=rtl] .summary-card-filtertags {
-    direction: rtl;
-    text-align: right;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-}
-
-/* Moodle 5.x fix: calendar SVG inline with label */
-.local-edwiserreports .filter-selector svg,
-.filter-selector svg.edw-calendar {
-    display: inline-block;
-    vertical-align: middle;
-    margin-right: 4px;
-}
-
-/* Remove row wrapper negative margins inside userfilter */
-#userfilter .row {
-    margin-left: 0;
-    margin-right: 0;
-}
-
-/* Fix date filter label width */
-.report-actions #userfilter .filter-selector {
-    padding-left: 0;
-    padding-right: 0;
-    width: 174px;
-    min-width: 160px;
-}
-
-/* Moodle 5.x fix: flatpickr calendar above navbar */
-.flatpickr-calendar {
-    z-index: 1060 !important;
-}
-.flatpickr-calendar.open {
-    z-index: 1060 !important;
-}
-
-/* Fix 1: Save Custom Report modal buttons visibility + styling.
-   core/modal_save_cancel already renders a working footer with Save/Cancel
-   buttons, so we only need to (a) make sure it can never collapse to
-   display:none, and (b) restyle those buttons to match the plugin's pill
-   button (Create New Report / Reset). No hardcoded LTR-only colors here -
-   theme-primary-* classes drive the color so this follows whatever primary
-   color is set in the report settings, and margin/justify-content are
-   logical so they mirror correctly under dir="rtl". */
-.modal-save-cancel .modal-footer,
-.modal-dialog .modal-footer {
-    display: flex !important;
-    justify-content: flex-end !important;
-    align-items: center !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    gap: 12px;
-    padding: 15px !important;
-    border-top: 1px solid #dee2e6 !important;
-    background-color: #f8f9fa !important;
-}
-.modal-save-cancel .modal-footer .btn,
-.modal-dialog .modal-footer .btn {
-    display: inline-flex !important;
-    align-items: center;
-    justify-content: center;
-    visibility: visible !important;
-    opacity: 1 !important;
-    padding: 10px 28px !important;
-    margin: 0 !important;
-    font-weight: 500 !important;
-    font-size: 0.95rem;
-    border-radius: 50px !important;
-    border-width: 1px !important;
-    border-style: solid !important;
-    cursor: pointer !important;
-    transition: opacity 0.15s ease-in-out;
-}
-.modal-save-cancel .modal-footer .btn:hover,
-.modal-dialog .modal-footer .btn:hover {
-    opacity: 0.85;
-}
-.modal-save-cancel .modal-footer [data-action=save],
-.modal-dialog .modal-footer .btn[data-action=save] {
-    border-color: transparent !important;
-}
-.modal-save-cancel .modal-footer [data-action=cancel],
-.modal-dialog .modal-footer .btn[data-action=cancel] {
-    background-color: #fff !important;
-}
-
-/* RTL: form rows inside the modal (Report Name / Short Name / checkboxes) use
-   Bootstrap's row/col grid, which already mirrors under dir="rtl". The one
-   thing that does not auto-mirror is the help-popover placement, which is a
-   literal physical side rather than a logical one - see customreportsblock.js,
-   which flips data-placement to "left" for RTL before the popover is triggered. */
-html[dir=rtl] .modal-save-cancel .modal-footer,
-html[dir=rtl] .modal-dialog .modal-footer {
-    justify-content: flex-end !important;
-}
-
-/* Fix 2: RTL text alignment for dataTables info ("Showing X to Y of Z entries") */
-html[dir=rtl] .local-edwiserreports .edwiserreports-table .dataTables_info {
-    text-align: left !important;
-}
-html[dir=rtl] .local-edwiserreports .dataTables_wrapper .dataTables_info {
-    float: left !important;
-}
-
-/* Fix 3: Icon and dropdown alignment - calendar icon with dropdown */
-.local-edwiserreports .filter-selector .input-group,
-.local-edwiserreports .filter-selector .edwiserreports-calendar-wrapper {
-    display: flex !important;
-    align-items: center !important;
-}
-.local-edwiserreports .filter-selector .edwiserreports-calendar {
-    display: inline-flex !important;
-    align-items: center !important;
-}
-.local-edwiserreports .filter-selector svg,
-.local-edwiserreports .filter-selector .fa-calendar,
-.local-edwiserreports .filter-selector .calendar-icon {
-    margin-right: 8px !important;
-    vertical-align: middle !important;
-}
-html[dir=rtl] .local-edwiserreports .filter-selector svg,
-html[dir=rtl] .local-edwiserreports .filter-selector .fa-calendar,
-html[dir=rtl] .local-edwiserreports .filter-selector .calendar-icon {
-    margin-right: 0 !important;
-    margin-left: 8px !important;
-}
-/* Ensure dropdown and icon are on same line */
-.local-edwiserreports .filter-selector .dropdown,
-.local-edwiserreports .filter-selector .dropdown-toggle {
-    display: inline-flex !important;
-    align-items: center !important;
-}
-
-/* report-page-header.mustache: the calendar icon used to be a loose sibling of
-   the whole label+button column, so it lined up with the label instead of the
-   button. It now lives inside .edwiserreports-calendar-wrapper next to the
-   button - this just flex-centers that pair and gives the icon breathing room. */
-.local-edwiserreports .filter-selector .edwiserreports-calendar-wrapper {
-    flex-shrink: 0;
-}
-.local-edwiserreports .filter-selector .edwiserreports-calendar-wrapper svg {
-    flex-shrink: 0;
-    width: 13px;
-    height: 14px;
-}
-.local-edwiserreports .filter-selector .edwiserreports-calendar-wrapper .edwiserreports-calendar {
-    width: 100%;
-}
-
-/* Pill-shaped Create New Report / Reset buttons in the custom reports preview footer. */
-.reports-preview-footer {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 12px;
-}
-.reports-preview-footer #wdm-custom-reports-save,
-.reports-preview-footer a.theme-primary-text.theme-primary-border {
-  border-radius: 50px;
-  padding: 10px 28px;
-  font-weight: 500;
-  font-size: 0.95rem;
-  line-height: 1.2;
-  border-width: 1px;
-  border-style: solid;
-  transition: opacity 0.15s ease-in-out;
-}
-.reports-preview-footer #wdm-custom-reports-save:hover,
-.reports-preview-footer a.theme-primary-text.theme-primary-border:hover {
-  opacity: 0.85;
-}
-.reports-preview-footer #wdm-custom-reports-save:disabled,
-.reports-preview-footer a.theme-primary-text.theme-primary-border:disabled {
-  opacity: 0.5;
-}
-.reports-preview-footer #wdm-custom-reports-save {
-  border-color: transparent;
-}
-.reports-preview-footer a.theme-primary-text.theme-primary-border {
-  background-color: #fff;
-  text-decoration: none;
 }

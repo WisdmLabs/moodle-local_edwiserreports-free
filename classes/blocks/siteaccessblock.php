@@ -66,7 +66,10 @@ class siteaccessblock extends block_base {
 
             $url = new moodle_url(
                 '/admin/tool/task/schedule_task.php',
-                array('task' => 'local_edwiserreports\task\site_access_data')
+                array(
+                    'task' => 'local_edwiserreports\task\site_access_data',
+                    'sesskey' => sesskey(),
+                )
             );
             if (get_config('local_edwiserreports', 'siteaccessrecalculate')) {
                 $this->block->cronwarning = get_string(

@@ -97,7 +97,7 @@ class learnertimespentonsiteblock extends block_base {
         $this->layout->name = get_string('learnertimespentonsiteheader', 'local_edwiserreports');
         $this->layout->info = get_string('learnertimespentonsiteblockhelp', 'local_edwiserreports');
         $this->layout->filters = $OUTPUT->render_from_template('local_edwiserreports/learnertimespentonsiteblockfilters', []);
-        $this->layout->pro = $this->image_icon('lock');
+        // $this->layout->pro = $this->image_icon('lock'); // Commented out to show dummy data in free version
         $this->layout->morelink = 1;
 
 
@@ -127,6 +127,32 @@ class learnertimespentonsiteblock extends block_base {
             $time = $this->enddate - $i * LOCAL_SITEREPORT_ONEDAY;
             $this->labels[] = $time * 1000;
         }
+    }
+
+    /**
+     * Calculate insight data for learner time spent on site block.
+     * @param array $timespent Timespent array
+     * @return object
+     */
+    public function calculate_insight($timespent) {
+        $total = array_sum($timespent);
+        $insight = [
+            'insight' => [
+                'title' => 'averagetimespent',
+                'value' => floor($total / $this->xlabelcount),
+                'difference' => [
+                    'direction' => 0,
+                    'value' => '13.2'
+                ]
+            ],
+            'details' => [
+                'data' => [[
+                    'title' => 'totaltimespent',
+                    'value' => $total
+                ]]
+            ]
+        ];
+        return $insight;
     }
 
     /**
@@ -175,6 +201,7 @@ class learnertimespentonsiteblock extends block_base {
         $response = [
             'timespent' => $timespent,
             'labels' => $this->labels,
+            'insight' => $this->calculate_insight($timespent)
         ];
         return $response;
     }

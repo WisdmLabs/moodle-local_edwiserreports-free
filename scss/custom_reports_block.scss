@@ -36,11 +36,13 @@
 .reports-filter-body {
     .select2-container {
         width: 100% !important;
-        height: 100% !important;
+        height: auto !important;
+        min-height: 38px;
     }
     .select2-selection--single,
     .select2-selection--multiple {
-        height: 100% !important;
+        height: auto !important;
+        min-height: 38px;
     }
     .select2-selection__rendered {
         word-wrap: break-word !important;
@@ -54,15 +56,22 @@
         cursor: pointer;
         &+.field {
             position: absolute;
-            z-index: 1;
+            z-index: 10;
             background: white;
             left: 0;
-            right: 0;
+            min-width: 100%;
+            width: max-content;
             max-height: 200px;
             overflow-y: auto;
+            white-space: nowrap;
             box-shadow: 0 7px 14px 0 rgba(59, 65, 94, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.07);
         }
     }
+}
+
+html[dir=rtl] .reports-filter-body .field-group + .field {
+    left: auto;
+    right: 0;
 }
 
 .field-group-wrap {
@@ -148,7 +157,7 @@ html[dir=rtl] #cr-list-table {
 }
 
 #wdm-customreports-save-form {
-    .form-group {
+    .fitem {
         .text-nowrap {
             abbr[title] {
                 text-decoration: none !important;
@@ -158,6 +167,38 @@ html[dir=rtl] #cr-list-table {
             * {
                 margin-top: 0;
                 margin-bottom: 0;
+            }
+        }
+    }
+}
+
+// RTL fix for Save Custom Report form - align icons and labels properly
+html[dir=rtl] #wdm-customreports-save-form {
+    .fitem {
+        > .col-md-3 {
+            display: flex !important;
+            flex-direction: row-reverse !important;
+            justify-content: flex-start !important;
+            align-items: center !important;
+
+            label {
+                margin-right: 0 !important;
+                margin-left: 0.5rem !important;
+            }
+
+            .text-nowrap {
+                margin-left: 0 !important;
+                margin-right: auto !important;
+                display: inline-flex !important;
+                flex-direction: row !important;
+                align-items: center !important;
+                gap: 4px !important;
+
+                abbr,
+                a {
+                    display: inline-flex !important;
+                    align-items: center !important;
+                }
             }
         }
     }

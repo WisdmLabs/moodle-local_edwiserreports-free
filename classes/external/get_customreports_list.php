@@ -110,21 +110,22 @@ trait get_customreports_list {
                 >
                 <a href="' .$editurl. '"
                     class = "p-1"
-                   data-toggle="tooltip" data-action="hide"
+                   data-toggle="tooltip" data-bs-toggle="tooltip" data-action="hide"
                    title="' . $tooltipstr . '"
                    data-titlehide="' . $enabledesktopstr . '"
                    data-titleshow="' . $disabledesktopstr . '"
                    data-value="' . $customreport->enabledesktop . '"
-                   data-target="#wdm-desktopenable-' . $customreport->id . '">
+                   data-target="#wdm-desktopenable-' . $customreport->id . '"
+                   data-bs-target="#wdm-desktopenable-' . $customreport->id . '">
                     <span class="show-svg">' . \local_edwiserreports\utility::image_icon('actions/show') . '</span>
                     <span class="hide-svg">' . \local_edwiserreports\utility::image_icon('actions/hide') . '</span>
                 </a>
-                <a href="' .$editurl. '" data-toggle="tooltip"
+                <a href="' .$editurl. '" data-toggle="tooltip" data-bs-toggle="tooltip"
                 class = "p-1"
                 title="' . get_string('editreports', 'local_edwiserreports') . '">
                     <span class="edit-svg">' . \local_edwiserreports\utility::image_icon('actions/edit') . '</span>
                 </a>
-                <a href="#" data-toggle="tooltip" data-reportsid="' . $customreport->id . '"
+                <a href="#" data-toggle="tooltip" data-bs-toggle="tooltip" data-reportsid="' . $customreport->id . '"
                 class = "p-1"
                 title="' . get_string('deletereports', 'local_edwiserreports') . '" data-action="delete">
                     <span class="delete-svg">' . \local_edwiserreports\utility::image_icon('actions/delete') . '</span>

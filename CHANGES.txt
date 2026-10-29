@@ -1,3 +1,12 @@
+v 2.0.2
+====================================================
+Bug Fixes
+- Fixed 'Cannot read properties of undefined (reading title)' error that left the My Time Spent On Site block stuck on LOADING (stale amd/build/block_learnertimespentonsite.min.js).
+- Rebuilt all first-party amd/build/*.min.js and amd/build/*.js files from amd/src (main.js build was out of date).
+- Removed debug console logging from the Learner Time Spent On Site block.
+- Replaced deprecated Bootstrap 4 classes (form-group, form-inline, pull-right, dropdown-menu-right) with Bootstrap 5 equivalents; removes the 'Deprecated style in use' warnings on the Save Custom Report form and other screens.
+- Added data-bs-* attribute twins for remaining data-toggle/data-target/data-placement/etc. attributes.
+
 v 2.0.1
 ====================================================
 Bug Fixes

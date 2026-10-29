@@ -178,6 +178,7 @@ $string['activity'] = 'Activity';
 $string['activities'] = 'Activities';
 $string['student'] = 'Student';
 $string['students'] = 'Students';
+$string['selectatleastoneuserfield'] = 'Please select at least one user field';
 
 /* Block Learning Program */
 $string['nolearningprograms'] = 'No Learning Programs Found';

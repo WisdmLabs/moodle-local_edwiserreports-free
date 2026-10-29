@@ -970,7 +970,7 @@ html[lang=es] .local-edwiserreports {
 }
 
 .modal-body {
-    .form-group {
+    .fitem {
         margin-right: 0;
         margin-left: 0;
     }
@@ -1362,6 +1362,15 @@ $button-width: 3.5rem;
     padding: 3px 10px !important;
 }
 
+.local-edwiserreports .edwiserreports-table .table-pagination .pagination {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 0;
+}
+
 .local-edwiserreports .pull-right{
     float: right;
 }
@@ -1495,6 +1504,20 @@ html[dir=rtl] .local-edwiserreports{
 #userfilter:not(#wdm-completion-individual #userfilter) .row>*:not(.table-length-input) {
     width: fit-content !important;
     max-width: 300px !important;
+}
+
+#activeusers .filter-selector.date-filter {
+    width: fit-content !important;
+    max-width: none !important;
+    .edwiserreports-calendar {
+        width: 100%;
+        min-width: 12rem;
+    }
+}
+html[dir=rtl] #activeusers .filter-selector.date-filter {
+    .edwiserreports-calendar {
+        text-align: right;
+    }
 }
 
 .summary-body-wrap.row>* {
@@ -1646,19 +1669,8 @@ html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .pag
         background-color: #fff !important;
         border: 1px solid #F98012 !important;
         color: #F98012 !important;
-        margin-right: 1.5rem !important;
     }
-    
-}
 
-// LTR: Add margin to first number after previous button (arrow)
-html[dir=ltr] .local-edwiserreports .edwiserreports-table .table-pagination .page-item.previous + .page-item .page-link {
-    margin-left: 0.5rem !important;
-}
-
-// RTL: Add margin to second-to-last number (before next button) - only in RTL
-html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .page-item:not(.next):nth-last-child(2) .page-link {
-    margin-left: 0.5rem !important;
 }
 
 .field.ml-3.mr-3.show {
@@ -1715,4 +1727,95 @@ html[dir=rtl] .local-edwiserreports .filter-selector .calendar-icon {
 }
 .local-edwiserreports .filter-selector .edwiserreports-calendar-wrapper .edwiserreports-calendar {
     width: 100%;
+}
+
+/* Fix: Custom Date dropdown text alignment for LTR/RTL - STRONGER SELECTORS */
+/* LTR - left align */
+html[dir=ltr] .local-edwiserreports .filter-selector .dropdown-menu .dropdown-item,
+html[dir=ltr] .local-edwiserreports .filter-selector .dropdown-menu .dropdown-item.custom,
+html[dir=ltr] .local-edwiserreports .filter-selector .dropdown-menu form .dropdown-item,
+html:not([dir=rtl]) .local-edwiserreports .filter-selector .dropdown-menu .dropdown-item,
+html:not([dir=rtl]) .local-edwiserreports .filter-selector .dropdown-menu .dropdown-item.custom,
+html:not([dir=rtl]) .local-edwiserreports .filter-selector .dropdown-menu form .dropdown-item,
+html[dir=ltr] body .filter-selector .dropdown-menu .dropdown-item,
+html:not([dir=rtl]) body .filter-selector .dropdown-menu .dropdown-item {
+    text-align: left !important;
+}
+
+/* RTL - right align */
+html[dir=rtl] .local-edwiserreports .filter-selector .dropdown-menu .dropdown-item,
+html[dir=rtl] .local-edwiserreports .filter-selector .dropdown-menu .dropdown-item.custom,
+html[dir=rtl] .local-edwiserreports .filter-selector .dropdown-menu form .dropdown-item,
+html[dir=rtl] body .filter-selector .dropdown-menu .dropdown-item {
+    text-align: right !important;
+}
+
+/* Ensure dropdown menu itself respects direction */
+.local-edwiserreports .filter-selector .dropdown-menu {
+    text-align: inherit;
+}
+
+/* Fix: Input placeholders in dropdown items for RTL/LTR */
+/* The "Custom Date" is an input placeholder, not regular text */
+html[dir=rtl] .local-edwiserreports .filter-selector .dropdown-menu .dropdown-item.custom input,
+html[dir=rtl] .local-edwiserreports .filter-selector .dropdown-menu .dropdown-item input.flatpickr,
+html[dir=rtl] .filter-selector .dropdown-menu .dropdown-item.custom input,
+html[dir=rtl] body .filter-selector .dropdown-menu .dropdown-item.custom input {
+    direction: rtl !important;
+    text-align: right !important;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+html[dir=ltr] .local-edwiserreports .filter-selector .dropdown-menu .dropdown-item.custom input,
+html[dir=ltr] .local-edwiserreports .filter-selector .dropdown-menu .dropdown-item input.flatpickr,
+html[dir=ltr] .filter-selector .dropdown-menu .dropdown-item.custom input,
+html:not([dir=rtl]) .filter-selector .dropdown-menu .dropdown-item.custom input {
+    direction: ltr !important;
+    text-align: left !important;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Force placeholder alignment in RTL for inputs */
+html[dir=rtl] .local-edwiserreports .filter-selector .dropdown-menu .dropdown-item.custom input::placeholder,
+html[dir=rtl] .filter-selector .dropdown-menu .dropdown-item.custom input::placeholder {
+    text-align: right !important;
+    direction: rtl !important;
+}
+
+/* Fix: Align only the "Date: Enrollments" label in report-page-header */
+.report-page-header-filter.filter-selector > label {
+    left: 2.15rem !important;
+    text-align: left !important;
+    width: auto !important;
+    white-space: nowrap !important;
+}
+
+/* RTL support for specific label */
+html[dir=rtl] .report-page-header-filter.filter-selector > label {
+    left: auto !important;
+    right: 2.15rem !important;
+    text-align: right !important;
+}
+
+/* Fix: Align filter-selector label with dropdown box */
+.local-edwiserreports .filter-selector {
+    position: relative;
+}
+.local-edwiserreports .filter-selector > label {
+    position: absolute;
+    background: white;
+    left: 0.75rem;
+    z-index: 1;
+    top: -0.5rem;
+    font-size: 0.857rem;
+    color: #474747;
+    padding: 0 0.25rem;
+}
+
+/* RTL support for label alignment */
+html[dir=rtl] .local-edwiserreports .filter-selector > label {
+    left: auto;
+    right: 0.75rem;
 }

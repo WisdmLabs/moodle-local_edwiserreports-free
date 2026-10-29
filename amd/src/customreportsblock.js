@@ -145,15 +145,28 @@ define([
         if (reportsDataLoaded) {
             reportsDataLoaded = false;
             selectedFields = [];
+            var hasUserField = false;
             cohorts = $(cfCohort).val();
             courses = $(cfCourse).val();
             $(cfCheckbox + ":checked").each(function() {
                 selectedFields.push($(this).val());
+                if ($(this).closest('.field-group-wrap').data('key') === 'user') {
+                    hasUserField = true;
+                }
             });
 
-            if (selectedFields.length == 0) {
+            if (selectedFields.length == 0 || !hasUserField) {
                 $(cfSave).prop('disabled', true);
+                cfPreview.empty();
                 reportsDataLoaded = true;
+                if (selectedFields.length > 0 && !hasUserField) {
+                    notif.addNotification({
+                        message: M.util.get_string('selectatleastoneuserfield', 'local_edwiserreports'),
+                        type: "error"
+                    });
+                }
+                common.loader.hide('#wdm-customreports-edit');
+                return;
             }
             common.loader.show('#wdm-customreports-edit');
             var getCustomReportsDataAjax = ajax.call([{
@@ -287,7 +300,9 @@ define([
             // popovers fly off past the edge of the modal instead of landing
             // next to the field they describe.
             if ($('html').attr('dir') === 'rtl') {
-                root.find('[data-toggle="popover"]').attr('data-placement', 'left');
+                root.find('[data-toggle="popover"], [data-bs-toggle="popover"]')
+                    .attr('data-placement', 'left')
+                    .attr('data-bs-placement', 'left');
             }
 
             modal.show();
@@ -311,6 +326,21 @@ define([
                     obj[item.name] = item.value;
                     return obj;
                 }, {});
+
+                var hasUserField = false;
+                $(cfCheckbox + ":checked").each(function() {
+                    if ($(this).closest('.field-group-wrap').data('key') === 'user') {
+                        hasUserField = true;
+                    }
+                });
+
+                if (!hasUserField) {
+                    notif.addNotification({
+                        message: M.util.get_string('selectatleastoneuserfield', 'local_edwiserreports'),
+                        type: "error"
+                    });
+                    return;
+                }
 
                 if (validateCustomReprtsSaveData(data)) {
                     // Prepare query data
