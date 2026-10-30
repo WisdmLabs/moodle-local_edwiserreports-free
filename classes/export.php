@@ -139,23 +139,26 @@ class export {
             $htmlhelp = html_writer::tag("p",
                 $help,
                 array(
-                    "style" => "direction:rtl; text-align:right;"
+                    "style" => "direction:rtl; text-align:right;",
+                    "dir" => "rtl"
                 )
             );
         }
         echo $htmlhelp;
 
-        echo '<table style="font-size: 11px;" border="1px" cellpadding="3">';
+        $tabledir = $rtl ? 'rtl' : 'ltr';
+        $cellalign = $rtl ? 'text-align:right;' : '';
+        echo '<table dir="' . $tabledir . '" style="font-size: 11px; direction: ' . $tabledir . ';" border="1px" cellpadding="3">';
 
         echo '<tr nobr="true">';
         foreach ($headerrow as $cell) {
-            echo '<th bgcolor="#ddd" style="font-weight: bold">' . $cell . '</th>';
+            echo '<th bgcolor="#ddd" style="font-weight: bold; ' . $cellalign . '">' . $cell . '</th>';
         }
         echo '</tr>';
         foreach ($data as $row) {
             echo '<tr nobr="true">';
             foreach ($row as $cell) {
-                echo '<td>' . $cell . '</td>';
+                echo '<td style="' . $cellalign . '">' . $cell . '</td>';
             }
             echo '</tr>';
         }
@@ -185,6 +188,8 @@ class export {
             }
         }
 
+        $rtl = get_string('thisdirection', 'langconfig') == 'rtl' ? 1 : 0;
+
         // Raise memory and time limit.
         raise_memory_limit(MEMORY_HUGE); // MEMORY_HUGE uses 2G or MEMORY_EXTRA, whichever is bigger.
         core_php_time_limit::raise(1200); // Setting time limit to 20 minutes.
@@ -199,6 +204,7 @@ class export {
         $pdf->SetPrintHeader(false);
         $pdf->SetPrintFooter(false);
         $pdf->AddPage();
+        $pdf->setRTL($rtl == 1);
         $pdf->WriteHTML($html, true, false, false, false, '');
         $pdf->Output($filename, 'D');
         die;
