@@ -162,7 +162,7 @@ define([
                                     next: " "
                                 }
                             },
-                            dom: '<"edwiserreports-table"i<t><"table-pagination"p>>',
+                            dom: '<"edwiserreports-table"<t><"p-2"i><"table-pagination"p>>',
                             drawCallback: function() {
                                 ModalTable.find('th').addClass('theme-3-bg text-white');
                                 common.stylePaginationButton(this);
@@ -192,7 +192,7 @@ define([
 
             datatable = $(CourseProgressTable).DataTable({
                 ajax: url + "&cohortid=" + cohortId + "&data=" + data,
-                dom: '<"edwiserreports-table"<"p-2"i><t><"table-pagination"p>>',
+                dom: '<"edwiserreports-table"<t><"p-2"i><"table-pagination"p>>',
                 columns: [{
                     "data": "coursename"
                 }, {

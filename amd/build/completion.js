@@ -123,7 +123,7 @@ define([
             }
 
             Table = CompletionTable.DataTable({
-                dom: '<"edwiserreports-table"<"table-filter d-flex"i><t><"table-pagination"p>>',
+                dom: '<"edwiserreports-table"<t><"p-2"i><"table-pagination"p>>',
                 ajax: V.generateUrl(V.requestUrl, params),
                 pageLength: pageLength,
                 language: {

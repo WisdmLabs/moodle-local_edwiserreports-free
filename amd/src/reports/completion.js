@@ -161,7 +161,7 @@ define('local_edwiserreports/reports/completion', [
             }
             $(SELECTOR.PAGETITLE).text(response.name);
             dataTable = $(SELECTOR.PAGE).find(".table").DataTable({
-                dom: '<"edwiserreports-table"<t><"table-filter d-flex"i><"table-pagination"p>>',
+                dom: '<"edwiserreports-table"<t><"p-2"i><"table-pagination"p>>',
                 data: response.data,
                 pageLength: $(SELECTOR.LENGTH).val(),
                 deferRendering: true,

@@ -3,58 +3,53 @@
 table.dataTable {
     border-bottom: 0 !important;
     thead {
+        .sorting,
+        .sorting_asc,
+        .sorting_desc,
+        .sorting_asc_disabled,
+        .sorting_desc_disabled {
+            position: relative;
+        }
+        .sorting:before,
+        .sorting_asc:before,
+        .sorting_desc:before,
+        .sorting_asc_disabled:before,
+        .sorting_desc_disabled:before,
+        .sorting:after,
+        .sorting_asc:after,
+        .sorting_desc:after,
+        .sorting_asc_disabled:after,
+        .sorting_desc_disabled:after {
+            content: '';
+            position: absolute;
+            right: 1em;
+            width: 0;
+            height: 0;
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+        }
         .sorting:before,
         .sorting_asc:before,
         .sorting_desc:before,
         .sorting_asc_disabled:before,
         .sorting_desc_disabled:before {
-            margin-top: -5px;
-            -webkit-transform: translateY(-50%);
-            -ms-transform: translateY(-50%);
-            -o-transform: translateY(-50%);
-            -moz-transform: translateY(-50%);
-            transform: translateY(-50%);
-            font-family: 'FontAwesome' !important;
-            position: absolute;
-            top: 50%;
-            right: 1em;
+            top: calc(50% - 7px);
+            border-bottom: 5px solid currentColor;
+            opacity: 0.4;
         }
         .sorting:after,
         .sorting_asc:after,
         .sorting_desc:after,
         .sorting_asc_disabled:after,
         .sorting_desc_disabled:after {
-            margin-top: 5px;
-            -webkit-transform: translateY(-50%);
-            -ms-transform: translateY(-50%);
-            -o-transform: translateY(-50%);
-            -moz-transform: translateY(-50%);
-            transform: translateY(-50%);
-            font-family: 'FontAwesome' !important;
-            position: absolute;
-            top: 50%;
-            right: 1em;
+            top: calc(50% + 2px);
+            border-top: 5px solid currentColor;
+            opacity: 0.4;
         }
-    }
-    .sorting:before,
-    .sorting_asc:before,
-    .sorting_desc:before,
-    .sorting_asc_disabled:before,
-    .sorting_desc_disabled:before {
-        content: "\f0de";
-        opacity: 0.2;
-    }
-    .sorting:after,
-    .sorting_asc:after,
-    .sorting_desc:after,
-    .sorting_asc_disabled:after,
-    .sorting_desc_disabled:after {
-        content: "\f0dd";
-        opacity: 0.2;
-    }
-    .sorting_asc:before,
-    .sorting_desc:after {
-        opacity: 1;
+        .sorting_asc:before,
+        .sorting_desc:after {
+            opacity: 1;
+        }
     }
     tr,
     td {
@@ -107,20 +102,14 @@ table.dataTable td.dataTables_empty {
 }
 
 // RTL fix for sorting icons in data tables.
-html[dir=rtl] .edwiserreports-table th.sorting:before,
-html[dir=rtl] .edwiserreports-table th.sorting_asc:before,
-html[dir=rtl] .edwiserreports-table th.sorting_desc:before,
-html[dir=rtl] .edwiserreports-table th.sorting:after,
-html[dir=rtl] .edwiserreports-table th.sorting_asc:after,
-html[dir=rtl] .edwiserreports-table th.sorting_desc:after {
+html[dir=rtl] table.dataTable thead .sorting:before,
+html[dir=rtl] table.dataTable thead .sorting_asc:before,
+html[dir=rtl] table.dataTable thead .sorting_desc:before,
+html[dir=rtl] table.dataTable thead .sorting:after,
+html[dir=rtl] table.dataTable thead .sorting_asc:after,
+html[dir=rtl] table.dataTable thead .sorting_desc:after {
     left: 1em;
     right: auto;
-    opacity: .6;
-}
-// RTL: Highlight the active sorting arrow with full opacity.
-html[dir=rtl] .edwiserreports-table th.sorting_asc:before,
-html[dir=rtl] .edwiserreports-table th.sorting_desc:after {
-    opacity: 1;
 }
 // RTL: mirror header cell padding so the arrow sits on the left.
 html[dir=rtl] .dataTables_wrapper table.dataTable thead>tr>th {
@@ -140,6 +129,9 @@ html[dir=rtl] .dataTables_wrapper table.dataTable thead>tr>th {
     .dataTables_info {
         padding: 0;
         float: none;
+        display: block !important;
+        width: 100% !important;
+        clear: both;
     }
     .table-pagination {
         display: flex;

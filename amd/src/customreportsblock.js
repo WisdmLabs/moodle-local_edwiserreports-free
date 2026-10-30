@@ -59,6 +59,7 @@ define([
     var cpHeader = '.reports-preview-header .rp-header';
     var cfPreviewTable = null;
     var crListTable = null;
+    var cfWarning = '.reports-preview-warning';
     var customReportSaveTitle = M.util.get_string('savecustomreport', 'local_edwiserreports');
 
     var selectedFields = [];
@@ -67,23 +68,18 @@ define([
     var reportsId = 0;
 
     /**
-     * Show the "at least one user field is required" notification,
-     * scroll it into view, and auto-dismiss after 5 seconds.
+     * Show the inline "at least one user field is required" warning.
      */
     function notifyUserFieldRequired() {
-        notif.addNotification({
-            message: M.util.get_string('selectatleastoneuserfield', 'local_edwiserreports'),
-            type: "error"
-        });
-        setTimeout(function() {
-            var $notification = $('#user-notifications .alert').first();
-            if ($notification.length) {
-                $notification[0].scrollIntoView({behavior: 'smooth', block: 'start'});
-                setTimeout(function() {
-                    $notification.find('.close').trigger('click');
-                }, 5000);
-            }
-        }, 0);
+        $(cfWarning).removeClass('d-none');
+        cfPreview.empty();
+    }
+
+    /**
+     * Hide the inline user-field warning.
+     */
+    function hideUserFieldRequired() {
+        $(cfWarning).addClass('d-none');
     }
     var reportsDataLoaded = true;
     var reportsData = {
@@ -177,14 +173,17 @@ define([
 
             if (selectedFields.length == 0 || !hasUserField) {
                 $(cfSave).prop('disabled', true);
-                cfPreview.empty();
                 reportsDataLoaded = true;
                 if (selectedFields.length > 0 && !hasUserField) {
                     notifyUserFieldRequired();
+                } else {
+                    hideUserFieldRequired();
+                    cfPreview.empty();
                 }
                 common.loader.hide('#wdm-customreports-edit');
                 return;
             }
+            hideUserFieldRequired();
             common.loader.show('#wdm-customreports-edit');
             var getCustomReportsDataAjax = ajax.call([{
                 methodname: 'local_edwiserreports_get_customreports_data',
@@ -353,6 +352,7 @@ define([
 
                 if (!hasUserField) {
                     notifyUserFieldRequired();
+                    modal.hide();
                     return;
                 }
 

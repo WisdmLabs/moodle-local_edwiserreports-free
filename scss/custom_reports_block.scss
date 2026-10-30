@@ -18,7 +18,8 @@
     }
 }
 
-.reports-list-content {
+.reports-list-content,
+.reports-preview-content {
     [data-action="hide"] {
         &[data-value="0"] {
             .show-svg {
@@ -30,6 +31,9 @@
                 display: none;
             }
         }
+    }
+    .table-responsive {
+        width: 100%;
     }
 }
 
@@ -184,6 +188,10 @@ html[dir=rtl] #wdm-customreports-save-form {
             label {
                 margin-right: 0 !important;
                 margin-left: 0.5rem !important;
+                padding-top: 0 !important;
+                padding-bottom: 0 !important;
+                margin-bottom: 0 !important;
+                line-height: 1.2;
             }
 
             .text-nowrap {
