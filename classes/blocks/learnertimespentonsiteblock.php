@@ -97,7 +97,7 @@ class learnertimespentonsiteblock extends block_base {
         $this->layout->name = get_string('learnertimespentonsiteheader', 'local_edwiserreports');
         $this->layout->info = get_string('learnertimespentonsiteblockhelp', 'local_edwiserreports');
         $this->layout->filters = $OUTPUT->render_from_template('local_edwiserreports/learnertimespentonsiteblockfilters', []);
-        // $this->layout->pro = $this->image_icon('lock'); // Commented out to show dummy data in free version
+        $this->layout->pro = $this->image_icon('lock');
         $this->layout->morelink = 1;
 
 

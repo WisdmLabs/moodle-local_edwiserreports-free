@@ -191,7 +191,7 @@ define('local_edwiserreports/reports/learnercourseactivities', [
                             data: 'timespent'
                         },
                     ],
-                    dom: '<"edwiserreports-table"i<t><"table-pagination"p>>',
+                    dom: '<"edwiserreports-table"<t><"p-2"i><"table-pagination"p>>',
                     language: {
                         info: M.util.get_string('tableinfo', 'local_edwiserreports'),
                         infoEmpty: M.util.get_string('infoempty', 'local_edwiserreports'),

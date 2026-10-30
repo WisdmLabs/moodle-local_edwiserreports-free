@@ -140,7 +140,7 @@ define('local_edwiserreports/reports/learnercourseprogress', [
                     columnDefs: [
                         {className: "fixed-column", targets: 0},
                         {className: "text-start", targets: [0, 1]},
-                        {className: "text-end", targets: "_all"}
+                        {className: "text-end", targets: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11]}
                     ],
                     columns: [
                         {data: "course", width: "12rem"},
@@ -174,7 +174,7 @@ define('local_edwiserreports/reports/learnercourseprogress', [
                             data: "timespent"
                         }
                     ],
-                    dom: '<"edwiserreports-table"i<t><"table-pagination"p>>',
+                    dom: '<"edwiserreports-table"<t><"p-2"i><"table-pagination"p>>',
                     language: {
                         info: M.util.get_string('tableinfo', 'local_edwiserreports'),
                         infoEmpty: M.util.get_string('infoempty', 'local_edwiserreports'),

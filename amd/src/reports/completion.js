@@ -161,7 +161,7 @@ define('local_edwiserreports/reports/completion', [
             }
             $(SELECTOR.PAGETITLE).text(response.name);
             dataTable = $(SELECTOR.PAGE).find(".table").DataTable({
-                dom: '<"edwiserreports-table"<"table-filter d-flex"i><t><"table-pagination"p>>',
+                dom: '<"edwiserreports-table"<t><"table-filter d-flex"i><"table-pagination"p>>',
                 data: response.data,
                 pageLength: $(SELECTOR.LENGTH).val(),
                 deferRendering: true,
@@ -178,7 +178,7 @@ define('local_edwiserreports/reports/completion', [
                 columnDefs: [
                     {className: "fixed-column", targets: 0},
                     {className: "text-start", targets: [0, 1, 2]},
-                    {className: "text-end", targets: "_all"}
+                    {className: "text-end", targets: [3, 4, 5, 6, 7]}
                 ],
                 columns: [
                     {data: "username"},

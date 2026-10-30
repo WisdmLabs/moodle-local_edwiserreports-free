@@ -167,12 +167,7 @@ define('local_edwiserreports/reports/allcoursessummary', [
         PROMISE.GET_DATA(filter).then(function(response) {
                 dataTable = $(SELECTOR.TABLE).DataTable({
                     data: response,
-                    dom: '<"edwiserreports-table"<"p-2"i><t><"table-pagination"p>>',
-                    columnDefs: [
-                        { className: "fixed-column", targets: 0 },
-                        { className: "text-start", targets: [0, 1, 2] },
-                        { className: "text-end", targets: "_all" }
-                    ],
+                    dom: '<"edwiserreports-table"<t><"p-2"i><"table-pagination"p>>',
                     columns: [
                         { "data": "coursename", width: "10rem" },
                         { "data": "category", width: "10rem" },
@@ -204,7 +199,7 @@ define('local_edwiserreports/reports/allcoursessummary', [
                     columnDefs: [
                         { className: "fixed-column", targets: 0 },
                         { className: "text-start", targets: [0, 1] },
-                        { className: "text-end", targets: "_all" }
+                        { className: "text-end", targets: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] }
                     ],
                     language: {
                         info: M.util.get_string('tableinfo', 'local_edwiserreports'),
@@ -401,7 +396,7 @@ define('local_edwiserreports/reports/allcoursessummary', [
                                 next: " "
                             }
                         },
-                        dom: '<"edwiserreports-table"i<t><"table-pagination"p>>',
+                        dom: '<"edwiserreports-table"<t><"p-2"i><"table-pagination"p>>',
                         drawCallback: function() {
                             common.stylePaginationButton(this);
                         },

@@ -42,7 +42,7 @@
             margin-bottom: 1rem;
         }
         table {
-            table-layout: fixed;
+            table-layout: auto;
             width: max-content !important;
             min-width: 100%;
             &.dataTable {
@@ -50,6 +50,7 @@
                     tr {
                         th {
                             height: 70px;
+                            white-space: nowrap;
                         }
                     }
                 }
@@ -184,9 +185,6 @@ html[dir=rtl] .local-edwiserreports {
         }
     }
     .edwiserreports-table {
-        table {
-            width: 100% !important;
-        }
         .fixed-column {
             left: auto;
             right: 0;

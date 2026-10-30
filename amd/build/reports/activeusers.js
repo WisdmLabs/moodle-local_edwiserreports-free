@@ -122,7 +122,7 @@ define('local_edwiserreports/reports/activeusers', [
 
                     // Create dataTable for userslist
                     modalTable = ModalRoot.find(".modal-table").DataTable({
-                        dom: '<"edwiserreports-table"<"p-2"i><t><"table-pagination"p>>',
+                        dom: '<"edwiserreports-table"<t><"p-2"i><"table-pagination"p>>',
                         language: {
                             info: M.util.get_string('tableinfo', 'local_edwiserreports'),
                             infoEmpty: M.util.get_string('infoempty', 'local_edwiserreports'),
@@ -246,7 +246,7 @@ define('local_edwiserreports/reports/activeusers', [
                     Templates.replaceNode(SELECTOR.TABLE, html, js);
                     dataTable = $(SELECTOR.TABLE).DataTable({
                         responsive: true,
-                        dom: '<"edwiserreports-table"<"p-2"i><t><"table-pagination"p>>',
+                        dom: '<"edwiserreports-table"<t><"p-2"i><"table-pagination"p>>',
                         order: [
                             [0, 'desc']
                         ],

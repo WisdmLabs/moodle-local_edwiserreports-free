@@ -290,6 +290,13 @@ html:not([dir=rtl]) #page-local-edwiserreports-index .edwiserreports-header .fil
     top: 100% !important;
 }
 
+// Dashboard date filter: the calendar dropdown must be wide enough for flatpickr.
+html:not([dir=rtl]) #page-local-edwiserreports-index .edwiserreports-header .filter-selector .dropdown-menu.withcalendar {
+    width: auto !important;
+    min-width: 308px;
+    display: flex;
+}
+
 html[lang=de] .local-edwiserreports {
     .filter-selector {
         .edwiserreports-calendar {
@@ -1421,6 +1428,19 @@ html[dir=rtl] .local-edwiserreports{
             }
         }
     }
+
+    // Dashboard date filter in RTL: remove the -163px offset and let the menu grow to the calendar width.
+    #page-local-edwiserreports-index .edwiserreports-header .filter-selector .dropdown-menu.withcalendar {
+        width: auto !important;
+        min-width: 308px;
+        display: flex;
+        > .dropdown-calendar:first-child {
+            right: 0 !important;
+            left: auto !important;
+            transform: none !important;
+        }
+    }
+
     .insight-card{
         .pro-lock{
             right: unset;

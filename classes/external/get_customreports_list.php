@@ -103,7 +103,7 @@ trait get_customreports_list {
         $enabledesktopstr = get_string('enabledesktop', 'local_edwiserreports');
         $disabledesktopstr = get_string('disabledesktop', 'local_edwiserreports');
         $tooltipstr = $customreport->enabledesktop ? $disabledesktopstr : $enabledesktopstr;
-        $html = '<div style="text-align:left;">
+        $html = '<div style="text-align:center;">
             <span>
                 <input type="checkbox" id="wdm-desktopenable-' . $customreport->id . '" class="d-none
                 custom-field-checkbox" ' . $enabledesktop . ' data-reportsid="' . $customreport->id . '"

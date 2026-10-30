@@ -165,11 +165,11 @@ define('local_edwiserreports/reports/studentengagement', [
             rowId: 'DT_RowId',
             scrollCollapse: true,
             columnDefs: [
-
                 { className: "fixed-column", targets: 0 },
                 { className: "text-start", targets: [0, 1, 2] },
+                { className: "text-end", targets: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15] },
                 { orderable: true, targets: [0, 1, 2, 3] },
-                { className: "text-end", orderable: false, targets: "_all" }
+                { orderable: false, targets: [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15] }
             ],
             columns: [
                 { data: "student", width: "10rem" },
@@ -207,7 +207,7 @@ define('local_edwiserreports/reports/studentengagement', [
                 { data: "completedquizzes", width: "6rem" },
                 { data: "completedscorms", width: "6rem" }
             ],
-            dom: '<"edwiserreports-table"i<t><"table-pagination"p>>',
+            dom: '<"edwiserreports-table"<t><"p-2"i><"table-pagination"p>>',
             language: {
                 info: M.util.get_string('tableinfo', 'local_edwiserreports'),
                 infoEmpty: M.util.get_string('infoempty', 'local_edwiserreports'),

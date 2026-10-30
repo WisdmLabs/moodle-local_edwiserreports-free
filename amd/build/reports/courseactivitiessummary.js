@@ -170,7 +170,7 @@ define('local_edwiserreports/reports/courseactivitiessummary', [
                     columnDefs: [
                         { className: "fixed-column", targets: 0 },
                         { className: "text-start", targets: [0, 1, 2] },
-                        { className: "text-end", targets: "_all" }
+                        { className: "text-end", targets: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] }
                     ],
                     columns: [
                         { 
@@ -212,7 +212,7 @@ define('local_edwiserreports/reports/courseactivitiessummary', [
                         { 'data': 'totalvisits', width: "3rem" },
                         { 'data': 'averagevisits', width: "4rem" }
                     ],
-                    dom: '<"edwiserreports-table"i<t><"table-pagination"p>>',
+                    dom: '<"edwiserreports-table"<t><"p-2"i><"table-pagination"p>>',
                     language: {
                         info: M.util.get_string('tableinfo', 'local_edwiserreports'),
                         infoEmpty: M.util.get_string('infoempty', 'local_edwiserreports'),

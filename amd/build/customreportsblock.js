@@ -65,6 +65,26 @@ define([
     var courses = [];
     var cohorts = [];
     var reportsId = 0;
+
+    /**
+     * Show the "at least one user field is required" notification,
+     * scroll it into view, and auto-dismiss after 5 seconds.
+     */
+    function notifyUserFieldRequired() {
+        notif.addNotification({
+            message: M.util.get_string('selectatleastoneuserfield', 'local_edwiserreports'),
+            type: "error"
+        });
+        setTimeout(function() {
+            var $notification = $('#user-notifications .alert').first();
+            if ($notification.length) {
+                $notification[0].scrollIntoView({behavior: 'smooth', block: 'start'});
+                setTimeout(function() {
+                    $notification.find('.close').trigger('click');
+                }, 5000);
+            }
+        }, 0);
+    }
     var reportsDataLoaded = true;
     var reportsData = {
         downloadenable: true
@@ -160,10 +180,7 @@ define([
                 cfPreview.empty();
                 reportsDataLoaded = true;
                 if (selectedFields.length > 0 && !hasUserField) {
-                    notif.addNotification({
-                        message: M.util.get_string('selectatleastoneuserfield', 'local_edwiserreports'),
-                        type: "error"
-                    });
+                    notifyUserFieldRequired();
                 }
                 common.loader.hide('#wdm-customreports-edit');
                 return;
@@ -335,10 +352,7 @@ define([
                 });
 
                 if (!hasUserField) {
-                    notif.addNotification({
-                        message: M.util.get_string('selectatleastoneuserfield', 'local_edwiserreports'),
-                        type: "error"
-                    });
+                    notifyUserFieldRequired();
                     return;
                 }
 

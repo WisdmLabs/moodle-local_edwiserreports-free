@@ -502,6 +502,12 @@ html:not([dir=rtl]) #page-local-edwiserreports-index .edwiserreports-header .fil
     top: 100% !important;
 }
 
+html:not([dir=rtl]) #page-local-edwiserreports-index .edwiserreports-header .filter-selector .dropdown-menu.withcalendar {
+    width: auto !important;
+    min-width: 308px;
+    display: flex;
+}
+
 html[lang=de] .local-edwiserreports .filter-selector .edwiserreports-calendar {
     min-width: 11.5rem;
 }
@@ -1485,6 +1491,16 @@ html[dir=rtl] .local-edwiserreports .filter-selector .edwiserreports-calendar {
 html[dir=rtl] .local-edwiserreports .filter-selector .edwiserreports-calendar::after {
     left: 0.829rem;
     right: unset;
+}
+html[dir=rtl] .local-edwiserreports #page-local-edwiserreports-index .edwiserreports-header .filter-selector .dropdown-menu.withcalendar {
+    width: auto !important;
+    min-width: 308px;
+    display: flex;
+}
+html[dir=rtl] .local-edwiserreports #page-local-edwiserreports-index .edwiserreports-header .filter-selector .dropdown-menu.withcalendar > .dropdown-calendar:first-child {
+    right: 0 !important;
+    left: auto !important;
+    transform: none !important;
 }
 html[dir=rtl] .local-edwiserreports .insight-card .pro-lock {
     right: unset;
@@ -2924,12 +2940,13 @@ html[dir=rtl] .modal-dialog .modal-footer {
     margin-bottom: 1rem;
 }
 .local-edwiserreports .edwiserreports-table table {
-    table-layout: fixed;
+    table-layout: auto;
     width: max-content !important;
     min-width: 100%;
 }
 .local-edwiserreports .edwiserreports-table table.dataTable thead tr th {
     height: 70px;
+    white-space: nowrap;
 }
 .local-edwiserreports .edwiserreports-table table.dataTable tbody tr td {
     height: 70px;
@@ -3022,9 +3039,6 @@ html[dir=rtl] .local-edwiserreports .table-search-input input {
 html[dir=rtl] .local-edwiserreports .table-search-input .search-button {
     right: auto;
     left: 0;
-}
-html[dir=rtl] .local-edwiserreports .edwiserreports-table table {
-    width: 100% !important;
 }
 html[dir=rtl] .local-edwiserreports .edwiserreports-table .fixed-column {
     left: auto;
