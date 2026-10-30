@@ -270,7 +270,7 @@ define([
             $(SELECTOR.DATEITEM + '.custom').addClass('active');
 
             // Show custom date to dropdown button.
-            $(SELECTOR.DATE).html(dateAlternate);
+            $(SELECTOR.DATE).html('<span dir="ltr">' + dateAlternate + '</span>');
 
             filter = date;
 

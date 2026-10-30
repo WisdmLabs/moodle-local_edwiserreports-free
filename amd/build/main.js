@@ -206,7 +206,7 @@ define([
         }
         $(SELECTOR.DATEITEM).removeClass('active');
         $(SELECTOR.DATEITEM + '.custom').addClass('active');
-        $(SELECTOR.DATE).html(dateAlternate);
+        $(SELECTOR.DATE).html('<span dir="ltr">' + dateAlternate + '</span>');
         throwDateEvent(date, dateAlternate);
     }
 
