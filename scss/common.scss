@@ -1430,11 +1430,16 @@ html[dir=rtl] .local-edwiserreports{
     }
 
     // Dashboard date filter in RTL: remove the -163px offset and let the menu grow to the calendar width.
-    #page-local-edwiserreports-index .edwiserreports-header .filter-selector .dropdown-menu.withcalendar {
+    #page-local-edwiserreports-index .edwiserreports-header .filter-selector .dropdown-menu {
         width: auto !important;
         min-width: 308px;
+        right: 0 !important;
+        left: auto !important;
+        transform: none !important;
+        top: 100% !important;
         display: flex;
         > .dropdown-calendar:first-child {
+            position: relative;
             right: 0 !important;
             left: auto !important;
             transform: none !important;

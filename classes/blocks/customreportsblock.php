@@ -106,8 +106,7 @@ class customreportsblock extends block_base {
                     foreach ($record as $fieldname => $fieldvalue) {
                         $dummyrecord[$fieldname] = format_string($fieldvalue, true, ['context' => \context_system::instance()]);
                     }
-                    // $records[] = $record;
-                    $records[] = $rtl ? array_reverse($dummyrecord) : $dummyrecord;
+                    $records[] = $dummyrecord;
                 }
             }
             $record = $recordset->current();
@@ -219,7 +218,7 @@ class customreportsblock extends block_base {
         unset($params->selectedfield);
 
         $records = $this->get_data($params, $rtl);
-        $header = $rtl ? array_reverse(array_column($records->columns, 'title')) : array_column($records->columns, 'title');
+        $header = array_column($records->columns, 'title');
         $data = array_map(function($record) {
             return array_values((array) $record);
         }, $records->reportsdata);

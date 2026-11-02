@@ -182,16 +182,16 @@ class completionblock {
      */
     public static function get_exportable_data_report($filter, $filterdata = true) {
         $cohortid = optional_param("cohortid", 0, PARAM_INT);
-        $rtl = optional_param("rtl", 0, PARAM_INT);
+        $rtl = get_string('thisdirection', 'langconfig') == 'rtl' ? 1 : 0;
 
         $completions = self::get_completions($filter, optional_param('cohortid', 0, PARAM_INT), 1);
 
         $export = array();
-        $export[] = $rtl ? array_reverse(self::get_header()) : self::get_header();
+        $export[] = self::get_header();
         foreach ($completions as $completion) {
             $completion->username = strip_tags($completion->username);
             $data = array_values((array)$completion);
-            $export[] = $rtl ? array_reverse($data) : $data;
+            $export[] = $data;
         }
         return $export;
     }

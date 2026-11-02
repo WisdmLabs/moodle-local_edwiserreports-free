@@ -157,7 +157,7 @@ class inactiveusersblock extends block_base {
             }
 
             // Put inactive users in inactive users table.
-            $inactiveusers[] = $rtl ? array_reverse(array_values($inactiveuser)) : array_values($inactiveuser);
+            $inactiveusers[] = array_values($inactiveuser);
         }
 
         // Return inactive users array.
@@ -182,12 +182,10 @@ class inactiveusersblock extends block_base {
      * @return array          Inactive users array
      */
     public static function get_exportable_data_block($filter) {
-        $rtl = get_string('thisdirection', 'langconfig') == 'rtl' ? 1 : 0;
-
         // Prepare inactive users data.
         $inactiveusers = array();
-        $inactiveusers[] = $rtl ? array_reverse(self::get_headers()) : self::get_headers();
-        $inactiveusers = array_merge($inactiveusers, self::get_inactiveusers($filter, true, $rtl));
+        $inactiveusers[] = self::get_headers();
+        $inactiveusers = array_merge($inactiveusers, self::get_inactiveusers($filter, true, 0));
 
         // Return all inactive users.
         return $inactiveusers;

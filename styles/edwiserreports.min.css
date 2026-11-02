@@ -1492,12 +1492,17 @@ html[dir=rtl] .local-edwiserreports .filter-selector .edwiserreports-calendar::a
     left: 0.829rem;
     right: unset;
 }
-html[dir=rtl] .local-edwiserreports #page-local-edwiserreports-index .edwiserreports-header .filter-selector .dropdown-menu.withcalendar {
+html[dir=rtl] .local-edwiserreports #page-local-edwiserreports-index .edwiserreports-header .filter-selector .dropdown-menu {
     width: auto !important;
     min-width: 308px;
+    right: 0 !important;
+    left: auto !important;
+    transform: none !important;
+    top: 100% !important;
     display: flex;
 }
-html[dir=rtl] .local-edwiserreports #page-local-edwiserreports-index .edwiserreports-header .filter-selector .dropdown-menu.withcalendar > .dropdown-calendar:first-child {
+html[dir=rtl] .local-edwiserreports #page-local-edwiserreports-index .edwiserreports-header .filter-selector .dropdown-menu > .dropdown-calendar:first-child {
+    position: relative;
     right: 0 !important;
     left: auto !important;
     transform: none !important;
@@ -2254,6 +2259,14 @@ html[dir=rtl] .local-edwiserreports .edwiserreports-table .dataTables_info {
 
 html[dir=rtl] .local-edwiserreports .dataTables_wrapper .dataTables_info {
     float: right !important;
+}
+
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .dataTables_length select {
+    min-width: 6rem !important;
+    width: auto !important;
+    padding-left: 1.75rem !important;
+    padding-right: 0.5rem !important;
+    text-align: right !important;
 }
 .fi {
     width: 20px;
@@ -4899,7 +4912,7 @@ span.flatpickr-weekday {
 }
 
 .select2-container--default[dir=rtl] .select2-selection--single {
-    padding-left: 1.858rem;
+    padding-left: 0.858rem;
     padding-right: 1rem;
 }
 

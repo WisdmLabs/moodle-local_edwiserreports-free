@@ -240,10 +240,16 @@ define([
                     container.appendChild(cal);
                     // positionCalendar() runs after onOpen, so we override it after the call stack clears
                     setTimeout(function() {
+                        var isRtl = document.dir === 'rtl' || $('html').attr('dir') === 'rtl';
                         cal.style.setProperty('position', 'absolute', 'important');
                         cal.style.setProperty('top', '0', 'important');
-                        cal.style.setProperty('left', '0', 'important');
-                        cal.style.setProperty('right', 'auto', 'important');
+                        if (isRtl) {
+                            cal.style.setProperty('right', '0', 'important');
+                            cal.style.setProperty('left', 'auto', 'important');
+                        } else {
+                            cal.style.setProperty('left', '0', 'important');
+                            cal.style.setProperty('right', 'auto', 'important');
+                        }
                         cal.style.setProperty('box-shadow', 'none', 'important');
                         cal.style.setProperty('border', '0', 'important');
                     }, 0);

@@ -446,7 +446,7 @@
 }
 
 .select2-container--default[dir="rtl"] .select2-selection--single {
-    padding-left: 1.858rem;
+    padding-left: 0.858rem;
     padding-right: 1rem;
 }
 

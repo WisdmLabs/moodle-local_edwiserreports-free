@@ -245,10 +245,8 @@ class activecoursesblock extends block_base {
      * @return array Array of exportable data
      */
     public static function get_exportable_data_block() {
-        $rtl = get_string('thisdirection', 'langconfig') == 'rtl' ? 1 : 0;
-
         $export = array();
-        $header = $rtl ? array_reverse(self::get_header()) : self::get_header();
+        $header = self::get_header();
 
         $classobj = new self();
         $activecoursesdata = $classobj->get_data(false);
@@ -256,14 +254,6 @@ class activecoursesblock extends block_base {
             array_splice($data, 0, 1);
             return $data;
         }, $activecoursesdata->data);
-
-        if ($rtl) {
-            $newdata = [];
-            foreach ($exportdata as $value) {
-                $newdata[] = $rtl ? array_reverse($value) : $value;
-            }
-            $exportdata = $newdata;
-        }
 
         $export = array_merge(
             array($header),
