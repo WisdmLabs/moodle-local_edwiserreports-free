@@ -165,11 +165,16 @@ html[dir=rtl] .local-edwiserreports .dataTables_wrapper .dataTables_info {
     float: right !important;
 }
 
-/* RTL fix: make the Show/length select wide enough for "100" */
-html[dir=rtl] .local-edwiserreports .edwiserreports-table .dataTables_length select {
+/* Make the Show/length select wide enough for "100" in both LTR and RTL */
+.local-edwiserreports .edwiserreports-table .dataTables_length select,
+.local-edwiserreports .edwiserreports-table .dataTables_length .select2-container {
     min-width: 6rem !important;
     width: auto !important;
-    padding-left: 1.75rem !important;
+}
+
+/* RTL: arrow is on the left, reduce left padding so the value isn't truncated */
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .dataTables_length select {
+    padding-left: 0.8rem !important;
     padding-right: 0.5rem !important;
     text-align: right !important;
 }

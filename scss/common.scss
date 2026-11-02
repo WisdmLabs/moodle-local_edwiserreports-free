@@ -1844,3 +1844,11 @@ html[dir=rtl] .local-edwiserreports .filter-selector > label {
     left: auto;
     right: 0.75rem;
 }
+
+/* RTL: keep Latin date ranges in day-month-year order so the day
+   does not jump to the visual start in RTL mode. */
+html[dir=rtl] .edwiserreports-calendar,
+html[dir=rtl] .selected-period {
+    direction: ltr;
+    text-align: right;
+}

@@ -178,7 +178,7 @@ $string['activity'] = 'Activity';
 $string['activities'] = 'Activities';
 $string['student'] = 'Student';
 $string['students'] = 'Students';
-$string['selectatleastoneuserfield'] = 'Select at least one learner field so that every row of the report can be identified.';
+$string['selectatleastoneuserfield'] = 'Please select at least one user field.';
 
 /* Block Learning Program */
 $string['nolearningprograms'] = 'No Learning Programs Found';

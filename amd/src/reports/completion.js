@@ -128,6 +128,7 @@ define('local_edwiserreports/reports/completion', [
     function customDateSelected() {
         let date = $(SELECTOR.DATEPICKERINPUT).val(); // Y-m-d format
         let dateAlternate = $(SELECTOR.DATEPICKERINPUT).next().val().replace("to", "-"); // D M Y format
+        dateAlternate = common.formatDateRangeForDisplay(dateAlternate);
         $(SELECTOR.DATEPICKERINPUT).next().val(dateAlternate);
 
         /* If correct date is not selected then return false */

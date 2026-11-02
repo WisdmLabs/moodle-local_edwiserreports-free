@@ -35,6 +35,10 @@
         min-width: 8.5rem;
         width: auto !important;
         max-width: none !important;
+        .select2-container {
+            min-width: 6rem !important;
+            width: auto !important;
+        }
     }
     .edwiserreports-table {
         &>div:not(.table-pagination) {

@@ -96,8 +96,10 @@ html[dir=rtl] .reports-filter-body .field-group + .field {
     display: none;
 }
 
-#cr-preview-table {
-    // Override width: max-content !important from .local-edwiserreports .edwiserreports-table table
+#wdm-customreports-edit #cr-preview-table,
+#wdm-customreports-edit #cr-list-table {
+    min-width: 100% !important;
+    // Override width: max-content !important from #wdm-edwiserreports .table
     width: 100% !important;
 }
 
@@ -107,9 +109,6 @@ html[dir=rtl] .reports-filter-body .field-group + .field {
 }
 
 #cr-list-table {
-    min-width: 100%;
-    // Override width: max-content !important from .local-edwiserreports .edwiserreports-table table
-    width: 100% !important;
     th,
     td {
         &:last-child {

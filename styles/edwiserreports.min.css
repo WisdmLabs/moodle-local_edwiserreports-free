@@ -1866,6 +1866,12 @@ html[dir=rtl] .local-edwiserreports .filter-selector > label {
     left: auto;
     right: 0.75rem;
 }
+
+html[dir=rtl] .edwiserreports-calendar,
+html[dir=rtl] .selected-period {
+    direction: ltr;
+    text-align: right;
+}
 #wdm-edwiserreports #courseprogressblock .col-md-3 {
     display: none;
 }
@@ -1993,7 +1999,9 @@ html[dir=rtl] .reports-filter-body .field-group + .field {
     display: none;
 }
 
-#cr-preview-table {
+#wdm-customreports-edit #cr-preview-table,
+#wdm-customreports-edit #cr-list-table {
+    min-width: 100% !important;
     width: 100% !important;
 }
 
@@ -2002,10 +2010,6 @@ html[dir=rtl] .reports-filter-body .field-group + .field {
     width: max-content !important;
 }
 
-#cr-list-table {
-    min-width: 100%;
-    width: 100% !important;
-}
 #cr-list-table th:last-child,
 #cr-list-table td:last-child {
     text-align: center;
@@ -2261,10 +2265,14 @@ html[dir=rtl] .local-edwiserreports .dataTables_wrapper .dataTables_info {
     float: right !important;
 }
 
-html[dir=rtl] .local-edwiserreports .edwiserreports-table .dataTables_length select {
+.local-edwiserreports .edwiserreports-table .dataTables_length select,
+.local-edwiserreports .edwiserreports-table .dataTables_length .select2-container {
     min-width: 6rem !important;
     width: auto !important;
-    padding-left: 1.75rem !important;
+}
+
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .dataTables_length select {
+    padding-left: 0.8rem !important;
     padding-right: 0.5rem !important;
     text-align: right !important;
 }
@@ -2962,6 +2970,10 @@ html[dir=rtl] .modal-dialog .modal-footer {
     min-width: 8.5rem;
     width: auto !important;
     max-width: none !important;
+}
+.local-edwiserreports .table-length-input .select2-container {
+    min-width: 6rem !important;
+    width: auto !important;
 }
 .local-edwiserreports .edwiserreports-table > div:not(.table-pagination) {
     overflow: auto;
@@ -4912,7 +4924,7 @@ span.flatpickr-weekday {
 }
 
 .select2-container--default[dir=rtl] .select2-selection--single {
-    padding-left: 0.858rem;
+    padding-left: 0.8rem;
     padding-right: 1rem;
 }
 
