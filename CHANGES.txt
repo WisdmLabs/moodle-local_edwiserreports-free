@@ -1,15 +1,20 @@
-v 2.0.2
+v 2.0.1
 ====================================================
+Tweaks
+- Minor UI Changes related to:
+-- Custom Reports table full-width layout.
+-- Date range display alignment in RTL and LTR modes.
+-- Length dropdown width so "100" is fully visible.
+-- Input fields and dropdowns.
+- Changes in Language Strings.
+
 Bug Fixes
+- Replaced the red error notification with a yellow inline warning box when no user field is selected in Custom Reports.
 - Fixed 'Cannot read properties of undefined (reading title)' error that left the My Time Spent On Site block stuck on LOADING (stale amd/build/block_learnertimespentonsite.min.js).
 - Rebuilt all first-party amd/build/*.min.js and amd/build/*.js files from amd/src (main.js build was out of date).
 - Removed debug console logging from the Learner Time Spent On Site block.
 - Replaced deprecated Bootstrap 4 classes (form-group, form-inline, pull-right, dropdown-menu-right) with Bootstrap 5 equivalents; removes the 'Deprecated style in use' warnings on the Save Custom Report form and other screens.
 - Added data-bs-* attribute twins for remaining data-toggle/data-target/data-placement/etc. attributes.
-
-v 2.0.1
-====================================================
-Bug Fixes
 - Fixed stale non-minified AMD build files (amd/build/*.js) that still referenced the removed core/modal_factory module, causing "No define call for core/modal_factory" JS errors on Moodle 5.x.
 - Regenerated all non-minified amd/build/*.js debug copies from amd/src to match the already-updated production amd/build/*.min.js files (Bootstrap 5 RTL/LTR class updates, flatpickr API updates).
 - Added missing amd/build/modal_factory_compat.js (non-minified) file.
