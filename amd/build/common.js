@@ -1131,6 +1131,27 @@ define([
     }
 
     /**
+     * Reverse a flatpickr date range for RTL display so the year appears
+     * first and the day does not jump to the visual start.
+     * @param {String} dateAlternate Range in "DD MMM YYYY - DD MMM YYYY" form.
+     * @returns {String}
+     */
+    function formatDateRangeForDisplay(dateAlternate) {
+        if ($('html').attr('dir') != 'rtl' || !dateAlternate || !dateAlternate.includes('-')) {
+            return dateAlternate;
+        }
+        var parts = dateAlternate.split('-');
+        var reversePart = function(part) {
+            var tokens = $.trim(part).split(' ');
+            if (tokens.length < 3) {
+                return part;
+            }
+            return tokens[2] + ' ' + tokens[1] + ' ' + tokens[0];
+        };
+        return reversePart(parts[1]) + '-' + reversePart(parts[0]);
+    }
+
+    /**
      * Update time duration in header.
      * @param {String} timeperiod Time period.
      */
@@ -1157,17 +1178,13 @@ define([
             let endYear = enddate.getUTCFullYear();
 
             var date = `${startDay} ${startMonth} ${startYear} - ${endDay} ${endMonth} ${endYear}`;
+            date = formatDateRangeForDisplay(date);
 
             if (direction == 'rtl') {
-                // Format for rtl: yyyy mm dd.
-                let startStr = startYear + ' ' + startMonth + ' ' + startDay;
-                let endStr = endYear + ' ' + endMonth + ' ' + endDay;
-                date = endStr + ' - ' + startStr;
-
-                // Making direction ltr for date selector and aligning text to right.
+                // Keep the Latin date range in LTR order inside the RTL page.
                 $(SELECTOR.DATESELECTED).css({'direction': 'ltr', 'text-align': 'right'});
             }
-            $(SELECTOR.DATESELECTED).html(date);
+            $(SELECTOR.DATESELECTED).html('<span dir="ltr">' + date + '</span>');
         }).fail(function(ex) {
             Notification.exception(ex);
         });
@@ -1196,6 +1213,7 @@ define([
         timeFormatter: timeFormatter,
         dateChange: dateChange,
         formatDate: formatDate,
+        formatDateRangeForDisplay: formatDateRangeForDisplay,
         stylePaginationButton: stylePaginationButton,
         handleSearchInput: handleSearchInput,
         reloadFilter: reloadFilter,

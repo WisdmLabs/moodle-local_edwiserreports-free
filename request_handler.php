@@ -91,7 +91,13 @@ if ($secret == null) {
         }
     }
     $USER = $DB->get_record('user', ['id' => $user]);
-    $USER->lang = optional_param('lang', $USER->lang, PARAM_LANG);
+}
+
+// Honour the page language sent by the requesting client so that RTL/LTR
+// formatting and strings stay consistent with the page that made the call.
+$lang = optional_param('lang', null, PARAM_LANG);
+if ($lang !== null) {
+    $USER->lang = $lang;
 }
 
 $PAGE->set_context($context);
@@ -125,4 +131,23 @@ foreach ($contfiles as $contfile) {
 }
 
 $kernel = new edwiserReportKernel($router);
-$kernel->handle($action);
+
+// Make sure stray bootstrap output / notices / language-pack warnings cannot
+// corrupt the JSON payload that DataTables expects.
+try {
+    ob_clean();
+    header('Content-Type: application/json; charset=utf-8');
+    $kernel->handle($action);
+} catch (Throwable $e) {
+    $exception = get_exception_info($e);
+    unset($exception->a);
+    $exception->backtrace = format_backtrace($exception->backtrace, true);
+    if (!debugging('', DEBUG_DEVELOPER)) {
+        unset($exception->debuginfo);
+        unset($exception->backtrace);
+    }
+    echo json_encode([
+        'error' => true,
+        'exception' => $exception
+    ]);
+}

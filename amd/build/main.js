@@ -187,17 +187,11 @@ define([
      */
     function customDateSelected() {
         let date = $(SELECTOR.DATEPICKERINPUT).val();
-        let dateAlternate = $(SELECTOR.DATEPICKERINPUT).next().val().replace("to", "-");
+        let dateAlternate = common.formatDateRangeForDisplay($(SELECTOR.DATEPICKERINPUT).next().val().replace("to", "-"));
         let dirattr = $('html').attr('dir');
-        let stringarr = dateAlternate.split('-');
-        if(dirattr == 'rtl'){
-            let startdate = stringarr[0].split(' ');
-            let enddate = stringarr[1].split(' ');
-            startdate = startdate[2] + ' ' + startdate[1] + ' ' + startdate[0];
-            enddate = enddate[3] + ' ' + enddate[2] + ' ' + enddate[1];
-            dateAlternate = enddate + '-' + startdate;
-            $(SELECTOR.DATE).css({'direction':'ltr','text-align': 'right'});
-            $(SELECTOR.DATEPICKERINPUT).css({'direction':'ltr','text-align': 'right'});
+        if (dirattr == 'rtl') {
+            $(SELECTOR.DATE).css({'direction': 'ltr', 'text-align': 'right'});
+            $(SELECTOR.DATEPICKERINPUT).css({'direction': 'ltr', 'text-align': 'right'});
         }
         $(SELECTOR.DATEPICKERINPUT).next().val(dateAlternate);
         if (!date.includes(" to ")) {

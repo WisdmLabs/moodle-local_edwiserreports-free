@@ -20,10 +20,11 @@
  */
 define([
     'jquery',
+    'core/notification',
     './variables',
     './common',
     './select2'
-], function($, V, common) {
+], function($, Notification, V, common) {
     /* eslint-disable no-unused-vars */
 
     /**
@@ -112,6 +113,7 @@ define([
             var params = {
                 action: "get_completion_data_ajax",
                 sesskey: $(PageId).data("sesskey"),
+                lang: $('html').attr('lang'),
                 data: JSON.stringify({
                     courseid: courseId,
                     cohortid: cohortId
@@ -122,9 +124,27 @@ define([
                 Table.destroy();
             }
 
+            // Suppress the default DataTables alert so we can handle aborted
+            // requests gracefully (they happen when the user switches course
+            // or language while a request is still in flight).
+            $.fn.dataTable.ext.errMode = 'none';
+
             Table = CompletionTable.DataTable({
                 dom: '<"edwiserreports-table"<t><"p-2"i><"table-pagination"p>>',
-                ajax: V.generateUrl(V.requestUrl, params),
+                ajax: {
+                    url: V.requestUrl,
+                    data: params,
+                    cache: false,
+                    error: function(xhr, error, thrown) {
+                        // Ignore requests aborted by page navigation.
+                        if (xhr && (xhr.statusText === 'abort' || error === 'abort')) {
+                            return;
+                        }
+                        Notification.exception({
+                            message: 'Course completion table load failed: ' + (thrown || error)
+                        });
+                    }
+                },
                 pageLength: pageLength,
                 language: {
                     info: M.util.get_string('tableinfo', 'local_edwiserreports'),
