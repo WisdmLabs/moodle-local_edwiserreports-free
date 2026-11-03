@@ -2150,6 +2150,7 @@ table.dataTable thead .sorting_desc,
 table.dataTable thead .sorting_asc_disabled,
 table.dataTable thead .sorting_desc_disabled {
     position: relative;
+    background-image: none !important;
 }
 table.dataTable thead .sorting:before,
 table.dataTable thead .sorting_asc:before,
@@ -2225,17 +2226,8 @@ table.dataTable td.dataTables_empty {
     padding: 10px 30px 10px 10px;
 }
 
-.dataTables_wrapper .row div[class^=col-] {
-    padding-right: 0;
-    padding-left: 0;
-}
-
-.dataTables_wrapper table.dataTable tr td {
-    background-color: #fff !important;
-}
-
 html[dir=rtl] .dataTables_wrapper table.dataTable thead > tr > th {
-    padding: 10px 10px 10px 50px;
+    padding: 10px 10px 10px 70px !important;
 }
 
 html[dir=rtl] table.dataTable thead .sorting:before,
@@ -2244,8 +2236,17 @@ html[dir=rtl] table.dataTable thead .sorting_desc:before,
 html[dir=rtl] table.dataTable thead .sorting:after,
 html[dir=rtl] table.dataTable thead .sorting_asc:after,
 html[dir=rtl] table.dataTable thead .sorting_desc:after {
-    left: 0.75em;
+    left: 0.5em;
     right: auto;
+}
+
+.dataTables_wrapper .row div[class^=col-] {
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.dataTables_wrapper table.dataTable tr td {
+    background-color: #fff !important;
 }
 
 .edwiserreports-table .table-filter [type=search] {
