@@ -312,7 +312,7 @@ define([
                 },
             }).done(function(response) {
                 var ActiveUsers = [];
-                response = JSON.parse(response);
+                response = typeof response === 'string' ? JSON.parse(response) : response;
 
                 $.each(response.dates, function(idx, val) {
                     rtl = $('html').attr('dir') == 'rtl' ? 1 : 0;

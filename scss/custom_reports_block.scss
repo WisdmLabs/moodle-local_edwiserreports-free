@@ -18,6 +18,25 @@
     }
 }
 
+.reports-preview-warning {
+    margin-bottom: 1rem;
+    padding: 1rem 1.5rem;
+    border: 0;
+    border-radius: 0.5rem;
+    background-color: #fff3cd;
+    color: #212529;
+    text-align: start;
+    unicode-bidi: plaintext;
+    &.d-none {
+        display: none !important;
+    }
+}
+
+html[dir=rtl] .reports-preview-warning {
+    direction: rtl;
+    text-align: right;
+}
+
 .reports-list-content,
 .reports-preview-content {
     [data-action="hide"] {

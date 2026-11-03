@@ -353,7 +353,7 @@ define('local_edwiserreports/reports/studentengagement', [
              // Fetching summary card data here
             PROMISES.GET_SUMMARY_CARD_DATA(filter)
             .done(function(response) {
-                response = JSON.parse(response);
+                response = typeof response === 'string' ? JSON.parse(response) : response;
                 common.refreshSummarycard('group', response, SELECTOR.SUMMARY, function() {
                 //     initializeDatatable();
                 });
@@ -380,7 +380,7 @@ define('local_edwiserreports/reports/studentengagement', [
              // Fetching summary card data here
              PROMISES.GET_SUMMARY_CARD_DATA(filter)
              .done(function(response) {
-                 response = JSON.parse(response);
+                 response = typeof response === 'string' ? JSON.parse(response) : response;
                  common.refreshSummarycard('group', response, SELECTOR.SUMMARY, function() {
                  //     initializeDatatable();
                  });

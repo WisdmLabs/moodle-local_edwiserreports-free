@@ -275,7 +275,7 @@ define('local_edwiserreports/reports/allcoursessummary', [
             filter.coursegroup = 0;
             PROMISE.GET_FILTER_DATA(['coursegroup'], filter.cohort)
                 .done(function(response) {
-                    response = JSON.parse(response);
+                    response = typeof response === 'string' ? JSON.parse(response) : response;
                     common.refreshFilter('group', response, SELECTOR.PAGE, function() {
                         initializeDatatable();
                     });

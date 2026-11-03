@@ -313,7 +313,7 @@ define('local_edwiserreports/reports/completion', [
 
             PROMISES.GET_SUMMARY_CARD_DATA(filter.course, filter.cohort, filter.group)
             .done(function(response) {
-                response = JSON.parse(response);
+                response = typeof response === 'string' ? JSON.parse(response) : response;
                 common.refreshSummarycard('group', response, SELECTOR.SUMMARY, function() {
                 //     InitializeDatatable();
                 });

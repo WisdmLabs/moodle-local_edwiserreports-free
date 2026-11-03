@@ -349,7 +349,7 @@ define([
                         })
                     }
                 }).done(function(response) {
-                    response = JSON.parse(response);
+                    response = typeof response === 'string' ? JSON.parse(response) : response;
                     if (response.success) {
                         if (hidden) {
                             _this.closest('.edwiserReport-block').removeClass('block-hidden');
@@ -470,7 +470,7 @@ define([
                 data: data
             }
         }).done(function(response) {
-            response = JSON.parse(response);
+            response = typeof response === 'string' ? JSON.parse(response) : response;
             if (response.success) {
                 callback();
                 location.reload();
@@ -794,7 +794,7 @@ define([
                     types.splice(types.indexOf('noallcourses'), 1);
                 }
 
-                response = JSON.parse(response);
+                response = typeof response === 'string' ? JSON.parse(response) : response;
                 let i = 0;
                 for (; i < types.length - 1; i++) {
                     refreshFilter(types[i], response[types[i]], PANEL, undefined);

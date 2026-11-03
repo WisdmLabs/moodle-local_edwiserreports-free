@@ -325,7 +325,7 @@ define('local_edwiserreports/reports/courseactivitycompletion', [
             // Fetching summary card data here
             PROMISE.GET_SUMMARY_CARD_DATA(filter)
                 .done(function(response) {
-                    response = JSON.parse(response);
+                    response = typeof response === 'string' ? JSON.parse(response) : response;
                     common.refreshSummarycard('group', response, SELECTOR.SUMMARY, function() {
                         //     InitializeDatatable();
                     });
@@ -347,7 +347,7 @@ define('local_edwiserreports/reports/courseactivitycompletion', [
             // Fetching summary card data here
             PROMISE.GET_SUMMARY_CARD_DATA(filter)
                 .done(function(response) {
-                    response = JSON.parse(response);
+                    response = typeof response === 'string' ? JSON.parse(response) : response;
                     common.refreshSummarycard('group', response, SELECTOR.SUMMARY, function() {
                         //     InitializeDatatable();
                     });

@@ -220,7 +220,7 @@ define('local_edwiserreports/reports/activeusers', [
             },
         }).done(function(response) {
             var ActiveUsers = [];
-            response = JSON.parse(response);
+            response = typeof response === 'string' ? JSON.parse(response) : response;
 
             $.each(response.dates, function(idx, val) {
                 ActiveUsers[idx] = {
