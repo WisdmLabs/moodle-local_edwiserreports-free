@@ -722,6 +722,12 @@ html[lang=es] .local-edwiserreports {
                             }
                         }
                     }
+                    // Keep the "..." block-options dropdown aligned under the
+                    // panel header in LTR. Bootstrap's Popper otherwise shifts it
+                    // slightly. Scope narrowly so other dropdowns are untouched.
+                    html:not([dir=rtl]) & .dropdown.blockoptions .dropdown-menu {
+                        left: -126px !important;
+                    }
                     .panel-background {
                         position: absolute;
                         left: 0;

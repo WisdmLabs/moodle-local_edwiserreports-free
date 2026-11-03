@@ -11,6 +11,8 @@ Bug Fixes
 - Fixed exporting issue of all tables in RTL languages, where the tables were flipped after export.
 - Fixed the issue in custom reports where the users were allowed to create reports with just course fields selected, now the user gets warning after selection of only course fields.
 - Fixed invalid JSON response error on the Course Completion report when switching courses or languages multiple times by cleaning the AJAX output buffer and keeping the request language in sync with the page.
+- Fixed RTL sorting arrows overlapping header text in RemUI tables by increasing left padding and positioning arrows inside the padding.
+- Fixed the Site Overview Status "..." dropdown being slightly shifted in RemUI by pinning its left offset for LTR.
 
 v 2.0.0
 ====================================================

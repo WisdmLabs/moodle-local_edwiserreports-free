@@ -101,19 +101,22 @@ table.dataTable td.dataTables_empty {
     background-color: #fff !important;
 }
 
-// RTL fix for sorting icons in data tables.
+// RTL: mirror header cell padding so the arrow sits on the left.
+// Use a larger left padding in RemUI so long RTL headers do not collapse
+// against the sorting arrows.
+html[dir=rtl] .dataTables_wrapper table.dataTable thead>tr>th {
+    padding: 10px 10px 10px 50px;
+}
+
+// RTL: keep the arrow icons inside the left padding area and away from text.
 html[dir=rtl] table.dataTable thead .sorting:before,
 html[dir=rtl] table.dataTable thead .sorting_asc:before,
 html[dir=rtl] table.dataTable thead .sorting_desc:before,
 html[dir=rtl] table.dataTable thead .sorting:after,
 html[dir=rtl] table.dataTable thead .sorting_asc:after,
 html[dir=rtl] table.dataTable thead .sorting_desc:after {
-    left: 1em;
+    left: 0.75em;
     right: auto;
-}
-// RTL: mirror header cell padding so the arrow sits on the left.
-html[dir=rtl] .dataTables_wrapper table.dataTable thead>tr>th {
-    padding: 10px 10px 10px 30px;
 }
 
 // Data table.
