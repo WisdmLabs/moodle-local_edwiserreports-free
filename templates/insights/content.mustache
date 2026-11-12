@@ -1,7 +1,7 @@
 <div class="insight-wrap d-flex">
-    <label class="insight-value pr-2 theme-primary-text h3">{{{value}}}</label>
+    <label class="insight-value pe-2 theme-primary-text h3">{{{value}}}</label>
     {{#difference}}
-        <span class="insight-direction d-inline-block pr-6 insight-{{#direction}}success{{/direction}}{{^direction}}danger{{/direction}}">
+        <span class="insight-direction d-inline-block pe-6 insight-{{#direction}}success{{/direction}}{{^direction}}danger{{/direction}}">
             <span class="value">
                 {{#direction}}
                     {{#pix}} uparrow, local_edwiserreports {{/pix}}
@@ -11,10 +11,10 @@
                 {{/direction}}
                 {{value}}%
                 {{#direction}}
-                    <span class="ml-1">{{#str}} up {{/str}}</span>
+                    <span class="ms-1">{{#str}} up {{/str}}</span>
                 {{/direction}}
                 {{^direction}}
-                    <span class="ml-1">{{#str}} down {{/str}}</span>
+                    <span class="ms-1">{{#str}} down {{/str}}</span>
                 {{/direction}}
             </span>
         </span>

@@ -365,15 +365,13 @@ class certificatesblock extends block_base {
     public static function get_exportable_data_block() {
         $cert = new self();
         $certificates = $cert->get_certificate_list(0);
-        $rtl = get_string('thisdirection', 'langconfig') == 'rtl' ? 1 : 0;
 
         foreach ($certificates as $key => $certificate) {
             unset($certificate["id"]);
-            // $certificates[$key] = array_values($certificate);
-            $certificates[$key] = $rtl ? array_reverse(array_values($certificate)) : array_values($certificate);
+            $certificates[$key] = array_values($certificate);
         }
 
-        $header = $rtl ? array(array_reverse(self::get_headers())) : array(self::get_headers());
+        $header = array(self::get_headers());
 
         $certificates = array_merge(
             $header,
@@ -391,16 +389,14 @@ class certificatesblock extends block_base {
         $cohortid = optional_param("cohortid", 0, PARAM_INT);
         $blockobj = new self();
         $record = $blockobj->get_issued_users($certid, $cohortid);
-        $rtl = get_string('thisdirection', 'langconfig') == 'rtl' ? 1 : 0;
 
         $users = array();
 
         foreach ($record->data as $key => $user) {
             $user->courseprogress = strip_tags($user->courseprogress);
-            // $users[$key] = array_values((array) $user);
-            $users[$key] = $rtl ? array_values(array_reverse((array) $user)) : array_values((array) $user);
+            $users[$key] = array_values((array) $user);
         }
-        $header = $rtl ? array(array_reverse(self::get_headers_report())) : array(self::get_headers_report());
+        $header = array(self::get_headers_report());
 
         $out = array_merge(
             $header,

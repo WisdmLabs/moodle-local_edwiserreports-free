@@ -108,12 +108,12 @@ define([
                     },
                     columnDefs: [{
                             "targets": 0,
-                            "className": "text-left pl-5",
+                            "className": "text-start ps-5",
                             "orderable": false
                         },
                         {
                             "targets": 1,
-                            "className": "text-left",
+                            "className": "text-start",
                             "orderable": false
                         },
                         {
@@ -131,7 +131,7 @@ define([
                     }).nodes().each(function(cell, i) {
                         let img = '';
                         if (i >= 0 && i <= 2) {
-                            img = "<img class='ml-1' src='" + M.util.image_url(
+                            img = "<img class='ms-1' src='" + M.util.image_url(
                                 'trophy/' + ['gold', 'silver', 'bronze'][i],
                                 'local_edwiserreports'
                             ) + "'></img>";

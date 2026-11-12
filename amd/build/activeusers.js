@@ -21,7 +21,7 @@
 /* eslint-disable no-console */
 define([
     'jquery',
-    'core/modal_factory',
+    'local_edwiserreports/modal_factory_compat',
     'core/modal_events',
     'core/notification',
     'core/fragment',
@@ -184,7 +184,7 @@ define([
 
                         // Create dataTable for userslist
                         modalTable = ModalRoot.find(".modal-table").DataTable({
-                            dom: '<"edwiserreports-table"<"p-2"i><t><"table-pagination"p>>',
+                            dom: '<"edwiserreports-table"<t><"p-2"i><"table-pagination"p>>',
                             language: {
                                 info: M.util.get_string('tableinfo', 'local_edwiserreports'),
                                 infoEmpty: M.util.get_string('infoempty', 'local_edwiserreports'),
@@ -213,7 +213,7 @@ define([
          * Create Calender in dropdown tp select range.
          */
         function createDropdownCalendar() {
-            flatpickr = Oldjquery(SELECTOR.DATEPICKERINPUT).flatpickr({
+            flatpickr = window.flatpickr(Oldjquery(SELECTOR.DATEPICKERINPUT)[0], {
                 mode: 'range',
                 altInput: true,
                 altFormat: "d M Y",
@@ -236,26 +236,14 @@ define([
          */
         function selectedCustomDate() {
             let date = $(SELECTOR.DATEPICKERINPUT).val(); // Y-m-d format
-            let dateAlternate = $(SELECTOR.DATEPICKERINPUT).next().val().replace("to", "-"); // Date d M Y format.
+            let dateAlternate = common.formatDateRangeForDisplay($(SELECTOR.DATEPICKERINPUT).next().val().replace("to", "-")); // Date d M Y format.
 
-            // RTL support
-            // Split string in 2 parts
-            let stringarr = dateAlternate.split('-');
-            // Formating date for rtl
-            if(filter.dir == 'rtl'){
-                // format for rtl : yyyy mm dd
-                let startdate = stringarr[0].split(' ');
-                let enddate = stringarr[1].split(' ');
-
-                startdate = startdate[2] + ' ' + startdate[1] + ' ' + startdate[0];
-                enddate = enddate[3] + ' ' + enddate[2] + ' ' + enddate[1];
-                dateAlternate = enddate + '-' + startdate;
-
-                // Making direction ltr for date selector and aligning text to right
-                $(SELECTOR.DATE).css({'direction':'ltr','text-align': 'right'});
-                $(SELECTOR.DATEPICKERINPUT).css({'direction':'ltr','text-align': 'right'});
+            // RTL support: keep the Latin date range in LTR order so the day
+            // does not jump to the visual start in RTL mode.
+            if ($('html').attr('dir') == 'rtl') {
+                $(SELECTOR.DATE).css({'direction': 'ltr', 'text-align': 'right'});
+                $(SELECTOR.DATEPICKERINPUT).css({'direction': 'ltr', 'text-align': 'right'});
             }
-
 
             $(SELECTOR.DATEPICKERINPUT).next().val(dateAlternate);
 
@@ -270,7 +258,7 @@ define([
             $(SELECTOR.DATEITEM + '.custom').addClass('active');
 
             // Show custom date to dropdown button.
-            $(SELECTOR.DATE).html(dateAlternate);
+            $(SELECTOR.DATE).html('<span dir="ltr">' + dateAlternate + '</span>');
 
             filter = date;
 
@@ -324,7 +312,7 @@ define([
                 },
             }).done(function(response) {
                 var ActiveUsers = [];
-                response = JSON.parse(response);
+                response = typeof response === 'string' ? JSON.parse(response) : response;
 
                 $.each(response.dates, function(idx, val) {
                     rtl = $('html').attr('dir') == 'rtl' ? 1 : 0;
@@ -357,7 +345,7 @@ define([
                     }).always(function() {
                         DataTable = $(ActiveUsersTable).DataTable({
                             responsive: true,
-                            dom: '<"edwiserreports-table"<"p-2"i><t><"table-pagination"p>>',
+                            dom: '<"edwiserreports-table"<t><"p-2"i><"table-pagination"p>>',
                             order: [
                                 [0, 'desc']
                             ],
@@ -373,7 +361,7 @@ define([
                             },
                             columnDefs: [{
                                     "targets": 0,
-                                    "className": "text-left"
+                                    "className": "text-start"
                                 },
                                 {
                                     "targets": "_all",

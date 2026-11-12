@@ -3,37 +3,53 @@
 table.dataTable {
     border-bottom: 0 !important;
     thead {
+        .sorting,
+        .sorting_asc,
+        .sorting_desc,
+        .sorting_asc_disabled,
+        .sorting_desc_disabled {
+            position: relative;
+            background-image: none !important;
+        }
+        .sorting:before,
+        .sorting_asc:before,
+        .sorting_desc:before,
+        .sorting_asc_disabled:before,
+        .sorting_desc_disabled:before,
+        .sorting:after,
+        .sorting_asc:after,
+        .sorting_desc:after,
+        .sorting_asc_disabled:after,
+        .sorting_desc_disabled:after {
+            content: '';
+            position: absolute;
+            right: 1em;
+            width: 0;
+            height: 0;
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+        }
         .sorting:before,
         .sorting_asc:before,
         .sorting_desc:before,
         .sorting_asc_disabled:before,
         .sorting_desc_disabled:before {
-            margin-top: -5px;
-            -webkit-transform: translateY(-50%);
-            -ms-transform: translateY(-50%);
-            -o-transform: translateY(-50%);
-            -moz-transform: translateY(-50%);
-            transform: translateY(-50%);
-            font-family: 'FontAwesome' !important;
-            position: absolute;
-            top: 50%;
-            right: 1em;
+            top: calc(50% - 7px);
+            border-bottom: 5px solid currentColor;
+            opacity: 0.4;
         }
         .sorting:after,
         .sorting_asc:after,
         .sorting_desc:after,
         .sorting_asc_disabled:after,
         .sorting_desc_disabled:after {
-            margin-top: 5px;
-            -webkit-transform: translateY(-50%);
-            -ms-transform: translateY(-50%);
-            -o-transform: translateY(-50%);
-            -moz-transform: translateY(-50%);
-            transform: translateY(-50%);
-            font-family: 'FontAwesome' !important;
-            position: absolute;
-            top: 50%;
-            right: 1em;
+            top: calc(50% + 2px);
+            border-top: 5px solid currentColor;
+            opacity: 0.4;
+        }
+        .sorting_asc:before,
+        .sorting_desc:after {
+            opacity: 1;
         }
     }
     tr,
@@ -77,6 +93,23 @@ table.dataTable td.dataTables_empty {
     padding: 10px 30px 10px 10px;
 }
 
+// RTL: give the sorting arrows much more room so they do not collapse
+// against long RTL headers (RemUI).
+html[dir=rtl] .dataTables_wrapper table.dataTable thead>tr>th {
+    padding: 10px 10px 10px 70px !important;
+}
+
+// RTL: place the arrows at the far left of the padding area.
+html[dir=rtl] table.dataTable thead .sorting:before,
+html[dir=rtl] table.dataTable thead .sorting_asc:before,
+html[dir=rtl] table.dataTable thead .sorting_desc:before,
+html[dir=rtl] table.dataTable thead .sorting:after,
+html[dir=rtl] table.dataTable thead .sorting_asc:after,
+html[dir=rtl] table.dataTable thead .sorting_desc:after {
+    left: 0.5em;
+    right: auto;
+}
+
 .dataTables_wrapper .row div[class^='col-'] {
     padding-right: 0;
     padding-left: 0;
@@ -86,26 +119,6 @@ table.dataTable td.dataTables_empty {
     background-color: #fff !important;
 }
 
-// RTL fix for sorting icons in data tables.
-html[dir=rtl] .edwiserreports-table th.sorting:before,
-html[dir=rtl] .edwiserreports-table th.sorting_asc:before,
-html[dir=rtl] .edwiserreports-table th.sorting_desc:before {
-    left: 20rem;
-    opacity: .6;
-}
-html[dir=rtl] .edwiserreports-table th.sorting:after,
-html[dir=rtl] .edwiserreports-table th.sorting_asc:after,
-html[dir=rtl] .edwiserreports-table th.sorting_desc:after {
-    left: 30rem;
-    opacity: .6;
-}
-// RTL: Highlight the active sorting arrow with full opacity.
-html[dir=rtl] .edwiserreports-table th.sorting_asc:before {
-    opacity: 1;
-}
-html[dir=rtl] .edwiserreports-table th.sorting_desc:after {
-    opacity: 1;
-}
 
 // Data table.
 .edwiserreports-table {
@@ -120,6 +133,9 @@ html[dir=rtl] .edwiserreports-table th.sorting_desc:after {
     .dataTables_info {
         padding: 0;
         float: none;
+        display: block !important;
+        width: 100% !important;
+        clear: both;
     }
     .table-pagination {
         display: flex;
@@ -143,4 +159,26 @@ html[dir=rtl] .edwiserreports-table th.sorting_desc:after {
             }
         }
     }
+}
+
+/* RTL fix: text alignment for dataTables info ("Showing X to Y of Z entries") */
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .dataTables_info {
+    text-align: right !important;
+}
+html[dir=rtl] .local-edwiserreports .dataTables_wrapper .dataTables_info {
+    float: right !important;
+}
+
+/* Make the Show/length select wide enough for "100" in both LTR and RTL */
+.local-edwiserreports .edwiserreports-table .dataTables_length select,
+.local-edwiserreports .edwiserreports-table .dataTables_length .select2-container {
+    min-width: 6rem !important;
+    width: auto !important;
+}
+
+/* RTL: arrow is on the left, reduce left padding so the value isn't truncated */
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .dataTables_length select {
+    padding-left: 0.8rem !important;
+    padding-right: 0.5rem !important;
+    text-align: right !important;
 }

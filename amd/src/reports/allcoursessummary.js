@@ -24,7 +24,7 @@ define('local_edwiserreports/reports/allcoursessummary', [
     'jquery',
     'core/ajax',
     'core/notification',
-    'core/modal_factory',
+    'local_edwiserreports/modal_factory_compat',
     'core/modal_events',
     'core/fragment',
     'local_edwiserreports/defaultconfig',
@@ -125,6 +125,7 @@ define('local_edwiserreports/reports/allcoursessummary', [
     function customDateSelected() {
         let date = $(SELECTOR.DATEPICKERINPUT).val(); // Y-m-d format
         let dateAlternate = $(SELECTOR.DATEPICKERINPUT).next().val().replace("to", "-"); // d M Y format
+        dateAlternate = common.formatDateRangeForDisplay(dateAlternate);
         $(SELECTOR.DATEPICKERINPUT).next().val(dateAlternate);
 
         /* If correct date is not selected then return false */
@@ -138,7 +139,7 @@ define('local_edwiserreports/reports/allcoursessummary', [
         $(SELECTOR.DATEITEM + '.custom').addClass('active');
 
         // Show custom date to dropdown button.
-        $(SELECTOR.DATE).html(dateAlternate);
+        $(SELECTOR.DATE).html('<span dir="ltr">' + dateAlternate + '</span>');
 
         filter.enrolment = date;
         initializeDatatable();
@@ -167,12 +168,7 @@ define('local_edwiserreports/reports/allcoursessummary', [
         PROMISE.GET_DATA(filter).then(function(response) {
                 dataTable = $(SELECTOR.TABLE).DataTable({
                     data: response,
-                    dom: '<"edwiserreports-table"<"p-2"i><t><"table-pagination"p>>',
-                    columnDefs: [
-                        { className: "fixed-column", targets: 0 },
-                        { className: "text-left", targets: [0, 1, 2] },
-                        { className: "text-right", targets: "_all" }
-                    ],
+                    dom: '<"edwiserreports-table"<t><"p-2"i><"table-pagination"p>>',
                     columns: [
                         { "data": "coursename", width: "10rem" },
                         { "data": "category", width: "10rem" },
@@ -203,8 +199,8 @@ define('local_edwiserreports/reports/allcoursessummary', [
                     ],
                     columnDefs: [
                         { className: "fixed-column", targets: 0 },
-                        { className: "text-left", targets: [0, 1] },
-                        { className: "text-right", targets: "_all" }
+                        { className: "text-start", targets: [0, 1] },
+                        { className: "text-end", targets: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] }
                     ],
                     language: {
                         info: M.util.get_string('tableinfo', 'local_edwiserreports'),
@@ -279,7 +275,7 @@ define('local_edwiserreports/reports/allcoursessummary', [
             filter.coursegroup = 0;
             PROMISE.GET_FILTER_DATA(['coursegroup'], filter.cohort)
                 .done(function(response) {
-                    response = JSON.parse(response);
+                    response = typeof response === 'string' ? JSON.parse(response) : response;
                     common.refreshFilter('group', response, SELECTOR.PAGE, function() {
                         initializeDatatable();
                     });
@@ -294,7 +290,7 @@ define('local_edwiserreports/reports/allcoursessummary', [
             initializeDatatable();
         });
 
-        flatpickr = Oldjquery(SELECTOR.DATEPICKERINPUT).flatpickr({
+        flatpickr = window.flatpickr(Oldjquery(SELECTOR.DATEPICKERINPUT)[0], {
             mode: 'range',
             altInput: true,
             altFormat: "d M Y",
@@ -401,7 +397,7 @@ define('local_edwiserreports/reports/allcoursessummary', [
                                 next: " "
                             }
                         },
-                        dom: '<"edwiserreports-table"i<t><"table-pagination"p>>',
+                        dom: '<"edwiserreports-table"<t><"p-2"i><"table-pagination"p>>',
                         drawCallback: function() {
                             common.stylePaginationButton(this);
                         },

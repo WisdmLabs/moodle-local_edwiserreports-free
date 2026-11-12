@@ -130,6 +130,32 @@ class learnertimespentonsiteblock extends block_base {
     }
 
     /**
+     * Calculate insight data for learner time spent on site block.
+     * @param array $timespent Timespent array
+     * @return object
+     */
+    public function calculate_insight($timespent) {
+        $total = array_sum($timespent);
+        $insight = [
+            'insight' => [
+                'title' => 'averagetimespent',
+                'value' => floor($total / $this->xlabelcount),
+                'difference' => [
+                    'direction' => 0,
+                    'value' => '13.2'
+                ]
+            ],
+            'details' => [
+                'data' => [[
+                    'title' => 'totaltimespent',
+                    'value' => $total
+                ]]
+            ]
+        ];
+        return $insight;
+    }
+
+    /**
      * Use this method to return data for block.
      * Get Data for block
      * @param  object $filter Filter object
@@ -175,6 +201,7 @@ class learnertimespentonsiteblock extends block_base {
         $response = [
             'timespent' => $timespent,
             'labels' => $this->labels,
+            'insight' => $this->calculate_insight($timespent)
         ];
         return $response;
     }

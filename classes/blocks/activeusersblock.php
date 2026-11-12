@@ -603,7 +603,7 @@ class activeusersblock extends block_base {
         $blockobj->graphajax = false;
         $cohortid = optional_param('cohortid', 0, PARAM_INT);
         $rtl = get_string('thisdirection', 'langconfig') == 'rtl' ? 1 : 0;
-        $export[] = $rtl ? array_reverse(self::get_header_report()) : self::get_header_report();
+        $export[] = self::get_header_report();
 
         // Generate active users data label.
         $blockobj->generate_labels($filter);
@@ -615,25 +615,6 @@ class activeusersblock extends block_base {
             $activeusers = self::get_usersdata($label, $date, "activeusers", $cohortid);
             $enrolments = self::get_usersdata($label, $date, "enrolments", $cohortid);
             $completions = self::get_usersdata($label, $date, "completions", $cohortid);
-
-            if ($rtl) {
-                $tempactiveusers = array();
-                $tempenrolments = array();
-                $tempcompletions = array();
-                foreach ($activeusers as $activeuser) {
-                    $tempactiveusers[] = array_reverse($activeuser);
-                }
-                foreach ($enrolments as $enrolment) {
-                    $tempenrolments[] = array_reverse($enrolment);
-                }
-                foreach ($completions as $completion) {
-                    $tempcompletions[] = array_reverse($completion);
-                }
-
-                $activeusers = $tempactiveusers;
-                $enrolments = $tempenrolments;
-                $completions = $tempcompletions;
-            }
 
             $export = array_merge(
                 $export,

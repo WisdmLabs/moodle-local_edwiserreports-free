@@ -29,7 +29,7 @@
         "downloadurl": "#"
     }
 }}
-<form action="{{{ downloadurl }}}" target="_blank" method="post" class="download-links more-details row m-0 ml-auto">
+<form action="{{{ downloadurl }}}" target="_blank" method="post" class="download-links more-details row m-0 ms-auto">
     <input type="hidden" name="block" value="{{id}}" />
     <input type="hidden" name="filter" value="{{filter}}" />
     <input type="hidden" name="cohortid" value="{{cohortid}}" />
@@ -59,7 +59,7 @@
     </div>
     <div class="pro-export-wrapper">
         {{> local_edwiserreports/proexport }}
-        <button type="button" class="a ml-2 btn theme-primary-text theme-primary-border bg-white pro-export" name="type" value="email">
+        <button type="button" class="a ms-2 btn theme-primary-text theme-primary-border bg-white pro-export" name="type" value="email">
             {{#str}} schedule, local_edwiserreports {{/str}}
             <span class="lock-icon">
                 {{{lock}}}

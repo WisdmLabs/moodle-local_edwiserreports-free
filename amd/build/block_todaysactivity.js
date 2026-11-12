@@ -60,7 +60,7 @@ define([
                  * Generate flatpicker for
                  * date filter in todays activity block
                  */
-                Oldjquery(flatpickrCalender).flatpickr({
+                window.flatpickr(Oldjquery(flatpickrCalender)[0], {
                     dateFormat: rtl ? "Y M d" : "d M Y",
                     maxDate: "today",
                     defaultDate: ["today"],

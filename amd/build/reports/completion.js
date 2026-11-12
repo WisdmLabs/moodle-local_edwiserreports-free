@@ -128,6 +128,7 @@ define('local_edwiserreports/reports/completion', [
     function customDateSelected() {
         let date = $(SELECTOR.DATEPICKERINPUT).val(); // Y-m-d format
         let dateAlternate = $(SELECTOR.DATEPICKERINPUT).next().val().replace("to", "-"); // D M Y format
+        dateAlternate = common.formatDateRangeForDisplay(dateAlternate);
         $(SELECTOR.DATEPICKERINPUT).next().val(dateAlternate);
 
         /* If correct date is not selected then return false */
@@ -141,7 +142,7 @@ define('local_edwiserreports/reports/completion', [
         $(SELECTOR.DATEITEM + '.custom').addClass('active');
 
         // Show custom date to dropdown button.
-        $(SELECTOR.DATE).html(dateAlternate);
+        $(SELECTOR.DATE).html('<span dir="ltr">' + dateAlternate + '</span>');
 
         filter.enrolment = date;
         initializeDatatable();
@@ -161,7 +162,7 @@ define('local_edwiserreports/reports/completion', [
             }
             $(SELECTOR.PAGETITLE).text(response.name);
             dataTable = $(SELECTOR.PAGE).find(".table").DataTable({
-                dom: '<"edwiserreports-table"<"table-filter d-flex"i><t><"table-pagination"p>>',
+                dom: '<"edwiserreports-table"<t><"p-2"i><"table-pagination"p>>',
                 data: response.data,
                 pageLength: $(SELECTOR.LENGTH).val(),
                 deferRendering: true,
@@ -177,8 +178,8 @@ define('local_edwiserreports/reports/completion', [
                 },
                 columnDefs: [
                     {className: "fixed-column", targets: 0},
-                    {className: "text-left", targets: [0, 1, 2]},
-                    {className: "text-right", targets: "_all"}
+                    {className: "text-start", targets: [0, 1, 2]},
+                    {className: "text-end", targets: [3, 4, 5, 6, 7]}
                 ],
                 columns: [
                     {data: "username"},
@@ -244,7 +245,7 @@ define('local_edwiserreports/reports/completion', [
             allowClear: true
         });
 
-        flatpickr = Oldjquery(SELECTOR.DATEPICKERINPUT).flatpickr({
+        flatpickr = window.flatpickr(Oldjquery(SELECTOR.DATEPICKERINPUT)[0], {
             mode: 'range',
             altInput: true,
             altFormat: "d M Y",
@@ -312,7 +313,7 @@ define('local_edwiserreports/reports/completion', [
 
             PROMISES.GET_SUMMARY_CARD_DATA(filter.course, filter.cohort, filter.group)
             .done(function(response) {
-                response = JSON.parse(response);
+                response = typeof response === 'string' ? JSON.parse(response) : response;
                 common.refreshSummarycard('group', response, SELECTOR.SUMMARY, function() {
                 //     InitializeDatatable();
                 });

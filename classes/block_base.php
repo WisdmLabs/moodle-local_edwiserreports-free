@@ -898,7 +898,7 @@ class block_base {
             'name' => 'pdf',
             'label' => get_string('exporttopdf', 'local_edwiserreports'),
             'type' => 'submit',
-            'btnclass' => 'text-left'
+            'btnclass' => 'text-start'
         ], [
             'name' => 'info',
             'label' => get_string('availableinpro', 'local_edwiserreports', UPGRADE_URL),
@@ -913,19 +913,19 @@ class block_base {
                 'label' => get_string('exporttopng', 'local_edwiserreports'),
                 'type' => 'button',
                 'class' => 'disabled',
-                'btnclass' => 'text-left'
+                'btnclass' => 'text-start'
             ], [
                 'name' => 'jpeg',
                 'label' => get_string('exporttojpeg', 'local_edwiserreports'),
                 'type' => 'button',
                 'class' => 'disabled',
-                'btnclass' => 'text-left'
+                'btnclass' => 'text-start'
             ], [
                 'name' => 'svg',
                 'label' => get_string('exporttosvg', 'local_edwiserreports'),
                 'type' => 'button',
                 'class' => 'disabled',
-                'btnclass' => 'text-left'
+                'btnclass' => 'text-start'
             ]]);
         } else {
             $exports = array_merge($exports, [[
@@ -933,13 +933,13 @@ class block_base {
                 'label' => get_string('exporttocsv', 'local_edwiserreports'),
                 'type' => 'button',
                 'class' => 'disabled',
-                'btnclass' => 'text-left'
+                'btnclass' => 'text-start'
             ], [
                 'name' => 'excel',
                 'label' => get_string('exporttoexcel', 'local_edwiserreports'),
                 'type' => 'button',
                 'class' => 'disabled',
-                'btnclass' => 'text-left'
+                'btnclass' => 'text-start'
             ]]);
         }
         $exports[] = [
@@ -947,7 +947,7 @@ class block_base {
             'label' => get_string('sendoveremail', 'local_edwiserreports'),
             'type' => 'button',
             'class' => 'disabled',
-            'btnclass' => 'text-left'
+            'btnclass' => 'text-start'
         ];
         return $exports;
     }

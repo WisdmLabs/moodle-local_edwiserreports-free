@@ -18,7 +18,27 @@
     }
 }
 
-.reports-list-content {
+.reports-preview-warning {
+    margin-bottom: 1rem;
+    padding: 1rem 1.5rem;
+    border: 0;
+    border-radius: 0.5rem;
+    background-color: #fff3cd;
+    color: #212529;
+    text-align: start;
+    unicode-bidi: plaintext;
+    &.d-none {
+        display: none !important;
+    }
+}
+
+html[dir=rtl] .reports-preview-warning {
+    direction: rtl;
+    text-align: right;
+}
+
+.reports-list-content,
+.reports-preview-content {
     [data-action="hide"] {
         &[data-value="0"] {
             .show-svg {
@@ -31,16 +51,21 @@
             }
         }
     }
+    .table-responsive {
+        width: 100%;
+    }
 }
 
 .reports-filter-body {
     .select2-container {
         width: 100% !important;
-        height: 100% !important;
+        height: auto !important;
+        min-height: 38px;
     }
     .select2-selection--single,
     .select2-selection--multiple {
-        height: 100% !important;
+        height: auto !important;
+        min-height: 38px;
     }
     .select2-selection__rendered {
         word-wrap: break-word !important;
@@ -54,15 +79,22 @@
         cursor: pointer;
         &+.field {
             position: absolute;
-            z-index: 1;
+            z-index: 10;
             background: white;
             left: 0;
-            right: 0;
+            min-width: 100%;
+            width: max-content;
             max-height: 200px;
             overflow-y: auto;
+            white-space: nowrap;
             box-shadow: 0 7px 14px 0 rgba(59, 65, 94, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.07);
         }
     }
+}
+
+html[dir=rtl] .reports-filter-body .field-group + .field {
+    left: auto;
+    right: 0;
 }
 
 .field-group-wrap {
@@ -83,8 +115,10 @@
     display: none;
 }
 
-#cr-preview-table {
-    // Override width: max-content !important from .local-edwiserreports .edwiserreports-table table
+#wdm-customreports-edit #cr-preview-table,
+#wdm-customreports-edit #cr-list-table {
+    min-width: 100% !important;
+    // Override width: max-content !important from #wdm-edwiserreports .table
     width: 100% !important;
 }
 
@@ -94,9 +128,6 @@
 }
 
 #cr-list-table {
-    min-width: 100%;
-    // Override width: max-content !important from .local-edwiserreports .edwiserreports-table table
-    width: 100% !important;
     th,
     td {
         &:last-child {
@@ -148,7 +179,7 @@ html[dir=rtl] #cr-list-table {
 }
 
 #wdm-customreports-save-form {
-    .form-group {
+    .fitem {
         .text-nowrap {
             abbr[title] {
                 text-decoration: none !important;
@@ -160,5 +191,78 @@ html[dir=rtl] #cr-list-table {
                 margin-bottom: 0;
             }
         }
+    }
+}
+
+// RTL fix for Save Custom Report form - align icons and labels properly
+html[dir=rtl] #wdm-customreports-save-form {
+    .fitem {
+        > .col-md-3 {
+            display: flex !important;
+            flex-direction: row-reverse !important;
+            justify-content: flex-start !important;
+            align-items: center !important;
+
+            label {
+                margin-right: 0 !important;
+                margin-left: 0.5rem !important;
+                padding-top: 0 !important;
+                padding-bottom: 0 !important;
+                margin-bottom: 0 !important;
+                line-height: 1.2;
+            }
+
+            .text-nowrap {
+                margin-left: 0 !important;
+                margin-right: auto !important;
+                display: inline-flex !important;
+                flex-direction: row !important;
+                align-items: center !important;
+                gap: 4px !important;
+
+                abbr,
+                a {
+                    display: inline-flex !important;
+                    align-items: center !important;
+                }
+            }
+        }
+    }
+}
+
+// Pill-shaped Create New Report / Reset buttons in the custom reports preview footer.
+.reports-preview-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+
+    #wdm-custom-reports-save,
+    a.theme-primary-text.theme-primary-border {
+        border-radius: 50px;
+        padding: 10px 28px;
+        font-weight: 500;
+        font-size: 0.95rem;
+        line-height: 1.2;
+        border-width: 1px;
+        border-style: solid;
+        transition: opacity 0.15s ease-in-out;
+
+        &:hover {
+            opacity: 0.85;
+        }
+
+        &:disabled {
+            opacity: 0.5;
+        }
+    }
+
+    #wdm-custom-reports-save {
+        border-color: transparent;
+    }
+
+    a.theme-primary-text.theme-primary-border {
+        background-color: #fff;
+        text-decoration: none;
     }
 }

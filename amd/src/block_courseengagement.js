@@ -22,7 +22,7 @@
 /* eslint-disable no-console, no-unused-vars */
 define([
     'jquery',
-    'core/modal_factory',
+    'local_edwiserreports/modal_factory_compat',
     'core/modal_events',
     'core/fragment',
     'local_edwiserreports/defaultconfig',
@@ -120,7 +120,7 @@ define([
                         "data": "averagetimespent"
                     }],
                     columnDefs: [{
-                        className: "text-left",
+                        className: "text-start",
                         targets: 0
                     }, {
                         className: "text-center",

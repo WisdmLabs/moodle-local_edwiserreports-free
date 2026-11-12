@@ -106,7 +106,7 @@ define([
             ],
             columnDefs: [{
                     "targets": 0,
-                    "className": "text-left"
+                    "className": "text-start"
                 },
                 {
                     "targets": 1,
@@ -127,7 +127,7 @@ define([
                 if (data == undefined) {
                     return;
                 }
-                var usersCount = '<small class="ml-auto my-auto font-weight-bold">LoggedIn Users : ' + data.length + '</small>';
+                var usersCount = '<small class="ml-auto my-auto fw-bold">LoggedIn Users : ' + data.length + '</small>';
                 $(document).find(".rtblock-filter").append(usersCount);
             }
         });

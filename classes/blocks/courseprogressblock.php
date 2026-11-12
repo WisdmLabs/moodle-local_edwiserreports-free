@@ -531,10 +531,8 @@ class courseprogressblock extends block_base {
      * @return array          Array of exportable data
      */
     public function get_exportable_data_block($filter) {
-        $rtl = get_string('thisdirection', 'langconfig') == 'rtl' ? 1 : 0;
-
         $export = array();
-        $export[] = $rtl ? array_reverse(self::get_header()) : self::get_header();
+        $export[] = self::get_header();
 
         $course = get_course($filter);
         $enrolledstudents = \local_edwiserreports\utility::get_enrolled_students($course->id, false);
@@ -549,7 +547,7 @@ class courseprogressblock extends block_base {
                 $completion["progresspercentage"] . "%"
             );
 
-            $export[] = $rtl ? array_reverse($data) : $data;
+            $export[] = $data;
         }
 
         return $export;
@@ -563,10 +561,8 @@ class courseprogressblock extends block_base {
         global $COURSE;
 
         $cohortid = optional_param("cohortid", 0, PARAM_INT);
-        // Check if current language is RTL
-        $rtl = (get_string('thisdirection', 'langconfig') === 'rtl');
         $export = array();
-        $export[] = $rtl ? array_reverse(self::get_header_report()) : self::get_header_report();
+        $export[] = self::get_header_report();
 
         $blockobj = new self();
         $courses = $blockobj->get_courses_of_user();
@@ -589,7 +585,7 @@ class courseprogressblock extends block_base {
                 ),
                 array_reverse($courseprogress->data)
             );
-            $export[] = $rtl ? array_reverse($data) : $data;
+            $export[] = $data;
         }
 
         return $export;

@@ -17,6 +17,7 @@
 #wdm-activeusers-individual .dropdown-item input {
     border-radius: 0 !important;
     border: 0 !important;
+    text-align: start;
     box-shadow: none !important;
     font-size: inherit !important;
     min-height: inherit !important;
@@ -501,6 +502,12 @@ html:not([dir=rtl]) #page-local-edwiserreports-index .edwiserreports-header .fil
     top: 100% !important;
 }
 
+html:not([dir=rtl]) #page-local-edwiserreports-index .edwiserreports-header .filter-selector .dropdown-menu.withcalendar {
+    width: auto !important;
+    min-width: 308px;
+    display: flex;
+}
+
 html[lang=de] .local-edwiserreports .filter-selector .edwiserreports-calendar {
     min-width: 11.5rem;
 }
@@ -517,7 +524,10 @@ html[lang=es] .local-edwiserreports .filter-selector .edwiserreports-calendar {
     left: 1rem;
 }
 .local-edwiserreports #learnertimespentonsiteblock .filter-selector .dropdown-toggle {
-    padding: 0.829rem 2rem 0.229rem 1rem !important;
+    padding: 0.6rem 2.2rem 0.6rem 1rem !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .local-edwiserreports button.learnertimespentonsite-calendar {
     width: auto !important;
@@ -583,18 +593,22 @@ html[lang=es] .local-edwiserreports .filter-selector .edwiserreports-calendar {
     border: 1px solid #ccc !important;
 }
 .local-edwiserreports .filter-selector .edwiserreports-calendar {
-    padding: 0.829rem 2rem 0.229rem 1rem !important;
+    padding: 0.6rem 2.2rem 0.6rem 1rem !important;
     min-width: 9rem;
     position: relative;
     text-align: left;
     justify-content: left !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .local-edwiserreports .filter-selector .edwiserreports-calendar::after {
     position: absolute;
     content: "" !important;
     border-color: transparent;
     right: 0.829rem;
-    bottom: 0.829rem;
+    top: 50%;
+    margin-top: -0.143rem;
     font-size: 0px !important;
     border-style: solid !important;
     border-width: 0.286rem 0.286rem 0 0.286rem !important;
@@ -628,6 +642,34 @@ html[lang=es] .local-edwiserreports .filter-selector .edwiserreports-calendar {
     background-color: #00A1A8 !important;
     border-radius: 1rem;
     font-weight: 500;
+}
+
+.local-edwiserreports.report-page .dropdown-menu.withcalendar {
+    width: -webkit-fill-available;
+    display: flex;
+}
+.local-edwiserreports.report-page .dropdown-menu.withcalendar .dropdown-calendar {
+    right: 0;
+    user-select: none;
+    height: 300px;
+    width: 308px;
+    float: left;
+    position: relative;
+}
+.local-edwiserreports.report-page .dropdown-menu.withcalendar .dropdown-calendar .flatpickr-calendar {
+    top: 0 !important;
+    left: 0 !important;
+    right: auto !important;
+    box-shadow: none !important;
+    border: 0 !important;
+    position: unset;
+}
+.local-edwiserreports.report-page .dropdown-menu.withcalendar .dropdown-body {
+    display: none;
+    width: auto !important;
+    flex: none !important;
+    right: auto !important;
+    left: auto !important;
 }
 
 .page-title h2 {
@@ -851,6 +893,9 @@ html[lang=es] .local-edwiserreports .filter-selector .edwiserreports-calendar {
     background: #E5E5E5;
     border-radius: 5px;
 }
+html:not([dir=rtl]) #wdm-edwiserreports .edwiserReport-block > div .panel .panel-header .dropdown.blockoptions .dropdown-menu {
+    left: -126px !important;
+}
 #wdm-edwiserreports .edwiserReport-block > div .panel .panel-header .panel-background {
     position: absolute;
     left: 0;
@@ -1071,7 +1116,7 @@ html[lang=es] .local-edwiserreports .filter-selector .edwiserreports-calendar {
     animation: spin 0.8s linear infinite;
 }
 
-.modal-body .form-group {
+.modal-body .fitem {
     margin-right: 0;
     margin-left: 0;
 }
@@ -1397,6 +1442,15 @@ html[lang=es] .local-edwiserreports .filter-selector .edwiserreports-calendar {
     padding: 3px 10px !important;
 }
 
+.local-edwiserreports .edwiserreports-table .table-pagination .pagination {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 0;
+}
+
 .local-edwiserreports .pull-right {
     float: right;
 }
@@ -1440,6 +1494,21 @@ html[dir=rtl] .local-edwiserreports .filter-selector .edwiserreports-calendar {
 html[dir=rtl] .local-edwiserreports .filter-selector .edwiserreports-calendar::after {
     left: 0.829rem;
     right: unset;
+}
+html[dir=rtl] .local-edwiserreports #page-local-edwiserreports-index .edwiserreports-header .filter-selector .dropdown-menu {
+    width: auto !important;
+    min-width: 308px;
+    right: 0 !important;
+    left: auto !important;
+    transform: none !important;
+    top: 100% !important;
+    display: flex;
+}
+html[dir=rtl] .local-edwiserreports #page-local-edwiserreports-index .edwiserreports-header .filter-selector .dropdown-menu > .dropdown-calendar:first-child {
+    position: relative;
+    right: 0 !important;
+    left: auto !important;
+    transform: none !important;
 }
 html[dir=rtl] .local-edwiserreports .insight-card .pro-lock {
     right: unset;
@@ -1495,6 +1564,19 @@ html[dir=rtl] .local-edwiserreports #learnertimespentonsiteblock .filter-selecto
 #userfilter:not(#wdm-completion-individual #userfilter) .row > *:not(.table-length-input) {
     width: fit-content !important;
     max-width: 300px !important;
+}
+
+#activeusers .filter-selector.date-filter {
+    width: fit-content !important;
+    max-width: none !important;
+}
+#activeusers .filter-selector.date-filter .edwiserreports-calendar {
+    width: 100%;
+    min-width: 12rem;
+}
+
+html[dir=rtl] #activeusers .filter-selector.date-filter .edwiserreports-calendar {
+    text-align: right;
 }
 
 .summary-body-wrap.row > * {
@@ -1649,15 +1731,6 @@ html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .pag
     background-color: #fff !important;
     border: 1px solid #F98012 !important;
     color: #F98012 !important;
-    margin-right: 1.5rem !important;
-}
-
-html[dir=ltr] .local-edwiserreports .edwiserreports-table .table-pagination .page-item.previous + .page-item .page-link {
-    margin-left: 0.5rem !important;
-}
-
-html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .page-item:not(.next):nth-last-child(2) .page-link {
-    margin-left: 0.5rem !important;
 }
 
 .field.ml-3.mr-3.show {
@@ -1669,6 +1742,157 @@ html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .pag
     border: 1px solid #ccc;
     box-sizing: border-box;
     z-index: 1000;
+}
+
+/* Fix: Icon and dropdown alignment - calendar icon with dropdown */
+.local-edwiserreports .filter-selector .input-group,
+.local-edwiserreports .filter-selector .edwiserreports-calendar-wrapper {
+    display: flex !important;
+    align-items: center !important;
+}
+
+.local-edwiserreports .filter-selector .edwiserreports-calendar {
+    display: inline-flex !important;
+    align-items: center !important;
+}
+
+.local-edwiserreports .filter-selector svg,
+.local-edwiserreports .filter-selector .fa-calendar,
+.local-edwiserreports .filter-selector .calendar-icon {
+    margin-right: 8px !important;
+    vertical-align: middle !important;
+}
+
+html[dir=rtl] .local-edwiserreports .filter-selector svg,
+html[dir=rtl] .local-edwiserreports .filter-selector .fa-calendar,
+html[dir=rtl] .local-edwiserreports .filter-selector .calendar-icon {
+    margin-right: 0 !important;
+    margin-left: 8px !important;
+}
+
+/* Ensure dropdown and icon are on same line */
+.local-edwiserreports .filter-selector .dropdown,
+.local-edwiserreports .filter-selector .dropdown-toggle {
+    display: inline-flex !important;
+    align-items: center !important;
+}
+
+/* report-page-header.mustache: the calendar icon used to be a loose sibling of
+   the whole label+button column, so it lined up with the label instead of the
+   button. It now lives inside .edwiserreports-calendar-wrapper next to the
+   button - this just flex-centers that pair and gives the icon breathing room. */
+.local-edwiserreports .filter-selector .edwiserreports-calendar-wrapper {
+    flex-shrink: 0;
+}
+
+.local-edwiserreports .filter-selector .edwiserreports-calendar-wrapper svg {
+    flex-shrink: 0;
+    width: 13px;
+    height: 14px;
+}
+
+.local-edwiserreports .filter-selector .edwiserreports-calendar-wrapper .edwiserreports-calendar {
+    width: 100%;
+}
+
+/* Fix: Custom Date dropdown text alignment for LTR/RTL - STRONGER SELECTORS */
+/* LTR - left align */
+html[dir=ltr] .local-edwiserreports .filter-selector .dropdown-menu .dropdown-item,
+html[dir=ltr] .local-edwiserreports .filter-selector .dropdown-menu .dropdown-item.custom,
+html[dir=ltr] .local-edwiserreports .filter-selector .dropdown-menu form .dropdown-item,
+html:not([dir=rtl]) .local-edwiserreports .filter-selector .dropdown-menu .dropdown-item,
+html:not([dir=rtl]) .local-edwiserreports .filter-selector .dropdown-menu .dropdown-item.custom,
+html:not([dir=rtl]) .local-edwiserreports .filter-selector .dropdown-menu form .dropdown-item,
+html[dir=ltr] body .filter-selector .dropdown-menu .dropdown-item,
+html:not([dir=rtl]) body .filter-selector .dropdown-menu .dropdown-item {
+    text-align: left !important;
+}
+
+/* RTL - right align */
+html[dir=rtl] .local-edwiserreports .filter-selector .dropdown-menu .dropdown-item,
+html[dir=rtl] .local-edwiserreports .filter-selector .dropdown-menu .dropdown-item.custom,
+html[dir=rtl] .local-edwiserreports .filter-selector .dropdown-menu form .dropdown-item,
+html[dir=rtl] body .filter-selector .dropdown-menu .dropdown-item {
+    text-align: right !important;
+}
+
+/* Ensure dropdown menu itself respects direction */
+.local-edwiserreports .filter-selector .dropdown-menu {
+    text-align: inherit;
+}
+
+/* Fix: Input placeholders in dropdown items for RTL/LTR */
+/* The "Custom Date" is an input placeholder, not regular text */
+html[dir=rtl] .local-edwiserreports .filter-selector .dropdown-menu .dropdown-item.custom input,
+html[dir=rtl] .local-edwiserreports .filter-selector .dropdown-menu .dropdown-item input.flatpickr,
+html[dir=rtl] .filter-selector .dropdown-menu .dropdown-item.custom input,
+html[dir=rtl] body .filter-selector .dropdown-menu .dropdown-item.custom input {
+    direction: rtl !important;
+    text-align: right !important;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+html[dir=ltr] .local-edwiserreports .filter-selector .dropdown-menu .dropdown-item.custom input,
+html[dir=ltr] .local-edwiserreports .filter-selector .dropdown-menu .dropdown-item input.flatpickr,
+html[dir=ltr] .filter-selector .dropdown-menu .dropdown-item.custom input,
+html:not([dir=rtl]) .filter-selector .dropdown-menu .dropdown-item.custom input {
+    direction: ltr !important;
+    text-align: left !important;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Force placeholder alignment in RTL for inputs */
+html[dir=rtl] .local-edwiserreports .filter-selector .dropdown-menu .dropdown-item.custom input::placeholder,
+html[dir=rtl] .filter-selector .dropdown-menu .dropdown-item.custom input::placeholder {
+    text-align: right !important;
+    direction: rtl !important;
+}
+
+/* Fix: Align only the "Date: Enrollments" label in report-page-header */
+.report-page-header-filter.filter-selector > label {
+    left: 2.15rem !important;
+    text-align: left !important;
+    width: auto !important;
+    white-space: nowrap !important;
+}
+
+/* RTL support for specific label */
+html[dir=rtl] .report-page-header-filter.filter-selector > label {
+    left: auto !important;
+    right: 2.15rem !important;
+    text-align: right !important;
+}
+
+/* Fix: Align filter-selector label with dropdown box */
+.local-edwiserreports .filter-selector {
+    position: relative;
+}
+
+.local-edwiserreports .filter-selector > label {
+    position: absolute;
+    background: white;
+    left: 0.75rem;
+    z-index: 1;
+    top: -0.5rem;
+    font-size: 0.857rem;
+    color: #474747;
+    padding: 0 0.25rem;
+}
+
+/* RTL support for label alignment */
+html[dir=rtl] .local-edwiserreports .filter-selector > label {
+    left: auto;
+    right: 0.75rem;
+}
+
+/* RTL: keep Latin date ranges in day-month-year order so the day
+   does not jump to the visual start in RTL mode. */
+html[dir=rtl] .edwiserreports-calendar,
+html[dir=rtl] .selected-period {
+    direction: ltr;
+    text-align: right;
 }
 #wdm-edwiserreports #courseprogressblock .col-md-3 {
     display: none;
@@ -1697,6 +1921,19 @@ html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .pag
     text-align: unset;
     white-space: unset;
 }
+
+.courseprogress-modal .edwiserreports-table {
+    width: 100%;
+}
+.courseprogress-modal .edwiserreports-table table {
+    width: 100% !important;
+    min-width: 100%;
+}
+.courseprogress-modal .dataTables_info {
+    display: block !important;
+    width: 100% !important;
+    clear: both;
+}
 .reports-preview-body table.empty,
 .reports-list-body table.empty {
     height: 300px;
@@ -1714,20 +1951,47 @@ html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .pag
     font-size: 36px;
 }
 
-.reports-list-content [data-action=hide][data-value="0"] .show-svg {
+.reports-preview-warning {
+    margin-bottom: 1rem;
+    padding: 1rem 1.5rem;
+    border: 0;
+    border-radius: 0.5rem;
+    background-color: #fff3cd;
+    color: #212529;
+    text-align: start;
+    unicode-bidi: plaintext;
+}
+.reports-preview-warning.d-none {
+    display: none !important;
+}
+
+html[dir=rtl] .reports-preview-warning {
+    direction: rtl;
+    text-align: right;
+}
+
+.reports-list-content [data-action=hide][data-value="0"] .show-svg,
+.reports-preview-content [data-action=hide][data-value="0"] .show-svg {
     display: none;
 }
-.reports-list-content [data-action=hide][data-value="1"] .hide-svg {
+.reports-list-content [data-action=hide][data-value="1"] .hide-svg,
+.reports-preview-content [data-action=hide][data-value="1"] .hide-svg {
     display: none;
+}
+.reports-list-content .table-responsive,
+.reports-preview-content .table-responsive {
+    width: 100%;
 }
 
 .reports-filter-body .select2-container {
     width: 100% !important;
-    height: 100% !important;
+    height: auto !important;
+    min-height: 38px;
 }
 .reports-filter-body .select2-selection--single,
 .reports-filter-body .select2-selection--multiple {
-    height: 100% !important;
+    height: auto !important;
+    min-height: 38px;
 }
 .reports-filter-body .select2-selection__rendered {
     word-wrap: break-word !important;
@@ -1742,13 +2006,20 @@ html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .pag
 }
 .reports-filter-body .field-group + .field {
     position: absolute;
-    z-index: 1;
+    z-index: 10;
     background: white;
     left: 0;
-    right: 0;
+    min-width: 100%;
+    width: max-content;
     max-height: 200px;
     overflow-y: auto;
+    white-space: nowrap;
     box-shadow: 0 7px 14px 0 rgba(59, 65, 94, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.07);
+}
+
+html[dir=rtl] .reports-filter-body .field-group + .field {
+    left: auto;
+    right: 0;
 }
 
 .field-group-wrap {
@@ -1769,7 +2040,9 @@ html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .pag
     display: none;
 }
 
-#cr-preview-table {
+#wdm-customreports-edit #cr-preview-table,
+#wdm-customreports-edit #cr-list-table {
+    min-width: 100% !important;
     width: 100% !important;
 }
 
@@ -1778,10 +2051,6 @@ html[dir=rtl] .local-edwiserreports .edwiserreports-table .table-pagination .pag
     width: max-content !important;
 }
 
-#cr-list-table {
-    min-width: 100%;
-    width: 100% !important;
-}
 #cr-list-table th:last-child,
 #cr-list-table td:last-child {
     text-align: center;
@@ -1819,51 +2088,128 @@ html[dir=rtl] #cr-list-table .pro-export-wrapper .pro-export-title::after {
     background-image: none !important;
 }
 
-#wdm-customreports-save-form .form-group .text-nowrap abbr[title] {
+#wdm-customreports-save-form .fitem .text-nowrap abbr[title] {
     text-decoration: none !important;
 }
-#wdm-customreports-save-form .form-group .text-nowrap {
+#wdm-customreports-save-form .fitem .text-nowrap {
     align-self: center;
     margin-left: auto;
 }
-#wdm-customreports-save-form .form-group .text-nowrap * {
+#wdm-customreports-save-form .fitem .text-nowrap * {
     margin-top: 0;
     margin-bottom: 0;
 }
+
+html[dir=rtl] #wdm-customreports-save-form .fitem > .col-md-3 {
+    display: flex !important;
+    flex-direction: row-reverse !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+}
+html[dir=rtl] #wdm-customreports-save-form .fitem > .col-md-3 label {
+    margin-right: 0 !important;
+    margin-left: 0.5rem !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+    line-height: 1.2;
+}
+html[dir=rtl] #wdm-customreports-save-form .fitem > .col-md-3 .text-nowrap {
+    margin-left: 0 !important;
+    margin-right: auto !important;
+    display: inline-flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 4px !important;
+}
+html[dir=rtl] #wdm-customreports-save-form .fitem > .col-md-3 .text-nowrap abbr,
+html[dir=rtl] #wdm-customreports-save-form .fitem > .col-md-3 .text-nowrap a {
+    display: inline-flex !important;
+    align-items: center !important;
+}
+
+.reports-preview-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+}
+.reports-preview-footer #wdm-custom-reports-save,
+.reports-preview-footer a.theme-primary-text.theme-primary-border {
+    border-radius: 50px;
+    padding: 10px 28px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    line-height: 1.2;
+    border-width: 1px;
+    border-style: solid;
+    transition: opacity 0.15s ease-in-out;
+}
+.reports-preview-footer #wdm-custom-reports-save:hover,
+.reports-preview-footer a.theme-primary-text.theme-primary-border:hover {
+    opacity: 0.85;
+}
+.reports-preview-footer #wdm-custom-reports-save:disabled,
+.reports-preview-footer a.theme-primary-text.theme-primary-border:disabled {
+    opacity: 0.5;
+}
+.reports-preview-footer #wdm-custom-reports-save {
+    border-color: transparent;
+}
+.reports-preview-footer a.theme-primary-text.theme-primary-border {
+    background-color: #fff;
+    text-decoration: none;
+}
 table.dataTable {
     border-bottom: 0 !important;
+}
+table.dataTable thead .sorting,
+table.dataTable thead .sorting_asc,
+table.dataTable thead .sorting_desc,
+table.dataTable thead .sorting_asc_disabled,
+table.dataTable thead .sorting_desc_disabled {
+    position: relative;
+    background-image: none !important;
+}
+table.dataTable thead .sorting:before,
+table.dataTable thead .sorting_asc:before,
+table.dataTable thead .sorting_desc:before,
+table.dataTable thead .sorting_asc_disabled:before,
+table.dataTable thead .sorting_desc_disabled:before,
+table.dataTable thead .sorting:after,
+table.dataTable thead .sorting_asc:after,
+table.dataTable thead .sorting_desc:after,
+table.dataTable thead .sorting_asc_disabled:after,
+table.dataTable thead .sorting_desc_disabled:after {
+    content: "";
+    position: absolute;
+    right: 1em;
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
 }
 table.dataTable thead .sorting:before,
 table.dataTable thead .sorting_asc:before,
 table.dataTable thead .sorting_desc:before,
 table.dataTable thead .sorting_asc_disabled:before,
 table.dataTable thead .sorting_desc_disabled:before {
-    margin-top: -5px;
-    -webkit-transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
-    -o-transform: translateY(-50%);
-    -moz-transform: translateY(-50%);
-    transform: translateY(-50%);
-    font-family: "FontAwesome" !important;
-    position: absolute;
-    top: 50%;
-    right: 1em;
+    top: calc(50% - 7px);
+    border-bottom: 5px solid currentColor;
+    opacity: 0.4;
 }
 table.dataTable thead .sorting:after,
 table.dataTable thead .sorting_asc:after,
 table.dataTable thead .sorting_desc:after,
 table.dataTable thead .sorting_asc_disabled:after,
 table.dataTable thead .sorting_desc_disabled:after {
-    margin-top: 5px;
-    -webkit-transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
-    -o-transform: translateY(-50%);
-    -moz-transform: translateY(-50%);
-    transform: translateY(-50%);
-    font-family: "FontAwesome" !important;
-    position: absolute;
-    top: 50%;
-    right: 1em;
+    top: calc(50% + 2px);
+    border-top: 5px solid currentColor;
+    opacity: 0.4;
+}
+table.dataTable thead .sorting_asc:before,
+table.dataTable thead .sorting_desc:after {
+    opacity: 1;
 }
 table.dataTable tr,
 table.dataTable td {
@@ -1899,6 +2245,20 @@ table.dataTable td.dataTables_empty {
     padding: 10px 30px 10px 10px;
 }
 
+html[dir=rtl] .dataTables_wrapper table.dataTable thead > tr > th {
+    padding: 10px 10px 10px 70px !important;
+}
+
+html[dir=rtl] table.dataTable thead .sorting:before,
+html[dir=rtl] table.dataTable thead .sorting_asc:before,
+html[dir=rtl] table.dataTable thead .sorting_desc:before,
+html[dir=rtl] table.dataTable thead .sorting:after,
+html[dir=rtl] table.dataTable thead .sorting_asc:after,
+html[dir=rtl] table.dataTable thead .sorting_desc:after {
+    left: 0.5em;
+    right: auto;
+}
+
 .dataTables_wrapper .row div[class^=col-] {
     padding-right: 0;
     padding-left: 0;
@@ -1908,24 +2268,6 @@ table.dataTable td.dataTables_empty {
     background-color: #fff !important;
 }
 
-html[dir=rtl] .edwiserreports-table th.sorting:before,
-html[dir=rtl] .edwiserreports-table th.sorting_asc:before,
-html[dir=rtl] .edwiserreports-table th.sorting_desc:before {
-    left: 20rem;
-    opacity: .6;
-}
-html[dir=rtl] .edwiserreports-table th.sorting:after,
-html[dir=rtl] .edwiserreports-table th.sorting_asc:after,
-html[dir=rtl] .edwiserreports-table th.sorting_desc:after {
-    left: 30rem;
-    opacity: .6;
-}
-html[dir=rtl] .edwiserreports-table th.sorting_asc:before {
-    opacity: 1;
-}
-html[dir=rtl] .edwiserreports-table th.sorting_desc:after {
-    opacity: 1;
-}
 .edwiserreports-table .table-filter [type=search] {
     margin-left: 0;
 }
@@ -1935,6 +2277,9 @@ html[dir=rtl] .edwiserreports-table th.sorting_desc:after {
 .edwiserreports-table .dataTables_info {
     padding: 0;
     float: none;
+    display: block !important;
+    width: 100% !important;
+    clear: both;
 }
 .edwiserreports-table .table-pagination {
     display: flex;
@@ -1952,6 +2297,26 @@ html[dir=rtl] .edwiserreports-table th.sorting_desc:after {
 .edwiserreports-table .table-pagination .dataTables_paginate .paginate_button:hover a {
     outline: 0 !important;
     background: transparent !important;
+}
+
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .dataTables_info {
+    text-align: right !important;
+}
+
+html[dir=rtl] .local-edwiserreports .dataTables_wrapper .dataTables_info {
+    float: right !important;
+}
+
+.local-edwiserreports .edwiserreports-table .dataTables_length select,
+.local-edwiserreports .edwiserreports-table .dataTables_length .select2-container {
+    min-width: 6rem !important;
+    width: auto !important;
+}
+
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .dataTables_length select {
+    padding-left: 0.8rem !important;
+    padding-right: 0.5rem !important;
+    text-align: right !important;
 }
 .fi {
     width: 20px;
@@ -2372,6 +2737,57 @@ html[dir=rtl] .insight-card .insight-details::before {
 .path-local-edwiserreports .modal-dialog:focus {
     outline: -webkit-focus-ring-color auto 0 !important;
 }
+
+.modal-save-cancel .modal-footer,
+.modal-dialog .modal-footer {
+    display: flex !important;
+    justify-content: flex-end !important;
+    align-items: center !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    gap: 12px;
+    padding: 15px !important;
+    border-top: 1px solid #dee2e6 !important;
+    background-color: #f8f9fa !important;
+}
+
+.modal-save-cancel .modal-footer .btn,
+.modal-dialog .modal-footer .btn {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    visibility: visible !important;
+    opacity: 1 !important;
+    padding: 10px 28px !important;
+    margin: 0 !important;
+    font-weight: 500 !important;
+    font-size: 0.95rem;
+    border-radius: 50px !important;
+    border-width: 1px !important;
+    border-style: solid !important;
+    cursor: pointer !important;
+    transition: opacity 0.15s ease-in-out;
+}
+
+.modal-save-cancel .modal-footer .btn:hover,
+.modal-dialog .modal-footer .btn:hover {
+    opacity: 0.85;
+}
+
+.modal-save-cancel .modal-footer [data-action=save],
+.modal-dialog .modal-footer .btn[data-action=save] {
+    border-color: transparent !important;
+}
+
+.modal-save-cancel .modal-footer [data-action=cancel],
+.modal-dialog .modal-footer .btn[data-action=cancel] {
+    background-color: #fff !important;
+}
+
+html[dir=rtl] .modal-save-cancel .modal-footer,
+html[dir=rtl] .modal-dialog .modal-footer {
+    justify-content: flex-end !important;
+}
 .pie-progress-sm {
     max-width: 100px;
 }
@@ -2593,20 +3009,26 @@ html[dir=rtl] .insight-card .insight-details::before {
     font-size: 1.07rem;
 }
 .local-edwiserreports .table-length-input {
-    width: 7.5rem !important;
-    max-width: 7.5rem !important;
+    min-width: 8.5rem;
+    width: auto !important;
+    max-width: none !important;
+}
+.local-edwiserreports .table-length-input .select2-container {
+    min-width: 6rem !important;
+    width: auto !important;
 }
 .local-edwiserreports .edwiserreports-table > div:not(.table-pagination) {
     overflow: auto;
     margin-bottom: 1rem;
 }
 .local-edwiserreports .edwiserreports-table table {
-    table-layout: fixed;
+    table-layout: auto;
     width: max-content !important;
     min-width: 100%;
 }
 .local-edwiserreports .edwiserreports-table table.dataTable thead tr th {
     height: 70px;
+    white-space: nowrap;
 }
 .local-edwiserreports .edwiserreports-table table.dataTable tbody tr td {
     height: 70px;
@@ -2692,6 +3114,18 @@ html[dir=rtl] .insight-card .insight-details::before {
     transform: translateY(-50%);
     color: #F98012;
 }
+
+html[dir=rtl] .local-edwiserreports .table-search-input input {
+    padding: 0.829rem 1rem 0.429rem 2.5rem !important;
+}
+html[dir=rtl] .local-edwiserreports .table-search-input .search-button {
+    right: auto;
+    left: 0;
+}
+html[dir=rtl] .local-edwiserreports .edwiserreports-table .fixed-column {
+    left: auto;
+    right: 0;
+}
 #page-local-edwiserreports-index.theme_remui #page #region-main > .card {
     background: transparent;
     padding: 0;
@@ -2715,7 +3149,7 @@ html[dir=rtl] .insight-card .insight-details::before {
 #page-local-edwiserreports-index.theme_adaptable .insight-wrap .insight-direction, #page-local-edwiserreports-index.theme_fordson .insight-wrap .insight-direction, #page-local-edwiserreports-index.theme_boost .insight-wrap .insight-direction {
     margin-top: 0.3rem !important;
 }
-html[dir="rtl"] #page-local-edwiserreports-index.theme_boost .dropdown-menu.dropdown-menu-right.dropdown-menu-end.show {
+html[dir=rtl] #page-local-edwiserreports-index.theme_boost .dropdown-menu.dropdown-menu-right.dropdown-menu-end.show {
     right: 1.17rem !important;
 }
 #page-local-edwiserreports-index.theme_adaptable .blockoptions button {
@@ -3215,6 +3649,7 @@ html[dir="rtl"] #page-local-edwiserreports-index.theme_boost .dropdown-menu.drop
     }
 }
 
+@charset "UTF-8";
 .flatpickr-calendar {
     background: transparent;
     opacity: 0;
@@ -3572,7 +4007,7 @@ html[dir="rtl"] #page-local-edwiserreports-index.theme_boost .dropdown-menu.drop
 
 .flatpickr-current-month .numInputWrapper {
     width: 6ch;
-    width: 7ch\0 ;
+    width: 7ch�;
     display: inline-block;
 }
 
@@ -4531,7 +4966,7 @@ span.flatpickr-weekday {
 }
 
 .select2-container--default[dir=rtl] .select2-selection--single {
-    padding-left: 1.858rem;
+    padding-left: 0.8rem;
     padding-right: 1rem;
 }
 

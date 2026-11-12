@@ -21,7 +21,7 @@
 define([
     'jquery',
     'core/ajax',
-    'core/modal_factory',
+    'local_edwiserreports/modal_factory_compat',
     'core/modal_events',
     'core/templates',
     'core/notification',
@@ -59,12 +59,28 @@ define([
     var cpHeader = '.reports-preview-header .rp-header';
     var cfPreviewTable = null;
     var crListTable = null;
+    var cfWarning = '.reports-preview-warning';
     var customReportSaveTitle = M.util.get_string('savecustomreport', 'local_edwiserreports');
 
     var selectedFields = [];
     var courses = [];
     var cohorts = [];
     var reportsId = 0;
+
+    /**
+     * Show the inline "at least one user field is required" warning.
+     */
+    function notifyUserFieldRequired() {
+        $(cfWarning).removeClass('d-none');
+        cfPreview.empty();
+    }
+
+    /**
+     * Hide the inline user-field warning.
+     */
+    function hideUserFieldRequired() {
+        $(cfWarning).addClass('d-none');
+    }
     var reportsDataLoaded = true;
     var reportsData = {
         downloadenable: true
@@ -145,16 +161,29 @@ define([
         if (reportsDataLoaded) {
             reportsDataLoaded = false;
             selectedFields = [];
+            var hasUserField = false;
             cohorts = $(cfCohort).val();
             courses = $(cfCourse).val();
             $(cfCheckbox + ":checked").each(function() {
                 selectedFields.push($(this).val());
+                if ($(this).closest('.field-group-wrap').data('key') === 'user') {
+                    hasUserField = true;
+                }
             });
 
-            if (selectedFields.length == 0) {
+            if (selectedFields.length == 0 || !hasUserField) {
                 $(cfSave).prop('disabled', true);
                 reportsDataLoaded = true;
+                if (selectedFields.length > 0 && !hasUserField) {
+                    notifyUserFieldRequired();
+                } else {
+                    hideUserFieldRequired();
+                    cfPreview.empty();
+                }
+                common.loader.hide('#wdm-customreports-edit');
+                return;
             }
+            hideUserFieldRequired();
             common.loader.show('#wdm-customreports-edit');
             var getCustomReportsDataAjax = ajax.call([{
                 methodname: 'local_edwiserreports_get_customreports_data',
@@ -272,7 +301,26 @@ define([
         }).done(function(modal) {
             var root = modal.getRoot();
             root.find('.modal-dialog').addClass('modal-lg');
-            modal.getFooter().find('[data-action="save"]').removeClass('btn-primary').addClass('theme-primary-bg text-white');
+
+            // Match the Create New Report / Reset pill buttons: filled with
+            // the theme color for Save, outlined for Cancel.
+            modal.getFooter().find('[data-action="save"]')
+                .removeClass('btn-primary')
+                .addClass('theme-primary-bg text-white');
+            modal.getFooter().find('[data-action="cancel"]')
+                .removeClass('btn-secondary')
+                .addClass('theme-primary-text theme-primary-border bg-white');
+
+            // Popover placement is a physical side ("right"), not a logical
+            // one, so it needs to be flipped by hand for RTL languages or the
+            // popovers fly off past the edge of the modal instead of landing
+            // next to the field they describe.
+            if ($('html').attr('dir') === 'rtl') {
+                root.find('[data-toggle="popover"], [data-bs-toggle="popover"]')
+                    .attr('data-placement', 'left')
+                    .attr('data-bs-placement', 'left');
+            }
+
             modal.show();
 
             // Destroying modal on hide event.
@@ -294,6 +342,19 @@ define([
                     obj[item.name] = item.value;
                     return obj;
                 }, {});
+
+                var hasUserField = false;
+                $(cfCheckbox + ":checked").each(function() {
+                    if ($(this).closest('.field-group-wrap').data('key') === 'user') {
+                        hasUserField = true;
+                    }
+                });
+
+                if (!hasUserField) {
+                    notifyUserFieldRequired();
+                    modal.hide();
+                    return;
+                }
 
                 if (validateCustomReprtsSaveData(data)) {
                     // Prepare query data

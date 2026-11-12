@@ -30,3 +30,18 @@
         }
     }
 }
+
+.courseprogress-modal {
+    .edwiserreports-table {
+        width: 100%;
+        table {
+            width: 100% !important;
+            min-width: 100%;
+        }
+    }
+    .dataTables_info {
+        display: block !important;
+        width: 100% !important;
+        clear: both;
+    }
+}

@@ -97,7 +97,7 @@ define('local_edwiserreports/reports/certificates', [
                 // Render data table.
                 dataTable = $(SELECTOR.TABLE).DataTable({
                     data: response.data,
-                    dom: '<"edwiserreports-table"i<t><"table-pagination"p>>',
+                    dom: '<"edwiserreports-table"<t><"p-2"i><"table-pagination"p>>',
                     columnDefs: [{
                             "targets": 0,
                             "className": "align-middle"

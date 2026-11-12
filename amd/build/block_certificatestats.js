@@ -95,7 +95,7 @@ define([
                     }],
                     columnDefs: [{
                         "targets": [0, 1],
-                        "className": "text-left"
+                        "className": "text-start"
                     }, {
                         "targets": "_all",
                         "className": "text-center",

@@ -139,8 +139,8 @@ define('local_edwiserreports/reports/learnercourseprogress', [
                     deferRendering: true,
                     columnDefs: [
                         {className: "fixed-column", targets: 0},
-                        {className: "text-left", targets: [0, 1]},
-                        {className: "text-right", targets: "_all"}
+                        {className: "text-start", targets: [0, 1]},
+                        {className: "text-end", targets: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11]}
                     ],
                     columns: [
                         {data: "course", width: "12rem"},
@@ -174,7 +174,7 @@ define('local_edwiserreports/reports/learnercourseprogress', [
                             data: "timespent"
                         }
                     ],
-                    dom: '<"edwiserreports-table"i<t><"table-pagination"p>>',
+                    dom: '<"edwiserreports-table"<t><"p-2"i><"table-pagination"p>>',
                     language: {
                         info: M.util.get_string('tableinfo', 'local_edwiserreports'),
                         infoEmpty: M.util.get_string('infoempty', 'local_edwiserreports'),
@@ -205,6 +205,7 @@ define('local_edwiserreports/reports/learnercourseprogress', [
     function customDateSelected() {
         let date = $(SELECTOR.DATEPICKERINPUT).val(); // Y-m-d format
         let dateAlternate = $(SELECTOR.DATEPICKERINPUT).next().val().replace("to", "-"); // D M Y format
+        dateAlternate = common.formatDateRangeForDisplay(dateAlternate);
         $(SELECTOR.DATEPICKERINPUT).next().val(dateAlternate);
 
         /* If correct date is not selected then return false */
@@ -218,7 +219,7 @@ define('local_edwiserreports/reports/learnercourseprogress', [
         $(SELECTOR.DATEITEM + '.custom').addClass('active');
 
         // Show custom date to dropdown button.
-        $(SELECTOR.DATE).html(dateAlternate);
+        $(SELECTOR.DATE).html('<span dir="ltr">' + dateAlternate + '</span>');
 
         filter.enrolment = date;
         initializeDatatable();
@@ -239,7 +240,7 @@ define('local_edwiserreports/reports/learnercourseprogress', [
 
         $(SELECTOR.PAGE).find('.singleselect').select2();
 
-        flatpickr = Oldjquery(SELECTOR.DATEPICKERINPUT).flatpickr({
+        flatpickr = window.flatpickr(Oldjquery(SELECTOR.DATEPICKERINPUT)[0], {
             mode: 'range',
             altInput: true,
             altFormat: "d M Y",
@@ -289,7 +290,7 @@ define('local_edwiserreports/reports/learnercourseprogress', [
                 // Fetching summary card data here
                 PROMISE.GET_SUMMARY_CARD_DATA(filter)
                 .done(function(response) {
-                    response = JSON.parse(response);
+                    response = typeof response === 'string' ? JSON.parse(response) : response;
                     common.refreshSummarycard('group', response, SELECTOR.SUMMARY, function() {
                     //     InitializeDatatable();
                     });

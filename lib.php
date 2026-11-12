@@ -214,7 +214,7 @@ function local_edwiserreports_output_fragment_get_blocksetting_form($params) {
         if (LOCAL_SITEREPORT_BLOCK_DESKTOP_VIEW == $key) {
             $voption[LOCAL_SITEREPORT_BLOCK_SMALL] = get_string('small', $component);
         }
-        $output .= html_writer::start_tag('div', array('class' => 'form-group row fitem'));
+        $output .= html_writer::start_tag('div', array('class' => 'mb-3 row fitem'));
         $output .= html_writer::start_tag('div', array('class' => 'col-md-6'));
         $labelparams = array('class' => 'col-form-label d-inline', 'for' => 'id_' . $view['key']);
         $output .= html_writer::tag('label', $view['name'], $labelparams);
@@ -229,7 +229,7 @@ function local_edwiserreports_output_fragment_get_blocksetting_form($params) {
 
     $blocks = \local_edwiserreports\utility::get_reports_block();
     $positions = range(1, count($blocks));
-    $output .= html_writer::start_tag('div', array('class' => 'form-group row fitem'));
+    $output .= html_writer::start_tag('div', array('class' => 'mb-3 row fitem'));
     $output .= html_writer::start_tag('div', array('class' => 'col-md-6'));
     $output .= html_writer::tag('label', get_string('position', $component),
             array('class' => 'col-form-label d-inline', 'for' => 'id_position'));
@@ -243,7 +243,7 @@ function local_edwiserreports_output_fragment_get_blocksetting_form($params) {
     $output .= html_writer::tag(
         'button',
         get_string('save'),
-        array('type' => 'submit', 'class' => 'btn theme-primary-bg text-white pull-right save-block-settings')
+        array('type' => 'submit', 'class' => 'btn theme-primary-bg text-white float-end save-block-settings')
     );
 
     $output .= html_writer::end_tag('form');
@@ -280,7 +280,7 @@ function local_edwiserreports_output_fragment_get_blockscap_form($block) {
     // Prepare form for block editing.
     $output = html_writer::start_tag('form', array('class' => 'form block-cap-form'));
 
-    $output .= html_writer::start_tag('div', array('class' => 'form-group row fitem'));
+    $output .= html_writer::start_tag('div', array('class' => 'mb-3 row fitem'));
     $output .= html_writer::start_tag('div', array('class' => 'col-md-3'));
     $output .= html_writer::tag('label',
         get_string('capabilties', $component),
@@ -299,7 +299,7 @@ function local_edwiserreports_output_fragment_get_blockscap_form($block) {
     $blockname = $block->classname . '-' . $block->id;
     $output .= local_edwiserreports_block_overview_display($capvalue, $blockname);
     $output .= html_writer::end_div();
-    $btnparams = array('type' => 'submit', 'class' => 'btn theme-primary-bg text-white pull-right save-block-caps');
+    $btnparams = array('type' => 'submit', 'class' => 'btn theme-primary-bg text-white float-end save-block-caps');
     $output .= html_writer::tag('button', get_string('save'), $btnparams);
 
     $output .= html_writer::end_tag('form');

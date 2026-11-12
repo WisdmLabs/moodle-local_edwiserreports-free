@@ -295,7 +295,7 @@ define([
     /**
      *  Create flatpicker to select custom date range
      */
-    Oldjquery(panel).find('.custom-flatpicker').flatpickr({
+    window.flatpickr(Oldjquery(panel).find('.custom-flatpicker')[0], {
         altInput: true,
         altFormat: "d/m/Y",
         dateFormat: "Y-m-d",

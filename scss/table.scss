@@ -32,8 +32,13 @@
         }
     }
     .table-length-input {
-        width: 7.5rem !important;
-        max-width: 7.5rem !important;
+        min-width: 8.5rem;
+        width: auto !important;
+        max-width: none !important;
+        .select2-container {
+            min-width: 6rem !important;
+            width: auto !important;
+        }
     }
     .edwiserreports-table {
         &>div:not(.table-pagination) {
@@ -41,7 +46,7 @@
             margin-bottom: 1rem;
         }
         table {
-            table-layout: fixed;
+            table-layout: auto;
             width: max-content !important;
             min-width: 100%;
             &.dataTable {
@@ -49,6 +54,7 @@
                     tr {
                         th {
                             height: 70px;
+                            white-space: nowrap;
                         }
                     }
                 }
@@ -167,6 +173,25 @@
                      color: #F98012;
                 }
             }
+        }
+    }
+}
+
+// RTL overrides for DataTable search, sizing and sticky first column.
+html[dir=rtl] .local-edwiserreports {
+    .table-search-input {
+        input {
+            padding: 0.829rem 1rem 0.429rem 2.5rem !important;
+        }
+        .search-button {
+            right: auto;
+            left: 0;
+        }
+    }
+    .edwiserreports-table {
+        .fixed-column {
+            left: auto;
+            right: 0;
         }
     }
 }

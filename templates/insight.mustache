@@ -55,7 +55,7 @@
             <div class="upgrade-notice text-center">
                 <h4 class="text-white d-inline">{{#str}} unlockthisfeature, local_edwiserreports {{/str}}</h4>
                 {{#upgradelink}}
-                    <a href="{{{upgradelink}}}" class="btn theme-primary-bg text-white ml-2 ms-2 d-inline" target="_blank">{{#str}} upgradetopro, local_edwiserreports {{/str}}</a>
+                    <a href="{{{upgradelink}}}" class="btn theme-primary-bg text-white ms-2 ms-2 d-inline" target="_blank">{{#str}} upgradetopro, local_edwiserreports {{/str}}</a>
                 {{/upgradelink}}
             </div>
         </div>
@@ -64,9 +64,9 @@
     <div class="insight-body p-3">
         <div class="body-wrap">
             <div class="insight-wrap d-flex">
-                <label class="insight-value pr-2 theme-primary-text h3">{{{value}}}</label>
+                <label class="insight-value pe-2 theme-primary-text h3">{{{value}}}</label>
                 {{#difference}}
-                    <span class="insight-direction pr-2 insight-{{#direction}}success{{/direction}}{{^direction}}danger{{/direction}}">
+                    <span class="insight-direction pe-2 insight-{{#direction}}success{{/direction}}{{^direction}}danger{{/direction}}">
                         <span class="value">
                             {{#direction}}
                                 {{#pix}} uparrow, local_edwiserreports {{/pix}}
@@ -88,7 +88,7 @@
         <div class="details-wrap">
             {{#data}}
             <div class="detail">
-                {{title}}: <span class="font-weight-bold">{{value}}</span>
+                {{title}}: <span class="fw-bold">{{value}}</span>
             </div>
             {{/data}}
         </div>

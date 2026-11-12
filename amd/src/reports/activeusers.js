@@ -23,7 +23,7 @@
 /* eslint-disable no-console */
 define('local_edwiserreports/reports/activeusers', [
     'jquery',
-    'core/modal_factory',
+    'local_edwiserreports/modal_factory_compat',
     'core/modal_events',
     'core/notification',
     'core/fragment',
@@ -122,7 +122,7 @@ define('local_edwiserreports/reports/activeusers', [
 
                     // Create dataTable for userslist
                     modalTable = ModalRoot.find(".modal-table").DataTable({
-                        dom: '<"edwiserreports-table"<"p-2"i><t><"table-pagination"p>>',
+                        dom: '<"edwiserreports-table"<t><"p-2"i><"table-pagination"p>>',
                         language: {
                             info: M.util.get_string('tableinfo', 'local_edwiserreports'),
                             infoEmpty: M.util.get_string('infoempty', 'local_edwiserreports'),
@@ -151,7 +151,7 @@ define('local_edwiserreports/reports/activeusers', [
      * Create Calender in dropdown tp select range.
      */
     function createDropdownCalendar() {
-        flatpickr = Oldjquery(SELECTOR.DATEPICKERINPUT).flatpickr({
+        flatpickr = window.flatpickr(Oldjquery(SELECTOR.DATEPICKERINPUT)[0], {
             mode: 'range',
             altInput: true,
             altFormat: "d M Y",
@@ -175,6 +175,7 @@ define('local_edwiserreports/reports/activeusers', [
     function selectedCustomDate() {
         let date = $(SELECTOR.DATEPICKERINPUT).val(); // Y-m-d format
         let dateAlternate = $(SELECTOR.DATEPICKERINPUT).next().val().replace("to", "-"); // d M Y format
+        dateAlternate = common.formatDateRangeForDisplay(dateAlternate);
         $(SELECTOR.DATEPICKERINPUT).next().val(dateAlternate);
 
         /* If correct date is not selected then return false */
@@ -188,7 +189,7 @@ define('local_edwiserreports/reports/activeusers', [
         $(SELECTOR.DATEITEM + '.custom').addClass('active');
 
         // Show custom date to dropdown button.
-        $(SELECTOR.DATE).html(dateAlternate);
+        $(SELECTOR.DATE).html('<span dir="ltr">' + dateAlternate + '</span>');
 
         filter = date;
 
@@ -219,7 +220,7 @@ define('local_edwiserreports/reports/activeusers', [
             },
         }).done(function(response) {
             var ActiveUsers = [];
-            response = JSON.parse(response);
+            response = typeof response === 'string' ? JSON.parse(response) : response;
 
             $.each(response.dates, function(idx, val) {
                 ActiveUsers[idx] = {
@@ -246,7 +247,7 @@ define('local_edwiserreports/reports/activeusers', [
                     Templates.replaceNode(SELECTOR.TABLE, html, js);
                     dataTable = $(SELECTOR.TABLE).DataTable({
                         responsive: true,
-                        dom: '<"edwiserreports-table"<"p-2"i><t><"table-pagination"p>>',
+                        dom: '<"edwiserreports-table"<t><"p-2"i><"table-pagination"p>>',
                         order: [
                             [0, 'desc']
                         ],
@@ -262,7 +263,7 @@ define('local_edwiserreports/reports/activeusers', [
                         },
                         columnDefs: [{
                                 "targets": 0,
-                                "className": "text-left"
+                                "className": "text-start"
                             },
                             {
                                 "targets": "_all",
